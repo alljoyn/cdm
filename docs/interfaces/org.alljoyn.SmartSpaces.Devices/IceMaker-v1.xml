@@ -1,0 +1,28 @@
+<node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
+    <interface name="org.alljoyn.SmartSpaces.Devices.IceMaker">
+        <description language="en">This interface provides capabilities to interact with specific functions and resources of Ice makers</description>
+        <annotation name="org.alljoyn.Bus.Secure" value="true"/>
+        <struct name="CyclePhaseInfo">
+            <field name="cyclePhase" type="y"/>
+            <field name="name" type="s"/>
+        </struct>
+        <property name="Version" type="q" access="read"/>
+        <property name="CyclePhaseId" type="y" access="read">
+            <description language="en">Currently selected cycle phase identifier</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <property name="SupportedCyclePhasesIds" type="ay" access="read">
+            <description language="en">Supported cycle phase identifiers</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
+        </property>
+        <method name="GetCyclePhaseIdsInfo">
+            <description language="en">Get cycle phase identifiers info</description>
+            <arg name="languageTag" type="s" direction="in">
+                <description language="en">Cycle phases info list</description>
+            </arg>
+            <arg name="description" type="[CyclePhaseInfo]" direction="out">
+                <description language="en">language to be used in the output strings</description>
+            </arg>
+        </method>
+    </interface>
+</node>
