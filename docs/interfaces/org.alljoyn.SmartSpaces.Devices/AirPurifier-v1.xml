@@ -1,0 +1,15 @@
+<node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
+    <interface name="org.alljoyn.SmartSpaces.Devices.AirPurifier">
+        <description language="en">This interface provides capabilities to interact with air purifier specific functions and resources.</description>
+        <annotation name="org.alljoyn.Bus.Secure" value="true"/>
+        <property name="Version" type="q" access="read"/>
+        <property name="TurboMode" type="y" access="read">
+            <description language="en">Turbo on/off status.</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <method name="EnableTurboMode">
+            <description language="en">Enable turbo mode. </description>
+            <arg name="turboMode" type="b" direction="in"/>
+        </method>
+    </interface>
+</node>
