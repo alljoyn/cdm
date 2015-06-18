@@ -1,0 +1,11 @@
+<node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
+    <interface name="org.alljoyn.SmartSpaces.Devices.FoodProbe">
+        <description language="en">This interface provides capabilities to interact with specific functions and resources of FoodProbe</description>
+        <annotation name="org.alljoyn.Bus.Secure" value="true"/>
+        <property name="Version" type="q" access="read"/>
+        <property name="InsertionStatus" type="y" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+                <description language="en">Insertion status</description>
+        </property>
+    </interface>
+</node>
