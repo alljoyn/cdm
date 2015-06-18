@@ -1,0 +1,17 @@
+<node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
+    <interface name="org.alljoyn.SmartSpaces.Environment.CurrentCo2Concentration">
+        <description language="en">This interface provides capability to represent current concentration of CO2.</description>
+        <annotation name="org.alljoyn.Bus.Secure" value="true"/>
+        <struct name="Concentration">
+            <field name="significand" type="q"/>
+            <field name="exponent" type="n"/>
+        </struct>
+        <property name="Version" type="q" access="read">
+            <description language="en">Interface version .</description>
+        </property>
+        <property name="CurrentValue" type="[Concentration]" access="read">
+            <description language="en"> The current value of concentration of CO2.</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+    </interface>
+</node>
