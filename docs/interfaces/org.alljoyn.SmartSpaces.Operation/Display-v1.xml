@@ -1,0 +1,16 @@
+<node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
+    <interface name="org.alljoyn.SmartSpaces.Operation.Display">
+        <annotation name="org.alljoyn.Bus.Secure" value="true"/>
+        <struct name="Resolution">
+            <field name="width" type="q"/>
+            <field name="height" type="q"/>
+        </struct>
+        <property name="Version" type="q" access="read"/>
+        <property name="PhysicalResolution" type="[Resolution]" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
+        </property>
+        <property name="GraphicalResolution" type="[Resolution]" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+    </interface>
+</node>
