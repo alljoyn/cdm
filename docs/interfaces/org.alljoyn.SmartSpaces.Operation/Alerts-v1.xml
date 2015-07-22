@@ -1,0 +1,22 @@
+<node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
+    <interface name="org.alljoyn.SmartSpaces.Operation.Alerts">
+        <description language="en">This information provides the status of the alerts of an appliance</description>
+        <annotation name="org.alljoyn.Bus.Secure" value="true"/>
+        <struct name="AlertRecord">
+            <field name="severity" type="y"/>
+            <field name="alertCode" type="q"/>
+        </struct>
+        <property name="Version" type="q" access="read"/>
+        <property name="Alerts" type="a[AlertRecord]" access="read">
+            <description language="en">List of current pending alerts</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <property name="AlertsRequestedAcknowledgement" type="b" access="read">
+            <description language="en">User acknowledgment is requested by pending alerts</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <method name="AcknowledgeAlerts">
+            <description language="en">Reset a pending user acknowledgment request</description>
+        </method>
+    </interface>
+</node>
