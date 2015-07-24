@@ -1,0 +1,36 @@
+<node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
+    <interface name="org.alljoyn.SmartSpaces.Devices.Thermostat">
+        <description language="en">This interface provides capabilities to control and monitor thermostat specific functions and resources.</description>
+        <annotation name="org.alljoyn.Bus.Secure" value="true"/>
+        <struct name="OperationalModeDescriptor">
+            <field name="modeId" type="q"/>
+            <field name="name" type="s"/>
+            <field name="description" type="s"/>
+        </struct>
+        <property name="Version" type="q" access="read">
+            <description language="en">Interface version</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
+        </property>
+        <property name="OperationalModeId" type="q" access="read">
+            <description language="en">Current operational mode identifier</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <property name="SupportedOperationalModeIds" type="aq" access="read">
+            <description language="en">Array of supported operational modes</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <property name="SelectableOperationalModeIds" type="aq" access="read">
+            <description language="en">Array of selectable operational modes</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <method name="SetOperationModeId">
+            <description language="en">Invoke this method to set an operational mode id</description>
+            <arg name="operationModeId" type="q" direction="in"/>
+        </method>
+        <method name="GetOperationalModesDescription">
+            <description language="en">Invoke this method to get operational modes descrtions</description>
+            <arg name="languageTag" type="s" direction="in"/>
+            <arg name="modesDescription" type="a[OperationalModeDescriptor]" direction="out"/>
+        </method>
+    </interface>
+</node>
