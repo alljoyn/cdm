@@ -1,0 +1,25 @@
+<node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
+    <interface name="org.alljoyn.SmartSpaces.Operation.Mouse">
+        <description language="en">This interface provides capabilities to control and monitor mouse movement and action.</description>
+        <annotation name="org.alljoyn.Bus.Secure" value="true"/>
+        <property name="Version" type="q" access="read">
+            <description language="en">Interface version</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
+        </property>
+        <method name="MoveMouse">
+            <description language="en">Invoke this method to move a mouse pointer on a controlle screen</description>
+            <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
+            <arg name="relativeX" type="n" direction="in"/>
+            <arg name="relativeY" type="n" direction="in"/>
+        </method>
+        <method name="PressMouseButton">
+            <description language="en">Invoke this method to press the mouse button</description>
+            <arg name="button" type="y" direction="in"/>
+        </method>
+        <method name="WheelMouse">
+            <description language="en">Invoke this method to wheel mouse in specific direction</description>
+            <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
+            <arg name="scroll" type="y" direction="in"/>
+        </method>
+    </interface>
+</node>
