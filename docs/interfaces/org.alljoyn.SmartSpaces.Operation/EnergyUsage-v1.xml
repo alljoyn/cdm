@@ -1,0 +1,24 @@
+<node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
+    <interface name="org.alljoyn.Hae.EnergyUsage">
+        <annotation name="org.alljoyn.Bus.Secure" value="true" />
+        <struct name="FixedPointNumber">
+            <field name="significand" type="i"/>
+            <field name="exponent" type="n"/>
+        </struct>
+        <property name="Version" type="q" access="read">
+            <description language="en">The version of this interface</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
+        </property>
+        <property name="RepresentedPower" type="[FixedPointNumber]" access="read">
+            <description language="en">The instantaneous power consumption of the device</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <property name="UsedEnergy" type="[FixedPointNumber]" access="read">
+            <description language="en">The cumlative power consumption of the device</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <method name="ResetUsedEnergy">
+            <description language="en">Resets the value of UsedEnergy to 0</description>
+       </method>
+    </interface>
+</node>
