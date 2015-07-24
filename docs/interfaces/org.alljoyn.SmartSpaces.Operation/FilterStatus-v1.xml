@@ -1,0 +1,22 @@
+<node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
+    <interface name="org.alljoyn.SmartSpaces.Operation.FilterStatus">
+         <annotation name="org.alljoyn.Bus.Secure" value="true"/>
+         <description language="en">Interface for determining the status of air and water filters</description>
+        <property name="Version" type="q" access="read">
+            <description language="en">The Interface Version</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
+        </property>
+        <property name="FilterType" type="y" access="read">
+            <description language="en">0=Water Filter, 1=Air Filter</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
+        </property>
+        <property name="StatusType" type="y" access="read">
+            <description language="en">How the filter reports status(0 = enum condition, 1=Days Remaining, 2=Lifespan Remaining in percentage)</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
+        </property>
+        <property name="FilterStatus" type="q" access="read">
+            <description language="en"> For StatusType=0 enum(0=Normal, 1=Need to Order, 2=Need to Replace, 3= Need to Clean) for StatusType 1 or 2 it's lifespan remaining </description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+    </interface>
+</node>
