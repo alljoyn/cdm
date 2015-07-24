@@ -1,0 +1,30 @@
+<node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
+    <interface name="org.alljoyn.SmartSpaces.Environment.VerticalWindDirection">
+        <description language="en">This interface is for controlling vertical wind direction of a device. </description>
+        <annotation name="org.alljoyn.Bus.Secure" value="true"/>
+        <property name="Version" type="q" access="read">
+            <description language="en">Interface version</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
+        </property>
+        <property name="WindDirection" type="q" access="read">
+            <description language="en">Wind direction of a device</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <property name="MaxDirection" type="q" access="read">
+            <description language="en">Maximum value allowed for a target wind direction</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
+        </property>
+        <property name="AutoMode" type="y" access="read">
+            <description language="en">Represent enabled/disabled state of the auto mode. AutoMode is for controlling vertical wind direction automatically.</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <method name="SetWindDirection">
+            <description language="en">Invoke this method to change wind direction</description>
+            <arg name="windDirection" type="q" direction="in"/>
+        </method>
+        <method name="EnableAutoMode">
+            <description language="en">Invoke this method to enable the auto mode</description>
+            <arg name="autoMode" type="b" direction="in"/>
+        </method>
+    </interface>
+</node>
