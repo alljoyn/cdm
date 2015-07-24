@@ -1,0 +1,22 @@
+<node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
+    <interface name="org.alljoyn.SmartSpaces.UserInterfaceSettings.TimeDisplay">
+        <description language="en">Interface to determine/control time display format on devices local user interface</description>
+        <annotation name="org.alljoyn.Bus.Secure" value="true"/>
+        <property name="Version" type="q" access="read">
+                <description language="en">Interface Version</description>
+                <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
+        </property>
+        <property name="DisplayTimeFormat" type="y" access="read">
+                <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+                <description language="en">Format clock is currently using to display time (0=12-hour, 1=24-hour)</description>
+        </property>
+        <property name="SupportedDisplayTimeFormatSettings" type="ay" access="read">
+            <description language="en">Which time formats clock can currently support</description>
+                <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
+        </property>
+        <method name="SetDisplayTimeFormat">
+            <description language="en">Changes clock display format (0=12-hour, 1=24-hour) </description>
+                <arg name="displayTimeFormat" type="y" direction="in"/>
+        </method>
+    </interface>
+</node>
