@@ -1,0 +1,74 @@
+<node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
+    <interface name="org.alljoyn.SmartSpaces.Devices.RobotCleaner">
+        <description language="en">This interface provides capabilities to control and monitor robot cleaner specific functions and resources.</description>
+        <annotation name="org.alljoyn.Bus.Secure" value="true"/>
+        <struct name="OperationalCycleDescriptor">
+            <field name="cycleId" type="q"/>
+            <field name="name" type="s"/>
+            <field name="description" type="s"/>
+        </struct>
+        <struct name="CyclePhaseDescriptor">
+            <field name="phaseId" type="y"/>
+            <field name="name" type="s"/>
+            <field name="description" type="s"/>
+        </struct>
+        <property name="Version" type="q" access="read">
+            <description language="en">Interface version</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
+        </property>
+        <property name="OperationalCycleId" type="q" access="read">
+            <description language="en">Current operational cycle identifier</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <property name="SupportedOperationalCycleIds" type="aq" access="read">
+            <description language="en">Array of supported operational cycle identifiers</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
+        </property>
+        <property name="SelectableOperationalCycleIds" type="aq" access="read">
+            <description language="en">Array of selectable operational cycle indetifiers</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <property name="CyclePhaseId" type="y" access="read">
+            <description language="en">Current cycle phase identifier</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <property name="SupportedCyclePhaseIds" type="ay" access="read">
+            <description language="en">Array of supported cycle phase identifiers</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
+        </property>
+        <property name="SelectableCyclePhaseIds" type="ay" access="read">
+            <description language="en">Array of selectable cycle phase identifiers</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <property name="TurboMode" type="y" access="read">
+            <description language="en">Represent enabled/disabled state of more powerful cleaning mode.</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <property name="RepeatMode" type="y" access="read">
+            <description language="en">Represent enabled/disabled state of the repeat mode.If enabled, robot cleaner will continously clean until the battery runs off.</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <method name="SetOperationalCycleId">
+            <description language="en">Invoke this method to set an operational cycle identifier</description>
+            <arg name="operationalCycleId" type="q" direction="in"/>
+        </method>
+        <method name="GetOperationalCyclesDescription">
+            <description language="en">Invoke this method to get operational cycles descriptions</description>
+            <arg name="language" type="s" direction="in"/>
+            <arg name="cyclesDescription" type="a[OperationalCycleDescriptor]" direction="out"/>
+        </method>
+        <method name="GetCyclePhasesDescription">
+            <description language="en">Invoke this method to get cyecl phases descriptions is string format</description>
+            <arg name="language" type="s" direction="in"/>
+            <arg name="phasesDescription" type="a[CyclePhaseDescriptor]" direction="out"/>
+        </method>
+        <method name="EnableTurboMode">
+            <description language="en">Invoke this method to enable/disable the turbo mode</description>
+            <arg name="turboMode" type="b" direction="in"/>
+        </method>
+        <method name="EnableRepeatMode">
+            <description language="en">Invoke this method to eable/disable the repeate mode</description>
+            <arg name="repeatMode" type="b" direction="in"/>
+        </method>
+    </interface>
+</node>
