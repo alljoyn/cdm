@@ -1,0 +1,30 @@
+<node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
+    <interface name="org.alljoyn.SmartSpaces.Evironment.TargetHumidity">
+        <description language="en">This interface is for setting target humidity of the HAE devices such as humidifier, dehumidifier, etc.</description>
+        <annotation name="org.alljoyn.Bus.Secure" value="true"/>
+        <property name="Version" type="q" access="read">
+            <description language="en">Interface version</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
+        </property>
+        <property name="TargetValue" type="y" access="read">
+            <description language="en">Target value for relative humidity</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <property name="MinValue" type="y" access="read">
+            <description language="en">Minimum value allowed for the TargetValue</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <property name="MaxValue" type="y" access="read">
+            <description language="en">Maximum value allowed for the TargetValue</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <property name="StepValue" type="y" access="read">
+            <description language="en">Step value allowed for the TargetValue setting</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <method name="SetTargetHumidity">
+            <description language="en">Invoke this method to set target value for relative humidity</description>
+            <arg name="humidity" type="y" direction="in"/>
+        </method>
+    </interface>
+</node>
