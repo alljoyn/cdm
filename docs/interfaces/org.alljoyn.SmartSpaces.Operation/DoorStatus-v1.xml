@@ -1,6 +1,6 @@
 <node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
     <interface name="org.alljoyn.SmartSpaces.Operation.DoorStatus">
-        <description language="en">TThis interface provides the status of a door.  It is intended to be part of a
+        <description language="en">This interface provides the status of a door.  It is intended to be part of a
             larger object that might have multiple doors.  Example a refrigerator
             compartment door or oven door.</description>
         <annotation name="org.alljoyn.Bus.Secure" value="true"/>
