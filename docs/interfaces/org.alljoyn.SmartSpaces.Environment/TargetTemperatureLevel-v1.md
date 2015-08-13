@@ -13,12 +13,22 @@ instead of physical quantities.
 
 ## Specification
 
-|            |                               |
-| ---------- | ----------------------------- |
-| Version    | 1                             |
-| Annotation | org.alljoyn.Bus.Secure = true |
+|            |                                                                |
+|------------|----------------------------------------------------------------|
+| Version    | 1                                                              |
+| Annotation | org.alljoyn.Bus.Secure = true                                  |
 
 ### Properties
+
+#### Version
+
+|            |                                                                |
+|------------|----------------------------------------------------------------|
+| Type       | uint16                                                         |
+| Access     | read-only                                                      |
+| Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true        |
+
+The interface version.
 
 #### MaxTemperatureLevel
 
@@ -35,11 +45,24 @@ Maximum value of temperature level.
 |            |                                                         |
 | ---------- | ------------------------------------------------------- |
 | Type       | byte                                                    |
-| Access     | read-only                                               |
+| Access     | read-write                                              |
 | Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true |
 
 Current value of temperature level. The valid values are in the range from 0
 (the lowest one) to **MaxTemperatureLevel** (the highest one).
+If the _consumer_ tries to set value which is not supported (i.e. it is not in
+the list of **SelectableTemperatureLevels** property), then an error should
+be returned.
+
+Errors raised when setting this property:
+
+  * org.alljoyn.Error.InvalidValue --- if the level value is not one of the
+    **SelectableTemperatureLevels** list
+  * org.alljoyn.SmartSpaces.Error.NotAcceptableDueToInternalState --- when the
+    level value is not accepted by the _producer_, because it is in a state
+    which doesn't allow the execution
+  * org.alljoyn.SmartSpaces.Error.RemoteControlDisabled --- when the remote
+    control is disabled
 
 #### SelectableTemperatureLevels
 
@@ -61,27 +84,6 @@ The elements of the array shall be in ascending and order not bigger than
 **MaxTemperatureLevel**.
 
 ### Methods
-
-#### SetTemperatureLevel (level)
-
-Set the value of temperature level.
-If the _consumer_ tries to set value which is not supported (i.e. it is not in
-the list of **SelectableTemperatureLevels** property), then an error should
-be returned.
-
-Input arguments:
-
-  * **level** --- byte --- the temperature level value to be set
-
-Errors raised by this method:
-
-  * org.alljoyn.Error.InvalidValue --- if the level value is not one of the
-    **SelectableTemperatureLevels** list
-  * org.alljoyn.SmartSpaces.Error.NotAcceptableDueToInternalState --- when the
-    level value is not accepted by the _producer_, because it is in a state
-    which doesn't allow the execution
-  * org.alljoyn.SmartSpaces.Error.RemoteControlDisabled --- when the remote
-    control is disabled
 
 #### GetTemperatureLevelInfo (languageTag) -> (info)
 

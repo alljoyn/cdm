@@ -1,13 +1,13 @@
 <node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
-    <interface name="org.alljoyn.SmartSpaces.Evironment.TargetHumidity">
-        <description language="en">This interface is for setting target humidity of the HAE devices such as humidifier, dehumidifier, etc.</description>
+    <interface name="org.alljoyn.SmartSpaces.Environment.TargetHumidity">
+        <description language="en">This interface is for setting target humidity of the HAE devices such as humidifier, dehumidifier, etc. This interface also provides capability to get information about the humidity level.</description>
         <annotation name="org.alljoyn.Bus.Secure" value="true"/>
         <property name="Version" type="q" access="read">
-            <description language="en">Interface version</description>
-            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
+            <description language="en">The interface version</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
-        <property name="TargetValue" type="y" access="read">
-            <description language="en">Target value for relative humidity</description>
+        <property name="TargetValue" type="y" access="readwrite">
+            <description language="en">Target value for relative humidity / Qualitative level of current humidity</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
         <property name="MinValue" type="y" access="read">
@@ -19,12 +19,21 @@
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
         <property name="StepValue" type="y" access="read">
-            <description language="en">Step value allowed for the TargetValue setting</description>
+            <description language="en">Step value allowed for the TargetValue (relative humidity) setting</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
-        <method name="SetTargetHumidity">
-            <description language="en">Invoke this method to set target value for relative humidity</description>
-            <arg name="humidity" type="y" direction="in"/>
+        <property name="SelectableHumidityLevels" type="ay" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+            <description language="en">List of the values of humidity level which can be selected</description>
+        </property>
+        <method name="GetHumidityLevelInfo">
+            <description language="en">Get humidity level info</description>
+            <arg name="languageTag" type="s" direction="in">
+                <description language="en">Language to be used in the output strings</description>
+            </arg>
+            <arg name="info" type="as" direction="out">
+                <description language="en">Humidity level info strings</description>
+            </arg>
         </method>
     </interface>
 </node>

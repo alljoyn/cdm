@@ -2,12 +2,15 @@
     <interface name="org.alljoyn.SmartSpaces.Environment.TargetTemperatureLevel">
         <description language="en">This interface provides capability to get information about the temperature level</description>
         <annotation name="org.alljoyn.Bus.Secure" value="true"/>
-        <property name="Version" type="q" access="read"/>
+        <property name="Version" type="q" access="read">
+            <description language="en">The interface version</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
         <property name="MaxTemperatureLevel" type="y" access="read">
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
             <description language="en">Maximum value of temperature level</description>
         </property>
-        <property name="TemperatureLevel" type="y" access="read">
+        <property name="TemperatureLevel" type="y" access="readwrite">
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
             <description language="en">Current value of temperature level</description>
         </property>
@@ -15,12 +18,6 @@
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
             <description language="en">List of the values of temperature level which can be selected</description>
         </property>
-        <method name="SetTemperatureLevel">
-            <description language="en">Set temperature level</description>
-            <arg name="level" type="y" direction="in">
-                <description language="en">Value to be set</description>
-            </arg>
-        </method>
         <method name="GetTemperatureLevelInfo">
             <description language="en">Get temperature level info</description>
             <arg name="languageTag" type="s" direction="in">

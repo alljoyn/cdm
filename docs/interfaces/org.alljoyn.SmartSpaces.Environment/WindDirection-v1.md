@@ -1,9 +1,9 @@
-# org.alljoyn.SmartSpaces.Environment.WindStrength version 1
+# org.alljoyn.SmartSpaces.Environment.WindDirection version 1
 
 ## Theory of Operation
 
-WindStrength interface is for controlling wind strength of a device. The
-AutoMode supports to control wind strength automatically.
+WindDirection interface is for controlling wind direction of a device. AutoMode
+supports to control wind direction automatically.
 
 ## Specification
 
@@ -22,28 +22,33 @@ AutoMode supports to control wind strength automatically.
 | Access     | read-only                                                      |
 | Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true        |
 
-The Interface version
+Interface version
 
-#### WindStrength
+#### DirectionType
+
+|            |                                                                |
+|------------|----------------------------------------------------------------|
+| Type       | byte                                                           |
+| Access     | read-only                                                      |
+| Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = false       |
+
+Type of wind direction.
+0 : Horizontal
+1 : Vertical
+
+#### WindDirection
 
 |                  |                                                          |
 |------------------|----------------------------------------------------------|
-| Type             | byte                                                     |
+| Type             | uint16                                                   |
 | Access           | read-write                                               |
 | Annotation       | org.freedesktop.DBus.Property.EmitsChangedSignal = true  |
 
-Wind Strength of a device. 1 means the lowest setting of continuous fan
-operation. MaxStrength means the highest setting of continuous fan operation.
-Step value is always 1.
-
-Special reserved values listed below:
-  * 0x00 --- **Off** --- Fan operation is turned off.
-
-The controller shall not set 0x00(Off) to turn off the fan operation. Turning
-on/off shall be operated by the OperationalControl interface. Only highlevel
-device of this interface can set 0x00 internally when the fan operation is
-turned off. If the controller tries to set 0x00, org.alljoyn.Error.InvalidValue
-error shall be returned.
+Wind direction of a device. 0 means the leftmost/highest position. MaxDirection
+means the rightmost/lowest position. An error code shall be returned if a
+setpoint value is greater than MaxDirection. Step value for WindDirection is
+always 1. All directions are based on the user's view, where the user is at the
+front of an object which contains this interface.
 
 Errors raised when setting this property:
 
@@ -53,15 +58,16 @@ Errors raised when setting this property:
   * org.alljoyn.Error.SmartSpaces.RemoteControlDisabled --- Returned if remote
   control is disabled.
 
-#### MaxStrength
+#### MaxDirection
 
 |                  |                                                          |
 |------------------|----------------------------------------------------------|
-| Type             | byte                                                     |
+| Type             | uint16                                                   |
 | Access           | read-only                                                |
 | Annotation       | org.freedesktop.DBus.Property.EmitsChangedSignal = false |
 
-Maximum strength allowed for target wind strength.
+Maximum value allowed for a target wind direction. 0 means that device doesn't
+support to set and represent the wind direction.
 
 #### AutoMode
 
@@ -71,13 +77,14 @@ Maximum strength allowed for target wind strength.
 | Access           | read-write                                               |
 | Annotation       | org.freedesktop.DBus.Property.EmitsChangedSignal = true  |
 
-AutoMode is for automatic control of wind strength. If the AutoMode is enabled,
-a high level device of this interface controls the wind strength automatically
-and the WindStrength property shall be changed according to changing wind
-strength. If the AutoMode is disabled, the wind strength will remain at an
-appropriate fixed strength determined by the device. (The fixed value of wind
-strength can be a default value or the value when the AutoMode is disabled. This
-operation of auto control wind strength depends on the device manufacturer.)
+AutoMode is for controlling wind direction of a device automatically. If the
+AutoMode is enabled, a high level device of this interface controls the wind
+direction automatically and the WindDirection property of the interface should
+be changed according to changing wind direction.
+If the AutoMode is disabled, the wind direction will remain at an appropriate
+fixed direction determined by the device. (At this time, the value of wind
+direction can be a default value or the value when the AutoMode is disabled.
+This operation of auto control direction depends on the device manufacturer.)
 
 The property data type is an enumeration and its allowed value are listed below:
   * 0x00 --- **Off** --- Auto mode is disabled.
@@ -100,29 +107,7 @@ Errors raised when setting this property:
 
 ### Methods
 
-#### GetWindStrengthInfo (languageTag) -> (info)
-
-Get added information about the wind strength which are supported by
-the appliance. It is used to communicate to controller the names and
-descriptions of rates supported by the appliance, so they can be available by
-the remote controller.
-
-Input arguments:
-
-  * **languageTag** --- string --- language to be used in the output strings
-  using IETF language tags specified by RFC 5646.
-
-Output arguments:
-
-  * **info** --- string[] --- the list of wind strength
-     * empty: there are no string to communicate
-     * list a string for each element from 0 to **MaxWindStrength**
-     examples of output are: "low", "med", "high"
-
-Errors raised by this method:
-
-  * org.alljoyn.Error.LanguageNotSupported --- The language specified is not
-    supported.
+No methods are exposed by this interface.
 
 ### Signals
 
@@ -130,18 +115,17 @@ No signals are emitted by this interface.
 
 ### Interface Errors
 
-The method calls in this interface use the AllJoyn error message handling
-feature (`ER_BUS_REPLY_IS_ERROR_MESSAGE`) to set the error name and error
-message. The table below lists the possible errors raised by this interface.
+The method calls in this interface use the AllJoyn error message handling feature
+(`ER_BUS_REPLY_IS_ERROR_MESSAGE`) to set the error name and error message. The table
+below lists the possible errors raised by this interface.
 
 | Error name                                                    | Error message                                      |
 |---------------------------------------------------------------|----------------------------------------------------|
 | org.alljoyn.Error.FeatureNotAvailable                         | Feature not supported                              |
 | org.alljoyn.Error.InvalidValue                                | Invalid value                                      |
-| org.alljoyn.Error.LanguageNotSupported                        | The language specified is not supported            |
 | org.alljoyn.SmartSpaces.Error.NotAcceptableDueToInternalState | The value is not acceptable due to internal state  |
 | org.alljoyn.SmartSpaces.Error.RemoteControlDisabled           | Remote control disabled                            |
 
-## References
+### References
 
-  * The XML definition of the [WindStrength interface](WindStrength-v1.xml)
+  * The XML definition of the [WindDirection interface](WindDirection-v1.xml)
