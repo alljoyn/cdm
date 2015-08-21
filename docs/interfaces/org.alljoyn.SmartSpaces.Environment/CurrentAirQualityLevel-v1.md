@@ -16,6 +16,16 @@ air quality monitor.
 
 ### Properties
 
+#### Version
+
+|            |                                                                |
+|------------|----------------------------------------------------------------|
+| Type       | uint16                                                         |
+| Access     | read-only                                                      |
+| Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true        |
+
+The interface version number.
+
 #### AirQualityType
 
 |            |                                                                |
