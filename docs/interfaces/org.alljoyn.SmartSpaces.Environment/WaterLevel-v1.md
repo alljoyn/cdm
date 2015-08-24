@@ -15,6 +15,16 @@ humidifier, and ice maker.
 
 ### Properties
 
+#### Version
+
+|            |                                                                |
+|------------|----------------------------------------------------------------|
+| Type       | uint16                                                         |
+| Access     | read-only                                                      |
+| Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true        |
+
+The interface version number.
+
 #### SupplySource
 
 |            |                                                                |
