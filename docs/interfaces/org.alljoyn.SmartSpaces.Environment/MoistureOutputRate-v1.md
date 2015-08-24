@@ -9,8 +9,8 @@ is about how fast a device reaches a given level of moisture. While the
 [TargetMoistureLevel](TargetMoistureLevel-v1) interface is about a set-point
 level of moisture to be reached, this interface provides a capability about how
 fast a device reaches a given level of moisture. Some cheap humidifiers just
-have a capbility to set the rate of moisture output and don't care about the
-current and target humidity level. That's just left as end-users' resposibility.
+have a capability to set the rate of moisture output and don't care about the
+current and target humidity level. That's just left as end-users' responsibility.
 
 ## Specification
 
@@ -21,12 +21,22 @@ current and target humidity level. That's just left as end-users' resposibility.
 
 ### Properties
 
+#### Version
+
+|            |                                                                |
+|------------|----------------------------------------------------------------|
+| Type       | uint16                                                         |
+| Access     | read-only                                                      |
+| Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true        |
+
+The interface version.
+
 #### MoistureOutputRate
 
 |            |                                                                |
 |------------|----------------------------------------------------------------|
 | Type       | byte                                                           |
-| Access     | read-only                                                      |
+| Access     | read-write                                                     |
 | Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true        |
 
 It is a qualitative representation of the current rate of moisture output.
@@ -41,6 +51,14 @@ Special reserved values listed below:
 
 For example, if there are 6 rates of moisture output then
 MaxMoistureOutputRate = 5, and the rates will be {0, 1, 2, 3, 4, 5}.
+
+Errors raised when setting this property:
+
+  * org.alljoyn.Error.InvalidValue --- Returned if value is not valid.
+  * org.alljoyn.Error.SmartSpaces.NotAcceptableDueToInternalState --- Returned
+  if value is not acceptable due to internal state.
+  * org.alljoyn.Error.SmartSpaces.RemoteControlDisabled --- Returned if remote
+  control is disabled.
 
 #### MaxMoistureOutputRate
 
@@ -57,7 +75,7 @@ It indicates a maximum rate of moisture output.
 |            |                                                                |
 |------------|----------------------------------------------------------------|
 | Type       | byte                                                           |
-| Access     | read-only                                                      |
+| Access     | read-write                                                     |
 | Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true        |
 
 If AutoMode is enabled, the device decides the moisture output rate for
@@ -76,23 +94,17 @@ The property data type is an enumeration and its allowed value are listed below:
   * **0xFF** --- **Not Supported** : Auto mode is not supported by specific
   appliance.
 
-### Methods
-
-#### SetMoistureOutputRate (moistureOutputRate)
-
-Set the moisture output rate.
-
-Input arguments:
-
-  * **moistureOutputRate** --- byte --- Target moisture output rate
-
-Errors raised by this method:
-
+Errors raised when setting this property:
+  
   * org.alljoyn.Error.InvalidValue --- Returned if value is not valid.
+  * org.alljoyn.Error.FeatureNotAvailable --- Returend if there is no selectable
+  operational mode id.
   * org.alljoyn.Error.SmartSpaces.NotAcceptableDueToInternalState --- Returned
   if value is not acceptable due to internal state.
   * org.alljoyn.Error.SmartSpaces.RemoteControlDisabled --- Returned if remote
   control is disabled.
+
+### Methods
 
 #### GetMoistureOutputRateInfo (languageTag) -> (info)
 
@@ -118,38 +130,9 @@ Errors raised by this method:
   * org.alljoyn.Error.LanguageNotSupported --- The language specified is not
     supported.
 
-#### EnableAutoMode (autoMode)
-
-Enable/disable auto control of moisture output rate.
-
-Input arguments:
-
-  * **autoMode** --- boolean --- Enable/Disable auto mode
-
-Errors raised by this method:
-
-  * org.alljoyn.Error.FeatureNotAvailable --- Returend if there is no selectable
-  operational mode id.
-  * org.alljoyn.Error.SmartSpaces.NotAcceptableDueToInternalState --- Returned
-  if value is not acceptable due to internal state.
-  * org.alljoyn.Error.SmartSpaces.RemoteControlDisabled --- Returned if remote
-  control is disabled.
-
 ### Signals
 
 No signals are emitted by this interface.
-
-### Named Types
-
-#### struct MoistureOutputRateDescriptor
-
-This structure is used to give added information about the MoistureOutputRate,
-using the id of MoistureOutputRate as reference.
-
-  * **moistureOutputRateId** --- int16 --- MoistureOutputRate id
-  * **name** --- string --- name of MoistureOutputRate (e.g. "low", "med" ...)
-  * **description** --- string --- description of MoistureOutputRate, it can be
-    empty string in case there is no description
 
 ### Interface Errors
 

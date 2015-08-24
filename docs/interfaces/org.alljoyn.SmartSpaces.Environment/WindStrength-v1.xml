@@ -4,9 +4,9 @@
         <annotation name="org.alljoyn.Bus.Secure" value="true"/>
         <property name="Version" type="q" access="read">
             <description language="en">Interface version</description>
-            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
-        <property name="WindStrength" type="y" access="read">
+        <property name="WindStrength" type="y" access="readwrite">
             <description language="en">Current wind strength</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
@@ -14,22 +14,14 @@
             <description language="en">Maximum strength allowed for target wind strenghth</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
         </property>
-        <property name="AutoMode" type="y" access="read">
+        <property name="AutoMode" type="y" access="readwrite">
             <description language="en">Represent enabled/disabled state of the auto mode.</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
-        <method name="SetWindStrength">
-            <description language="en">Invoke this method to set wind strength</description>
-            <arg name="windStrength" type="y" direction="in"/>
-        </method>
         <method name="GetWindStrengthInfo">
             <description language="en">Invoke this method to get information about wind strength in string format</description>
             <arg name="languageTag" type="s" direction="in"/>
             <arg name="info" type="as" direction="out"/>
-        </method>
-        <method name="EnableAutoMode">
-            <description language="en">Invoke this method to enable/disable the auto mode</description>
-            <arg name="autoMode" type="b" direction="in"/>
         </method>
     </interface>
 </node>

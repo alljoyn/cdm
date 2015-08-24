@@ -1,0 +1,26 @@
+<node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
+    <interface name="org.alljoyn.SmartSpaces.Environment.WindDirection">
+        <description language="en">This interface is for controlling wind direction of a device.</description>
+        <annotation name="org.alljoyn.Bus.Secure" value="true"/>
+        <property name="Version" type="q" access="read">
+            <description language="en">Interface version</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <property name="DirectionType" type="y" access="read">
+            <description language="en">Type of wind direction (0=Horizontal, 1=Vertical)</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
+        </property>
+        <property name="WindDirection" type="q" access="readwrite">
+            <description language="en">Wind direction of a device</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <property name="MaxDirection" type="q" access="read">
+            <description language="en">Maximum value allowed for a target wind direction</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
+        </property>
+        <property name="AutoMode" type="y" access="readwrite">
+            <description language="en">Represent enabled/disabled state of the auto mode. AutoMode is for controlling wind direction automatically.</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+    </interface>
+</node>

@@ -2,15 +2,11 @@
     <interface name="org.alljoyn.SmartSpaces.Environment.CurrentTemperature">
         <description language="en">This interface provides capability to represent current temperature.</description>
         <annotation name="org.alljoyn.Bus.Secure" value="true"/>
-        <struct name="Temperature">
-            <field name="significand" type="n"/>
-            <field name="exponent" type="n"/>
-        </struct>
         <property name="Version" type="q" access="read">
-            <description language="en">Interface version</description>
-            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
+            <description language="en">The interface version</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
-        <property name="CurrentValue" type="[Temperature]" access="read">
+        <property name="CurrentValue" type="double" access="read">
             <description language="en">Current temperature expressed in Celsius</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
