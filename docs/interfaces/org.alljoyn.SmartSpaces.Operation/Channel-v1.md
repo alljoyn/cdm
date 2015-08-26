@@ -1,7 +1,7 @@
-# org.alljoyn.SmartSpaces.Operation.TelevisionChannel version 1
+# org.alljoyn.SmartSpaces.Operation.Channel version 1
 
 ## Theory of Operation
-This interface provides capabilites to set and get channel of device
+This interface provides capabilities to set and get channel of device
 that has a channel list.
 
 ## Specification
@@ -13,15 +13,32 @@ that has a channel list.
 
 ### Properties
 
+#### Version
+
+|            |                                                                |
+|------------|----------------------------------------------------------------|
+| Type       | uint16                                                         |
+| Access     | read-only                                                      |
+| Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true        |
+
+Interface version
+
 #### ChannelId
 
 |            |                                                                |
 |------------|----------------------------------------------------------------|
 | Type       | string                                                         |
-| Access     | read-only                                                      |
+| Access     | read-write                                                     |
 | Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true        |
 
 Current channel ID.
+
+Errors raised when setting this property:
+  * org.alljoyn.Error.InvalidValue --- Returned if value is not valid.
+  * org.alljoyn.Error.SmartSpaces.NotAcceptableDueToInternalState --- Returned
+  if value is not acceptable due to internal state.
+  * org.alljoyn.Error.SmartSpaces.RemoteControlDisabled --- Returned if remote
+  control is disabled.
 
 #### TotalNumberOfChannels
 
@@ -86,23 +103,6 @@ Errors raised by this method:
   * org.alljoyn.Error.SmartSpaces.RemoteControlDisabled --- Returned if remote
   control is disabled.
 
-#### ChangeChannel (channelId)
-
-Change channel using channelId.
-
-Input arguments:
-  * **channelId** --- sting --- The value corresponds to the unique channel ID
-    in ChannelInfoRecord.
-
-Output arguments: None.
-
-Errors raised by this method:
-  * org.alljoyn.Error.InvalidValue --- Returned if value is not valid.
-  * org.alljoyn.Error.SmartSpaces.NotAcceptableDueToInternalState --- Returned
-  if value is not acceptable due to internal state.
-  * org.alljoyn.Error.SmartSpaces.RemoteControlDisabled --- Returned if remote
-  control is disabled.
-
 ### Signals
 
 #### ChannelListChanged
@@ -119,11 +119,6 @@ Output arguments: None.
 #### struct ChannelInfoRecord
 
   * **channelID** --- string --- The unique channel ID.
-  * **channelMode** --- byte --- The enumeration below lists channel mode.
-    * Terrestrial : 1
-    * Cable : 2
-    * Satellite : 3
-    * Common Interface Plus : 4 (DVB only)
   * **channelNumber** --- string --- The display channel number in the device.
     ex) 11-2, 7, 9-1
   * **channelName** --- string --- the channel short name which is user friendly
@@ -143,4 +138,4 @@ message. The table below lists the possible errors raised by this interface.
 
 ## References
 
-  * The XML definition of the [TelevisionChannel interface](TelevisionChannel-v1.xml)
+  * The XML definition of the [Channel interface](Channel-v1.xml)

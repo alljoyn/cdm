@@ -1,22 +1,21 @@
 <node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
-    <interface name="org.alljoyn.SmartSpaces.Operation.TelevisionChannel">
-        <description language="en">This interface provides capabilites to set and get channel of device that has a channel list.</description>
+    <interface name="org.alljoyn.SmartSpaces.Operation.Channel">
+        <description language="en">This interface provides capabilities to set and get channel of device that has a channel list.</description>
         <annotation name="org.alljoyn.Bus.Secure" value="true"/>
         <struct name="ChannelInfoRecord">
             <field name="channelID" type="s"/>
-            <field name="channelMode" type="y"/>
             <field name="channelNumber" type="s"/>
             <field name="channelName" type="s"/>
         </struct>
         <property name="Version" type="q" access="read">
             <description language="en">Interface version</description>
-            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
-        <property name="ChannelId" type="s" access="read">
+        <property name="ChannelId" type="s" access="readwrite">
             <description language="en">Current channel id</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
-        <property name="TotalNumberOfChannels" type="y" access="read">
+        <property name="TotalNumberOfChannels" type="q" access="read">
             <description language="en">Total number of scanned channels</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
@@ -32,12 +31,9 @@
         <method name="DownChannel">
             <description language="en">Invoke this method to move down to the next available channel</description>
         </method>
-        <method name="ChangeChannel">
-            <description language="en">Invoke this method to change the channel using channel id</description>
-            <arg name="channelId" type="s" direction="in"/>
-        </method>
         <signal name="ChannelListChanged" sessionless="false">
             <description language="en">Emitted this signal if the channel list is changed</description>
         </signal>
     </interface>
 </node>
+

@@ -1,24 +1,20 @@
 <node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
     <interface name="org.alljoyn.SmartSpaces.Operation.AudioVolume">
-        <description language="en">This interface provides capabilites to control and monitor volume.</description>
+        <description language="en">This interface provides capabilities to control and monitor volume.</description>
         <annotation name="org.alljoyn.Bus.Secure" value="true"/>
         <property name="Version" type="q" access="read">
             <description language="en">Interface version</description>
-            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
-        <property name="Volume" type="y" access="read">
+        <property name="Volume" type="y" access="readwrite">
             <description language="en">Speaker volume index of the device</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
-        <property name="StepValue" type="y" access="read">
-            <description language="en"></description>
-            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
-        </property>
-        <property name="MaxValue" type="y" access="read">
+        <property name="MaxVolume" type="y" access="read">
             <description language="en">Maximum value allowed for Volume</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
-        <property name="Muted" type="y" access="read">
+        <property name="Mute" type="b" access="readwrite">
             <description language="en">The state of volume muted</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
@@ -28,13 +24,6 @@
         <method name="DownVolume">
             <description language="en">Invoke this method to down volume to the next available value </description>
         </method>
-        <method name="ChangeVolume">
-            <description language="en">Invoke this method to change volume</description>
-            <arg name="volume" type="y" direction="in"/>
-        </method>
-        <method name="EnableMute">
-            <description language="en">Invoke this method to enable/disable volume mute</description>
-            <arg name="mute" type="b" direction="in"/>
-        </method>
     </interface>
 </node>
+
