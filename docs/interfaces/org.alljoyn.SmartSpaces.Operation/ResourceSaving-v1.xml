@@ -1,7 +1,8 @@
 <node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
     <interface name="org.alljoyn.SmartSpaces.Operation.ResourceSaving">
+        <description language="en">Interface that exposes the resource saving mode.  Depending on the device this resource could be electricity, water, natural gas, etc. </description>
         <annotation name="org.alljoyn.Bus.Secure" value="true" />
-        <property name="Version" type="q" access="read">
+        <property name="Version" type="q" access="readwrite">
             <description language="en">The version of this interface</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
         </property>
@@ -9,7 +10,7 @@
             <description language="en">The current resource saving mode of the device</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
-        <method name="EnableResourceSaving">
+        <method name="SetResourceSavingMode">
             <description language="en">Enables or disables the resource saving mode</description>
             <arg name="resourceSavingMode" type="b" direction="in"/>
         </method>
