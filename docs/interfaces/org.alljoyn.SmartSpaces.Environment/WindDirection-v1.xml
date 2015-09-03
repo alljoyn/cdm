@@ -6,20 +6,28 @@
             <description language="en">Interface version</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
-        <property name="DirectionType" type="y" access="read">
-            <description language="en">Type of wind direction (0=Horizontal, 1=Vertical)</description>
-            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
-        </property>
-        <property name="WindDirection" type="q" access="readwrite">
-            <description language="en">Wind direction of a device</description>
+        <property name="HorizontalWind" type="q" access="readwrite">
+            <description language="en">Horizontal wind direction of a device</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
-        <property name="MaxDirection" type="q" access="read">
-            <description language="en">Maximum value allowed for a target wind direction</description>
+        <property name="HorizontalMax" type="q" access="read">
+            <description language="en">Maximum value allowed for a target horizontal wind direction</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
         </property>
-        <property name="AutoMode" type="y" access="readwrite">
-            <description language="en">Represent enabled/disabled state of the auto mode. AutoMode is for controlling wind direction automatically.</description>
+        <property name="HorizontalAutoMode" type="y" access="readwrite">
+            <description language="en">Represent enabled/disabled state of the horizontal auto mode. HorizontalAutoMode is for controlling horizontal wind direction automatically.</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <property name="VerticalWind" type="q" access="readwrite">
+            <description language="en">Vertical wind direction of a device</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <property name="VerticalMax" type="q" access="read">
+            <description language="en">Maximum value allowed for a target vertical wind direction</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
+        </property>
+        <property name="VerticalAutoMode" type="y" access="readwrite">
+            <description language="en">Represent enabled/disabled state of the vertical auto mode. VerticalAutoMode is for controlling vertical wind direction automatically.</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
     </interface>
