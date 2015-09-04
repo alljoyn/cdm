@@ -1,13 +1,10 @@
 # org.alljoyn.SmartSpaces.Environment.TargetHumidity version 1
 
 ## Theory of Operation
-This interface is for setting target humidity of the HAE devices such as
-humidifier, dehumidifier, etc.
-This interface also provides capability to get information about the moisture or
-humidity level of an appliance or more in general of a resource of it (e.g. the
-clothes moisture a Clothes Dryer). When the related humidity feature takes
-values from a discrete set rather than a continuous range, the values can be
-associated to descriptive labels instead of physical quantities.
+This interface provides a capability to set a target humidity.
+This interface also provides capability to set a target level of moisture or
+humidity of an appliance or more in general of a resource of it (e.g. the
+clothes moisture of a Clothes Dryer).
 
 ## Specification
 
@@ -72,8 +69,8 @@ Errors raised when setting this property:
 | Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true        |
 
 Minimum value allowed for **TargetValue**. **MinValue** can’t be less than 0.
-If this value is same with **MaxValue**, **TargetValue** means qualitative level
-of current humidity.
+If this value is same with **MaxValue**, **TargetValue** represents the
+set-point value of qualitative level of target humidity.
 
 #### MaxValue
 
@@ -84,9 +81,8 @@ of current humidity.
 | Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true        |
 
 Maximum value allowed for **TargetValue**. **MaxValue** can’t be greater than
-100.
-If this value is same with **MinValue**, **TargetValue** means qualitative level
-of current humidity.
+100. If this value is same with **MinValue**, **TargetValue** represents the
+set-point value of qualitative level of target humidity.
 
 #### StepValue
 
@@ -101,8 +97,8 @@ percentage) setting. The step of humidity increment or decrement can be
 different for each device. The step can be 1%, 5%, and 10%, etc. Starting from
 **MinValue**, valid target value will be represented. Difference between
 **MaxValue** and **MinValue** shall be a multiple of **StepValue**.
-If this interface is for qualitative level of current humidity (When the
-**MaxValue** is same with **MinValue**), this value shall be set to 1.
+If this interface is for setting the qualitative level of target humidity(When
+the **MaxValue** is same with **MinValue**), this value shall be set to 1.
 
 #### SelectableHumidityLevels
 
@@ -119,41 +115,15 @@ is same with **MinValue**); it can be different because of the appliance state
 selectable humidity levels). It is used to let _consumer_ know in advance
 which are the values of **TargetValue** property that can be set by _consumer_.
 
-If the array is empty, the humidity level can be only monitored.
-
-The elements of the array shall be in ascending and order not bigger than
+If the array is empty, the target humidity level can be only monitored.
+In case this interface is implemented for setting a quantitative percentage of
+target humidity, the list shall be empty.
+The elements of the array shall be in ascending order and not bigger than
 **MaxValue**.
 
 ### Methods
 
-#### GetHumidityLevelInfo (languageTag) -> (info)
-
-Get information about the humidity levels in string format.
-It is used to communicate to _consumer_ the strings associated to the humidity
-level supported values, so it can display them. This method can be used when
-this interface represents the target humidity as a qualitative level (When the
-**MaxValue** is same with **MinValue**).
-
-Input arguments:
-
-  * **languageTag** --- string --- language to be used in the output strings
-    using IETF language tags specified by RFC 5646.
-
-Output arguments:
-
-  * **info** --- string[] --- the list of strings associated to the humidity
-    levels, each element of the array refers to the level expressed by its index;
-    the array can be:
-      * empty: there are no string to communicate
-      * list a string for each element from 0 to **MaxValue**
-    examples of output are:
-      1. "wet", "damp", "dry"
-
-Errors raised by this method:
-
-  * org.alljoyn.Error.FeatureNotAvailable --- The feature is not supported.
-  * org.alljoyn.Error.LanguageNotSupported --- The language specified is not
-    supported.
+No methods are implemented by this interface.
 
 ### Signals
 
@@ -169,8 +139,6 @@ message. The table below lists the possible errors raised by this interface.
 | Error name                                                    | Error message                                      |
 |---------------------------------------------------------------|----------------------------------------------------|
 | org.alljoyn.Error.InvalidValue                                | Invalid value                                      |
-| org.alljoyn.Error.FeatureNotAvailable                         | Feature is not supported                           |
-| org.alljoyn.Error.LanguageNotSupported                        | Language specified is not supported                |
 | org.alljoyn.SmartSpaces.Error.NotAcceptableDueToInternalState | The value is not acceptable due to internal state  |
 | org.alljoyn.SmartSpaces.Error.RemoteControlDisabled           | Remote control disabled                            |
 

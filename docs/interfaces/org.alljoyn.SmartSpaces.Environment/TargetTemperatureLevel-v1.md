@@ -30,7 +30,7 @@ instead of physical quantities.
 
 The interface version.
 
-#### MaxTemperatureLevel
+#### MaxLevel
 
 |            |                                                          |
 | ---------- | -------------------------------------------------------- |
@@ -38,9 +38,9 @@ The interface version.
 | Access     | read-only                                                |
 | Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = false |
 
-Maximum value of temperature level.
+Maximum value allowed for target temperature level setting.
 
-#### TemperatureLevel
+#### TargetLevel
 
 |            |                                                         |
 | ---------- | ------------------------------------------------------- |
@@ -48,10 +48,10 @@ Maximum value of temperature level.
 | Access     | read-write                                              |
 | Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true |
 
-Current value of temperature level. The valid values are in the range from 0
-(the lowest one) to **MaxTemperatureLevel** (the highest one).
+Target set-point value of temperature level. The valid values are in the range
+from 0 (the lowest one) to **MaxLevel** (the highest one).
 If the _consumer_ tries to set value which is not supported (i.e. it is not in
-the list of **SelectableTemperatureLevels** property), then an error should
+the list of **SelectableTemperatureLevels** property), then an error shall
 be returned.
 
 Errors raised when setting this property:
@@ -75,41 +75,17 @@ Errors raised when setting this property:
 It lists the values of temperature level which can be selected; it can be
 different because of the appliance state (e.g. different selected operational
 cycles can have a different list of selectable water temperature levels). It is
-used to know in advance which are the values of **TemperatureLevel** property
-that can be set by _consumer_ using the **SetTemperatureLevel** method.
+used to know in advance which are the values of **TargetLevel** property
+that can be set by _consumer_.
 
-If the array is empty the temperature level can be only monitored.
+If the array is empty the target temperature level can be only monitored.
 
-The elements of the array shall be in ascending and order not bigger than
-**MaxTemperatureLevel**.
+The elements of the array shall be in ascending order and not bigger than
+**MaxLevel**.
 
 ### Methods
 
-#### GetTemperatureLevelInfo (languageTag) -> (info)
-
-Get information about the temperature levels in string format.
-It is used to communicate to _consumer_ the strings associated to the
-temperature level supported values, so it can display them.
-
-Input arguments:
-
-  * **languageTag** --- string --- language to be used in the output strings
-    using IETF language tags specified by RFC 5646.
-
-Output arguments:
-
-  * **info** --- string[] --- the list of strings associated to the temperature
-    levels, each element of the array refers to the level expressed by its
-    index; the array can be:
-      * empty: there are no string to communicate
-      * list a string for each element from 0 to **MaxTemperatureLevel**
-    examples of output are:
-      1. "cold", "warm", "hot", "very hot"
-      2.  "30 °C", "60 °C", "70 °C" ,"90 °C"
-
-Errors raised by this method:
-
-  * org.alljoyn.LanguageNotSupported --- the language specified is not supported
+No methods are implemented by this interface.
 
 ### Signals
 
@@ -124,21 +100,8 @@ message. The table below lists the possible errors raised by this interface.
 | Error name                                                    | Error message                                     |
 |---------------------------------------------------------------|---------------------------------------------------|
 | org.alljoyn.Error.InvalidValue                                | Invalid value                                     |
-| org.alljoyn.Error.LanguageNotSupported                        | Language specified is not supported               |
 | org.alljoyn.SmartSpaces.Error.NotAcceptableDueToInternalState | The value is not acceptable due to internal state |
 | org.alljoyn.SmartSpaces.Error.RemoteControlDisabled           | Remote control disabled                           |
-
-## Examples
-
-The following sequence diagram shows an example of which can be the exchanged
-messages between _producer_ and _consumer_ to select the temperature level from
-remote, it refers to the water temperature of a Clothes Washer.
-
-![Temperature Level Selection Example][TemperatureLevelSelectionExample]
-
-[TemperatureLevelSelectionExample]: TemperatureLevelSelectionExample.png
-
-**Figure 1:** Temperature level selection example
 
 ## References
 
