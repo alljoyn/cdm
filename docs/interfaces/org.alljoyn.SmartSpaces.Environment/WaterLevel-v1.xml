@@ -2,23 +2,21 @@
     <interface name="org.alljoyn.SmartSpaces.Environment.WaterLevel">
         <description language="en">This information provides level and supply source of water for an appliance.</description>
         <annotation name="org.alljoyn.Bus.Secure" value="true"/>
-        <property name="Version" type="q" access="read"/>
+        <property name="Version" type="q" access="read">
+            <description language="en">The interface version.</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
         <property name="SupplySource" type="y" access="read">
             <description language="en">The supply source of water.</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
         <property name="CurrentLevel" type="y" access="read">
-            <description language="en">The current relative level of water in the tank.</description>
+            <description language="en">The current level of water in the tank.</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
         <property name="MaxLevel" type="y" access="read">
             <description language="en">Maximum level allowed for water level.</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
-        <method name="GetWaterLevelInfo">
-            <description language="en">Get added info about the water levels in string format.</description>
-            <arg name="languageTag" type="s" direction="in"/>
-            <arg name="waterLevelInfo" type="as" direction="out"/>
-        </method>
     </interface>
 </node>

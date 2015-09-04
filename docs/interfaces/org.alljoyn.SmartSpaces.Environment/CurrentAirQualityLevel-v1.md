@@ -2,9 +2,9 @@
 
 ## Theory of Operation
 
-This information provides represented air quality level measured by an 
-appliance.
-Examples of appliances which may include this interface are air purifier and 
+This information provides represented air quality level measured by a 
+device.
+Examples of devices which may include this interface are air purifier and 
 air quality monitor.
 
 ## Specification
@@ -34,7 +34,7 @@ The interface version number.
 | Access     | read-only                                                      |
 | Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = false       |
 
-The air quality type.
+The measured air quality type.
 
 * **0** --- **PM2.5**
 * **1** --- **PM10**
@@ -54,7 +54,7 @@ The air quality type.
 | Access     | read-only                                                      |
 | Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true        |
 
-The qualitative representation of current relative air quality level.
+The qualitative representation of current air quality level.
 
 0 ~ MaxLevel:
 
@@ -78,43 +78,11 @@ Maximum level allowed for represented air quality level.
 
 ### Methods
 
-#### GetAirQualityLevelInfo (languageTag) -> (airQualityLevelInfo)
-
-Get added info about the air quality levels in string format. It is used to 
-communicate to controller the strings associated to the air quality level 
-supported values so it can display them.
-
-Input arguments:
-
-  * **languageTag** --- string --- languageTag to be used in the output strings
-    using IETF language tags specified by RFC 5646.
-
-Output arguments:
-
-  * **airQualityLevelInfo** --- string[] --- the list of strings
-    associated to the air quality levels, each element of the array refers
-    to the level expressed by its index; the array can be:
-    * empty: there are no strings to communicate
-    * list a string for each element from 0 to **MaxLevel** 
-    examples of output are: "Clean", "Mid", "Very Impure"
-
-Errors raised by this method:
-
-  * org.alljoyn.Error.LanguageNotSupported --- the language specified is not supported
+No methods are exposed by this interface.
 
 ### Signals
 
 No signals are emitted by this interface.
-
-### Interface Errors
-
-The method calls in this interface use the AllJoyn error message handling
-feature (`ER_BUS_REPLY_IS_ERROR_MESSAGE`) to set the error name and error
-message. The table below lists the possible errors raised by this interface.
-
-|                          Error name                          |                     Error                     |
-| ------------------------------------------------------------ | --------------------------------------------- |
-| org.alljoyn.Error.LanguageNotSupported                       | The language specified is not supported       |
 
 ## References
 

@@ -1,24 +1,22 @@
 <node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
     <interface name="org.alljoyn.SmartSpaces.Environment.AirQualityLevel">
-        <description language="en">This information provides represented air quality level measured by an appliance.</description>
+        <description language="en">This information provides represented air quality level measured by a device.</description>
         <annotation name="org.alljoyn.Bus.Secure" value="true"/>
-        <property name="Version" type="q" access="read"/>
+        <property name="Version" type="q" access="read">
+            <description language="en">The interface version.</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
         <property name="AirQualityType" type="y" access="read">
             <description language="en">The air quality type.</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
         </property>
         <property name="CurrentLevel" type="y" access="read">
-            <description language="en">The qualitative representation of current relative air quality level.</description>
+            <description language="en">The qualitative representation of current air quality level.</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
         <property name="MaxLevel" type="y" access="read">
             <description language="en">Maximum level allowed for represented air quality level.</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
         </property>
-        <method name="GetAirQualityLevelInfo">
-            <description language="en">Get added info about the air quality levels in string format.</description>
-            <arg name="languageTag" type="s" direction="in"/>
-            <arg name="airQualityLevelInfo" type="as" direction="out"/>
-        </method>
     </interface>
 </node>
