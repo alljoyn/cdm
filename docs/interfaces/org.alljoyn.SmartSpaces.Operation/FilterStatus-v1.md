@@ -21,31 +21,8 @@ use case is outside the scope of AllJoyn HAE).
 
 ### Properties
 
-#### FilterType
 
-|                       |                                                                       |
-|-----------------------|-----------------------------------------------------------------------|
-| Type                  | byte                                                                  |
-| Access                | read-only                                                             |
-| Annotation            | org.freedesktop.DBus.Property.EmitsChangedSignal = true               |
-
-0 = Water
-1 = Air
-
-#### FilterStatusType
-
-|                       |                                                                       |
-|-----------------------|-----------------------------------------------------------------------|
-| Type                  | byte                                                                  |
-| Access                | read-only                                                             |
-| Annotation            | org.freedesktop.DBus.Property.EmitsChangedSignal = true               |
-
-0 : Filter Condition
-1 : Day Counter
-2 : % Lifespan Counter 
-
-
-#### FilterStatus
+#### Version
 
 |                       |                                                                       |
 |-----------------------|-----------------------------------------------------------------------|
@@ -54,20 +31,32 @@ use case is outside the scope of AllJoyn HAE).
 | Annotation            | org.freedesktop.DBus.Property.EmitsChangedSignal = true               |
 
 
-The meaning of the FilterStatus Property depends on the value of the FilterStatusType.
 
-|  Filter Status Type  |   Status Value Meaning                                                                      |
-|----------------------|---------------------------------------------------------------------------------------------|
-| 0                    |  0 - normal condition                                                                       |
-|                      |  1 - need to order:  The filter will expire soon and a new one should be obtained.          |
-|                      |  2 - need to replace:  The filter has reached the end of life and should be replaced.       |
-|                      |  3 - need to clean:  The filter needs to be cleaned, after cleaning it can be reinstalled.  |
-| 1                    | Days remaining.  0 indicates replace/clean.                                                 |
-| 2                    | Lifespan Remaining in percentage (100 - 0).  0 indicates replace/clean.                     |
+#### FilterInformation
+
+|            |                                                          |
+|------------|----------------------------------------------------------|
+| Type       | FilterData                                               |
+| Access     | read-only                                                |
+| Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true  |
+
+Holds static information about the fiter.  Should change to const in 16.04
+
+#### FilterLifeRemaining
+
+|                       |                                                                       |
+|-----------------------|-----------------------------------------------------------------------|
+| Type                  | byte                                                                |
+| Access                | read-only                                                             |
+| Annotation            | org.freedesktop.DBus.Property.EmitsChangedSignal = true               |
+
+Lifespan Remaining in percentage (100 - 0).  0 indicates replace/clean. 
+A simple device may just implement 100/0 or  100/OrderPercent/0 instead of 
+implementing the entire range of values
 
 ### Methods
 
-No methods are implemented by this interface.
+No methods are defined for this interface.
 
 ### Signals
 
@@ -75,11 +64,34 @@ No signals are emitted by this interface.
 
 ### Named Types
 
-No Named Types are required by this interface.
+#### struct FilterData
+
+* **filterLifeInDays --- UInt16
+* **isCleanable  --- boolean
+* **orderPercentage --- byte
+* **filterManufacturer** --- string
+* **filterPartNumber** --- string
+* **filterUrl** --- string
+
+   
+Static property provides filter information.
+* filterLifeInDays is the manufacturers expected time between cleaning/
+replacement.  Used to convert percentage into days remaining. 0xFFFF indicate no 
+life estimate available.  0 indicates <1 day.
+* isCleanable  a boolean signal if true at 0% remaining life filter can be 
+cleaned and re-installed.
+* orderPercentage is the life remaining at which it is recommended that a new
+filter be ordered.  It can have a value of 0 because the filter is cleanable, or 
+becuase the remaining life is unpredictable, for example a psid switch.
+* filterManufacturer & filterPartNumber act as a tuple to determine type of 
+filter.  A null string is acceptable.
+* Url can be just a domain or a complete URL to the exact filter.  It may provide
+additionl information of a site for ordering.  A null string is acceptable.
+
 
 ### Interface Errors
 
-No unique errors are associated with this interface.
+No errors are raised by this interface
 
 ## References
 
