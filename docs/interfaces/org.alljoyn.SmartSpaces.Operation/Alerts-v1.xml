@@ -5,18 +5,37 @@
         <struct name="AlertRecord">
             <field name="severity" type="y"/>
             <field name="alertCode" type="q"/>
+            <field name="requestedAcknowledgement" type="b"/>
         </struct>
-        <property name="Version" type="q" access="read"/>
+        <struct name="AlertCodesDescriptor">
+            <field name="alertCode" type="q"/>
+            <field name="description" type="s"/>
+        </struct>
+        <property name="Version" type="q" access="read">
+            <description language="en">Interface version</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
         <property name="Alerts" type="a[AlertRecord]" access="read">
             <description language="en">List of current pending alerts</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
-        <property name="AlertsRequestedAcknowledgement" type="b" access="read">
-            <description language="en">User acknowledgment is requested by pending alerts</description>
-            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
-        </property>
-        <method name="AcknowledgeAlerts">
-            <description language="en">Reset a pending user acknowledgment request</description>
+        <method name="GetAlertCodesDescription">
+            <description language="en">Get alert codes description</description>
+            <arg name="languageTag" type="s" direction="in">
+                <description language="en">Language to be used in the output strings</description>
+            </arg>
+            <arg name="description" type="[AlertCodesDescriptor]" direction="out">
+                <description language="en">alert codes description</description>
+            </arg>
+        </method>
+        <method name="AcknowledgeSpecificAlert">
+            <description language="en">Reset the user acknowledgment request of a specific pending alert</description>
+            <arg name="alertCode" type="q" direction="in">
+                <description language="en">Alert code of the alert to be acknowledge</description>
+            </arg>
+        </method>
+        <method name="AcknowledgeAllAlerts">
+            <description language="en">Reset the user acknowledgment request of any pending alert</description>
         </method>
     </interface>
 </node>
