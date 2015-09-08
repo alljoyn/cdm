@@ -1,8 +1,11 @@
 <node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
-    <interface name="org.alljoyn.SmartSpaces.Operation.Control">
-        <description language="en">This interface provides capability to monitor the operational state of an appliance and to controllinf it using relate commands</description>
+    <interface name="org.alljoyn.SmartSpaces.Operation.CyclicControl">
+        <description language="en">This interface provides capability to monitor the operational state of an appliance and to control it using relate commands</description>
         <annotation name="org.alljoyn.Bus.Secure" value="true"/>
-        <property name="Version" type="q" access="read"/>
+        <property name="Version" type="q" access="read">
+            <description language="en">Interface version</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
         <property name="OperationalState" type="y" access="read">
             <description language="en">Current operational state of the appliance</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
@@ -21,5 +24,9 @@
                 <description language="en">Operational command to be executed</description>
             </arg>
         </method>
+        <signal name="EndOfCycle" sessionless="true">
+            <description language="en">Emitted this signal if the cycle is completed</description>
+        </signal>
     </interface>
 </node>
+

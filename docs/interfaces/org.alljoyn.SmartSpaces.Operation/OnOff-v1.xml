@@ -1,0 +1,22 @@
+<node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
+    <interface name="org.alljoyn.SmartSpaces.Operation.OnOff">
+        <description language="en">This interface provides capability to control power on/off</description>
+        <annotation name="org.alljoyn.Bus.Secure" value="true"/>
+        <property name="Version" type="q" access="read">
+            <description language="en">Interface version</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <property name="OnOff" type="b" access="readwrite">
+            <description language="en">Current on/off state of the appliance</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <property name="SwitchOnIsSupported" type="b" access="read">
+            <description language="en">Appliance can be switched on</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
+        </property>
+        <property name="SwitchOffIsSupported" type="b" access="read">
+            <description language="en">Appliance can be switched off</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
+        </property>
+    </interface>
+</node>
