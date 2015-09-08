@@ -70,24 +70,25 @@ No signals are emitted by this interface.
     * [Component](#Component) : 1
     * [Composite](#Composite) : 2
     * [S-Video](#S-Video) : 3
-    * [RGB](#RGB) : 4
-    * [DVI](#DVI) : 5
-    * [HDMI](#HDMI) : 6
-    * [DisplayPort](#DisplayPort) : 7
-    * [SCART](#SCART) : 8
-    * External Storage : 9
-    * Network : 10
-    * [Analog Audio](#AnalogAudio) : 11
-    * [Phono](#AnalogAudio) : 12
-    * [S/PDIF](#S/PDIF) - Coaxial : 13
-    * [S/PDIF](#S/PDIF) - Optical : 14
+    * [RGB](#RGB) : 4 
+    * [SDI](#SDI) : 5
+    * [DVI](#DVI) : 6
+    * [HDMI](#HDMI) : 7
+    * [DisplayPort](#DisplayPort) : 8
+    * [SCART](#SCART) : 9
+    * External Storage : 10
+    * Network : 11
+    * [Analog Audio](#AnalogAudio) : 12
+    * [Phono](#AnalogAudio) : 13
+    * [S/PDIF](#S/PDIF) - Coaxial : 14
+    * [S/PDIF](#S/PDIF) - Optical : 15
   * **detectedState** --- byte --- The enumeration below lists detected state.
     * Unknown : 0
     * Detected : 1
     * Not detected : 2
   * **portNumber** --- uint16 --- When the device has plural HDMI input port, it
     could be distinguished by port number.
-    ex) HDMI2 : sourceType is 6, portNumber is 2.
+    ex) HDMI2 : sourceType is 7, portNumber is 2.
   * **friendlyName** --- string --- The friendly name of input source is a UTF-8
     encoded string. The controller should display this field to the end-user.
     ex) "HDMI-2", "RGB-PC"
@@ -117,6 +118,8 @@ message. The table below lists the possible errors raised by this interface.
     matching values and description of the connector
 <a name="RGB"/a>
   * **RGB**[NTSC/PAL] - National Television Systems Committee/Phase Alternating Line
+<a name="SDI"/a>
+  * **SDI**[SMPTE 259M,292M,344M,372M,424M] - Serial Digital Interface
 <a name="DVI"/a>
   * **DVI** - Digital Visual Interface, Revision 1.0
 <a name="HDMI"/a>
