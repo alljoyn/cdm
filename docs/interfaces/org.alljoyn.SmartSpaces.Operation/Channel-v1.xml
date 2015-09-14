@@ -25,12 +25,6 @@
              <arg name="numRecords" type="q" direction="in"/>
              <arg name="listOfChannelInfoRecords" type="a[ChannelInfoRecord]" direction="out"/>
         </method>
-        <method name="UpChannel">
-            <description language="en">Invoke this method to move up to the next available channel</description>
-        </method>
-        <method name="DownChannel">
-            <description language="en">Invoke this method to move down to the next available channel</description>
-        </method>
         <signal name="ChannelListChanged" sessionless="false">
             <description language="en">Emitted this signal if the channel list is changed</description>
         </signal>
