@@ -1,6 +1,6 @@
 <node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
     <interface name="org.alljoyn.SmartSpaces.Environment.MoistureOutput">
-        <description language="en">This interface provides capabilities to control and monitor the moisture output rate.</description>
+        <description language="en">This interface provides a capability to control and monitor the moisture output rate.</description>
         <annotation name="org.alljoyn.Bus.Secure" value="true"/>
         <property name="Version" type="q" access="read">
             <description language="en">The interface version</description>
@@ -12,7 +12,7 @@
         </property>
         <property name="MaxMoistureOutputRate" type="y" access="read">
             <description language="en">Maximum rate of moisture output</description>
-            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
         <property name="AutoMode" type="n" access="readwrite">
             <description language="en">Represent enabled/disabled state of the auto mode. The device decides the moisture output rate for providing comfortable surroundings automatically.</description>
