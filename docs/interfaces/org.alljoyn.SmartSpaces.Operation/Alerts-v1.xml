@@ -5,7 +5,7 @@
         <struct name="AlertRecord">
             <field name="severity" type="y"/>
             <field name="alertCode" type="q"/>
-            <field name="requestedAcknowledgement" type="b"/>
+            <field name="needAcknowledgement" type="b"/>
         </struct>
         <struct name="AlertCodesDescriptor">
             <field name="alertCode" type="q"/>
@@ -28,10 +28,10 @@
                 <description language="en">alert codes description</description>
             </arg>
         </method>
-        <method name="AcknowledgeSpecificAlert">
+        <method name="AcknowledgeAlert">
             <description language="en">Reset the user acknowledgment request of a specific pending alert</description>
             <arg name="alertCode" type="q" direction="in">
-                <description language="en">Alert code of the alert to be acknowledge</description>
+                <description language="en">Alert code of the alert to be acknowledged</description>
             </arg>
         </method>
         <method name="AcknowledgeAllAlerts">
