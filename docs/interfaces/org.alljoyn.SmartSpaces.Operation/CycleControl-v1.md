@@ -145,6 +145,9 @@ comprehensive of all the cases which can be covered by appliances.
 | Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true        |
 
 The interface version.
+The EmitsChangedSignal of this property should be modified to const once that
+feature is available.
+
 
 #### OperationalState
 
@@ -167,11 +170,11 @@ The data type is an enumeration and its allowed value are listed below:
 
 #### SupportedOperationalStates
 
-|            |                                                          |
-| ---------- | -------------------------------------------------------- |
-| Type       | byte[]                                                   |
-| Access     | read-only                                                |
-| Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = false |
+|            |                                                         |
+| ---------- | ------------------------------------------------------- |
+| Type       | byte[]                                                  |
+| Access     | read-only                                               |
+| Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true |
 
 It indicates which are the supported operational states by the specific
 appliance. A device may support just a subset of operational states, depending
@@ -181,13 +184,16 @@ implementation.
 The data type is an enumeration and the allowed values are the same of
 **OperationalState** property list.
 
+The EmitsChangedSignal of this property should be modified to const once that
+feature is available.
+
 #### SupportedOperationalCommands
 
-|            |                                                          |
-| ---------- | -------------------------------------------------------- |
-| Type       | byte[]                                                   |
-| Access     | read-only                                                |
-| Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = false |
+|            |                                                         |
+| ---------- | ------------------------------------------------------- |
+| Type       | byte[]                                                  |
+| Access     | read-only                                               |
+| Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true |
 
 It indicates which are the supported operational commands by the appliance. A
 device may support just a subset of operational commands, depending on its type
@@ -200,6 +206,9 @@ The data type is an enumeration and its allowed value are listed below:
   * 1 --- **Stop** --- see "Theory of Operation"
   * 2 --- **Pause** --- see "Theory of Operation"
   * 3 --- **Resume** --- see "Theory of Operation"
+
+The EmitsChangedSignal of this property should be modified to const once that
+feature is available.
 
 ### Methods
 
@@ -268,3 +277,5 @@ from appliance.
 
   * The XML definition of the [CycleControl interface](CycleControl-v1.xml)
   * The definition of the [OnOff interface](/org.alljoyn.SmartSpaces.Operation/OnOff-v1)
+  * The theory of operation of the HAE service framework [Theory of Operation](/org.alljoyn.SmartSpaces/theory-of-operation-v1)
+  * The definition of the [RemoteControllability interface](RemoteControllability-v1)

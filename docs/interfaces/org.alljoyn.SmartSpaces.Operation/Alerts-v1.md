@@ -13,12 +13,26 @@ Service. Anyway Notifications are not suitable in the case of appliances
 because:
   * Notifications can inform about alerts as events, not as status; i.e. an
     alert is detected by the _consumer_ only if this one is working and
-    connected at the time the alert happens; it is not possible to know the list
-    of previous alerts even if they are still pending
+    connected at the time the alert happens or if the TTL (Time To Leave) of
+    related notification is long enough; this interface lets know directly the
+    current alerts status without build it from past events;
   * Notifications don't define a hierarchy based on alerts gravity and user
     intervention.
-  * Notifications send human readable strings, which are not inter-operable
+  * Notifications send human readable strings, which are not not suitable for
+    machine interpretation
   * Notifications are "session-less"
+
+When an alert comes up, it keeps pending until its root cause disappear: e.g.
+  * a door ajar alert expires when door is closed
+  * a broken component alert expires when that component is substituted.
+In most of the cases when an alert comes up, it causes also a visual (pop-up,
+blinking led or icon ...) or acoustic (buzzer) feedbacks in local UI or in the
+remote one on the _consumer_ side.
+The user can acknowledge the alert in order to stop the feedback.
+So an alert can live in one of three states:
+  * not raised
+  * raised, needs acknowledgment
+  * raised, has been acknowledged
 
 There are three kinds of alerts in term of severity, they are listed and
 described below:
@@ -57,6 +71,10 @@ described below:
 | Access     | read-only                                               |
 | Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true |
 
+The interface version.
+The EmitsChangedSignal of this property should be modified to const once that
+feature is available.
+
 #### Alerts
 
 |            |                                                         |
@@ -91,12 +109,12 @@ Output arguments:
 Errors raised by this method:
   * org.alljoyn.LanguageNotSupported --- the language specified is not supported
 
-#### AcknowledgeSpecificAlert (alertCode)
+#### AcknowledgeAlert (alertCode)
 
 Reset the user acknowledgment request state of a specific pending alert, using
 the **alertCode** to identify it.
-It sets to false the **requestedAcknowledgement** field of related element of
-the **Alerts** list.
+It sets to false the **needAcknowledgement** field of related element of the
+**Alerts** list.
 If there is no pending alert with this **alertCode** or the alert acknowledgment
 request state is false, the method has no effect.
 
@@ -104,7 +122,7 @@ If the remote control state of the appliance is disabled, an error is returned.
 
 Input arguments:
 
-  * **alertCode** --- uint16 --- Alert code of the alert to be acknowledge
+  * **alertCode** --- uint16 --- Alert code of the alert to be acknowledged
 
 Errors raised by this method:
   * org.alljoyn.SmartSpaces.Error.RemoteControlDisabled --- when the remote
@@ -113,7 +131,7 @@ Errors raised by this method:
 #### AcknowledgeAllAlerts()
 
 Reset the user acknowledgment request state of any pending alerts.
-It sets to false the **requestedAcknowledgement** field of any element of the
+It sets to false the **needAcknowledgement** field of any element of the
 **Alerts** list.
 If there are no pending alerts or if the acknowledgment request state of any
 pending alert is false, the method has no effect.
@@ -138,7 +156,7 @@ No signals are emitted by this interface.
   * **alertCode** --- uint16 --- at the moment the allowed values are in the
     range from 0x8000 to 0xFFFF, their meaning depends on the specific
     appliances
-  * **requestedAcknowledgement** --- boolean --- acknowledgment request state:
+  * **needAcknowledgement** --- boolean --- acknowledgment request state:
     it indicates whether there is a request of user acknowledgment for this
     specific alert;
       * **false** --- the user acknowledgment is not requested from the beginning
@@ -205,15 +223,14 @@ refrigeration appliances.
     feedbacks
   * the interface properties are updated:
     * an "open door" element is loaded in **Alerts** array
-    * **requestedAcknowledgement** of this element is true
+    * **needAcknowledgement** of this element is true
 
 2. the user detect and acknowledge it (locally or remotely):
   * the appliance stops the acoustic (buzzer) feedbacks;
     anyway the alert condition is still present
   * the interface properties are updated:
-    * **requestedAcknowledgement** is set to false; if the user action is remote
-      it is done via **AcknowledgeSpecificAlert** or **AcknowledgeAllAlerts**
-      methods
+    * **needAcknowledgement** is set to false; if the user action is remote it
+      is done via **AcknowledgeAlert** or **AcknowledgeAllAlerts** methods
     * The "open door" element is still present in **Alerts** array
 
 3. the door is closed:
@@ -225,3 +242,5 @@ refrigeration appliances.
 ## References
 
   * The XML definition of the [Alerts interface](Alerts-v1.xml)
+  * The theory of operation of the HAE service framework [Theory of Operation](/org.alljoyn.SmartSpaces/theory-of-operation-v1)
+  * The definition of the [RemoteControllability interface](RemoteControllability-v1)
