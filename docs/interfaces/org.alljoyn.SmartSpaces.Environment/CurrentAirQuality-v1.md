@@ -16,7 +16,7 @@
 | Access            | read-only                                               |
 | Annotation        | org.freedesktop.DBus.Property.EmitsChangedSignal = true |
 
-interface version.
+Interface version.
 
 #### AirQualityType
 
@@ -26,13 +26,14 @@ interface version.
 | Access            | read-only                                               |
 | Annotation        | org.freedesktop.DBus.Property.EmitsChangedSignal = true |
 
-the type of air quality.
-0 : CH2O (ug/m3)
-1 : CO2 (ppm)
-2 : CO (ppm)
-3 : PM2.5 (ug/m3)
-4 : PM10 (ug/m3)
-5 : VOC (ug/m3)
+The type of air quality.
+
+* **0** -- **CH2O (ug/m3)**
+* **1** -- **CO2 (ppm)**
+* **2** -- **CO (ppm)**
+* **3** -- **PM2.5 (ug/m3)**
+* **4** -- **PM10 (ug/m3)**
+* **5** -- **VOC (ug/m3)**
 
 #### CurrentValue
 
@@ -42,7 +43,7 @@ the type of air quality.
 | Access            | read-only                                               |
 | Annotation        | org.freedesktop.DBus.Property.EmitsChangedSignal = true |
 
-The current value of concentration of air quality.
+The current air quality in the unit indicated by AirQualityType.
 
 #### MaxValue
 
@@ -78,6 +79,6 @@ No signals are exposed by this interface.
 
 ## References
 
-  * the XML definition of the [CurrentAirQuality interface]
-    (CurrentAirQuality-v1.xml)
+  * the XML definition of the [CurrentAirQuality interface](CurrentAirQuality-v1.xml)
+  * The theory of operation of the HAE service framework [Theory of Operation](/org.alljoyn.SmartSpaces/theory-of-operation-v1)
 
