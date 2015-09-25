@@ -75,34 +75,6 @@ Errors raised by this method:
   * org.alljoyn.Error.SmartSpaces.NotAcceptableDueToInternalState --- Returned
   if value is not acceptable due to internal state.
 
-#### UpChannel ()
-
-Move up to the next available channel.
-
-Input arguments: None.
-
-Output arguments: None.
-
-Errors raised by this method:
-  * org.alljoyn.Error.SmartSpaces.NotAcceptableDueToInternalState --- Returned
-  if value is not acceptable due to internal state.
-  * org.alljoyn.Error.SmartSpaces.RemoteControlDisabled --- Returned if remote
-  control is disabled.
-
-#### DownChannel ()
-
-Move down to the next available channel.
-
-Input arguments: None.
-
-Output arguments: None.
-
-Errors raised by this method:
-  * org.alljoyn.Error.SmartSpaces.NotAcceptableDueToInternalState --- Returned
-  if value is not acceptable due to internal state.
-  * org.alljoyn.Error.SmartSpaces.RemoteControlDisabled --- Returned if remote
-  control is disabled.
-
 ### Signals
 
 #### ChannelListChanged
@@ -139,3 +111,8 @@ message. The table below lists the possible errors raised by this interface.
 ## References
 
   * The XML definition of the [Channel interface](Channel-v1.xml)
+  * The theory of operation of the HAE service framework [Theory of Operation](/org.alljoyn.SmartSpaces/theory-of-operation-v1)
+  * The definition of the [RemoteControllability interface](/org.alljoyn.SmartSpaces.Operation/RemoteControllability-v1)
+
+
+

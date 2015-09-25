@@ -18,12 +18,6 @@
             <description language="en">The state of volume muted</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
-        <method name="UpVolume">
-            <description language="en">Invoke this method to up volume to the next available value</description>
-        </method>
-        <method name="DownVolume">
-            <description language="en">Invoke this method to down volume to the next available value </description>
-        </method>
     </interface>
 </node>
 
