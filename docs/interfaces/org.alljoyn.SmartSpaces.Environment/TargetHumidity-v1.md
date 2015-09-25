@@ -39,18 +39,15 @@ water at the same temperature. When **MinValue** is the same as **MaxValue**,
 then this value represents the target relative humidity as a qualitative level.
 Otherwise, this value represents the target relative humidity as a quantitative
 value, expressed in percentage.
+
 In the case of quantitative representation of target humidity value, if the
 controller tries to set a relative humidity which is out of range, then
-an error shall be returned. When the **TargetValue** is in range defined in
-**MinValue** and **MaxValue**, but it is not on the grid in terms of
-**StepValue**, the controllee can set an appropriate value without returning
-an error, or it can refuse to accept the **TargetValue** and return an
-appropriate error. But if **StepValue** = 0, it means there is no step value
-information available for the controllee device. In this case, the controllee
-will go to an appropriate value that can be accepted without returning an error.
-In the case of qualitative representation of target humidity level, an error
-shall be returned if the value is not one of the **SelectableHumidityLevels**
-list.
+controllee should adjust the value to min/max value. When the **TargetValue** is
+in range defined in **MinValue** and **MaxValue**, but it is not on the grid
+in terms of **StepValue**, the controllee should set an appropriate value
+that can be accepted. In the case of qualitative representation of target
+humidity level, an error shall be returned if the value is not one of the
+**SelectableHumidityLevels** list.
 
 Errors raised when setting this property:
 
@@ -97,7 +94,7 @@ percentage) setting. The step of humidity increment or decrement can be
 different for each device. The step can be 1%, 5%, and 10%, etc. Starting from
 **MinValue**, valid target value will be represented. Difference between
 **MaxValue** and **MinValue** shall be a multiple of **StepValue**.
-If this interface is for setting the qualitative level of target humidity(When
+If this interface is for setting the qualitative level of target humidity (when
 the **MaxValue** is same with **MinValue**), this value shall be set to 1.
 
 #### SelectableHumidityLevels
@@ -114,12 +111,8 @@ is same with **MinValue**); it can be different because of the appliance state
 (e.g. different selected operational cycles can have a different list of
 selectable humidity levels). It is used to let _consumer_ know in advance
 which are the values of **TargetValue** property that can be set by _consumer_.
-
-If the array is empty, the target humidity level can be only monitored.
-In case this interface is implemented for setting a quantitative percentage of
-target humidity, the list shall be empty.
-The elements of the array shall be in ascending order and not bigger than
-**MaxValue**.
+The elements of the array shall be in ascending order and not bigger
+than **MaxValue**.
 
 ### Methods
 
@@ -145,3 +138,6 @@ message. The table below lists the possible errors raised by this interface.
 ## References
 
   * The XML definition of the [TargetHumidity interface](TargetHumidity-v1.xml)
+  * The theory of operation of the HAE service framework [Theory of Operation](/org.alljoyn.SmartSpaces/theory-of-operation-v1)
+  * The definition of the [RemoteControllability interface](/org.alljoyn.SmartSpaces.Operation/RemoteControllability-v1)
+
