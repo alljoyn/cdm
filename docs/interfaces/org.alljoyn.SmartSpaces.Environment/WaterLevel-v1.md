@@ -95,3 +95,4 @@ message. The table below lists the possible errors raised by this interface.
 ## References
 
   * The XML definition of the [WaterLevel interface](WaterLevel-v1.xml)
+  * The theory of operation of the HAE service framework [Theory of Operation](/org.alljoyn.SmartSpaces/theory-of-operation-v1)

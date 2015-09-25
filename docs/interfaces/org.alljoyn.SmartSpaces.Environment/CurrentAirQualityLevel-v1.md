@@ -32,7 +32,7 @@ The interface version number.
 |------------|----------------------------------------------------------------|
 | Type       | byte                                                           |
 | Access     | read-only                                                      |
-| Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = false       |
+| Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true        |
 
 The measured air quality type.
 
@@ -72,7 +72,7 @@ represented levels would be {0(cleanest), 1, 2, 3, 4, 5(dirtiest)}.
 |------------|----------------------------------------------------------------|
 | Type       | byte                                                           |
 | Access     | read-only                                                      |
-| Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = false       |
+| Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true        |
 
 Maximum level allowed for represented air quality level.
 
@@ -87,3 +87,4 @@ No signals are emitted by this interface.
 ## References
 
   * The XML definition of the [CurrentAirQualityLevel interface](CurrentAirQualityLevel-v1.xml)
+  * The theory of operation of the HAE service framework [Theory of Operation](/org.alljoyn.SmartSpaces/theory-of-operation-v1)
