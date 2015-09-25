@@ -1,15 +1,13 @@
 <node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
-    <interface name="org.alljoyn.SmartSpaces.Operation.DoorStatus">
-        <description language="en">This interface provides the status of a door.  It is intended to be part of a
-            larger object that might have multiple doors.  Example a refrigerator
-            compartment door or oven door.</description>
+    <interface name="org.alljoyn.SmartSpaces.Operation.ClosedStatus">
+        <description language="en">This interface provides the status of an opening.  It can be a stand alone door or window, or part of a larger object that might have multiple doors.  For example a refrigerator compartment door or oven door.</description>
         <annotation name="org.alljoyn.Bus.Secure" value="true"/>
         <property name="Version" type="q" access="read">
             <description language="en">The Version of this interface</description>
-            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
         <property name="IsClosed" type="b" access="read">
-            <description language="en">Boolean property that is true when door is closed.</description>
+            <description language="en">Boolean property that is true when object is closed.</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
     </interface>
