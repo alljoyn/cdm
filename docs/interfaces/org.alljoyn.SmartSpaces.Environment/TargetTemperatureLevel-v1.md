@@ -8,8 +8,7 @@ temperature of a Clothes Washer).
 
 It is used instead of **org.alljoyn.SmartSpaces.Environment.TargetTemperature**
 when the related temperature feature takes values form a discrete set rather
-than a continuous range; the values can be associated to descriptive labels
-instead of physical quantities.
+than a continuous range.
 
 ## Specification
 
@@ -36,7 +35,7 @@ The interface version.
 | ---------- | -------------------------------------------------------- |
 | Type       | byte                                                     |
 | Access     | read-only                                                |
-| Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = false |
+| Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true  |
 
 Maximum value allowed for target temperature level setting.
 
@@ -106,4 +105,6 @@ message. The table below lists the possible errors raised by this interface.
 ## References
 
   * The XML definition of the [TargetTemperatureLevel interface](TargetTemperatureLevel-v1.xml)
+  * The theory of operation of the HAE service framework [Theory of Operation](/org.alljoyn.SmartSpaces/theory-of-operation-v1)
+  * The definition of the [RemoteControllability interface](/org.alljoyn.SmartSpaces.Operation/RemoteControllability-v1)
   * The XML definition of the [TargetTemperature interface](TargetTemperature-v1.xml)

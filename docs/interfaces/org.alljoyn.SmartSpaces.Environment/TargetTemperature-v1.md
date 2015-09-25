@@ -33,19 +33,14 @@ The interface version.
 
 Target temperature, expressed in Celsius.
 
-If the controller tries to set a target value which is out of range, then an
-error shall be returned. If the controller tries to set a target value which
-doesn't match with the granularity of the current step, the device has to make
-one of the following operations:
-
-  * raising an error (it could be ER_INVALID_DATA or a specific error to be
-  defined).
-  * setting TargetValue to an appropriate value.
-  * the decision is up to the device itself.
+If the controller tries to set a target value which is out of range, then
+the controllee should adjust the value to min/max value. If the controller
+tries to set a target value which doesn't match with the granularity of
+the current step, the device should set an appropriate value that can be
+accepted.
 
 Errors raised when setting this property:
 
-  * org.alljoyn.Error.InvalidValue --- Returned if value is not valid.
   * org.alljoyn.Error.SmartSpaces.NotAcceptableDueToInternalState --- Returned
   if value is not acceptable due to internal state.
   * org.alljoyn.Error.SmartSpaces.RemoteControlDisabled --- Returned if remote
@@ -60,7 +55,6 @@ Errors raised when setting this property:
 | Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true        |
 
 Minimum value of target temperature, expressed in Celsius.
-If there is no minimum value available, this shall be set to 0xFFF0000000000000.
 
 #### MaxValue
 
@@ -71,7 +65,6 @@ If there is no minimum value available, this shall be set to 0xFFF0000000000000.
 | Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true        |
 
 Maximum value of target temperature, expressed in Celsius.
-If there is no maximum value available, this shall be set to 0x7FF0000000000000.
 
 
 #### StepValue
@@ -83,8 +76,7 @@ If there is no maximum value available, this shall be set to 0x7FF0000000000000.
 | Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true        |
 
 Step value allowed for TargetTemperature setting, expressed in Celsius.
-~~It shall be a positive value (data type representation is unsigned for
-consistency with other temperature properties)~~
+~~It shall be a positive value.~~
 
 ### Methods
 
@@ -102,10 +94,12 @@ message. The table below lists the possible errors raised by this interface.
 
 | Error name                                                    | Error message                                      |
 |---------------------------------------------------------------|----------------------------------------------------|
-| org.alljoyn.Error.InvalidValue                                | Invalid value                                      |
 | org.alljoyn.SmartSpaces.Error.NotAcceptableDueToInternalState | The value is not acceptable due to internal state  |
 | org.alljoyn.SmartSpaces.Error.RemoteControlDisabled           | Remote control disabled                            |
 
 ## References
 
   * The XML definition of the [TargetTemperature interface](TargetTemperature-v1.xml)
+  * The theory of operation of the HAE service framework [Theory of Operation](/org.alljoyn.SmartSpaces/theory-of-operation-v1)
+  * The definition of the [RemoteControllability interface](/org.alljoyn.SmartSpaces.Operation/RemoteControllability-v1)
+
