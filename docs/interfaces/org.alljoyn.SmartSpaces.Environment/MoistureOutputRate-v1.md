@@ -2,14 +2,14 @@
 
 ## Theory of Operation
 
-This interface provides capabilities to control and monitor the output rate of
+This interface provides a capability to control and monitor the output rate of
 moisture. Humidifier or air purifier can have this MoistureOutputRate interface
 to adjust the moisture output rate for humidification. The moisture output rate
 is about how fast a device reaches a given level of moisture. While the
 [TargetHumidity](TargetHumidity-v1) interface is about a set-point
-level of moisture or humidity to be reached, this interface provides a
-capability about how fast a device reaches a given level of moisture. Some
-cheap humidifiers just have a capability to set the rate of moisture output
+level of moisture or humidity to be reached, this interface provides an 
+interaction capability about how fast a device reaches a given level of moisture. 
+Some low-end humidifiers just have a capability to set the rate of moisture output
 and don't care about the current and target humidity level. That's just left
 as end-users' responsibility.
 
@@ -43,9 +43,9 @@ The interface version.
 It is a qualitative representation of the current rate of moisture output.
 1 means the smallest rate of moisture output. MaxMoistureOutputRate means
 the largest setting of moisture output rate.
-MoistureOutputRate can be set to 0 where the AutoMode is true and the device
-stops temporaily the moisture output to provide users with comfortable
- surroundings.
+MoistureOutputRate can be set to 0 when the AutoMode is on and the device
+stops temporarily the moisture output to provide users with comfortable
+surroundings.
 
 Special reserved values listed below:
   * 0x00 --- **Off** --- Moisture output is turned off
@@ -67,7 +67,7 @@ Errors raised when setting this property:
 |------------|----------------------------------------------------------------|
 | Type       | byte                                                           |
 | Access     | read-only                                                      |
-| Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = false       |
+| Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true        |
 
 It indicates a maximum rate of moisture output.
 
@@ -127,4 +127,6 @@ message. The table below lists the possible errors raised by this interface.
 ### References
 
   * The XML definition of the [MoistureOutputRate interface](MoistureOutputRate-v1.xml)
-  * The definition of the [TargetHumidity](TargetHumidity-v1)
+  * The theory of operation of the HAE service framework [Theory of Operation](/org.alljoyn.SmartSpaces/theory-of-operation-v1)
+  * The definition of the [TargetHumidity interface](TargetHumidity-v1)
+  * The definition of the [RemoteControllability interface](/org.alljoyn.SmartSpaces.Operation/RemoteControllability-v1)
