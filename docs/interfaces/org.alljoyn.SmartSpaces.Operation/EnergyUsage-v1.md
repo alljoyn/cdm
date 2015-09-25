@@ -69,4 +69,4 @@ The table below shows the possible raised by this inteface.
 
   * [The XML definition of the EnergyUsage](EnergyUsage-v1.xml)
   * The theory of operation of the HAE service framework [Theory of Operation](/org.alljoyn.SmartSpaces/theory-of-operation-v1)
-  * [The definition of RemoteControllability interface](/org.alljoyn.SmartSpaces.Operation/RemoteControllability-v1)
+  * The definition of the [RemoteControllability interface](RemoteControllability-v1)

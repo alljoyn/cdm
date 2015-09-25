@@ -64,3 +64,4 @@ No unique errors are associated with this interface.
 ## References
 
   * The XML definition of the [BatteryStatus interface](BatteryStatus-v1.xml)
+  * The theory of operation of the HAE service framework [Theory of Operation](/org.alljoyn.SmartSpaces/theory-of-operation-v1)

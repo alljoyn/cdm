@@ -60,5 +60,6 @@ The table below shows the possible errors raised by this interface.
 
 ## References
 
-  * [The definition of common interface](/org.alljoyn.SmartSpaces/Common-v1)
   * [The XML definition of ResourceSaving](ResourceSaving-v1.xml)
+  * The theory of operation of the HAE service framework [Theory of Operation](/org.alljoyn.SmartSpaces/theory-of-operation-v1)
+  * The definition of the [RemoteControllability interface](RemoteControllability-v1)

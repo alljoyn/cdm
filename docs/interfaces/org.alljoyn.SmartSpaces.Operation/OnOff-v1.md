@@ -113,4 +113,6 @@ message. The table below lists the possible errors raised by this interface.
 ## References
 
   * The XML definition of the [OnOff interfce](OnOff-v1.xml)
-  * The definition of the [Cycle Control interface](/org.alljoyn.SmartSpaces.Operation/CycleControl-v1)
+  * The theory of operation of the HAE service framework [Theory of Operation](/org.alljoyn.SmartSpaces/theory-of-operation-v1)
+  * The definition of the [RemoteControllability interface](RemoteControllability-v1)
+  * The definition of the [Cycle Control interface](CycleControl-v1)

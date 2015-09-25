@@ -96,4 +96,4 @@ message. The table below lists the possible errors raised by this interface.
 
   * The XML definition of the [AudioVolume interface](AudioVolume-v1.xml)
   * The theory of operation of the HAE service framework [Theory of Operation](/org.alljoyn.SmartSpaces/theory-of-operation-v1)
-  * The definition of the [RemoteControllability interface](/org.alljoyn.SmartSpaces.Operation/RemoteControllability-v1)
+  * The definition of the [RemoteControllability interface](RemoteControllability-v1)

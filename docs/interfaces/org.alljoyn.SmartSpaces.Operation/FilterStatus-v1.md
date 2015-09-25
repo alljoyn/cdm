@@ -95,4 +95,5 @@ No errors are raised by this interface
 
 ## References
 
-* The XML definition of the [FilterStatus interface](FilterStatus-v1.xml)
+  * The XML definition of the [FilterStatus interface](FilterStatus-v1.xml)
+  * The theory of operation of the HAE service framework [Theory of Operation](/org.alljoyn.SmartSpaces/theory-of-operation-v1)

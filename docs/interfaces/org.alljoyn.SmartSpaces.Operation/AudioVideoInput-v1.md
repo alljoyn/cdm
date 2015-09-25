@@ -108,6 +108,8 @@ message. The table below lists the possible errors raised by this interface.
 ## References
 
   * The XML definition of the [AudioVideoInput interface](AudioVideoInput-v1.xml)
+  * The theory of operation of the HAE service framework [Theory of Operation](/org.alljoyn.SmartSpaces/theory-of-operation-v1)
+  * The definition of the [RemoteControllability interface](RemoteControllability-v1)
 <a name="Component"/a>
   * **Component**[CEA-770.2-D] - Standard Definition TV Analog Component Video Interface
 <a name="Composite"/a>
