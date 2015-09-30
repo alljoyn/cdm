@@ -10,9 +10,5 @@
             <description language="en">Current remaining battery value</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
-        <property name="MaxValue" type="y" access="read">
-            <description language="en">Maximum value allowed for represented battery value</description>
-            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
-        </property>
     </interface>
 </node>
