@@ -12,15 +12,20 @@ definitions of appliance types are in the
 **org.alljoyn.SmartSpaces.Operation.CycleControl** interface.
 
 Depending on the _producer_ implementation, the _consumer_ can interact with its
-on/off status with different access credentials; following three cases are
-contemplated:
+on/off status with the following three cases.
   * the _consumer_ can monitor the on/off status of _producer_, but it can not
-    control it
+    control it. As an example, some oven models might not allow remote on/off 
+    since their usage requires **attended** operations (put in and out the food)
+    and thus, the manufacturers can enable only monitoring on/off status.
   * the _consumer_ can monitor the on/off status of _producer_ and it can
-    control it, switching both on and   off
+    control it, switching both on and off. In case AllJoyn connectivity module
+    works even if its higher device is powered off, turning the device's power 
+    on and off remotely might be enabled.
   * the _consumer_ can monitor the on/off status of _producer_ and it can switch
-    it off but it can not switch it on (sometime this is required for safety
-    issue)
+    it off but it can not switch it on. Sometimes this is required for safety
+    issue or it is impossible to turn the device on remote since the AllJoyn
+    connectivity module share the same power source with its higer device.
+    In the latter case, the **off** state couldn't be monitored.
 This interface provide the capability to the _consumer_ to know in advance which
 are the allowed operations without the need to attempt them and check errors.
 
@@ -71,7 +76,7 @@ Errors raised when setting this property:
 | ---------- | -------------------------------------------------------- |
 | Type       | boolean                                                  |
 | Access     | read-only                                                |
-| Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = false |
+| Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true  |
 
 It indicates whether on/off status can be switched on or not.
 
@@ -84,7 +89,7 @@ It indicates whether on/off status can be switched on or not.
 | ---------- | -------------------------------------------------------- |
 | Type       | boolean                                                  |
 | Access     | read-only                                                |
-| Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = false |
+| Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true  |
 
 It indicates whether on/off status can be switched off or not.
 
