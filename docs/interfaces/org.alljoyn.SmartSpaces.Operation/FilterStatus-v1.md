@@ -32,17 +32,79 @@ use case is outside the scope of AllJoyn HAE).
 
 
 
-#### FilterInformation
+#### ExpectedLifeDays
 
 |            |                                                          |
 |------------|----------------------------------------------------------|
-| Type       | FilterData                                               |
+| Type       | uint16                                               |
 | Access     | read-only                                                |
 | Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true  |
 
-Holds static information about the fiter.  Should change to const in 16.04
+* filterLifeInDays is the manufacturers expected time between cleaning/
+replacement.  Used to convert percentage into days remaining. 0xFFFF indicate no 
+life estimate available.  0 indicates less than 1 day.  Should change to const 
+once that feature is available in Core.
 
-#### FilterLifeRemaining
+#### IsCleanable
+
+|            |                                                          |
+|------------|----------------------------------------------------------|
+| Type       | boolean                                                  |
+| Access     | read-only                                                |
+| Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true  |
+
+If the property is true a new filter does not need to be ordered, just clean. 
+
+#### OrderPercentage
+
+|            |                                                          |
+|------------|----------------------------------------------------------|
+| Type       | byte                                                     |
+| Access     | read-only                                                |
+| Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true  |
+
+The LifeRemaining value  at which it is recommended that a new filter be 
+ordered.  It can have a value of 0 because the filter is cleanable, or 
+because the remaining life is unpredictable, for example a psid switch.
+
+#### Manufacturer 
+
+|            |                                                          |
+|------------|----------------------------------------------------------|
+| Type       | String                                                   |
+| Access     | read-only                                                |
+| Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true  |
+
+The manufacturer of the recommended filter for the device. Manufacturer and 
+PartNumber act as a tuple to determine type of filter.  A null string is 
+acceptable.  Should change to const once that feature is available in Core.
+
+#### PartNumber 
+
+|            |                                                          |
+|------------|----------------------------------------------------------|
+| Type       | String                                                   |
+| Access     | read-only                                                |
+| Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true  |
+
+The manufacturer of the recommended filter for the device. Manufacturer and 
+PartNumber act as a tuple to determine type of filter.  A null string is 
+acceptable.  Should change to const once that feature is available in Core.
+
+#### Url 
+
+|            |                                                          |
+|------------|----------------------------------------------------------|
+| Type       | String                                                   |
+| Access     | read-only                                                |
+| Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true  |
+
+Url can be just a domain or a complete URL to the exact filter.  It may provide
+additional information of a site for ordering.  A null string is acceptable.
+Should change to const once that feature is available in Core.
+
+
+#### LifeRemaining
 
 |                       |                                                                       |
 |-----------------------|-----------------------------------------------------------------------|
@@ -51,7 +113,7 @@ Holds static information about the fiter.  Should change to const in 16.04
 | Annotation            | org.freedesktop.DBus.Property.EmitsChangedSignal = true               |
 
 Lifespan Remaining in percentage (100 - 0).  0 indicates replace/clean. 
-A simple device may just implement 100/0 or  100/OrderPercent/0 instead of 
+A simple device may just implement 100/0 or 100/OrderPercent/0 instead of 
 implementing the entire range of values
 
 ### Methods
@@ -64,30 +126,7 @@ No signals are emitted by this interface.
 
 ### Named Types
 
-#### struct FilterData
-
-* **filterLifeInDays --- UInt16
-* **isCleanable  --- boolean
-* **orderPercentage --- byte
-* **filterManufacturer** --- string
-* **filterPartNumber** --- string
-* **filterUrl** --- string
-
-   
-Static property provides filter information.
-* filterLifeInDays is the manufacturers expected time between cleaning/
-replacement.  Used to convert percentage into days remaining. 0xFFFF indicate no 
-life estimate available.  0 indicates <1 day.
-* isCleanable  a boolean signal if true at 0% remaining life filter can be 
-cleaned and re-installed.
-* orderPercentage is the life remaining at which it is recommended that a new
-filter be ordered.  It can have a value of 0 because the filter is cleanable, or 
-becuase the remaining life is unpredictable, for example a psid switch.
-* filterManufacturer & filterPartNumber act as a tuple to determine type of 
-filter.  A null string is acceptable.
-* Url can be just a domain or a complete URL to the exact filter.  It may provide
-additionl information of a site for ordering.  A null string is acceptable.
-
+No Named Types are required by this interface.
 
 ### Interface Errors
 
