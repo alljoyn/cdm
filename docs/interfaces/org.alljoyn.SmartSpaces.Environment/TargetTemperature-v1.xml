@@ -1,26 +1,47 @@
 <node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
     <interface name="org.alljoyn.SmartSpaces.Environment.TargetTemperature">
-        <description language="en">This interface is for setting target temperature of the HAE devices such as air conditioner, refrigerator, oven, etc.</description>
+        <description language="en">This interface is for setting target temperature(s) of the HAE devices such as air conditioner, refrigerator, oven, etc.</description>
         <annotation name="org.alljoyn.Bus.Secure" value="true"/>
+	<struct name="SetPoint">
+	    <field name="key" type="s"/>
+	    <field name="min" type="d"/>
+	    <field name="max" type="d"/>
+	    <field name="step" type="d"/>
+	</struct>
+	<struct name="TargetTemperature">
+	    <field name="key" type="s"/>
+	    <field name="temperature" type="d"/>
+	</struct>
         <property name="Version" type="q" access="read">
-            <description language="en">The interface version</description>
+            <description language="en">Interface version</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
-        <property name="TargetValue" type="d" access="readwrite">
-            <description language="en">Target temperature expressed in Celsius</description>
+        <property name="SupportedSetPoints" type="a[SetPoint]" access="read">
+            <description language="en">List of supported set points</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
-        <property name="MinValue" type="d" access="read">
-            <description language="en">Minimum value of target temperature</description>
+        <property name="UpperActiveSetPoint" type="s" access="readwrite">
+            <description language="en">Dictionary key for a set point that the device is attempting to keep temperature below</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
-        <property name="MaxValue" type="d" access="read">
-            <description language="en">Maximum value of target temperature</description>
+        <property name="LowerActiveSetpoint" type="s" access="readwrite">
+            <description language="en">The dictionary key for a set point that the device is attempting to keep temperature above</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
-        <property name="StepValue" type="d" access="read">
-            <description language="en">Step value allowed for the TargetTemperature setting</description>
-            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
-        </property>
+        <method name="GetTargetTemperatures">
+            <description language="en">Get target temperatures for one or more set points</description>
+            <arg name="keys" type="as" direction="in">
+                <description language="en">List of dictionary keys for each set point to get</description>
+            </arg>
+            <arg name="targetTemperatures" type="a[TargetTemperature]" direction="out">
+                <description language="en">List of target temperatures</description>
+            </arg>
+        </method>
+         <method name="SetTargetTemperatures">
+            <description language="en">Set target temperatures for one or more set points</description>
+            <arg name="targetTemperatures" type="a[TargetTemperature]" direction="in">
+                <description language="en">List of target temperatures to set</description>
+            </arg>
+        </method>
     </interface>
 </node>
