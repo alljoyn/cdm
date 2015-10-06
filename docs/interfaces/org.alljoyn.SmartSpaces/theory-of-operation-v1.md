@@ -122,7 +122,7 @@ to About and Config metadata, respectively.
 | org.alljoyn.SmartSpaces.CorporateBrand      | no        | no        | yes       | s         | Corporate level brand name. For example, AEG for Electrolux and Sanyo for Panasonic, etc. |
 | org.alljoyn.SmartSpaces.ProductBrand        | no        | no        | yes       | s         | Product level brand name. Walkman and Bravia for Sony, Viera for Panasonic. |
 | org.alljoyn.SmartSpaces.Location            | yes        | yes       | yes       | s         | Location information of a device. There is no constraint about location information. For example, classification of rooms ("Dining room", "Bedroom", "Restroom", etc.) or coordinate of GPS data can be a value of location information. |
-| org.alljoyn.SmartSpaces.DeviceDescription| yes       | yes       | no        | a(uo)    | Information that identifies the HAE device types of implemented bus objects |
+| org.alljoyn.SmartSpaces.DeviceDescription| yes       | yes       | no        | a(ou)    | Information that identifies the HAE device types of implemented bus objects |
 
 The fields with a yes value in the Announced column will also be published
 via the Announce signal.
@@ -231,8 +231,8 @@ type identifier and bus object patch. For the air conditioner and refrigerator
 examples described in _Figure 3_ and _Figure 4_, the following values will
 be signaled as DeviceDescription respectively.
 
-* DeviceDescription = { <0, "/A">, <5, "/A"> } for the example air conditioner
-* DeviceDescription = { <0, "/HAE">, <2, "/HAE/Alpha">, <3, "/HAE/Beta">, <4, "/HAE/Gamma"> }
+* DeviceDescription = { <"/A", 0>, <"/A", 5> } for the example air conditioner
+* DeviceDescription = { <"/HAE", 0>, <"/HAE/Alpha", 2>, <"/HAE/Beta", 3>, <"/HAE/Gamma", 4> }
                       for the example refrigerator
 
 #### Discovery Call Flow
