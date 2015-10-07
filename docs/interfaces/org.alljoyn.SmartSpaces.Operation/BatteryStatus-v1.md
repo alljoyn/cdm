@@ -4,7 +4,7 @@
 
 This interface provides capability to represent remaining battery status.
 The battery status would be displayed as quantitative remaining battery
-percentage or qualitative remaining battery level.
+percentage.
 
 ## Specification
 
@@ -33,21 +33,7 @@ Interface version
 | Access     | read-only                                                      |
 | Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true        |
 
-The current remaining battery value.
-If the MaxValue is 100, the CurrentValue means remaining battery
-percentage. And if the MaxValue is less than 100, this value means
-qualitative remaining battery level.
-
-#### MaxValue
-
-|            |                                                                |
-|------------|----------------------------------------------------------------|
-| Type       | byte                                                           |
-| Access     | read-only                                                      |
-| Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = false       |
-
-Maximum value allowed for the CurrentValue. This value is not allowed
-more than 100.
+The current remaining battery value. Max value is always 100.
 
 ### Methods
 
