@@ -40,10 +40,14 @@ use case is outside the scope of AllJoyn HAE).
 | Access     | read-only                                                |
 | Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true  |
 
-* filterLifeInDays is the manufacturers expected time between cleaning/
-replacement.  Used to convert percentage into days remaining. 0xFFFF indicate no 
-life estimate available.  0 indicates less than 1 day.  Should change to const 
-once that feature is available in Core.
+ExpectedLifeInDays is the manufacturers expected time between cleaning/
+replacement.  This is the design life of the recommended filter, and can be used 
+to convert percentage into days remaining. using the formula:
+
+* DaysRemaining: = ExpectedLifeDays*LifeRemaining.
+
+0xFFFF indicate no life estimate available.  0 indicates less than 1 day.  
+Should change to const once that feature is available in Core.
 
 #### IsCleanable
 
