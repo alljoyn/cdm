@@ -1,0 +1,14 @@
+<node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
+    <interface name="org.alljoyn.SmartSpaces.Operation.RapidMode">
+        <description language="en">Interface that exposes the Rapid (or Turbo) mode.  This is the opposite of ResourceSaving, the device works in a more aggressive mode, usually at an efficiency or noise level penalty. </description>
+        <annotation name="org.alljoyn.Bus.Secure" value="true" />
+        <property name="Version" type="q" access="read">
+            <description language="en">The version of this interface</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <property name="RapidMode" type="b" access="readwrite">
+            <description language="en">True if the device is currently operating in rapid mode.</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+    </interface>
+</node>
