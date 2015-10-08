@@ -22,9 +22,9 @@ because:
     machine interpretation
   * Notifications are "session-less"
 
-When an alert comes up, it keeps pending until its root cause disappear: e.g.
+When an alert comes up, it keeps pending until its root cause disappears: e.g.
   * a door ajar alert expires when door is closed
-  * a broken component alert expires when that component is substituted.
+  * a broken component alert expires when that component is replaced.
 In most of the cases when an alert comes up, it causes also a visual (pop-up,
 blinking led or icon ...) or acoustic (buzzer) feedbacks in local UI or in the
 remote one on the _consumer_ side.
