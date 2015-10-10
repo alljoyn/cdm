@@ -37,12 +37,12 @@ Holds the instantaneous power consumption of the device in Watts.
 | Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true  |
 
 Holds the cumulative energy consumption of the device in kWh.
-7fff ffff ffff ffff (NaN) indicates an unknown value.  ResetUsedEnergy resets
+7fff ffff ffff ffff (NaN) indicates an unknown value.  ResetCumulativeEnergy resets
 the value to 0.
 
 ### Methods
 
-#### ResetEnergy ()
+#### ResetCumulativeEnergy ()
 
 Resets the value of CumulativeEnergy to 0.
 
