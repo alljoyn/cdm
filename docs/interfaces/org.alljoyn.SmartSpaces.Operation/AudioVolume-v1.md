@@ -63,8 +63,8 @@ Maximum value allowed for Volume.
 | Access     | read-write                                                     |
 | Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true        |
 
-Volume mute state. True indicates that volume is not muted, false
-indicates volume is muted.
+Volume mute state. True indicates that volume is muted, false
+indicates volume is not muted.
 
 Errors raised when setting this property:
 

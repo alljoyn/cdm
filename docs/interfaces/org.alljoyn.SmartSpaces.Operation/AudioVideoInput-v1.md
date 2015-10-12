@@ -82,10 +82,10 @@ No signals are emitted by this interface.
     * [Phono](#AnalogAudio) : 13
     * [S/PDIF](#S/PDIF) - Coaxial : 14
     * [S/PDIF](#S/PDIF) - Optical : 15
-  * **detectedState** --- byte --- The enumeration below lists detected state.
+  * **signalPresence** --- byte --- The enumeration below lists signal presence.
     * Unknown : 0
-    * Detected : 1
-    * Not detected : 2
+    * signal present : 1
+    * signal absent : 2
   * **portNumber** --- uint16 --- When the device has plural HDMI input port, it
     could be distinguished by port number.
     ex) HDMI2 : sourceType is 7, portNumber is 2.
