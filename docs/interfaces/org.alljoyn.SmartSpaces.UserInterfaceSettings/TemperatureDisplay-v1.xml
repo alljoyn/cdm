@@ -4,19 +4,15 @@
         <annotation name="org.alljoyn.Bus.Secure" value="true"/>
         <property name="Version" type="q" access="read">
             <description language="en">Interface version</description>
-            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
-        <property name="DisplayTemperatureUnit" type="y" access="read">
+        <property name="DisplayTemperatureUnit" type="y" access="readwrite">
             <description language="en">The unit being used to display temperature (0=C, 1=F, 2 =K)</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
-        <property name="SupportedDisplayTemperatureUnitSettings" type="ay" access="read">
+        <property name="SupportedDisplayTemperatureUnits" type="ay" access="read">
             <description language="en">Array of temperature units supported (0=C, 1=F, 2 =K).  If only one is listed SetDisplayTemperatureUnit cannot change the display</description>
-            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
-        <method name="SetDisplayTemperatureUnit">
-            <description language="en">Set the display temperature to the unit indicated.  Read SuppoertedDisplayTemperatureUnitSettings to determine allowable values</description>
-                <arg name="displayTemperatureUnit" type="y" direction="in"/>
-        </method>
     </interface>
 </node>
