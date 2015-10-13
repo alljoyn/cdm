@@ -9,8 +9,9 @@ If the control is physically part of the device it is typically called an air
 conditioner or heater.  If the control is remote from the appliance it is 
 typically called a thermostat.  A controller can recognize this device as an air 
 conditioner or thermostat by the DeviceDescription metatdata field.
-This interface is used instead of an "OnOff" control becuase of ambiguity in what 
-the On/Off on the interface would control, and because of the need for an intermittent mode.
+This interface is used instead of an "OnOff" control becuase of ambiguity in 
+what the On/Off on the interface would control, and because of the need for an 
+intermittent mode.
 
 
 ## Specification

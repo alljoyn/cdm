@@ -1,56 +1,78 @@
 DRAFT
+## HVAC Theory of Operation version 1
 
 This theory of operation explains the interaction of various interfaces to 
 assemble an air conditioner or thermostat.
 
 
-AC picture.
+### Overview
 
+HVAC is the abbreviation for Heating, Ventillation, and Air Conditioning, and is
+typically used for installed devices.  It includes other air comfort devices as
+well, for example humidifiers, de-humidifiers, and thermostats.  The HAE service 
+framework does not differentiate between installed and portable versions of 
+these products. Since the HAE service framework defines a common set of standard 
+interfaces that work across multiple device types, this document illustrates how 
+to use those interfaces for typical hvac applications.
 
-The AC Will need to implement several interfaces, they can all co-exist on the 
-same bus object:
+#### Simple System
+
+Consider a simple Air Conditioner that just offers the ability to cool air and 
+to move air with it's fan.  Although this appliance also dehumidifies the air, 
+it does not have controls in that area and does not need to implement any 
+Humidity interfaces. It would implement the following interfaces:
 
 CurrentTemperature
 TargetTemperature
-ClmateControlMode
-HvacFanMode   (optional - required to have a fan mode other than auto).
-            Votes on if this can be optional?
-WindStrength (optional -only required if multiple fan speeds available).
+ClimateControlMode
+HvacFanMode 
 
 The minimum supported modes for ClimateControlMode are Off & Cool.
-The minimum supported modes for HvacFanMode is Auto.  Auto support only is 
-assumed if interface is not implemented.
+The minimum supported modes for HvacFanMode is Auto. 
 
-The TargetValues for this device would be very simple {"cool":23} 
-or {"setpoint":22.5}
+This appliance might only support one temperature in the TargetTemperature for 
+example {"cool":23} or {"setpoint":23}
 
-UpperActiveSetpoint = "setpoint" or "cool" or ""
-LowerActiveSetpoint = ""
+##### Off
+To turn the device off set:
+ClimateControlMode = Off
+HvacFanMode = Auto
+You should see:
+UpperActiveSetpoint = ""
+LowerActiveSetpoint = "" (This will never change)
+
+##### To Run just the Fan Continuously
+
+Set HvacFanMode = Continuous
+Nothing else should change
+
+##### To Run in Cool
+Set ClimateControlMode = Cool
+You should see:
+UpperActiveSetpoint = "setpoint"  The name is irrelevent as long as it appears
+in the list of SupportedSetPoints in the TargetTemperatureInterface.
+
+##### To Adjust the Setpoint
+Call method SetTargetTemperature(["setpoint":25])
 
 
+A simple thermostat that only controlled a furnace whould be implemented simarily.
 
-Consider a more complex device, the structure is essentially the same except 
-with more interfaces.
-
-
-Thermostat Picture 2
-
-
-
+#### Complex System
 
 Consider a PTAC (Packaged Terminal Air Conditioner) that supports Heat/Cool/Auto
 /AuxillaryHeat and a ResourceSavingsMode (Often called Home/Away, Day/Night,
-Occupied/Unoccupied or EnergySavings).  This device also supports two fan 
+Occupied/Unoccupied or EnergySavings).   It also supports the option to be used 
+as a dehumidifier by supporting ContinuousDry. This device also supports two fan 
 speeds and a circulate mode for the fan.
 
 The interfaces are:
 
 CurrentTemperature
-ClmateControlMode
+ClimateControlMode
 TargetTemperature
 HvacFanMode
 WindStrength
-EnergySavingsMode
 ResourceSaving
 
 The TargetValues for this device could be very complex {"Morning cool":23, 
@@ -76,7 +98,7 @@ SetTargetTemperature("Away cool", 26).
 
 <More examples can be added>
 <Still need ClimateControlMode for interoperability, and to destinguish between
-an AC using humidity control nd one that is off>
+an AC using humidity control and one that is off>
 
 
 
