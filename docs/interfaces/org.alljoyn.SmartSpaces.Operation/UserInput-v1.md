@@ -1,12 +1,11 @@
 # org.alljoyn.SmartSpaces.Operation.UserInput version 1
 
 ## Theory of Operation
-This interface provides a capability to inject user input events for USB HID
-devices from the _consumer_ to the _producer_. This interface wraps 
-[linux input subsystem](#Linux input subsystem) which is based on 
-[USB HUT(HID Usage Tables) 1.12](#USB HUT). Therefore, this interface supports
-a generic mechanism to inject user input events for various HID devices such as
-key board, mouse, touch screen, remote controller, key pad, and joy stick, etc.
+This interface provides a capability to inject user input events for human
+interface devices from the _consumer_ to the _producer_. This interface
+supports a generic mechanism to inject user input events for various Human
+interface devices such as keyboard, mouse, touchscreen, remote controller,
+keypad, and joystick, etc.
 
 ## Specification
 
@@ -45,11 +44,10 @@ List of supported input events by a device.
 |------------|----------------------------------------------------------------|
 | Annotation | org.freedesktop.DBus.Method.NoReply = true                     |
 
-Inject the user input events for HID devices. This method is based on
-*input_inject_event()* function in [linux input subsystem](#Linux input subsystem).
-When occurred multiple events simultaneously, send an array of input events.
-The reply is not needed. If the controllee doesn't support event code, it just
-ignores the event code without returning error.
+Inject the user input events for human interface devices. When occurred multiple
+events simultaneously, send an array of input events. The reply is not needed.
+If the controllee doesn't support event code, it just ignores the event code
+without returning error.
 
 Input arguments:
   * **inputEvents** --- InputEvent[] --- input events
@@ -73,9 +71,8 @@ No signals are emitted by this interface.
   * **value** --- int32 --- Event values used to describe detailed operation or
     status such as describing the distance of mouse movement or a button is pressed.
 
-This named type is based on *input_event* structure in
-"input.h" header file of [linux input subsystem](#Linux input subsystem).
-Refer to [linux input event codes](#Linux input event codes) for more details.
+This named type is based on [linux input subsystem](#Linux input subsystem).
+The event types and event codes are defined in [linux input event codes](#Linux input event codes).
 
 #### struct SupportedInputEvent
 
@@ -94,6 +91,7 @@ This named type is used to retrieve supported input events.
 
 | Event Type   | Value |
 |--------------|-------|
+| EV_SYN       | 0x00  |
 | EV_KEY       | 0x01  |
 | EV_REL       | 0x02  |
 | EV_ABS       | 0x03  |
@@ -128,12 +126,12 @@ Event codes for relative axes when event type is *EV_REL*
 | Event Code       | Value      |
 |------------------|------------|
 | REL_X            | 0x0        |
-| KEY_Y            | 0x1        |
-| KEY_Z            | 0x2        |
-| KEY_WHEEL        | 0x8        |
+| REL_Y            | 0x1        |
+| REL_Z            | 0x2        |
+| REL_WHEEL        | 0x8        |
 
-### Usage 1 : Key Board
-Getting supported input event infomation of key board
+### Usage 1 : Keyboard
+Getting supported input event infomation of keyboard
 ```
 Get_Property(SupportedEvents)
 ```
@@ -205,7 +203,7 @@ inputEvents[0].value = 0
 InjectEvent(inputEvents);
 ```
 
-### Usage 3 : Touch Screen
+### Usage 3 : Touchscreen
 
 Getting supported input event infomation of touch screen
 ```
@@ -273,4 +271,3 @@ InjectEvent(inputEvents);
   * The definition of the [RemoteControllability interface](RemoteControllability-v1)
   * <a name="Linux input subsystem" href="https://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/tree/include/uapi/linux/input.h"> Linux input subsystem </a>
   * <a name="Linux input event codes" href="https://www.kernel.org/doc/Documentation/input/event-codes.txt"> Linux input event codes </a>
-  * <a name="USB HUT" href="http://www.usb.org/developers/hidpage#HID_Usage"> USB HUT(HID Usage Tables) 1.12 </a>
