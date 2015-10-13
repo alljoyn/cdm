@@ -11,7 +11,7 @@ these operations have some of the following features:
   * they have a start time
   * they have a end time
   * they can be set to start after a delay
-  * they can provide info about the amount time before the end of operation
+  * they can provide info about the amount of time before the end of operation
   * they can provide info about the operation duration
 
 So it is useful to describe the appliance behavior in term of times and
@@ -33,7 +33,7 @@ reference (e.g. UTC).
 Moreover all these time properties are represented as signed data type for the
 following reasons:
 
-  * the same data type is used for each of this property
+  * the same data type is used for each of these properties
   * some negative values are reserved for some special meanings (e.g.
     **Unknown**)
   * since these times are relative, future evolution of the interface can use
