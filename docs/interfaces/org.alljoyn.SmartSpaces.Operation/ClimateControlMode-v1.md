@@ -3,7 +3,7 @@
 ## Theory of Operation
 
 This interface controls the heating and cooling  of a  home appliance used to 
-alter the properties of air(primarily temperature and humidity) to more 
+alter the properties of air (primarily temperature and humidity) to more 
 comfortable conditions.
 If the control is physically part of the device it is typically called an air 
 conditioner or heater.  If the control is remote from the appliance it is 
@@ -49,14 +49,14 @@ It indicates the currently selected mode.
   * **3** --- **Auto** : Change automatically the mode of operation by sensing
     the difference between the ambient room temperature and the target
     temperature.
-  * **4** -- **AuxilliaryHeat** : Sometimes called Emergency Heat.  Heat pumps 
-    loose their efficiciency when outdoor temperatures drop.  Used to bypass the 
+  * **4** -- **AuxiliaryHeat** : Sometimes called Emergency Heat.  Heat pumps 
+    lose their efficiciency when outdoor temperatures drop.  Used to bypass the 
     heat pump in cold weather
   * **5** --- **Dry** : Provide dehumidifying surroundings to a target 
     dryness.  Depending on construction may also provide cooling.  Cycles based 
     on target humidity instead of target temperature.
   * **6** --- **Continuous Dry** : Provide dehumidifying surroundings 
-continuously while On.
+    continuously while On.
 
 Errors raised by setting this property:
 
