@@ -14,7 +14,7 @@
             <description language="en">The cumlative power consumption of the device in kWHr.  7fff ffff ffff ffff (NaN) indicates an unknown value.</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
-        <method name="ResetEnergy">
+        <method name="ResetCumulativeEnergy">
             <description language="en">Resets the value of CumulativeEnergy to 0</description>
        </method>
     </interface>
