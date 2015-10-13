@@ -6,13 +6,13 @@ enabled/disabled status. Some home appliances provide an option to enable and
 disable locally the remote controllability for the various reasons.
 The followings are examples use cases.
 
-* An end-user selects and starts the cooking process of an oven, then disable
-   the remote control to prevent from other users from modifying its programed
+* An end-user selects and starts the cooking process of an oven, then disables
+   the remote control to prevent from other users from modifying its programmed
    operation.
-* A mother sets a target temperature of Kimchi refrigerator and press the
+* A mother sets a target temperature of Kimchi refrigerator and presses the
    kids lock button on the local control panel to prevent her little kids
    from changing the settings. Kimchi is a typical fermented Korean food.
-* A family goes on vacation. They fear that their home devices mighe be
+* A family goes on vacation. They fear that their home devices might be
    remote controlled maliciously by somebody. So they disable the remote control
    operation of their home devices before their leaving.
 * In the United States, UL requires that the consumer explicitly permit remote
@@ -25,7 +25,7 @@ in front of the device and thus, it is not allowed to change remotely.
 
 Remote monitoring should be always possible regardless of device's remote
 control enabled/disabled status. The remote monitoring includes getting
-properites and receiving signals. If a method call is about retrieving
+properties and receiving signals. If a method call is about retrieving
 information from the _producer_, then it should be allowed.
 
 ## Specification
