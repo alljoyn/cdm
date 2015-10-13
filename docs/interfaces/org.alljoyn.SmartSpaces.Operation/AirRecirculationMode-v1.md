@@ -1,10 +1,10 @@
-# org.alljoyn.SmartSpaces.Operation.AirRefreshMode version 1
+# org.alljoyn.SmartSpaces.Operation.AirRecirculationMode version 1
 
 ## Theory of Operation
 
 The interface is used to control if air is recirculating or being refreshed in a 
-ventillation product.  The recirc/refresh could be on inlet, like a window air-
-conditioner, or on exhast like a cooking hood.
+ventilation product.  The recirc/refresh could be on inlet, like a window air-
+conditioner, or on exhaust like a cooking hood.
 
 
 ## Specification
@@ -27,16 +27,16 @@ conditioner, or on exhast like a cooking hood.
 The interface version.  The EmitsChangedSignal of this property should be "const"
 once that feature is implemented in core.
 
-### IsRefreshing
+### IsRecirculating
 
 |            |                                                          |
 | ---------- | -------------------------------------------------------- |
 | Type       | boolean                                                  |
-| Access     | read-only                                                |
+| Access     | read-write                                               |
 | Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true  |
 
-Indicates if the air flow inlet/extraction is drawing/exhausting to outside(true)
-or is in a recirculating mode(false).
+Indicates if the air flow inlet/extraction is in a recirculating mode(true) or 
+is drawing/exhausting to outside(false).
 
 Errors raised by setting this property:
 
@@ -73,7 +73,7 @@ No example associated to this interface.
 
 ## References
 
-* The XML definition of the [AirRefreshMode interface](AirRefreshMode-v1.xml)
+* The XML definition of the [AirRecirculationMode interface](AirRecirculationMode-v1.xml)
 * The theory of operation of the HAE service framework [Theory of Operation](/org.alljoyn.SmartSpaces/theory-of-operation-v1)
 * The [RemoteControllability interface](RemoteControllability-v1)
 
