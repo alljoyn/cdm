@@ -6,17 +6,13 @@
                 <description language="en">Interface Version</description>
                 <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
         </property>
-        <property name="DisplayTimeFormat" type="y" access="read">
+        <property name="DisplayTimeFormat" type="y" access="readwrite">
                 <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
                 <description language="en">Format clock is currently using to display time (0=12-hour, 1=24-hour)</description>
         </property>
-        <property name="SupportedDisplayTimeFormatSettings" type="ay" access="read">
-            <description language="en">Which time formats clock can currently support</description>
-                <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
+        <property name="SupportedDisplayTimeFormats" type="ay" access="read">
+            <description language="en">Which time formats clock can support</description>
+                <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
-        <method name="SetDisplayTimeFormat">
-            <description language="en">Changes clock display format (0=12-hour, 1=24-hour) </description>
-                <arg name="displayTimeFormat" type="y" direction="in"/>
-        </method>
     </interface>
 </node>

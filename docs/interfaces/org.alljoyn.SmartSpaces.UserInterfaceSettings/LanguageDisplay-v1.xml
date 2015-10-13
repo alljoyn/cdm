@@ -3,20 +3,16 @@
         <annotation name="org.alljoyn.Bus.Secure" value="true"/>
         <description language="en">This interface shows the language the UI is in and allows changing the display language</description>
         <property name="Version" type="q" access="read">
-            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
             <description language="en">The version of the interface</description>
         </property>
-        <property name="DisplayLanguage" type="s" access="read">
+        <property name="DisplayLanguage" type="s" access="readwrite">
             <description language="en">This is the RFC 5646 tag of the current language being used by the device user interface</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
-        <property name="SupportedDisplayLanguageSettings" type="as" access="read">
-            <description language="en">This is a list of supported languages using RFC5646 tags</description>
-            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
+        <property name="SupportedDisplayLanguages" type="as" access="read">
+            <description language="en">This is a list of supported languages using RFC 5646 tags</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
-        <method name="SetDisplayLaunguage">
-            <description language="en">The arguement is the RFC 5646 tag  of the desired display language.</description>
-            <arg name="languangeTag" type="s" direction="in"/>
-        </method>
     </interface>
 </node>
