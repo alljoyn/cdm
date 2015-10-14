@@ -6,12 +6,12 @@
             <description language="en">Interface version</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
-        <property name="RapidModeTimeRemaining" type="q" access="readwrite">
+        <property name="RapidModeMinutesRemaining" type="q" access="readwrite">
             <description language="en">Time remaining in rapid mode in minutes.  Zero indicates not in rapid mode.</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
-        <property name="MaxTime" type="q" access="read">
-            <description language="en">Maximum rapid mode set time.  Does not change to accomodate already in rapid mode, may generate an InternalState error.</description>
+        <property name="MaxSetMinutes" type="q" access="read">
+            <description language="en">Maximum rapid mode set time in minutes.  Does not change to accomodate already in rapid mode.</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
     </interface>

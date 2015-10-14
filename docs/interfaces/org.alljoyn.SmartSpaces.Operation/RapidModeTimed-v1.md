@@ -35,8 +35,8 @@ feature is available.
 | Access           | read-write                                               |
 | Annotation       | org.freedesktop.DBus.Property.EmitsChangedSignal = true  |
 
-Time remaining in RapidMode.  MaxTime means the longest value for setting rapid 
-mode.  Step value is always 1.
+Minutes remaining in RapidMode.  MaxTime means the longest value for setting 
+rapid mode.  Step value is always 1.
 
 Special reserved values listed below:
   * 0x00 --- **Off** --- Not in rapid mode. Writing this turns rapid mode off.
@@ -53,7 +53,7 @@ Errors raised when setting this property:
 control is disabled.  See the RemoteControl property in the 
 [RemoteControllability](RemoteControllability-v1)  interface for further information.
 
-#### MaxTime
+#### MaxSetMinutes
 
 |                  |                                                          |
 |------------------|----------------------------------------------------------|
@@ -61,12 +61,10 @@ control is disabled.  See the RemoteControl property in the
 | Access           | read-only                                                |
 | Annotation       | org.freedesktop.DBus.Property.EmitsChangedSignal = true  |
 
-Maximum rapid mode set time.  Does not change to accomodate already in rapid 
-mode.  For example, if a fan can only do rapid mode for 30 minutes, then needs
-to wait before starting a new rapid mode.  This property will read 30.  If 
-RapidModeTimeRemaining is set to 15, this property will stay at 30.  Writing to 
-RapidModeTimeRemaining may generate NotAcceptableDueToInternalState error if 
-device cannot support.
+Maximum rapid mode set time in minutes.  Does not change to accomodate already 
+in rapid mode.  For example, if a fan can only do rapid mode for 30 minutes, 
+then needs to wait before starting a new rapid mode.  This property will read 
+30.  If RapidModeTimeRemaining is set to 15, this property will stay at 30.  
 
 The EmitsChangedSignal of this property should be modified to const once that 
 feature is available.
