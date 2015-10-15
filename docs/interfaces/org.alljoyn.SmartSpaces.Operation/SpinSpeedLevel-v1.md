@@ -1,11 +1,11 @@
-# org.alljoyn.SmartSpaces.Environment.TargetSoilLevel version 1
+# org.alljoyn.SmartSpaces.Operation.SpinSpeedLevel version 1
 
 ## Theory of Operation
 
-This interface provides the capability to set a target level of soil in Clothes
+This interface provides the capability to set the level of spin speed in Clothes
 Washers or Clothes Washer-Dryers.
-The values are usually associated to descriptive labels which are out of the
-scope of this interface.
+The values are usually associated to descriptive labels or physical quantities
+(usually expressed in RPM).
 
 ## Specification
 
@@ -36,7 +36,7 @@ feature is available.
 | Access     | read-only                                               |
 | Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true |
 
-Maximum value of soil level.
+Maximum value of spin speed level.
 The EmitsChangedSignal of this property should be modified to const once that
 feature is available.
 
@@ -48,8 +48,8 @@ feature is available.
 | Access     | read-write                                              |
 | Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true |
 
-Target value of soil level. The valid values are in the range from 0 (the
-lowest one) to ***MaxLevel** (the highest one).
+Target value of spin speed level. The valid values are in the range from 0 (the
+lowest one) to **MaxLevel** (the highest one).
 
 Errors raised when setting this property:
 
@@ -69,13 +69,13 @@ Errors raised when setting this property:
 | Access     | read-only                                               |
 | Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true |
 
-It lists the values of soil level which can be selected; it can be
-different because of the appliance state (e.g. different selected operational
-cycles can have a different list of selectable soil levels). It is used to know
-in advance which are the values of **TargetLevel** property that can be set by
-_consumer_.
+The values of spin speed level which can be selected; it can be different
+because of the appliance state (e.g., different selected operational cycles can
+have a different list of selectable spin speed levels). It is used to know in
+advance which are the values of the **TargetLevel** property that can be set
+by a _consumer_.
 
-If the array is empty the target soil level can be only monitored.
+If the array is empty the spin speed level can be only monitored.
 
 The elements of the array shall be in ascending order and not bigger than
 **MaxLevel**.
@@ -102,6 +102,6 @@ message. The table below lists the possible errors raised by this interface.
 
 ## References
 
-  * The XML definition of the [TargetSoilLevel interface](TargetSoilLevel-v1.xml)
+  * The XML definition of the [SpinSpeedLevel interface](SpinSpeedLevel-v1.xml)
   * The theory of operation of the HAE service framework [Theory of Operation](/org.alljoyn.SmartSpaces/theory-of-operation-v1)
-  * The definition of the [RemoteControllability interface](/org.alljoyn.SmartSpaces.Operation.RemoteControllability-v1)
+  * The definition of the [RemoteControllability interface](RemoteControllability-v1)

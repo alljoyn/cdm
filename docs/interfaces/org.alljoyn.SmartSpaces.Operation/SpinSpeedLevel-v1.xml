@@ -1,22 +1,22 @@
 <node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
-    <interface name="org.alljoyn.SmartSpaces.Environment.TargetSoilLevel">
-        <description language="en">This interface provides a capability to set target soil level</description>
+    <interface name="org.alljoyn.SmartSpaces.Operation.SpinSpeedLevel">
+        <description language="en">This interface provides a capability to set the spin speed level</description>
         <annotation name="org.alljoyn.Bus.Secure" value="true"/>
         <property name="Version" type="q" access="read">
             <description language="en">The interface version</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
         <property name="MaxLevel" type="y" access="read">
-            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
-            <description language="en">Maximum value allowed for target soil level setting</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
+            <description language="en">Maximum value allowed for the spin speed level setting</description>
         </property>
         <property name="TargetLevel" type="y" access="readwrite">
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
-            <description language="en">Target set-point value of soil level</description>
+            <description language="en">Target set-point value of spin speed level</description>
         </property>
         <property name="SelectableLevels" type="ay" access="read">
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
-            <description language="en">List of the values of soil level which can be selected</description>
+            <description language="en">List of the values of spin speed level which can be selected</description>
         </property>
     </interface>
 </node>
