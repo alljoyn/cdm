@@ -24,7 +24,7 @@
         </property>
         <property name="SelectableHumidityLevels" type="ay" access="read">
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
-            <description language="en">List of the selectable levels of target humidity. The list is only available when this interface is implemented for setting a qualtitative level of target humidity. (When MinValue = MaxValue)</description>
+            <description language="en">List of the selectable levels of target humidity. The list is only available when this interface is implemented for setting a qualitative level of target humidity. (When MinValue = MaxValue)</description>
         </property>
     </interface>
 </node>

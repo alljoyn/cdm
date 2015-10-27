@@ -30,7 +30,7 @@ The interface version.
 | Access     | read-only                                                      |
 | Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true        |
 
-The represented value of current temperature, expressed in Celsius.
+The current temperature in degrees Celsius.
 
 ### Methods
 
