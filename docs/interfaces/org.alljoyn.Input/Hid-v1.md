@@ -1,4 +1,4 @@
-# org.alljoyn.SmartSpaces.Operation.UserInput version 1
+# org.alljoyn.Input.Hid version 1
 
 ## Theory of Operation
 This interface provides a capability to inject user input events for human
@@ -266,8 +266,8 @@ InjectEvent(inputEvents);
 
 ## References
 
-  * The XML definition of the [User Input interface](UserInput-v1.xml)
+  * The XML definition of the [Hid interface](Hid-v1.xml)
   * The theory of operation of the HAE service framework [Theory of Operation](/org.alljoyn.SmartSpaces/theory-of-operation-v1)
-  * The definition of the [RemoteControllability interface](RemoteControllability-v1)
+  * The definition of the [RemoteControllability interface](/org.alljoyn.SmartSpaces.Operation/RemoteControllability-v1)
   * <a name="Linux input subsystem" href="https://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/tree/include/uapi/linux/input.h"> Linux input subsystem </a>
   * <a name="Linux input event codes" href="https://www.kernel.org/doc/Documentation/input/event-codes.txt"> Linux input event codes </a>
