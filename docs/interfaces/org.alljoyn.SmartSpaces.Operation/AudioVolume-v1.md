@@ -32,7 +32,7 @@ Interface version
 
 Speaker volume index of the device. Minimum volume is always 0 and volume value
 is incremented by 1. If the controller tries to set a target value which is
-out of range, the controllee should adjust the value to appropriate
+out of range, the controllee should adjust the value to an appropriate
 min/max value.
 
 **Example**: AV receiver has volume range from -80.0 to +10.0 in 0.5 dB

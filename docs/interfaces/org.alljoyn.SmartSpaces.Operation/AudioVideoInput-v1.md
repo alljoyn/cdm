@@ -2,7 +2,7 @@
 
 ## Theory of Operation
 This interface provides capabilities to control and monitor audio video
-input source of device such as TV or SetTopBox.
+input sources of a device such as a TV or SetTopBox.
 
 ## Specification
 
@@ -66,28 +66,29 @@ No signals are emitted by this interface.
   * **id** --- uint16 --- The input source id.  It will be used as to set the
   device input source.
   * **sourceType** --- uint16 --- The enumeration below lists source type.
-    * Tuner : 0
-    * [Component](#Component) : 1
-    * [Composite](#Composite) : 2
-    * [S-Video](#S-Video) : 3
-    * [RGB](#RGB) : 4 
-    * [SDI](#SDI) : 5
-    * [DVI](#DVI) : 6
-    * [HDMI](#HDMI) : 7
-    * [DisplayPort](#DisplayPort) : 8
-    * [SCART](#SCART) : 9
-    * External Storage : 10
-    * Network : 11
-    * [Analog Audio](#AnalogAudio) : 12
-    * [Phono](#AnalogAudio) : 13
-    * [S/PDIF](#S/PDIF) - Coaxial : 14
-    * [S/PDIF](#S/PDIF) - Optical : 15
+    * Unknown : 0
+    * Tuner : 1
+    * [Component](#Component) : 2
+    * [Composite](#Composite) : 3
+    * [S-Video](#S-Video) : 4
+    * [RGB](#RGB) : 5
+    * [SDI](#SDI) : 6
+    * [DVI](#DVI) : 7
+    * [HDMI](#HDMI) : 8
+    * [DisplayPort](#DisplayPort) : 9
+    * [SCART](#SCART) : 10
+    * External Storage : 11
+    * Network : 12
+    * [Analog Audio](#AnalogAudio) : 13
+    * [Phono](#AnalogAudio) : 14
+    * [S/PDIF](#S/PDIF) - Coaxial : 15
+    * [S/PDIF](#S/PDIF) - Optical : 16
   * **signalPresence** --- byte --- The enumeration below lists signal presence.
     * Unknown : 0
     * signal present : 1
     * signal absent : 2
-  * **portNumber** --- uint16 --- When the device has plural HDMI input port, it
-    could be distinguished by port number.
+  * **portNumber** --- uint16 --- When the device has more than one HDMI input
+    port, it could be distinguished by port number.
     ex) HDMI2 : sourceType is 7, portNumber is 2.
   * **friendlyName** --- string --- The friendly name of input source is a UTF-8
     encoded string. The controller should display this field to the end-user.

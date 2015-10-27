@@ -1,7 +1,7 @@
 # org.alljoyn.SmartSpaces.Operation.Channel version 1
 
 ## Theory of Operation
-This interface provides capabilities to set and get channel of device
+This interface provides capabilities to set and get the channel of a device
 that has a channel list.
 
 ## Specification
