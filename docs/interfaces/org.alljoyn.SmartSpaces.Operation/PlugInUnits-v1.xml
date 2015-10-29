@@ -1,13 +1,18 @@
 <node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
-    <interface name="org.alljoyn.SmartSpaces.Operation.InsertionStatus">
-        <description language="en">Insertion status of an object</description>
+    <interface name="org.alljoyn.SmartSpaces.Operation.PlugInUnits">
+        <description language="en">This interface provides the status of Plug in units.</description>
         <annotation name="org.alljoyn.Bus.Secure" value="true"/>
+        <struct name="PlugInInfo">
+            <field name="objectPath" type="o"/>
+            <field name="deviceId" type="u"/>
+            <field name="status" type="b"/>
+        </struct>
         <property name="Version" type="q" access="read">
             <description language="en">The version of this interface</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
-        <property name="IsClosed" type="b" access="read">
-            <description language="en">Boolean property that is true when object is inserted.</description>
+        <property name="PlugInUnits" type="a[PlugInInfo]" access="read">
+            <description language="en">The lists of all the possible hot pluggable devices and the associated status.</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
     </interface>
