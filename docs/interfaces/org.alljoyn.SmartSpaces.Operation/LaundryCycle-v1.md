@@ -159,18 +159,18 @@ cycle phases information to the _consumer_.
 #### GetOperationalCyclesDescription (languageTag) -> (cyclesDescription)
 
 Get information about the cycle which are supported by the appliance.
-It is used to communicate to _consumer_ the names and descriptions of the
+It is used to communicate to the _consumer_ the names and descriptions of the
 vendor-defined cycles supported by the appliance, so they can be available
 remotely.
 In principle standard cycles have standards names and descriptions (in English
-language) which are defined at specification level and so this method returns
-information only about operational cycles belonging to "vendor-defined" range
+language) which are defined at the specification level and so this method returns
+information only about operational cycles belonging to the "vendor-defined" range
 [0x8000 - 0xFFFF] of **OperationalCycle** propriety.
 
 Input arguments:
 
-  * **languageTag** --- string --- language to be used in the output strings using
-    IETF language tags specified by RFC 5646.
+  * **languageTag** --- string --- preferred language to be used in selecting 
+  the output strings using IETF language tags specified by RFC 5646.
 
 Output arguments:
 
@@ -184,7 +184,7 @@ Errors raised by this method:
 #### GetCyclePhasesDescription (languageTag) -> (phasesDescription)
 
 Get information about the cycle phases which are supported by the appliance.
-It is used to communicate to _consumer_ the names of the vendor-defined cycle
+It is used to communicate to the _consumer_ the names of the vendor-defined cycle
 phases supported by the appliance, so they can be available remotely.
 In principle standard cycle phases have standards names (in English language)
 which are defined at specification level and so this method returns information
@@ -195,8 +195,8 @@ is returned).
 
 Input arguments:
 
-  * **languageTag** --- string --- language to be used in the output strings
-    using IETF language tags specified by RFC 5646.
+  * **languageTag** --- string --- preferred language to be used in selecting 
+  the output strings using IETF language tags specified by RFC 5646.
 
 Output arguments:
 
