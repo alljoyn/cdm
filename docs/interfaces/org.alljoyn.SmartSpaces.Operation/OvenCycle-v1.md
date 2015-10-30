@@ -143,8 +143,8 @@ information only about operational cycles belonging to "vendor-defined" range
 
 Input arguments:
 
-  * **languageTag** --- string --- language to be used in the output strings using
-    IETF language tags specified by RFC 5646.
+  * **languageTag** --- string --- preferred language to be used in selecting 
+  the output strings using IETF language tags specified by RFC 5646.
 
 Output arguments:
 
@@ -169,8 +169,8 @@ is returned).
 
 Input arguments:
 
-  * **languageTag** --- string --- language to be used in the output strings
-    using IETF language tags specified by RFC 5646.
+  * **languageTag** --- string --- preferred language to be used in selecting 
+  the output strings using IETF language tags specified by RFC 5646.
 
 Output arguments:
 
