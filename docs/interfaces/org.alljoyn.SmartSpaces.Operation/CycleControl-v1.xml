@@ -1,5 +1,5 @@
 <node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
-    <interface name="org.alljoyn.SmartSpaces.Operation.CyclicControl">
+    <interface name="org.alljoyn.SmartSpaces.Operation.CycleControl">
         <description language="en">This interface provides capability to monitor the operational state of an appliance and to control it using relate commands</description>
         <annotation name="org.alljoyn.Bus.Secure" value="true"/>
         <property name="Version" type="q" access="read">
@@ -25,7 +25,7 @@
             </arg>
         </method>
         <signal name="EndOfCycle" sessionless="true">
-            <description language="en">Emitted this signal if the cycle is completed</description>
+            <description language="en">This signal is emitted if the cycle is completed</description>
         </signal>
     </interface>
 </node>
