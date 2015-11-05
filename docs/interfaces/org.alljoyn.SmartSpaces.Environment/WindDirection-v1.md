@@ -37,7 +37,8 @@ HorizontalMax means the rightmost position. The device should adjust the value
 to HorizontalMax value if a setpoint value is greater than HorizontalMax.
 Step value for HorizontalDirection is always 1.
 All directions are based on the user's view, where the user is at the
-front of an object which contains this interface.
+front of an object which contains this interface. It is assumed that the wind
+is blowing toward the user.
 
 Errors raised when setting this property:
 
@@ -55,7 +56,7 @@ Errors raised when setting this property:
 | Annotation       | org.freedesktop.DBus.Property.EmitsChangedSignal = true  |
 
 Maximum value allowed for a target horizontal wind direction. 0 means that
-device doesn't support to set and represent horizontal wind direction.
+device doesn't support setting and representing horizontal wind direction.
 
 #### HorizontalAutoMode
 

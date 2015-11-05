@@ -3,7 +3,7 @@
 ## Theory of Operation
 This interface provides a capability to set a target humidity.
 This interface also provides capability to set a target level of moisture or
-humidity of an appliance or more in general of a resource of it (e.g. the
+humidity of an appliance or more in general of a resource of it (e.g., the
 clothes moisture of a Clothes Dryer).
 
 ## Specification
@@ -92,7 +92,7 @@ set-point value of qualitative level of target humidity.
 Step value allowed for **TargetValue** (relative humidity, expressed in
 percentage) setting. The step of humidity increment or decrement can be
 different for each device. The step can be 1%, 5%, and 10%, etc. Starting from
-**MinValue**, valid target value will be represented. Difference between
+**MinValue**, valid target value will be represented. The difference between
 **MaxValue** and **MinValue** shall be a multiple of **StepValue**.
 If this interface is for setting the qualitative level of target humidity (when
 the **MaxValue** is same with **MinValue**), this value shall be set to 1.
@@ -105,12 +105,12 @@ the **MaxValue** is same with **MinValue**), this value shall be set to 1.
 | Access     | read-only                                                      |
 | Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true        |
 
-It lists the values of humidity level which can be selected when this interface
-represents the target humidity as a qualitative level (When the **MaxValue**
+The values of humidity level which can be selected when this interface
+represents the target humidity as a qualitative level (when the **MaxValue**
 is same with **MinValue**); it can be different because of the appliance state
-(e.g. different selected operational cycles can have a different list of
-selectable humidity levels). It is used to let _consumer_ know in advance
-which are the values of **TargetValue** property that can be set by _consumer_.
+(e.g., different selected operational cycles can have a different list of
+selectable humidity levels). It is used to let a _consumer_ know in advance
+which are the values of **TargetValue** property that can be set by a _consumer_.
 The elements of the array shall be in ascending order and not bigger
 than **MaxValue**.
 

@@ -3,8 +3,8 @@
 ## Theory of Operation
 
 This interface provides capability to get information about the temperature
-level of an appliance or more in general of a resource of it (e.g. the water
-temperature of a Clothes Washer).
+level of an appliance or a resource (e.g., the water temperature of
+a Clothes Washer).
 
 It is used instead of **org.alljoyn.SmartSpaces.Environment.TargetTemperature**
 when the related temperature feature takes values form a discrete set rather
@@ -49,7 +49,7 @@ Maximum value allowed for target temperature level setting.
 
 Target set-point value of temperature level. The valid values are in the range
 from 0 (the lowest one) to **MaxLevel** (the highest one).
-If the _consumer_ tries to set value which is not supported (i.e. it is not in
+If the _consumer_ tries to set value which is not supported (i.e., it is not in
 the list of **SelectableTemperatureLevels** property), then an error shall
 be returned.
 
