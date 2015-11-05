@@ -1,6 +1,6 @@
 <node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
     <interface name="org.alljoyn.SmartSpaces.Operation.Channel">
-        <description language="en">This interface provides capabilities to set and get channel of device that has a channel list.</description>
+        <description language="en">This interface provides capabilities to set and get channel of device that has a channel list</description>
         <annotation name="org.alljoyn.Bus.Secure" value="true"/>
         <struct name="ChannelInfoRecord">
             <field name="channelID" type="s"/>
@@ -20,13 +20,13 @@
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
         <method name="GetChannelList">
-            <description language="en">Invoke this method to retrieve the list of channels</description>
+            <description language="en">Retrieve the list of channels</description>
              <arg name="startingRecord" type="q" direction="in"/>
              <arg name="numRecords" type="q" direction="in"/>
              <arg name="listOfChannelInfoRecords" type="a[ChannelInfoRecord]" direction="out"/>
         </method>
         <signal name="ChannelListChanged" sessionless="false">
-            <description language="en">Emitted this signal if the channel list is changed</description>
+            <description language="en">This signal is emitted when the channel list is changed</description>
         </signal>
     </interface>
 </node>

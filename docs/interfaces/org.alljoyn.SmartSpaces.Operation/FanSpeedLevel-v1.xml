@@ -1,17 +1,17 @@
 <node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
-    <interface name="org.alljoyn.SmartSpaces.Environment.WindStrength">
-        <description language="en">This interface is for controlling wind strength of a device.</description>
+    <interface name="org.alljoyn.SmartSpaces.Operation.FanSpeedLevel">
+        <description language="en">This interface is for controlling fan speed level of a device.</description>
         <annotation name="org.alljoyn.Bus.Secure" value="true"/>
         <property name="Version" type="q" access="read">
             <description language="en">Interface version</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
-        <property name="WindStrength" type="y" access="readwrite">
-            <description language="en">Wind strength of a device</description>
+        <property name="FanSpeedLevel" type="y" access="readwrite">
+            <description language="en">Fan speed level of a device</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
-        <property name="MaxStrength" type="y" access="read">
-            <description language="en">Maximum strength allowed for target wind strenghth</description>
+        <property name="MaxFanSpeedLevel" type="y" access="read">
+            <description language="en">Maximum level allowed for target fan speed level</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
         </property>
         <property name="AutoMode" type="y" access="readwrite">

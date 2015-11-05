@@ -1,21 +1,21 @@
 <node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
-    <interface name="org.alljoyn.SmartSpaces.Environment.MoistureOutput">
-        <description language="en">This interface provides a capability to control and monitor the moisture output rate.</description>
+    <interface name="org.alljoyn.SmartSpaces.Operation.MoistureOutputLevel">
+        <description language="en">This interface provides a capability to control and monitor the moisture output level</description>
         <annotation name="org.alljoyn.Bus.Secure" value="true"/>
         <property name="Version" type="q" access="read">
             <description language="en">The interface version</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
-        <property name="MoistureOutputRate" type="y" access="readwrite">
-            <description language="en">Current rate of moisture output</description>
+        <property name="MoistureOutputLevel" type="y" access="readwrite">
+            <description language="en">Current level of moisture output</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
-        <property name="MaxMoistureOutputRate" type="y" access="read">
-            <description language="en">Maximum rate of moisture output</description>
+        <property name="MaxMoistureOutputLevel" type="y" access="read">
+            <description language="en">Maximum level of moisture output</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
         <property name="AutoMode" type="n" access="readwrite">
-            <description language="en">Represent enabled/disabled state of the auto mode. The device decides the moisture output rate for providing comfortable surroundings automatically.</description>
+            <description language="en">Represent enabled/disabled state of the auto mode. The device decides the moisture output level for providing comfortable surroundings automatically.</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
     </interface>
