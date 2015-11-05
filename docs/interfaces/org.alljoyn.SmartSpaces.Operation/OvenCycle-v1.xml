@@ -35,7 +35,7 @@
         <method name="GetOperationalCyclesDescription">
             <description language="en">Get operational cycles description</description>
             <arg name="languageTag" type="s" direction="in">
-                <description language="en">language to be used in the output strings</description>
+                <description language="en">preferred language to be used in selecting the output strings</description>
             </arg>
             <arg name="cyclesDescription" type="[OperationalCycleDescriptor]" direction="out">
                 <description language="en">Operational cycles description</description>
@@ -44,7 +44,7 @@
         <method name="GetCyclePhasesDescription">
             <description language="en">Get cycle phases description</description>
             <arg name="languageTag" type="s" direction="in">
-                <description language="en">language to be used in the output strings</description>
+                <description language="en">preferred language to be used in selecting the output strings</description>
             </arg>
             <arg name="phasesDescription" type="[CyclePhaseDescriptor]" direction="out">
                 <description language="en">Cycle phases description</description>
