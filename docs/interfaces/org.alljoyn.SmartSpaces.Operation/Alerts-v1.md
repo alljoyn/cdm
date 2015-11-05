@@ -14,8 +14,8 @@ because:
   * Notifications can inform about alerts as events, not as status; i.e. an
     alert is detected by the _consumer_ only if this one is working and
     connected at the time the alert happens or if the TTL (Time To Leave) of
-    related notification is long enough; this interface lets know directly the
-    current alerts status without build it from past events;
+    related notification is long enough; this interface lets consumers directly
+    know the current alert status without building it from past events;
   * Notifications don't define a hierarchy based on alerts gravity and user
     intervention.
   * Notifications send human readable strings, which are not not suitable for
@@ -44,7 +44,7 @@ described below:
       * e.g.: missing polishing in Dish Washer
 
   * **alarm**:
-    * there is risk of damage of something (e.g. food) after some time
+    * there is risk of damage of something (e.g., food) after some time
     * appliance can work, but results are not sure
     * it can be removed by user intervention
       * e.g.: fridge open door
@@ -94,12 +94,13 @@ If there are no pending alerts the array is empty.
 #### GetAlertCodesDescription (languageTag) -> (description)
 
 Get information about the Alert code which can be provided by the appliance.
-It is used to communicate to _consumer_  descriptions of the alert codes in
+It is used to communicate to a consumer descriptions of the alert codes in
 order to give to the user some awareness of it.
 
 Input arguments:
-  * **languageTag** --- string --- language to be used in the output strings
-    using IETF language tags specified by RFC 5646.
+  * **languageTag** --- string --- preferred language tag, to be used in
+  selecting the language to be used in the output strings using IETF language
+  tags specified by RFC 5646.
 
 Output arguments:
   * **description** --- AlertCodesDescriptor[] --- the list of alert codes
@@ -176,15 +177,15 @@ principle they are manufacturer dependent.
 Note about **alertCode**:
 
 So far it is not possible to have interoperability on these codes because they
-depends by the specific manufacturer and sometimes by the specific appliance
+depends on the specific manufacturer and sometimes by the specific appliance
 type.
 To understand the **alertCode** values it is expected that separate
-documentation are provided and maintained by manufacturers.
+documentation is provided and maintained by manufacturers.
 This information can be used by _consumers_ to interpret correctly the alerts.
 
 Anyway it is expected that in the future (at the release one of the next
 version of the interface) a list of some basic standard cross-manufacturer
-**alertCode** values will be defined, e.g. for most common alerts like
+**alertCode** values will be defined, e.g., for most common alerts like
 Refrigerator Door Open, ...
 For this reason the **alertCode** values are organized in two ranges:
   * 0x0000-0x7FFF --- standard codes, reserved for future inter-operable alerts
@@ -195,7 +196,7 @@ At the moment only the vendor-defined codes range is used.
 
 #### struct AlertCodesDescriptor
 
-This structure is used to give added information about alert, using its alert
+This structure is used to give added information about an alert, using its alert
 code as reference.
 
   * **alertCode** --- uint16 --- the alert code value of the **AlertRecord**
@@ -225,7 +226,7 @@ refrigeration appliances.
     * an "open door" element is loaded in **Alerts** array
     * **needAcknowledgement** of this element is true
 
-2. the user detect and acknowledge it (locally or remotely):
+2. the user detects and acknowledges it (locally or remotely):
   * the appliance stops the acoustic (buzzer) feedbacks;
     anyway the alert condition is still present
   * the interface properties are updated:
