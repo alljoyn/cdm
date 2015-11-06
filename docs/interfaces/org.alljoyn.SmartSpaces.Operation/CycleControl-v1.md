@@ -26,7 +26,7 @@ the appliances can be organized in two categories:
     fridges, freezers, ...)
 
 The operational state of **Non-Cyclic Operations Devices** can be just on and
-off, so is fully described in the **org.alljoyn.SmartSpaces.Operation.OnOff**
+off, so is fully described in the **org.alljoyn.SmartSpaces.Operation.OnOffStatus**
 interface.
 On the other hand **Cyclic Operations Devices** has more complex operational
 state, so the on/off management is integrated with the features described below
@@ -41,7 +41,7 @@ and their meaning is the following:
     the battery level is not above threshold to start its cleaning operation
   * **Working** --- the device is executing its peculiar operation
   * **ReadyToStart** --- the cycle has been selected and the device is waiting
-    the explicit start command from the user to execute it
+    the start to execute it
   * **DelayedStart** --- the execution of the cycle is being delayed until the
     specified time elapses
   * **Paused** --- the device is in pause, its operation is on hold
@@ -50,8 +50,8 @@ and their meaning is the following:
     **ReadyToStart** or **Idle**; the device can make some post-cycle operations
     in this state, e.g. buzzing, ...
 
-The remote controller can monitor the value of the state and and can stimulate
-the change of the state by sending the following operational commands:
+The remote controller can monitor the value of the state and make evolve it by
+sending the following operational commands:
 
   * **Start**
   * **Stop**
@@ -59,11 +59,11 @@ the change of the state by sending the following operational commands:
   * **Resume**
 
 The above list of operational states and commands cover the most general case.
-A particular appliance implementation supports just subset of them.
+A particular appliance implementation supports just sub-set of them.
 
 All states transitions depending on the received commands are listed below: they
 are described as generic cases, anyway the specific devices can refuse commands
-for functional reason (e.g. for safety reason a device could not support the
+for functional reason (e.g. for safety reason an device could not support the
 start from remote ...):
 
   * transitions from **Idle** state
@@ -80,7 +80,7 @@ start from remote ...):
         the usage of parameters and options that are really peculiar to the
         device type
       when the device is in **Idle** state the controller can suggest or
-      recommend that the user select the cycle (e.g. a dedicated message on a
+      recommend the user to select the cycle (e.g. a dedicated message on a
       remote App) acting locally or remotely
 
   * transitions from **Working** state
@@ -276,6 +276,6 @@ from appliance.
 ## References
 
   * The XML definition of the [CycleControl interface](CycleControl-v1.xml)
-  * The definition of the [OnOff interface](OnOff-v1)
+  * The definition of the [OnOffStatus interface](/org.alljoyn.SmartSpaces.Operation/OnOffStatus-v1)
   * The theory of operation of the HAE service framework [Theory of Operation](/org.alljoyn.SmartSpaces/theory-of-operation-v1)
   * The definition of the [RemoteControllability interface](RemoteControllability-v1)
