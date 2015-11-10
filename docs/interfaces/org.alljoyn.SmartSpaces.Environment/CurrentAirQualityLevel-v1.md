@@ -6,6 +6,9 @@ This information provides represented air quality level measured by a
 device.
 Examples of devices which may include this interface are air purifier and 
 air quality monitor.
+If the sensor is capable of detecting CHO2/CO2/CO/PM2.5/PM/VOC in ppm or 
+ug/m3, it is recommended to use the CurrentAirQuality interface rather 
+than CurrentAirQualityLevel.
 
 ## Specification
 
@@ -26,7 +29,7 @@ air quality monitor.
 
 The interface version number.
 
-#### AirQualityType
+#### ContaminantType
 
 |            |                                                                |
 |------------|----------------------------------------------------------------|
@@ -34,17 +37,17 @@ The interface version number.
 | Access     | read-only                                                      |
 | Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true        |
 
-The measured air quality type.
+The measured contaminant type.
 
-* **0** --- **PM2.5**
-* **1** --- **PM10**
+* **0** --- **CH2O**
+* **1** --- **CO2**
 * **2** --- **CO**
-* **3** --- **CO2**
-* **4** --- **CH2O**
+* **3** --- **PM2.5**
+* **4** --- **PM10**
 * **5** --- **VOC**
-* **6** --- **Smoke**
-* **7** --- **Odor**
-* **8** --- **AirPollution**
+* **253** --- **Smoke**
+* **254** --- **Odor**
+* **255** --- **AirPollution**
 
 #### CurrentLevel
 
