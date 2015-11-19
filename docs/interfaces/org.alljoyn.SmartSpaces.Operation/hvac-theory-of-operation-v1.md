@@ -1,4 +1,3 @@
-DRAFT
 ## HVAC Theory of Operation version 1
 
 This theory of operation explains the interaction of various interfaces to 
@@ -7,124 +6,142 @@ assemble an air conditioner or thermostat.
 
 ### Overview
 
-HVAC is the abbreviation for Heating, Ventillation, and Air Conditioning, and is
+HVAC is the abbreviation for Heating, Ventilation, and Air Conditioning, and is
 typically used for installed devices.  It includes other air comfort devices as
 well, for example humidifiers, de-humidifiers, and thermostats.  The HAE service 
 framework does not differentiate between installed and portable versions of 
 these products. Since the HAE service framework defines a common set of standard 
-interfaces that work across multiple device types, this document illustrates how 
-to use those interfaces for typical hvac applications.
+interfaces that works across multiple device types, this document illustrates how 
+to use those interfaces for typical HVAC applications.
 
-#### Simple System
+### Simple System
 
 Consider a simple Air Conditioner that just offers the ability to cool air and 
-to move air with it's fan.  Although this appliance also dehumidifies the air, 
+to move air with its fan.  Although this appliance also dehumidifies the air, 
 it does not have controls in that area and does not need to implement any 
 Humidity interfaces. It would implement the following interfaces:
 
-CurrentTemperature
-TargetTemperature
-ClimateControlMode
-HvacFanMode 
+- CurrentTemperature
+- TargetTemperature
+- ClimateControlMode
+- HvacFanMode 
 
 The minimum supported modes for ClimateControlMode are Off & Cool.
+
 The minimum supported modes for HvacFanMode is Auto. 
 
-This appliance might only support one temperature in the TargetTemperature for 
-example {"cool":23} or {"setpoint":23}
+This appliance only supports one TargetTemperature temperature interface, and it 
+can be placed on the root node.
 
 ##### Off
 To turn the device off set:
-ClimateControlMode = Off
-HvacFanMode = Auto
-You should see:
-UpperActiveSetpoint = ""
-LowerActiveSetpoint = "" (This will never change)
+- ClimateControlMode = Off
+- HvacFanMode = Auto
 
 ##### To Run just the Fan Continuously
-
 Set HvacFanMode = Continuous
-Nothing else should change
 
 ##### To Run in Cool
-Set ClimateControlMode = Cool
-You should see:
-UpperActiveSetpoint = "setpoint"  The name is irrelevent as long as it appears
-in the list of SupportedSetPoints in the TargetTemperatureInterface.
+Set:
+- ClimateControlMode = Cool
+- HvacFanMode = Auto or Continuous
 
 ##### To Adjust the Setpoint
-Call method SetTargetTemperature(["setpoint":25])
+Write Property TargetValue = 25
 
+A simple thermostat that only controlled a furnace would be implemented similary.
 
-A simple thermostat that only controlled a furnace whould be implemented simarily.
-
-#### Complex System
+### Complex System
 
 Consider a PTAC (Packaged Terminal Air Conditioner) that supports Heat/Cool/Auto
-/AuxillaryHeat and a ResourceSavingsMode (Often called Home/Away, Day/Night,
-Occupied/Unoccupied or EnergySavings).   It also supports the option to be used 
-as a dehumidifier by supporting ContinuousDry. This device also supports two fan 
-speeds and a circulate mode for the fan.
+/AuxillaryHeat/Dry/ContinuosDry and a ResourceSavingsMode (Often called 
+Home/Away, Day/Night, Occupied/Unoccupied or EnergySavings).   It also supports 
+the option to be used as a dehumidifier by supporting ContinuousDry. This device 
+also supports two fan speeds and a circulate mode for the fan.
 
 The interfaces are:
 
-CurrentTemperature
-ClimateControlMode
-TargetTemperature
-HvacFanMode
-WindStrength
-ResourceSaving
+- CurrentTemperature
+- ClimateControlMode
+- TargetTemperature (x2)
+- HvacFanMode
+- FanSpeedLevel
+- ResourceSaving
+- TargetHumidity
 
-The TargetValues for this device could be very complex {"Morning cool":23, 
-"Morning heat": 21, "Away Cool 25:, "Away Heat 19", "EmergencyHeat": 17,
-"Evening Cool": 23, "Evening Heat":21 ...} 
+To disambiguate the two TargetTemperature interfaces each must be placed on 
+their own endpoint.  Based on current HAE rules of max two levels of path,
+no children are allowed  for /Heat and /Cool.  Any additional interfaces should 
+either be on /root or its own child /root/feature unless they are directly 
+related to the heating or cooling targets.
+- /root/Cool
+- /root/Heat
 
-Controller reads the thermostat Mode = "Auto" 
-and
-UpperActiveSetpoint = "Morning cool"
-LowerActiveSetpoint = "Morning heat"
+###  Interactions of Temperature and other controls
+In general if a thermostat supports the ability to program more than two 
+temperatures then the TargetTemperatures on the /root/Heat/ and /root/Cool/
+endpoints should be interpreted as a temporary hold.  It will remain in effect 
+as long as the temperature it replaced would have remained in effect.
 
-It wants to reduce the AC expenditure because of a preprogrammed rule of the 
-consuners:
+#### Schedules
+At the present time AllJoyn does not support thermostat schedules.  If a 
+thermostat supports a schedule through either a manufacturer app or its user
+interface.
 
-It could write ResourceSavingMode = True;
-Reading Active setpoints might then return:
-UpperActiveSetpoint = "Away cool"
-LowerActiveSetpoint = "Away heat"
+Example:  At 0700 the current heating target is 23 degrees, and at 0800 the 
+schedule will change to 21 degrees.  Controller writes TargetValue = 22 to the 
+TargetTemperature interface on the /root/Heat.  The thermostat will adjust its 
+setpoint and the TargetValue to 22.  At 0800 the thermostat will again adjust its
+setpoint and the TargetValue to 21.  If a controller would like the temperature
+set to 22, it must write to the TargetValue again.
 
-If more reduction was required, it could call:
-SetTargetTemperature("Away cool", 26).
+#### Modes 
+Mode is loosely coupled to TargetTemperature, changing mode should not normally
+change the TargetTemperature.  Writing to the /root/Cool target temperature
+while the ClimateControlMode is Heat is allowed, and would have an effect if the 
+mode were to change in the future.
+The exception is if a Mode has a unique TargetValue associated with that mode in 
+the manufacturer app or local UI.
+
+Example:
+Consider the above device that does not support a schedule.  In its local 
+memory it supports 4 temperatures, with the following values Heat(21), Cool(25),
+AwayHeat(19), AwayCool(26).  The away modes are triggered by the 
+ResourceSavingsMode.  It also has an EmergencyHeatMode that disables the heat 
+pump but does not have its own temperature. At start the ClimateControlMode=Off.  
 
 
-<More examples can be added>
-<Still need ClimateControlMode for interoperability, and to destinguish between
-an AC using humidity control and one that is off>
+In the table headings below:
+- Heat TV  means the /root/Heat TargetTemperature Interface TargetValue
+- Cool TV  means the /root/Cool TargetTemperature Interface TargetValue
+
+| Action                    | Heat TV | Cool TV | notes                        |
+|---------------------------|---------|---------|------------------------------|
+| Start                     |  21     | 25      |TVs are not active            |
+| ClimateControlMode = Heat |  21     | 25      | Heat is Active; Cool is not  |
+| /root/Heat/Target = 23    |  23     | 25      | Heat is Active; Cool is not  |
+| ClimateControlMode = Cool |  23     | 25      | Cool is Active; Heat is not  |
+| ResourceSavingMode = True |  19     | 26      | Heat is Active; Cool is not  |
+| ClimateControlMode = Auto |  19     | 26      | Both Active                  |
+| /root/Cool/Target = 27    |  19     | 27      | Both Active                  |
+| ResourceSavingMode = False|  23     | 25      | Both Active                  |
+| ClimateControlMode = Dry  |  19     | 26      | Neither Active               |
 
 
+### Wind Interactions.
 
-
-Wind Interactions.
-
-There is an Auto in HvacFanModes and an Auto in WindStrength
+There is an Auto in HvacFanModes and an Auto in FanSpeedLevel
 This causes some confusion, but they are two different items.  One controls how
 often the fan is on (Duty Cyle).  The other controls the speed of operation.
 Consider 
 
-|  HvacFanMode | WindStrength | WindStrength Auto | Behavior         |
+|  HvacFanMode | FanSpeedLevel | FanSpeedLevel Auto | Behavior         |
 |--------------|--------------|-------------------|------------------|
 | Continuous   |   1          |   Off             | Fan Always on Low |
-|--------------|--------------|-------------------|-------------------|
 | Continuous   |   1          |   On              | Fan Always on Speed Varies |
-|--------------|--------------|-------------------|-------------------|
 | Continuous   |   2          |   Off             | Fan Always on High |
-|--------------|--------------|-------------------|-------------------|
 | Continuous   |   2          |   On              | Fan Always on Speed Varies |
-|--------------|--------------|-------------------|------------------|
-| Auto         |   1          |   Off             | Fan Intermittent on Low |
-|--------------|--------------|-------------------|-------------------|
+| Auto         |   1          |   Off             | Fan Intermittent on Low Speed |
 | Auto         |   1          |   On              | Fan Intermittent on Speed Varies |
-|--------------|--------------|-------------------|-------------------|
-| Auto         |   2          |   Off             | Fan Always on High |
-|--------------|--------------|-------------------|-------------------|
-| Auto         |   2          |   On              | Fan Always on Speed Varies |
-|--------------|--------------|-------------------|-------------------|
+| Auto         |   2          |   Off             | Fan Intermittent on High Speed |
+| Auto         |   2          |   On              | Fan Intermittent on Speed Varies |
