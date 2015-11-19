@@ -22,5 +22,13 @@
             <description language="en"> The maximum value allowed for CurrentValue.</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
+        <property name="Precision" type="d" access="read">
+            <description language="en">The precision of the CurrentValue property. i.e. the number of ug/m3 or ppm the actual power consumption must change before CurrentValue is updated.</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <property name="UpdateMinTime" type="q" access="read">
+            <description language="en">The minimum time between updates of the CurrentValue property in milliseconds.</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
     </interface>
 </node>

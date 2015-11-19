@@ -69,6 +69,30 @@ The minimum value allowed for CurrentValue.
 If there is no minimum value available, the MinValue shall
 be set to 0x0.
 
+#### Precision
+
+|            |                                                          |
+|------------|----------------------------------------------------------|
+| Type       | double                                                   |
+| Access     | read-only                                                |
+| Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true  |
+
+The precision of the CurrentValue property. i.e. the number of ug/m3 or ppm the
+actual current temperature (the physical value which is measured)must change
+before the CurrentValue property is updated.
+
+#### UpdateMinTime
+
+|            |                                                          |
+|------------|----------------------------------------------------------|
+| Type       | uint16                                                   |
+| Access     | read-only                                                |
+| Annotation | org.freedesktop.DBus.Property.EmitsChangedSignal = true  |
+
+The minimum time between updates in milliseconds.  Changes in the physical
+measured value that occur faster, even if they exceed Precision property value
+will not update the CurrentValue property.
+
 ### Methods
 
 No methods are exposed by this interface.
