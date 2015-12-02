@@ -1,0 +1,41 @@
+<node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
+    <interface name="org.alljoyn.SmartSpaces.Operation.Alerts">
+        <description language="en">This information provides the status of the alerts of an appliance</description>
+        <annotation name="org.alljoyn.Bus.Secure" value="true"/>
+        <struct name="AlertRecord">
+            <field name="severity" type="y"/>
+            <field name="alertCode" type="q"/>
+            <field name="needAcknowledgement" type="b"/>
+        </struct>
+        <struct name="AlertCodesDescriptor">
+            <field name="alertCode" type="q"/>
+            <field name="description" type="s"/>
+        </struct>
+        <property name="Version" type="q" access="read">
+            <description language="en">Interface version</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <property name="Alerts" type="a[AlertRecord]" access="read">
+            <description language="en">List of current pending alerts</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <method name="GetAlertCodesDescription">
+            <description language="en">Get alert codes description</description>
+            <arg name="languageTag" type="s" direction="in">
+                <description language="en">Language to be used in the output strings</description>
+            </arg>
+            <arg name="description" type="[AlertCodesDescriptor]" direction="out">
+                <description language="en">alert codes description</description>
+            </arg>
+        </method>
+        <method name="AcknowledgeAlert">
+            <description language="en">Reset the user acknowledgment request of a specific pending alert</description>
+            <arg name="alertCode" type="q" direction="in">
+                <description language="en">Alert code of the alert to be acknowledged</description>
+            </arg>
+        </method>
+        <method name="AcknowledgeAllAlerts">
+            <description language="en">Reset the user acknowledgment request of any pending alert</description>
+        </method>
+    </interface>
+</node>

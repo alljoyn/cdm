@@ -1,0 +1,42 @@
+# Copyright AllSeen Alliance. All rights reserved.
+#
+#    Permission to use, copy, modify, and/or distribute this software for any
+#    purpose with or without fee is hereby granted, provided that the above
+#    copyright notice and this permission notice appear in all copies.
+#
+#    THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+#    WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+#    MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+#    ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+#    WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+#    ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+#    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+Import('hae_env')
+
+# Sources
+srcs = hae_env.Glob('*.cc')
+srcs += hae_env.Glob('interfaces/*.cc')
+srcs += hae_env.Glob('interfaces/operation/*.cc')
+srcs += hae_env.Glob('interfaces/environment/*.cc')
+srcs += hae_env.Glob('interfaces/input/*.cc')
+hae_env.Append(CPPPATH = '.');
+
+# Platform specific sources
+if hae_env['OS'] == 'android':
+    srcs += hae_env.Glob('$OS/*.cc')
+else:
+    srcs += hae_env.Glob('$OS_GROUP/*.cc')
+
+libs = []
+
+# Static library
+objs = hae_env.Object(srcs)
+libs.append(hae_env.StaticLibrary('alljoyn_hae', objs))
+
+# Shared library
+if hae_env.get('LIBTYPE', 'static') != 'static':
+    shobjs = hae_env.SharedObject(srcs)
+    libs.append(hae_env.SharedLibrary('alljoyn_hae', shobjs))
+
+Return('libs')

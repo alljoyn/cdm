@@ -1,0 +1,7 @@
+*.dblite
+*.pyc
+*.orig
+*.pydevproject
+build/
+tags
+html/

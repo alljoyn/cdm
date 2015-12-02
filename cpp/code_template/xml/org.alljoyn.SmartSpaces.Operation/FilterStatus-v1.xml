@@ -1,0 +1,38 @@
+<node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
+    <interface name="org.alljoyn.SmartSpaces.Operation.FilterStatus">
+         <annotation name="org.alljoyn.Bus.Secure" value="true"/>
+         <description language="en">Interface for determining the status of filters</description>
+        <property name="Version" type="q" access="read">
+            <description language="en">The Interface Version</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <property name="ExpectedLifeInDays" type="q" access="read">
+            <description language="en">Day a new filter will last.  Used to convert percentage into days remaining.  If 0xFFFF there is no predicted life.  If 0 the life is less than 1 day</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <property name="IsCleanable" type="b" access="read">
+            <description language="en">This is a static property of the filter.  If the property is true a new filter does not need to be ordered, just clean.</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <property name="OrderPercentage" type="y" access="read">
+            <description language="en">If non-zero the lifetime percentage at which ordering is recommended. If 0 filter is cleanable and there is no reason to order, or no order signal is available. For example simple psid switch.</description>
+        <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <property name="Manufacturer" type="s" access="read">
+            <description language="en">Identification of the filter manufacturer, which along with the part number act as a tuple to identify the filter withing the Alljoyn device.  Either one or both may be a null string.</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <property name="PartNumber" type="s" access="read">
+            <description language="en">Identification of the filter manufacturer, which along with the part number act as a tuple to identify the filter withing the Alljoyn device.  Either one or both may be a null string.</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <property name="Url" type="s"access="read">
+            <description language="en">Url can be just a domain or a complete URL to the exact filter.  It may provide additiona access="read"l information of a site for ordering.  A null string is acceptable.</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <property name="LifeRemaining" type="y" access="read">
+            <description language="en">Lifespan Remaining in percentage (100 - 0).  0 indicates replace/clean. A simple device may just implement 100/0 or 100/OrderPercentage/0 instead of implementing the entire range of values</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+    </interface>
+</node>

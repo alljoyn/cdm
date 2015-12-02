@@ -1,0 +1,25 @@
+<node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
+    <interface name="org.alljoyn.SmartSpaces.Operation.AudioVideoInput">
+        <description language="en">This interface provides capabilities to control and monitor audio video input source of device such as TV or SetTopBox.</description>
+        <annotation name="org.alljoyn.Bus.Secure" value="true"/>
+        <struct name="InputSource">
+            <field name="id" type="q"/>
+            <field name="sourceType" type="q"/>
+            <field name="detectedState" type="y"/>
+            <field name="portNumber" type="q"/>
+            <field name="friendlyName" type="s"/>
+        </struct>
+        <property name="Version" type="q" access="read">
+            <description language="en">Interface version</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <property name="InputSourceId" type="q" access="readwrite">
+            <description language="en">Activated input source id</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <property name="SupportedInputSources" type="a[InputSource]" access="read">
+            <description language="en">Array of supported input sources</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+    </interface>
+</node>

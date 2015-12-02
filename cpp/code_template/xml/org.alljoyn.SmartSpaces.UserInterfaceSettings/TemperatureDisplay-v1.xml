@@ -1,0 +1,18 @@
+<node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
+    <interface name="org.alljoyn.Hae.UserInterfaceSettings.TemperatureDisplay">
+        <description language="en">Interface to determine/control temperature display format on devices local user interface</description>
+        <annotation name="org.alljoyn.Bus.Secure" value="true"/>
+        <property name="Version" type="q" access="read">
+            <description language="en">Interface version</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <property name="DisplayTemperatureUnit" type="y" access="readwrite">
+            <description language="en">The unit being used to display temperature (0=C, 1=F, 2 =K)</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <property name="SupportedDisplayTemperatureUnits" type="ay" access="read">
+            <description language="en">Array of temperature units supported (0=C, 1=F, 2 =K).  If only one is listed SetDisplayTemperatureUnit cannot change the display</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+    </interface>
+</node>

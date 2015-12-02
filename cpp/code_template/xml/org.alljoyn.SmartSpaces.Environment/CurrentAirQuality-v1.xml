@@ -1,0 +1,34 @@
+<node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
+    <interface name="org.alljoyn.SmartSpaces.Environment.CurrentAirQuality">
+        <description language="en">This interface provides capability to represent current value of air quality.</description>
+        <annotation name="org.alljoyn.Bus.Secure" value="true"/>
+        <property name="Version" type="q" access="read">
+            <description language="en"> Interface version</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+		<property name="AirQualityType" type="y" access="read">
+            <description language="en"> The type of air quality.</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <property name="CurrentValue" type="d" access="read">
+            <description language="en"> The current value of air quality.</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <property name="MinValue" type="d" access="read">
+            <description language="en"> The minimum value allowed for CurrentValue.</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <property name="MaxValue" type="d" access="read">
+            <description language="en"> The maximum value allowed for CurrentValue.</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <property name="Precision" type="d" access="read">
+            <description language="en">The precision of the CurrentValue property. i.e. the number of ug/m3 or ppm the actual power consumption must change before CurrentValue is updated.</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <property name="UpdateMinTime" type="q" access="read">
+            <description language="en">The minimum time between updates of the CurrentValue property in milliseconds.</description>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+    </interface>
+</node>

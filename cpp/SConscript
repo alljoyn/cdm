@@ -1,0 +1,44 @@
+# Copyright AllSeen Alliance. All rights reserved.
+#
+#    Permission to use, copy, modify, and/or distribute this software for any
+#    purpose with or without fee is hereby granted, provided that the above
+#    copyright notice and this permission notice appear in all copies.
+#
+#    THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+#    WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+#    MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+#    ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+#    WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+#    ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+#    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+Import('hae_env')
+
+if not hae_env.has_key('_ALLJOYNCORE_'):
+    hae_env.Append(LIBS = ['alljoyn'])
+    if hae_env['BR'] == 'on' :
+        brFile = hae_env.subst('$DISTDIR') + '/cpp/lib/BundledRouter.o'
+        hae_env['brobj'] = File(brFile)
+        hae_env['ajrlib'] = 'ajrouter'
+    if hae_env['OS'] == 'openwrt':
+        hae_env.AppendUnique(LIBS = [ 'stdc++', 'pthread' ])
+
+# Make hae dist a sub-directory of the alljoyn dist.  This avoids any conflicts with alljoyn dist targets.
+hae_env['HAE_DISTDIR'] = hae_env['DISTDIR'] + '/hae'
+
+hae_env.Install('$HAE_DISTDIR/inc/alljoyn/hae', hae_env.Glob('inc/alljoyn/hae/*.h'))
+hae_env.Install('$HAE_DISTDIR/inc/alljoyn/hae/interfaces', hae_env.Glob('inc/alljoyn/hae/interfaces/*.h'))
+hae_env.Install('$HAE_DISTDIR/inc/alljoyn/hae/interfaces/operation', hae_env.Glob('inc/alljoyn/hae/interfaces/operation/*.h'))
+hae_env.Install('$HAE_DISTDIR/inc/alljoyn/hae/interfaces/environment', hae_env.Glob('inc/alljoyn/hae/interfaces/environment/*.h'))
+hae_env.Install('$HAE_DISTDIR/inc/alljoyn/hae/interfaces/input', hae_env.Glob('inc/alljoyn/hae/interfaces/input/*.h'))
+
+# Libraries
+hae_env.Install('$HAE_DISTDIR/lib', hae_env.SConscript('src/SConscript', exports = ['hae_env']))
+
+# Sample programs
+if hae_env['BUILD_HAE_SAMPLES'] == 'on':
+    hae_env.Install('$HAE_DISTDIR/bin', hae_env.SConscript('samples/SConscript', exports = ['hae_env']))
+
+# Build docs
+installDocs = hae_env.SConscript('docs/SConscript', exports = ['hae_env'])
+hae_env.Depends(installDocs, hae_env.Glob('$HAE_DISTDIR/inc/alljoyn/hae/*.h'));
