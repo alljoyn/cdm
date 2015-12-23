@@ -19,7 +19,7 @@
 #include <alljoyn/hae/interfaces/HaeInterfaceTypes.h>
 #include <alljoyn/hae/interfaces/InterfaceControllerListener.h>
 
-#include "HaeProxyBusObject.h"
+#include <alljoyn/hae/HaeProxyBusObject.h>
 #include "InterfaceFactory.h"
 
 using namespace std;

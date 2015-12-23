@@ -20,7 +20,7 @@
 #include <alljoyn/hae/interfaces/operation/AudioVolumeIntfControllerListener.h>
 
 #include "AudioVolumeIntfControllerImpl.h"
-#include "HaeProxyBusObject.h"
+#include <alljoyn/hae/HaeProxyBusObject.h>
 
 using namespace qcc;
 using namespace std;
@@ -124,17 +124,17 @@ void AudioVolumeIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const
         if (!s_prop_Volume.compare(propNameStr)) {
             if (propValue->typeId == ALLJOYN_BYTE) {
                 uint8_t volume = propValue->v_byte;
-                m_interfaceListener.VolumePropertyChanged(obj.GetPath(), volume);
+                m_interfaceListener.OnVolumeChanged(obj.GetPath(), volume);
             }
         } else if (!s_prop_MaxVolume.compare(propNameStr)) {
             if (propValue->typeId == ALLJOYN_BYTE) {
                 uint8_t maxVolume = propValue->v_byte;
-                m_interfaceListener.MaxVolumePropertyChanged(obj.GetPath(), maxVolume);
+                m_interfaceListener.OnMaxVolumeChanged(obj.GetPath(), maxVolume);
             }
         } else if (!s_prop_Mute.compare(propNameStr)) {
             if (propValue->typeId == ALLJOYN_BOOLEAN) {
                 bool mute = propValue->v_bool;
-                m_interfaceListener.MutePropertyChanged(obj.GetPath(), mute);
+                m_interfaceListener.OnMuteChanged(obj.GetPath(), mute);
             }
         }
     }
@@ -146,7 +146,7 @@ void AudioVolumeIntfControllerImpl::SetVolumePropertyCB(QStatus status, ProxyBus
         return;
     }
 
-    m_interfaceListener.SetVolumePropertyCallback(status, obj->GetPath(), context);
+    m_interfaceListener.OnResponseSetVolume(status, obj->GetPath(), context);
 }
 
 void AudioVolumeIntfControllerImpl::SetMutePropertyCB(QStatus status, ProxyBusObject* obj, void* context)
@@ -155,7 +155,7 @@ void AudioVolumeIntfControllerImpl::SetMutePropertyCB(QStatus status, ProxyBusOb
         return;
     }
 
-    m_interfaceListener.SetMutePropertyCallback(status, obj->GetPath(), context);
+    m_interfaceListener.OnResponseSetMute(status, obj->GetPath(), context);
 }
 
 void AudioVolumeIntfControllerImpl::GetVolumePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
@@ -167,7 +167,7 @@ void AudioVolumeIntfControllerImpl::GetVolumePropertyCB(QStatus status, ProxyBus
     uint8_t volume;
     value.Get("y", &volume);
 
-    m_interfaceListener.GetVolumePropertyCallback(status, obj->GetPath(), volume, context);
+    m_interfaceListener.OnResponseGetVolume(status, obj->GetPath(), volume, context);
 }
 
 void AudioVolumeIntfControllerImpl::GetMaxVolumePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
@@ -179,7 +179,7 @@ void AudioVolumeIntfControllerImpl::GetMaxVolumePropertyCB(QStatus status, Proxy
     uint8_t maxVolume;
     value.Get("y", &maxVolume);
 
-    m_interfaceListener.GetMaxVolumePropertyCallback(status, obj->GetPath(), maxVolume, context);
+    m_interfaceListener.OnResponseGetMaxVolume(status, obj->GetPath(), maxVolume, context);
 }
 
 void AudioVolumeIntfControllerImpl::GetMutePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
@@ -191,7 +191,7 @@ void AudioVolumeIntfControllerImpl::GetMutePropertyCB(QStatus status, ProxyBusOb
     bool mute;
     value.Get("b", &mute);
 
-    m_interfaceListener.GetMutePropertyCallback(status, obj->GetPath(), mute, context);
+    m_interfaceListener.OnResponseGetMute(status, obj->GetPath(), mute, context);
 }
 
 } //namespace services

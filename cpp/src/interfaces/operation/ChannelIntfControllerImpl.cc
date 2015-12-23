@@ -17,10 +17,10 @@
 #include <qcc/Util.h>
 
 #include <alljoyn/hae/LogModule.h>
+#include <alljoyn/hae/HaeProxyBusObject.h>
 #include <alljoyn/hae/interfaces/operation/ChannelIntfControllerListener.h>
 
 #include "ChannelIntfControllerImpl.h"
-#include "HaeProxyBusObject.h"
 
 using namespace qcc;
 using namespace std;
@@ -134,12 +134,12 @@ void ChannelIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const cha
         if (!s_prop_ChannelId.compare(propNameStr)) {
             if (propValue->typeId == ALLJOYN_STRING) {
                 String channelId = String(propValue->v_string.str);
-                m_interfaceListener.ChannelIdPropertyChanged(obj.GetPath(), channelId);
+                m_interfaceListener.OnChannelIdChanged(obj.GetPath(), channelId);
             }
         } else if (!s_prop_TotalNumberOfChannels.compare(propNameStr)) {
             if (propValue->typeId == ALLJOYN_UINT16) {
                 uint16_t totalNumberOfChannels = propValue->v_uint16;
-                m_interfaceListener.TotalNumberOfChannelsPropertyChanged(obj.GetPath(), totalNumberOfChannels);
+                m_interfaceListener.OnTotalNumberOfChannelsChanged(obj.GetPath(), totalNumberOfChannels);
             }
         }
     }
@@ -151,7 +151,7 @@ void ChannelIntfControllerImpl::SetChannelIdPropertyCB(QStatus status, ProxyBusO
         return;
     }
 
-    m_interfaceListener.SetChannelIdPropertyCallback(status, obj->GetPath(), context);
+    m_interfaceListener.OnResponseSetChannelId(status, obj->GetPath(), context);
 }
 
 void ChannelIntfControllerImpl::GetChannelIdPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
@@ -164,7 +164,7 @@ void ChannelIntfControllerImpl::GetChannelIdPropertyCB(QStatus status, ProxyBusO
     value.Get("s", &id);
     String channelId = String(id);
 
-    m_interfaceListener.GetChannelIdPropertyCallback(status, obj->GetPath(), channelId, context);
+    m_interfaceListener.OnResponseGetChannelId(status, obj->GetPath(), channelId, context);
 }
 
 void ChannelIntfControllerImpl::GetTotalNumberOfChannelsPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
@@ -176,20 +176,17 @@ void ChannelIntfControllerImpl::GetTotalNumberOfChannelsPropertyCB(QStatus statu
     uint16_t totalNumberOfChannels;
     value.Get("q", &totalNumberOfChannels);
 
-    m_interfaceListener.GetTotalNumberOfChannelsPropertyCallback(status, obj->GetPath(), totalNumberOfChannels, context);
+    m_interfaceListener.OnResponseGetTotalNumberOfChannels(status, obj->GetPath(), totalNumberOfChannels, context);
 }
 
 void ChannelIntfControllerImpl::GetChannelListReplyHandler(Message& message, void* context)
 {
     ChannelInterface::ChannelInfoRecords records;
-    qcc::String errorMsg;
-    const char* errorName = message->GetErrorName(&errorMsg);
-    if (errorName) {
-        //String for error code would be added to somewhere later.
-        if(!errorMsg.compare("ER_INVALID_DATA")) {
-            m_interfaceListener.GetChannelListMethodCallback(ER_INVALID_DATA, m_proxyObject.GetPath(), records, context);
-        }
-        //handling for HAE specific error code would be added later.
+    qcc::String errorMessage;
+    const char* errorName = message->GetErrorName(&errorMessage);
+    QStatus status = ER_OK;
+    if (message->GetType() != MESSAGE_METHOD_RET) {
+        status = ER_FAIL;
     } else {
         size_t numArgs;
         const MsgArg* args;
@@ -212,16 +209,16 @@ void ChannelIntfControllerImpl::GetChannelListReplyHandler(Message& message, voi
             record.channelNumber = String(channelNumber);
             records.push_back(record);
         }
-
-        m_interfaceListener.GetChannelListMethodCallback(ER_OK, m_proxyObject.GetPath(), records, context);
     }
+    m_interfaceListener.OnResponseGetChannelList(status, m_proxyObject.GetPath(), records, context,
+                                                 errorName, errorMessage.c_str());
 }
 
 void ChannelIntfControllerImpl::ChannelListChanged(const InterfaceDescription::Member* member, const char* srcPath, Message& message)
 {
     String path = String(srcPath);
 
-    m_interfaceListener.ChannelListChangedSignal(path);
+    m_interfaceListener.OnChannelListChanged(path);
 }
 
 } //namespace services

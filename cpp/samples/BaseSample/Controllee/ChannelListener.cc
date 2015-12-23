@@ -38,7 +38,8 @@ QStatus ChannelListener::OnGetTotalNumberOfChannels(uint16_t& totalNumberOfChann
 }
 
 QStatus ChannelListener::OnGetChannelList(const uint16_t& startingRecord, const uint16_t& numRecords,
-                                          ChannelInterface::ChannelInfoRecords& listOfChannelInfoRecords)
+                                          ChannelInterface::ChannelInfoRecords& listOfChannelInfoRecords,
+                                          ErrorCode& errorCode)
 {
     cout << "ChannelListener::OnGetChannelList()" << endl;
 

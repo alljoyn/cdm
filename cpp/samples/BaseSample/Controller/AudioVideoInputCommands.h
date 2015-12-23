@@ -30,11 +30,11 @@ class AudioVideoInputListener : public AudioVideoInputIntfControllerListener {
   public:
     AudioVideoInputListener();
     virtual ~AudioVideoInputListener();
-    virtual void InputSourceIdPropertyChanged(const qcc::String& objectPath, const uint16_t inputSourceId);
-    virtual void SupportedInputSourcesPropertyChanged(const qcc::String& objectPath, const AudioVideoInputInterface::InputSources& supportedInputSources);
-    virtual void GetInputSourceIdPropertyCallback(QStatus status, const qcc::String& objectPath, const uint16_t inputSourceId, void* context);
-    virtual void GetSupportedInputSourcesPropertyCallback(QStatus status, const qcc::String& objectPath, const AudioVideoInputInterface::InputSources& supportedInputSources, void* context);
-    virtual void SetInputSourceIdPropertyCallback(QStatus status, const qcc::String& objectPath, void* context);
+    virtual void OnResponseSetInputSourceId(QStatus status, const qcc::String& objectPath, void* context);
+    virtual void OnResponseGetInputSourceId(QStatus status, const qcc::String& objectPath, const uint16_t inputSourceId, void* context);
+    virtual void OnResponseGetSupportedInputSources(QStatus status, const qcc::String& objectPath, const AudioVideoInputInterface::InputSources& supportedInputSources, void* context);
+    virtual void OnInputSourceIdChanged(const qcc::String& objectPath, const uint16_t inputSourceId);
+    virtual void OnSupportedInputSourcesChanged(const qcc::String& objectPath, const AudioVideoInputInterface::InputSources& supportedInputSources);
 };
 
 class AudioVideoInputCommands : public InterfaceCommands

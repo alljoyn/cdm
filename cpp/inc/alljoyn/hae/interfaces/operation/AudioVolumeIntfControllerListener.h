@@ -36,25 +36,12 @@ class AudioVolumeIntfControllerListener : public InterfaceControllerListener {
     virtual ~AudioVolumeIntfControllerListener() {}
 
     /**
-     * Handler for Volume property changed
+     * Callback handler for setting Volume property
+     * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] volume volume
+     * @param[in] context the context that is passed from application
      */
-    virtual void VolumePropertyChanged(const qcc::String& objectPath, const uint8_t volume) {}
-
-    /**
-     * Handler for MaxVolume property changed
-     * @param[in] objectPath the object path
-     * @param[in] maxVolume the maximum volume
-     */
-    virtual void MaxVolumePropertyChanged(const qcc::String& objectPath, const uint8_t maxVolume) {}
-
-    /**
-     * Handler for Mute property changed
-     * @param[in] objectPath the object path
-     * @param[in] mute mute
-     */
-    virtual void MutePropertyChanged(const qcc::String& objectPath, const bool mute) {}
+    virtual void OnResponseSetVolume(QStatus status, const qcc::String& objectPath, void* context) {}
 
     /**
      * Callback handler for getting Volume property
@@ -63,7 +50,7 @@ class AudioVolumeIntfControllerListener : public InterfaceControllerListener {
      * @param[in] volume volume
      * @param[in] context the context that is passed from application
      */
-    virtual void GetVolumePropertyCallback(QStatus status, const qcc::String& objectPath, const uint8_t volume, void* context) {}
+    virtual void OnResponseGetVolume(QStatus status, const qcc::String& objectPath, const uint8_t volume, void* context) {}
 
     /**
      * Callback handler for getting MaxVolume property
@@ -72,7 +59,15 @@ class AudioVolumeIntfControllerListener : public InterfaceControllerListener {
      * @param[in] maxVolume the maximum volume
      * @param[in] context the context that is passed from application
      */
-    virtual void GetMaxVolumePropertyCallback(QStatus status, const qcc::String& objectPath, const uint8_t maxVolume, void* context) {}
+    virtual void OnResponseGetMaxVolume(QStatus status, const qcc::String& objectPath, const uint8_t maxVolume, void* context) {}
+
+    /**
+     * Callback handler for setting Mute property
+     * @param[in] status ER_OK on success
+     * @param[in] objectPath the object path
+     * @param[in] context the context that is passed from application
+     */
+    virtual void OnResponseSetMute(QStatus status, const qcc::String& objectPath, void* context) {}
 
     /**
      * Callback handler for getting Mute property
@@ -81,23 +76,28 @@ class AudioVolumeIntfControllerListener : public InterfaceControllerListener {
      * @param[in] mute mute
      * @param[in] context the context that is passed from application
      */
-    virtual void GetMutePropertyCallback(QStatus status, const qcc::String& objectPath, const bool mute, void* context) {}
+    virtual void OnResponseGetMute(QStatus status, const qcc::String& objectPath, const bool mute, void* context) {}
 
     /**
-     * Callback handler for setting Volume property
-     * @param[in] status ER_OK on success
+     * Handler for Volume property changed
      * @param[in] objectPath the object path
-     * @param[in] context the context that is passed from application
+     * @param[in] volume volume
      */
-    virtual void SetVolumePropertyCallback(QStatus status, const qcc::String& objectPath, void* context) {}
+    virtual void OnVolumeChanged(const qcc::String& objectPath, const uint8_t volume) {}
 
     /**
-     * Callback handler for setting Mute property
-     * @param[in] status ER_OK on success
+     * Handler for MaxVolume property changed
      * @param[in] objectPath the object path
-     * @param[in] context the context that is passed from application
+     * @param[in] maxVolume the maximum volume
      */
-    virtual void SetMutePropertyCallback(QStatus status, const qcc::String& objectPath, void* context) {}
+    virtual void OnMaxVolumeChanged(const qcc::String& objectPath, const uint8_t maxVolume) {}
+
+    /**
+     * Handler for Mute property changed
+     * @param[in] objectPath the object path
+     * @param[in] mute mute
+     */
+    virtual void OnMuteChanged(const qcc::String& objectPath, const bool mute) {}
 };
 
 } //namespace services

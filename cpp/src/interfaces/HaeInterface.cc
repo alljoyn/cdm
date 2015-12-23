@@ -68,6 +68,22 @@ std::map<HaeInterfaceType, qcc::String> InterfaceTypesMap = {
     {TIME_DISPLAY_INTERFACE, "org.alljoyn.SmartSpaces.UserInterfaceSettings.TimeDisplay"},
 };
 
+std::map<ErrorCode, qcc::String> HaeInterface::InterfaceErrorNameMap = {
+    {INVALID_VALUE, "org.alljoyn.Error.InvalidValue"},
+    {FEATURE_NOT_AVAILABLE, "org.alljoyn.Error.FeatureNotAvailable"},
+    {LANGUAGE_NOT_SUPPORTED, "org.alljoyn.Error.LanguageNotSupported"},
+    {NOT_ACCEPTABLE_DUE_TO_INTERNAL_STATE, "org.alljoyn.SmartSpaces.Error.NotAcceptableDueToInternalState"},
+    {REMOTE_CONTROL_DISABLED, "org.alljoyn.SmartSpaces.Error.RemoteControlDisabled"},
+};
+
+std::map<ErrorCode, qcc::String> HaeInterface::InterfaceErrorMessageMap = {
+    {INVALID_VALUE, "Invalid value"},
+    {FEATURE_NOT_AVAILABLE, "Feature not available"},
+    {LANGUAGE_NOT_SUPPORTED, "The language specified is not supported."},
+    {NOT_ACCEPTABLE_DUE_TO_INTERNAL_STATE, "The value is not acceptable due to internal state."},
+    {REMOTE_CONTROL_DISABLED, "Remote control disabled"},
+};
+
 QStatus HaeInterface::Init()
 {
     QStatus status = ER_OK;

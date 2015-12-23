@@ -37,18 +37,12 @@ class AudioVideoInputIntfControllerListener : public InterfaceControllerListener
     virtual ~AudioVideoInputIntfControllerListener() {}
 
     /**
-     * Handler for InputSourceId property changed
+     * Callback handler for setting InputSourceId property
+     * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] inputSourceId input source id
+     * @param[in] context the context that is passed from application
      */
-    virtual void InputSourceIdPropertyChanged(const qcc::String& objectPath, const uint16_t inputSourceId) {}
-
-    /**
-     * Handler for SupportedInputSources property changed
-     * @param[in] objectPath the object path
-     * @param[in] supportedInputSources supported input sources
-     */
-    virtual void SupportedInputSourcesPropertyChanged(const qcc::String& objectPath, const AudioVideoInputInterface::InputSources& supportedInputSources) {}
+    virtual void OnResponseSetInputSourceId(QStatus status, const qcc::String& objectPath, void* context) {}
 
     /**
      * Callback handler for getting InputSourceId property
@@ -57,7 +51,7 @@ class AudioVideoInputIntfControllerListener : public InterfaceControllerListener
      * @param[in] inputSourceId input source id
      * @param[in] context the context that is passed from application
      */
-    virtual void GetInputSourceIdPropertyCallback(QStatus status, const qcc::String& objectPath, const uint16_t inputSourceId, void* context) {}
+    virtual void OnResponseGetInputSourceId(QStatus status, const qcc::String& objectPath, const uint16_t inputSourceId, void* context) {}
 
     /**
      * Callback handler for getting SupportedInputSources property
@@ -66,15 +60,21 @@ class AudioVideoInputIntfControllerListener : public InterfaceControllerListener
      * @param[in] supportedInputSources supported input sources
      * @param[in] context the context that is passed from application
      */
-    virtual void GetSupportedInputSourcesPropertyCallback(QStatus status, const qcc::String& objectPath, const AudioVideoInputInterface::InputSources& supportedInputSources, void* context) {}
+    virtual void OnResponseGetSupportedInputSources(QStatus status, const qcc::String& objectPath, const AudioVideoInputInterface::InputSources& supportedInputSources, void* context) {}
 
     /**
-     * Callback handler for setting InputSourceId property
-     * @param[in] status ER_OK on success
+     * Handler for InputSourceId property changed
      * @param[in] objectPath the object path
-     * @param[in] context the context that is passed from application
+     * @param[in] inputSourceId input source id
      */
-    virtual void SetInputSourceIdPropertyCallback(QStatus status, const qcc::String& objectPath, void* context) {}
+    virtual void OnInputSourceIdChanged(const qcc::String& objectPath, const uint16_t inputSourceId) {}
+
+    /**
+     * Handler for SupportedInputSources property changed
+     * @param[in] objectPath the object path
+     * @param[in] supportedInputSources supported input sources
+     */
+    virtual void OnSupportedInputSourcesChanged(const qcc::String& objectPath, const AudioVideoInputInterface::InputSources& supportedInputSources) {}
 };
 
 } //namespace services

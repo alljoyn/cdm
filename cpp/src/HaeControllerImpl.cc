@@ -27,7 +27,7 @@
 #include "HaeBusListener.h"
 #include "HaeAboutCustomFields.h"
 #include "InterfaceFactory.h"
-#include "HaeProxyBusObject.h"
+#include <alljoyn/hae/HaeProxyBusObject.h>
 
 using namespace ajn;
 using namespace services;

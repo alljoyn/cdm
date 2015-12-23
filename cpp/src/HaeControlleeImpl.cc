@@ -20,6 +20,7 @@
 #include <alljoyn/Status.h>
 #include <alljoyn/BusAttachment.h>
 #include <alljoyn/AuthListener.h>
+#include <alljoyn/hae/HaeBusObject.h>
 #include <alljoyn/hae/LogModule.h>
 #include <alljoyn/hae/HaeAboutData.h>
 #include <alljoyn/hae/DeviceTypeDescription.h>
@@ -30,7 +31,6 @@
 #include "HaeAboutCustomFields.h"
 #include "HaeConstants.h"
 #include "InterfaceFactory.h"
-#include "HaeBusObject.h"
 #include "HaeControlleeImpl.h"
 
 using namespace std;

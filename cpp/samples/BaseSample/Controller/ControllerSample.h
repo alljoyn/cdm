@@ -79,6 +79,8 @@ class ControllerSample : public BaseSample
     HaeInterface* CreateInterface(const HaeInterfaceType type, const std::string& busName, const qcc::String& objectPath,
                                   const SessionId& sessionId, InterfaceControllerListener& listener);
 
+    const HaeInterfaceType RegisterVendorDefinedInterface(const qcc::String& interfaceName, CreateIntfControllerFptr createIntfController);
+
   private:
     BusAttachment* m_bus;
     FoundDeviceMap m_deviceList;

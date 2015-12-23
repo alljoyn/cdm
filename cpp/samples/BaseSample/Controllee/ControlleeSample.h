@@ -58,6 +58,7 @@ class ControlleeSample : public BaseSample
     HaeControllee* GetControllee() { return m_controllee; }
 
   protected:
+    virtual void InitSample() {}
     virtual void CreateInterfaces() = 0;
     virtual void SetInitialProperty() = 0;
 
@@ -66,7 +67,6 @@ class ControlleeSample : public BaseSample
     AboutObj* m_aboutObj;
     AboutSessionListener* m_aboutSessionListener;
 
-  private:
     QStatus Init();
     void Deinit();
     QStatus AnnounceAboutObj();

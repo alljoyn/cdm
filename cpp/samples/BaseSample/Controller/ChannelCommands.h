@@ -30,13 +30,14 @@ class ChannelListener : public ChannelIntfControllerListener {
   public:
     ChannelListener();
     virtual ~ChannelListener();
-    virtual void ChannelIdPropertyChanged(const qcc::String& objectPath, const qcc::String channelId);
-    virtual void TotalNumberOfChannelsPropertyChanged(const qcc::String& objectPath, const uint16_t totalNumberOfChannels);
-    virtual void GetChannelIdPropertyCallback(QStatus status, const qcc::String& objectPath, const qcc::String channelId, void* context);
-    virtual void GetTotalNumberOfChannelsPropertyCallback(QStatus status, const qcc::String& objectPath, const uint16_t totalNumberOfChannels, void* context);
-    virtual void SetChannelIdPropertyCallback(QStatus status, const qcc::String& objectPath, void* context);
-    virtual void GetChannelListMethodCallback(QStatus status, const qcc::String& objectPath, const ChannelInterface::ChannelInfoRecords& listOfChannelInfoRecords, void* context);
-    virtual void ChannelListChangedSignal(const qcc::String& objectPath);
+    virtual void OnResponseSetChannelId(QStatus status, const qcc::String& objectPath, void* context);
+    virtual void OnResponseGetChannelId(QStatus status, const qcc::String& objectPath, const qcc::String channelId, void* context);
+    virtual void OnResponseGetTotalNumberOfChannels(QStatus status, const qcc::String& objectPath, const uint16_t totalNumberOfChannels, void* context);
+    virtual void OnResponseGetChannelList(QStatus status, const qcc::String& objectPath, const ChannelInterface::ChannelInfoRecords& listOfChannelInfoRecords,
+                                          void* context, const char* errorName, const char* errorMessage);
+    virtual void OnChannelIdChanged(const qcc::String& objectPath, const qcc::String channelId);
+    virtual void OnTotalNumberOfChannelsChanged(const qcc::String& objectPath, const uint16_t totalNumberOfChannels);
+    virtual void OnChannelListChanged(const qcc::String& objectPath);
 };
 
 class ChannelCommands : public InterfaceCommands

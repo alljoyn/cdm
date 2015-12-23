@@ -6,8 +6,8 @@
             <description language="en"> Interface version</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
-		<property name="AirQualityType" type="y" access="read">
-            <description language="en"> The type of air quality.</description>
+		<property name="ContaminantType" type="y" access="read">
+            <description language="en"> The contaminant type.</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
         <property name="CurrentValue" type="d" access="read">

@@ -6,6 +6,16 @@
 #include "ChannelCommands.h"
 #include "AudioVideoInputCommands.h"
 #include "HidCommands.h"
+#include "OnControlCommands.h"
+#include "OffControlCommands.h"
+#include "OnOffStatusCommands.h"
+#include "ResourceSavingCommands.h"
+#include "FanSpeedLevelCommands.h"
+#include "CurrentTemperatureCommands.h"
+#include "TargetTemperatureCommands.h"
+#include "ClimateControlModeCommands.h"
+#include "WindDirectionCommands.h"
+#include "VendorDefinedCommands.h"
 
 DeviceCommands::DeviceCommands(ControllerSample* sample, DeviceInfoPtr& info)
 : ControllerCommands(sample)
@@ -55,7 +65,7 @@ void DeviceCommands::OnCmdSelectInterface(Commands* commands, std::string& cmd)
             if (!(sample->GetCurrentCommands()->GetChild(key))) {
                 Commands* intfCommands = static_cast<DeviceCommands*>(commands)->CreateInterfaceCommands(commands, intfs[j], paths[i]);
                 if (!intfCommands) {
-                    cout << "Command object creation for interface " << intfs[j] << "is failed" << endl;
+                    cout << "Command object creation for interface " << intfs[j] << " is failed" << endl;
                     continue;
                 }
 
@@ -87,6 +97,26 @@ Commands* DeviceCommands::CreateInterfaceCommands(Commands* commands, const char
         intfCommands = new AudioVideoInputCommands(sample, info, objectPath);
     } else if (!strncmp(intfName, "org.alljoyn.Input.Hid", strlen(intfName))) {
         intfCommands = new HidCommands(sample, info, objectPath);
+    } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Operation.OnControl", strlen(intfName))) {
+        intfCommands = new OnControlCommands(sample, info, objectPath);
+    } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Operation.OffControl", strlen(intfName))) {
+        intfCommands = new OffControlCommands(sample, info, objectPath);
+    } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Operation.OnOffStatus", strlen(intfName))) {
+        intfCommands = new OnOffStatusCommands(sample, info, objectPath);
+    } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Operation.ResourceSaving", strlen(intfName))) {
+        intfCommands = new ResourceSavingCommands(sample, info, objectPath);
+    } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Operation.FanSpeedLevel", strlen(intfName))) {
+        intfCommands = new FanSpeedLevelCommands(sample, info, objectPath);
+    } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Environment.CurrentTemperature", strlen(intfName))) {
+        intfCommands = new CurrentTemperatureCommands(sample, info, objectPath);
+    } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Environment.TargetTemperature", strlen(intfName))) {
+        intfCommands = new TargetTemperatureCommands(sample, info, objectPath);
+    }  else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Operation.ClimateControlMode", strlen(intfName))) {
+        intfCommands = new ClimateControlModeCommands(sample, info, objectPath);
+    }  else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Environment.WindDirection", strlen(intfName))) {
+        intfCommands = new WindDirectionCommands(sample, info, objectPath);
+    } else if (!strncmp(intfName, "com.foo.bar.test", strlen(intfName))) {
+        intfCommands = new VendorDefinedCommands(sample, info, objectPath);
     }
 
     return intfCommands;

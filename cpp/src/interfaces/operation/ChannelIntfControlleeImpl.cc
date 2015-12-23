@@ -18,9 +18,8 @@
 
 #include <alljoyn/hae/LogModule.h>
 #include <alljoyn/hae/interfaces/operation/ChannelIntfControlleeListener.h>
-
+#include <alljoyn/hae/HaeBusObject.h>
 #include "ChannelIntfControlleeImpl.h"
-#include "HaeBusObject.h"
 
 using namespace qcc;
 using namespace std;
@@ -196,8 +195,9 @@ void ChannelIntfControlleeImpl::OnGetChannelList(const InterfaceDescription::Mem
         uint16_t startingRecord = args[0].v_uint16;
         uint16_t numRecords = args[1].v_uint16;
         ChannelInterface::ChannelInfoRecords listOfChannelInfoRecords;
+        ErrorCode errorCode = NOT_ERROR;
 
-        status = m_interfaceListener.OnGetChannelList(startingRecord, numRecords, listOfChannelInfoRecords);
+        status = m_interfaceListener.OnGetChannelList(startingRecord, numRecords, listOfChannelInfoRecords, errorCode);
         if (status == ER_OK) {
             int numReturned = listOfChannelInfoRecords.size();
             ChannelInterface::ChannelInfoRecords::const_iterator citer;
@@ -213,7 +213,13 @@ void ChannelIntfControlleeImpl::OnGetChannelList(const InterfaceDescription::Mem
 
             status = m_busObject.ReplyMethodCall(msg, retArgs, ArraySize(retArgs));
         } else {
-            m_busObject.ReplyMethodCall(msg, status);
+            if (errorCode == NOT_ERROR) {
+                QCC_LogError(status, ("%s: status is not ER_OK, but errorCode was not set.", __func__));
+                m_busObject.ReplyMethodCall(msg, status);
+            } else {
+                m_busObject.ReplyMethodCall(msg, HaeInterface::GetInterfaceErrorName(errorCode).c_str(),
+                        HaeInterface::GetInterfaceErrorMessage(errorCode).c_str());
+            }
         }
     } else {
         m_busObject.ReplyMethodCall(msg, ER_INVALID_DATA);

@@ -27,28 +27,14 @@ AudioVideoInputListener::~AudioVideoInputListener()
 {
 }
 
-void AudioVideoInputListener::InputSourceIdPropertyChanged(const qcc::String& objectPath, const uint16_t inputSourceId)
+void AudioVideoInputListener::OnResponseSetInputSourceId(QStatus status, const qcc::String& objectPath, void* context)
 {
     cout << __func__ << endl;
+    cout << "status: " << QCC_StatusText(status) << endl;
     cout << "path: " << objectPath << endl;
-    cout << "inputSourceId: " << inputSourceId << endl;
 }
 
-void AudioVideoInputListener::SupportedInputSourcesPropertyChanged(const qcc::String& objectPath, const AudioVideoInputInterface::InputSources& supportedInputSources)
-{
-    cout << __func__ << endl;
-    cout << "path: " << objectPath << endl;
-    for(AudioVideoInputInterface::InputSources::const_iterator citer = supportedInputSources.begin();
-        citer != supportedInputSources.end(); citer++) {
-        cout << citer->first << " "
-             << citer->second.sourceType << " "
-             << (int)citer->second.signalPresence << " "
-             << citer->second.portNumber << " "
-             << citer->second.friendlyName.c_str() << " " << endl;
-    }
-}
-
-void AudioVideoInputListener::GetInputSourceIdPropertyCallback(QStatus status, const qcc::String& objectPath, const uint16_t inputSourceId, void* context)
+void AudioVideoInputListener::OnResponseGetInputSourceId(QStatus status, const qcc::String& objectPath, const uint16_t inputSourceId, void* context)
 {
     cout << __func__ << endl;
     cout << "status: " << QCC_StatusText(status) << endl;
@@ -56,7 +42,7 @@ void AudioVideoInputListener::GetInputSourceIdPropertyCallback(QStatus status, c
     cout << "inputSourceId: " << inputSourceId << endl;
 }
 
-void AudioVideoInputListener::GetSupportedInputSourcesPropertyCallback(QStatus status, const qcc::String& objectPath, const AudioVideoInputInterface::InputSources& supportedInputSources, void* context)
+void AudioVideoInputListener::OnResponseGetSupportedInputSources(QStatus status, const qcc::String& objectPath, const AudioVideoInputInterface::InputSources& supportedInputSources, void* context)
 {
     cout << __func__ << endl;
     cout << "status: " << QCC_StatusText(status) << endl;
@@ -73,11 +59,25 @@ void AudioVideoInputListener::GetSupportedInputSourcesPropertyCallback(QStatus s
     }
 }
 
-void AudioVideoInputListener::SetInputSourceIdPropertyCallback(QStatus status, const qcc::String& objectPath, void* context)
+void AudioVideoInputListener::OnInputSourceIdChanged(const qcc::String& objectPath, const uint16_t inputSourceId)
 {
     cout << __func__ << endl;
-    cout << "status: " << QCC_StatusText(status) << endl;
     cout << "path: " << objectPath << endl;
+    cout << "inputSourceId: " << inputSourceId << endl;
+}
+
+void AudioVideoInputListener::OnSupportedInputSourcesChanged(const qcc::String& objectPath, const AudioVideoInputInterface::InputSources& supportedInputSources)
+{
+    cout << __func__ << endl;
+    cout << "path: " << objectPath << endl;
+    for(AudioVideoInputInterface::InputSources::const_iterator citer = supportedInputSources.begin();
+        citer != supportedInputSources.end(); citer++) {
+        cout << citer->first << " "
+             << citer->second.sourceType << " "
+             << (int)citer->second.signalPresence << " "
+             << citer->second.portNumber << " "
+             << citer->second.friendlyName.c_str() << " " << endl;
+    }
 }
 
 AudioVideoInputCommands::AudioVideoInputCommands(ControllerSample* sample, DeviceInfoPtr& info, const char* objectPath)

@@ -18,9 +18,8 @@
 
 #include <alljoyn/hae/LogModule.h>
 #include <alljoyn/hae/interfaces/operation/AudioVideoInputIntfControlleeListener.h>
-
+#include <alljoyn/hae/HaeBusObject.h>
 #include "AudioVideoInputIntfControlleeImpl.h"
-#include "HaeBusObject.h"
 
 using namespace qcc;
 using namespace std;

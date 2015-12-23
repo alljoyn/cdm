@@ -19,7 +19,7 @@
 #include <alljoyn/BusAttachment.h>
 #include <alljoyn/hae/LogModule.h>
 #include "DeviceManager.h"
-#include "HaeProxyBusObject.h"
+#include <alljoyn/hae/HaeProxyBusObject.h>
 #include "AutoLock.h"
 
 using namespace ajn;

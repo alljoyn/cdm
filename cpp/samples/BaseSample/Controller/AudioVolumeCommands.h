@@ -30,14 +30,14 @@ class AudioVolumeListener : public AudioVolumeIntfControllerListener {
   public:
     AudioVolumeListener();
     virtual ~AudioVolumeListener();
-    virtual void VolumePropertyChanged(const qcc::String& objectPath, const uint8_t volume);
-    virtual void MaxVolumePropertyChanged(const qcc::String& objectPath, const uint8_t maxVolume);
-    virtual void MutePropertyChanged(const qcc::String& objectPath, const bool mute);
-    virtual void GetVolumePropertyCallback(QStatus status, const qcc::String& objectPath, uint8_t volume, void* context);
-    virtual void GetMaxVolumePropertyCallback(QStatus status, const qcc::String& objectPath, const uint8_t maxVolume, void* context);
-    virtual void GetMutePropertyCallback(QStatus status, const qcc::String& objectPath, const bool mute, void* context);
-    virtual void SetVolumePropertyCallback(QStatus status, const qcc::String& objectPath, void* context);
-    virtual void SetMutePropertyCallback(QStatus status, const qcc::String& objectPath, void* context);
+    virtual void OnResponseSetVolume(QStatus status, const qcc::String& objectPath, void* context);
+    virtual void OnResponseGetVolume(QStatus status, const qcc::String& objectPath, uint8_t volume, void* context);
+    virtual void OnResponseGetMaxVolume(QStatus status, const qcc::String& objectPath, const uint8_t maxVolume, void* context);
+    virtual void OnResponseSetMute(QStatus status, const qcc::String& objectPath, void* context);
+    virtual void OnResponseGetMute(QStatus status, const qcc::String& objectPath, const bool mute, void* context);
+    virtual void OnVolumeChanged(const qcc::String& objectPath, const uint8_t volume);
+    virtual void OnMaxVolumeChanged(const qcc::String& objectPath, const uint8_t maxVolume);
+    virtual void OnMuteChanged(const qcc::String& objectPath, const bool mute);
 };
 
 class AudioVolumeCommands : public InterfaceCommands

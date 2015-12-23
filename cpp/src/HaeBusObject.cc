@@ -15,12 +15,11 @@
  ******************************************************************************/
 
 #include <alljoyn/hae/LogModule.h>
+#include <alljoyn/hae/HaeBusObject.h>
 #include <alljoyn/hae/interfaces/HaeInterface.h>
 #include <alljoyn/hae/interfaces/HaeInterfaceTypes.h>
 #include <alljoyn/hae/interfaces/InterfaceControllee.h>
 #include <alljoyn/hae/interfaces/InterfaceControlleeListener.h>
-
-#include "HaeBusObject.h"
 #include "InterfaceFactory.h"
 
 using namespace std;

@@ -36,14 +36,14 @@ class AudioVideoInputIntfControlleeListener : public InterfaceControlleeListener
     virtual ~AudioVideoInputIntfControlleeListener() {}
 
     /**
-     * Handler for setting input source id
+     * Handler for setting InputSourceId property
      * @param[in] inputSourceId input source id
      * @return ER_OK on success
      */
     virtual QStatus OnSetInputSourceId(const uint16_t& inputSourceId) = 0;
 
     /**
-     * Handler for getting input source id
+     * Handler for getting InputSourceId property
      * This function is only called, when InterfaceControllee::s_retrievingActualPropertyValue is true.
      * @param[out] inputSourceId input source id
      * @return ER_OK on success
@@ -51,7 +51,7 @@ class AudioVideoInputIntfControlleeListener : public InterfaceControlleeListener
     virtual QStatus OnGetInputSourceId(uint16_t& inputSourceId) = 0;
 
     /**
-     * Handler for getting supported input sources
+     * Handler for getting SupportedInputSources property
      * This function is only called, when InterfaceControllee::s_retrievingActualPropertyValue is true.
      * @param[out] supportedInputSources supported input sources
      * @return ER_OK on success

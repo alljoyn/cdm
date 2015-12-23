@@ -20,7 +20,7 @@
 #include <alljoyn/hae/interfaces/operation/AudioVideoInputIntfControllerListener.h>
 
 #include "AudioVideoInputIntfControllerImpl.h"
-#include "HaeProxyBusObject.h"
+#include <alljoyn/hae/HaeProxyBusObject.h>
 
 using namespace qcc;
 using namespace std;
@@ -104,7 +104,7 @@ void AudioVideoInputIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, c
         if (!s_prop_InputSourceId.compare(propNameStr)) {
             if (propValue->typeId == ALLJOYN_UINT16) {
                 uint16_t inputSourceId = propValue->v_uint16;
-                m_interfaceListener.InputSourceIdPropertyChanged(obj.GetPath(), inputSourceId);
+                m_interfaceListener.OnInputSourceIdChanged(obj.GetPath(), inputSourceId);
             }
         } else if (!s_prop_SupportedInputSources.compare(propNameStr)) {
             if (propValue->typeId == ALLJOYN_ARRAY) {
@@ -125,7 +125,7 @@ void AudioVideoInputIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, c
                     inputSource.friendlyName = String(friendlyName);
                     inputSources.insert(std::pair<uint16_t, AudioVideoInputInterface::InputSource>(id, inputSource));
                 }
-                m_interfaceListener.SupportedInputSourcesPropertyChanged(obj.GetPath(), inputSources);
+                m_interfaceListener.OnSupportedInputSourcesChanged(obj.GetPath(), inputSources);
             }
         }
     }
@@ -137,7 +137,7 @@ void AudioVideoInputIntfControllerImpl::SetInputSourceIdPropertyCB(QStatus statu
         return;
     }
 
-    m_interfaceListener.SetInputSourceIdPropertyCallback(status, obj->GetPath(), context);
+    m_interfaceListener.OnResponseSetInputSourceId(status, obj->GetPath(), context);
 }
 
 void AudioVideoInputIntfControllerImpl::GetInputSourceIdPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
@@ -149,7 +149,7 @@ void AudioVideoInputIntfControllerImpl::GetInputSourceIdPropertyCB(QStatus statu
     uint16_t inputSourceId;
     value.Get("q", &inputSourceId);
 
-    m_interfaceListener.GetInputSourceIdPropertyCallback(status, obj->GetPath(), inputSourceId, context);
+    m_interfaceListener.OnResponseGetInputSourceId(status, obj->GetPath(), inputSourceId, context);
 }
 
 void AudioVideoInputIntfControllerImpl::GetSupportedInputSourcesPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
@@ -183,7 +183,7 @@ void AudioVideoInputIntfControllerImpl::GetSupportedInputSourcesPropertyCB(QStat
         inputSource.friendlyName = String(friendlyName);
         inputSources.insert(std::pair<uint16_t, AudioVideoInputInterface::InputSource>(id, inputSource));
     }
-    m_interfaceListener.GetSupportedInputSourcesPropertyCallback(status, obj->GetPath(), inputSources, context);
+    m_interfaceListener.OnResponseGetSupportedInputSources(status, obj->GetPath(), inputSources, context);
 }
 
 } //namespace services

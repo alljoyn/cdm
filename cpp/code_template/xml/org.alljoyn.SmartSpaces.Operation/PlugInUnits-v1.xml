@@ -5,7 +5,7 @@
         <struct name="PlugInInfo">
             <field name="objectPath" type="o"/>
             <field name="deviceId" type="u"/>
-            <field name="status" type="b"/>
+            <field name="pluggedIn" type="b"/>
         </struct>
         <property name="Version" type="q" access="read">
             <description language="en">The version of this interface</description>

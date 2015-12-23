@@ -30,8 +30,8 @@ class HidListener : public HidIntfControllerListener {
   public:
     HidListener();
     virtual ~HidListener();
-    virtual void SupportedEventsPropertyChanged(const qcc::String& objectPath, const HidInterface::SupportedInputEvents& supportedEvents);
-    virtual void GetSupportedEventsPropertyCallback(QStatus status, const qcc::String& objectPath, const HidInterface::SupportedInputEvents& supportedEvents, void* context);
+    virtual void OnResponseGetSupportedEvents(QStatus status, const qcc::String& objectPath, const HidInterface::SupportedInputEvents& supportedEvents, void* context);
+    virtual void OnSupportedEventsChanged(const qcc::String& objectPath, const HidInterface::SupportedInputEvents& supportedEvents);
 };
 
 class HidCommands : public InterfaceCommands

@@ -124,3 +124,9 @@ HaeInterface* ControllerSample::CreateInterface(const HaeInterfaceType type, con
 {
     return m_controller->CreateInterface(type, busName, objectPath, sessionId, listener);
 }
+
+
+const HaeInterfaceType ControllerSample::RegisterVendorDefinedInterface(const qcc::String& interfaceName, CreateIntfControllerFptr createIntfController)
+{
+    return m_controller->RegisterVendorDefinedInterface(interfaceName, createIntfController);
+}

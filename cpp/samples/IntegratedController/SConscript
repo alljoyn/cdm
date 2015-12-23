@@ -16,10 +16,12 @@ Import('env')
 
 env.Append(CPPPATH = '../BaseSample');
 env.Append(CPPPATH = '../BaseSample/Controller');
+env.Append(CPPPATH = '../BaseSample/VendorDefinedInterfaces');
 
 srcs = env.Glob('*.cc')
 srcs += env.Glob('../BaseSample/*.cc')
 srcs += env.Glob('../BaseSample/Controller/*.cc')
+srcs += env.Glob('../BaseSample/VendorDefinedInterfaces/*.cc')
 
 objs = env.Object(srcs)
 

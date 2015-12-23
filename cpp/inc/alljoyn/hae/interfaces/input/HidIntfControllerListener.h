@@ -36,20 +36,20 @@ class HidIntfControllerListener : public InterfaceControllerListener {
     virtual ~HidIntfControllerListener() {}
 
     /**
-     * Handler for SupportedEvents property changed
-     * @param[in] objectPath the object path
-     * @param[in] supportedEvents supported events
-     */
-    virtual void SupportedEventsPropertyChanged(const qcc::String& objectPath, const HidInterface::SupportedInputEvents& supportedEvents) {}
-
-    /**
      * Callback handler for getting SupportedEvents property
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
      * @param[in] supportedEvents supported events
      * @param[in] context the context that is passed from application
      */
-    virtual void GetSupportedEventsPropertyCallback(QStatus status, const qcc::String& objectPath, const HidInterface::SupportedInputEvents& supportedEvents, void* context) {}
+    virtual void OnResponseGetSupportedEvents(QStatus status, const qcc::String& objectPath, const HidInterface::SupportedInputEvents& supportedEvents, void* context) {}
+
+    /**
+     * Handler for SupportedEvents property changed
+     * @param[in] objectPath the object path
+     * @param[in] supportedEvents supported events
+     */
+    virtual void OnSupportedEventsChanged(const qcc::String& objectPath, const HidInterface::SupportedInputEvents& supportedEvents) {}
 };
 
 } //namespace services

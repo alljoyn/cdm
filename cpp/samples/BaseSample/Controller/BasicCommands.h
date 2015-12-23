@@ -31,7 +31,10 @@ class BasicControllerCommands : public ControllerCommands
     static void OnCmdDeviceList(Commands* commands, std::string&);
     static void OnCmdDeviceInfo(Commands* commands, std::string&);
     static void OnCmdDeviceJoin(Commands* commands, std::string&);
-};
 
+  private:
+    static void PrintAboutData(ajn::services::HaeAboutData& aboutData);
+    static void PrintAboutObjectDescription(ajn::AboutObjectDescription& aboutObjectDesc);
+};
 
 #endif

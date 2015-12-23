@@ -35,14 +35,14 @@ class AudioVolumeIntfControlleeListener : public InterfaceControlleeListener {
     virtual ~AudioVolumeIntfControlleeListener() {}
 
     /**
-     * Handler for setting volume
+     * Handler for setting Volume property
      * @param[in] volume volume
      * @return ER_OK on success
      */
     virtual QStatus OnSetVolume(const uint8_t& volume) = 0;
 
     /**
-     * Handler for getting volume
+     * Handler for getting Volume property
      * This function is only called, when InterfaceControllee::s_retrievingActualPropertyValue is true.
      * @param[out] volume volume
      * @return ER_OK on success
@@ -50,7 +50,7 @@ class AudioVolumeIntfControlleeListener : public InterfaceControlleeListener {
     virtual QStatus OnGetVolume(uint8_t& volume) = 0;
 
     /**
-     * Handler for getting the maximum volume
+     * Handler for getting MaxVolume property
      * This function is only called, when InterfaceControllee::s_retrievingActualPropertyValue is true.
      * @param[out] maxVolume the maximum volume
      * @return ER_OK on success
@@ -58,14 +58,14 @@ class AudioVolumeIntfControlleeListener : public InterfaceControlleeListener {
      virtual QStatus OnGetMaxVolume(uint8_t& maxVolume) = 0;
 
      /**
-      * Handler for setting mute
+      * Handler for setting Mute property
       * @param[in] mute mute
       * @return ER_OK on success
       */
      virtual QStatus OnSetMute(const bool& mute) = 0;
 
      /**
-      * Handler for getting mute
+      * Handler for getting Mute property
       * This function is only called, when InterfaceControllee::s_retrievingActualPropertyValue is true.
       * @param[out] mute mute
       * @return ER_OK on success

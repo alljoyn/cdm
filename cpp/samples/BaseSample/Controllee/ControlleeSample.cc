@@ -48,6 +48,8 @@ QStatus ControlleeSample::Init()
     }
     PushCommands(m_rootCommands);
 
+    InitSample();
+
     CreateInterfaces();
 
     m_controllee->Start();

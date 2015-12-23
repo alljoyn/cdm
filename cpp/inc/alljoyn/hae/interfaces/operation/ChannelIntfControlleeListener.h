@@ -38,14 +38,14 @@ class ChannelIntfControlleeListener : public InterfaceControlleeListener {
     virtual ~ChannelIntfControlleeListener() {}
 
     /**
-     * Handler for setting channel id
+     * Handler for setting ChannelId property
      * @param[in] channelId channel id
      * @return ER_OK on success
      */
     virtual QStatus OnSetChannelId(const qcc::String& channelId) = 0;
 
     /**
-     * Handler for getting channel id
+     * Handler for getting ChannelId property
      * This function is only called, when InterfaceControllee::s_retrievingActualPropertyValue is true.
      * @param[out] channelId channel id
      * @return ER_OK on success
@@ -53,7 +53,7 @@ class ChannelIntfControlleeListener : public InterfaceControlleeListener {
     virtual QStatus OnGetChannelId(qcc::String& channelId) = 0;
 
     /**
-     * Handler for getting total number of channels
+     * Handler for getting TotalNumberOfChannels property
      * This function is only called, when InterfaceControllee::s_retrievingActualPropertyValue is true.
      * @param[out] totalNumberOfChannels total number of channels
      * @return ER_OK on success
@@ -65,10 +65,12 @@ class ChannelIntfControlleeListener : public InterfaceControlleeListener {
      * @param[in] startingRecord starting record
      * @param[in] numRecords the number of records
      * @param[out] listOfChannelInfoRecords list of channel info records
-     * @return ER_OK on success
+     * @param[out] errorCode the error code should be set when the method call is failed
+     * @return ER_OK on succes
      */
      virtual QStatus OnGetChannelList(const uint16_t& startingRecord, const uint16_t& numRecords,
-                                      ChannelInterface::ChannelInfoRecords& listOfChannelInfoRecords) = 0;
+                                      ChannelInterface::ChannelInfoRecords& listOfChannelInfoRecords,
+                                      ErrorCode& errorCode) = 0;
 };
 
 } //namespace services

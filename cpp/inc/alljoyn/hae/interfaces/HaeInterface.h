@@ -21,6 +21,7 @@
 #include <alljoyn/BusAttachment.h>
 #include <alljoyn/InterfaceDescription.h>
 #include <alljoyn/hae/interfaces/HaeInterfaceTypes.h>
+#include <alljoyn/hae/interfaces/HaeInterfaceErrors.h>
 
 namespace ajn {
 namespace services {
@@ -93,6 +94,18 @@ class HaeInterface {
      */
     const InterfaceDescription* GetInterfaceDescription() const { return m_interfaceDescription; }
 
+    /**
+     * Get interface error name
+     * @return Interface error name
+     */
+    static qcc::String& GetInterfaceErrorName(ErrorCode errorCode) { return InterfaceErrorNameMap[errorCode]; }
+
+    /**
+     * Get interface error message
+     * @return Interface error message
+     */
+    static qcc::String& GetInterfaceErrorMessage(ErrorCode errorCode) { return InterfaceErrorMessageMap[errorCode]; }
+
   protected:
     /**
      * Get introspection xml
@@ -101,6 +114,10 @@ class HaeInterface {
     virtual const qcc::String& GetIntrospectionXml() = 0;
 
     const InterfaceDescription* m_interfaceDescription;
+
+  private:
+    static std::map<ErrorCode, qcc::String> InterfaceErrorNameMap;
+    static std::map<ErrorCode, qcc::String> InterfaceErrorMessageMap;
 };
 
 } //namespace services

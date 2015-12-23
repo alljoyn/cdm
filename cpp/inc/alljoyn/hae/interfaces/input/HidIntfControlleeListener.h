@@ -38,7 +38,7 @@ class HidIntfControlleeListener : public InterfaceControlleeListener {
     virtual ~HidIntfControlleeListener() {}
 
     /**
-     * Handler for getting supported events
+     * Handler for getting SupportedEvents property
      * This function is only called, when InterfaceControllee::s_retrievingActualPropertyValue is true.
      * @param[out] supportedEvents supported events
      * @return ER_OK on success

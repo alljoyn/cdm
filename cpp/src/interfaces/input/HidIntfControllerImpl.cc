@@ -20,7 +20,7 @@
 #include <alljoyn/hae/interfaces/input/HidIntfControllerListener.h>
 
 #include "HidIntfControllerImpl.h"
-#include "HaeProxyBusObject.h"
+#include <alljoyn/hae/HaeProxyBusObject.h>
 
 using namespace qcc;
 using namespace std;
@@ -99,7 +99,7 @@ void HidIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* i
                     supportedEvent.max = max;
                     supportedEvents.push_back(supportedEvent);
                 }
-                m_interfaceListener.SupportedEventsPropertyChanged(obj.GetPath(), supportedEvents);
+                m_interfaceListener.OnSupportedEventsChanged(obj.GetPath(), supportedEvents);
             }
         }
     }
@@ -135,7 +135,7 @@ void HidIntfControllerImpl::GetSupportedEventsPropertyCB(QStatus status, ProxyBu
         supportedEvent.max = max;
         supportedEvents.push_back(supportedEvent);
     }
-    m_interfaceListener.GetSupportedEventsPropertyCallback(status, obj->GetPath(), supportedEvents, context);
+    m_interfaceListener.OnResponseGetSupportedEvents(status, obj->GetPath(), supportedEvents, context);
 }
 
 QStatus HidIntfControllerImpl::InjectEvents(HidInterface::InputEvents& inputEvents)

@@ -27,21 +27,14 @@ ChannelListener::~ChannelListener()
 {
 }
 
-void ChannelListener::ChannelIdPropertyChanged(const qcc::String& objectPath, const qcc::String channelId)
+void ChannelListener::OnResponseSetChannelId(QStatus status, const qcc::String& objectPath, void* context)
 {
     cout << __func__ << endl;
+    cout << "status: " << QCC_StatusText(status) << endl;
     cout << "path: " << objectPath << endl;
-    cout << "channelId: " << channelId << endl;
 }
 
-void ChannelListener::TotalNumberOfChannelsPropertyChanged(const qcc::String& objectPath, const uint16_t totalNumberOfChannels)
-{
-    cout << __func__ << endl;
-    cout << "path: " << objectPath << endl;
-    cout << "totalNumberOfChannels: " << totalNumberOfChannels << endl;
-}
-
-void ChannelListener::GetChannelIdPropertyCallback(QStatus status, const qcc::String& objectPath, const qcc::String channelId, void* context)
+void ChannelListener::OnResponseGetChannelId(QStatus status, const qcc::String& objectPath, const qcc::String channelId, void* context)
 {
     cout << __func__ << endl;
     cout << "status: " << QCC_StatusText(status) << endl;
@@ -49,7 +42,7 @@ void ChannelListener::GetChannelIdPropertyCallback(QStatus status, const qcc::St
     cout << "channelId: " << channelId << endl;
 }
 
-void ChannelListener::GetTotalNumberOfChannelsPropertyCallback(QStatus status, const qcc::String& objectPath, const uint16_t totalNumberOfChannels, void* context)
+void ChannelListener::OnResponseGetTotalNumberOfChannels(QStatus status, const qcc::String& objectPath, const uint16_t totalNumberOfChannels, void* context)
 {
     cout << __func__ << endl;
     cout << "status: " << QCC_StatusText(status) << endl;
@@ -57,14 +50,8 @@ void ChannelListener::GetTotalNumberOfChannelsPropertyCallback(QStatus status, c
     cout << "totalNumberOfChannels: " << totalNumberOfChannels << endl;
 }
 
-void ChannelListener::SetChannelIdPropertyCallback(QStatus status, const qcc::String& objectPath, void* context)
-{
-    cout << __func__ << endl;
-    cout << "status: " << QCC_StatusText(status) << endl;
-    cout << "path: " << objectPath << endl;
-}
-
-void ChannelListener::GetChannelListMethodCallback(QStatus status, const qcc::String& objectPath, const ChannelInterface::ChannelInfoRecords& listOfChannelInfoRecords, void* context)
+void ChannelListener::OnResponseGetChannelList(QStatus status, const qcc::String& objectPath, const ChannelInterface::ChannelInfoRecords& listOfChannelInfoRecords,
+                                                   void* context, const char* errorName, const char* errorMessage)
 {
     cout << __func__ << endl;
     cout << "status: " << QCC_StatusText(status) << endl;
@@ -77,10 +64,27 @@ void ChannelListener::GetChannelListMethodCallback(QStatus status, const qcc::St
                  << citer->channelNumber.c_str() << " "
                  << citer->channelName.c_str() << endl;
         }
+    } else {
+        cout << "error name : " << errorName << endl;
+        cout << "error message : " << errorMessage << endl;
     }
 }
 
-void ChannelListener::ChannelListChangedSignal(const qcc::String& objectPath)
+void ChannelListener::OnChannelIdChanged(const qcc::String& objectPath, const qcc::String channelId)
+{
+    cout << __func__ << endl;
+    cout << "path: " << objectPath << endl;
+    cout << "channelId: " << channelId << endl;
+}
+
+void ChannelListener::OnTotalNumberOfChannelsChanged(const qcc::String& objectPath, const uint16_t totalNumberOfChannels)
+{
+    cout << __func__ << endl;
+    cout << "path: " << objectPath << endl;
+    cout << "totalNumberOfChannels: " << totalNumberOfChannels << endl;
+}
+
+void ChannelListener::OnChannelListChanged(const qcc::String& objectPath)
 {
     cout << __func__ << endl;
     cout << "path: " << objectPath << endl;

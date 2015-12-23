@@ -25,28 +25,14 @@ AudioVolumeListener::~AudioVolumeListener()
 {
 }
 
-void AudioVolumeListener::VolumePropertyChanged(const qcc::String& objectPath, const uint8_t volume)
+void AudioVolumeListener::OnResponseSetVolume(QStatus status, const qcc::String& objectPath, void* context)
 {
     cout << __func__ << endl;
+    cout << "status: " << QCC_StatusText(status) << endl;
     cout << "path: " << objectPath << endl;
-    cout << "volume: " << (int)volume << endl;
 }
 
-void AudioVolumeListener::MaxVolumePropertyChanged(const qcc::String& objectPath, const uint8_t maxVolume)
-{
-    cout << __func__ << endl;
-    cout << "path: " << objectPath << endl;
-    cout << "max volume: " << (int)maxVolume << endl;
-}
-
-void AudioVolumeListener::MutePropertyChanged(const qcc::String& objectPath, const bool mute)
-{
-    cout << __func__ << endl;
-    cout << "path: " << objectPath << endl;
-    cout << "mute: " << mute << endl;
-}
-
-void AudioVolumeListener::GetVolumePropertyCallback(QStatus status, const qcc::String& objectPath, uint8_t volume, void* context)
+void AudioVolumeListener::OnResponseGetVolume(QStatus status, const qcc::String& objectPath, uint8_t volume, void* context)
 {
     cout << __func__ << endl;
     cout << "status: " << QCC_StatusText(status) << endl;
@@ -54,7 +40,7 @@ void AudioVolumeListener::GetVolumePropertyCallback(QStatus status, const qcc::S
     cout << "volume: " << (int)volume << endl;
 }
 
-void AudioVolumeListener::GetMaxVolumePropertyCallback(QStatus status, const qcc::String& objectPath, const uint8_t maxVolume, void* context)
+void AudioVolumeListener::OnResponseGetMaxVolume(QStatus status, const qcc::String& objectPath, const uint8_t maxVolume, void* context)
 {
     cout << __func__ << endl;
     cout << "status: " << QCC_StatusText(status) << endl;
@@ -62,7 +48,14 @@ void AudioVolumeListener::GetMaxVolumePropertyCallback(QStatus status, const qcc
     cout << "max volume: " << (int)maxVolume << endl;
 }
 
-void AudioVolumeListener::GetMutePropertyCallback(QStatus status, const qcc::String& objectPath, const bool mute, void* context)
+void AudioVolumeListener::OnResponseSetMute(QStatus status, const qcc::String& objectPath, void* context)
+{
+    cout << __func__ << endl;
+    cout << "status: " << QCC_StatusText(status) << endl;
+    cout << "path: " << objectPath << endl;
+}
+
+void AudioVolumeListener::OnResponseGetMute(QStatus status, const qcc::String& objectPath, const bool mute, void* context)
 {
     cout << __func__ << endl;
     cout << "status: " << QCC_StatusText(status) << endl;
@@ -70,18 +63,25 @@ void AudioVolumeListener::GetMutePropertyCallback(QStatus status, const qcc::Str
     cout << "mute: " << mute << endl;
 }
 
-void AudioVolumeListener::SetVolumePropertyCallback(QStatus status, const qcc::String& objectPath, void* context)
+void AudioVolumeListener::OnVolumeChanged(const qcc::String& objectPath, const uint8_t volume)
 {
     cout << __func__ << endl;
-    cout << "status: " << QCC_StatusText(status) << endl;
     cout << "path: " << objectPath << endl;
+    cout << "volume: " << (int)volume << endl;
 }
 
-void AudioVolumeListener::SetMutePropertyCallback(QStatus status, const qcc::String& objectPath, void* context)
+void AudioVolumeListener::OnMaxVolumeChanged(const qcc::String& objectPath, const uint8_t maxVolume)
 {
     cout << __func__ << endl;
-    cout << "status: " << QCC_StatusText(status) << endl;
     cout << "path: " << objectPath << endl;
+    cout << "max volume: " << (int)maxVolume << endl;
+}
+
+void AudioVolumeListener::OnMuteChanged(const qcc::String& objectPath, const bool mute)
+{
+    cout << __func__ << endl;
+    cout << "path: " << objectPath << endl;
+    cout << "mute: " << mute << endl;
 }
 
 AudioVolumeCommands::AudioVolumeCommands(ControllerSample* sample, DeviceInfoPtr& info, const char* objectPath)
@@ -108,10 +108,10 @@ void AudioVolumeCommands::Init()
     }
 
     RegisterCommand(&AudioVolumeCommands::OnCmdGetVolume, "gv", "get volume");
-    RegisterCommand(&AudioVolumeCommands::OnCmdSetVolume, "sv", "set volume (use 'sv <volume>'");
+    RegisterCommand(&AudioVolumeCommands::OnCmdSetVolume, "sv", "set volume (use 'sv <volume>')");
     RegisterCommand(&AudioVolumeCommands::OnCmdGetMaxVolume, "gmv", "get max volume");
     RegisterCommand(&AudioVolumeCommands::OnCmdGetMute, "gmute", "get mute");
-    RegisterCommand(&AudioVolumeCommands::OnCmdSetMute, "smute", "set mute (use 'smute <0/1>'");
+    RegisterCommand(&AudioVolumeCommands::OnCmdSetMute, "smute", "set mute (use 'smute <0/1>')");
     PrintCommands();
 }
 

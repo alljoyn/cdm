@@ -9,30 +9,33 @@ HAE Service Framework provides easy methods to implement HAE controllee and cont
 Folder Structure
 ----------------
 <pre>
-cpp
-├── code_template
-│   └── xml
-│       ├── org.alljoyn.SmartSpaces.Environment
-│       ├── org.alljoyn.SmartSpaces.Operation
-│       └── org.alljoyn.SmartSpaces.UserInterfaceSettings
-├── inc
-│   └── alljoyn
-│       └── hae
-│           └── interfaces
-│               ├── environment
-│               ├── input
-│               └── operation
-├── samples
-│   ├── BaseSample
-│   │   ├── Controllee
-│   │   └── Controller
-│   ├── IntegratedController
-│   └── TvControllee
-└── src
-    └── interfaces
-        ├── environment
-        ├── input
-        └── operation
++---code_template
+|   +---interface_template
+|   +---vendor_defined_interface_template
+|   \---xml
+|       +---org.alljoyn.SmartSpaces.Environment
+|       +---org.alljoyn.SmartSpaces.Operation
+|       \---org.alljoyn.SmartSpaces.UserInterfaceSettings
++---inc
+|   \---alljoyn
+|       \---hae
+|           \---interfaces
+|               +---environment
+|               +---input
+|               \---operation
++---samples
+|   +---BaseSample
+|   |   +---Controllee
+|   |   +---Controller
+|   |   \---VendorDefinedInterfaces
+|   +---IntegratedController
+|   +---TvControllee
+|   \---VDIControllee
+\---src
+    \---interfaces
+        +---environment
+        +---input
+        \---operation
 </pre>
 
  * cpp/code_template : Generator of HAE interfaces skeleton codes
@@ -45,7 +48,7 @@ cpp
    - The current version supports only TV-related interfaces. (Channel, AudioVolume, AudioVideoInput, Hid)
    - Intergrated controller is designed to make it easier to add other interfaces.
  * cpp/samples/TVControllee :
-   - Example of hae device composed of Base sample contorllee
+   - Example of hae device composed of Base sample controllee
    - Emulated virtual TV sample. It has 4 interfaces. (Channel, AudioVolume, AudioVideoInput, Hid)
 
 
@@ -58,13 +61,13 @@ for more details on setting up your environment.
 
   * Folder structure
 <pre>
-    root-source-dir/
-        core/
-            alljoyn/
-            ajtcl/
-        services/
-            base/
-            hae/
+root-source-dir
+    +---core
+    |   +---alljoyn
+    |   \---ajtcl
+    \---services
+        +---base
+        \---hae
 </pre>
 
   * Build
@@ -76,15 +79,15 @@ scons BINDINGS=cpp WS=off BT=off ICE=off
   * Output
 <pre>
 hae/
-├── bin
-├── inc
-│   └── alljoyn
-│       └── hae
-│           └── interfaces
-│               ├── environment
-│               ├── input
-│               └── operation
-└── lib
+    +---bin
+    +---inc
+    |   \---alljoyn
+    |       \---hae
+    |           \---interfaces
+    |               +---environment
+    |               +---input
+    |               \---operation
+    \---lib
 </pre>
 
     - path : root-source-dir/services/hae/build/$OS/$TARGET_CPU/debug/dist/hae
@@ -113,7 +116,7 @@ How to add new interface
 
     * create skeleton codes for new interface
 <pre>
-cd <root dir of source>/services/hae/cpp/code_template
+cd root-source-dir/services/hae/cpp/code_template
 python make_interface.py -n InterfaceName -c CategoryName
 (InterfaceName and CategoryName are case sensitive.)
 [example]
@@ -132,7 +135,38 @@ Created: ../src/interfaces/environment/TargetTemperatureIntfControllerImpl.cc
 
     * delete files related new interface
 <pre>
-cd <root dir of source>/services/hae/cpp/code_template
+cd root-source-dir/services/hae/cpp/code_template
 python make_interface.py -n InterfaceName -c Category -d
+</pre>
+
+How to add vendor defined interface
+------------------------------------
+  1. Generate the skeleton codes using make_interface.py script.
+  2. Copy all files to your application folder
+  3. Fill the codes for properties, methods and signals in all files generated.
+
+    * create skeleton codes for vendor defined interface
+<pre>
+cd root-source-dir/services/hae/cpp/code_template
+python make_interface.py -n InterfaceName -v
+(InterfaceName is case sensitive.)
+[example]
+python make_interface.py -n Test -v
+Created: ./vendor_defined/TestInterface.h
+Created: ./vendor_defined/TestIntfControllee.h
+Created: ./vendor_defined/TestIntfControlleeListener.h
+Created: ./vendor_defined/TestIntfController.h
+Created: ./vendor_defined/TestIntfControllerListener.h
+Created: ./vendor_defined/TestInterface.cc
+Created: ./vendor_defined/TestIntfControlleeImpl.h
+Created: ./vendor_defined/TestIntfControlleeImpl.cc
+Created: ./vendor_defined/TestIntfControllerImpl.h
+Created: ./vendor_defined/TestIntfControllerImpl.cc
+</pre>
+
+    * delete files related vendor defined interface
+<pre>
+cd root-source-dir/services/hae/cpp/code_template
+python make_interface.py -n InterfaceName -v -d
 </pre>
 

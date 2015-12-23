@@ -29,7 +29,8 @@ class ChannelListener : public ChannelIntfControlleeListener
     virtual QStatus OnGetChannelId(qcc::String& channelId);
     virtual QStatus OnGetTotalNumberOfChannels(uint16_t& totalNumberOfChannels);
     virtual QStatus OnGetChannelList(const uint16_t& startingRecord, const uint16_t& numRecords,
-                                     ChannelInterface::ChannelInfoRecords& listOfChannelInfoRecords);
+                                     ChannelInterface::ChannelInfoRecords& listOfChannelInfoRecords,
+                                     ErrorCode& errorCode);
 };
 
 #endif /* CHANNELLISTENER_H_ */

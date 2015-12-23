@@ -27,9 +27,10 @@ HidListener::~HidListener()
 {
 }
 
-void HidListener::SupportedEventsPropertyChanged(const qcc::String& objectPath, const HidInterface::SupportedInputEvents& supportedEvents)
+void HidListener::OnResponseGetSupportedEvents(QStatus status, const qcc::String& objectPath, const HidInterface::SupportedInputEvents& supportedEvents, void* context)
 {
     cout << __func__ << endl;
+    cout << "status: " << QCC_StatusText(status) << endl;
     cout << "path: " << objectPath << endl;
     for(HidInterface::SupportedInputEvents::const_iterator citer = supportedEvents.begin();
         citer != supportedEvents.end(); citer++) {
@@ -40,10 +41,9 @@ void HidListener::SupportedEventsPropertyChanged(const qcc::String& objectPath, 
     }
 }
 
-void HidListener::GetSupportedEventsPropertyCallback(QStatus status, const qcc::String& objectPath, const HidInterface::SupportedInputEvents& supportedEvents, void* context)
+void HidListener::OnSupportedEventsChanged(const qcc::String& objectPath, const HidInterface::SupportedInputEvents& supportedEvents)
 {
     cout << __func__ << endl;
-    cout << "status: " << QCC_StatusText(status) << endl;
     cout << "path: " << objectPath << endl;
     for(HidInterface::SupportedInputEvents::const_iterator citer = supportedEvents.begin();
         citer != supportedEvents.end(); citer++) {
