@@ -32,6 +32,8 @@ if 'cpp' in env['bindings'] and not env.has_key('_ALLJOYNCORE_') and os.path.exi
 if 'java' in env['bindings'] and not env.has_key('_ALLJOYN_JAVA_') and os.path.exists('../../core/alljoyn/alljoyn_java/SConscript'):
    env.SConscript('../../core/alljoyn/alljoyn_java/SConscript')
 
+env.Append(CPPFLAGS=['-Wno-unused-variable', '-Wno-unused-parameter'])
+
 hae_env = env.Clone()
 
 for b in hae_env['bindings']:
