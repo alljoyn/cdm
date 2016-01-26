@@ -20,8 +20,20 @@ env['_ALLJOYN_HAE_'] = True
 env['OBJDIR_SERVICES_HAE'] = env['OBJDIR'] + '/services/hae'
 
 # Make config library and header file paths available to the global environment
-env.Append(LIBPATH = '$DISTDIR/hae/lib');
+env.Append(LIBPATH = '$DISTDIR/hae/lib')
 env.Append(CPPPATH = '$DISTDIR/hae/inc');
+
+if 'c' not in env['bindings']:
+    list = env['LIBPATH']
+    if '$DISTDIR/c/lib' in list:
+        list.remove('$DISTDIR/c/lib')
+        env['LIBPATH'] = list
+
+#allow dynamic casts in HAE"
+flags = env['CXXFLAGS']
+if '-fno-rtti' in flags:
+    flags.remove('-fno-rtti')
+    env['CXXFLAGS'] = flags
 
 if not env.has_key('_ALLJOYN_ABOUT_') and os.path.exists('../../core/alljoyn/services/about/SConscript'):
     env.SConscript('../../core/alljoyn/services/about/SConscript')
@@ -38,7 +50,7 @@ hae_env = env.Clone()
 
 for b in hae_env['bindings']:
     if os.path.exists('%s/SConscript' % b):
+# if SDKROOT set will build from core build instead of include library if no library copied into include
+        hae_env.Append(LIBPATH = '$../../core/alljoyn/build/$OS/$CPU/$VARIANT/dist/%s/lib' % b)
         hae_env.VariantDir('$OBJDIR_SERVICES_HAE/%s' % b, b, duplicate = 0)
-
-hae_env.SConscript(['$OBJDIR_SERVICES_HAE/%s/SConscript' % b for b in env['bindings'] if os.path.exists('%s/SConscript' % b) ],
-                  exports = ['hae_env'])
+        hae_env.SConscript(['$OBJDIR_SERVICES_HAE/%s/SConscript' % b for b in env['bindings'] ], exports = ['hae_env'])

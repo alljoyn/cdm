@@ -93,7 +93,7 @@ QStatus AudioVideoInputIntfControlleeImpl::SetSupportedInputSources(const InputS
     }
 
     if(diff) {
-        MsgArg args[supportedInputSources.size()];
+        MsgArg *args = new MsgArg[supportedInputSources.size()];
         MsgArg val;
         InputSources::const_iterator citer;
         int i=0;
@@ -108,6 +108,7 @@ QStatus AudioVideoInputIntfControlleeImpl::SetSupportedInputSources(const InputS
         val.v_array.SetElements("(qqyqs)", i, args);
         m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_SupportedInputSources.c_str(), val, 0, ALLJOYN_FLAG_GLOBAL_BROADCAST);
         m_supportedInputSources = supportedInputSources;
+        delete [] args;
     }
 
     return ER_OK;
@@ -146,7 +147,7 @@ QStatus AudioVideoInputIntfControlleeImpl::OnGetProperty(const String propName, 
                     SetSupportedInputSources(supportedInputSources);
                 }
 
-                MsgArg args[supportedInputSources.size()];
+                MsgArg *args = new MsgArg[supportedInputSources.size()];
                 InputSources::const_iterator citer;
                 int i=0;
 
@@ -158,6 +159,7 @@ QStatus AudioVideoInputIntfControlleeImpl::OnGetProperty(const String propName, 
 
                 val.Set("a(qqyqs)", i, args);
                 val.Stabilize();
+                delete [] args;
             } else {
                 status = ER_BUS_NO_SUCH_PROPERTY;
             }
@@ -168,7 +170,7 @@ QStatus AudioVideoInputIntfControlleeImpl::OnGetProperty(const String propName, 
                 val.v_uint16 = inputSourceId;
             } else if (!(s_prop_SupportedInputSources.compare(propName))) {
                 const InputSources& supportedInputSources = GetSupportedInputSources();
-                MsgArg args[supportedInputSources.size()];
+                MsgArg *args = new MsgArg[supportedInputSources.size()];
                 InputSources::const_iterator citer;
                 int i=0;
 
@@ -180,6 +182,7 @@ QStatus AudioVideoInputIntfControlleeImpl::OnGetProperty(const String propName, 
 
                 val.Set("a(qqyqs)", i, args);
                 val.Stabilize();
+                delete [] args;
             } else {
                 status = ER_BUS_NO_SUCH_PROPERTY;
             }
