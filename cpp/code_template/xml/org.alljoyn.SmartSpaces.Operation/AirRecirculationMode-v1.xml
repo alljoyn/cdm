@@ -7,7 +7,7 @@
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
         <property name="IsRecirculating" type="b" access="readwrite">
-        	<description language="en">If true, air is being recirculated</description>
+            <description language="en">If true, air is being recirculated</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
     </interface>

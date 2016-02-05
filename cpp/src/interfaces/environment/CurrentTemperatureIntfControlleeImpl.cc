@@ -139,7 +139,7 @@ QStatus CurrentTemperatureIntfControlleeImpl::SetCurrentValue(const double value
         MsgArg val;
         val.typeId = ALLJOYN_DOUBLE;
         val.v_double = value;
-        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_CurrentValue.c_str(), val, 0, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_CurrentValue.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
         m_CurrentValue = value;
     }
 

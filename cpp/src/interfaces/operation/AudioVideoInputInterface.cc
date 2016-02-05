@@ -27,7 +27,7 @@ const qcc::String AudioVideoInputInterface::s_xml =
         "<node>"
         "    <interface name='org.alljoyn.SmartSpaces.Operation.AudioVideoInput'>"
         "        <description language='en'>This interface provides capabilities to control and monitor audio video input source of device such as TV or SetTopBox.</description>"
-        "        <annotation name='org.alljoyn.Bus.Secure' value='false'/>"
+        "        <annotation name='org.alljoyn.Bus.Secure' value='true'/>"
         "        <property name='Version' type='q' access='read'>"
         "            <description language='en'>Interface version</description>"
         "            <annotation name='org.freedesktop.DBus.Property.EmitsChangedSignal' value='true'/>"

@@ -228,7 +228,7 @@ const HaeInterfaceType HaeControlleeImpl::RegisterVendorDefinedInterface(const q
     std::map<HaeInterfaceType, qcc::String>::iterator it;
     for (it = InterfaceTypesMap.begin(); it != InterfaceTypesMap.end(); ++it) {
         type = it->first;
-        if (type >= VENDOR_DEFIEND_INTERFACE) {
+        if (type >= VENDOR_DEFINED_INTERFACE) {
             ++vendorCnt;
         }
 
@@ -245,7 +245,7 @@ const HaeInterfaceType HaeControlleeImpl::RegisterVendorDefinedInterface(const q
     }
 
     // Add new interface type
-    HaeInterfaceType newVendorType = VENDOR_DEFIEND_INTERFACE + vendorCnt;
+    HaeInterfaceType newVendorType = VENDOR_DEFINED_INTERFACE + vendorCnt;
 
     InterfaceTypesMap[newVendorType] = interfaceName;
     factory->RegisterVendorDefinedIntfControllee(newVendorType, createIntfControllee);

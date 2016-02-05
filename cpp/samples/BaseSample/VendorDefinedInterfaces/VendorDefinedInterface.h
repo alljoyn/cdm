@@ -43,7 +43,7 @@ class VendorDefinedInterface : public HaeInterface {
      * Get Interface Type
      * @return interface type
      */
-    const HaeInterfaceType GetInterfaceType() const { return VENDOR_DEFIEND_INTERFACE; }
+    const HaeInterfaceType GetInterfaceType() const { return VENDOR_DEFINED_INTERFACE; }
 
     /**
      * Get Introspection Xml

@@ -28,7 +28,7 @@ const qcc::String AudioVolumeInterface::s_xml =
         "<node>"
         "    <interface name='org.alljoyn.SmartSpaces.Operation.AudioVolume'>"
         "        <description language='en'>This interface provides capabilities to control and monitor volume.</description>"
-        "        <annotation name='org.alljoyn.Bus.Secure' value='false'/>"
+        "        <annotation name='org.alljoyn.Bus.Secure' value='true'/>"
         "        <property name='Version' type='q' access='read'>"
         "            <description language='en'>Interface version</description>"
         "            <annotation name='org.freedesktop.DBus.Property.EmitsChangedSignal' value='true'/>"

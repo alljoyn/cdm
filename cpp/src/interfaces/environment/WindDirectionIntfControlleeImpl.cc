@@ -278,7 +278,7 @@ QStatus WindDirectionIntfControlleeImpl::SetHorizontalDirection(const uint16_t v
             MsgArg val;
             val.typeId = ALLJOYN_UINT16;
             val.v_uint16 = value;
-            m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_HorizontalDirection.c_str(), val, 0, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+            m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_HorizontalDirection.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
             m_HorizontalDirection = value;
         }
     }
@@ -292,7 +292,7 @@ QStatus WindDirectionIntfControlleeImpl::SetHorizontalMax(const uint16_t value)
         MsgArg val;
         val.typeId = ALLJOYN_UINT16;
         val.v_byte = value;
-        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_HorizontalMax.c_str(), val, 0, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_HorizontalMax.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
         m_HorizontalMax = value;
     }
 
@@ -305,7 +305,7 @@ QStatus WindDirectionIntfControlleeImpl::SetHorizontalAutoMode(const uint8_t val
         MsgArg val;
         val.typeId = ALLJOYN_BYTE;
         val.v_byte = value;
-        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_HorizontalAutoMode.c_str(), val, 0, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_HorizontalAutoMode.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
         m_HorizontalAutoMode = value;
     }
 
@@ -324,7 +324,7 @@ QStatus WindDirectionIntfControlleeImpl::SetVerticalDirection(const uint16_t val
             MsgArg val;
             val.typeId = ALLJOYN_UINT16;
             val.v_uint16 = value;
-            m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_VerticalDirection.c_str(), val, 0, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+            m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_VerticalDirection.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
             m_VerticalDirection = value;
         }
     }
@@ -338,7 +338,7 @@ QStatus WindDirectionIntfControlleeImpl::SetVerticalMax(const uint16_t value)
         MsgArg val;
         val.typeId = ALLJOYN_UINT16;
         val.v_byte = value;
-        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_VerticalMax.c_str(), val, 0, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_VerticalMax.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
         m_VerticalMax = value;
     }
 
@@ -351,7 +351,7 @@ QStatus WindDirectionIntfControlleeImpl::SetVerticalAutoMode(const uint8_t value
         MsgArg val;
         val.typeId = ALLJOYN_BYTE;
         val.v_byte = value;
-        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_VerticalAutoMode.c_str(), val, 0, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_VerticalAutoMode.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
         m_VerticalAutoMode = value;
     }
 

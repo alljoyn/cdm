@@ -39,12 +39,12 @@ class ChannelIntfControllerImpl : public InterfaceController, public ChannelIntf
     static HaeInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, HaeProxyBusObject& haeProxyObject);
 
     /**
-     * Constructor of ChannelIntfControlleeImpl
+     * Constructor of ChannelIntfControllerImpl
      */
     ChannelIntfControllerImpl(BusAttachment& busAttachment, ChannelIntfControllerListener& listener, HaeProxyBusObject& haeProxyObject);
 
     /**
-     * Destructor of ChannelIntfControlleeImpl
+     * Destructor of ChannelIntfControllerImpl
      */
     virtual ~ChannelIntfControllerImpl();
 

@@ -143,7 +143,7 @@ QStatus ResourceSavingIntfControlleeImpl::SetResourceSavingMode(const bool mode)
         MsgArg val;
         val.typeId = ALLJOYN_BOOLEAN;
         val.v_bool = mode;
-        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_ResourceSavingMode.c_str(), val, 0, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_ResourceSavingMode.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
         m_ResourceSavingMode = mode;
     }
 

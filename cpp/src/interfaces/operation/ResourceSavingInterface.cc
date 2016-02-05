@@ -27,7 +27,7 @@ const qcc::String ResourceSavingInterface::s_xml =
         "<node>"
         "   <interface name='org.alljoyn.SmartSpaces.Operation.ResourceSaving'>"
         "        <description language='en'>Interface that exposes the resource saving mode.  Depending on the device this resource could be electricity, water, natural gas, etc. </description>"
-        "        <annotation name='org.alljoyn.Bus.Secure' value='false'/>"
+        "        <annotation name='org.alljoyn.Bus.Secure' value='true'/>"
         "        <property name='Version' type='q' access='read'>"
         "            <description language='en'>The version of this interface</description>"
         "            <annotation name='org.freedesktop.DBus.Property.EmitsChangedSignal' value='true'/>"

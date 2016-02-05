@@ -51,7 +51,7 @@ class ChannelIntfControllerListener : public InterfaceControllerListener {
      * @param[in] channelId channel id
      * @param[in] context the context that is passed from application
      */
-    virtual void OnResponseGetChannelId(QStatus status, const qcc::String& objectPath, const qcc::String channelId, void* context) {}
+    virtual void OnResponseGetChannelId(QStatus status, const qcc::String& objectPath, const qcc::String& channelId, void* context) {}
 
     /**
      * Callback handler for getting TotalNumberOfChannels property
@@ -79,7 +79,7 @@ class ChannelIntfControllerListener : public InterfaceControllerListener {
      * @param[in] objectPath the object path
      * @param[in] channelId channel id
      */
-    virtual void OnChannelIdChanged(const qcc::String& objectPath, const qcc::String channelId) {}
+    virtual void OnChannelIdChanged(const qcc::String& objectPath, const qcc::String& channelId) {}
 
     /**
      * Handler for TotalNumberOfChannels property changed

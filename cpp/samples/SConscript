@@ -27,7 +27,9 @@ if local_env['BR'] == 'on':
 sample_dirs = [
     'IntegratedController',
     'TvControllee',
-    'VDIControllee'
+    'VDIControllee',
+    'ACControllee',
+    'RobotCleanerControllee'
     ]
 
 exports = { 'env': local_env }

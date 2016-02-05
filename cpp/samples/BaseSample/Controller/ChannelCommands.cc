@@ -34,7 +34,7 @@ void ChannelListener::OnResponseSetChannelId(QStatus status, const qcc::String& 
     cout << "path: " << objectPath << endl;
 }
 
-void ChannelListener::OnResponseGetChannelId(QStatus status, const qcc::String& objectPath, const qcc::String channelId, void* context)
+void ChannelListener::OnResponseGetChannelId(QStatus status, const qcc::String& objectPath, const qcc::String& channelId, void* context)
 {
     cout << __func__ << endl;
     cout << "status: " << QCC_StatusText(status) << endl;
@@ -70,7 +70,7 @@ void ChannelListener::OnResponseGetChannelList(QStatus status, const qcc::String
     }
 }
 
-void ChannelListener::OnChannelIdChanged(const qcc::String& objectPath, const qcc::String channelId)
+void ChannelListener::OnChannelIdChanged(const qcc::String& objectPath, const qcc::String& channelId)
 {
     cout << __func__ << endl;
     cout << "path: " << objectPath << endl;

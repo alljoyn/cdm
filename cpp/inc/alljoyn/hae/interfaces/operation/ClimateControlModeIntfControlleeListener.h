@@ -17,8 +17,7 @@
 #ifndef CLIMATECONTROLMODEINTFCONTROLLEELISTENER_H_
 #define CLIMATECONTROLMODEINTFCONTROLLEELISTENER_H_
 
-#include <map>
-#include <utility>
+#include <vector>
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>

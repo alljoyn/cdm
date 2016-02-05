@@ -41,7 +41,7 @@ class {interface_name}IntfController : public {interface_name}Interface {
 
     /**
      * TODO: define functions to request the set/get properties
-     * SetProperty function of read-only property must not be defined in the controller side.
+     * GetProperty function of read-only property must not be defined in the controller side.
      */
 
     /*

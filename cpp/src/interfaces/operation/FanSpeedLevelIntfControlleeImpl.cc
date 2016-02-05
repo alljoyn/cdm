@@ -193,7 +193,7 @@ QStatus FanSpeedLevelIntfControlleeImpl::SetFanSpeedLevel(const uint8_t value)
         MsgArg val;
         val.typeId = ALLJOYN_BYTE;
         val.v_byte = value;
-        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_FanSpeedLevel.c_str(), val, 0, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_FanSpeedLevel.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
     }
 
     return status;
@@ -205,10 +205,6 @@ QStatus FanSpeedLevelIntfControlleeImpl::SetMaxFanSpeedLevel(const uint8_t value
 
     if (m_MaxFanSpeedLevel != value) {
         m_MaxFanSpeedLevel = value;
-//        MsgArg val;
-//        val.typeId = ALLJOYN_BYTE;
-//        val.v_byte = value;
-//        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_MaxFanSpeedLevel.c_str(), val, 0, ALLJOYN_FLAG_GLOBAL_BROADCAST);
     }
 
     return status;
@@ -223,7 +219,7 @@ QStatus FanSpeedLevelIntfControlleeImpl::SetAutoMode(const uint8_t value)
         MsgArg val;
         val.typeId = ALLJOYN_BYTE;
         val.v_byte = value;
-        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_AutoMode.c_str(), val, 0, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_AutoMode.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
     }
 
     return status;

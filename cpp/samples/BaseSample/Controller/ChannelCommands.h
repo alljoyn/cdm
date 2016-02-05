@@ -31,11 +31,11 @@ class ChannelListener : public ChannelIntfControllerListener {
     ChannelListener();
     virtual ~ChannelListener();
     virtual void OnResponseSetChannelId(QStatus status, const qcc::String& objectPath, void* context);
-    virtual void OnResponseGetChannelId(QStatus status, const qcc::String& objectPath, const qcc::String channelId, void* context);
+    virtual void OnResponseGetChannelId(QStatus status, const qcc::String& objectPath, const qcc::String& channelId, void* context);
     virtual void OnResponseGetTotalNumberOfChannels(QStatus status, const qcc::String& objectPath, const uint16_t totalNumberOfChannels, void* context);
     virtual void OnResponseGetChannelList(QStatus status, const qcc::String& objectPath, const ChannelInterface::ChannelInfoRecords& listOfChannelInfoRecords,
                                           void* context, const char* errorName, const char* errorMessage);
-    virtual void OnChannelIdChanged(const qcc::String& objectPath, const qcc::String channelId);
+    virtual void OnChannelIdChanged(const qcc::String& objectPath, const qcc::String& channelId);
     virtual void OnTotalNumberOfChannelsChanged(const qcc::String& objectPath, const uint16_t totalNumberOfChannels);
     virtual void OnChannelListChanged(const qcc::String& objectPath);
 };

@@ -46,8 +46,14 @@ void Commands::PrintCommandList()
 std::string Commands::GetCommandToken(std::string& cmd, std::string& remain)
 {
     std::string::size_type pos = cmd.find_first_of(' ');
-    std::string token = cmd.substr(0, pos);
-    remain = cmd.substr(pos + 1, cmd.length() - 1);
+    std::string token;
+    if (pos == (std::string::size_type)-1) {
+        token = cmd;
+        remain = "";
+    } else {
+        token = cmd.substr(0, pos);
+        remain = cmd.substr(pos + 1, cmd.length());
+    }
     return token;
 }
 

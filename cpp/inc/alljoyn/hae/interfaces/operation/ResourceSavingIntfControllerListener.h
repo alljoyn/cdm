@@ -17,9 +17,6 @@
 #ifndef RESOURCESAVINGINTFCONTROLLERLISTENER_H_
 #define RESOURCESAVINGINTFCONTROLLERLISTENER_H_
 
-#include <map>
-#include <utility>
-
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/hae/interfaces/InterfaceControllerListener.h>

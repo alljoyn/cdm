@@ -204,7 +204,7 @@ QStatus TargetTemperatureIntfControlleeImpl::SetTargetValue(const double value)
             MsgArg val;
             val.typeId = ALLJOYN_DOUBLE;
             val.v_double = value;
-            m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_TargetValue.c_str(), val, 0, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+            m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_TargetValue.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
             m_TargetValue = value;
         }
     }
@@ -218,7 +218,7 @@ QStatus TargetTemperatureIntfControlleeImpl::SetMinValue(const double value)
         MsgArg val;
         val.typeId = ALLJOYN_DOUBLE;
         val.v_double = value;
-        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_MinValue.c_str(), val, 0, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_MinValue.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
         m_MinValue = value;
     }
 
@@ -231,7 +231,7 @@ QStatus TargetTemperatureIntfControlleeImpl::SetMaxValue(const double value)
         MsgArg val;
         val.typeId = ALLJOYN_DOUBLE;
         val.v_double = value;
-        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_MaxValue.c_str(), val, 0, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_MaxValue.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
         m_MaxValue = value;
     }
 
@@ -244,7 +244,7 @@ QStatus TargetTemperatureIntfControlleeImpl::SetStepValue(const double value)
         MsgArg val;
         val.typeId = ALLJOYN_DOUBLE;
         val.v_double = value;
-        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_StepValue.c_str(), val, 0, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_StepValue.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
         m_StepValue = value;
     }
 

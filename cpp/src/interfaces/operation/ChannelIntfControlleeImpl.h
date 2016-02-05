@@ -94,7 +94,7 @@ class ChannelIntfControlleeImpl : public InterfaceControllee, public ChannelIntf
      * Set channel id
      * @return status
      */
-    virtual QStatus SetChannelId(const qcc::String channelId);
+    virtual QStatus SetChannelId(const qcc::String& channelId);
 
     /**
      * Get channel id

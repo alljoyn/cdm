@@ -55,14 +55,14 @@ QStatus ChannelIntfControlleeImpl::Init()
     return status;
 }
 
-QStatus ChannelIntfControlleeImpl::SetChannelId(const qcc::String channelId)
+QStatus ChannelIntfControlleeImpl::SetChannelId(const qcc::String& channelId)
 {
     if (m_channelId != channelId) {
         MsgArg val;
         val.typeId = ALLJOYN_STRING;
         val.v_string.str = channelId.c_str();
         val.v_string.len = channelId.size();
-        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_ChannelId.c_str(), val, 0, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_ChannelId.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
         m_channelId = channelId;
     }
     return ER_OK;
@@ -74,7 +74,7 @@ QStatus ChannelIntfControlleeImpl::SetTotalNumberOfChannels(const uint16_t total
         MsgArg val;
         val.typeId = ALLJOYN_UINT16;
         val.v_uint16 = totalNumberOfChannels;
-        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_TotalNumberOfChannels.c_str(), val, 0, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_TotalNumberOfChannels.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
         m_totalNumberOfChannels = totalNumberOfChannels;
     }
     return ER_OK;
@@ -201,25 +201,24 @@ void ChannelIntfControlleeImpl::OnGetChannelList(const InterfaceDescription::Mem
         if (status == ER_OK) {
             int numReturned = listOfChannelInfoRecords.size();
             ChannelInterface::ChannelInfoRecords::const_iterator citer;
-            MsgArg *args = new MsgArg[numReturned];
+            MsgArg args[numReturned];
             MsgArg retArgs[1];
-            int i=0;
+            int i = 0;
 
-            for(citer = listOfChannelInfoRecords.begin(); citer != listOfChannelInfoRecords.end(); citer++, i++) {
+            for (citer = listOfChannelInfoRecords.begin(); citer != listOfChannelInfoRecords.end(); citer++, i++) {
                 status = args[i].Set("(sss)", citer->channelId.c_str(), citer->channelNumber.c_str(), citer->channelName.c_str());
                 args[i].Stabilize();
             }
             status = retArgs[0].Set("a(sss)", i, args);
 
             status = m_busObject.ReplyMethodCall(msg, retArgs, ArraySize(retArgs));
-            delete [] args;
         } else {
             if (errorCode == NOT_ERROR) {
                 QCC_LogError(status, ("%s: status is not ER_OK, but errorCode was not set.", __func__));
                 m_busObject.ReplyMethodCall(msg, status);
             } else {
                 m_busObject.ReplyMethodCall(msg, HaeInterface::GetInterfaceErrorName(errorCode).c_str(),
-                        HaeInterface::GetInterfaceErrorMessage(errorCode).c_str());
+                                            HaeInterface::GetInterfaceErrorMessage(errorCode).c_str());
             }
         }
     } else {

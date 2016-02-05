@@ -147,7 +147,7 @@ QStatus VendorDefinedIntfControlleeImpl::SetTestProperty(int property)
         MsgArg val;
         val.typeId = ALLJOYN_INT32;
         val.v_int32 = property;
-        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_TestProperty.c_str(), val, 0, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_TestProperty.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
         m_testProperty = property;
     }
     return ER_OK;

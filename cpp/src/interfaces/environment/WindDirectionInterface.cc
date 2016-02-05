@@ -27,7 +27,7 @@ const qcc::String WindDirectionInterface::s_xml =
         "<node>"
         "    <interface name='org.alljoyn.SmartSpaces.Environment.WindDirection'>"
         "        <description language='en'>This interface is for controlling wind direction of a device.</description>"
-        "        <annotation name='org.alljoyn.Bus.Secure' value='false'/>"
+        "        <annotation name='org.alljoyn.Bus.Secure' value='true'/>"
         "        <property name='Version' type='q' access='read'>"
         "            <description language='en'>The interface version</description>"
         "            <annotation name='org.freedesktop.DBus.Property.EmitsChangedSignal' value='true'/>"

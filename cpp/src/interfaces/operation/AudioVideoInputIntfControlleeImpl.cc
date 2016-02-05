@@ -57,7 +57,7 @@ QStatus AudioVideoInputIntfControlleeImpl::SetInputSourceId(const uint16_t input
         MsgArg val;
         val.typeId = ALLJOYN_UINT16;
         val.v_uint16 = inputSourceId;
-        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_InputSourceId.c_str(), val, 0, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_InputSourceId.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
         m_inputSourceId = inputSourceId;
     }
     return ER_OK;
@@ -93,7 +93,7 @@ QStatus AudioVideoInputIntfControlleeImpl::SetSupportedInputSources(const InputS
     }
 
     if(diff) {
-        MsgArg *args = new MsgArg[supportedInputSources.size()];
+        MsgArg args[supportedInputSources.size()];
         MsgArg val;
         InputSources::const_iterator citer;
         int i=0;
@@ -106,9 +106,8 @@ QStatus AudioVideoInputIntfControlleeImpl::SetSupportedInputSources(const InputS
 
         val.typeId = ALLJOYN_ARRAY;
         val.v_array.SetElements("(qqyqs)", i, args);
-        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_SupportedInputSources.c_str(), val, 0, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_SupportedInputSources.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
         m_supportedInputSources = supportedInputSources;
-        delete [] args;
     }
 
     return ER_OK;
@@ -133,9 +132,8 @@ QStatus AudioVideoInputIntfControlleeImpl::OnGetProperty(const String propName, 
                 } else {
                     SetInputSourceId(inputSourceId); // update the value in AudioVideoInputIntfControllee.
                 }
-
                 val.typeId = ALLJOYN_UINT16;
-                val.v_byte = inputSourceId;
+                val.v_uint16 = inputSourceId;
             } else if (!(s_prop_SupportedInputSources.compare(propName))) {
                 InputSources supportedInputSources;
                 status = m_interfaceListener.OnGetSupportedInputSources(supportedInputSources);
@@ -147,7 +145,7 @@ QStatus AudioVideoInputIntfControlleeImpl::OnGetProperty(const String propName, 
                     SetSupportedInputSources(supportedInputSources);
                 }
 
-                MsgArg *args = new MsgArg[supportedInputSources.size()];
+                MsgArg args[supportedInputSources.size()];
                 InputSources::const_iterator citer;
                 int i=0;
 
@@ -159,7 +157,6 @@ QStatus AudioVideoInputIntfControlleeImpl::OnGetProperty(const String propName, 
 
                 val.Set("a(qqyqs)", i, args);
                 val.Stabilize();
-                delete [] args;
             } else {
                 status = ER_BUS_NO_SUCH_PROPERTY;
             }
@@ -170,7 +167,7 @@ QStatus AudioVideoInputIntfControlleeImpl::OnGetProperty(const String propName, 
                 val.v_uint16 = inputSourceId;
             } else if (!(s_prop_SupportedInputSources.compare(propName))) {
                 const InputSources& supportedInputSources = GetSupportedInputSources();
-                MsgArg *args = new MsgArg[supportedInputSources.size()];
+                MsgArg args[supportedInputSources.size()];
                 InputSources::const_iterator citer;
                 int i=0;
 
@@ -182,7 +179,6 @@ QStatus AudioVideoInputIntfControlleeImpl::OnGetProperty(const String propName, 
 
                 val.Set("a(qqyqs)", i, args);
                 val.Stabilize();
-                delete [] args;
             } else {
                 status = ER_BUS_NO_SUCH_PROPERTY;
             }

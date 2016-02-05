@@ -1,12 +1,7 @@
 <node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
-    <interface name="org.alljoyn.SmartSpaces.Operation.OvenCycle">
-        <description language="en">This interface provides a capability to control and moniotor the operational cycle and its phase of the Oven</description>
+    <interface name="org.alljoyn.SmartSpaces.Operation.OvenCyclePhase">
+        <description language="en">This interface provides a capability to monitor the phase of the operational cycle of the Oven</description>
         <annotation name="org.alljoyn.Bus.Secure" value="true"/>
-        <struct name="OperationalCycleDescriptor">
-            <field name="cycle" type="q"/>
-            <field name="name" type="s"/>
-            <field name="description" type="s"/>
-        </struct>
         <struct name="CyclePhaseDescriptor">
             <field name="phase" type="y"/>
             <field name="name" type="s"/>
@@ -14,14 +9,6 @@
         </struct>
         <property name="Version" type="q" access="read">
             <description language="en">Interface version</description>
-            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
-        </property>
-        <property name="OperationalCycle" type="q" access="readwrite">
-            <description language="en">Current operational cycle</description>
-            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
-        </property>
-        <property name="SupportedOperationalCycles" type="aq" access="read">
-            <description language="en">List of supported operational cycles</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
         <property name="CyclePhase" type="y" access="read">
@@ -32,16 +19,7 @@
             <description language="en">List of supported cycle phases</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
-        <method name="GetOperationalCyclesDescription">
-            <description language="en">Get operational cycles description</description>
-            <arg name="languageTag" type="s" direction="in">
-                <description language="en">preferred language to be used in selecting the output strings</description>
-            </arg>
-            <arg name="cyclesDescription" type="[OperationalCycleDescriptor]" direction="out">
-                <description language="en">Operational cycles description</description>
-            </arg>
-        </method>
-        <method name="GetCyclePhasesDescription">
+        <method name="GetVendorPhasesDescription">
             <description language="en">Get cycle phases description</description>
             <arg name="languageTag" type="s" direction="in">
                 <description language="en">preferred language to be used in selecting the output strings</description>

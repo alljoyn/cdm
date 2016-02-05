@@ -27,7 +27,7 @@ const qcc::String TargetTemperatureInterface::s_xml =
         "<node>"
         "    <interface name='org.alljoyn.SmartSpaces.Environment.TargetTemperature'>"
         "        <description language='en'>This interface is for setting target temperature of the HAE devices such as air conditioner, refrigerator, oven, etc.</description>"
-        "        <annotation name='org.alljoyn.Bus.Secure' value='false'/>"
+        "        <annotation name='org.alljoyn.Bus.Secure' value='true'/>"
         "        <property name='Version' type='q' access='read'>"
         "            <description language='en'>The interface version</description>"
         "            <annotation name='org.freedesktop.DBus.Property.EmitsChangedSignal' value='true'/>"

@@ -108,10 +108,10 @@ void AudioVolumeCommands::Init()
     }
 
     RegisterCommand(&AudioVolumeCommands::OnCmdGetVolume, "gv", "get volume");
-    RegisterCommand(&AudioVolumeCommands::OnCmdSetVolume, "sv", "set volume (use 'sv <volume>')");
+    RegisterCommand(&AudioVolumeCommands::OnCmdSetVolume, "sv", "set volume (use 'sv <volume>'");
     RegisterCommand(&AudioVolumeCommands::OnCmdGetMaxVolume, "gmv", "get max volume");
     RegisterCommand(&AudioVolumeCommands::OnCmdGetMute, "gmute", "get mute");
-    RegisterCommand(&AudioVolumeCommands::OnCmdSetMute, "smute", "set mute (use 'smute <0/1>')");
+    RegisterCommand(&AudioVolumeCommands::OnCmdSetMute, "smute", "set mute (use 'smute <0/1>'");
     PrintCommands();
 }
 

@@ -34,9 +34,12 @@
 #include "interfaces/operation/ClimateControlModeIntfControlleeImpl.h"
 #include "interfaces/operation/ResourceSavingIntfControlleeImpl.h"
 #include "interfaces/operation/FanSpeedLevelIntfControlleeImpl.h"
+#include "interfaces/operation/BatteryStatusIntfControlleeImpl.h"
 #include "interfaces/environment/CurrentTemperatureIntfControlleeImpl.h"
 #include "interfaces/environment/TargetTemperatureIntfControlleeImpl.h"
 #include "interfaces/environment/WindDirectionIntfControlleeImpl.h"
+#include "interfaces/operation/AirRecirculationModeIntfControlleeImpl.h"
+#include "interfaces/operation/RepeatModeIntfControlleeImpl.h"
 
 // Controller
 #include "interfaces/operation/AudioVolumeIntfControllerImpl.h"
@@ -49,9 +52,12 @@
 #include "interfaces/operation/ClimateControlModeIntfControllerImpl.h"
 #include "interfaces/operation/ResourceSavingIntfControllerImpl.h"
 #include "interfaces/operation/FanSpeedLevelIntfControllerImpl.h"
+#include "interfaces/operation/BatteryStatusIntfControllerImpl.h"
 #include "interfaces/environment/CurrentTemperatureIntfControllerImpl.h"
 #include "interfaces/environment/TargetTemperatureIntfControllerImpl.h"
 #include "interfaces/environment/WindDirectionIntfControllerImpl.h"
+#include "interfaces/operation/AirRecirculationModeIntfControllerImpl.h"
+#include "interfaces/operation/RepeatModeIntfControllerImpl.h"
 
 using namespace std;
 using namespace qcc;
@@ -86,6 +92,9 @@ InterfaceFactory::InterfaceFactory() :
     m_controllerCreators[WIND_DIRECTION_INTERFACE] = static_cast<CreateIntfControllerFptr>(&WindDirectionIntfControllerImpl::CreateInterface);
     m_controllerCreators[RESOURCE_SAVING_INTERFACE] = static_cast<CreateIntfControllerFptr>(&ResourceSavingIntfControllerImpl::CreateInterface);
     m_controllerCreators[CLIMATE_CONTROL_MODE_INTERFACE] = static_cast<CreateIntfControllerFptr>(&ClimateControlModeIntfControllerImpl::CreateInterface);
+    m_controllerCreators[BATTERY_STATUS_INTERFACE] = static_cast<CreateIntfControllerFptr>(&BatteryStatusIntfControllerImpl::CreateInterface);
+    m_controllerCreators[AIR_RECIRCULATION_MODE_INTERFACE] = static_cast<CreateIntfControllerFptr>(&AirRecirculationModeIntfControllerImpl::CreateInterface);
+    m_controllerCreators[REPEAT_MODE_INTERFACE] = static_cast<CreateIntfControllerFptr>(&RepeatModeIntfControllerImpl::CreateInterface);
 
     // Controllee
     m_controlleeCreators[CHANNEL_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&ChannelIntfControlleeImpl::CreateInterface);
@@ -101,6 +110,9 @@ InterfaceFactory::InterfaceFactory() :
     m_controlleeCreators[ON_CONTROL_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&OnControlIntfControlleeImpl::CreateInterface);
     m_controlleeCreators[OFF_CONTROL_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&OffControlIntfControlleeImpl::CreateInterface);
     m_controlleeCreators[ON_OFF_STATUS_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&OnOffStatusIntfControlleeImpl::CreateInterface);
+    m_controlleeCreators[BATTERY_STATUS_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&BatteryStatusIntfControlleeImpl::CreateInterface);
+    m_controlleeCreators[AIR_RECIRCULATION_MODE_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&AirRecirculationModeIntfControlleeImpl::CreateInterface);
+    m_controlleeCreators[REPEAT_MODE_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&RepeatModeIntfControlleeImpl::CreateInterface);
 }
 
 InterfaceFactory::InterfaceFactory(const InterfaceFactory& src)

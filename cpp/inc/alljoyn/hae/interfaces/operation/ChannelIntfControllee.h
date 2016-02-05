@@ -50,7 +50,7 @@ class ChannelIntfControllee : public ChannelInterface {
      * @param[in] channelId channel id
      * @return ER_OK on success
      */
-    virtual QStatus SetChannelId(const qcc::String channelId) = 0;
+    virtual QStatus SetChannelId(const qcc::String& channelId) = 0;
 
     /**
      * Get total number of channels

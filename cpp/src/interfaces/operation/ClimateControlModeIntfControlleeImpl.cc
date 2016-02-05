@@ -212,7 +212,7 @@ QStatus ClimateControlModeIntfControlleeImpl::SetMode(const uint16_t mode)
         MsgArg val;
         val.typeId = ALLJOYN_UINT16;
         val.v_uint16 = mode;
-        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_Mode.c_str(), val, 0, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_Mode.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
         m_Mode = mode;
     }
 
@@ -250,7 +250,7 @@ QStatus ClimateControlModeIntfControlleeImpl::SetSupportedModes(const SupportedM
         if(status != ER_OK)
             QCC_LogError(status, ("%s: could not set Elements.", __func__));
 
-        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_SupportedModes.c_str(), arg, 0, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_SupportedModes.c_str(), arg, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
         m_SupportedModes = modes;
     }
 
@@ -263,7 +263,7 @@ QStatus ClimateControlModeIntfControlleeImpl::SetOperatingState(const uint16_t s
         MsgArg val;
         val.typeId = ALLJOYN_UINT16;
         val.v_uint16 = state;
-        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_OperatingState.c_str(), val, 0, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_OperatingState.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
         m_OperatingState = state;
     }
 

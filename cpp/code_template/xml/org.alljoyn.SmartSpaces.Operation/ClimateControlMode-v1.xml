@@ -14,7 +14,7 @@
             <description language="en">Array of supported modes</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
-        <property name="Status" type="q" access="read">
+        <property name="OperationalState" type="q" access="read">
             <description language="en">Current status of device.</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>

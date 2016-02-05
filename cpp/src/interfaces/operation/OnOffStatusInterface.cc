@@ -27,7 +27,7 @@ const qcc::String OnOffStatusInterface::s_xml =
 "<node xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='http://www.allseenalliance.org/schemas/introspect.xsd'>"
 "    <interface name='org.alljoyn.SmartSpaces.Operation.OnOffStatus'>"
 "        <description language='en'>This interface provides a capability to monitor the on/off status of device.</description>"
-"        <annotation name='org.alljoyn.Bus.Secure' value='false'/>"
+"        <annotation name='org.alljoyn.Bus.Secure' value='true'/>"
 "        <property name='Version' type='q' access='read'>"
 "            <description language='en'>Interface version</description>"
 "            <annotation name='org.freedesktop.DBus.Property.EmitsChangedSignal' value='true'/>"

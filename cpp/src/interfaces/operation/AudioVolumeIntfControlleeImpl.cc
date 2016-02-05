@@ -59,7 +59,7 @@ QStatus AudioVolumeIntfControlleeImpl::SetVolume(const uint8_t volume)
         MsgArg val;
         val.typeId = ALLJOYN_BYTE;
         val.v_byte = volume;
-        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_Volume.c_str(), val, 0, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_Volume.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
         m_volume = volume;
     }
     return ER_OK;
@@ -71,7 +71,7 @@ QStatus AudioVolumeIntfControlleeImpl::SetMute(const bool mute)
         MsgArg val;
         val.typeId = ALLJOYN_BOOLEAN;
         val.v_bool = mute;
-        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_Mute.c_str(), val, 0, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_Mute.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
         m_mute = mute;
     }
     return ER_OK;
@@ -83,7 +83,7 @@ QStatus AudioVolumeIntfControlleeImpl::SetMaxVolume(const uint8_t maxVolume)
         MsgArg val;
         val.typeId = ALLJOYN_BYTE;
         val.v_byte = maxVolume;
-        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_MaxVolume.c_str(), val, 0, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_MaxVolume.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
         m_maxVolume = maxVolume;
     }
     return ER_OK;
@@ -122,7 +122,7 @@ QStatus AudioVolumeIntfControlleeImpl::OnGetProperty(const String propName, MsgA
                     SetMute(mute); // update the value in AudioVolumeIntfControllee.
                 }
 
-                val.typeId = ALLJOYN_BYTE;
+                val.typeId = ALLJOYN_BOOLEAN;
                 val.v_bool = mute;
             } else if (!(s_prop_MaxVolume.compare(propName))) {
                 uint8_t maxVolume;

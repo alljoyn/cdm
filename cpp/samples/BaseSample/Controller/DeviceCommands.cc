@@ -15,7 +15,10 @@
 #include "TargetTemperatureCommands.h"
 #include "ClimateControlModeCommands.h"
 #include "WindDirectionCommands.h"
+#include "AirRecirculationModeCommands.h"
 #include "VendorDefinedCommands.h"
+#include "BatteryStatusCommands.h"
+#include "RepeatModeCommands.h"
 
 DeviceCommands::DeviceCommands(ControllerSample* sample, DeviceInfoPtr& info)
 : ControllerCommands(sample)
@@ -107,14 +110,20 @@ Commands* DeviceCommands::CreateInterfaceCommands(Commands* commands, const char
         intfCommands = new ResourceSavingCommands(sample, info, objectPath);
     } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Operation.FanSpeedLevel", strlen(intfName))) {
         intfCommands = new FanSpeedLevelCommands(sample, info, objectPath);
+    } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Operation.BatteryStatus", strlen(intfName))) {
+        intfCommands = new BatteryStatusCommands(sample, info, objectPath);
     } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Environment.CurrentTemperature", strlen(intfName))) {
         intfCommands = new CurrentTemperatureCommands(sample, info, objectPath);
     } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Environment.TargetTemperature", strlen(intfName))) {
         intfCommands = new TargetTemperatureCommands(sample, info, objectPath);
-    }  else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Operation.ClimateControlMode", strlen(intfName))) {
+    } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Operation.ClimateControlMode", strlen(intfName))) {
         intfCommands = new ClimateControlModeCommands(sample, info, objectPath);
-    }  else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Environment.WindDirection", strlen(intfName))) {
+    } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Environment.WindDirection", strlen(intfName))) {
         intfCommands = new WindDirectionCommands(sample, info, objectPath);
+    } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Operation.AirRecirculationMode", strlen(intfName))) {
+        intfCommands = new AirRecirculationModeCommands(sample, info, objectPath);
+    } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Operation.RepeatMode", strlen(intfName))) {
+        intfCommands = new RepeatModeCommands(sample, info, objectPath);
     } else if (!strncmp(intfName, "com.foo.bar.test", strlen(intfName))) {
         intfCommands = new VendorDefinedCommands(sample, info, objectPath);
     }

@@ -60,7 +60,7 @@ QStatus OnOffStatusIntfControlleeImpl::SetOnOff(const bool value)
         MsgArg val;
         val.typeId = ALLJOYN_BOOLEAN;
         val.v_bool = value;
-        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_OnOff.c_str(), val, 0, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_OnOff.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
     }
 
     return status;
