@@ -27,6 +27,7 @@
 #include "interfaces/operation/ChannelIntfControlleeImpl.h"
 #include "interfaces/operation/AudioVideoInputIntfControlleeImpl.h"
 #include "interfaces/operation/AudioVolumeIntfControlleeImpl.h"
+#include "interfaces/operation/ClosedStatusIntfControlleeImpl.h"
 #include "interfaces/input/HidIntfControlleeImpl.h"
 #include "interfaces/operation/OnControlIntfControlleeImpl.h"
 #include "interfaces/operation/OffControlIntfControlleeImpl.h"
@@ -34,6 +35,7 @@
 #include "interfaces/operation/ClimateControlModeIntfControlleeImpl.h"
 #include "interfaces/operation/ResourceSavingIntfControlleeImpl.h"
 #include "interfaces/operation/FanSpeedLevelIntfControlleeImpl.h"
+#include "interfaces/operation/ClosedStatusIntfControlleeImpl.h"
 #include "interfaces/environment/CurrentTemperatureIntfControlleeImpl.h"
 #include "interfaces/environment/TargetTemperatureIntfControlleeImpl.h"
 #include "interfaces/environment/WindDirectionIntfControlleeImpl.h"
@@ -42,6 +44,7 @@
 #include "interfaces/operation/AudioVolumeIntfControllerImpl.h"
 #include "interfaces/operation/ChannelIntfControllerImpl.h"
 #include "interfaces/operation/AudioVideoInputIntfControllerImpl.h"
+#include "interfaces/operation/ClosedStatusIntfControllerImpl.h"
 #include "interfaces/input/HidIntfControllerImpl.h"
 #include "interfaces/operation/OnControlIntfControllerImpl.h"
 #include "interfaces/operation/OffControlIntfControllerImpl.h"
@@ -49,6 +52,7 @@
 #include "interfaces/operation/ClimateControlModeIntfControllerImpl.h"
 #include "interfaces/operation/ResourceSavingIntfControllerImpl.h"
 #include "interfaces/operation/FanSpeedLevelIntfControllerImpl.h"
+#include "interfaces/operation/ClosedStatusIntfControllerImpl.h"
 #include "interfaces/environment/CurrentTemperatureIntfControllerImpl.h"
 #include "interfaces/environment/TargetTemperatureIntfControllerImpl.h"
 #include "interfaces/environment/WindDirectionIntfControllerImpl.h"
@@ -86,6 +90,7 @@ InterfaceFactory::InterfaceFactory() :
     m_controllerCreators[WIND_DIRECTION_INTERFACE] = static_cast<CreateIntfControllerFptr>(&WindDirectionIntfControllerImpl::CreateInterface);
     m_controllerCreators[RESOURCE_SAVING_INTERFACE] = static_cast<CreateIntfControllerFptr>(&ResourceSavingIntfControllerImpl::CreateInterface);
     m_controllerCreators[CLIMATE_CONTROL_MODE_INTERFACE] = static_cast<CreateIntfControllerFptr>(&ClimateControlModeIntfControllerImpl::CreateInterface);
+    m_controllerCreators[CLOSED_STATUS_INTERFACE] = static_cast<CreateIntfControllerFptr>(&ClosedStatusIntfControllerImpl::CreateInterface);
 
     // Controllee
     m_controlleeCreators[CHANNEL_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&ChannelIntfControlleeImpl::CreateInterface);
@@ -101,6 +106,7 @@ InterfaceFactory::InterfaceFactory() :
     m_controlleeCreators[ON_CONTROL_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&OnControlIntfControlleeImpl::CreateInterface);
     m_controlleeCreators[OFF_CONTROL_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&OffControlIntfControlleeImpl::CreateInterface);
     m_controlleeCreators[ON_OFF_STATUS_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&OnOffStatusIntfControlleeImpl::CreateInterface);
+    m_controlleeCreators[CLOSED_STATUS_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&ClosedStatusIntfControlleeImpl::CreateInterface);
 }
 
 InterfaceFactory::InterfaceFactory(const InterfaceFactory& src)

@@ -9,8 +9,10 @@
 #include "AudioVolumeListener.h"
 #include "ChannelListener.h"
 #include "AudioVideoInputListener.h"
+#include "ClosedStatusListener.h"
 #include "HidListener.h"
 #include <alljoyn/hae/interfaces/operation/AudioVolumeIntfControllee.h>
+#include <alljoyn/hae/interfaces/operation/ClosedStatusIntfControllee.h>
 #include <alljoyn/hae/interfaces/operation/ChannelIntfControllee.h>
 #include <alljoyn/hae/interfaces/operation/AudioVideoInputIntfControllee.h>
 #include <alljoyn/hae/interfaces/input/HidIntfControllee.h>
@@ -25,10 +27,12 @@ class TvControllee : public ControlleeSample
     ChannelListener* m_channelListener;
     AudioVideoInputListener* m_avInputListener;
     HidListener *m_hidListener;
+    ClosedStatusListener *m_closedStatusListener;
     AudioVolumeIntfControllee* m_audioVolumeIntfControllee;
     ChannelIntfControllee* m_channelIntfControllee;
     AudioVideoInputIntfControllee* m_avInputIntfControllee;
     HidIntfControllee* m_hidIntfControllee;
+    ClosedStatusIntfControllee* m_closedStatusIntfControllee;
 
   public:
     TvControllee(BusAttachment* bus, HaeAboutData* aboutData);
@@ -40,12 +44,13 @@ class TvControllee : public ControlleeSample
 TvControllee::TvControllee(BusAttachment* bus, HaeAboutData* aboutData)
   : ControlleeSample(bus, aboutData),
     m_audioVolumeListener(NULL), m_channelListener(NULL), m_avInputListener(NULL), m_hidListener(NULL),
-    m_audioVolumeIntfControllee(NULL), m_channelIntfControllee(NULL), m_avInputIntfControllee(NULL), m_hidIntfControllee(NULL)
+    m_audioVolumeIntfControllee(NULL), m_channelIntfControllee(NULL), m_avInputIntfControllee(NULL), m_hidIntfControllee(NULL), m_closedStatusIntfControllee(NULL)
 {
     m_audioVolumeListener = new AudioVolumeListener();
     m_channelListener = new ChannelListener();
     m_avInputListener = new AudioVideoInputListener();
     m_hidListener = new HidListener();
+    m_closedStatusListener = new ClosedStatusListener();
 }
 
 TvControllee::~TvControllee()
@@ -61,6 +66,9 @@ TvControllee::~TvControllee()
     }
     if (m_hidListener) {
         delete m_hidListener;
+    }
+    if(m_closedStatusListener){
+    	delete m_closedStatusListener;
     }
 }
 
@@ -80,6 +88,9 @@ void TvControllee::CreateInterfaces()
     m_avInputIntfControllee = static_cast<AudioVideoInputIntfControllee*>(intf);
     intf = haeControllee->CreateInterface(HID_INTERFACE, "/Hae/Tv", *m_hidListener);
     m_hidIntfControllee = static_cast<HidIntfControllee*>(intf);
+    intf = haeControllee->CreateInterface(CLOSED_STATUS_INTERFACE, "/Hae/Tv", *m_closedStatusListener);
+    m_closedStatusIntfControllee = static_cast<ClosedStatusIntfControllee*>(intf);
+
 }
 
 void TvControllee::SetInitialProperty()
