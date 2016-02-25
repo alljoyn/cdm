@@ -27,6 +27,7 @@
 #include "interfaces/operation/ChannelIntfControlleeImpl.h"
 #include "interfaces/operation/AudioVideoInputIntfControlleeImpl.h"
 #include "interfaces/operation/AudioVolumeIntfControlleeImpl.h"
+#include "interfaces/operation/ClosedStatusIntfControlleeImpl.h"
 #include "interfaces/input/HidIntfControlleeImpl.h"
 #include "interfaces/operation/OnControlIntfControlleeImpl.h"
 #include "interfaces/operation/OffControlIntfControlleeImpl.h"
@@ -45,6 +46,7 @@
 #include "interfaces/operation/AudioVolumeIntfControllerImpl.h"
 #include "interfaces/operation/ChannelIntfControllerImpl.h"
 #include "interfaces/operation/AudioVideoInputIntfControllerImpl.h"
+#include "interfaces/operation/ClosedStatusIntfControllerImpl.h"
 #include "interfaces/input/HidIntfControllerImpl.h"
 #include "interfaces/operation/OnControlIntfControllerImpl.h"
 #include "interfaces/operation/OffControlIntfControllerImpl.h"
@@ -95,6 +97,7 @@ InterfaceFactory::InterfaceFactory() :
     m_controllerCreators[BATTERY_STATUS_INTERFACE] = static_cast<CreateIntfControllerFptr>(&BatteryStatusIntfControllerImpl::CreateInterface);
     m_controllerCreators[AIR_RECIRCULATION_MODE_INTERFACE] = static_cast<CreateIntfControllerFptr>(&AirRecirculationModeIntfControllerImpl::CreateInterface);
     m_controllerCreators[REPEAT_MODE_INTERFACE] = static_cast<CreateIntfControllerFptr>(&RepeatModeIntfControllerImpl::CreateInterface);
+    m_controllerCreators[CLOSED_STATUS_INTERFACE] = static_cast<CreateIntfControllerFptr>(&ClosedStatusIntfControllerImpl::CreateInterface);
 
     // Controllee
     m_controlleeCreators[CHANNEL_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&ChannelIntfControlleeImpl::CreateInterface);
@@ -113,6 +116,7 @@ InterfaceFactory::InterfaceFactory() :
     m_controlleeCreators[BATTERY_STATUS_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&BatteryStatusIntfControlleeImpl::CreateInterface);
     m_controlleeCreators[AIR_RECIRCULATION_MODE_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&AirRecirculationModeIntfControlleeImpl::CreateInterface);
     m_controlleeCreators[REPEAT_MODE_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&RepeatModeIntfControlleeImpl::CreateInterface);
+    m_controlleeCreators[CLOSED_STATUS_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&ClosedStatusIntfControlleeImpl::CreateInterface);
 }
 
 InterfaceFactory::InterfaceFactory(const InterfaceFactory& src)

@@ -5,6 +5,7 @@
 #include "AudioVolumeCommands.h"
 #include "ChannelCommands.h"
 #include "AudioVideoInputCommands.h"
+#include "ClosedStatusCommands.h"
 #include "HidCommands.h"
 #include "OnControlCommands.h"
 #include "OffControlCommands.h"
@@ -126,7 +127,8 @@ Commands* DeviceCommands::CreateInterfaceCommands(Commands* commands, const char
         intfCommands = new RepeatModeCommands(sample, info, objectPath);
     } else if (!strncmp(intfName, "com.foo.bar.test", strlen(intfName))) {
         intfCommands = new VendorDefinedCommands(sample, info, objectPath);
+    } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Operation.ClosedStatus", strlen(intfName))){
+        intfCommands = new ClosedStatusCommands(sample, info, objectPath);
     }
-
     return intfCommands;
 }
