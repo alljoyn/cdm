@@ -65,6 +65,7 @@ class BatteryStatusInterface : public HaeInterface {
   protected:
     static const qcc::String s_prop_Version;
     static const qcc::String s_prop_CurrentValue;
+    static const qcc::String s_prop_IsCharging;
 
   private:
     static const qcc::String s_xml;

@@ -113,13 +113,19 @@ void TvControllee::SetInitialProperty()
 
     if (m_avInputIntfControllee) {
         AudioVideoInputInterface::InputSources inputSources;
-        AudioVideoInputInterface::InputSource inputSource1;
+        AudioVideoInputInterface::InputSource inputSource1, inputSource2;
         uint16_t inputSource1Id = 8080;
-        inputSource1.sourceType = 8;
-        inputSource1.signalPresence = 0;
+        inputSource1.sourceType = AudioVideoInputInterface::AUDIO_VIDEO_INPUT_SOURCE_TYPE_HDMI;
+        inputSource1.signalPresence = AudioVideoInputInterface::AUDIO_VIDEO_INPUT_SIGNAL_PRESENCE_ABSENT;
         inputSource1.portNumber = 1;
         inputSource1.friendlyName = "HDMI1";
         inputSources.insert(std::pair<uint16_t, AudioVideoInputInterface::InputSource>(inputSource1Id, inputSource1));
+        uint16_t inputSource2Id = 8000;
+        inputSource2.sourceType = AudioVideoInputInterface::AUDIO_VIDEO_INPUT_SOURCE_TYPE_TUNER;
+        inputSource2.signalPresence = AudioVideoInputInterface::AUDIO_VIDEO_INPUT_SIGNAL_PRESENCE_PRESENT;
+        inputSource2.portNumber = 1;
+        inputSource2.friendlyName = "TUNER";
+        inputSources.insert(std::pair<uint16_t, AudioVideoInputInterface::InputSource>(inputSource2Id, inputSource2));
         uint16_t inputSourceId = inputSource1Id;
         m_avInputIntfControllee->SetSupportedInputSources(inputSources);
         m_avInputIntfControllee->SetInputSourceId(inputSourceId);

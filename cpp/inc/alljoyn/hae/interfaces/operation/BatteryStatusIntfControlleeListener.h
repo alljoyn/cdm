@@ -41,6 +41,14 @@ class BatteryStatusIntfControlleeListener : public InterfaceControlleeListener {
      * @return ER_OK on success
      */
     virtual QStatus OnGetCurrentValue(uint8_t& value) = 0;
+
+    /**
+     * Handler for getting IsCharging property
+     * This function is only called, when InterfaceControllee::s_retrievingActualPropertyValue is true.
+     * @param[out] isCharging if battery is being charged or not
+     * @return ER_OK on success
+     */
+    virtual QStatus OnGetIsCharging(bool& isCharging) = 0;
 };
 
 } //namespace services

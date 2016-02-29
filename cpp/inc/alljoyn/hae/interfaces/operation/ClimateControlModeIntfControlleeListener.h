@@ -62,12 +62,12 @@ class ClimateControlModeIntfControlleeListener : public InterfaceControlleeListe
     virtual QStatus OnGetSupportedModes(SupportedModes& modes) = 0;
 
     /**
-     * Handler for getting operating state
+     * Handler for getting operational state
      * This function is only called, when InterfaceControllee::s_retrievingActualPropertyValue is true.
-     * @param[out] operatingState operating state
+     * @param[out] operationalState operational state
      * @return ER_OK on success
      */
-    virtual QStatus OnGetOperatingState(uint16_t& operatingState) = 0;
+    virtual QStatus OnGetOperationalState(uint16_t& operationalState) = 0;
 };
 
 } //namespace services

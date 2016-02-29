@@ -143,7 +143,7 @@ QStatus HidIntfControllerImpl::InjectEvents(HidInterface::InputEvents& inputEven
     QStatus status = ER_OK;
 
     MsgArg arg[1];
-    MsgArg *entries = new MsgArg[inputEvents.size()];
+    MsgArg* entries = new MsgArg[inputEvents.size()];
     int i=0;
     for (HidInterface::InputEvents::const_iterator citer = inputEvents.begin(); citer != inputEvents.end(); ++citer, i++) {
         entries[i].Set("(qqi)", citer->type, citer->code, citer->value);
@@ -151,7 +151,7 @@ QStatus HidIntfControllerImpl::InjectEvents(HidInterface::InputEvents& inputEven
     arg[0].Set("a(qqi)", i, entries);
 
     status = m_proxyObject.MethodCall(GetInterfaceName().c_str(), s_method_InjectEvents.c_str(), arg, 1);
-    delete [] entries;
+    delete[] entries;
     return status;
 }
 

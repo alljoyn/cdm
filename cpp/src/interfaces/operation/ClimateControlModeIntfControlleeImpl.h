@@ -109,7 +109,7 @@ class ClimateControlModeIntfControlleeImpl : public InterfaceControllee, public 
      * @param[in] modes
      * @return status
      */
-    virtual QStatus SetSupportedModes(const SupportedModes modes);
+    virtual QStatus SetSupportedModes(const SupportedModes& modes);
 
     /**
      * Get SupportedModes
@@ -118,17 +118,17 @@ class ClimateControlModeIntfControlleeImpl : public InterfaceControllee, public 
     virtual const SupportedModes& GetSupportedModes() const { return m_SupportedModes; }
 
     /**
-     * Set OperatingState
+     * Set OperationalState
      * @param[in] state
      * @return status
      */
-    virtual QStatus SetOperatingState(const uint16_t state);
+    virtual QStatus SetOperationalState(const uint16_t state);
 
     /**
-     * Get OperatingState
+     * Get OperationalState
      * @return state
      */
-    virtual const uint16_t GetOperatingState() const { return m_OperatingState; }
+    virtual const uint16_t GetOperationalState() const { return m_OperationalState; }
 
   private:
     ClimateControlModeIntfControlleeImpl();
@@ -136,7 +136,7 @@ class ClimateControlModeIntfControlleeImpl : public InterfaceControllee, public 
     BusAttachment& m_busAttachment;
     ClimateControlModeIntfControlleeListener& m_interfaceListener;
     uint16_t m_Mode;                       // read-write, EmitsChangedSignal
-    uint16_t m_OperatingState;        // read-only, EmitsChangedSignal
+    uint16_t m_OperationalState;        // read-only, EmitsChangedSignal
     SupportedModes m_SupportedModes;         // read-only, EmitsChangedSignal
     MethodHandlers m_methodHandlers;
 };

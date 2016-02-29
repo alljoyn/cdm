@@ -37,7 +37,8 @@ BatteryStatusIntfControlleeImpl::BatteryStatusIntfControlleeImpl(BusAttachment& 
     InterfaceControllee(haeBusObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener),
-    m_currentValue(MAX_BATTERY)
+    m_currentValue(MAX_BATTERY),
+    m_isCharging(false)
 {
 }
 
@@ -75,6 +76,18 @@ QStatus BatteryStatusIntfControlleeImpl::OnGetProperty(const String propName, Ms
                 }
                 val.typeId = ALLJOYN_BYTE;
                 val.v_byte = currentValue;
+            } else if (!(s_prop_IsCharging.compare(propName))) {
+                bool isCharging = false;
+                status = m_interfaceListener.OnGetIsCharging(isCharging);
+                if (status != ER_OK) {
+                    isCharging = GetIsCharging();
+                    QCC_LogError(status, ("%s: failed to get actual property value from application. use previous value.", __func__));
+                    status = ER_OK;
+                } else {
+                    SetIsCharging(isCharging);
+                }
+                val.typeId = ALLJOYN_BOOLEAN;
+                val.v_bool = isCharging;
             } else {
                 status = ER_BUS_NO_SUCH_PROPERTY;
             }
@@ -83,6 +96,10 @@ QStatus BatteryStatusIntfControlleeImpl::OnGetProperty(const String propName, Ms
                 const uint8_t currentValue = GetCurrentValue();
                 val.typeId = ALLJOYN_BYTE;
                 val.v_byte = currentValue;
+            } else if (!(s_prop_IsCharging.compare(propName))) {
+                const bool isCharging = GetIsCharging();
+                val.typeId = ALLJOYN_BOOLEAN;
+                val.v_bool = isCharging;
             } else {
                 status = ER_BUS_NO_SUCH_PROPERTY;
             }
@@ -128,6 +145,7 @@ void BatteryStatusIntfControlleeImpl::OnMethodHandler(const InterfaceDescription
 QStatus BatteryStatusIntfControlleeImpl::SetCurrentValue(const uint8_t value)
 {
     if (MIN_BATTERY > value || MAX_BATTERY < value) {
+        QCC_LogError(ER_INVALID_DATA, ("%s: value is invalid.", __func__));
         return ER_INVALID_DATA;
     }
 
@@ -137,6 +155,18 @@ QStatus BatteryStatusIntfControlleeImpl::SetCurrentValue(const uint8_t value)
         val.v_byte = value;
         m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_CurrentValue.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
         m_currentValue = value;
+    }
+    return ER_OK;
+}
+
+QStatus BatteryStatusIntfControlleeImpl::SetIsCharging(const bool isCharging)
+{
+    if (m_isCharging != isCharging) {
+        MsgArg val;
+        val.typeId = ALLJOYN_BOOLEAN;
+        val.v_bool = isCharging;
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_IsCharging.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        m_isCharging = isCharging;
     }
     return ER_OK;
 }

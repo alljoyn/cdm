@@ -66,13 +66,13 @@ class ClimateControlModeIntfControllerListener : public InterfaceControllerListe
     virtual void OnResponseGetSupportedModes(QStatus status, const qcc::String& objectPath, const SupportedModes& value, void* context) {}
 
     /**
-     * Callback handler for getting OperatingState property
+     * Callback handler for getting OperationalState property
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] value operating state
+     * @param[in] value operational state
      * @param[in] context the context that is passed from application
      */
-    virtual void OnResponseGetOperatingState(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context) {}
+    virtual void OnResponseGetOperationalState(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context) {}
 
     /**
      * Handler for Mode property changed
@@ -89,11 +89,11 @@ class ClimateControlModeIntfControllerListener : public InterfaceControllerListe
     virtual void OnSupportedModesChanged(const qcc::String& objectPath, const SupportedModes& value) {}
 
     /**
-     * Handler for OperatingState property changed
+     * Handler for OperationalState property changed
      * @param[in] objectPath the object path
-     * @param[in] value operating state
+     * @param[in] value operational state
      */
-    virtual void OnOperatingStateChanged(const qcc::String& objectPath, const uint16_t value) {}
+    virtual void OnOperationalStateChanged(const qcc::String& objectPath, const uint16_t value) {}
 
 };
 

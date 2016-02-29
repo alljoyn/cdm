@@ -67,11 +67,19 @@ class BatteryStatusIntfControllerImpl : public InterfaceController, public Batte
      */
     virtual QStatus GetCurrentValue(void* context);
 
+    /**
+     * Get if battery is being charged
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
+     */
+    virtual QStatus GetIsCharging(void* context);
+
   private:
     BatteryStatusIntfControllerImpl();
 
     void PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context);
     void GetCurrentValuePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+    void GetIsChargingPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
 
     BusAttachment& m_busAttachment;
     BatteryStatusIntfControllerListener& m_interfaceListener;

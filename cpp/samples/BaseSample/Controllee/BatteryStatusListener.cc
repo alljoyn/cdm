@@ -24,3 +24,9 @@ QStatus BatteryStatusListener::OnGetCurrentValue(uint8_t& currentValue)
     cout << "BatteryStatusListener::OnGetCurrentValue() - currentValue : " << currentValue << endl;
     return ER_OK;
 }
+
+QStatus BatteryStatusListener::OnGetIsCharging(bool& isCharging)
+{
+    cout << "BatteryStatusListener::OnGetIsCharging() - isCharging : " << isCharging << endl;
+    return ER_OK;
+}

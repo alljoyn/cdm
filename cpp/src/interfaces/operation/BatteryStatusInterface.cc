@@ -36,15 +36,17 @@ const qcc::String BatteryStatusInterface::s_xml =
 "            <description language='en'>Current remaining battery value</description>"
 "            <annotation name='org.freedesktop.DBus.Property.EmitsChangedSignal' value='true'/>"
 "        </property>"
+"        <property name='IsCharging' type='b' access='read'>"
+"            <description language='en'>Charging status</description>"
+"            <annotation name='org.freedesktop.DBus.Property.EmitsChangedSignal' value='true'/>"
+"        </property>"
 "    </interface>"
 "</node>"
 ;
 
 const qcc::String BatteryStatusInterface::s_prop_Version = "Version";
 const qcc::String BatteryStatusInterface::s_prop_CurrentValue = "CurrentValue";
-/**
- * TODO: initialize property, method and signal name variable
- */
+const qcc::String BatteryStatusInterface::s_prop_IsCharging = "IsCharging";
 
 } //namespace services
 } //namespace ajn

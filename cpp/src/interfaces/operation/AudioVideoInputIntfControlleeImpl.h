@@ -118,6 +118,7 @@ class AudioVideoInputIntfControlleeImpl : public InterfaceControllee, public Aud
 
   private:
     AudioVideoInputIntfControlleeImpl();
+    QStatus CheckSupportedInputSources(const InputSources& supportedInputSources);
 
     BusAttachment& m_busAttachment;
     AudioVideoInputIntfControlleeListener& m_interfaceListener;

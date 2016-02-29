@@ -86,11 +86,11 @@ class ClimateControlModeIntfControllerImpl : public InterfaceController, public 
     virtual QStatus GetSupportedModes(void* context);
 
     /**
-     * Get OperatingState
+     * Get OperationalState
      * @param[in] context
      * @return status
      */
-    virtual QStatus GetOperatingState(void* context);
+    virtual QStatus GetOperationalState(void* context);
 
   private:
     ClimateControlModeIntfControllerImpl();
@@ -99,7 +99,7 @@ class ClimateControlModeIntfControllerImpl : public InterfaceController, public 
     void SetModePropertyCB(QStatus status, ProxyBusObject* obj, void* context);
     void GetModePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
     void GetSupportedModesPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
-    void GetOperatingStatePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+    void GetOperationalStatePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
 
     BusAttachment& m_busAttachment;
     ClimateControlModeIntfControllerListener& m_interfaceListener;

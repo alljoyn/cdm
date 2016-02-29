@@ -21,7 +21,10 @@ env['OBJDIR_SERVICES_HAE'] = env['OBJDIR'] + '/services/hae'
 
 # Make config library and header file paths available to the global environment
 env.Append(LIBPATH = '$DISTDIR/hae/lib')
-env.Append(CPPPATH = '$DISTDIR/hae/inc');
+env.Append(CPPPATH = '$DISTDIR/hae/inc')
+
+if env['OS'] == 'darwin' and env['CPU'] == 'x86':
+    env.Append(CPPPATH = [os.popen('brew --prefix openssl').read().strip() + '/include'])
 
 if 'c' not in env['bindings']:
     list = env['LIBPATH']

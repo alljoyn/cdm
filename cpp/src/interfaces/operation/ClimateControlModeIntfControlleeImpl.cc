@@ -37,7 +37,7 @@ ClimateControlModeIntfControlleeImpl::ClimateControlModeIntfControlleeImpl(BusAt
     m_busAttachment(busAttachment),
     m_interfaceListener(listener),
     m_Mode(0),
-    m_OperatingState(0)
+    m_OperationalState(0)
 {
 
 }
@@ -57,7 +57,6 @@ QStatus ClimateControlModeIntfControlleeImpl::Init()
 QStatus ClimateControlModeIntfControlleeImpl::OnGetProperty(const String propName, MsgArg& val)
 {
     QStatus status = ER_OK;
-
 
     if (!(s_prop_Version.compare(propName))) {
         val.typeId = ALLJOYN_UINT16;
@@ -91,7 +90,7 @@ QStatus ClimateControlModeIntfControlleeImpl::OnGetProperty(const String propNam
                 MsgArg arg(ALLJOYN_ARRAY);
                 size_t numElements = value.size();
                 uint16_t temp[numElements];
-                for (size_t i=0 ; i < numElements ; i++)
+                for (size_t i = 0; i < numElements; i++)
                 {
                     temp[i] =  value[i];
                 }
@@ -99,15 +98,15 @@ QStatus ClimateControlModeIntfControlleeImpl::OnGetProperty(const String propNam
 
                 val = arg;
 
-            } else if (!(s_prop_OperatingState.compare(propName))) {
+            } else if (!(s_prop_OperationalState.compare(propName))) {
                 uint16_t value;
-                status = m_interfaceListener.OnGetOperatingState(value);
+                status = m_interfaceListener.OnGetOperationalState(value);
                 if (status != ER_OK) {
-                    value = GetOperatingState();
+                    value = GetOperationalState();
                     QCC_LogError(status, ("%s: failed to get actual property value from application. use previous value.", __func__));
                     status = ER_OK;
                 } else {
-                    SetOperatingState(value);
+                    SetOperationalState(value);
                 }
 
                 val.typeId = ALLJOYN_UINT16;
@@ -127,7 +126,7 @@ QStatus ClimateControlModeIntfControlleeImpl::OnGetProperty(const String propNam
                 MsgArg arg(ALLJOYN_ARRAY);
                 size_t numElements = value.size();
                 uint16_t temp[numElements];
-                for (size_t i=0 ; i < numElements ; i++)
+                for (size_t i = 0; i < numElements; i++)
                 {
                     temp[i] =  value[i];
                 }
@@ -135,8 +134,8 @@ QStatus ClimateControlModeIntfControlleeImpl::OnGetProperty(const String propNam
 
                 val = arg;
 
-            } else if (!(s_prop_OperatingState.compare(propName))) {
-                const uint16_t value = GetOperatingState();
+            } else if (!(s_prop_OperationalState.compare(propName))) {
+                const uint16_t value = GetOperationalState();
                 val.typeId = ALLJOYN_UINT16;
                 val.v_uint16 = value;
             } else {
@@ -160,13 +159,13 @@ QStatus ClimateControlModeIntfControlleeImpl::OnSetProperty(const String propNam
         }
         uint16_t value = val.v_uint16;
 
-        for ( i=0 ; i < m_SupportedModes.size() ; i++)
+        for (i = 0; i < m_SupportedModes.size(); i++)
         {
-            if( m_SupportedModes[i] == value)
+            if (m_SupportedModes[i] == value)
                 break;
         }
 
-        if( i != m_SupportedModes.size() ) {
+        if (i != m_SupportedModes.size()) {
             status = m_interfaceListener.OnSetMode(value);
             if (status != ER_OK) {
                 QCC_LogError(status, ("%s: failed to set property value", __func__));
@@ -174,9 +173,9 @@ QStatus ClimateControlModeIntfControlleeImpl::OnSetProperty(const String propNam
             } else {
                 SetMode(value);
             }
-        }
-        else
+        } else {
             status = ER_INVALID_DATA;
+        }
 
     } else {
         status = ER_BUS_NO_SUCH_PROPERTY;
@@ -208,6 +207,18 @@ void ClimateControlModeIntfControlleeImpl::OnMethodHandler(const InterfaceDescri
 
 QStatus ClimateControlModeIntfControlleeImpl::SetMode(const uint16_t mode)
 {
+    size_t i = 0;
+
+    for (i = 0; i < m_SupportedModes.size(); i++) {
+        if (mode == m_SupportedModes[i]) {
+            break;
+        }
+    }
+    if (i == m_SupportedModes.size()) {
+        QCC_LogError(ER_INVALID_DATA, ("%s: Mode is not exist in SupportedModes.", __func__));
+        return ER_INVALID_DATA;
+    }
+
     if (m_Mode != mode) {
         MsgArg val;
         val.typeId = ALLJOYN_UINT16;
@@ -219,36 +230,43 @@ QStatus ClimateControlModeIntfControlleeImpl::SetMode(const uint16_t mode)
     return ER_OK;
 }
 
-QStatus ClimateControlModeIntfControlleeImpl::SetSupportedModes(const SupportedModes modes)
+QStatus ClimateControlModeIntfControlleeImpl::SetSupportedModes(const SupportedModes& modes)
 {
     QStatus status = ER_OK;
+    uint32_t i=0;
     bool diff = false;
+
+    for (i = 0; i < modes.size(); i++) {
+        if (modes[i] < MIN_CLIMATE_CONTROL_MODE || modes[i] > MAX_CLIMATE_CONTROL_MODE) {
+            status = ER_INVALID_DATA;
+            QCC_LogError(status, ("%s: Unknown Mode is included.", __func__));
+            return status;
+        }
+    }
 
     if (m_SupportedModes.size() != modes.size()) {
         diff = true;
     } else {
-        for (uint32_t i=0 ; i < m_SupportedModes.size() ; i++)
-        {
-            if( m_SupportedModes[i] != modes[i] )
-            {
+        for (i = 0; i < m_SupportedModes.size(); i++) {
+            if (m_SupportedModes[i] != modes[i]) {
                 diff = true;
                 break;
             }
         }
     }
 
-    if(diff) {
+    if (diff) {
         MsgArg arg(ALLJOYN_ARRAY);
         size_t numElements = modes.size();
         uint16_t temp[numElements];
-        for (size_t i=0 ; i < numElements ; i++)
-        {
+        for (size_t i = 0; i < numElements; i++) {
             temp[i] =  modes[i];
         }
         arg.Set("aq", numElements, temp);
 
-        if(status != ER_OK)
+        if (status != ER_OK) {
             QCC_LogError(status, ("%s: could not set Elements.", __func__));
+        }
 
         m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_SupportedModes.c_str(), arg, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
         m_SupportedModes = modes;
@@ -257,14 +275,19 @@ QStatus ClimateControlModeIntfControlleeImpl::SetSupportedModes(const SupportedM
     return ER_OK;
 }
 
-QStatus ClimateControlModeIntfControlleeImpl::SetOperatingState(const uint16_t state)
+QStatus ClimateControlModeIntfControlleeImpl::SetOperationalState(const uint16_t state)
 {
-    if (m_OperatingState != state) {
+    if (state < MIN_CLIMATE_CONTROL_OPERATIONAL_STATE || state > MAX_CLIMATE_CONTROL_OPERATIONAL_STATE) {
+        QCC_LogError(ER_INVALID_DATA, ("%s: Unknown OperationalState.", __func__));
+        return ER_INVALID_DATA;
+    }
+
+    if (m_OperationalState != state) {
         MsgArg val;
         val.typeId = ALLJOYN_UINT16;
         val.v_uint16 = state;
-        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_OperatingState.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
-        m_OperatingState = state;
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_OperationalState.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        m_OperationalState = state;
     }
 
     return ER_OK;

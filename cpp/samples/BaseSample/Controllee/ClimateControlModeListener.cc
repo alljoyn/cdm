@@ -44,8 +44,8 @@ QStatus ClimateControlModeListener::OnGetSupportedModes(SupportedModes& modes)
     return ER_OK;
 }
 
-QStatus ClimateControlModeListener::OnGetOperatingState(uint16_t& operatingState)
+QStatus ClimateControlModeListener::OnGetOperationalState(uint16_t& operationalState)
 {
-    cout << "ClimateControlModeListener::OnGetOperatingState() - operatingState : " << operatingState << endl;
+    cout << "ClimateControlModeListener::OnGetOperationalState() - operationalState : " << operationalState << endl;
     return ER_OK;
 }

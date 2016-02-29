@@ -136,6 +136,13 @@ QStatus FanSpeedLevelIntfControlleeImpl::OnSetProperty(const String propName, Ms
             return status;
         }
         uint8_t value = val.v_byte;
+        if (value == FAN_TURNED_OFF) {
+            QCC_LogError(ER_INVALID_DATA, ("%s: 0x00 can't be set.", __func__));
+            return ER_INVALID_DATA;
+        } else if (value > m_MaxFanSpeedLevel) {
+            QCC_LogError(ER_INVALID_DATA, ("%s: Out of range.", __func__));
+            return ER_INVALID_DATA;
+        }
         status = m_interfaceListener.OnSetFanSpeedLevel(value);
         if (status != ER_OK) {
             QCC_LogError(status, ("%s: failed to set property value", __func__));
@@ -148,7 +155,19 @@ QStatus FanSpeedLevelIntfControlleeImpl::OnSetProperty(const String propName, Ms
             status = ER_BUS_NO_SUCH_PROPERTY;
             return status;
         }
+        if (m_AutoMode == 0xFF) {
+            QCC_LogError(ER_INVALID_DATA, ("%s: Feature not available.", __func__));
+            return ER_INVALID_DATA;
+        }
+
         uint8_t value = val.v_byte;
+        if (value == 0xFF) {
+            QCC_LogError(ER_INVALID_DATA, ("%s: Not allowed to set AutoMode to 0xFF.", __func__));
+            return ER_INVALID_DATA;
+        } else if (!IsAutoModeValid(value)) {
+            QCC_LogError(ER_INVALID_DATA, ("%s: Value is invalid.", __func__));
+            return ER_INVALID_DATA;
+        }
         status = m_interfaceListener.OnSetAutoMode(value);
         if (status != ER_OK) {
             QCC_LogError(status, ("%s: failed to set property value", __func__));
@@ -186,7 +205,10 @@ void FanSpeedLevelIntfControlleeImpl::OnMethodHandler(const InterfaceDescription
 
 QStatus FanSpeedLevelIntfControlleeImpl::SetFanSpeedLevel(const uint8_t value)
 {
-    QStatus status = ER_OK;
+    if (value > m_MaxFanSpeedLevel) {
+        QCC_LogError(ER_INVALID_DATA, ("%s: Out of range.", __func__));
+        return ER_INVALID_DATA;
+    }
 
     if (m_FanSpeedLevel != value) {
         m_FanSpeedLevel = value;
@@ -196,23 +218,24 @@ QStatus FanSpeedLevelIntfControlleeImpl::SetFanSpeedLevel(const uint8_t value)
         m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_FanSpeedLevel.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
     }
 
-    return status;
+    return ER_OK;
 }
 
 QStatus FanSpeedLevelIntfControlleeImpl::SetMaxFanSpeedLevel(const uint8_t value)
 {
-    QStatus status = ER_OK;
-
     if (m_MaxFanSpeedLevel != value) {
         m_MaxFanSpeedLevel = value;
     }
 
-    return status;
+    return ER_OK;
 }
 
 QStatus FanSpeedLevelIntfControlleeImpl::SetAutoMode(const uint8_t value)
 {
-    QStatus status = ER_OK;
+    if (!IsAutoModeValid(value)) {
+        QCC_LogError(ER_INVALID_DATA, ("%s: value is invalid.", __func__));
+        return ER_INVALID_DATA;
+    }
 
     if (m_AutoMode != value) {
         m_AutoMode = value;
@@ -222,10 +245,20 @@ QStatus FanSpeedLevelIntfControlleeImpl::SetAutoMode(const uint8_t value)
         m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_AutoMode.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
     }
 
-    return status;
+    return ER_OK;
 }
 
-
+bool FanSpeedLevelIntfControlleeImpl::IsAutoModeValid(uint8_t autoMode)
+{
+    switch (autoMode) {
+    case 0x00:
+    case 0x01:
+    case 0xFF:
+        return true;
+    default:
+        return false;
+    }
+}
 
 } //namespace services
 } //namespace ajn

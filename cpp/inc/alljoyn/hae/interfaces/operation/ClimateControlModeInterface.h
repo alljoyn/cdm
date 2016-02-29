@@ -64,11 +64,40 @@ class ClimateControlModeInterface : public HaeInterface {
      */
     virtual const uint16_t GetInterfaceVersion() const { return s_interfaceVersion; }
 
+    enum {
+        CLIMATE_CONTROL_MODE_OFF = 0,
+        CLIMATE_CONTROL_MODE_HEAT,
+        CLIMATE_CONTROL_MODE_COOL,
+        CLIMATE_CONTROL_MODE_AUTO,
+        CLIMATE_CONTROL_MODE_AUX_HEAT,
+        CLIMATE_CONTROL_MODE_DRY,
+        CLIMATE_CONTROL_MODE_CONT_DRY
+    };
+
+    enum {
+        MIN_CLIMATE_CONTROL_MODE = CLIMATE_CONTROL_MODE_OFF,
+        MAX_CLIMATE_CONTROL_MODE = CLIMATE_CONTROL_MODE_CONT_DRY
+    };
+
+    enum {
+        CLIMATE_CONTROL_OPERATIONAL_STATE_IDLE = 0,
+        CLIMATE_CONTROL_OPERATIONAL_STATE_HEATING,
+        CLIMATE_CONTROL_OPERATIONAL_STATE_COOLING,
+        CLIMATE_CONTROL_OPERATIONAL_STATE_PENDING_HEAT,
+        CLIMATE_CONTROL_OPERATIONAL_STATE_PENDING_COOL,
+        CLIMATE_CONTROL_OPERATIONAL_STATE_AUX_HEAT
+    };
+
+    enum {
+        MIN_CLIMATE_CONTROL_OPERATIONAL_STATE = CLIMATE_CONTROL_OPERATIONAL_STATE_IDLE,
+        MAX_CLIMATE_CONTROL_OPERATIONAL_STATE = CLIMATE_CONTROL_OPERATIONAL_STATE_AUX_HEAT
+    };
+
   protected:
     static const qcc::String s_prop_Version;
     static const qcc::String s_prop_Mode;
     static const qcc::String s_prop_SupportedModes;
-    static const qcc::String s_prop_OperatingState;
+    static const qcc::String s_prop_OperationalState;
 
   private:
     static const qcc::String s_xml;

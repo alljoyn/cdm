@@ -33,6 +33,12 @@ namespace services {
  */
 class TargetTemperatureIntfControllee : public TargetTemperatureInterface {
   public:
+    typedef enum {
+        ROUNDING_TO_NEAREST_VALUE,
+        ROUNDING_OFF,
+        ROUNDING_UP
+    } AdjustTargetValue;
+
     /**
      * Constructor of TargetTemperatureIntfControllee
      */
@@ -74,6 +80,7 @@ class TargetTemperatureIntfControllee : public TargetTemperatureInterface {
      * @return The maximum value of target temperature
      */
     virtual const double GetMaxValue() const = 0;
+
     /**
      * Set the maximum value of target temperature
      * @param[in] value the maximum value of target temperature
@@ -86,6 +93,20 @@ class TargetTemperatureIntfControllee : public TargetTemperatureInterface {
      * @return The step value of target temperature
      */
     virtual const double GetStepValue() const = 0;
+
+    /**
+     * Set the step value of target temperature
+     * @param[in] value the step value of target temperature
+     * @return ER_OK on success
+     */
+    virtual QStatus SetStepValue(const double value) = 0;
+
+    /**
+     * Set strategy of adjusting target value
+     * @param[in] strategy
+     * @return status
+     */
+    virtual QStatus SetStrategyOfAdjustingTargetValue(AdjustTargetValue strategy) = 0;
 };
 
 } //namespace services

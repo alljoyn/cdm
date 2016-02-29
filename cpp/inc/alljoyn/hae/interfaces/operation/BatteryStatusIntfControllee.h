@@ -53,8 +53,17 @@ class BatteryStatusIntfControllee : public BatteryStatusInterface {
     virtual const uint8_t GetCurrentValue() const = 0;
 
     /**
-     * TODO: define functions that can emit signals, if any
+     * Set if battery is being charged
+     * @param[in] isCharging if battery is being charged or not
+     * @return ER_OK on success
      */
+    virtual QStatus SetIsCharging(const bool isCharging) = 0;
+
+    /**
+     * Get if battery is being charged
+     * @return If battery is being charged or not
+     */
+    virtual const bool GetIsCharging() const = 0;
 };
 
 } //namespace services

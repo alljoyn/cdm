@@ -40,7 +40,7 @@ const qcc::String ClimateControlModeInterface::s_xml =
         "            <description language='en'>Array of supported modes</description>"
         "            <annotation name='org.freedesktop.DBus.Property.EmitsChangedSignal' value='true'/>"
         "        </property>"
-        "        <property name='OperatingState' type='q' access='read'>"
+        "        <property name='OperationalState' type='q' access='read'>"
         "            <description language='en'>Current status of device.</description>"
         "            <annotation name='org.freedesktop.DBus.Property.EmitsChangedSignal' value='true'/>"
         "        </property>"
@@ -50,7 +50,7 @@ const qcc::String ClimateControlModeInterface::s_xml =
 const qcc::String ClimateControlModeInterface::s_prop_Version = "Version";
 const qcc::String ClimateControlModeInterface::s_prop_Mode = "Mode";
 const qcc::String ClimateControlModeInterface::s_prop_SupportedModes = "SupportedModes";
-const qcc::String ClimateControlModeInterface::s_prop_OperatingState = "OperatingState";
+const qcc::String ClimateControlModeInterface::s_prop_OperationalState = "OperationalState";
 
 } //namespace services
 } //namespace ajn

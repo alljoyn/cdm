@@ -26,6 +26,7 @@ class BatteryStatusListener : public BatteryStatusIntfControlleeListener
 {
   public:
     virtual QStatus OnGetCurrentValue(uint8_t& currentValue);
+    virtual QStatus OnGetIsCharging(bool& isCharging);
 
 };
 

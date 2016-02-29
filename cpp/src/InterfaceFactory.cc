@@ -41,6 +41,9 @@
 #include "interfaces/environment/WindDirectionIntfControlleeImpl.h"
 #include "interfaces/operation/AirRecirculationModeIntfControlleeImpl.h"
 #include "interfaces/operation/RepeatModeIntfControlleeImpl.h"
+#include "interfaces/operation/RobotCleaningCyclePhaseIntfControlleeImpl.h"
+#include "interfaces/operation/CurrentPowerIntfControlleeImpl.h"
+#include "interfaces/operation/EnergyUsageIntfControlleeImpl.h"
 
 // Controller
 #include "interfaces/operation/AudioVolumeIntfControllerImpl.h"
@@ -60,6 +63,9 @@
 #include "interfaces/environment/WindDirectionIntfControllerImpl.h"
 #include "interfaces/operation/AirRecirculationModeIntfControllerImpl.h"
 #include "interfaces/operation/RepeatModeIntfControllerImpl.h"
+#include "interfaces/operation/RobotCleaningCyclePhaseIntfControllerImpl.h"
+#include "interfaces/operation/CurrentPowerIntfControllerImpl.h"
+#include "interfaces/operation/EnergyUsageIntfControllerImpl.h"
 
 using namespace std;
 using namespace qcc;
@@ -98,6 +104,9 @@ InterfaceFactory::InterfaceFactory() :
     m_controllerCreators[AIR_RECIRCULATION_MODE_INTERFACE] = static_cast<CreateIntfControllerFptr>(&AirRecirculationModeIntfControllerImpl::CreateInterface);
     m_controllerCreators[REPEAT_MODE_INTERFACE] = static_cast<CreateIntfControllerFptr>(&RepeatModeIntfControllerImpl::CreateInterface);
     m_controllerCreators[CLOSED_STATUS_INTERFACE] = static_cast<CreateIntfControllerFptr>(&ClosedStatusIntfControllerImpl::CreateInterface);
+    m_controllerCreators[ROBOT_CLEANING_CYCLE_PHASE_INTERFACE] = static_cast<CreateIntfControllerFptr>(&RobotCleaningCyclePhaseIntfControllerImpl::CreateInterface);
+    m_controllerCreators[CURRENT_POWER_INTERFACE] = static_cast<CreateIntfControllerFptr>(&CurrentPowerIntfControllerImpl::CreateInterface);
+    m_controllerCreators[ENERGY_USAGE_INTERFACE] = static_cast<CreateIntfControllerFptr>(&EnergyUsageIntfControllerImpl::CreateInterface);
 
     // Controllee
     m_controlleeCreators[CHANNEL_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&ChannelIntfControlleeImpl::CreateInterface);
@@ -117,6 +126,9 @@ InterfaceFactory::InterfaceFactory() :
     m_controlleeCreators[AIR_RECIRCULATION_MODE_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&AirRecirculationModeIntfControlleeImpl::CreateInterface);
     m_controlleeCreators[REPEAT_MODE_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&RepeatModeIntfControlleeImpl::CreateInterface);
     m_controlleeCreators[CLOSED_STATUS_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&ClosedStatusIntfControlleeImpl::CreateInterface);
+    m_controlleeCreators[ROBOT_CLEANING_CYCLE_PHASE_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&RobotCleaningCyclePhaseIntfControlleeImpl::CreateInterface);
+    m_controlleeCreators[CURRENT_POWER_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&CurrentPowerIntfControlleeImpl::CreateInterface);
+    m_controlleeCreators[ENERGY_USAGE_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&EnergyUsageIntfControlleeImpl::CreateInterface);
 }
 
 InterfaceFactory::InterfaceFactory(const InterfaceFactory& src)

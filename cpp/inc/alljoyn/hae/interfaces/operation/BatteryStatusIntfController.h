@@ -46,6 +46,13 @@ class BatteryStatusIntfController : public BatteryStatusInterface {
      */
     virtual QStatus GetCurrentValue(void* context = NULL) = 0;
 
+    /**
+     * Get if battery is being charged
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
+     */
+    virtual QStatus GetIsCharging(void* context = NULL) = 0;
+
 };
 
 } //namespace services

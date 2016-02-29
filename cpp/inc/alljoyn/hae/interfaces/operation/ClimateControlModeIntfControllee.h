@@ -63,10 +63,24 @@ class ClimateControlModeIntfControllee : public ClimateControlModeInterface {
     virtual const SupportedModes& GetSupportedModes() const = 0;
 
     /**
-     * Get operating state
-     * @return Operating state
+     * Set supported modes
+     * @param[in] modes supported modes
+     * @return ER_OK on success
      */
-    virtual const uint16_t GetOperatingState() const = 0;
+    virtual QStatus SetSupportedModes(const SupportedModes& modes) = 0;
+
+    /**
+     * Get operational state
+     * @return Operational state
+     */
+    virtual const uint16_t GetOperationalState() const = 0;
+
+    /**
+     * Set operational state
+     * @param[in] state operational state
+     * @return ER_OK on success
+     */
+    virtual QStatus SetOperationalState(const uint16_t state) = 0;
 };
 
 } //namespace services

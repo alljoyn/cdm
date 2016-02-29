@@ -104,6 +104,18 @@ class BatteryStatusIntfControlleeImpl : public InterfaceControllee, public Batte
      */
     virtual const uint8_t GetCurrentValue() const { return m_currentValue; }
 
+    /**
+     * Set if battery is being charged
+     * @param[in] isCharging if battery is being charged or not
+     * @return ER_OK on success
+     */
+    virtual QStatus SetIsCharging(const bool isCharging);
+
+    /**
+     * Get if battery is being charged
+     * @return If battery is being charged or not
+     */
+    virtual const bool GetIsCharging() const { return m_isCharging; }
 
   private:
     BatteryStatusIntfControlleeImpl();
@@ -112,6 +124,7 @@ class BatteryStatusIntfControlleeImpl : public InterfaceControllee, public Batte
     BatteryStatusIntfControlleeListener& m_interfaceListener;
     MethodHandlers m_methodHandlers;
     uint8_t m_currentValue;
+    bool m_isCharging;
 };
 
 } //namespace services

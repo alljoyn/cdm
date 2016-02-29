@@ -77,6 +77,11 @@ void BatteryStatusIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, con
                 uint8_t value = propValue->v_byte;
                 m_interfaceListener.OnCurrentValueChanged(obj.GetPath(), value);
             }
+        } else if (!s_prop_IsCharging.compare(propNameStr)) {
+            if (propValue->typeId == ALLJOYN_BOOLEAN) {
+                bool isCharging = propValue->v_bool;
+                m_interfaceListener.OnIsChargingChanged(obj.GetPath(), isCharging);
+            }
         }
     }
 }
@@ -86,6 +91,15 @@ QStatus BatteryStatusIntfControllerImpl::GetCurrentValue(void* context)
     QStatus status = ER_OK;
 
     status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_CurrentValue.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&BatteryStatusIntfControllerImpl::GetCurrentValuePropertyCB, context);
+
+    return status;
+}
+
+QStatus BatteryStatusIntfControllerImpl::GetIsCharging(void* context)
+{
+    QStatus status = ER_OK;
+
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_IsCharging.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&BatteryStatusIntfControllerImpl::GetIsChargingPropertyCB, context);
 
     return status;
 }
@@ -102,7 +116,17 @@ void BatteryStatusIntfControllerImpl::GetCurrentValuePropertyCB(QStatus status, 
     m_interfaceListener.OnResponseGetCurrentValue(status, obj->GetPath(), currentValue, context);
 }
 
+void BatteryStatusIntfControllerImpl::GetIsChargingPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
+{
+    if (!obj) {
+        return;
+    }
 
+    bool isCharging;
+    value.Get("b", &isCharging);
+
+    m_interfaceListener.OnResponseGetIsCharging(status, obj->GetPath(), isCharging, context);
+}
 
 } //namespace services
 } //namespace ajn

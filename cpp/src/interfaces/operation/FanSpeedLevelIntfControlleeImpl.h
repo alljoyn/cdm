@@ -131,6 +131,7 @@ class FanSpeedLevelIntfControlleeImpl : public InterfaceControllee, public FanSp
 
   private:
     FanSpeedLevelIntfControlleeImpl();
+    bool IsAutoModeValid(uint8_t autoMode);
 
     BusAttachment& m_busAttachment;
     FanSpeedLevelIntfControlleeListener& m_interfaceListener;

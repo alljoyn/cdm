@@ -174,6 +174,12 @@ class WindDirectionIntfControlleeImpl : public InterfaceControllee, public WindD
   private:
     WindDirectionIntfControlleeImpl();
 
+    uint16_t adjustHorizontalDirection(uint16_t horizontalDirection);
+    bool isHorizontalAutoModeValid(uint8_t horizontalAutoMode);
+
+    uint16_t adjustVerticalDirection(uint16_t verticalDirection);
+    bool isVerticalAutoModeValid(uint8_t verticalAutoMode);
+
     BusAttachment& m_busAttachment;
     WindDirectionIntfControlleeListener& m_interfaceListener;
     uint16_t m_HorizontalDirection;   // read-write, EmitsChangedSignal

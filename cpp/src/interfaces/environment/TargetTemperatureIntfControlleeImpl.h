@@ -35,6 +35,7 @@ class HaeBusObject;
  */
 class TargetTemperatureIntfControlleeImpl : public InterfaceControllee, public TargetTemperatureIntfControllee {
   public:
+
     /**
      * Create interface
      */
@@ -143,16 +144,26 @@ class TargetTemperatureIntfControlleeImpl : public InterfaceControllee, public T
      */
     virtual const double GetStepValue() const { return m_StepValue; }
 
+    /**
+     * Set strategy of adjusting target value
+     * @param[in] strategy
+     * @return status
+     */
+    virtual QStatus SetStrategyOfAdjustingTargetValue(AdjustTargetValue strategy);
   private:
     TargetTemperatureIntfControlleeImpl();
 
     BusAttachment& m_busAttachment;
     TargetTemperatureIntfControlleeListener& m_interfaceListener;
+
+    double adjustTargetValue(double value);
     double m_TargetValue;                       // read-write, EmitsChangedSignal
     double m_MinValue;
     double m_MaxValue;
     double m_StepValue;
     MethodHandlers m_methodHandlers;
+
+    AdjustTargetValue m_currentStrategy;
 };
 
 } //namespace services

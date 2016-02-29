@@ -77,7 +77,7 @@ QStatus HidIntfControlleeImpl::SetSupportedEvents(const HidInterface::SupportedI
     }
 
     if(diff) {
-        MsgArg *args = new MsgArg[supportedEvents.size()];
+        MsgArg* args = new MsgArg[supportedEvents.size()];
         MsgArg val;
         HidInterface::SupportedInputEvents::const_iterator citer;
         int i=0;
@@ -91,7 +91,7 @@ QStatus HidIntfControlleeImpl::SetSupportedEvents(const HidInterface::SupportedI
         val.v_array.SetElements("(qqii)", i, args);
         m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_SupportedEvents.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
         m_supportedEvents = supportedEvents;
-        delete [] args;
+        delete[] args;
     }
 
     return ER_OK;
@@ -117,7 +117,7 @@ QStatus HidIntfControlleeImpl::OnGetProperty(const String propName, MsgArg& val)
                     SetSupportedEvents(supportedEvents);
                 }
 
-                MsgArg *args = new MsgArg[supportedEvents.size()];
+                MsgArg* args = new MsgArg[supportedEvents.size()];
                 HidInterface::SupportedInputEvents::const_iterator citer;
                 int i=0;
 
@@ -128,14 +128,14 @@ QStatus HidIntfControlleeImpl::OnGetProperty(const String propName, MsgArg& val)
 
                 val.Set("a(qqii)", i, args);
                 val.Stabilize();
-                delete [] args;
+                delete[] args;
             } else {
                 status = ER_BUS_NO_SUCH_PROPERTY;
             }
         } else {
             if (!(s_prop_SupportedEvents.compare(propName))) {
                 const HidInterface::SupportedInputEvents& supportedEvents = GetSupportedEvents();
-                MsgArg *args = new MsgArg[supportedEvents.size()];
+                MsgArg* args = new MsgArg[supportedEvents.size()];
                 HidInterface::SupportedInputEvents::const_iterator citer;
                 int i=0;
 
@@ -146,7 +146,7 @@ QStatus HidIntfControlleeImpl::OnGetProperty(const String propName, MsgArg& val)
 
                 val.Set("a(qqii)", i, args);
                 val.Stabilize();
-                delete [] args;
+                delete[] args;
             } else {
                 status = ER_BUS_NO_SUCH_PROPERTY;
             }

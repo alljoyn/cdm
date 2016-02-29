@@ -34,10 +34,10 @@ class ClimateControlModeListener : public ClimateControlModeIntfControllerListen
     virtual void OnResponseSetMode(QStatus status, const qcc::String& objectPath, void* context);
     virtual void OnResponseGetMode(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context);
     virtual void OnResponseGetSupportedModes(QStatus status, const qcc::String& objectPath, const SupportedModes& value, void* context);
-    virtual void OnResponseGetOperatingState(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context);
+    virtual void OnResponseGetOperationalState(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context);
     virtual void OnModeChanged(const qcc::String& objectPath, const uint16_t value);
     virtual void OnSupportedModesChanged(const qcc::String& objectPath, const SupportedModes& value);
-    virtual void OnOperatingStateChanged(const qcc::String& objectPath, const uint16_t value);
+    virtual void OnOperationalStateChanged(const qcc::String& objectPath, const uint16_t value);
 };
 
 
@@ -54,7 +54,7 @@ class ClimateControlModeCommands : public InterfaceCommands
     static void OnCmdGetMode(Commands* commands, std::string& cmd);
     static void OnCmdSetMode(Commands* commands, std::string& cmd);
     static void OnCmdGetSupportedModes(Commands* commands, std::string& cmd);
-    static void OnCmdGetOperatingState(Commands* commands, std::string& cmd);
+    static void OnCmdGetOperationalState(Commands* commands, std::string& cmd);
 
   private:
     ClimateControlModeIntfController* m_intfController;

@@ -31,7 +31,9 @@ class BatteryStatusListener : public BatteryStatusIntfControllerListener {
     BatteryStatusListener();
     virtual ~BatteryStatusListener();
     virtual void OnResponseGetCurrentValue(QStatus status, const qcc::String& objectPath, const uint8_t currentValue, void* context);
+    virtual void OnResponseGetIsCharging(QStatus status, const qcc::String& objectPath, const bool isCharging, void* context);
     virtual void OnCurrentValueChanged(const qcc::String& objectPath, const uint8_t currentValue);
+    virtual void OnIsChargingChanged(const qcc::String& objectPath, const bool isCharging);
 };
 
 class BatteryStatusCommands : public InterfaceCommands
@@ -45,6 +47,7 @@ class BatteryStatusCommands : public InterfaceCommands
     BatteryStatusIntfController* GetInterface() { return m_intfController; }
 
     static void OnCmdGetCurrentValue(Commands* commands, std::string& cmd);
+    static void OnCmdGetIsCharging(Commands* commands, std::string& cmd);
 
   private:
     BatteryStatusIntfController* m_intfController;

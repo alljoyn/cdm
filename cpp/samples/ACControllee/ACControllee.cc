@@ -14,6 +14,8 @@
 #include "ResourceSavingListener.h"
 #include "ClimateControlModeListener.h"
 #include "FanSpeedLevelListener.h"
+#include "CurrentPowerListener.h"
+#include "EnergyUsageListener.h"
 #include "CurrentTemperatureListener.h"
 #include "TargetTemperatureListener.h"
 #include "WindDirectionListener.h"
@@ -24,6 +26,8 @@
 #include <alljoyn/hae/interfaces/operation/ResourceSavingIntfControllee.h>
 #include <alljoyn/hae/interfaces/operation/ClimateControlModeIntfControllee.h>
 #include <alljoyn/hae/interfaces/operation/FanSpeedLevelIntfControllee.h>
+#include <alljoyn/hae/interfaces/operation/CurrentPowerIntfControllee.h>
+#include <alljoyn/hae/interfaces/operation/EnergyUsageIntfControllee.h>
 #include <alljoyn/hae/interfaces/environment/CurrentTemperatureIntfControllee.h>
 #include <alljoyn/hae/interfaces/environment/TargetTemperatureIntfControllee.h>
 #include <alljoyn/hae/interfaces/environment/WindDirectionIntfControllee.h>
@@ -40,6 +44,8 @@ class ACControllee : public ControlleeSample
     ResourceSavingListener* m_resourceSavingListener;
     ClimateControlModeListener* m_climateControlModeListener;
     FanSpeedLevelListener* m_fanSpeedLevelListener;
+    CurrentPowerListener* m_currentPowerListener;
+    EnergyUsageListener* m_energyUsageListener;
     CurrentTemperatureListener* m_currentTemperatureListener;
     TargetTemperatureListener* m_targetTemperatureListener;
     WindDirectionListener* m_windDirectionListener;
@@ -50,6 +56,8 @@ class ACControllee : public ControlleeSample
     ResourceSavingIntfControllee* m_resourceSavingIntfControllee;
     ClimateControlModeIntfControllee* m_climateControlModeIntfControllee;
     FanSpeedLevelIntfControllee* m_fanSpeedLevelIntfControllee;
+    CurrentPowerIntfControllee* m_currentPowerIntfControllee;
+    EnergyUsageIntfControllee* m_energyUsageIntfControllee;
     CurrentTemperatureIntfControllee* m_currentTemperatureIntfControllee;
     TargetTemperatureIntfControllee* m_targetTemperatureIntfControllee;
     WindDirectionIntfControllee* m_windDirectionIntfControllee;
@@ -63,8 +71,8 @@ class ACControllee : public ControlleeSample
 
 ACControllee::ACControllee(BusAttachment* bus, HaeAboutData* aboutData)
   : ControlleeSample(bus, aboutData),
-    m_onOffStatusListener(NULL), m_onControlListener(NULL), m_offControlListener(NULL), m_resourceSavingListener(NULL), m_climateControlModeListener(NULL), m_fanSpeedLevelListener(NULL), m_currentTemperatureListener(NULL), m_targetTemperatureListener(NULL), m_windDirectionListener(NULL),
-    m_onOffStatusIntfControllee(NULL),  m_onControlIntfControllee(NULL), m_offControlIntfControllee(NULL), m_resourceSavingIntfControllee(NULL), m_climateControlModeIntfControllee(NULL),  m_fanSpeedLevelIntfControllee(NULL), m_currentTemperatureIntfControllee(NULL), m_targetTemperatureIntfControllee(NULL), m_windDirectionIntfControllee(NULL)
+    m_onOffStatusListener(NULL), m_onControlListener(NULL), m_offControlListener(NULL), m_resourceSavingListener(NULL), m_climateControlModeListener(NULL), m_fanSpeedLevelListener(NULL), m_currentPowerListener(NULL), m_energyUsageListener(NULL), m_currentTemperatureListener(NULL), m_targetTemperatureListener(NULL), m_windDirectionListener(NULL),
+    m_onOffStatusIntfControllee(NULL),  m_onControlIntfControllee(NULL), m_offControlIntfControllee(NULL), m_resourceSavingIntfControllee(NULL), m_climateControlModeIntfControllee(NULL),  m_fanSpeedLevelIntfControllee(NULL), m_currentPowerIntfControllee(NULL), m_energyUsageIntfControllee(NULL), m_currentTemperatureIntfControllee(NULL), m_targetTemperatureIntfControllee(NULL), m_windDirectionIntfControllee(NULL)
 {
     m_onOffStatusListener = new OnOffStatusListener();
     m_onControlListener = new OnControlListener();
@@ -72,6 +80,8 @@ ACControllee::ACControllee(BusAttachment* bus, HaeAboutData* aboutData)
     m_resourceSavingListener = new ResourceSavingListener();
     m_climateControlModeListener = new ClimateControlModeListener();
     m_fanSpeedLevelListener = new FanSpeedLevelListener();
+    m_currentPowerListener = new CurrentPowerListener();
+    m_energyUsageListener = new EnergyUsageListener();
     m_currentTemperatureListener = new CurrentTemperatureListener();
     m_targetTemperatureListener = new TargetTemperatureListener();
     m_windDirectionListener = new WindDirectionListener();
@@ -96,6 +106,12 @@ ACControllee::~ACControllee()
     }
     if (m_fanSpeedLevelListener) {
         delete m_fanSpeedLevelListener;
+    }
+    if (m_currentPowerListener) {
+        delete m_currentPowerListener;
+    }
+    if (m_energyUsageListener) {
+        delete m_energyUsageListener;
     }
     if (m_currentTemperatureListener) {
         delete m_currentTemperatureListener;
@@ -128,6 +144,10 @@ void ACControllee::CreateInterfaces()
     m_climateControlModeIntfControllee = static_cast<ClimateControlModeIntfControllee*>(intf);
     intf = haeControllee->CreateInterface(FAN_SPEED_LEVEL_INTERFACE, "/Hae/AirConditioner", *m_fanSpeedLevelListener);
     m_fanSpeedLevelIntfControllee = static_cast<FanSpeedLevelIntfControllee*>(intf);
+    intf = haeControllee->CreateInterface(CURRENT_POWER_INTERFACE, "/Hae/AirConditioner", *m_currentPowerListener);
+    m_currentPowerIntfControllee = static_cast<CurrentPowerIntfControllee*>(intf);
+    intf = haeControllee->CreateInterface(ENERGY_USAGE_INTERFACE, "/Hae/AirConditioner", *m_energyUsageListener);
+    m_energyUsageIntfControllee = static_cast<EnergyUsageIntfControllee*>(intf);
     intf = haeControllee->CreateInterface(CURRENT_TEMPERATURE_INTERFACE, "/Hae/AirConditioner", *m_currentTemperatureListener);
     m_currentTemperatureIntfControllee = static_cast<CurrentTemperatureIntfControllee*>(intf);
     intf = haeControllee->CreateInterface(TARGET_TEMPERATURE_INTERFACE, "/Hae/AirConditioner", *m_targetTemperatureListener);
@@ -149,8 +169,14 @@ void ACControllee::SetInitialProperty()
     }
 
     if (m_climateControlModeIntfControllee) {
-        uint16_t mode = 0; // off
+        ClimateControlModeInterface::SupportedModes supportedModes;
+        supportedModes.push_back(ClimateControlModeInterface::CLIMATE_CONTROL_MODE_OFF);
+        supportedModes.push_back(ClimateControlModeInterface::CLIMATE_CONTROL_MODE_COOL);
+        m_climateControlModeIntfControllee->SetSupportedModes(supportedModes);
+        uint16_t mode = ClimateControlModeInterface::CLIMATE_CONTROL_MODE_OFF;
         m_climateControlModeIntfControllee->SetMode(mode);
+        uint16_t operationalState = ClimateControlModeInterface::CLIMATE_CONTROL_OPERATIONAL_STATE_IDLE;
+        m_climateControlModeIntfControllee->SetOperationalState(operationalState);
     }
 
     if (m_fanSpeedLevelIntfControllee) {
@@ -163,6 +189,26 @@ void ACControllee::SetInitialProperty()
         m_fanSpeedLevelIntfControllee->SetMaxFanSpeedLevel(maxlevel);
     }
 
+    if (m_currentPowerIntfControllee) {
+        double currentPower = 20;
+        double precision = 10;
+        uint16_t updateMinTime = 1;
+
+        m_currentPowerIntfControllee->SetCurrentPower(currentPower);
+        m_currentPowerIntfControllee->SetPrecision(precision);
+        m_currentPowerIntfControllee->SetUpdateMinTime(updateMinTime);
+    }
+
+    if (m_energyUsageIntfControllee) {
+        double cumulativeEnergy = 0.0;
+        double precision = 0.1;
+        uint16_t updateMinTime = 10000;
+
+        m_energyUsageIntfControllee->SetCumulativeEnergy(cumulativeEnergy);
+        m_energyUsageIntfControllee->SetPrecision(precision);
+        m_energyUsageIntfControllee->SetUpdateMinTime(updateMinTime);
+    }
+
     if (m_currentTemperatureIntfControllee) {
         double currentValue = 0;
         m_currentTemperatureIntfControllee->SetCurrentValue(currentValue);
@@ -172,10 +218,13 @@ void ACControllee::SetInitialProperty()
         double maxvalue = 30;
         double minvalue = -30;
         double targetvalue = 0;
+        double stepvalue = 5;
 
         m_targetTemperatureIntfControllee->SetMaxValue(maxvalue);
         m_targetTemperatureIntfControllee->SetMinValue(minvalue);
         m_targetTemperatureIntfControllee->SetTargetValue(targetvalue);
+        m_targetTemperatureIntfControllee->SetStepValue(stepvalue);
+        m_targetTemperatureIntfControllee->SetStrategyOfAdjustingTargetValue(TargetTemperatureIntfControllee::ROUNDING_TO_NEAREST_VALUE);
     }
 
     if (m_windDirectionIntfControllee) {

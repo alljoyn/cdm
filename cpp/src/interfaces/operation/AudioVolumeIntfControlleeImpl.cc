@@ -55,6 +55,11 @@ QStatus AudioVolumeIntfControlleeImpl::Init()
 
 QStatus AudioVolumeIntfControlleeImpl::SetVolume(const uint8_t volume)
 {
+    if (volume > m_maxVolume) {
+        QCC_LogError(ER_INVALID_DATA, ("%s: Out of range.", __func__));
+        return ER_INVALID_DATA;
+    }
+
     if (m_volume != volume) {
         MsgArg val;
         val.typeId = ALLJOYN_BYTE;
@@ -85,6 +90,9 @@ QStatus AudioVolumeIntfControlleeImpl::SetMaxVolume(const uint8_t maxVolume)
         val.v_byte = maxVolume;
         m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_MaxVolume.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
         m_maxVolume = maxVolume;
+        if (m_maxVolume < m_volume) {
+            SetVolume(m_maxVolume);
+        }
     }
     return ER_OK;
 }
@@ -172,6 +180,9 @@ QStatus AudioVolumeIntfControlleeImpl::OnSetProperty(const String propName, MsgA
             return status;
         }
         uint8_t volume = val.v_byte;
+        if (volume > m_maxVolume) {
+            volume = m_maxVolume;
+        }
         status = m_interfaceListener.OnSetVolume(volume);
         if (status != ER_OK) {
             QCC_LogError(status, ("%s: failed to set property value", __func__));

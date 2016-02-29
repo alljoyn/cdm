@@ -59,7 +59,7 @@ std::map<HaeInterfaceType, qcc::String> InterfaceTypesMap = {
     {REMOTE_CONTROLLABILITY_INTERFACE, "org.alljoyn.SmartSpaces.Operation.RemoteControllability"},
     {REPEAT_MODE_INTERFACE, "org.alljoyn.SmartSpaces.Operation.RepeatMode"},
     {RESOURCE_SAVING_INTERFACE, "org.alljoyn.SmartSpaces.Operation.ResourceSaving"},
-    {ROBOT_CLEANING_CYCLE_INTERFACE, "org.alljoyn.SmartSpaces.Operation.RobotCleaningCycle"},
+    {ROBOT_CLEANING_CYCLE_PHASE_INTERFACE, "org.alljoyn.SmartSpaces.Operation.RobotCleaningCyclePhase"},
     {SOIL_LEVEL_INTERFACE, "org.alljoyn.SmartSpaces.Operation.SoilLevel"},
     {SPIN_SPEED_LEVEL_INTERFACE, "org.alljoyn.SmartSpaces.Operation.SpinSpeedLevel"},
     {TIMER_INTERFACE, "org.alljoyn.SmartSpaces.Operation.Timer"},

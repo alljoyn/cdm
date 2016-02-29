@@ -189,10 +189,16 @@ QStatus WindDirectionIntfControlleeImpl::OnSetProperty(const String propName, Ms
 
     if (!(s_prop_HorizontalDirection.compare(propName))) {
         if (val.typeId != ALLJOYN_UINT16) {
-            status = ER_BUS_NO_SUCH_PROPERTY;
-            return status;
+            return ER_BUS_NO_SUCH_PROPERTY;
         }
-        uint16_t value = val.v_uint16;
+
+        if (m_HorizontalMax == 0) {
+            // return ErrorMsg org.alljoyn.Error.FeatureNotAvailable
+            QCC_LogError(ER_BUS_SET_PROPERTY_REJECTED, ("%s: HorizontalDirection feature is not available", __func__));
+            return ER_BUS_SET_PROPERTY_REJECTED;
+        }
+
+        uint16_t value = adjustHorizontalDirection(val.v_uint16);
         status = m_interfaceListener.OnSetHorizontalDirection(value);
         if (status != ER_OK) {
             QCC_LogError(status, ("%s: failed to set property value", __func__));
@@ -205,7 +211,24 @@ QStatus WindDirectionIntfControlleeImpl::OnSetProperty(const String propName, Ms
             status = ER_BUS_NO_SUCH_PROPERTY;
             return status;
         }
+        if (m_HorizontalAutoMode == 0xFF) {
+            // return ErrorMsg org.alljoyn.Error.FeatureNotAvailable
+            QCC_LogError(ER_BUS_SET_PROPERTY_REJECTED, ("%s: HorizontalAutoMode is not supported", __func__));
+            return ER_BUS_SET_PROPERTY_REJECTED;
+        }
+
         uint8_t value = val.v_byte;
+        if (value == 0xFF) {      // The controller shall not set 0xFF(not supported)
+            QCC_LogError(ER_INVALID_DATA, ("%s: Setting HorizontalAutoMode for 0xFF is rejected", __func__));
+            return ER_INVALID_DATA;
+        }
+
+        if (!isHorizontalAutoModeValid(value)) {
+            // return ErrorMsg org.alljoyn.Error.InvalidValue
+            QCC_LogError(ER_BUS_PROPERTY_VALUE_NOT_SET, ("%s: value is invalid", __func__));
+            return ER_BUS_PROPERTY_VALUE_NOT_SET;
+        }
+
         status = m_interfaceListener.OnSetHorizontalAutoMode(value);
         if (status != ER_OK) {
             QCC_LogError(status, ("%s: failed to set property value", __func__));
@@ -213,11 +236,19 @@ QStatus WindDirectionIntfControlleeImpl::OnSetProperty(const String propName, Ms
         } else {
             SetHorizontalAutoMode(value); // update the value in WindDirectionIntfControllee.
         }
+
     } else if (!(s_prop_VerticalDirection.compare(propName))) {
         if (val.typeId != ALLJOYN_UINT16) {
             status = ER_BUS_NO_SUCH_PROPERTY;
             return status;
         }
+
+        if (m_VerticalMax == 0) {
+            // return ErrorMsg org.alljoyn.Error.FeatureNotAvailable
+            QCC_LogError(ER_BUS_SET_PROPERTY_REJECTED, ("%s: VerticalDirection feature is not available", __func__));
+            return ER_BUS_SET_PROPERTY_REJECTED;
+        }
+
         uint16_t value = val.v_uint16;
         status = m_interfaceListener.OnSetVerticalDirection(value);
         if (status != ER_OK) {
@@ -231,7 +262,25 @@ QStatus WindDirectionIntfControlleeImpl::OnSetProperty(const String propName, Ms
             status = ER_BUS_NO_SUCH_PROPERTY;
             return status;
         }
+
+        if (m_VerticalAutoMode == 0xFF) {
+            // return ErrorMsg org.alljoyn.Error.FeatureNotAvailable
+            QCC_LogError(ER_BUS_SET_PROPERTY_REJECTED, ("%s: VerticalAutoMode is not supported", __func__));
+            return ER_BUS_SET_PROPERTY_REJECTED;
+        }
+
         uint8_t value = val.v_byte;
+        if (value == 0xFF) {      // The controller shall not set 0xFF(not supported)
+            QCC_LogError(ER_INVALID_DATA, ("%s: Setting VerticalAutoMode for 0xFF is rejected", __func__));
+            return ER_INVALID_DATA;
+        }
+
+        if (!isVerticalAutoModeValid(value)) {
+            // return ErrorMsg org.alljoyn.Error.InvalidValue
+            QCC_LogError(ER_BUS_PROPERTY_VALUE_NOT_SET, ("%s: value is invalid", __func__));
+            return ER_BUS_PROPERTY_VALUE_NOT_SET;
+        }
+
         status = m_interfaceListener.OnSetVerticalAutoMode(value);
         if (status != ER_OK) {
             QCC_LogError(status, ("%s: failed to set property value", __func__));
@@ -269,21 +318,25 @@ void WindDirectionIntfControlleeImpl::OnMethodHandler(const InterfaceDescription
 
 QStatus WindDirectionIntfControlleeImpl::SetHorizontalDirection(const uint16_t value)
 {
-    QStatus status = ER_OK;
-    if ( value < 0 || value > this->m_HorizontalMax ) {
-        status = ER_FAIL;
-        QCC_LogError(status, ("%s: HorizontalDirection is out of range. ", __func__));
-    } else {
-        if (m_HorizontalDirection != value) {
-            MsgArg val;
-            val.typeId = ALLJOYN_UINT16;
-            val.v_uint16 = value;
-            m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_HorizontalDirection.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
-            m_HorizontalDirection = value;
-        }
+    if (m_HorizontalMax == 0) {
+        QCC_LogError(ER_FAIL, ("%s: Setting horizontal wind direction is not supported. ", __func__));
+        return ER_FAIL;
     }
 
-    return status;
+    if ( value < 0 || value > this->m_HorizontalMax ) {
+        QCC_LogError(ER_FAIL, ("%s: HorizontalDirection is out of range. ", __func__));
+        return ER_FAIL;
+    }
+
+    if (m_HorizontalDirection != value) {
+        MsgArg val;
+        val.typeId = ALLJOYN_UINT16;
+        val.v_uint16 = value;
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_HorizontalDirection.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        m_HorizontalDirection = value;
+    }
+
+    return ER_OK;
 }
 
 QStatus WindDirectionIntfControlleeImpl::SetHorizontalMax(const uint16_t value)
@@ -301,6 +354,11 @@ QStatus WindDirectionIntfControlleeImpl::SetHorizontalMax(const uint16_t value)
 
 QStatus WindDirectionIntfControlleeImpl::SetHorizontalAutoMode(const uint8_t value)
 {
+    if (!isHorizontalAutoModeValid(value)) {
+        QCC_LogError(ER_FAIL, ("%s: value is not valid. ", __func__));
+        return ER_FAIL;
+    }
+
     if (m_HorizontalAutoMode != value) {
         MsgArg val;
         val.typeId = ALLJOYN_BYTE;
@@ -315,21 +373,25 @@ QStatus WindDirectionIntfControlleeImpl::SetHorizontalAutoMode(const uint8_t val
 
 QStatus WindDirectionIntfControlleeImpl::SetVerticalDirection(const uint16_t value)
 {
-    QStatus status = ER_OK;
-    if ( value < 0 || value > this->m_VerticalMax ) {
-        status = ER_FAIL;
-        QCC_LogError(status, ("%s: VerticalDirection is out of range. ", __func__));
-    } else {
-        if (m_VerticalDirection != value) {
-            MsgArg val;
-            val.typeId = ALLJOYN_UINT16;
-            val.v_uint16 = value;
-            m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_VerticalDirection.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
-            m_VerticalDirection = value;
-        }
+    if (m_VerticalMax == 0) {
+        QCC_LogError(ER_FAIL, ("%s: Setting horizontal wind direction is not supported. ", __func__));
+        return ER_FAIL;
     }
 
-    return status;
+    if ( value < 0 || value > this->m_VerticalMax ) {
+        QCC_LogError(ER_FAIL, ("%s: VerticalDirection is out of range. ", __func__));
+        return ER_FAIL;
+    }
+
+    if (m_VerticalDirection != value) {
+        MsgArg val;
+        val.typeId = ALLJOYN_UINT16;
+        val.v_uint16 = value;
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_VerticalDirection.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        m_VerticalDirection = value;
+    }
+
+    return ER_OK;
 }
 
 QStatus WindDirectionIntfControlleeImpl::SetVerticalMax(const uint16_t value)
@@ -347,6 +409,11 @@ QStatus WindDirectionIntfControlleeImpl::SetVerticalMax(const uint16_t value)
 
 QStatus WindDirectionIntfControlleeImpl::SetVerticalAutoMode(const uint8_t value)
 {
+    if (!isVerticalAutoModeValid(value)) {
+        QCC_LogError(ER_FAIL, ("%s: value is not valid. ", __func__));
+        return ER_FAIL;
+    }
+
     if (m_VerticalAutoMode != value) {
         MsgArg val;
         val.typeId = ALLJOYN_BYTE;
@@ -356,6 +423,44 @@ QStatus WindDirectionIntfControlleeImpl::SetVerticalAutoMode(const uint8_t value
     }
 
     return ER_OK;
+}
+
+uint16_t WindDirectionIntfControlleeImpl::adjustHorizontalDirection(uint16_t horizontalDirection)
+{
+    return horizontalDirection > m_HorizontalMax ? m_HorizontalMax : horizontalDirection;
+}
+
+bool WindDirectionIntfControlleeImpl::isHorizontalAutoModeValid(uint8_t horizontalAutoMode) {
+    if (m_HorizontalAutoMode == 0xFF)
+        return false;
+
+    switch (horizontalAutoMode) {
+    case 0x00:
+    case 0x01:
+    case 0xFF:
+        return true;
+    default:
+        return false;
+    }
+}
+
+uint16_t WindDirectionIntfControlleeImpl::adjustVerticalDirection(uint16_t verticalDirection)
+{
+    return verticalDirection > m_VerticalMax ? m_VerticalMax : verticalDirection;
+}
+
+bool WindDirectionIntfControlleeImpl::isVerticalAutoModeValid(uint8_t verticalAutoMode) {
+    if (m_VerticalAutoMode == 0xFF)
+        return false;
+
+    switch (verticalAutoMode) {
+    case 0x00:
+    case 0x01:
+    case 0xFF:
+        return true;
+    default:
+        return false;
+    }
 }
 
 } //namespace services

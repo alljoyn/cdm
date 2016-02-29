@@ -28,7 +28,7 @@ class ClimateControlModeListener : public ClimateControlModeIntfControlleeListen
     virtual QStatus OnSetMode(const uint16_t& mode);
     virtual QStatus OnGetMode(uint16_t& mode);
     virtual QStatus OnGetSupportedModes(SupportedModes& modes);
-    virtual QStatus OnGetOperatingState(uint16_t& operatingState);
+    virtual QStatus OnGetOperationalState(uint16_t& operationalState);
 };
 
 #endif /* CLIMATECONTROLMODELISTENER_H_ */

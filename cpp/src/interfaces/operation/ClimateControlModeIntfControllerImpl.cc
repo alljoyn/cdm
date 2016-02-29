@@ -92,10 +92,10 @@ QStatus ClimateControlModeIntfControllerImpl::GetSupportedModes(void* context)
     return status;
 }
 
-QStatus ClimateControlModeIntfControllerImpl::GetOperatingState(void* context)
+QStatus ClimateControlModeIntfControllerImpl::GetOperationalState(void* context)
 {
     QStatus status = ER_OK;
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_OperatingState.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&ClimateControlModeIntfControllerImpl::GetOperatingStatePropertyCB, context);
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_OperationalState.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&ClimateControlModeIntfControllerImpl::GetOperationalStatePropertyCB, context);
     return status;
 }
 
@@ -118,17 +118,6 @@ void ClimateControlModeIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj
             }
         } else if (!s_prop_SupportedModes.compare(propNameStr)) {
             if (propValue->typeId == ALLJOYN_UINT16_ARRAY) {
-//
-//                const MsgArg* args = propValue->v_array.GetElements();
-//                size_t argsNum = propValue->v_array.GetNumElements();
-//                ClimateControlModeIntfControllerListener::SupportedModes supportedmodes;
-//
-//                for(size_t i=0; i<argsNum; i++) {
-//                    uint16_t mode;
-//                    args[i].Get("q", &mode);
-//                    supportedmodes.push_back(mode);
-//                }
-
                 SupportedModes supportedmodes;
                 uint16_t *vals;
                 size_t numVals;
@@ -141,12 +130,11 @@ void ClimateControlModeIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj
                 }
 
                 m_interfaceListener.OnSupportedModesChanged(obj.GetPath(), supportedmodes);
-
             }
-        } else if (!s_prop_OperatingState.compare(propNameStr)) {
+        } else if (!s_prop_OperationalState.compare(propNameStr)) {
             if (propValue->typeId == ALLJOYN_UINT16) {
                 uint16_t value = propValue->v_uint16;
-                m_interfaceListener.OnOperatingStateChanged(obj.GetPath(), value);
+                m_interfaceListener.OnOperationalStateChanged(obj.GetPath(), value);
             }
         }
     }
@@ -197,7 +185,7 @@ void ClimateControlModeIntfControllerImpl::GetSupportedModesPropertyCB(QStatus s
     m_interfaceListener.OnResponseGetSupportedModes(status, obj->GetPath(), supportedmodes, context);
 }
 
-void ClimateControlModeIntfControllerImpl::GetOperatingStatePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
+void ClimateControlModeIntfControllerImpl::GetOperationalStatePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
     if (!obj) {
         return;
@@ -205,7 +193,7 @@ void ClimateControlModeIntfControllerImpl::GetOperatingStatePropertyCB(QStatus s
 
     uint16_t val;
     value.Get("q", &val);
-    m_interfaceListener.OnResponseGetOperatingState(status, obj->GetPath(), val, context);
+    m_interfaceListener.OnResponseGetOperationalState(status, obj->GetPath(), val, context);
 }
 
 } //namespace services

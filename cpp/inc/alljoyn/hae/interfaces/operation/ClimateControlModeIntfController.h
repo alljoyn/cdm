@@ -66,11 +66,11 @@ class ClimateControlModeIntfController : public ClimateControlModeInterface {
     virtual QStatus GetSupportedModes(void* context = NULL) = 0;
 
     /**
-     * Get operating state
+     * Get operational state
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus GetOperatingState(void* context = NULL) = 0;
+    virtual QStatus GetOperationalState(void* context = NULL) = 0;
 };
 
 } //namespace services

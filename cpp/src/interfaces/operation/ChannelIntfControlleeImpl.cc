@@ -201,7 +201,7 @@ void ChannelIntfControlleeImpl::OnGetChannelList(const InterfaceDescription::Mem
         if (status == ER_OK) {
             int numReturned = listOfChannelInfoRecords.size();
             ChannelInterface::ChannelInfoRecords::const_iterator citer;
-            MsgArg *args = new MsgArg[numReturned];
+            MsgArg* args = new MsgArg[numReturned];
             MsgArg retArgs[1];
             int i = 0;
 
@@ -212,7 +212,7 @@ void ChannelIntfControlleeImpl::OnGetChannelList(const InterfaceDescription::Mem
             status = retArgs[0].Set("a(sss)", i, args);
 
             status = m_busObject.ReplyMethodCall(msg, retArgs, ArraySize(retArgs));
-            delete [] args;
+            delete[] args;
         } else {
             if (errorCode == NOT_ERROR) {
                 QCC_LogError(status, ("%s: status is not ER_OK, but errorCode was not set.", __func__));

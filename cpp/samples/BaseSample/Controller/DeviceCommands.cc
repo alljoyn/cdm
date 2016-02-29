@@ -5,7 +5,6 @@
 #include "AudioVolumeCommands.h"
 #include "ChannelCommands.h"
 #include "AudioVideoInputCommands.h"
-#include "ClosedStatusCommands.h"
 #include "HidCommands.h"
 #include "OnControlCommands.h"
 #include "OffControlCommands.h"
@@ -20,6 +19,9 @@
 #include "VendorDefinedCommands.h"
 #include "BatteryStatusCommands.h"
 #include "RepeatModeCommands.h"
+#include "RobotCleaningCyclePhaseCommands.h"
+#include "CurrentPowerCommands.h"
+#include "EnergyUsageCommands.h"
 
 DeviceCommands::DeviceCommands(ControllerSample* sample, DeviceInfoPtr& info)
 : ControllerCommands(sample)
@@ -125,10 +127,15 @@ Commands* DeviceCommands::CreateInterfaceCommands(Commands* commands, const char
         intfCommands = new AirRecirculationModeCommands(sample, info, objectPath);
     } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Operation.RepeatMode", strlen(intfName))) {
         intfCommands = new RepeatModeCommands(sample, info, objectPath);
+    } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Operation.RobotCleaningCyclePhase", strlen(intfName))) {
+        intfCommands = new RobotCleaningCyclePhaseCommands(sample, info, objectPath);
+    } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Operation.EnergyUsage", strlen(intfName))) {
+        intfCommands = new EnergyUsageCommands(sample, info, objectPath);
     } else if (!strncmp(intfName, "com.foo.bar.test", strlen(intfName))) {
         intfCommands = new VendorDefinedCommands(sample, info, objectPath);
-    } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Operation.ClosedStatus", strlen(intfName))){
-        intfCommands = new ClosedStatusCommands(sample, info, objectPath);
+    } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Operation.CurrentPower", strlen(intfName))) {
+        intfCommands = new CurrentPowerCommands(sample, info, objectPath);
     }
+
     return intfCommands;
 }

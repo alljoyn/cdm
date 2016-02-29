@@ -20,6 +20,7 @@
 #include <alljoyn/hae/interfaces/environment/TargetTemperatureIntfControlleeListener.h>
 #include <alljoyn/hae/HaeBusObject.h>
 #include "TargetTemperatureIntfControlleeImpl.h"
+#include <cmath>
 
 using namespace qcc;
 using namespace std;
@@ -41,7 +42,8 @@ TargetTemperatureIntfControlleeImpl::TargetTemperatureIntfControlleeImpl(BusAtta
     m_TargetValue(0),
     m_MinValue(0),
     m_MaxValue(100),
-    m_StepValue(1)
+    m_StepValue(1),
+    m_currentStrategy(ROUNDING_TO_NEAREST_VALUE)
 {
 }
 
@@ -157,7 +159,7 @@ QStatus TargetTemperatureIntfControlleeImpl::OnSetProperty(const String propName
             status = ER_BUS_NO_SUCH_PROPERTY;
             return status;
         }
-        double value = val.v_double;
+        double value = adjustTargetValue(val.v_double);
         status = m_interfaceListener.OnSetTargetValue(value);
         if (status != ER_OK) {
             QCC_LogError(status, ("%s: failed to set property value", __func__));
@@ -195,21 +197,25 @@ void TargetTemperatureIntfControlleeImpl::OnMethodHandler(const InterfaceDescrip
 
 QStatus TargetTemperatureIntfControlleeImpl::SetTargetValue(const double value)
 {
-    QStatus status = ER_OK;
-    if ( value < m_MinValue || value > m_MaxValue ) {
-        status = ER_FAIL;
-        QCC_LogError(status, ("%s: TargetTemperature is out of range. ", __func__));
-    } else {
-        if (m_TargetValue != value) {
-            MsgArg val;
-            val.typeId = ALLJOYN_DOUBLE;
-            val.v_double = value;
-            m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_TargetValue.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
-            m_TargetValue = value;
-        }
+    if (value < m_MinValue || value > m_MaxValue) {
+        QCC_LogError(ER_FAIL, ("%s: TargetTemperature is out of range. ", __func__));
+        return ER_FAIL;
     }
 
-    return status;
+    if (m_StepValue != 0 && std::fmod(value - m_MinValue, m_StepValue) != 0.0) {
+        QCC_LogError(ER_FAIL, ("%s: TargetTemperature doesn't match with the granularity of the current step. ", __func__));
+        return ER_FAIL;
+    }
+
+    if (m_TargetValue != value) {
+        MsgArg val;
+        val.typeId = ALLJOYN_DOUBLE;
+        val.v_double = value;
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_TargetValue.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        m_TargetValue = value;
+    }
+
+    return ER_OK;
 }
 
 QStatus TargetTemperatureIntfControlleeImpl::SetMinValue(const double value)
@@ -251,7 +257,35 @@ QStatus TargetTemperatureIntfControlleeImpl::SetStepValue(const double value)
     return ER_OK;
 }
 
+QStatus TargetTemperatureIntfControlleeImpl::SetStrategyOfAdjustingTargetValue(AdjustTargetValue strategy) {
+    switch(strategy) {
+    case ROUNDING_TO_NEAREST_VALUE:
+    case ROUNDING_OFF:
+    case ROUNDING_UP:
+        return ER_OK;
+    default:
+        return ER_FAIL;
+    }
+}
 
+double TargetTemperatureIntfControlleeImpl::adjustTargetValue(double value) {
+    if (m_StepValue == 0)
+        return value;
+
+    double div = value/m_StepValue;
+    switch(m_currentStrategy) {
+    case ROUNDING_OFF:
+        value = std::floor(div) * m_StepValue;
+        break;
+    case ROUNDING_TO_NEAREST_VALUE:
+        value = std::floor(div + 0.5) * m_StepValue;
+        break;
+    case ROUNDING_UP:
+        value = std::ceil(div) * m_StepValue;
+        break;
+    }
+    return (value < m_MinValue) ? m_MinValue : (value > m_MaxValue ? m_MaxValue : value);
+}
 
 
 } //namespace services

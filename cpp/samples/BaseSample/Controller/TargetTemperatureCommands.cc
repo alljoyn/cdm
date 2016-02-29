@@ -149,7 +149,7 @@ void TargetTemperatureCommands::OnCmdSetTargetValue(Commands* commands, std::str
     }
 
     double value = strtol(cmd.c_str(), NULL, 10);
-    if (value < 18 || value > 30) {
+    if (value < -30 || value > 30) {
         cout << "Input argument is wrong." << endl;
         return;
     }

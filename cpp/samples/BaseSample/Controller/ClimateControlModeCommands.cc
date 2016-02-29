@@ -55,12 +55,12 @@ void ClimateControlModeListener::OnResponseGetSupportedModes(QStatus status, con
     cout << endl;
 }
 
-void ClimateControlModeListener::OnResponseGetOperatingState(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context)
+void ClimateControlModeListener::OnResponseGetOperationalState(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context)
 {
     cout << __func__ << endl;
     cout << "status: " << QCC_StatusText(status) << endl;
     cout << "path: " << objectPath << endl;
-    cout << "OperatingState: " << value << endl;
+    cout << "OperationalState: " << value << endl;
 }
 
 void ClimateControlModeListener::OnModeChanged(const qcc::String& objectPath, const uint16_t value)
@@ -83,11 +83,11 @@ void ClimateControlModeListener::OnSupportedModesChanged(const qcc::String& obje
 
 }
 
-void ClimateControlModeListener::OnOperatingStateChanged(const qcc::String& objectPath, const uint16_t value)
+void ClimateControlModeListener::OnOperationalStateChanged(const qcc::String& objectPath, const uint16_t value)
 {
     cout << __func__ << endl;
     cout << "path: " << objectPath << endl;
-    cout << "OperatingState: " << value << endl;
+    cout << "OperationalState: " << value << endl;
 }
 
 
@@ -117,7 +117,7 @@ void ClimateControlModeCommands::Init()
     RegisterCommand(&ClimateControlModeCommands::OnCmdGetMode, "getmode", "Get Mode");
     RegisterCommand(&ClimateControlModeCommands::OnCmdSetMode, "setmode", "Set Mode");
     RegisterCommand(&ClimateControlModeCommands::OnCmdGetSupportedModes, "getsm", "Get SupportedModes");
-    RegisterCommand(&ClimateControlModeCommands::OnCmdGetOperatingState, "getos", "Get OperatingState");
+    RegisterCommand(&ClimateControlModeCommands::OnCmdGetOperationalState, "getos", "Get OperationalState");
 
     PrintCommands();
 }
@@ -163,7 +163,7 @@ void ClimateControlModeCommands::OnCmdGetSupportedModes(Commands* commands, std:
     intfController->GetSupportedModes();
 }
 
-void ClimateControlModeCommands::OnCmdGetOperatingState(Commands* commands, std::string& cmd)
+void ClimateControlModeCommands::OnCmdGetOperationalState(Commands* commands, std::string& cmd)
 {
     ClimateControlModeIntfController* intfController = static_cast<ClimateControlModeCommands*>(commands)->GetInterface();
 
@@ -172,7 +172,7 @@ void ClimateControlModeCommands::OnCmdGetOperatingState(Commands* commands, std:
         return;
     }
 
-    intfController->GetOperatingState();
+    intfController->GetOperationalState();
 }
 
 
