@@ -32,10 +32,12 @@ Folder Structure
 |   +---TvControllee
 |   \---VDIControllee
 \---src
-    \---interfaces
-        +---environment
-        +---input
-        \---operation
+|   \---interfaces
+|       +---environment
+|       +---input
+|       \---operation
+\---unittest
+
 </pre>
 
  * cpp/code_template : Generator of HAE interfaces skeleton codes
@@ -94,6 +96,15 @@ hae/
     - bin : IntegratedController, TvControllee
     - lib : liballjoyn_hae.a, liballjoyn_hae.so
     - inc : header files
+
+Unit Tests
+-------
+  * Build unit tests
+To build the unit tests add a GTEST_DIR='<your local path>/GTEST/googletest' 
+parameter to the scons command line.
+
+tests can be found and run from:
+<root-source-dir>/services/hae/build/{OS}/{CPU}/{VARIANT}/test/hae/bin
 
 Doxygen
 -------
