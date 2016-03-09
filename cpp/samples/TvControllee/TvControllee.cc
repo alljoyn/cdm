@@ -68,7 +68,7 @@ TvControllee::~TvControllee()
         delete m_hidListener;
     }
     if(m_closedStatusListener){
-    	delete m_closedStatusListener;
+        delete m_closedStatusListener;
     }
 }
 

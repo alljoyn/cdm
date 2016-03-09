@@ -1,0 +1,96 @@
+/******************************************************************************
+ * Copyright AllSeen Alliance. All rights reserved.
+ *
+ *    Permission to use, copy, modify, and/or distribute this software for any
+ *    purpose with or without fee is hereby granted, provided that the above
+ *    copyright notice and this permission notice appear in all copies.
+ *
+ *    THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ *    WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ *    MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ *    ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ *    WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ *    ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ ******************************************************************************/
+
+#ifndef OVENCYCLEPHASEINTERFACE_H_
+#define OVENCYCLEPHASEINTERFACE_H_
+
+#include <vector>
+#include <qcc/String.h>
+#include <alljoyn/Status.h>
+#include <alljoyn/hae/interfaces/HaeInterface.h>
+
+namespace ajn {
+namespace services {
+
+/**
+ * OvenCyclePhase Interface class
+ */
+class OvenCyclePhaseInterface : public HaeInterface {
+  public:
+
+    typedef struct {
+        uint8_t phase;
+        qcc::String name;
+        qcc::String description;
+    }OvenPhaseDescriptor;
+
+    typedef enum {
+        OVEN_PHASE_UNAVAILABLE,
+        OVEN_PHASE_PREHEATING,
+        OVEN_PHASE_COOKING,
+        OVEN_PHASE_CLEANING
+    }OvenCyclePhase;
+
+    typedef std::vector<OvenCyclePhase> StandardCyclePhases;
+
+    typedef std::vector<uint8_t> SupportedCyclePhases;
+    typedef std::vector<OvenPhaseDescriptor> CyclePhaseDescriptions;
+
+    static const StandardCyclePhases m_standardCyclePhases;
+    /**
+     * Constructor of OvenCyclePhase
+     */
+    OvenCyclePhaseInterface() {}
+
+    /**
+     * Destructor of OvenCyclePhase
+     */
+    virtual ~OvenCyclePhaseInterface() {}
+
+    /**
+     * Get Interface Type
+     * @return interface type
+     */
+    const HaeInterfaceType GetInterfaceType() const { return OVEN_CYCLE_PHASE_INTERFACE; }
+
+    /**
+     * Get Introspection Xml
+     * @return xml
+     */
+    virtual const qcc::String& GetIntrospectionXml() { return s_xml; }
+
+    /**
+     * Get Interface version
+     * @return interface version
+     */
+    virtual const uint16_t GetInterfaceVersion() const { return s_interfaceVersion; }
+
+  protected:
+    static const qcc::String s_prop_Version;
+    static const qcc::String s_prop_CyclePhase;
+    static const qcc::String s_prop_SupportedCyclePhases;
+    static const qcc::String s_method_GetVendorPhasesDescription;
+
+
+  private:
+    static const qcc::String s_xml;
+    static const uint16_t s_interfaceVersion;
+};
+
+} //namespace services
+} //namespace ajn
+
+#endif /* OVENCYCLEPHASEINTERFACE_H_ */

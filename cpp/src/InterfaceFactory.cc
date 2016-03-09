@@ -44,6 +44,17 @@
 #include "interfaces/operation/RobotCleaningCyclePhaseIntfControlleeImpl.h"
 #include "interfaces/operation/CurrentPowerIntfControlleeImpl.h"
 #include "interfaces/operation/EnergyUsageIntfControlleeImpl.h"
+#include "interfaces/operation/CycleControlIntfControlleeImpl.h"
+#include "interfaces/operation/RemoteControllabilityIntfControlleeImpl.h"
+#include "interfaces/operation/RapidModeIntfControlleeImpl.h"
+#include "interfaces/operation/SoilLevelIntfControlleeImpl.h"
+#include "interfaces/operation/SpinSpeedLevelIntfControlleeImpl.h"
+#include "interfaces/environment/WaterLevelIntfControlleeImpl.h"
+#include "interfaces/operation/HeatingZoneIntfControlleeImpl.h"
+#include "interfaces/operation/DishWashingCyclePhaseIntfControlleeImpl.h"
+#include "interfaces/operation/LaundryCyclePhaseIntfControlleeImpl.h"
+#include "interfaces/operation/OvenCyclePhaseIntfControlleeImpl.h"
+#include "interfaces/operation/TimerIntfControlleeImpl.h"
 
 // Controller
 #include "interfaces/operation/AudioVolumeIntfControllerImpl.h"
@@ -66,6 +77,17 @@
 #include "interfaces/operation/RobotCleaningCyclePhaseIntfControllerImpl.h"
 #include "interfaces/operation/CurrentPowerIntfControllerImpl.h"
 #include "interfaces/operation/EnergyUsageIntfControllerImpl.h"
+#include "interfaces/operation/CycleControlIntfControllerImpl.h"
+#include "interfaces/operation/RemoteControllabilityIntfControllerImpl.h"
+#include "interfaces/operation/RapidModeIntfControllerImpl.h"
+#include "interfaces/operation/SoilLevelIntfControllerImpl.h"
+#include "interfaces/operation/SpinSpeedLevelIntfControllerImpl.h"
+#include "interfaces/environment/WaterLevelIntfControllerImpl.h"
+#include "interfaces/operation/HeatingZoneIntfControllerImpl.h"
+#include "interfaces/operation/DishWashingCyclePhaseIntfControllerImpl.h"
+#include "interfaces/operation/LaundryCyclePhaseIntfControllerImpl.h"
+#include "interfaces/operation/OvenCyclePhaseIntfControllerImpl.h"
+#include "interfaces/operation/TimerIntfControllerImpl.h"
 
 using namespace std;
 using namespace qcc;
@@ -107,6 +129,17 @@ InterfaceFactory::InterfaceFactory() :
     m_controllerCreators[ROBOT_CLEANING_CYCLE_PHASE_INTERFACE] = static_cast<CreateIntfControllerFptr>(&RobotCleaningCyclePhaseIntfControllerImpl::CreateInterface);
     m_controllerCreators[CURRENT_POWER_INTERFACE] = static_cast<CreateIntfControllerFptr>(&CurrentPowerIntfControllerImpl::CreateInterface);
     m_controllerCreators[ENERGY_USAGE_INTERFACE] = static_cast<CreateIntfControllerFptr>(&EnergyUsageIntfControllerImpl::CreateInterface);
+    m_controllerCreators[CYCLE_CONTROL_INTERFACE] = static_cast<CreateIntfControllerFptr>(&CycleControlIntfControllerImpl::CreateInterface);
+    m_controllerCreators[REMOTE_CONTROLLABILITY_INTERFACE] = static_cast<CreateIntfControllerFptr>(&RemoteControllabilityIntfControllerImpl::CreateInterface);
+    m_controllerCreators[RAPID_MODE_INTERFACE] = static_cast<CreateIntfControllerFptr>(&RapidModeIntfControllerImpl::CreateInterface);
+    m_controllerCreators[SOIL_LEVEL_INTERFACE] = static_cast<CreateIntfControllerFptr>(&SoilLevelIntfControllerImpl::CreateInterface);
+    m_controllerCreators[SPIN_SPEED_LEVEL_INTERFACE] = static_cast<CreateIntfControllerFptr>(&SpinSpeedLevelIntfControllerImpl::CreateInterface);
+    m_controllerCreators[WATER_LEVEL_INTERFACE] = static_cast<CreateIntfControllerFptr>(&WaterLevelIntfControllerImpl::CreateInterface);
+    m_controllerCreators[HEATING_ZONE_INTERFACE] = static_cast<CreateIntfControllerFptr>(&HeatingZoneIntfControllerImpl::CreateInterface);
+    m_controllerCreators[DISH_WASHING_CYCLE_PHASE_INTERFACE] = static_cast<CreateIntfControllerFptr>(&DishWashingCyclePhaseIntfControllerImpl::CreateInterface);
+    m_controllerCreators[LAUNDRY_CYCLE_PHASE_INTERFACE] = static_cast<CreateIntfControllerFptr>(&LaundryCyclePhaseIntfControllerImpl::CreateInterface);
+    m_controllerCreators[OVEN_CYCLE_PHASE_INTERFACE] = static_cast<CreateIntfControllerFptr>(&OvenCyclePhaseIntfControllerImpl::CreateInterface);
+    m_controllerCreators[TIMER_INTERFACE] = static_cast<CreateIntfControllerFptr>(&TimerIntfControllerImpl::CreateInterface);
 
     // Controllee
     m_controlleeCreators[CHANNEL_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&ChannelIntfControlleeImpl::CreateInterface);
@@ -129,6 +162,17 @@ InterfaceFactory::InterfaceFactory() :
     m_controlleeCreators[ROBOT_CLEANING_CYCLE_PHASE_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&RobotCleaningCyclePhaseIntfControlleeImpl::CreateInterface);
     m_controlleeCreators[CURRENT_POWER_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&CurrentPowerIntfControlleeImpl::CreateInterface);
     m_controlleeCreators[ENERGY_USAGE_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&EnergyUsageIntfControlleeImpl::CreateInterface);
+    m_controlleeCreators[CYCLE_CONTROL_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&CycleControlIntfControlleeImpl::CreateInterface);
+    m_controlleeCreators[REMOTE_CONTROLLABILITY_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&RemoteControllabilityIntfControlleeImpl::CreateInterface);
+    m_controlleeCreators[RAPID_MODE_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&RapidModeIntfControlleeImpl::CreateInterface);
+    m_controlleeCreators[SOIL_LEVEL_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&SoilLevelIntfControlleeImpl::CreateInterface);
+    m_controlleeCreators[SPIN_SPEED_LEVEL_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&SpinSpeedLevelIntfControlleeImpl::CreateInterface);
+    m_controlleeCreators[WATER_LEVEL_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&WaterLevelIntfControlleeImpl::CreateInterface);
+    m_controlleeCreators[HEATING_ZONE_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&HeatingZoneIntfControlleeImpl::CreateInterface);
+    m_controlleeCreators[DISH_WASHING_CYCLE_PHASE_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&DishWashingCyclePhaseIntfControlleeImpl::CreateInterface);
+    m_controlleeCreators[LAUNDRY_CYCLE_PHASE_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&LaundryCyclePhaseIntfControlleeImpl::CreateInterface);
+    m_controlleeCreators[OVEN_CYCLE_PHASE_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&OvenCyclePhaseIntfControlleeImpl::CreateInterface);
+    m_controlleeCreators[TIMER_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&TimerIntfControlleeImpl::CreateInterface);
 }
 
 InterfaceFactory::InterfaceFactory(const InterfaceFactory& src)

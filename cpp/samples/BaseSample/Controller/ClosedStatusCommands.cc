@@ -72,7 +72,7 @@ void ClosedStatusCommands::Init()
 
 void ClosedStatusCommands::OnCmdGetIsClosed(Commands* commands, std::string& cmd)
 {
-	ClosedStatusIntfController* intfController = static_cast<ClosedStatusCommands*>(commands)->GetInterface();
+    ClosedStatusIntfController* intfController = static_cast<ClosedStatusCommands*>(commands)->GetInterface();
 
     if (!intfController) {
         cout << "Interface is not exist." << endl;

@@ -22,6 +22,18 @@
 #include "RobotCleaningCyclePhaseCommands.h"
 #include "CurrentPowerCommands.h"
 #include "EnergyUsageCommands.h"
+#include "CycleControlCommands.h"
+#include "RemoteControllabilityCommands.h"
+#include "RapidModeCommands.h"
+#include "SoilLevelCommands.h"
+#include "SpinSpeedLevelCommands.h"
+#include "WaterLevelCommands.h"
+#include "HeatingZoneCommands.h"
+#include "DishWashingCyclePhaseCommands.h"
+#include "LaundryCyclePhaseCommands.h"
+#include "OvenCyclePhaseCommands.h"
+#include "TimerCommands.h"
+#include "ClosedStatusCommands.h"
 
 DeviceCommands::DeviceCommands(ControllerSample* sample, DeviceInfoPtr& info)
 : ControllerCommands(sample)
@@ -135,7 +147,30 @@ Commands* DeviceCommands::CreateInterfaceCommands(Commands* commands, const char
         intfCommands = new VendorDefinedCommands(sample, info, objectPath);
     } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Operation.CurrentPower", strlen(intfName))) {
         intfCommands = new CurrentPowerCommands(sample, info, objectPath);
+    } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Operation.CycleControl", strlen(intfName))) {
+        intfCommands = new CycleControlCommands(sample, info, objectPath);
+    } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Operation.RapidMode", strlen(intfName))) {
+        intfCommands = new RapidModeCommands(sample, info, objectPath);
+    } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Operation.SoilLevel", strlen(intfName))) {
+        intfCommands = new SoilLevelCommands(sample, info, objectPath);
+    } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Operation.SpinSpeedLevel", strlen(intfName))) {
+        intfCommands = new SpinSpeedLevelCommands(sample, info, objectPath);
+    } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Environment.WaterLevel", strlen(intfName))) {
+        intfCommands = new WaterLevelCommands(sample, info, objectPath);
+    } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Operation.HeatingZone", strlen(intfName))) {
+        intfCommands = new HeatingZoneCommands(sample, info, objectPath);
+    } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Operation.DishWashingCyclePhase", strlen(intfName))) {
+        intfCommands = new DishWashingCyclePhaseCommands(sample, info, objectPath);
+    } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Operation.OvenCyclePhase", strlen(intfName))) {
+        intfCommands = new OvenCyclePhaseCommands(sample, info, objectPath);
+    } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Operation.LaundryCyclePhase", strlen(intfName))) {
+        intfCommands = new LaundryCyclePhaseCommands(sample, info, objectPath);
+    } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Operation.Timer", strlen(intfName))) {
+        intfCommands = new TimerCommands(sample, info, objectPath);
+    } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Operation.RemoteControllability", strlen(intfName))) {
+        intfCommands = new RemoteControllabilityCommands(sample, info, objectPath);
+    } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Operation.ClosedStatus", strlen(intfName))) {
+        intfCommands = new ClosedStatusCommands(sample, info, objectPath);
     }
-
     return intfCommands;
 }
