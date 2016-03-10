@@ -134,11 +134,28 @@ void TvControllee::SetInitialProperty()
     if (m_hidIntfControllee) {
         HidInterface::SupportedInputEvents supportedEvents;
         HidInterface::SupportedInputEvent supportedEvent;
-        supportedEvent.type = 0x01;
-        supportedEvent.code = 0x71;
-        supportedEvent.min = 1;
-        supportedEvent.max = 1;
+        // synchronization event (required to synchronize other events)
+        supportedEvent.type = 0x00; // EV_SYN
+        supportedEvent.code = 0; //SYN_REPORT
+        supportedEvent.min = 0;
+        supportedEvent.max = 0;
         supportedEvents.push_back(supportedEvent);
+        // all numeric keys
+        for(uint16_t code = 0x200; code <= 0x209; code++) { // KEY_NUMERIC_0 to KEY_NUMERIC_9
+            supportedEvent.type = 0x01; // EV_KEY
+            supportedEvent.code = code;
+            supportedEvent.min = 0; // release state
+            supportedEvent.max = 1; // press state
+            supportedEvents.push_back(supportedEvent);
+        }
+        // all volume keys
+        for(uint16_t code = 0x71; code <= 0x73; code++) { // KEY_MUTE to KEY_VOLUMEUP
+            supportedEvent.type = 0x01; // EV_KEY
+            supportedEvent.code = code;
+            supportedEvent.min = 0; // release state
+            supportedEvent.max = 1; // press state
+            supportedEvents.push_back(supportedEvent);
+        }
         m_hidIntfControllee->SetSupportedEvents(supportedEvents);
     }
 }
