@@ -66,6 +66,8 @@ class CurrentTemperatureInterface : public HaeInterface {
   protected:
     static const qcc::String s_prop_Version;
     static const qcc::String s_prop_CurrentValue;
+    static const qcc::String s_prop_Precision;
+    static const qcc::String s_prop_UpdateMinTime;
 
   private:
     static const qcc::String s_xml;

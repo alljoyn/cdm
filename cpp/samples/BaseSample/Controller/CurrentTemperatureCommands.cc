@@ -35,11 +35,41 @@ void CurrentTemperatureListener::OnResponseGetCurrentValue(QStatus status, const
     cout << "CurrentValue: " << value << endl;
 }
 
+void CurrentTemperatureListener::OnResponseGetPrecision(QStatus status, const qcc::String& objectPath, const double precision, void* context)
+{
+    cout << __func__ << endl;
+    cout << "status: " << QCC_StatusText(status) << endl;
+    cout << "path: " << objectPath << endl;
+    cout << "Precision: " << precision << endl;
+}
+
+void CurrentTemperatureListener::OnResponseGetUpdateMinTime(QStatus status, const qcc::String& objectPath, const uint16_t updateMinTime, void* context)
+{
+    cout << __func__ << endl;
+    cout << "status: " << QCC_StatusText(status) << endl;
+    cout << "path: " << objectPath << endl;
+    cout << "UpdateMinTime: " << updateMinTime << endl;
+}
+
 void CurrentTemperatureListener::OnCurrentValueChanged(const qcc::String& objectPath, const double value)
 {
     cout << __func__ << endl;
     cout << "path: " << objectPath << endl;
     cout << "CurrentValue: " << value << endl;
+}
+
+void CurrentTemperatureListener::OnPrecisionChanged(const qcc::String& objectPath, const double precision)
+{
+    cout << __func__ << endl;
+    cout << "path: " << objectPath << endl;
+    cout << "Precision: " << precision << endl;
+}
+
+void CurrentTemperatureListener::OnUpdateMinTimeChanged(const qcc::String& objectPath, const uint16_t updateMinTime)
+{
+    cout << __func__ << endl;
+    cout << "path: " << objectPath << endl;
+    cout << "UpdateMinTime: " << updateMinTime << endl;
 }
 
 CurrentTemperatureCommands::CurrentTemperatureCommands(ControllerSample* sample, DeviceInfoPtr& info, const char* objectPath)
@@ -65,6 +95,8 @@ void CurrentTemperatureCommands::Init()
     }
 
     RegisterCommand(&CurrentTemperatureCommands::OnCmdGetCurrentValue, "getcv", "Get CurrentValue");
+    RegisterCommand(&CurrentTemperatureCommands::OnCmdGetPrecision, "gp", "get precision");
+    RegisterCommand(&CurrentTemperatureCommands::OnCmdGetUpdateMinTime, "gumt", "get update min time");
 
     PrintCommands();
 }
@@ -81,3 +113,26 @@ void CurrentTemperatureCommands::OnCmdGetCurrentValue(Commands* commands, std::s
     intfController->GetCurrentValue();
 }
 
+void CurrentTemperatureCommands::OnCmdGetPrecision(Commands* commands, std::string& cmd)
+{
+    CurrentTemperatureIntfController* intfController = static_cast<CurrentTemperatureCommands*>(commands)->GetInterface();
+
+    if (!intfController) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    intfController->GetPrecision();
+}
+
+void CurrentTemperatureCommands::OnCmdGetUpdateMinTime(Commands* commands, std::string& cmd)
+{
+    CurrentTemperatureIntfController* intfController = static_cast<CurrentTemperatureCommands*>(commands)->GetInterface();
+
+    if (!intfController) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    intfController->GetUpdateMinTime();
+}

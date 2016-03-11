@@ -25,3 +25,14 @@ QStatus CurrentTemperatureListener::OnGetCurrentValue(double& value)
     return ER_OK;
 }
 
+QStatus CurrentTemperatureListener::OnGetPrecision(double& precision)
+{
+    cout << "CurrentTemperatureListener::OnGetPrecision() - precision : " << precision << endl;
+    return ER_OK;
+}
+
+QStatus CurrentTemperatureListener::OnGetUpdateMinTime(uint16_t& updateMinTime)
+{
+    cout << "CurrentTemperatureListener::OnGetUpdateMinTime() - updateMinTime : " << updateMinTime << endl;
+    return ER_OK;
+}

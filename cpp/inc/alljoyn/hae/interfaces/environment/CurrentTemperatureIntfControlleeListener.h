@@ -45,6 +45,22 @@ class CurrentTemperatureIntfControlleeListener : public InterfaceControlleeListe
      * @return ER_OK on success
      */
     virtual QStatus OnGetCurrentValue(double& value) = 0;
+
+    /**
+     * Handler for getting Precision
+     * This function is only called, when InterfaceControllee::s_retrievingActualPropertyValue is true.
+     * @param[out] Precision precision
+     * @return ER_OK on success
+     */
+    virtual QStatus OnGetPrecision(double& precision) = 0;
+
+    /**
+     * Handler for getting UpdateMinTime
+     * This function is only called, when InterfaceControllee::s_retrievingActualPropertyValue is true.
+     * @param[out] UpdateMinTime the minimum time between updates
+     * @return ER_OK on success
+     */
+    virtual QStatus OnGetUpdateMinTime(uint16_t& updateMinTime) = 0;
 };
 
 } //namespace services

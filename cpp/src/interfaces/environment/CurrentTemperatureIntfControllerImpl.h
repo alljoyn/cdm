@@ -67,11 +67,27 @@ class CurrentTemperatureIntfControllerImpl : public InterfaceController, public 
      */
     QStatus GetCurrentValue(void* context);
 
+    /**
+     * Get current Precision
+     * @param[in] context
+     * @return status
+     */
+    virtual QStatus GetPrecision(void* context);
+
+    /**
+     * Get current UpdateMinTime
+     * @param[in] context
+     * @return status
+     */
+    virtual QStatus GetUpdateMinTime(void* context);
+
   private:
     CurrentTemperatureIntfControllerImpl();
 
     void PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context);
     void GetCurrentValuePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+    void GetPrecisionPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+    void GetUpdateMinTimePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
 
     BusAttachment& m_busAttachment;
     CurrentTemperatureIntfControllerListener& m_interfaceListener;

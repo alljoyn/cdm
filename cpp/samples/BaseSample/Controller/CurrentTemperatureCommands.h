@@ -30,8 +30,13 @@ class CurrentTemperatureListener : public CurrentTemperatureIntfControllerListen
   public:
     CurrentTemperatureListener();
     virtual ~CurrentTemperatureListener();
+
     virtual void OnResponseGetCurrentValue(QStatus status, const qcc::String& objectPath, const double value, void* context);
+    virtual void OnResponseGetPrecision(QStatus status, const qcc::String& objectPath, const double precision, void* context);
+    virtual void OnResponseGetUpdateMinTime(QStatus status, const qcc::String& objectPath, const uint16_t updateMinTime, void* context);
     virtual void OnCurrentValueChanged(const qcc::String& objectPath, const double value);
+    virtual void OnPrecisionChanged(const qcc::String& objectPath, const double precision);
+    virtual void OnUpdateMinTimeChanged(const qcc::String& objectPath, const uint16_t updateMinTime);
 };
 
 class CurrentTemperatureCommands : public InterfaceCommands
@@ -45,6 +50,8 @@ class CurrentTemperatureCommands : public InterfaceCommands
     CurrentTemperatureIntfController* GetInterface() { return m_intfController; }
 
     static void OnCmdGetCurrentValue(Commands* commands, std::string& cmd);
+    static void OnCmdGetPrecision(Commands* commands, std::string& cmd);
+    static void OnCmdGetUpdateMinTime(Commands* commands, std::string& cmd);
 
   private:
     CurrentTemperatureIntfController* m_intfController;

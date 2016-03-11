@@ -50,6 +50,19 @@ class CurrentTemperatureIntfController : public CurrentTemperatureInterface {
      */
     virtual QStatus GetCurrentValue(void* context = NULL) = 0;
 
+    /**
+     * Get Precision
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
+     */
+    virtual QStatus GetPrecision(void* context = NULL) = 0;
+
+    /**
+     * Get UpdateMinTime
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
+     */
+    virtual QStatus GetUpdateMinTime(void* context = NULL) = 0;
 };
 
 } //namespace services

@@ -64,7 +64,7 @@ QStatus ChannelIntfControllerImpl::Init()
         if (channelListChanged) {
             status = m_busAttachment.RegisterSignalHandler(this, static_cast<SignalHandler>(&ChannelIntfControllerImpl::ChannelListChanged), channelListChanged, NULL);
             if (ER_OK != status) {
-                QCC_LogError(status, ("%s: RegisterPropertiesChangedListener failed.", __func__));
+                QCC_LogError(status, ("%s: RegisterSignalHandler for ChannelListChanged signal failed.", __func__));
             }
         } else {
             status = ER_FAIL;

@@ -82,8 +82,8 @@ void WindDirectionIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, con
                 m_interfaceListener.OnHorizontalMaxChanged(obj.GetPath(), value);
             }
         } else if  (!s_prop_HorizontalAutoMode.compare(propNameStr)) {
-            if (propValue->typeId == ALLJOYN_UINT16) {
-                uint16_t value = propValue->v_uint16;
+            if (propValue->typeId == ALLJOYN_BYTE) {
+                uint8_t value = propValue->v_byte;
                 m_interfaceListener.OnHorizontalAutoModeChanged(obj.GetPath(), value);
             }
         } else if (!s_prop_VerticalDirection.compare(propNameStr)) {
@@ -97,8 +97,8 @@ void WindDirectionIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, con
                 m_interfaceListener.OnVerticalMaxChanged(obj.GetPath(), value);
             }
         } else if  (!s_prop_VerticalAutoMode.compare(propNameStr)) {
-            if (propValue->typeId == ALLJOYN_UINT16) {
-                uint16_t value = propValue->v_uint16;
+            if (propValue->typeId == ALLJOYN_BYTE) {
+                uint8_t value = propValue->v_byte;
                 m_interfaceListener.OnVerticalAutoModeChanged(obj.GetPath(), value);
             }
         }
