@@ -103,12 +103,40 @@ class CurrentTemperatureIntfControlleeImpl : public InterfaceControllee, public 
      */
     virtual const double GetCurrentValue() const { return m_CurrentValue; }
 
+    /**
+     * Set Precision
+     * @param[in] Precision
+     * @return status
+     */
+    virtual QStatus SetPrecision(const double precision);
+
+    /**
+     * Get Precision
+     * @return state
+     */
+    virtual const double GetPrecision() const { return m_precision; }
+
+    /**
+     * Set UpdateMinTime
+     * @param[in] UpdateMinTime
+     * @return status
+     */
+    virtual QStatus SetUpdateMinTime(const uint16_t currentPower);
+
+    /**
+     * Get UpdateMinTime
+     * @return state
+     */
+    virtual const uint16_t GetUpdateMinTime() const { return m_updateMinTime; }
+
   private:
     CurrentTemperatureIntfControlleeImpl();
 
     BusAttachment& m_busAttachment;
     CurrentTemperatureIntfControlleeListener& m_interfaceListener;
     double m_CurrentValue;                       // read-only, EmitsChangedSignal
+    double m_precision;
+    uint16_t m_updateMinTime;
     MethodHandlers m_methodHandlers;
 };
 

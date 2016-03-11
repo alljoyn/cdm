@@ -36,11 +36,11 @@ class ResourceSavingIntfControllerListener : public InterfaceControllerListener 
     virtual ~ResourceSavingIntfControllerListener() {}
 
     /**
-     * Handler for ResourceSavingMode property changed
+     * Handler for OnResourceSavingMode property changed
      * @param[in] objectPath the object path
      * @param[in] value resource saving mode
      */
-    virtual void ResourceSavingModePropertyChanged(const qcc::String& objectPath, const bool value) {}
+    virtual void OnResourceSavingModeChanged(const qcc::String& objectPath, const bool value) {}
 
     /**
      * Callback handler for setting ResourceSavingMode property

@@ -26,6 +26,8 @@ class CurrentTemperatureListener : public CurrentTemperatureIntfControlleeListen
 {
   public:
     virtual QStatus OnGetCurrentValue(double& value);
+    virtual QStatus OnGetPrecision(double& precision);
+    virtual QStatus OnGetUpdateMinTime(uint16_t& updateMinTime);
 };
 
 #endif /* CURRENTTEMPERATURELISTENER_H_ */

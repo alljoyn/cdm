@@ -38,7 +38,9 @@ CurrentTemperatureIntfControlleeImpl::CurrentTemperatureIntfControlleeImpl(BusAt
     InterfaceControllee(haeBusObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener),
-    m_CurrentValue(0)
+    m_CurrentValue(0),
+    m_precision(1.0),
+    m_updateMinTime(1000)
 {
 }
 
@@ -76,6 +78,32 @@ QStatus CurrentTemperatureIntfControlleeImpl::OnGetProperty(const String propNam
 
                 val.typeId = ALLJOYN_DOUBLE;
                 val.v_double = value;
+            } else if (!(s_prop_Precision.compare(propName))) {
+                double precision;
+                status = m_interfaceListener.OnGetPrecision(precision);
+                if (status != ER_OK) {
+                    precision = GetPrecision();
+                    QCC_LogError(status, ("%s: failed to get actual property value from application. use previous value.", __func__));
+                    status = ER_OK;
+                } else {
+                    SetPrecision(precision);  // update the value in CurrentTemperatureIntfControllee.
+                }
+
+                val.typeId = ALLJOYN_DOUBLE;
+                val.v_double = precision;
+            } else if (!(s_prop_UpdateMinTime.compare(propName))) {
+                uint16_t updateMinTime;
+                status = m_interfaceListener.OnGetUpdateMinTime(updateMinTime);
+                if (status != ER_OK) {
+                    updateMinTime = GetUpdateMinTime();
+                    QCC_LogError(status, ("%s: failed to get actual property value from application. use previous value.", __func__));
+                    status = ER_OK;
+                } else {
+                    SetUpdateMinTime(updateMinTime);  // update the value in CurrentTemperatureIntfControllee.
+                }
+
+                val.typeId = ALLJOYN_UINT16;
+                val.v_uint16 = updateMinTime;
             } else {
                 status = ER_BUS_NO_SUCH_PROPERTY;
             }
@@ -85,6 +113,14 @@ QStatus CurrentTemperatureIntfControlleeImpl::OnGetProperty(const String propNam
                 const double value = GetCurrentValue();
                 val.typeId = ALLJOYN_DOUBLE;
                 val.v_double = value;
+            } else if (!(s_prop_Precision.compare(propName))) {
+                double precision = GetPrecision();
+                val.typeId = ALLJOYN_DOUBLE;
+                val.v_double = precision;
+            } else if (!(s_prop_UpdateMinTime.compare(propName))) {
+                uint16_t updateMinTime = GetUpdateMinTime();
+                val.typeId = ALLJOYN_UINT16;
+                val.v_uint16 = updateMinTime;
             } else {
                 status = ER_BUS_NO_SUCH_PROPERTY;
             }
@@ -96,20 +132,7 @@ QStatus CurrentTemperatureIntfControlleeImpl::OnGetProperty(const String propNam
 
 QStatus CurrentTemperatureIntfControlleeImpl::OnSetProperty(const String propName, MsgArg& val)
 {
-    QStatus status = ER_OK;
-
-    if (!(s_prop_CurrentValue.compare(propName))) {
-        if (val.typeId != ALLJOYN_DOUBLE) {
-            status = ER_BUS_NO_SUCH_PROPERTY;
-            return status;
-        }
-        status = ER_BUS_PROPERTY_VALUE_NOT_SET;
-
-    } else {
-        status = ER_BUS_NO_SUCH_PROPERTY;
-    }
-
-    return status;
+    return ER_BUS_NO_SUCH_PROPERTY;
 }
 
 void CurrentTemperatureIntfControlleeImpl::OnMethodHandler(const InterfaceDescription::Member* member, Message& msg)
@@ -146,6 +169,35 @@ QStatus CurrentTemperatureIntfControlleeImpl::SetCurrentValue(const double value
     return ER_OK;
 }
 
+QStatus CurrentTemperatureIntfControlleeImpl::SetPrecision(const double precision)
+{
+    QStatus status = ER_OK;
+
+    if (m_precision != precision) {
+        m_precision = precision;
+        MsgArg val;
+        val.typeId = ALLJOYN_DOUBLE;
+        val.v_double = precision;
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_Precision.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+    }
+
+    return status;
+}
+
+QStatus CurrentTemperatureIntfControlleeImpl::SetUpdateMinTime(const uint16_t updateMinTime)
+{
+    QStatus status = ER_OK;
+
+    if (m_updateMinTime != updateMinTime) {
+        m_updateMinTime = updateMinTime;
+        MsgArg val;
+        val.typeId = ALLJOYN_UINT16;
+        val.v_uint16 = updateMinTime;
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_UpdateMinTime.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+    }
+
+    return status;
+}
 
 } //namespace services
 } //namespace ajn

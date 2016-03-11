@@ -36,11 +36,22 @@ const qcc::String CurrentTemperatureInterface::s_xml =
         "            <description language='en'>Current temperature expressed in Celsius</description>"
         "            <annotation name='org.freedesktop.DBus.Property.EmitsChangedSignal' value='true'/>"
         "       </property>"
+        "       <property name='Precision' type='d' access='read'>"
+        "            <description language='en'>The precision of the CurrentValue property. i.e. the number of degrees Celsius the"
+        "                actual power consumption must change before CurrentValue is updated.</description>"
+        "            <annotation name='org.freedesktop.DBus.Property.EmitsChangedSignal' value='true'/>"
+        "       </property>"
+        "       <property name='UpdateMinTime' type='q' access='read'>"
+        "            <description language='en'>The minimum time between updates of the CurrentValue property in milliseconds.</description>"
+        "            <annotation name='org.freedesktop.DBus.Property.EmitsChangedSignal' value='true'/>"
+        "        </property>"
         "   </interface>"
         "</node>";
 
 const qcc::String CurrentTemperatureInterface::s_prop_Version = "Version";
 const qcc::String CurrentTemperatureInterface::s_prop_CurrentValue = "CurrentValue";
+const qcc::String CurrentTemperatureInterface::s_prop_Precision = "Precision";
+const qcc::String CurrentTemperatureInterface::s_prop_UpdateMinTime = "UpdateMinTime";
 
 } //namespace services
 } //namespace ajn

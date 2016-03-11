@@ -48,12 +48,43 @@ class CurrentTemperatureIntfControllerListener : public InterfaceControllerListe
     virtual void OnResponseGetCurrentValue(QStatus status, const qcc::String& objectPath, const double value, void* context) {}
 
     /**
+     * Callback handler for getting Precision property
+     * @param[in] status ER_OK on success
+     * @param[in] objectPath the object path
+     * @param[in] Precision precision
+     * @param[in] context the context that is passed from application
+     */
+    virtual void OnResponseGetPrecision(QStatus status, const qcc::String& objectPath, const double precision, void* context) {}
+
+    /**
+     * Callback handler for getting UpdateMinTime property
+     * @param[in] status ER_OK on success
+     * @param[in] objectPath the object path
+     * @param[in] UpdateMinTime the minimum time between updates
+     * @param[in] context the context that is passed from application
+     */
+    virtual void OnResponseGetUpdateMinTime(QStatus status, const qcc::String& objectPath, const uint16_t updateMinTime, void* context) {}
+
+    /**
      * Handler for CurrentValue property changed
      * @param[in] objectPath the object path
      * @param[in] value current temperature
      */
     virtual void OnCurrentValueChanged(const qcc::String& objectPath, const double value) {}
 
+    /**
+     * Handler for Precision property changed
+     * @param[in] objectPath the object path
+     * @param[in] Precision precision
+     */
+    virtual void OnPrecisionChanged(const qcc::String& objectPath, const double precision) {}
+
+    /**
+     * Handler for UpdateMinTime property changed
+     * @param[in] objectPath the object path
+     * @param[in] UpdateMinTime the minimum time between updates
+     */
+    virtual void OnUpdateMinTimeChanged(const qcc::String& objectPath, const uint16_t updateMinTime) {}
 };
 
 } //namespace services

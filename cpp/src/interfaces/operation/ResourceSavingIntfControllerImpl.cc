@@ -94,7 +94,7 @@ void ResourceSavingIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, co
         if (!s_prop_ResourceSavingMode.compare(propNameStr)) {
             if (propValue->typeId == ALLJOYN_BOOLEAN) {
                 bool value = propValue->v_bool;
-                m_interfaceListener.ResourceSavingModePropertyChanged(obj.GetPath(), value);
+                m_interfaceListener.OnResourceSavingModeChanged(obj.GetPath(), value);
             }
         }
     }

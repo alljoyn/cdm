@@ -76,6 +76,16 @@ void CurrentTemperatureIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj
                 double value = propValue->v_double;
                 m_interfaceListener.OnCurrentValueChanged(obj.GetPath(), value);
             }
+        } else if (!s_prop_Precision.compare(propNameStr)) {
+            if (propValue->typeId == ALLJOYN_DOUBLE) {
+                double value = propValue->v_double;
+                m_interfaceListener.OnPrecisionChanged(obj.GetPath(), value);
+            }
+        } else if (!s_prop_UpdateMinTime.compare(propNameStr)) {
+            if (propValue->typeId == ALLJOYN_UINT16) {
+                uint16_t value = propValue->v_uint16;
+                m_interfaceListener.OnUpdateMinTimeChanged(obj.GetPath(), value);
+            }
         }
     }
 }
@@ -90,6 +100,26 @@ void CurrentTemperatureIntfControllerImpl::GetCurrentValuePropertyCB(QStatus sta
     m_interfaceListener.OnResponseGetCurrentValue(status, obj->GetPath(), val, context);
 }
 
+void CurrentTemperatureIntfControllerImpl::GetPrecisionPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
+{
+    if (!obj) {
+        return;
+    }
+    double val;
+    value.Get("d", &val);
+    m_interfaceListener.OnResponseGetPrecision(status, obj->GetPath(), val, context);
+}
+
+void CurrentTemperatureIntfControllerImpl::GetUpdateMinTimePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
+{
+    if (!obj) {
+        return;
+    }
+    uint16_t val;
+    value.Get("q", &val);
+    m_interfaceListener.OnResponseGetUpdateMinTime(status, obj->GetPath(), val, context);
+}
+
 QStatus CurrentTemperatureIntfControllerImpl::GetCurrentValue(void* context)
 {
     QStatus status = ER_OK;
@@ -97,6 +127,19 @@ QStatus CurrentTemperatureIntfControllerImpl::GetCurrentValue(void* context)
     return status;
 }
 
+QStatus CurrentTemperatureIntfControllerImpl::GetPrecision(void* context)
+{
+    QStatus status = ER_OK;
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_Precision.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&CurrentTemperatureIntfControllerImpl::GetPrecisionPropertyCB, context);
+    return status;
+}
+
+QStatus CurrentTemperatureIntfControllerImpl::GetUpdateMinTime(void* context)
+{
+    QStatus status = ER_OK;
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_UpdateMinTime.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&CurrentTemperatureIntfControllerImpl::GetUpdateMinTimePropertyCB, context);
+    return status;
+}
 
 } //namespace services
 } //namespace ajn
