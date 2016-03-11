@@ -28,7 +28,6 @@
 
 #include "AutoLock.h"
 #include "HaeBusListener.h"
-#include "HaeAboutCustomFields.h"
 #include "HaeConstants.h"
 #include "InterfaceFactory.h"
 #include "HaeControlleeImpl.h"
@@ -266,14 +265,14 @@ QStatus HaeControlleeImpl::CheckAboutDeviceTypeValidation()
         return ER_INVALID_DATA;
     }
 
-    status = m_aboutData->GetField(DEVICE_TYPE_DESCRIPTION.c_str(), deviceTypeArg);
+    status = m_aboutData->GetField(HaeAboutData::DEVICE_TYPE_DESCRIPTION.c_str(), deviceTypeArg);
     if (status != ER_OK) {
         return status;
     } else if (!deviceTypeArg) {
         return ER_FAIL;
     }
 
-    status = deviceTypeArg->Get(m_aboutData->GetFieldSignature(DEVICE_TYPE_DESCRIPTION.c_str()), &elemCount, &elemArg);
+    status = deviceTypeArg->Get(m_aboutData->GetFieldSignature(HaeAboutData::DEVICE_TYPE_DESCRIPTION.c_str()), &elemCount, &elemArg);
     if (status != ER_OK) {
         return status;
     }

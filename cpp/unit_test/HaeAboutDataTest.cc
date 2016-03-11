@@ -13,396 +13,164 @@
  *    ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-
+//Code Under Test
 #include <HaeAboutData.h>
+
+
 #include <alljoyn/version.h>
 #include <gtest/gtest.h>
 #include <qcc/String.h>
 
 #include <map>
-
+#include <alljoyn/hae/DeviceTypeDescription.h>
 
 namespace ajn{
 namespace services{
 
 TEST(HaeAboutDataTest, constants) {
-    //Common
-    EXPECT_STREQ("AppId", HaeAboutData::APP_ID);
-    EXPECT_STREQ("DefaultLanguage", HaeAboutData::DEFAULT_LANGUAGE);
-    EXPECT_STREQ("DeviceName", HaeAboutData::DEVICE_NAME);
-    EXPECT_STREQ("DeviceId", HaeAboutData::DEVICE_ID);
-    EXPECT_STREQ("AppName", HaeAboutData::APP_NAME);
-    EXPECT_STREQ("Manufacturer", HaeAboutData::MANUFACTURER);
-    EXPECT_STREQ("ModelNumber", HaeAboutData::MODEL_NUMBER);
-    EXPECT_STREQ("SupportedLanguages", HaeAboutData::SUPPORTED_LANGUAGES);
-    EXPECT_STREQ("Description", HaeAboutData::DESCRIPTION);
-    EXPECT_STREQ("DateOfManufacture", HaeAboutData::DATE_OF_MANUFACTURE);
-    EXPECT_STREQ("SoftwareVersion", HaeAboutData::SOFTWARE_VERSION);
-    EXPECT_STREQ("AJSoftwareVersion", HaeAboutData::AJ_SOFTWARE_VERSION);
-    EXPECT_STREQ("HardwareVersion", HaeAboutData::HARDWARE_VERSION);
-    EXPECT_STREQ("SupportUrl", HaeAboutData::SUPPORT_URL);
-    //HAE Unique
-    /*   Determine how to test
-    EXPECT_STREQ("CountryOfProduction", ajn::services::HaeAboutData::COUNTRY_OF_PRODUCTION);
-    EXPECT_STREQ("CorporateBrand", ajn::services::HaeAboutData::CORPORATE_BRAND);
-    EXPECT_STREQ("ProductBrand", ajn::services::HaeAboutData::PRODUCT_BRAND);
-    EXPECT_STREQ("Location", ajn::services::HaeAboutData::LOCATION);
-    EXPECT_STREQ("DeviceTypeDescription", ajn::services::HaeAboutData::DEVICE_TYPE_DESCRIPTION);
-     */
+  //HAE Unique
+    EXPECT_STREQ("CountryOfProduction", ajn::services::HaeAboutData::HaeAboutKeys::COUNTRY_OF_PRODUCTION.c_str());
+    EXPECT_STREQ("CorporateBrand", ajn::services::HaeAboutData::CORPORATE_BRAND.c_str());
+    EXPECT_STREQ("ProductBrand", ajn::services::HaeAboutData::PRODUCT_BRAND.c_str());
+    EXPECT_STREQ("Location", ajn::services::HaeAboutData::LOCATION.c_str());
+    EXPECT_STREQ("DeviceTypeDescription", ajn::services::HaeAboutData::DEVICE_TYPE_DESCRIPTION.c_str());
+
 }
     
 
 
 TEST(HaeAboutDataTest, VerifyFieldValues) {
     HaeAboutData aboutData;
-    //AppId
-    EXPECT_TRUE(aboutData.IsFieldRequired(HaeAboutData::APP_ID));
-    EXPECT_TRUE(aboutData.IsFieldAnnounced(HaeAboutData::APP_ID));
-    EXPECT_FALSE(aboutData.IsFieldLocalized(HaeAboutData::APP_ID));
-    EXPECT_STREQ("ay", aboutData.GetFieldSignature(HaeAboutData::APP_ID));
 
-    //DefaultLanguage
-    EXPECT_TRUE(aboutData.IsFieldRequired(HaeAboutData::DEFAULT_LANGUAGE));
-    EXPECT_TRUE(aboutData.IsFieldAnnounced(HaeAboutData::DEFAULT_LANGUAGE));
-    EXPECT_FALSE(aboutData.IsFieldLocalized(HaeAboutData::DEFAULT_LANGUAGE));
-    EXPECT_STREQ("s", aboutData.GetFieldSignature(HaeAboutData::DEFAULT_LANGUAGE));
-
-    //DeviceName
-    EXPECT_FALSE(aboutData.IsFieldRequired(HaeAboutData::DEVICE_NAME));
-    EXPECT_TRUE(aboutData.IsFieldAnnounced(HaeAboutData::DEVICE_NAME));
-    EXPECT_TRUE(aboutData.IsFieldLocalized(HaeAboutData::DEVICE_NAME));
-    EXPECT_STREQ("s", aboutData.GetFieldSignature(HaeAboutData::DEVICE_NAME));
-
-    //DeviceId
-    EXPECT_TRUE(aboutData.IsFieldRequired(HaeAboutData::DEVICE_ID));
-    EXPECT_TRUE(aboutData.IsFieldAnnounced(HaeAboutData::DEVICE_ID));
-    EXPECT_FALSE(aboutData.IsFieldLocalized(HaeAboutData::DEVICE_ID));
-    EXPECT_STREQ("s", aboutData.GetFieldSignature(HaeAboutData::DEVICE_ID));
-
-    //AppName
-    EXPECT_TRUE(aboutData.IsFieldRequired(HaeAboutData::APP_NAME));
-    EXPECT_TRUE(aboutData.IsFieldAnnounced(HaeAboutData::APP_NAME));
-    EXPECT_TRUE(aboutData.IsFieldLocalized(HaeAboutData::APP_NAME));
-    EXPECT_STREQ("s", aboutData.GetFieldSignature(HaeAboutData::APP_NAME));
-
-    //Manufacturer
-    EXPECT_TRUE(aboutData.IsFieldRequired(HaeAboutData::MANUFACTURER));
-    EXPECT_TRUE(aboutData.IsFieldAnnounced(HaeAboutData::MANUFACTURER));
-    EXPECT_TRUE(aboutData.IsFieldLocalized(HaeAboutData::MANUFACTURER));
-    EXPECT_STREQ("s", aboutData.GetFieldSignature(HaeAboutData::MANUFACTURER));
-
-    //ModelNumber
-    EXPECT_TRUE(aboutData.IsFieldRequired(HaeAboutData::MODEL_NUMBER));
-    EXPECT_TRUE(aboutData.IsFieldAnnounced(HaeAboutData::MODEL_NUMBER));
-    EXPECT_FALSE(aboutData.IsFieldLocalized(HaeAboutData::MODEL_NUMBER));
-    EXPECT_STREQ("s", aboutData.GetFieldSignature(HaeAboutData::MODEL_NUMBER));
-
-    //SupportedLanguages
-    EXPECT_TRUE(aboutData.IsFieldRequired(HaeAboutData::SUPPORTED_LANGUAGES));
-    EXPECT_FALSE(aboutData.IsFieldAnnounced(HaeAboutData::SUPPORTED_LANGUAGES));
-    EXPECT_FALSE(aboutData.IsFieldLocalized(HaeAboutData::SUPPORTED_LANGUAGES));
-    EXPECT_STREQ("as", aboutData.GetFieldSignature(HaeAboutData::SUPPORTED_LANGUAGES));
-
-    //Description
-    EXPECT_TRUE(aboutData.IsFieldRequired(HaeAboutData::DESCRIPTION));
-    EXPECT_FALSE(aboutData.IsFieldAnnounced(HaeAboutData::DESCRIPTION));
-    EXPECT_TRUE(aboutData.IsFieldLocalized(HaeAboutData::DESCRIPTION));
-    EXPECT_STREQ("s", aboutData.GetFieldSignature(HaeAboutData::DESCRIPTION));
-
-    //DateOfManufacture
-    EXPECT_FALSE(aboutData.IsFieldRequired(HaeAboutData::DATE_OF_MANUFACTURE));
-    EXPECT_FALSE(aboutData.IsFieldAnnounced(HaeAboutData::DATE_OF_MANUFACTURE));
-    EXPECT_FALSE(aboutData.IsFieldLocalized(HaeAboutData::DATE_OF_MANUFACTURE));
-    EXPECT_STREQ("s", aboutData.GetFieldSignature(HaeAboutData::DATE_OF_MANUFACTURE));
-
-    //SoftwareVersion
-    EXPECT_TRUE(aboutData.IsFieldRequired(HaeAboutData::SOFTWARE_VERSION));
-    EXPECT_FALSE(aboutData.IsFieldAnnounced(HaeAboutData::SOFTWARE_VERSION));
-    EXPECT_FALSE(aboutData.IsFieldLocalized(HaeAboutData::SOFTWARE_VERSION));
-    EXPECT_STREQ("s", aboutData.GetFieldSignature(HaeAboutData::SOFTWARE_VERSION));
-
-    //AJSoftwareVersion
-    EXPECT_TRUE(aboutData.IsFieldRequired(HaeAboutData::AJ_SOFTWARE_VERSION));
-    EXPECT_FALSE(aboutData.IsFieldAnnounced(HaeAboutData::AJ_SOFTWARE_VERSION));
-    EXPECT_FALSE(aboutData.IsFieldLocalized(HaeAboutData::AJ_SOFTWARE_VERSION));
-    EXPECT_STREQ("s", aboutData.GetFieldSignature(HaeAboutData::AJ_SOFTWARE_VERSION));
-
-    //HardwareVersion
-    EXPECT_FALSE(aboutData.IsFieldRequired(HaeAboutData::HARDWARE_VERSION));
-    EXPECT_FALSE(aboutData.IsFieldAnnounced(HaeAboutData::HARDWARE_VERSION));
-    EXPECT_FALSE(aboutData.IsFieldLocalized(HaeAboutData::HARDWARE_VERSION));
-    EXPECT_STREQ("s", aboutData.GetFieldSignature(HaeAboutData::HARDWARE_VERSION));
-
-    //SupportUrl
-    EXPECT_FALSE(aboutData.IsFieldRequired(HaeAboutData::SUPPORT_URL));
-    EXPECT_FALSE(aboutData.IsFieldAnnounced(HaeAboutData::SUPPORT_URL));
-    EXPECT_FALSE(aboutData.IsFieldLocalized(HaeAboutData::SUPPORT_URL));
-    EXPECT_STREQ("s", aboutData.GetFieldSignature(HaeAboutData::SUPPORT_URL));
-
-    //Unknown field
-    EXPECT_FALSE(aboutData.IsFieldRequired("Unknown"));
-    EXPECT_FALSE(aboutData.IsFieldAnnounced("Unknown"));
-    EXPECT_FALSE(aboutData.IsFieldLocalized("Unknown"));
-    EXPECT_TRUE(NULL == aboutData.GetFieldSignature("Unknown"));
-/*
     //CountryOfProduction
-    EXPECT_FALSE(aboutData.IsFieldRequired(HaeAboutData::COUNTRY_OF_PRODUCTION));
-    EXPECT_FALSE(aboutData.IsFieldAnnounced(HaeAboutData::COUNTRY_OF_PRODUCTION));
-    EXPECT_TRUE(aboutData.IsFieldLocalized(HaeAboutData::COUNTRY_OF_PRODUCTION));
-    EXPECT_STREQ("a", aboutData.GetFieldSignature(HaeAboutData::COUNTRY_OF_PRODUCTION));
+    EXPECT_FALSE(aboutData.IsFieldRequired(HaeAboutData::COUNTRY_OF_PRODUCTION.c_str()));
+    EXPECT_FALSE(aboutData.IsFieldAnnounced(HaeAboutData::COUNTRY_OF_PRODUCTION.c_str()));
+    EXPECT_TRUE(aboutData.IsFieldLocalized(HaeAboutData::COUNTRY_OF_PRODUCTION.c_str()));
+    EXPECT_STREQ("s", aboutData.GetFieldSignature(HaeAboutData::COUNTRY_OF_PRODUCTION.c_str()));
 
     //CorporateBrand
-    EXPECT_FALSE(aboutData.IsFieldRequired(HaeAboutData::CORPORATE_BRAND));
-    EXPECT_FALSE(aboutData.IsFieldAnnounced(HaeAboutData::CORPORATE_BRAND));
-    EXPECT_TRUE(aboutData.IsFieldLocalized(HaeAboutData::CORPORATE_BRAND));
-    EXPECT_STREQ("a", aboutData.GetFieldSignature(HaeAboutData::CORPORATE_BRAND));
+    EXPECT_FALSE(aboutData.IsFieldRequired(HaeAboutData::CORPORATE_BRAND.c_str()));
+    EXPECT_FALSE(aboutData.IsFieldAnnounced(HaeAboutData::CORPORATE_BRAND.c_str()));
+    EXPECT_TRUE(aboutData.IsFieldLocalized(HaeAboutData::CORPORATE_BRAND.c_str()));
+    EXPECT_STREQ("s", aboutData.GetFieldSignature(HaeAboutData::CORPORATE_BRAND.c_str()));
 
     //ProductBrand
-    EXPECT_FALSE(aboutData.IsFieldRequired(HaeAboutData::PRODUCT_BRAND));
-    EXPECT_FALSE(aboutData.IsFieldAnnounced(HaeAboutData::PRODUCT_BRAND));
-    EXPECT_TRUE(aboutData.IsFieldLocalized(HaeAboutData::PRODUCT_BRAND));
-    EXPECT_STREQ("a", aboutData.GetFieldSignature(HaeAboutData::PRODUCT_BRAND));
+    EXPECT_FALSE(aboutData.IsFieldRequired(HaeAboutData::PRODUCT_BRAND.c_str()));
+    EXPECT_FALSE(aboutData.IsFieldAnnounced(HaeAboutData::PRODUCT_BRAND.c_str()));
+    EXPECT_TRUE(aboutData.IsFieldLocalized(HaeAboutData::PRODUCT_BRAND.c_str()));
+    EXPECT_STREQ("s", aboutData.GetFieldSignature(HaeAboutData::PRODUCT_BRAND.c_str()));
 
     //Location
-    EXPECT_TRUE(aboutData.IsFieldRequired(HaeAboutData::LOCATION));
-    EXPECT_TRUE(aboutData.IsFieldAnnounced(HaeAboutData::LOCATION));
-    EXPECT_TRUE(aboutData.IsFieldLocalized(HaeAboutData::LOCATION));
-    EXPECT_STREQ("a", aboutData.GetFieldSignature(HaeAboutData::LOCATION));
+    EXPECT_TRUE(aboutData.IsFieldRequired(HaeAboutData::LOCATION.c_str()));
+    EXPECT_TRUE(aboutData.IsFieldAnnounced(HaeAboutData::LOCATION.c_str()));
+    EXPECT_TRUE(aboutData.IsFieldLocalized(HaeAboutData::LOCATION.c_str()));
+    EXPECT_STREQ("s", aboutData.GetFieldSignature(HaeAboutData::LOCATION.c_str()));
 
     //DeviceTypeDescription
-    EXPECT_TRUE(aboutData.IsFieldRequired(HaeAboutData::DEVICE_TYPE_DESCRIPTION));
-    EXPECT_TRUE(aboutData.IsFieldAnnounced(HaeAboutData::DEVICE_TYPE_DESCRIPTION));
-    EXPECT_FALSE(aboutData.IsFieldLocalized(HaeAboutData::DEVICE_TYPE_DESCRIPTION));
-    EXPECT_STREQ("a(ou)", aboutData.GetFieldSignature(HaeAboutData::DEVICE_TYPE_DESCRIPTION));
-*/
-}
-}//end of part updated to services
+    EXPECT_TRUE(aboutData.IsFieldRequired(HaeAboutData::DEVICE_TYPE_DESCRIPTION.c_str()));
+    EXPECT_TRUE(aboutData.IsFieldAnnounced(HaeAboutData::DEVICE_TYPE_DESCRIPTION.c_str()));
+    EXPECT_FALSE(aboutData.IsFieldLocalized(HaeAboutData::DEVICE_TYPE_DESCRIPTION.c_str()));
+    EXPECT_STREQ("a(ou)", aboutData.GetFieldSignature(HaeAboutData::DEVICE_TYPE_DESCRIPTION.c_str()));
 
+}
 
 
 TEST(HaeAboutDataTest, DefaultLanguageNotSpecified) {
     QStatus status = ER_FAIL;
-    AboutData aboutData;
-    status = aboutData.SetDeviceName("Device Name");
+    HaeAboutData aboutData;
+    
+    //HAE SPECIFIC
+    status = aboutData.SetCountryOfProduction("A Country");
     EXPECT_EQ(ER_ABOUT_DEFAULT_LANGUAGE_NOT_SPECIFIED, status);
-
-    status = aboutData.SetAppName("Application Name");
+    
+    status = aboutData.SetCorporateBrand("A Company");
     EXPECT_EQ(ER_ABOUT_DEFAULT_LANGUAGE_NOT_SPECIFIED, status);
-
-    status = aboutData.SetManufacturer("Manufacturer Name");
+    
+    status = aboutData.SetProductBrand("A Brand");
     EXPECT_EQ(ER_ABOUT_DEFAULT_LANGUAGE_NOT_SPECIFIED, status);
-
-    status = aboutData.SetDescription("A description of the application.");
+    
+    status = aboutData.SetLocation("A place in my home");
     EXPECT_EQ(ER_ABOUT_DEFAULT_LANGUAGE_NOT_SPECIFIED, status);
+    
 }
 
-//TODO:   Figure out why ajn::GetVersion() works for About, but not HaeAbout
 
-TEST(HaeAboutDataTest, Constructor) {
-    AboutData aboutData("en");
+//MFF - Spot check changing new HAE fields
+TEST(HaeAboutDataTest, CopyConstructor) {
+    HaeAboutData aboutData("en");
     char* language;
     aboutData.GetDefaultLanguage(&language);
     EXPECT_STREQ("en", language);
     char* ajSoftwareVersion;
     aboutData.GetAJSoftwareVersion(&ajSoftwareVersion);
     EXPECT_STREQ(ajn::GetVersion(), ajSoftwareVersion);
-}
 
-TEST(HaeAboutDataTest, CopyConstructor) {
-    AboutData aboutData("en");
-    char* language;
-    aboutData.GetDefaultLanguage(&language);
-    EXPECT_STREQ("en", language);
-    char* ajSoftwareVersion;
-    aboutData.GetAJSoftwareVersion(&ajSoftwareVersion);
-//    EXPECT_STREQ(ajn::GetVersion(), ajSoftwareVersion);
-
-    AboutData aboutDataCopy(aboutData);
+    HaeAboutData aboutDataCopy(aboutData);
     aboutDataCopy.GetDefaultLanguage(&language);
     EXPECT_STREQ("en", language);
 
     aboutDataCopy.GetAJSoftwareVersion(&ajSoftwareVersion);
-//    EXPECT_STREQ(ajn::GetVersion(), ajSoftwareVersion);
+    EXPECT_STREQ(ajn::GetVersion(), ajSoftwareVersion);
 
     //should be able to change each copy independent of one another
-    QStatus status = aboutData.SetDeviceName("Device");
+    QStatus status = aboutData.SetProductBrand("Brand");
     EXPECT_EQ(ER_OK, status);
 
-    status = aboutDataCopy.SetDeviceName("Copy Device");
+    status = aboutDataCopy.SetProductBrand("New Brand");
     EXPECT_EQ(ER_OK, status);
 
-    char* deviceName;
-    status = aboutData.GetDeviceName(&deviceName);
+    char* brand;
+    status = aboutData.GetProductBrand(&brand);
     EXPECT_EQ(ER_OK, status);
-    EXPECT_STREQ("Device", deviceName);
+    EXPECT_STREQ("Brand", brand);
 
-    status = aboutDataCopy.GetDeviceName(&deviceName);
+    status = aboutDataCopy.GetProductBrand(&brand);
     EXPECT_EQ(ER_OK, status);
-    EXPECT_STREQ("Copy Device", deviceName);
+    EXPECT_STREQ("New Brand", brand);
 }
-
+    
+    
+//MFF - Spot check changing new HAE fields
 TEST(HaeAboutDataTest, AssignmentOperator) {
-    AboutData aboutData("en");
+    HaeAboutData aboutData("en");
     char* language;
     aboutData.GetDefaultLanguage(&language);
     EXPECT_STREQ("en", language);
     char* ajSoftwareVersion;
     aboutData.GetAJSoftwareVersion(&ajSoftwareVersion);
-//    EXPECT_STREQ(ajn::GetVersion(), ajSoftwareVersion);
+    EXPECT_STREQ(ajn::GetVersion(), ajSoftwareVersion);
 
     // Self assignment
     aboutData = aboutData;
-    AboutData aboutDataCopy;
+    HaeAboutData aboutDataCopy;
     aboutDataCopy = aboutData;
     aboutDataCopy.GetDefaultLanguage(&language);
     EXPECT_STREQ("en", language);
 
     aboutDataCopy.GetAJSoftwareVersion(&ajSoftwareVersion);
-//    EXPECT_STREQ(ajn::GetVersion(), ajSoftwareVersion);
+    EXPECT_STREQ(ajn::GetVersion(), ajSoftwareVersion);
 
     //should be able to change each copy independent of one another
-    QStatus status = aboutData.SetDeviceName("Device");
+    QStatus status = aboutData.SetCorporateBrand("Company");
     EXPECT_EQ(ER_OK, status);
 
-    status = aboutDataCopy.SetDeviceName("Copy Device");
+    status = aboutDataCopy.SetCorporateBrand("Copy Company");
     EXPECT_EQ(ER_OK, status);
 
-    char* deviceName;
-    status = aboutData.GetDeviceName(&deviceName);
+    char* brand;
+    status = aboutData.GetCorporateBrand(&brand);
     EXPECT_EQ(ER_OK, status);
-    EXPECT_STREQ("Device", deviceName);
+    EXPECT_STREQ("Company", brand);
 
-    status = aboutDataCopy.GetDeviceName(&deviceName);
+    status = aboutDataCopy.GetCorporateBrand(&brand);
     EXPECT_EQ(ER_OK, status);
-    EXPECT_STREQ("Copy Device", deviceName);
+    EXPECT_STREQ("Copy Company", brand);
 }
 
-TEST(HaeAboutDataTest, SetAppId) {
+    
+TEST(HaeAboutDataTest, SetCountryOfProduction) {
     QStatus status = ER_FAIL;
-    AboutData aboutData("en");
-
-    uint8_t originalAppId[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
-    status = aboutData.SetAppId(originalAppId, 16u);
-    EXPECT_EQ(ER_OK, status);
-
-    uint8_t* appId;
-    size_t num;
-    status = aboutData.GetAppId(&appId, &num);
-    EXPECT_EQ(ER_OK, status);
-    ASSERT_EQ(16u, num);
-    for (size_t i = 0; i < num; i++) {
-        EXPECT_EQ(originalAppId[i], appId[i]);
-    }
-
-    //smaller than 128-bit
-    uint8_t appId_64[] = { 0, 1, 2, 3, 4, 5, 6, 7 };
-    status = aboutData.SetAppId(originalAppId, 8u);
-    EXPECT_EQ(ER_ABOUT_INVALID_ABOUTDATA_FIELD_APPID_SIZE, status);
-
-    status = aboutData.GetAppId(&appId, &num);
-    EXPECT_EQ(ER_OK, status);
-    ASSERT_EQ(8u, num);
-    for (size_t i = 0; i < num; i++) {
-        EXPECT_EQ(appId_64[i], appId[i]);
-    }
-
-    //larger than 128-bit
-    uint8_t appId_256[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
-                            16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 };
-    status = aboutData.SetAppId(appId_256, 32u);
-    EXPECT_EQ(ER_ABOUT_INVALID_ABOUTDATA_FIELD_APPID_SIZE, status);
-
-    status = aboutData.GetAppId(&appId, &num);
-    EXPECT_EQ(ER_OK, status);
-    ASSERT_EQ(32u, num);
-    for (size_t i = 0; i < num; i++) {
-        EXPECT_EQ(appId_256[i], appId[i]);
-    }
-}
-
-TEST(HaeAboutDataTest, SetAppId_using_uuid_string) {
-    QStatus status = ER_FAIL;
-    AboutData aboutData("en");
-
-    // not a hex digit
-    status = aboutData.SetAppId("g00102030405060708090a0b0c0d0e0f");
-    EXPECT_EQ(ER_ABOUT_INVALID_ABOUTDATA_FIELD_VALUE, status);
-
-    // odd number of characters parsing error
-    status = aboutData.SetAppId("00102030405060708090a0b0c0d0e0f");
-    EXPECT_EQ(ER_ABOUT_INVALID_ABOUTDATA_FIELD_VALUE, status);
-
-    // too few characters
-    status = aboutData.SetAppId("0102030405060708090a0b0c0d0e0f");
-    EXPECT_EQ(ER_ABOUT_INVALID_ABOUTDATA_FIELD_APPID_SIZE, status);
-
-    // too many characters
-    status = aboutData.SetAppId("000102030405060708090a0b0c0d0e0f10");
-    EXPECT_EQ(ER_ABOUT_INVALID_ABOUTDATA_FIELD_APPID_SIZE, status);
-
-    // not valid uuid parsing error
-    status = aboutData.SetAppId("000102030405-060708090A0B-0C0D0E0F10");
-    EXPECT_EQ(ER_ABOUT_INVALID_ABOUTDATA_FIELD_VALUE, status);
-
-    // not valid uuid parsing error
-    status = aboutData.SetAppId("00010203-04050607-0809-0A0B-0C0D0E0F");
-    EXPECT_EQ(ER_ABOUT_INVALID_ABOUTDATA_FIELD_VALUE, status);
-
-    status = aboutData.SetAppId("000102030405060708090a0b0c0d0e0f");
-    EXPECT_EQ(ER_OK, status);
-
-    uint8_t* appId;
-    size_t num;
-    status = aboutData.GetAppId(&appId, &num);
-    EXPECT_EQ(ER_OK, status);
-    ASSERT_EQ(16u, num);
-    for (size_t i = 0; i < num; i++) {
-        EXPECT_EQ(i, appId[i]);
-    }
-
-    AboutData aboutData2("en");
-
-    //use capital hex digits
-    status = aboutData2.SetAppId("000102030405060708090A0B0C0D0E0F");
-    EXPECT_EQ(ER_OK, status);
-
-    status = aboutData2.GetAppId(&appId, &num);
-    EXPECT_EQ(ER_OK, status);
-    ASSERT_EQ(16u, num);
-    for (size_t i = 0; i < num; i++) {
-        EXPECT_EQ(i, appId[i]);
-    }
-
-    AboutData aboutData3("en");
-
-    //use capital hex digits UUID as per RFC 4122
-    status = aboutData3.SetAppId("00010203-0405-0607-0809-0A0B0C0D0E0F");
-    EXPECT_EQ(ER_OK, status);
-
-    status = aboutData3.GetAppId(&appId, &num);
-    EXPECT_EQ(ER_OK, status);
-    ASSERT_EQ(16u, num);
-    for (size_t i = 0; i < num; i++) {
-        EXPECT_EQ(i, appId[i]);
-    }
-
-    AboutData aboutData4("en");
-
-    //use lowercase hex digits UUID as per RFC 4122
-    status = aboutData4.SetAppId("00010203-0405-0607-0809-0a0b0c0d0e0f");
-    EXPECT_EQ(ER_OK, status);
-
-    status = aboutData4.GetAppId(&appId, &num);
-    EXPECT_EQ(ER_OK, status);
-    ASSERT_EQ(16u, num);
-    for (size_t i = 0; i < num; i++) {
-        EXPECT_EQ(i, appId[i]);
-    }
-}
-
-TEST(HaeAboutDataTest, SetDeviceName) {
-    QStatus status = ER_FAIL;
-    AboutData aboutData("en");
+    HaeAboutData aboutData("en");
     char* language;
     status = aboutData.GetDefaultLanguage(&language);
     EXPECT_EQ(ER_OK, status);
@@ -410,273 +178,111 @@ TEST(HaeAboutDataTest, SetDeviceName) {
     char* ajSoftwareVersion;
     status = aboutData.GetAJSoftwareVersion(&ajSoftwareVersion);
     EXPECT_EQ(ER_OK, status);
-//    EXPECT_STREQ(ajn::GetVersion(), ajSoftwareVersion);
+    EXPECT_STREQ(ajn::GetVersion(), ajSoftwareVersion);
 
-    status = aboutData.SetDeviceName("Device");
+    status = aboutData.SetCountryOfProduction("Italy");
     EXPECT_EQ(ER_OK, status);
 
-    char* deviceName;
-    status = aboutData.GetDeviceName(&deviceName);
+    char* country;
+    status = aboutData.GetCountryOfProduction(&country);
     EXPECT_EQ(ER_OK, status);
-    EXPECT_STREQ("Device", deviceName);
+    EXPECT_STREQ("Italy", country);
 
-    status = aboutData.SetDeviceName("dispositivo", "es");
+    status = aboutData.SetCountryOfProduction("Italia", "it");
     EXPECT_EQ(ER_OK, status);
 
-    status = aboutData.GetDeviceName(&deviceName, "es");
+    status = aboutData.GetCountryOfProduction(&country, "it");
     EXPECT_EQ(ER_OK, status);
-    EXPECT_STREQ("dispositivo", deviceName);
+    EXPECT_STREQ("Italia", country);
 }
 
-TEST(HaeAboutDataTest, SetDeviceId) {
+
+TEST(HaeAboutDataTest, SetCorporateBrand) {
     QStatus status = ER_FAIL;
-    AboutData aboutData("en");
+    HaeAboutData aboutData("en");
 
-    status = aboutData.SetDeviceId("avec-awe1213-1234559xvc123");
+    status = aboutData.SetCorporateBrand("Company");
     EXPECT_EQ(ER_OK, status);
 
-    char* deviceId;
-    status = aboutData.GetDeviceId(&deviceId);
+    char* brand;
+    status = aboutData.GetCorporateBrand(&brand);
     EXPECT_EQ(ER_OK, status);
-    EXPECT_STREQ("avec-awe1213-1234559xvc123", deviceId);
+    EXPECT_STREQ("Company", brand);
+
+    status = aboutData.SetCorporateBrand("회사", "ko");
+    EXPECT_EQ(ER_OK, status);
+
+    status = aboutData.GetCorporateBrand(&brand, "ko");
+    EXPECT_EQ(ER_OK, status);
+    EXPECT_STREQ("회사", brand);
 }
 
-TEST(HaeAboutDataTest, SetAppName) {
+TEST(HaeAboutDataTest, SetProductBrand) {
     QStatus status = ER_FAIL;
-    AboutData aboutData("en");
+    HaeAboutData aboutData("en");
 
-    status = aboutData.SetAppName("Application");
+    status = aboutData.SetProductBrand("Product");
     EXPECT_EQ(ER_OK, status);
 
-    char* appName;
-    status = aboutData.GetAppName(&appName);
+    char* brand;
+    status = aboutData.GetProductBrand(&brand);
     EXPECT_EQ(ER_OK, status);
-    EXPECT_STREQ("Application", appName);
+    EXPECT_STREQ("Product", brand);
 
-    status = aboutData.SetAppName("aplicacion", "es");
+    status = aboutData.SetProductBrand("製品", "ja");
     EXPECT_EQ(ER_OK, status);
 
-    status = aboutData.GetAppName(&appName, "es");
+    status = aboutData.GetProductBrand(&brand, "ja");
     EXPECT_EQ(ER_OK, status);
-    EXPECT_STREQ("aplicacion", appName);
+    EXPECT_STREQ("製品", brand);
 }
 
-TEST(HaeAboutDataTest, SetManufacturer) {
+
+TEST(HaeAboutDataTest, SetLocation) {
     QStatus status = ER_FAIL;
-    AboutData aboutData("en");
+    HaeAboutData aboutData("en");
 
-    status = aboutData.SetManufacturer("Manufacturer");
+    status = aboutData.SetLocation("upstairs bedroom");
     EXPECT_EQ(ER_OK, status);
 
-    char* manufacturer;
-    status = aboutData.GetManufacturer(&manufacturer);
+    char* location;
+    status = aboutData.GetLocation(&location);
     EXPECT_EQ(ER_OK, status);
-    EXPECT_STREQ("Manufacturer", manufacturer);
+    EXPECT_STREQ("upstairs bedroom", location);
 
-    status = aboutData.SetManufacturer("manufactura", "es");
+    status = aboutData.SetLocation("habitación del segundo piso", "es");
     EXPECT_EQ(ER_OK, status);
 
-    status = aboutData.GetManufacturer(&manufacturer, "es");
+    status = aboutData.GetLocation(&location, "es");
     EXPECT_EQ(ER_OK, status);
-    EXPECT_STREQ("manufactura", manufacturer);
+    EXPECT_STREQ("habitación del segundo piso", location);
 }
 
-TEST(HaeAboutDataTest, SetModelNumber) {
+
+TEST(HaeAboutDataTest, SetDeviceTypeDescription) {
     QStatus status = ER_FAIL;
-    AboutData aboutData("en");
-
-    status = aboutData.SetModelNumber("xBnc345");
+    HaeAboutData aboutData("en");
+    
+    DeviceTypeDescription description;
+    description.AddDeviceType(THERMOSTAT, "/Hae/Thermostat");
+    status = aboutData.SetDeviceTypeDescription(&description);
     EXPECT_EQ(ER_OK, status);
 
-    char* modelNumber;
-    status = aboutData.GetModelNumber(&modelNumber);
+    DeviceTypeDescription*  returnedDescription = new DeviceTypeDescription();
+    status = aboutData.GetDeviceTypeDescription( &returnedDescription);
     EXPECT_EQ(ER_OK, status);
-    EXPECT_STREQ("xBnc345", modelNumber);
+
+    std::multimap<DeviceType, qcc::String>::const_iterator it = returnedDescription->GetDescriptions().begin();
+    EXPECT_EQ(THERMOSTAT, it->first);
+    EXPECT_STREQ("/Hae/Thermostat", it->second.c_str() );
+    
 }
 
-TEST(HaeAboutDataTest, SetSupportedLanguage)
-{
-    QStatus status = ER_FAIL;
-    AboutData aboutData("en");
-
-    size_t numLanguages = aboutData.GetSupportedLanguages();
-    const char** languages = new const char*[numLanguages];
-
-
-    size_t numRetLang = aboutData.GetSupportedLanguages(languages, numLanguages);
-    EXPECT_EQ(numLanguages, numRetLang);
-    EXPECT_EQ(1u, numLanguages);
-    EXPECT_STREQ("en", languages[0]);
-    delete [] languages;
-    languages = NULL;
-
-    status = aboutData.SetSupportedLanguage("es");
-    EXPECT_EQ(ER_OK, status);
-
-    numLanguages = aboutData.GetSupportedLanguages();
-    languages = new const char*[numLanguages];
-
-    numRetLang = aboutData.GetSupportedLanguages(languages, numLanguages);
-    EXPECT_EQ(numLanguages, numRetLang);
-    EXPECT_EQ(2u, numLanguages);
-    EXPECT_STREQ("en", languages[0]);
-    EXPECT_STREQ("es", languages[1]);
-    delete [] languages;
-    languages = NULL;
-}
-//ASACORE-910
-TEST(HaeAboutDataTest, SetSupportedLanguage_Duplicate)
-{
-    QStatus status = ER_FAIL;
-    AboutData aboutData("en");
-
-    status = aboutData.SetSupportedLanguage("es");
-    EXPECT_EQ(ER_OK, status);
-
-    // Duplicate language already added from constructor
-    status = aboutData.SetSupportedLanguage("en");
-    EXPECT_EQ(ER_OK, status);
-
-    // Duplicate language already added, error status should be generated
-    status = aboutData.SetSupportedLanguage("es");
-    EXPECT_EQ(ER_OK, status);
-
-    // Even though "en" and "es" languages have been added multiple times only
-    // two languages should be reported in the list of SupportedLanguages.
-    size_t numRetLang = aboutData.GetSupportedLanguages();
-    EXPECT_EQ(2u, numRetLang);
-}
-
-//ASACORE-911
-TEST(HaeAboutDataTest, DISABLED_SetSupportedLanguage_Invalid_Tag)
-{
-    QStatus status = ER_FAIL;
-    AboutData aboutData("en");
-
-    // Invalid language tag not defined in RFC5646
-    status = aboutData.SetSupportedLanguage("abc");
-    EXPECT_NE(ER_OK, status);
-
-    status = aboutData.SetSupportedLanguage("232");
-    EXPECT_NE(ER_OK, status);
-
-    // Invalid subtag not defined in RFC5646
-    status = aboutData.SetSupportedLanguage("en-t324");
-    EXPECT_NE(ER_OK, status);
-
-    status = aboutData.SetSupportedLanguage("zh-gfjk");
-    EXPECT_NE(ER_OK, status);
-
-    size_t numRetLang = aboutData.GetSupportedLanguages();
-    EXPECT_EQ(1u, numRetLang);
-}
-
-//ASACORE-907
-TEST(HaeAboutDataTest, GetSupportedLanguages)
-{
-    AboutData aboutData("en");
-
-    size_t numLanguages;
-    numLanguages = aboutData.GetSupportedLanguages();
-    EXPECT_EQ(1u, numLanguages);
-}
-
-TEST(HaeAboutDataTest, SetDescription) {
-    QStatus status = ER_FAIL;
-    AboutData aboutData("en");
-
-    status = aboutData.SetDescription("A poetic description of this application");
-    EXPECT_EQ(ER_OK, status);
-
-    char* description;
-    status = aboutData.GetDescription(&description);
-    EXPECT_EQ(ER_OK, status);
-    EXPECT_STREQ("A poetic description of this application", description);
-
-    status = aboutData.SetDescription("Una descripcion poetica de esta aplicacion", "es");
-    EXPECT_EQ(ER_OK, status);
-
-    status = aboutData.GetDescription(&description, "es");
-    EXPECT_EQ(ER_OK, status);
-    EXPECT_STREQ("Una descripcion poetica de esta aplicacion", description);
-}
-
-TEST(HaeAboutDataTest, SetDateOfManufacture) {
-    QStatus status = ER_FAIL;
-    AboutData aboutData("en");
-
-    status = aboutData.SetDateOfManufacture("2014-01-20");
-    EXPECT_EQ(ER_OK, status);
-
-    char* dateOfManufacture;
-    status = aboutData.GetDateOfManufacture(&dateOfManufacture);
-    EXPECT_EQ(ER_OK, status);
-    EXPECT_STREQ("2014-01-20", dateOfManufacture);
-
-}
-
-// ASACORE-906
-TEST(HaeAboutDataTest, DISABLED_SetDateOfManufacture_Negative) {
-    QStatus status = ER_FAIL;
-    AboutData aboutData("en");
-
-    // Invalid date should fail
-    status = aboutData.SetDateOfManufacture("2014-41-20");
-    EXPECT_NE(ER_OK, status);
-
-    status = aboutData.SetDateOfManufacture("201a-02-20");
-    EXPECT_NE(ER_OK, status);
-
-    status = aboutData.SetDateOfManufacture("2013-02-29");
-    EXPECT_NE(ER_OK, status);
-
-    status = aboutData.SetDateOfManufacture("04/31/2014");
-    EXPECT_NE(ER_OK, status);
-}
-
-TEST(HaeAboutDataTest, SetSoftwareVersion) {
-    QStatus status = ER_FAIL;
-    AboutData aboutData("en");
-
-    status = aboutData.SetSoftwareVersion("0.1.2");
-    EXPECT_EQ(ER_OK, status);
-
-    char* softwareVersion;
-    status = aboutData.GetSoftwareVersion(&softwareVersion);
-    EXPECT_EQ(ER_OK, status);
-    EXPECT_STREQ("0.1.2", softwareVersion);
-}
-
-TEST(HaeAboutDataTest, SetHardwareVersion) {
-    QStatus status = ER_FAIL;
-    AboutData aboutData("en");
-
-    status = aboutData.SetHardwareVersion("3.2.1");
-    EXPECT_EQ(ER_OK, status);
-
-    char* hardwareVersion;
-    status = aboutData.GetHardwareVersion(&hardwareVersion);
-    EXPECT_EQ(ER_OK, status);
-    EXPECT_STREQ("3.2.1", hardwareVersion);
-}
-
-TEST(HaeAboutDataTest, SetSupportUrl) {
-    QStatus status = ER_FAIL;
-    AboutData aboutData("en");
-
-    status = aboutData.SetSupportUrl("www.example.com");
-    EXPECT_EQ(ER_OK, status);
-
-    char* supportUrl;
-    status = aboutData.GetSupportUrl(&supportUrl);
-    EXPECT_EQ(ER_OK, status);
-    EXPECT_STREQ("www.example.com", supportUrl);
-}
 
 TEST(HaeAboutDataTest, IsValid)
 {
     QStatus status = ER_FAIL;
-    AboutData aboutData("en");
+    HaeAboutData aboutData("en");
 
     EXPECT_FALSE(aboutData.IsValid());
     uint8_t appId[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
@@ -694,7 +300,15 @@ TEST(HaeAboutDataTest, IsValid)
     EXPECT_EQ(ER_OK, status);
     status = aboutData.SetSoftwareVersion("0.1.2");
     EXPECT_EQ(ER_OK, status);
+    status = aboutData.SetLocation("upstairs bedroom");
+    EXPECT_EQ(ER_OK, status);
+    DeviceTypeDescription description;
+    description.AddDeviceType(THERMOSTAT, "/Hae/Thermostat");
+    status = aboutData.SetDeviceTypeDescription(&description);
+    EXPECT_EQ(ER_OK, status);
+    
     EXPECT_TRUE(aboutData.IsValid());
+    
 
     EXPECT_FALSE(aboutData.IsValid("es"));
 
@@ -706,81 +320,73 @@ TEST(HaeAboutDataTest, IsValid)
     EXPECT_EQ(ER_OK, status);
     status = aboutData.SetDescription("Una descripcion poetica de esta aplicacion", "es");
     EXPECT_EQ(ER_OK, status);
+    status = aboutData.SetLocation("habitación del segundo piso", "es");
+    EXPECT_EQ(ER_OK, status);
+    
     EXPECT_TRUE(aboutData.IsValid("es"));
 }
-//ASACORE-914
+
+    
 TEST(HaeAboutDataTest, IsValid_Negative)
 {
     QStatus status = ER_FAIL;
-    AboutData aboutData;
-    //DefaultLanguage and other required fields are missing
-    EXPECT_FALSE(aboutData.IsValid());
-
+    HaeAboutData aboutData;
+//Core fields are tested in Core test cases
     status = aboutData.SetDefaultLanguage("en");
     EXPECT_EQ(ER_OK, status);
-    EXPECT_FALSE(aboutData.IsValid());
-
     uint8_t appId[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
     status = aboutData.SetAppId(appId, 16);
     EXPECT_EQ(ER_OK, status);
-    //DeviceId and other required fields are missing
-    EXPECT_FALSE(aboutData.IsValid());
-
     status = aboutData.SetDeviceId("fakeID");
     EXPECT_EQ(ER_OK, status);
-    //AppName and other required fields are missing
-    EXPECT_FALSE(aboutData.IsValid());
-
     status = aboutData.SetAppName("Application");
     EXPECT_EQ(ER_OK, status);
-    //Manufacturer and other required fields are missing
-    EXPECT_FALSE(aboutData.IsValid());
-
     status = aboutData.SetManufacturer("Manufacturer");
     EXPECT_EQ(ER_OK, status);
-    //ModelNumber and other required fields are missing
-    EXPECT_FALSE(aboutData.IsValid());
-
     status = aboutData.SetModelNumber("123456");
     EXPECT_EQ(ER_OK, status);
-    //Description and other required fields are missing
-    EXPECT_FALSE(aboutData.IsValid());
-
     status = aboutData.SetDescription("A poetic description of this application");
     EXPECT_EQ(ER_OK, status);
-    //SoftwareVersion missing
-    EXPECT_FALSE(aboutData.IsValid());;
-
     status = aboutData.SetSoftwareVersion("0.1.2");
     EXPECT_EQ(ER_OK, status);
+    
+    //Hae Fields Missing
+    EXPECT_FALSE(aboutData.IsValid());;
+    status = aboutData.SetLocation("upstairs bedroom");
+    EXPECT_EQ(ER_OK, status);
+    DeviceTypeDescription description;
+    description.AddDeviceType(THERMOSTAT, "/Hae/Thermostat");
+    status = aboutData.SetDeviceTypeDescription(&description);
+    EXPECT_EQ(ER_OK, status);
+    
+    
 
     // Now all required fields are set for english
     EXPECT_TRUE(aboutData.IsValid());
 
     status = aboutData.SetSupportedLanguage("es");
     EXPECT_EQ(ER_OK, status);
-    // Missing AppName/Manufacture/Description
-    EXPECT_FALSE(aboutData.IsValid("es"));
-
     status = aboutData.SetAppName("aplicacion", "es");
     EXPECT_EQ(ER_OK, status);
-    // Missing Manufacture/Description
-    EXPECT_FALSE(aboutData.IsValid("es"));
-
     status = aboutData.SetManufacturer("manufactura", "es");
     EXPECT_EQ(ER_OK, status);
-    // Missing Description
-    EXPECT_FALSE(aboutData.IsValid("es"));
-
     status = aboutData.SetDescription("Una descripcion poetica de esta aplicacion", "es");
     EXPECT_EQ(ER_OK, status);
+    //Missing HAE mandatory localized field, location
+    EXPECT_FALSE(aboutData.IsValid("es"));
+    
+    status = aboutData.SetLocation("habitación del segundo piso", "es");
+    EXPECT_EQ(ER_OK, status);
+    
     EXPECT_TRUE(aboutData.IsValid("es"));
+
 }
 
+    
 TEST(HaeAboutDataTest, GetAboutData)
 {
     QStatus status = ER_FAIL;
-    AboutData aboutData("en");
+    HaeAboutData aboutData("en");
 
     uint8_t appId[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
     status = aboutData.SetAppId(appId, 16);
@@ -797,6 +403,18 @@ TEST(HaeAboutDataTest, GetAboutData)
     EXPECT_EQ(ER_OK, status);
     status = aboutData.SetSoftwareVersion("0.1.2");
     EXPECT_EQ(ER_OK, status);
+    status = aboutData.SetCountryOfProduction("Italy");
+    EXPECT_EQ(ER_OK, status);
+    status = aboutData.SetCorporateBrand("Company");
+    EXPECT_EQ(ER_OK, status);
+    status = aboutData.SetProductBrand("Product");
+    EXPECT_EQ(ER_OK, status);
+    status = aboutData.SetLocation("upstairs bedroom");
+    EXPECT_EQ(ER_OK, status);
+    DeviceTypeDescription description;
+    description.AddDeviceType(THERMOSTAT, "/Hae/Thermostat");
+    status = aboutData.SetDeviceTypeDescription(&description);
+    EXPECT_EQ(ER_OK, status);
     EXPECT_TRUE(aboutData.IsValid());
 
     status = aboutData.SetSupportedLanguage("es");
@@ -807,17 +425,21 @@ TEST(HaeAboutDataTest, GetAboutData)
     EXPECT_EQ(ER_OK, status);
     status = aboutData.SetDescription("Una descripcion poetica de esta aplicacion", "es");
     EXPECT_EQ(ER_OK, status);
+    status = aboutData.SetLocation("habitación del segundo piso", "es");
+    EXPECT_EQ(ER_OK, status);
+
     EXPECT_TRUE(aboutData.IsValid("es"));
 
     MsgArg aboutArg;
     status = aboutData.GetAboutData(&aboutArg);
     EXPECT_EQ(ER_OK, status);
 
-    //printf("*****\n%s\n*****\n", aboutArg.ToString().c_str());
+    printf("*****\n%s\n*****\n", aboutArg.ToString().c_str());
 
     MsgArg* args;
 
     aboutArg.GetElement("{sv}", AboutData::APP_ID, &args);
+//    printf("********\n%s\n********\n", args->ToString().c_str());
     int8_t* appIdOut;
     size_t appIdNum;
     args->Get("ay", &appIdNum, &appIdOut);
@@ -826,31 +448,45 @@ TEST(HaeAboutDataTest, GetAboutData)
         EXPECT_EQ(appId[i], appIdOut[i]);
     }
 
-    aboutArg.GetElement("{sv}", AboutData::DEFAULT_LANGUAGE, &args);
-    char* defaultLanguage;
-    args->Get("s", &defaultLanguage);
-    EXPECT_STREQ("en", defaultLanguage);
+    aboutArg.GetElement("{sv}", HaeAboutData::COUNTRY_OF_PRODUCTION.c_str(), &args);
+    char* country;
+    args->Get("s", &country);
+    EXPECT_STREQ("Italy", country);
 
-    aboutArg.GetElement("{sv}", AboutData::DEVICE_ID, &args);
-    char* deviceId;
-    args->Get("s", &deviceId);
-    EXPECT_STREQ("fakeID", deviceId);
+    aboutArg.GetElement("{sv}", HaeAboutData::CORPORATE_BRAND.c_str(), &args);
+    char* company;
+    args->Get("s", &company);
+    EXPECT_STREQ("Company", company);
 
-    aboutArg.GetElement("{sv}", AboutData::APP_NAME, &args);
-    char* appName;
-    args->Get("s", &appName);
-    EXPECT_STREQ("Application", appName);
+    aboutArg.GetElement("{sv}", HaeAboutData::PRODUCT_BRAND.c_str(), &args);
+    char* brand;
+    args->Get("s", &brand);
+    EXPECT_STREQ("Product", brand);
 
-    aboutArg.GetElement("{sv}", AboutData::MANUFACTURER, &args);
-    char* manufacturer;
-    args->Get("s", &manufacturer);
-    EXPECT_STREQ("Manufacture", manufacturer);
+    aboutArg.GetElement("{sv}", HaeAboutData::LOCATION.c_str(), &args);
+    char* location;
+    args->Get("s", &location);
+    EXPECT_STREQ("upstairs bedroom", location);
 
-    aboutArg.GetElement("{sv}", AboutData::MODEL_NUMBER, &args);
-    char* modelNumber;
-    args->Get("s", &modelNumber);
-    EXPECT_STREQ("123456", modelNumber);
+    aboutArg.GetElement("{sv}", HaeAboutData::DEVICE_TYPE_DESCRIPTION.c_str(), &args);
+//    printf("********\n%s\n********\n", args->ToString().c_str());
+
+    MsgArg* entries;
+    size_t elemSize = 0;
+    status = args->Get("a(uo)", &elemSize, &entries);
+    EXPECT_EQ(ER_OK, status);
+    EXPECT_EQ(1, elemSize);
+    printf("********\n%s\n********\n", entries[0].ToString().c_str());
+    
+    DeviceType deviceType;
+    char* objectPath;
+    status = entries[0].Get("(uo)", &deviceType, &objectPath);
+    EXPECT_EQ(ER_OK, status);    
+    EXPECT_EQ(THERMOSTAT, deviceType);
+    EXPECT_STREQ("/Hae/Thermostat", objectPath );
 }
+}//end of part updated to services
+
 
 TEST(HaeAboutDataTest, GetMsgArg_es_language)
 {
@@ -2297,14 +1933,5 @@ TEST(HaeAboutDataTest, caseInsensitiveLanguageTag) {
     EXPECT_STREQ("dispositivo", deviceName);
 }
 
-//TEST(HaeAboutDataTest, SetSupportUrlEmpty) {
-//    QStatus status = ER_FAIL;
-//    AboutData aboutData("en");
-//
-//    char* supportUrl;
-//    status = aboutData.GetSupportUrl(&supportUrl);
-//    EXPECT_EQ(ER_OK, status);
-//    EXPECT_STREQ("www.example.com", supportUrl);
-//}
-    
+
 }

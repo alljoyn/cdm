@@ -19,6 +19,8 @@
 #define HAEABOUTDATA_H_
 
 #include <alljoyn/AboutData.h>
+#include <alljoyn/hae/HaeAboutKeys.h>
+#include <qcc/String.h>
 
 namespace ajn {
 namespace services {
@@ -28,7 +30,7 @@ class DeviceTypeDescription;
 /**
  * Hae BusObject class.
  */
-class HaeAboutData : public AboutData {
+class HaeAboutData : public AboutData , public HaeAboutKeys {
   public:
     /**
      * Constructor of HaeAboutData
@@ -70,7 +72,7 @@ class HaeAboutData : public AboutData {
      *            if language is NULL the Description will be set for the default language.
      * @return ER_OK on success
      */
-    QStatus SetCountryOfProduction(const char* country, const char* language);
+    QStatus SetCountryOfProduction(const char* country, const char* language = NULL);
 
     /**
      * Get country of production
@@ -79,7 +81,7 @@ class HaeAboutData : public AboutData {
      *            if language is NULL the Description for the default language will be returned.
      * @return ER_OK on success
      */
-    QStatus GetCountryOfProduction(char** country, const char* language);
+    QStatus GetCountryOfProduction(char** country, const char* language = NULL);
 
     /**
      * Set corporate brand
@@ -88,7 +90,7 @@ class HaeAboutData : public AboutData {
      *            if language is NULL the Description will be set for the default language.
      * @return ER_OK on success
      */
-    QStatus SetCorporateBrand(const char* brand, const char* language);
+    QStatus SetCorporateBrand(const char* brand, const char* language = NULL);
 
     /**
      * Get corporate brand
@@ -97,7 +99,7 @@ class HaeAboutData : public AboutData {
      *            if language is NULL the Description for the default language will be returned.
      * @return ER_OK on success
      */
-    QStatus GetCorporateBrand(char** brand, const char* language);
+    QStatus GetCorporateBrand(char** brand, const char* language = NULL);
 
     /**
      * Set product brand
@@ -106,7 +108,7 @@ class HaeAboutData : public AboutData {
      *            if language is NULL the Description will be set for the default language.
      * @return ER_OK on success
      */
-    QStatus SetProductBrand(const char* brand, const char* language);
+    QStatus SetProductBrand(const char* brand, const char* language = NULL);
 
     /**
      * Get product brand
@@ -115,7 +117,7 @@ class HaeAboutData : public AboutData {
      *            if language is NULL the Description for the default language will be returned.
      * @return ER_OK on success
      */
-    QStatus GetProductBrand(char** brand, const char* language);
+    QStatus GetProductBrand(char** brand, const char* language = NULL);
 
     /**
      * Set location
@@ -124,7 +126,7 @@ class HaeAboutData : public AboutData {
      *            if language is NULL the Description will be set for the default language.
      * @return ER_OK on success
      */
-    QStatus SetLocation(const char* location, const char* language);
+    QStatus SetLocation(const char* location, const char* language = NULL);
 
     /**
      * Get location
@@ -133,7 +135,7 @@ class HaeAboutData : public AboutData {
      *            if language is NULL the Description for the default language will be returned.
      * @return ER_OK on success
      */
-    QStatus GetLocation(char** location, const char* language);
+    QStatus GetLocation(char** location, const char* language = NULL);
 
     /**
      * Set device type description

@@ -25,7 +25,6 @@
 #include "HaeConstants.h"
 #include "HaeControllerImpl.h"
 #include "HaeBusListener.h"
-#include "HaeAboutCustomFields.h"
 #include "InterfaceFactory.h"
 #include <alljoyn/hae/HaeProxyBusObject.h>
 
@@ -306,7 +305,7 @@ void HaeControllerImpl::Announced(const char* busName, uint16_t version, Session
 
     QCC_DbgPrintf(("%s: Received Announce: busName=%s port=%u deviceID=%s deviceName=%s rank=%s isLeader=%d", __func__, busName, port, deviceID, deviceName));
 
-    status = aboutData.GetField(DEVICE_TYPE_DESCRIPTION.c_str(), deviceTypeArg);
+    status = aboutData.GetField(HaeAboutData::DEVICE_TYPE_DESCRIPTION.c_str(), deviceTypeArg);
     if (status != ER_OK) {
         QCC_DbgPrintf(("Error (%d)", status));
         return;
@@ -315,7 +314,7 @@ void HaeControllerImpl::Announced(const char* busName, uint16_t version, Session
         return;
     }
 
-    status = deviceTypeArg->Get(aboutData.GetFieldSignature(DEVICE_TYPE_DESCRIPTION.c_str()), &elemCount, &elemArg);
+    status = deviceTypeArg->Get(aboutData.GetFieldSignature(HaeAboutData::DEVICE_TYPE_DESCRIPTION.c_str()), &elemCount, &elemArg);
     if (status != ER_OK) {
         QCC_DbgPrintf(("Error (%d)", status));
         return;

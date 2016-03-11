@@ -18,8 +18,10 @@
 #include <alljoyn/hae/LogModule.h>
 #include <alljoyn/hae/HaeAboutData.h>
 #include <alljoyn/hae/DeviceTypeDescription.h>
+#include <HaeAboutKeys.h>
 
-#include "HaeAboutCustomFields.h"
+//#include "HaeAboutCustomFields.h"
+using ajn::services::HaeAboutKeys;
 
 namespace ajn {
 namespace services {
@@ -55,12 +57,12 @@ QStatus HaeAboutData::SetCountryOfProduction(const char* country, const char* la
 {
     QStatus status = ER_OK;
     MsgArg arg;
-    status = arg.Set(GetFieldSignature(COUNTRY_OF_PRODUCTION.c_str()), country);
+    status = arg.Set(GetFieldSignature(HaeAboutKeys::COUNTRY_OF_PRODUCTION.c_str()), country);
     if (status != ER_OK) {
         QCC_LogError(status, ("%s: failed to set MsgArg.", __func__));
         return status;
     }
-    status = SetField(COUNTRY_OF_PRODUCTION.c_str(), arg, language);
+    status = SetField(HaeAboutKeys::COUNTRY_OF_PRODUCTION.c_str(), arg, language);
     return status;
 }
 
@@ -68,12 +70,12 @@ QStatus HaeAboutData::GetCountryOfProduction(char** country, const char* languag
 {
     QStatus status = ER_OK;
     MsgArg* arg = NULL;
-    status = GetField(COUNTRY_OF_PRODUCTION.c_str(), arg, language);
+    status = GetField(HaeAboutKeys::COUNTRY_OF_PRODUCTION.c_str(), arg, language);
     if (status != ER_OK) {
         QCC_LogError(status, ("%s: failed to get field.", __func__));
         return status;
     }
-    status = arg->Get(GetFieldSignature(COUNTRY_OF_PRODUCTION.c_str()), country);
+    status = arg->Get(GetFieldSignature(HaeAboutKeys::COUNTRY_OF_PRODUCTION.c_str()), country);
     return status;
 }
 
@@ -81,12 +83,12 @@ QStatus HaeAboutData::SetCorporateBrand(const char* brand, const char* language)
 {
     QStatus status = ER_OK;
     MsgArg arg;
-    status = arg.Set(GetFieldSignature(CORPORATE_BRAND.c_str()), brand);
+    status = arg.Set(GetFieldSignature(HaeAboutKeys::CORPORATE_BRAND.c_str()), brand);
     if (status != ER_OK) {
         QCC_LogError(status, ("%s: failed to set MsgArg.", __func__));
         return status;
     }
-    status = SetField(CORPORATE_BRAND.c_str(), arg, language);
+    status = SetField(HaeAboutKeys::CORPORATE_BRAND.c_str(), arg, language);
     return status;
 }
 
@@ -94,12 +96,12 @@ QStatus HaeAboutData::GetCorporateBrand(char** brand, const char* language)
 {
     QStatus status = ER_OK;
     MsgArg* arg = NULL;
-    status = GetField(CORPORATE_BRAND.c_str(), arg, language);
+    status = GetField(HaeAboutKeys::CORPORATE_BRAND.c_str(), arg, language);
     if (status != ER_OK) {
         QCC_LogError(status, ("%s: failed to get field.", __func__));
         return status;
     }
-    status = arg->Get(GetFieldSignature(CORPORATE_BRAND.c_str()), brand);
+    status = arg->Get(GetFieldSignature(HaeAboutKeys::CORPORATE_BRAND.c_str()), brand);
     return status;
 }
 
@@ -108,11 +110,11 @@ QStatus HaeAboutData::SetProductBrand(const char* brand, const char* language)
 {
     QStatus status = ER_OK;
     MsgArg arg;
-    status = arg.Set(GetFieldSignature(PRODUCT_BRAND.c_str()), brand);
+    status = arg.Set(GetFieldSignature(HaeAboutKeys::PRODUCT_BRAND.c_str()), brand);
     if (status != ER_OK) {
         return status;
     }
-    status = SetField(PRODUCT_BRAND.c_str(), arg, language);
+    status = SetField(HaeAboutKeys::PRODUCT_BRAND.c_str(), arg, language);
     return status;
 }
 
@@ -120,12 +122,12 @@ QStatus HaeAboutData::GetProductBrand(char** brand, const char* language)
 {
     QStatus status = ER_OK;
     MsgArg* arg = NULL;
-    status = GetField(PRODUCT_BRAND.c_str(), arg, language);
+    status = GetField(HaeAboutKeys::PRODUCT_BRAND.c_str(), arg, language);
     if (status != ER_OK) {
         QCC_LogError(status, ("%s: failed to get field.", __func__));
         return status;
     }
-    status = arg->Get(GetFieldSignature(PRODUCT_BRAND.c_str()), brand);
+    status = arg->Get(GetFieldSignature(HaeAboutKeys::PRODUCT_BRAND.c_str()), brand);
     return status;
 }
 
@@ -133,11 +135,11 @@ QStatus HaeAboutData::SetLocation(const char* location, const char* language)
 {
     QStatus status = ER_OK;
     MsgArg arg;
-    status = arg.Set(GetFieldSignature(LOCATION.c_str()), location);
+    status = arg.Set(GetFieldSignature(HaeAboutKeys::LOCATION.c_str()), location);
     if (status != ER_OK) {
         return status;
     }
-    status = SetField(LOCATION.c_str(), arg, language);
+    status = SetField(HaeAboutKeys::LOCATION.c_str(), arg, language);
     return status;
 }
 
@@ -145,12 +147,12 @@ QStatus HaeAboutData::GetLocation(char** location, const char* language)
 {
     QStatus status = ER_OK;
     MsgArg* arg = NULL;
-    status = GetField(LOCATION.c_str(), arg, language);
+    status = GetField(HaeAboutKeys::LOCATION.c_str(), arg, language);
     if (status != ER_OK) {
         QCC_LogError(status, ("%s: failed to get field.", __func__));
         return status;
     }
-    status = arg->Get(GetFieldSignature(LOCATION.c_str()), location);
+    status = arg->Get(GetFieldSignature(HaeAboutKeys::LOCATION.c_str()), location);
     return status;
 }
 
@@ -175,14 +177,14 @@ QStatus HaeAboutData::SetDeviceTypeDescription(const DeviceTypeDescription *devi
     assert(elemCount == elemSize);
 
     MsgArg deviceTypeDescriptions;
-    status = deviceTypeDescriptions.Set(GetFieldSignature(DEVICE_TYPE_DESCRIPTION.c_str()), elemSize, typeAndObjPath); // a(uo)
+    status = deviceTypeDescriptions.Set(GetFieldSignature(HaeAboutKeys::DEVICE_TYPE_DESCRIPTION.c_str()), elemSize, typeAndObjPath); // a(uo)
     if (status != ER_OK) {
         QCC_LogError(status, ("%s: failed to set MsgArg.", __func__));
         delete[] typeAndObjPath;
         return status;
     }
 
-    status = SetField(DEVICE_TYPE_DESCRIPTION.c_str(), deviceTypeDescriptions);
+    status = SetField(HaeAboutKeys::DEVICE_TYPE_DESCRIPTION.c_str(), deviceTypeDescriptions);
 
     delete[] typeAndObjPath;
     return status;
@@ -195,14 +197,14 @@ QStatus HaeAboutData::GetDeviceTypeDescription(DeviceTypeDescription **deviceTyp
 
     (*deviceTypes)->ResetDescriptions();
 
-    status = GetField(DEVICE_TYPE_DESCRIPTION.c_str(), arg);
+    status = GetField(HaeAboutKeys::DEVICE_TYPE_DESCRIPTION.c_str(), arg);
     if (status != ER_OK) {
         QCC_LogError(status, ("%s: failed to get field.", __func__));
         return status;
     }
     MsgArg* elemArg = NULL;
     size_t elemSize = 0;
-    status = arg->Get(GetFieldSignature(DEVICE_TYPE_DESCRIPTION.c_str()), &elemSize, &elemArg);
+    status = arg->Get(GetFieldSignature(HaeAboutKeys::DEVICE_TYPE_DESCRIPTION.c_str()), &elemSize, &elemArg);
     if (status != ER_OK) {
         QCC_LogError(status, ("%s: failed to get MsgArg.", __func__));
         return status;
@@ -229,11 +231,11 @@ QStatus HaeAboutData::GetDeviceTypeDescription(DeviceTypeDescription **deviceTyp
 
 void HaeAboutData::InitializeCustomFieldDetails()
 {
-    SetNewFieldDetails(COUNTRY_OF_PRODUCTION.c_str(),   LOCALIZED, "s");
-    SetNewFieldDetails(CORPORATE_BRAND.c_str(),         LOCALIZED, "s");
-    SetNewFieldDetails(PRODUCT_BRAND.c_str(),           LOCALIZED, "s");
-    SetNewFieldDetails(LOCATION.c_str(),                REQUIRED | LOCALIZED | ANNOUNCED, "s");
-    SetNewFieldDetails(DEVICE_TYPE_DESCRIPTION.c_str(), REQUIRED | ANNOUNCED, "a(uo)");
+    SetNewFieldDetails(HaeAboutKeys::COUNTRY_OF_PRODUCTION.c_str(),   LOCALIZED, "s");
+    SetNewFieldDetails(HaeAboutKeys::CORPORATE_BRAND.c_str(),         LOCALIZED, "s");
+    SetNewFieldDetails(HaeAboutKeys::PRODUCT_BRAND.c_str(),           LOCALIZED, "s");
+    SetNewFieldDetails(HaeAboutKeys::LOCATION.c_str(),                REQUIRED | LOCALIZED | ANNOUNCED, "s");
+    SetNewFieldDetails(HaeAboutKeys::DEVICE_TYPE_DESCRIPTION.c_str(), REQUIRED | ANNOUNCED, "a(uo)");
 }
 
 } //namespace services

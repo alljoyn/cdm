@@ -140,7 +140,7 @@ else:
     haetest_prog = hae_unittest_env.Program(haetest_obj)
     hae_unittest_env.Install('$TESTDIR/hae/bin', haetest_prog)
 
-    hae_unittest_env.Append(LIBPATH = [ '$OBJDIR_SERVICES_HAE/cpp/src' ])
+    hae_unittest_env.Append(LIBPATH = [ '#' + '$OBJDIR_SERVICES_HAE/cpp/src' ])
 
 
 #######  TODO Figure out how this is supposed to work

@@ -13,23 +13,18 @@
  *    ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-#ifndef HAEABOUTCUSTOMFIELDS_H_
-#define HAEABOUTCUSTOMFIELDS_H_
-
+#include <HaeAboutKeys.h>
 #include <qcc/String.h>
 
+#define QCC_MODULE "ALLJOYN_ABOUT"
+
 namespace ajn {
-namespace services {
-/**
- * custom field name
- */
-static const qcc::String COUNTRY_OF_PRODUCTION   = "CountryOfProduction";
-static const qcc::String CORPORATE_BRAND         = "CorporateBrand";
-static const qcc::String PRODUCT_BRAND           = "ProductBrand";
-static const qcc::String LOCATION                = "Location";
-static const qcc::String DEVICE_TYPE_DESCRIPTION = "DeviceTypeDescription";
+    namespace services {
+    const qcc::String HaeAboutKeys::COUNTRY_OF_PRODUCTION   = "CountryOfProduction";
+    const qcc::String HaeAboutKeys::CORPORATE_BRAND         = "CorporateBrand";
+    const qcc::String HaeAboutKeys::PRODUCT_BRAND           = "ProductBrand";
+    const qcc::String HaeAboutKeys::LOCATION                = "Location";
+    const qcc::String HaeAboutKeys::DEVICE_TYPE_DESCRIPTION = "DeviceTypeDescription";
 
+    }
 }
-}
-
-#endif //HAEABOUTCUSTOMFIELDS_H_
