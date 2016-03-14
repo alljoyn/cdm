@@ -100,7 +100,7 @@ QStatus OvenCyclePhaseIntfControlleeImpl::OnGetProperty(const String propName, M
                     //update internal value
                     SetSupportedCyclePhases(supportedCyclePhases);
                 }
-                uint8_t vals[supportedCyclePhases.size()];
+                uint8_t* vals = new uint8_t[supportedCyclePhases.size()];
                 size_t i = 0;
 
                 for(i = 0; i < supportedCyclePhases.size(); i++)
@@ -109,6 +109,7 @@ QStatus OvenCyclePhaseIntfControlleeImpl::OnGetProperty(const String propName, M
                 }
                 val.Set("ay", sizeof(vals)/ sizeof(uint8_t), vals);
                 val.Stabilize();
+                delete[] vals;
             }
             else
             {
@@ -129,7 +130,7 @@ QStatus OvenCyclePhaseIntfControlleeImpl::OnGetProperty(const String propName, M
             {
                 SupportedCyclePhases supportedCyclePhases;
                 supportedCyclePhases = GetSupportedCyclePhases();
-                uint8_t vals[supportedCyclePhases.size()];
+                uint8_t* vals = new uint8_t[supportedCyclePhases.size()];
                 size_t i = 0;
 
                 for(i = 0; i < supportedCyclePhases.size(); i++)
@@ -138,6 +139,7 @@ QStatus OvenCyclePhaseIntfControlleeImpl::OnGetProperty(const String propName, M
                 }
                 val.Set("ay", sizeof(vals)/ sizeof(uint8_t), vals);
                 val.Stabilize();
+                delete[] vals;
             }
             else
             {
@@ -205,8 +207,6 @@ QStatus OvenCyclePhaseIntfControlleeImpl::SetCyclePhase(const uint8_t cyclePhase
 
 QStatus OvenCyclePhaseIntfControlleeImpl::SetSupportedCyclePhases(const SupportedCyclePhases& supportedPhases)
 {
-    uint8_t vals[supportedPhases.size()];
-
     bool listChanged = false;
 
     if(m_supportedCyclePhases.size() != supportedPhases.size())
@@ -234,6 +234,7 @@ QStatus OvenCyclePhaseIntfControlleeImpl::SetSupportedCyclePhases(const Supporte
 
     if(listChanged)
     {
+        uint8_t* vals = new uint8_t[supportedPhases.size()];
         m_supportedCyclePhases.clear();
         for(size_t i = 0 ; i < supportedPhases.size(); i ++)
         {
@@ -246,6 +247,7 @@ QStatus OvenCyclePhaseIntfControlleeImpl::SetSupportedCyclePhases(const Supporte
         arg.Stabilize();
 
         m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_SupportedCyclePhases.c_str(), arg, 0 , ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        delete[] vals;
     }
     return ER_OK;
 }
@@ -278,7 +280,7 @@ void OvenCyclePhaseIntfControlleeImpl::OnGetCyclePhasesDescription(const Interfa
             {
                 int numReturned = listOfDescriptions.size();
                 OvenCyclePhaseInterface::CyclePhaseDescriptions::const_iterator citer;
-                MsgArg args[numReturned];
+                MsgArg *args = new MsgArg[numReturned];
                 MsgArg retArgs[1];
                 int i=0;
 
@@ -289,6 +291,7 @@ void OvenCyclePhaseIntfControlleeImpl::OnGetCyclePhasesDescription(const Interfa
                 status = retArgs[0].Set("a(yss)", i, args);
                 retArgs[0].Stabilize();
                 status = m_busObject.ReplyMethodCall(msg, retArgs, ArraySize(retArgs));
+                delete [] args;
             }
             else
             {

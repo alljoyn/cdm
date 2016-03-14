@@ -63,7 +63,7 @@ QStatus SoilLevelIntfControlleeImpl::OnGetProperty(const String propName, MsgArg
     } else if (!s_prop_SelectableLevels.compare(propName)) {
         std::vector<uint8_t> levels = GetSelectableLevels();
 
-        uint8_t vals[levels.size()];
+        uint8_t* vals = new uint8_t[levels.size()];
 
         size_t i = 0;
 
@@ -72,6 +72,7 @@ QStatus SoilLevelIntfControlleeImpl::OnGetProperty(const String propName, MsgArg
 
         val.Set("ay", sizeof(vals)/ sizeof(uint8_t), vals);
         val.Stabilize();
+        delete[] vals;
     }
     else {
         if (s_retrievingActualPropertyValue) {
@@ -222,7 +223,7 @@ QStatus SoilLevelIntfControlleeImpl::SetSelectableLevels(const std::vector<uint8
         return ER_INVALID_DATA;
 
     MsgArg arg;
-    uint8_t vals[selectableLevels.size()];
+    uint8_t* vals = new uint8_t[selectableLevels.size()];
 
     size_t i = 0;
 
@@ -238,7 +239,7 @@ QStatus SoilLevelIntfControlleeImpl::SetSelectableLevels(const std::vector<uint8
         m_selectableLevels.push_back(selectableLevels[i]);
 
     m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_SelectableLevels.c_str(), arg, 0 ,ALLJOYN_FLAG_GLOBAL_BROADCAST);
-
+    delete[] vals;
     return ER_OK;
 }
 

@@ -89,7 +89,7 @@ QStatus RobotCleaningCyclePhaseIntfControlleeImpl::OnGetProperty(const String pr
 
                 MsgArg arg(ALLJOYN_ARRAY);
                 size_t numElements = supportedCyclePhases.size();
-                uint8_t temp[numElements];
+                uint8_t* temp = new uint8_t[numElements];
                 for (size_t i = 0; i < numElements; i++)
                 {
                     temp[i] =  supportedCyclePhases[i];
@@ -97,6 +97,7 @@ QStatus RobotCleaningCyclePhaseIntfControlleeImpl::OnGetProperty(const String pr
                 arg.Set("ay", numElements, temp);
 
                 val = arg;
+                delete[] temp;
             } else {
                 status = ER_BUS_NO_SUCH_PROPERTY;
             }
@@ -110,7 +111,7 @@ QStatus RobotCleaningCyclePhaseIntfControlleeImpl::OnGetProperty(const String pr
 
                 MsgArg arg(ALLJOYN_ARRAY);
                 size_t numElements = supportedCyclePhases.size();
-                uint8_t temp[numElements];
+                uint8_t* temp = new uint8_t[numElements];
                 for (size_t i = 0; i < numElements; i++)
                 {
                     temp[i] =  supportedCyclePhases[i];
@@ -118,6 +119,7 @@ QStatus RobotCleaningCyclePhaseIntfControlleeImpl::OnGetProperty(const String pr
                 arg.Set("ay", numElements, temp);
 
                 val = arg;
+                delete[] temp;
             } else {
                 status = ER_BUS_NO_SUCH_PROPERTY;
             }
@@ -213,7 +215,7 @@ QStatus RobotCleaningCyclePhaseIntfControlleeImpl::SetSupportedCyclePhases(const
     if (diff) {
         MsgArg arg(ALLJOYN_ARRAY);
         size_t numElements = supportedCyclePhases.size();
-        uint8_t temp[numElements];
+        uint8_t* temp = new uint8_t[numElements];
         for (size_t i = 0; i < numElements; i++)
         {
             temp[i] =  supportedCyclePhases[i];
@@ -222,6 +224,7 @@ QStatus RobotCleaningCyclePhaseIntfControlleeImpl::SetSupportedCyclePhases(const
 
         m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_SupportedCyclePhases.c_str(), arg, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
         m_supportedCyclePhases = supportedCyclePhases;
+        delete[] temp;
     }
 
     return ER_OK;

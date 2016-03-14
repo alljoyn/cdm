@@ -89,7 +89,7 @@ QStatus ClimateControlModeIntfControlleeImpl::OnGetProperty(const String propNam
 
                 MsgArg arg(ALLJOYN_ARRAY);
                 size_t numElements = value.size();
-                uint16_t temp[numElements];
+                uint16_t* temp = new uint16_t[numElements];
                 for (size_t i = 0; i < numElements; i++)
                 {
                     temp[i] =  value[i];
@@ -97,7 +97,7 @@ QStatus ClimateControlModeIntfControlleeImpl::OnGetProperty(const String propNam
                 arg.Set("aq", numElements, temp);
 
                 val = arg;
-
+                delete[] temp;
             } else if (!(s_prop_OperationalState.compare(propName))) {
                 uint16_t value;
                 status = m_interfaceListener.OnGetOperationalState(value);
@@ -125,7 +125,7 @@ QStatus ClimateControlModeIntfControlleeImpl::OnGetProperty(const String propNam
 
                 MsgArg arg(ALLJOYN_ARRAY);
                 size_t numElements = value.size();
-                uint16_t temp[numElements];
+                uint16_t* temp = new uint16_t[numElements];
                 for (size_t i = 0; i < numElements; i++)
                 {
                     temp[i] =  value[i];
@@ -133,7 +133,7 @@ QStatus ClimateControlModeIntfControlleeImpl::OnGetProperty(const String propNam
                 arg.Set("aq", numElements, temp);
 
                 val = arg;
-
+                delete[] temp;
             } else if (!(s_prop_OperationalState.compare(propName))) {
                 const uint16_t value = GetOperationalState();
                 val.typeId = ALLJOYN_UINT16;
@@ -258,7 +258,7 @@ QStatus ClimateControlModeIntfControlleeImpl::SetSupportedModes(const SupportedM
     if (diff) {
         MsgArg arg(ALLJOYN_ARRAY);
         size_t numElements = modes.size();
-        uint16_t temp[numElements];
+        uint16_t* temp = new uint16_t[numElements];
         for (size_t i = 0; i < numElements; i++) {
             temp[i] =  modes[i];
         }
@@ -270,6 +270,7 @@ QStatus ClimateControlModeIntfControlleeImpl::SetSupportedModes(const SupportedM
 
         m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_SupportedModes.c_str(), arg, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
         m_SupportedModes = modes;
+        delete[] temp;
     }
 
     return ER_OK;

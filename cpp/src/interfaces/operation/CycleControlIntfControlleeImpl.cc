@@ -71,7 +71,7 @@ QStatus CycleControlIntfControlleeImpl::OnGetProperty(const String propName, Msg
     else if(!s_prop_SupportedOperationalCommands.compare(propName))
     {
         SupportedOperationalCommands commands = GetSupportedCommands();
-        uint8_t vals[commands.size()];
+        uint8_t* vals = new uint8_t[commands.size()];
         size_t i = 0;
 
         for(i = 0; i < commands.size(); i++)
@@ -80,11 +80,12 @@ QStatus CycleControlIntfControlleeImpl::OnGetProperty(const String propName, Msg
         }
         val.Set("ay", sizeof(vals)/sizeof(uint8_t), vals);
         val.Stabilize();
+        delete[] vals;
     }
     else if(!s_prop_SupportedOperationalStates.compare(propName))
     {
         SupportedOperationalStates states = GetSupportedStates();
-        uint8_t vals[states.size()];
+        uint8_t* vals = new uint8_t[states.size()];
         size_t i = 0;
 
         for(i = 0; i < states.size(); i++)
@@ -93,6 +94,7 @@ QStatus CycleControlIntfControlleeImpl::OnGetProperty(const String propName, Msg
         }
         val.Set("ay", sizeof(vals)/ sizeof(uint8_t), vals);
         val.Stabilize();
+        delete[] vals;
     }
     else
     {
@@ -265,7 +267,7 @@ QStatus CycleControlIntfControlleeImpl::SetSupportedCommands(SupportedOperationa
         m_supportedCommands.clear();
         for(unsigned int i =0;i<commands.size();i++)
             m_supportedCommands.push_back(commands[i]);
-        uint8_t vals[m_supportedCommands.size()];
+        uint8_t* vals = new uint8_t[m_supportedCommands.size()];
         MsgArg val;
         size_t i = 0;
 
@@ -276,6 +278,7 @@ QStatus CycleControlIntfControlleeImpl::SetSupportedCommands(SupportedOperationa
         val.Set("ay", sizeof(vals)/ sizeof(uint8_t), vals);
         val.Stabilize();
         m_busObject.EmitPropChanged(GetInterfaceName().c_str(),s_prop_SupportedOperationalCommands.c_str(), val, 0, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        delete[] vals;
     }
     return status;
 }
@@ -305,7 +308,7 @@ QStatus CycleControlIntfControlleeImpl::SetSupportedStates(SupportedOperationalS
         m_supportedStates.clear();
         for(unsigned int i =0;i<states.size();i++)
             m_supportedStates.push_back(states[i]);
-        uint8_t vals[m_supportedStates.size()];
+        uint8_t* vals = new uint8_t[m_supportedStates.size()];
 
         MsgArg val;
         size_t i = 0;
@@ -317,6 +320,7 @@ QStatus CycleControlIntfControlleeImpl::SetSupportedStates(SupportedOperationalS
         val.Set("ay", sizeof(vals)/ sizeof(uint8_t), vals);
         val.Stabilize();
         m_busObject.EmitPropChanged(GetInterfaceName().c_str(),s_prop_SupportedOperationalStates.c_str(), val, 0, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        delete[] vals;
     }
     return status;
 }
