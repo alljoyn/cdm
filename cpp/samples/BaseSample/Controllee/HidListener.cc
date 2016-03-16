@@ -17,11 +17,32 @@
 #include <iostream>
 #include "HidListener.h"
 
+// Integration of UInput functionalities
+// Default activation status = OFF
+// To activate it : scons BINDINGS=... UINPUT=on
+#ifdef UINPUT
+#include "UInput.h"
+#endif
+
 using namespace std;
 
 void HidListener::OnInjectEvents(HidInterface::InputEvents& inputEvents)
 {
+#ifdef UINPUT
+    // we use UInput to inject each event in linux kernel
+    for (HidInterface::InputEvents::iterator it = inputEvents.begin() ; it != inputEvents.end(); ++it) {
+        HidInterface::InputEvent iev = *it;
+        if(UInput::Instance().InjectEvent(iev.type, iev.code, iev.value) < 0) {
+            cout << "event injection >> [type : " << iev.type << "] [code : " << iev.code << "] [value :" << iev.value << "] >> FAILURE" << endl;
+            break;
+        }
+        else {
+            cout << "event injection >> [type : " << iev.type << "] [code : " << iev.code << "] [value :" << iev.value << "] >> INJECTED" << endl;
+        }
+    }
+#else
     cout << "HidListener::OnInjectEvents - inputEvents size : " << inputEvents.size() << endl;
+#endif
 }
 
 QStatus HidListener::OnGetSupportedEvents(HidInterface::SupportedInputEvents& supportedEvents)

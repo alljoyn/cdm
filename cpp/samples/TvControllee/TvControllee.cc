@@ -17,6 +17,19 @@
 #include <alljoyn/hae/interfaces/operation/AudioVideoInputIntfControllee.h>
 #include <alljoyn/hae/interfaces/input/HidIntfControllee.h>
 
+// Integration of UInput functionalities
+// Default activation status = OFF
+// To activate it : scons BINDINGS=... UINPUT=on
+#ifdef UINPUT
+#include "UInput.h"
+// To create the input device, we need a vendor ID, a product ID and a version
+// In this sample, we are using LGE ID
+// see : http://www.linux-usb.org/usb.ids
+#define UINPUT_DEV_VENDOR_ID   0x043e // LG Electronics USA, Inc.
+#define UINPUT_DEV_PRODUCT_ID  0xffff // unknown product
+#define UINPUT_DEV_VERSION     0x01
+#endif
+
 using namespace std;
 using namespace qcc;
 
@@ -157,6 +170,11 @@ void TvControllee::SetInitialProperty()
             supportedEvents.push_back(supportedEvent);
         }
         m_hidIntfControllee->SetSupportedEvents(supportedEvents);
+
+#ifdef UINPUT
+        // Initialize the UInput instance (to create the input device on system)
+        UInput::Instance().Init(UINPUT_DEV_VENDOR_ID, UINPUT_DEV_PRODUCT_ID, UINPUT_DEV_VERSION, supportedEvents);
+#endif
     }
 }
 
@@ -280,6 +298,11 @@ int main()
     controllee.Startup();
 
     controllee.Shutdown();
+
+#ifdef UINPUT
+    // Release the UInput instance (to destroy the input device on system)
+    UInput::Instance().Release();
+#endif
 
     if (bus) {
         bus->Disconnect();
