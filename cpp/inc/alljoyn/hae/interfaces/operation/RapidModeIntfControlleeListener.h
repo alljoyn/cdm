@@ -36,11 +36,19 @@ class RapidModeIntfControlleeListener : public InterfaceControlleeListener {
     virtual ~RapidModeIntfControlleeListener() {}
 
     /**
-     * TODO: define functions that receives the SetProperty, GetProperty and other method call
+     * Handler for setting RapidMode property
+     * @param[in] rapidMode rapid mode
+     * @return ER_OK on success
      */
     virtual QStatus OnSetRapidMode(const bool& rapidMode) = 0;
 
-    virtual QStatus OnGetRapidMode(bool& volume) = 0;
+    /**
+     * Handler for getting RapidMode property
+     * This function is only called, when InterfaceControllee::s_retrievingActualPropertyValue is true.
+     * @param[out] rapidMode if device is in rapid mode
+     * @return ER_OK on success
+     */
+    virtual QStatus OnGetRapidMode(bool& rapidMode) = 0;
 
 };
 

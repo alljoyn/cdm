@@ -60,10 +60,6 @@ class RapidModeInterface : public HaeInterface {
   protected:
     static const qcc::String s_prop_Version;
     static const qcc::String s_prop_RapidMode;
-    /**
-     * TODO: add property, method and signal name variable
-     */
-
 
   private:
     static const qcc::String s_xml;

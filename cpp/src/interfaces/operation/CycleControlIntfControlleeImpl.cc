@@ -227,7 +227,6 @@ QStatus CycleControlIntfControlleeImpl::SetOperationalState(CycleControlOperatio
         return ER_FAIL;
 
     QStatus status = ER_OK;
-    cout << "Set operational state to '" << OPERATIONAL_STATE_STRINGS[state] << "'" <<endl;
 
     if (m_currentState != state)
     {
@@ -235,7 +234,6 @@ QStatus CycleControlIntfControlleeImpl::SetOperationalState(CycleControlOperatio
         val.typeId = ALLJOYN_BYTE;
         val.v_byte = (uint8_t)state;
         m_currentState = state;
-        cout << "emitting propchanged" << endl;
         m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_OperationalState.c_str(), val, 0, ALLJOYN_FLAG_GLOBAL_BROADCAST);
     }
     return status;

@@ -57,10 +57,6 @@ QStatus RapidModeIntfControllerImpl::Init()
         QCC_LogError(status, ("%s: RegisterPropertiesChangedListener failed.", __func__));
     }
 
-    /**
-     * TODO: Register signal handler
-     */
-
     return status;
 }
 
@@ -90,8 +86,6 @@ QStatus RapidModeIntfControllerImpl::GetRapidMode(void* context)
 {
     QStatus status = ER_OK;
 
-    cout << "IF: " << GetInterfaceName().c_str() << endl;
-    cout << "prop: " << s_prop_RapidMode.c_str() << endl;
     status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_RapidMode.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&RapidModeIntfControllerImpl::GetRapidModePropertyCB, context);
 
     return status;
@@ -103,8 +97,6 @@ QStatus RapidModeIntfControllerImpl::SetRapidMode(const bool rapidMode, void* co
 
     MsgArg arg;
     arg.Set("b", rapidMode);
-    cout << "IF: " << GetInterfaceName().c_str() << endl;
-    cout << "prop: " << s_prop_RapidMode.c_str() << endl;
     status = m_proxyObject.SetPropertyAsync(GetInterfaceName().c_str(), s_prop_RapidMode.c_str(), arg, this, (ProxyBusObject::Listener::SetPropertyCB)&RapidModeIntfControllerImpl::SetRapidModePropertyCB, context);
 
     return status;

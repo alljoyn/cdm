@@ -90,28 +90,84 @@ class TimerIntfControlleeImpl : public InterfaceControllee, public TimerIntfCont
      */
     virtual BusAttachment& GetBusAttachment() const { return m_busAttachment; }
 
+    /**
+     * Get ReferenceTimer
+     * @return reference timer value
+     */
     virtual const int32_t GetReferenceTimer() const {return m_referenceTimer; }
 
+    /**
+     * Set ReferenceTimer
+     * @param[in] time
+     * @return status
+     */
     virtual QStatus SetReferenceTimer(const int32_t time);
 
+    /**
+     * Get ReferenceTimer
+     * @return target time to start
+     */
     virtual const int32_t GetTargetTimeToStart() const { return m_targetTimeToStart; }
 
+    /**
+     * Get ReferenceTimer
+     * @return target time to stop
+     */
     virtual const int32_t GetTargetTimeToStop() const { return m_targetTimeToStop; }
 
+    /**
+     * Get ReferenceTimer
+     * @return estimated time to end
+     */
     virtual const int32_t GetEstimatedTimeToEnd() const { return (m_targetTimeToStop - m_referenceTimer); }
 
+    /**
+     * Set EstimatedTimeToEnd
+     * @param[in] time
+     * @return status
+     */
     virtual QStatus SetEstimatedTimeToEnd(const int32_t time);
 
+    /**
+     * Get ReferenceTimer
+     * @return running time
+     */
     virtual const int32_t GetRunningTime() const { return (m_referenceTimer - m_targetTimeToStart); }
 
+    /**
+     * Set RunningTime
+     * @param[in] time
+     * @return status
+     */
     virtual QStatus SetRunningTime(const int32_t time);
 
+    /**
+     * Get ReferenceTimer
+     * @return target duration
+     */
     virtual const int32_t GetTargetDuration() const { return (m_targetTimeToStop - m_targetTimeToStart); }
 
+    /**
+     * Set TargetDuration
+     * @param[in] time
+     * @return status
+     */
     virtual QStatus SetTargetDuration(const int32_t time);
 
+    /**
+     * Handler of SetTargetTimeToStart method
+     * @param member
+     * @param msg reference of alljoyn Message
+     */
     void OnSetTargetTimeToStart(const InterfaceDescription::Member* member, Message& msg);
+
+    /**
+     * Handler of SetTargetTimeToStop method
+     * @param member
+     * @param msg reference of alljoyn Message
+     */
     void OnSetTargetTimeToStop(const InterfaceDescription::Member* member, Message& msg);
+
   private:
     TimerIntfControlleeImpl();
 

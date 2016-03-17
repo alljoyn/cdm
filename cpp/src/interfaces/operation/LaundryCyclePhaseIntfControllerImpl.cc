@@ -57,10 +57,6 @@ QStatus LaundryCyclePhaseIntfControllerImpl::Init()
         QCC_LogError(status, ("%s: RegisterPropertiesChangedListener failed.", __func__));
     }
 
-    /**
-     * TODO: Register signal handler
-     */
-
     return status;
 }
 

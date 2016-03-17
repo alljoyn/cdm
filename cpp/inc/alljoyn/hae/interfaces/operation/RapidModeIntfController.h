@@ -39,8 +39,19 @@ class RapidModeIntfController : public RapidModeInterface {
      */
     virtual ~RapidModeIntfController() {}
 
+    /**
+     * Get rapid mode
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
+     */
     virtual QStatus GetRapidMode(void* context = NULL) = 0;
 
+    /**
+     * Set rapid mode
+     * @param[in] rapidMide rapid mode
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
+     */
     virtual QStatus SetRapidMode(const bool rapidMode, void* context = NULL) = 0;
 };
 

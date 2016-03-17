@@ -90,16 +90,44 @@ class LaundryCyclePhaseIntfControlleeImpl : public InterfaceControllee, public L
      */
     virtual BusAttachment& GetBusAttachment() const { return m_busAttachment; }
 
+    /**
+     * Get CyclePhase
+     * @return cycle phase
+     */
     virtual const uint8_t GetCyclePhase() const { return m_cyclePhase; }
 
+    /**
+     * Set SyclePhase
+     * @param[in] cyclePhase
+     * @return status
+     */
     virtual QStatus SetCyclePhase(const uint8_t cyclePhase);
 
+    /**
+     * Get list of supported cycle phases
+     * @return list of cycle phases
+     */
     virtual const SupportedCyclePhases& GetSupportedCyclePhases() const { return m_supportedCyclePhases; }
 
-    virtual QStatus SetSupportedCyclePhases(const SupportedCyclePhases& descriptions);
+    /**
+     * Set list of supported cycle phases
+     * @param[in] supportedPhases
+     * @return status
+     */
+    virtual QStatus SetSupportedCyclePhases(const SupportedCyclePhases& supportedPhases);
 
+    /**
+     * Handler of GetCyclePhasesDescription method
+     * @param[in] member
+     * @param[in] msg reference of alljoyn Message
+     */
     void OnGetCyclePhasesDescription(const InterfaceDescription::Member* member, Message& msg);
 
+    /**
+     * Set list of vendor defined cycle phases
+     * @param[in] vendorPhases
+     * @return status
+     */
     virtual QStatus SetVendorDefinedCyclePhases(const std::vector<uint8_t>& vendorPhases);
 
   private:

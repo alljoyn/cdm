@@ -60,10 +60,25 @@ class HeatingZoneIntfControllerImpl : public InterfaceController, public Heating
      */
     virtual BusAttachment& GetBusAttachment() const { return m_busAttachment; }
 
+    /**
+     * Get number of heating zones
+     * @param[in] context
+     * @return status
+     */
     virtual QStatus GetNumberOfHeatingZones(void* context);
 
+    /**
+     * Get list of max heating levels
+     * @param[in] context
+     * @return status
+     */
     virtual QStatus GetMaxHeatingLevels(void* context );
 
+    /**
+     * Get list of heating levels
+     * @param[in] context
+     * @return status
+     */
     virtual QStatus GetHeatingLevels(void* context);
 
   private:

@@ -98,7 +98,6 @@ QStatus RapidModeIntfControlleeImpl::OnGetProperty(const String propName, MsgArg
 QStatus RapidModeIntfControlleeImpl::OnSetProperty(const String propName, MsgArg& val)
 {
     QStatus status = ER_OK;
-    cout << "On Set property. propName: " << propName << endl;
 
     if(!s_prop_RapidMode.compare(propName)){
         if(val.typeId != ALLJOYN_BOOLEAN) {

@@ -60,10 +60,25 @@ class DishWashingCyclePhaseIntfControllerImpl : public InterfaceController, publ
      */
     virtual BusAttachment& GetBusAttachment() const { return m_busAttachment; }
 
+    /**
+     * Get current cycle phase
+     * @param[in] context
+     * @return status
+     */
     virtual QStatus GetCyclePhase(void* context);
 
+    /**
+     * Get list of supported cycle phases
+     * @param[in] context
+     * @return status
+     */
     virtual QStatus GetSupportedCyclePhases(void* context );
 
+    /**
+     * Get vedor defined cycles descriptions
+     * @param[in] context
+     * @return status
+     */
     virtual QStatus GetCyclePhasesDescriptions(const qcc::String& language, void* context);
 
   private:

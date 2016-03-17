@@ -60,10 +60,25 @@ class WaterLevelIntfControllerImpl : public InterfaceController, public WaterLev
      */
     virtual BusAttachment& GetBusAttachment() const { return m_busAttachment; }
 
+    /**
+     * Get current water level
+     * @param[in] context
+     * @return status
+     */
     virtual QStatus GetCurrentLevel(void* context = NULL);
 
+    /**
+     * Get supply source
+     * @param[in] context
+     * @return status
+     */
     virtual QStatus GetSupplySource(void* context = NULL);
 
+    /**
+     * Get max level
+     * @param[in] context
+     * @return status
+     */
     virtual QStatus GetMaxLevel(void* context = NULL);
 
   private:

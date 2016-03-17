@@ -26,7 +26,7 @@ CycleControlListener::~CycleControlListener()
 }
 
 
-void CycleControlListener::OperationalStatePropertyChanged(const qcc::String& objectPath, const CycleControlInterface::CycleControlOperationalState state)
+void CycleControlListener::OperationalStatePropertyChanged(const qcc::String& objectPath, const CycleControlInterface::CycleControlOperationalState& state)
 {
     cout << __func__ << endl;
     cout << "# path: " << objectPath << endl;
@@ -34,7 +34,7 @@ void CycleControlListener::OperationalStatePropertyChanged(const qcc::String& ob
 }
 
 
-void CycleControlListener::GetOperationalStatePropertyCallback(QStatus status, const qcc::String& objectPath, const CycleControlInterface::CycleControlOperationalState state, void* context)
+void CycleControlListener::GetOperationalStatePropertyCallback(QStatus status, const qcc::String& objectPath, const CycleControlInterface::CycleControlOperationalState& state, void* context)
 {
     cout << __func__ << endl;
     cout << "# status: " << QCC_StatusText(status) << endl;
@@ -43,7 +43,7 @@ void CycleControlListener::GetOperationalStatePropertyCallback(QStatus status, c
 }
 
 
-void CycleControlListener::GetSupportedStatesPropertyCallbalck(QStatus status, const qcc::String& objectPath, const CycleControlInterface::SupportedOperationalStates states, void* context)
+void CycleControlListener::GetSupportedStatesPropertyCallbalck(QStatus status, const qcc::String& objectPath, const CycleControlInterface::SupportedOperationalStates& states, void* context)
 {
     cout << __func__ << endl;
     cout << "# status: " << QCC_StatusText(status) << endl;
@@ -55,7 +55,7 @@ void CycleControlListener::GetSupportedStatesPropertyCallbalck(QStatus status, c
     }
 }
 
-void CycleControlListener::GetSupportedCommandsPropertyCallbalck(QStatus status, const qcc::String& objectPath, const CycleControlInterface::SupportedOperationalCommands commands, void* context)
+void CycleControlListener::GetSupportedCommandsPropertyCallbalck(QStatus status, const qcc::String& objectPath, const CycleControlInterface::SupportedOperationalCommands& commands, void* context)
 {
     cout << __func__ << endl;
     cout << "# status: " << QCC_StatusText(status) << endl;
@@ -67,7 +67,7 @@ void CycleControlListener::GetSupportedCommandsPropertyCallbalck(QStatus status,
     }
 }
 
-void CycleControlListener::SupportedOperationalStatesProperyChanged(const qcc::String& objectPath, const CycleControlInterface::SupportedOperationalStates states)
+void CycleControlListener::SupportedOperationalStatesProperyChanged(const qcc::String& objectPath, const CycleControlInterface::SupportedOperationalStates& states)
 {
     cout << __func__ << endl;
     cout << "# path: " << objectPath << endl;
@@ -78,7 +78,7 @@ void CycleControlListener::SupportedOperationalStatesProperyChanged(const qcc::S
     }
 }
 
-void CycleControlListener::SupportedOperationalCommandsProperyChanged(const qcc::String& objectPath, const CycleControlInterface::SupportedOperationalCommands commands)
+void CycleControlListener::SupportedOperationalCommandsProperyChanged(const qcc::String& objectPath, const CycleControlInterface::SupportedOperationalCommands& commands)
 {
     cout << __func__ << endl;
     cout << "# path: " << objectPath << endl;

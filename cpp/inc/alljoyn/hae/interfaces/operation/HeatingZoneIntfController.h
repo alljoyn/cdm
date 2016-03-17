@@ -39,10 +39,25 @@ class HeatingZoneIntfController : public HeatingZoneInterface {
      */
     virtual ~HeatingZoneIntfController() {}
 
+    /**
+     * Get number of heating zones
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
+     */
     virtual QStatus GetNumberOfHeatingZones(void* context = NULL) = 0;
 
+    /**
+     * Get list of maximum heating levels
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
+     */
     virtual QStatus GetMaxHeatingLevels(void* context = NULL) = 0;
 
+    /**
+     * Get list current heating levels
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
+     */
     virtual QStatus GetHeatingLevels(void* context = NULL) = 0;
 };
 

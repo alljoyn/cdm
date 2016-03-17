@@ -61,20 +61,62 @@ class TimerIntfControllerImpl : public InterfaceController, public TimerIntfCont
     virtual BusAttachment& GetBusAttachment() const { return m_busAttachment; }
 
 
+    /**
+     * Get ReferenceTimer
+     * @param[in] context
+     * @return status
+     */
     virtual QStatus GetReferenceTimer(void* context );
 
+    /**
+     * Get target time to start
+     * @param[in] context
+     * @return status
+     */
     virtual QStatus GetTargetTimeToStart(void* context );
 
+    /**
+     * Get target time to stop
+     * @param[in] context
+     * @return status
+     */
     virtual QStatus GetTargetTimeToStop(void* context );
 
+    /**
+     * Get estimated time to end
+     * @param[in] context
+     * @return status
+     */
     virtual QStatus GetEstimatedTimeToEnd(void* context );
 
+    /**
+     * Get running time
+     * @param[in] context
+     * @return status
+     */
     virtual QStatus GetRunningTime(void* context );
 
+    /**
+     * Get target duration
+     * @param[in] context
+     * @return status
+     */
     virtual QStatus GetTargetDuration(void* context );
 
+    /**
+     * Set starget time to start
+     * @param[in] time
+     * @param[in] context
+     * @return status
+     */
     virtual QStatus SetTargetTimeToStart(int32_t time, void* context );
 
+    /**
+     * Set starget time to stop
+     * @param[in] time
+     * @param[in] context
+     * @return status
+     */
     virtual QStatus SetTargetTimeToStop(int32_t time, void* context );
 
   private:

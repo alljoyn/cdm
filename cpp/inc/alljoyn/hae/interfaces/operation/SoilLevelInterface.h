@@ -62,10 +62,6 @@ class SoilLevelInterface : public HaeInterface {
     static const qcc::String s_prop_MaxLevel;
     static const qcc::String s_prop_TargetLevel;
     static const qcc::String s_prop_SelectableLevels;
-    /**
-     * TODO: add property, method and signal name variable
-     */
-
 
   private:
     static const qcc::String s_xml;

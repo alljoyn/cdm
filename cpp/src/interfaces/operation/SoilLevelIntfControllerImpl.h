@@ -100,14 +100,6 @@ class SoilLevelIntfControllerImpl : public InterfaceController, public SoilLevel
     void GetSelectableLevelsPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
 
 
-    /*
-     * TODO: define method reply handler
-     */
-
-    /*
-     * TODO: define signal handler
-     */
-
     BusAttachment& m_busAttachment;
     SoilLevelIntfControllerListener& m_interfaceListener;
 };

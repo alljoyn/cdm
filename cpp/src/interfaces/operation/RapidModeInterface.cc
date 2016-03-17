@@ -42,9 +42,6 @@ const qcc::String RapidModeInterface::s_xml =
 
 const qcc::String RapidModeInterface::s_prop_Version = "Version";
 const qcc::String RapidModeInterface::s_prop_RapidMode = "RapidMode";
-/**
- * TODO: initialize property, method and signal name variable
- */
 
 } //namespace services
 } //namespace ajn
