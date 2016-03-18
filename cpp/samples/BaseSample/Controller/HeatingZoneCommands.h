@@ -32,11 +32,11 @@ class HeatingZoneListener : public HeatingZoneIntfControllerListener{
     virtual ~HeatingZoneListener();
 
     virtual void OnGetNumberOfHeatingZonesPropertyCallback(QStatus status, const qcc::String& objectPath, const uint8_t numberOfZones, void* context);
-    virtual void OnGetMaxHeatingLevelsPropertyCallback(QStatus status, const qcc::String& objectPath, std::vector<uint8_t> maxHeatingLevels, void* context);
-    virtual void OnGetHeatingLevelsPropertyCallback(QStatus status, const qcc::String& objectPath, std::vector<uint8_t> heatingLevels, void* context);
+    virtual void OnGetMaxHeatingLevelsPropertyCallback(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& maxHeatingLevels, void* context);
+    virtual void OnGetHeatingLevelsPropertyCallback(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& heatingLevels, void* context);
     virtual void NumberOfHeatingZonesPropertyChanged(const qcc::String& objectPath, const uint8_t numberOfHeatingZones);
-    virtual void MaxHeatingLevelsPropertyChanged(const qcc::String& objectPath, std::vector<uint8_t> maxHeatingLevels);
-    virtual void HeatingLevelsPropertyChanged(const qcc::String& objectPath, std::vector<uint8_t> heatingLevels);
+    virtual void MaxHeatingLevelsPropertyChanged(const qcc::String& objectPath, const std::vector<uint8_t>& maxHeatingLevels);
+    virtual void HeatingLevelsPropertyChanged(const qcc::String& objectPath, const std::vector<uint8_t>& heatingLevels);
 };
 
 class HeatingZoneCommands : public InterfaceCommands

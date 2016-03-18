@@ -232,6 +232,7 @@ QStatus HeatingZoneIntfControlleeImpl::SetMaxHeatingLevels(const std::vector<uin
     bool listChanged = false;
     for(size_t i = 0; i < maxHeatingLevels.size(); i ++)
     {
+
         std::vector<uint8_t>::iterator it;
         it = std::find(m_maxHeatingLevels.begin(),m_maxHeatingLevels.end(),maxHeatingLevels[i]);
         if(it == m_maxHeatingLevels.end())
@@ -266,7 +267,6 @@ QStatus HeatingZoneIntfControlleeImpl::SetMaxHeatingLevels(const std::vector<uin
 QStatus HeatingZoneIntfControlleeImpl::SetHeatingLevels(const std::vector<uint8_t>& heatingLevels)
 {
     QStatus status = ER_OK;
-
     if(heatingLevels.size() != m_numberOfHeatingLevels)
         return ER_BUS_BAD_VALUE;
 

@@ -20,13 +20,13 @@
 using namespace std;
 
 
-QStatus RapidModeListener::OnGetRapidMode(bool& isClosed)
+QStatus RapidModeListener::OnGetRapidMode(bool& rapidMode)
 {
     cout << "RapidModeListener::OnGetRapidMode()" << endl;
     return ER_OK;
 }
 
-QStatus RapidModeListener::OnSetRapidMode(const bool& isClosed)
+QStatus RapidModeListener::OnSetRapidMode(const bool& rapidMode)
 {
     cout << "RapidModeListener::OnSetRapidMode()" << endl;
     return ER_OK;

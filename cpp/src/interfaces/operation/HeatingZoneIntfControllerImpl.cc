@@ -72,6 +72,7 @@ void HeatingZoneIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const
         entries[i].Get("{sv}", &propName, &propValue);
         String propNameStr(propName);
 
+        cout << "Prop changed. PropName: " << propName << endl;
         if (!s_prop_NumberOfHeatingZones.compare(propNameStr)) {
             if (propValue->typeId == ALLJOYN_BYTE) {
                 uint8_t numOfZones = propValue->v_byte;
@@ -141,7 +142,6 @@ void HeatingZoneIntfControllerImpl::GetNumberOfHeatingZonesPropertyCB(QStatus st
     uint8_t numOfZones;
 
     value.Get("y",&numOfZones);
-
     m_interfaceListener.OnGetNumberOfHeatingZonesPropertyCallback(status, obj->GetPath(), numOfZones, context);
 }
 

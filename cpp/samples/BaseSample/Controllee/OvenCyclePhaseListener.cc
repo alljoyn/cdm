@@ -40,24 +40,14 @@ QStatus OvenCyclePhaseListener::OnGetCyclePhasesDescriptions(const qcc::String l
     cout << "OvenCyclePhaseListener::OnGetCyclePhasesDescriptions" << endl;
 
     OvenCyclePhaseInterface::OvenPhaseDescriptor disc;
-    disc.phase = 1;
-    disc.name = "Oven phase1";
-    disc.description = "Oven this is phase 1";
+    disc.phase = 0x80;
+    disc.name = "VendorPhase1";
+    disc.description = "this is vendor defined phase 1 for Oven";
     listOfPhaseDescs.push_back(disc);
 
-    disc.phase = 2;
-    disc.name = "Oven phase2";
-    disc.description = "Oven this is phase 2";
-    listOfPhaseDescs.push_back(disc);
-
-    disc.phase = 3;
-    disc.name = "Oven phase3";
-    disc.description = "Oven this is phase 3";
-    listOfPhaseDescs.push_back(disc);
-
-    disc.phase = 4;
-    disc.name = "Oven phase4";
-    disc.description = "Oven this is phase 4";
+    disc.phase = 0x81;
+    disc.name = "VendorPhase1";
+    disc.description = "this is vendor defined phase 1 for Oven";
     listOfPhaseDescs.push_back(disc);
 
     return status;

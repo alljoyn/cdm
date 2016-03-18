@@ -57,10 +57,6 @@ QStatus SoilLevelIntfControllerImpl::Init()
         QCC_LogError(status, ("%s: RegisterPropertiesChangedListener failed.", __func__));
     }
 
-    /**
-     * TODO: Register signal handler
-     */
-
     return status;
 }
 
@@ -137,14 +133,6 @@ QStatus SoilLevelIntfControllerImpl::GetSelectableLevels(void* context)
 
     return status;
 }
-/**
- * TODO: define functions to request the set/get properties
- * GetProperty function of read-only property must not be defined in the controller side.
- */
-
-/*
- * TODO: define functions to request the method call
- */
 
 void SoilLevelIntfControllerImpl::GetMaxLevelPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
@@ -195,14 +183,6 @@ void SoilLevelIntfControllerImpl::GetSelectableLevelsPropertyCB(QStatus status, 
 
     m_interfaceListener.GetSelectableLevelsPropertyCallback(status,obj->GetPath(), levels, context);
 }
-
-/*
- * TODO: define method reply handler
- */
-
-/*
- * TODO: define signal handler
- */
 
 } //namespace services
 } //namespace ajn

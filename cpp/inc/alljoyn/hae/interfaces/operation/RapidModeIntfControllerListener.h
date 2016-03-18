@@ -31,10 +31,28 @@ class RapidModeIntfControllerListener : public InterfaceControllerListener {
   public:
     virtual ~RapidModeIntfControllerListener() {}
 
+    /**
+     * Handler for RapidMode property changed
+     * @param[in] objectPath the object path
+     * @param[in] rapidMode rapid mode
+     */
     virtual void RapidModePropertyChanged(const qcc::String& objectPath, const bool rapidMode) {}
 
+    /**
+     * Callback handler for setting RapidMode property
+     * @param[in] status ER_OK on success
+     * @param[in] objectPath the object path
+     * @param[in] context the context that is passed from application
+     */
     virtual void OnSetRapidModePropertyCallback(QStatus status, const qcc::String& objectPath, void* context) {}
 
+    /**
+     * Callback handler for getting RapidMode property
+     * @param[in] status ER_OK on success
+     * @param[in] objectPath the object path
+     * @param[in] rapidMode rapid mode
+     * @param[in] context the context that is passed from application
+     */
     virtual void OnGetRapidModePropertyCallback(QStatus status, const qcc::String& objectPath, const bool rapidMode, void* context) {}
 };
 

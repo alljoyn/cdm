@@ -52,9 +52,6 @@ const qcc::String SoilLevelInterface::s_prop_Version = "Version";
 const qcc::String SoilLevelInterface::s_prop_MaxLevel = "MaxLevel";
 const qcc::String SoilLevelInterface::s_prop_TargetLevel = "TargetLevel";
 const qcc::String SoilLevelInterface::s_prop_SelectableLevels = "SelectableLevels";
-/**
- * TODO: initialize property, method and signal name variable
- */
 
 } //namespace services
 } //namespace ajn

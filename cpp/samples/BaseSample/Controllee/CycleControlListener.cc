@@ -30,6 +30,5 @@ QStatus CycleControlListener::OnExecuteCommand(CycleControlInterface::CycleContr
     QStatus status = ER_OK;
     cout << "CycleControlListener::OnExecuteCommand. Command: " << (int)command << ". Command name: " << CycleControlInterface::OPERATIONAL_COMMAND_STRINGS[command] <<endl;
     error = NOT_ERROR;
-    newState = CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_END_OF_CYCLE;
     return status;
 }

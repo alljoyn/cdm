@@ -28,7 +28,7 @@ class RapidModeListener : public RapidModeIntfControlleeListener
 
     virtual QStatus OnSetRapidMode(const bool& rapidMode);
 
-    virtual QStatus OnGetRapidMode(bool& volume);
+    virtual QStatus OnGetRapidMode(bool& rapidMode);
 };
 
 #endif /* RAPIDMODELISTENER_H_ */

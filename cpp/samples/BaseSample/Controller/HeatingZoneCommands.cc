@@ -33,7 +33,7 @@ void HeatingZoneListener::OnGetNumberOfHeatingZonesPropertyCallback(QStatus stat
     cout << "# path: " << objectPath << endl;
     cout << "# number of heating zones: " << (int) numberOfZones << endl;
 }
-void HeatingZoneListener::OnGetMaxHeatingLevelsPropertyCallback(QStatus status, const qcc::String& objectPath, std::vector<uint8_t> maxHeatingLevels, void* context)
+void HeatingZoneListener::OnGetMaxHeatingLevelsPropertyCallback(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& maxHeatingLevels, void* context)
 {
     cout << __func__ << endl;
     cout << "# status: " << QCC_StatusText(status) << endl;
@@ -44,7 +44,7 @@ void HeatingZoneListener::OnGetMaxHeatingLevelsPropertyCallback(QStatus status, 
         cout << "# max level: " << (int)maxHeatingLevels[i] << endl;
     }
 }
-void HeatingZoneListener::OnGetHeatingLevelsPropertyCallback(QStatus status, const qcc::String& objectPath, std::vector<uint8_t> heatingLevels, void* context)
+void HeatingZoneListener::OnGetHeatingLevelsPropertyCallback(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& heatingLevels, void* context)
 {
     cout << __func__ << endl;
     cout << "# status: " << QCC_StatusText(status) << endl;
@@ -61,7 +61,7 @@ void HeatingZoneListener::NumberOfHeatingZonesPropertyChanged(const qcc::String&
     cout << "# path: " << objectPath << endl;
     cout << "# number of heating zones: " << (int) numberOfHeatingZones << endl;
 }
-void HeatingZoneListener::MaxHeatingLevelsPropertyChanged(const qcc::String& objectPath, std::vector<uint8_t> maxHeatingLevels)
+void HeatingZoneListener::MaxHeatingLevelsPropertyChanged(const qcc::String& objectPath, const std::vector<uint8_t>& maxHeatingLevels)
 {
     cout << __func__ << endl;
     cout << "# path: " << objectPath << endl;
@@ -71,7 +71,7 @@ void HeatingZoneListener::MaxHeatingLevelsPropertyChanged(const qcc::String& obj
         cout << "# max level: " << (int)maxHeatingLevels[i] << endl;
     }
 }
-void HeatingZoneListener::HeatingLevelsPropertyChanged(const qcc::String& objectPath, std::vector<uint8_t> heatingLevels)
+void HeatingZoneListener::HeatingLevelsPropertyChanged(const qcc::String& objectPath, const std::vector<uint8_t>& heatingLevels)
 {
     cout << __func__ << endl;
     cout << "# path: " << objectPath << endl;

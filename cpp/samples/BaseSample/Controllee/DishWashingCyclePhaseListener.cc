@@ -40,24 +40,14 @@ QStatus DishWashingCyclePhaseListener::OnGetCyclePhasesDescriptions(const qcc::S
     cout << "DishWashingCyclePhaseListener::OnGetCyclePhasesDescriptions" << endl;
 
     DishWashingCyclePhaseInterface::DishWashingPhaseDescriptor disc;
-    disc.phase = 1;
-    disc.name = "phase1";
-    disc.description = "this is phase 1";
+    disc.phase = 0x80;
+    disc.name = "VendorPhase1";
+    disc.description = "this is vendor defined phase 1 for dish washer";
     listOfPhaseDescs.push_back(disc);
 
-    disc.phase = 2;
-    disc.name = "phase2";
-    disc.description = "this is phase 2";
-    listOfPhaseDescs.push_back(disc);
-
-    disc.phase = 3;
-    disc.name = "phase3";
-    disc.description = "this is phase 3";
-    listOfPhaseDescs.push_back(disc);
-
-    disc.phase = 4;
-    disc.name = "phase4";
-    disc.description = "this is phase 4";
+    disc.phase = 0x81;
+    disc.name = "VendorPhase1";
+    disc.description = "this is vendor defined phase 1 dish washer";
     listOfPhaseDescs.push_back(disc);
 
     return status;

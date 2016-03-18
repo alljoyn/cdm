@@ -19,7 +19,6 @@
 #include "BatteryStatusListener.h"
 #include "ChannelListener.h"
 #include "ClimateControlModeListener.h"
-#include "ClosedStatusListener.h"
 #include "CurrentPowerListener.h"
 #include "EnergyUsageListener.h"
 #include "FanSpeedLevelListener.h"
@@ -29,6 +28,18 @@
 #include "RepeatModeListener.h"
 #include "ResourceSavingListener.h"
 #include "RobotCleaningCyclePhaseListener.h"
+#include "ClosedStatusListener.h"
+#include "CycleControlListener.h"
+#include "DishWashingCyclePhaseListener.h"
+#include "HeatingZoneListener.h"
+#include "LaundryCyclePhaseListener.h"
+#include "OvenCyclePhaseListener.h"
+#include "RapidModeListener.h"
+#include "RemoteControllabilityListener.h"
+#include "SoilLevelListener.h"
+#include "SpinSpeedLevelListener.h"
+#include "TimerListener.h"
+#include "WaterLevelListener.h"
 
 #include <alljoyn/hae/interfaces/input/HidIntfControllee.h>
 #include <alljoyn/hae/interfaces/environment/CurrentTemperatureIntfControllee.h>
@@ -40,7 +51,6 @@
 #include <alljoyn/hae/interfaces/operation/BatteryStatusIntfControllee.h>
 #include <alljoyn/hae/interfaces/operation/ChannelIntfControllee.h>
 #include <alljoyn/hae/interfaces/operation/ClimateControlModeIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/ClosedStatusIntfControllee.h>
 #include <alljoyn/hae/interfaces/operation/CurrentPowerIntfControllee.h>
 #include <alljoyn/hae/interfaces/operation/EnergyUsageIntfControllee.h>
 #include <alljoyn/hae/interfaces/operation/FanSpeedLevelIntfControllee.h>
@@ -50,6 +60,18 @@
 #include <alljoyn/hae/interfaces/operation/RepeatModeIntfControllee.h>
 #include <alljoyn/hae/interfaces/operation/ResourceSavingIntfControllee.h>
 #include <alljoyn/hae/interfaces/operation/RobotCleaningCyclePhaseIntfControllee.h>
+#include <alljoyn/hae/interfaces/operation/ClosedStatusIntfControllee.h>
+#include <alljoyn/hae/interfaces/operation/CycleControlIntfControllee.h>
+#include <alljoyn/hae/interfaces/operation/DishWashingCyclePhaseIntfControllee.h>
+#include <alljoyn/hae/interfaces/operation/HeatingZoneIntfControllee.h>
+#include <alljoyn/hae/interfaces/operation/LaundryCyclePhaseIntfControllee.h>
+#include <alljoyn/hae/interfaces/operation/OvenCyclePhaseIntfControllee.h>
+#include <alljoyn/hae/interfaces/operation/RapidModeIntfControllee.h>
+#include <alljoyn/hae/interfaces/operation/RemoteControllabilityIntfControllee.h>
+#include <alljoyn/hae/interfaces/operation/SoilLevelIntfControllee.h>
+#include <alljoyn/hae/interfaces/operation/SpinSpeedLevelIntfControllee.h>
+#include <alljoyn/hae/interfaces/operation/TimerIntfControllee.h>
+#include <alljoyn/hae/interfaces/environment/WaterLevelIntfControllee.h>
 
 using namespace std;
 using namespace qcc;
@@ -67,7 +89,6 @@ class IntegratedControllee : public ControlleeSample
     BatteryStatusListener m_batteryStatusListener;
     ChannelListener m_channelListener;
     ClimateControlModeListener m_climateControlModeListener;
-    ClosedStatusListener m_closedStatusListener;
     CurrentPowerListener m_currentPowerListener;
     EnergyUsageListener m_energyUsageListener;
     FanSpeedLevelListener m_fanSpeedLevelListener;
@@ -77,6 +98,18 @@ class IntegratedControllee : public ControlleeSample
     RepeatModeListener m_repeatModeListener;
     ResourceSavingListener m_resourceSavingListener;
     RobotCleaningCyclePhaseListener m_robotCleaningCyclePhaseListener;
+    ClosedStatusListener m_closedStatusListener;
+    CycleControlListener m_cycleControlListener;
+    DishWashingCyclePhaseListener m_dishWashingCycleListener;
+    HeatingZoneListener m_heatingZoneListener;
+    LaundryCyclePhaseListener m_laundryCyclePhaseListener;
+    OvenCyclePhaseListener m_ovenCyclePhaseListener;
+    RapidModeListener m_rapidModeListener;
+    RemoteControllabilityListener m_remoteControllabilityListener;
+    SoilLevelListener m_soilLevelListener;
+    SpinSpeedLevelListener m_spinSpeedLevelListener;
+    TimerListener m_timerListener;
+    WaterLevelListener m_waterLevelListener;
 
     HidIntfControllee* m_hidIntfControllee;
     CurrentTemperatureIntfControllee* m_currentTemperatureIntfControllee;
@@ -88,7 +121,6 @@ class IntegratedControllee : public ControlleeSample
     BatteryStatusIntfControllee* m_batteryStatusIntfControllee;
     ChannelIntfControllee* m_channelIntfControllee;
     ClimateControlModeIntfControllee* m_climateControlModeIntfControllee;
-    ClosedStatusIntfControllee* m_closedStatusIntfControllee;
     CurrentPowerIntfControllee* m_currentPowerIntfControllee;
     EnergyUsageIntfControllee* m_energyUsageIntfControllee;
     FanSpeedLevelIntfControllee* m_fanSpeedLevelIntfControllee;
@@ -98,6 +130,18 @@ class IntegratedControllee : public ControlleeSample
     RepeatModeIntfControllee* m_repeatModeIntfControllee;
     ResourceSavingIntfControllee* m_resourceSavingIntfControllee;
     RobotCleaningCyclePhaseIntfControllee* m_robotCleaningCyclePhaseIntfControllee;
+    ClosedStatusIntfControllee* m_closedStatusIntfControllee;
+    CycleControlIntfControllee* m_cycleControlIntfControllee;
+    DishWashingCyclePhaseIntfControllee* m_dishWashingCyclePhaseIntfControllee;
+    HeatingZoneIntfControllee* m_heatingZoneIntfControllee;
+    LaundryCyclePhaseIntfControllee* m_laundryCyclePhaseIntfControllee;
+    OvenCyclePhaseIntfControllee* m_ovenCyclePhaseIntfControllee;
+    RapidModeIntfControllee* m_rapidModeIntfControllee;
+    RemoteControllabilityIntfControllee* m_remoteControllabilityIntfControllee;
+    SoilLevelIntfControllee* m_soilLevelIntfControllee;
+    SpinSpeedLevelIntfControllee* m_spinSpeedLevelIntfControllee;
+    TimerIntfControllee* m_timerIntfControllee;
+    WaterLevelIntfControllee* m_waterLevelIntfControllee;
 
   public:
     IntegratedControllee(BusAttachment* bus, HaeAboutData* aboutData);
@@ -118,7 +162,6 @@ IntegratedControllee::IntegratedControllee(BusAttachment* bus, HaeAboutData* abo
   ,m_batteryStatusIntfControllee(NULL)
   ,m_channelIntfControllee(NULL)
   ,m_climateControlModeIntfControllee(NULL)
-  ,m_closedStatusIntfControllee(NULL)
   ,m_currentPowerIntfControllee(NULL)
   ,m_energyUsageIntfControllee(NULL)
   ,m_fanSpeedLevelIntfControllee(NULL)
@@ -128,6 +171,18 @@ IntegratedControllee::IntegratedControllee(BusAttachment* bus, HaeAboutData* abo
   ,m_repeatModeIntfControllee(NULL)
   ,m_resourceSavingIntfControllee(NULL)
   ,m_robotCleaningCyclePhaseIntfControllee(NULL)
+  ,m_closedStatusIntfControllee(NULL)
+  ,m_cycleControlIntfControllee(NULL)
+  ,m_dishWashingCyclePhaseIntfControllee(NULL)
+  ,m_heatingZoneIntfControllee(NULL)
+  ,m_laundryCyclePhaseIntfControllee(NULL)
+  ,m_ovenCyclePhaseIntfControllee(NULL)
+  ,m_rapidModeIntfControllee(NULL)
+  ,m_remoteControllabilityIntfControllee(NULL)
+  ,m_soilLevelIntfControllee(NULL)
+  ,m_spinSpeedLevelIntfControllee(NULL)
+  ,m_timerIntfControllee(NULL)
+  ,m_waterLevelIntfControllee(NULL)
 {
 }
 
@@ -173,9 +228,6 @@ void IntegratedControllee::CreateInterfaces()
     intf = haeControllee->CreateInterface(CLIMATE_CONTROL_MODE_INTERFACE, "/Hae/IntegratedControllee", m_climateControlModeListener);
     m_climateControlModeIntfControllee = static_cast<ClimateControlModeIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(CLOSED_STATUS_INTERFACE, "/Hae/IntegratedControllee", m_closedStatusListener);
-    m_closedStatusIntfControllee = static_cast<ClosedStatusIntfControllee*>(intf);
-
     intf = haeControllee->CreateInterface(CURRENT_POWER_INTERFACE, "/Hae/IntegratedControllee", m_currentPowerListener);
     m_currentPowerIntfControllee = static_cast<CurrentPowerIntfControllee*>(intf);
 
@@ -202,6 +254,42 @@ void IntegratedControllee::CreateInterfaces()
 
     intf = haeControllee->CreateInterface(ROBOT_CLEANING_CYCLE_PHASE_INTERFACE, "/Hae/IntegratedControllee", m_robotCleaningCyclePhaseListener);
     m_robotCleaningCyclePhaseIntfControllee = static_cast<RobotCleaningCyclePhaseIntfControllee*>(intf);
+
+    intf = haeControllee->CreateInterface(CLOSED_STATUS_INTERFACE, "/Hae/IntegratedControllee", m_closedStatusListener);
+    m_closedStatusIntfControllee = static_cast<ClosedStatusIntfControllee*>(intf);
+
+    intf = haeControllee->CreateInterface(CYCLE_CONTROL_INTERFACE, "/Hae/IntegratedControllee", m_cycleControlListener);
+    m_cycleControlIntfControllee = static_cast<CycleControlIntfControllee*>(intf);
+
+    intf = haeControllee->CreateInterface(DISH_WASHING_CYCLE_PHASE_INTERFACE, "/Hae/IntegratedControllee", m_dishWashingCycleListener);
+    m_dishWashingCyclePhaseIntfControllee = static_cast<DishWashingCyclePhaseIntfControllee*>(intf);
+
+    intf = haeControllee->CreateInterface(HEATING_ZONE_INTERFACE, "/Hae/IntegratedControllee", m_heatingZoneListener);
+    m_heatingZoneIntfControllee = static_cast<HeatingZoneIntfControllee*>(intf);
+
+    intf = haeControllee->CreateInterface(LAUNDRY_CYCLE_PHASE_INTERFACE, "/Hae/IntegratedControllee", m_laundryCyclePhaseListener);
+    m_laundryCyclePhaseIntfControllee = static_cast<LaundryCyclePhaseIntfControllee*>(intf);
+
+    intf = haeControllee->CreateInterface(OVEN_CYCLE_PHASE_INTERFACE, "/Hae/IntegratedControllee", m_ovenCyclePhaseListener);
+    m_ovenCyclePhaseIntfControllee = static_cast<OvenCyclePhaseIntfControllee*>(intf);
+
+    intf = haeControllee->CreateInterface(RAPID_MODE_INTERFACE, "/Hae/IntegratedControllee", m_rapidModeListener);
+    m_rapidModeIntfControllee = static_cast<RapidModeIntfControllee*>(intf);
+
+    intf = haeControllee->CreateInterface(REMOTE_CONTROLLABILITY_INTERFACE, "/Hae/IntegratedControllee", m_remoteControllabilityListener);
+    m_remoteControllabilityIntfControllee = static_cast<RemoteControllabilityIntfControllee*>(intf);
+
+    intf = haeControllee->CreateInterface(SOIL_LEVEL_INTERFACE, "/Hae/IntegratedControllee", m_soilLevelListener);
+    m_soilLevelIntfControllee = static_cast<SoilLevelIntfControllee*>(intf);
+
+    intf = haeControllee->CreateInterface(SPIN_SPEED_LEVEL_INTERFACE, "/Hae/IntegratedControllee", m_spinSpeedLevelListener);
+    m_spinSpeedLevelIntfControllee = static_cast<SpinSpeedLevelIntfControllee*>(intf);
+
+    intf = haeControllee->CreateInterface(TIMER_INTERFACE, "/Hae/IntegratedControllee", m_timerListener);
+    m_timerIntfControllee = static_cast<TimerIntfControllee*>(intf);
+
+    intf = haeControllee->CreateInterface(WATER_LEVEL_INTERFACE, "/Hae/IntegratedControllee", m_waterLevelListener);
+    m_waterLevelIntfControllee = static_cast<WaterLevelIntfControllee*>(intf);
 }
 
 void IntegratedControllee::SetInitialProperty()
@@ -303,10 +391,6 @@ void IntegratedControllee::SetInitialProperty()
         m_climateControlModeIntfControllee->SetOperationalState(operationalState);
     }
 
-    if (m_closedStatusIntfControllee) {
-        m_closedStatusIntfControllee->SetIsClosed(true);
-    }
-
     if (m_currentPowerIntfControllee) {
         double currentPower = 20;
         double precision = 10;
@@ -360,6 +444,146 @@ void IntegratedControllee::SetInitialProperty()
         uint8_t cyclePhase = RobotCleaningCyclePhaseInterface::ROBOT_CLEANING_CYCLE_PHASE_CLEANING;
         m_robotCleaningCyclePhaseIntfControllee->SetSupportedCyclePhases(supportedCyclePhase);
         m_robotCleaningCyclePhaseIntfControllee->SetCyclePhase(cyclePhase);
+    }
+        if (m_closedStatusIntfControllee) {
+        m_closedStatusIntfControllee->SetIsClosed(true);
+    }
+
+    if(m_cycleControlIntfControllee) {
+        CycleControlInterface::SupportedOperationalCommands comm;
+        comm.push_back(CycleControlInterface::CycleControlOperationalCommand::OPERATIONAL_COMMAND_START);
+        comm.push_back(CycleControlInterface::CycleControlOperationalCommand::OPERATIONAL_COMMAND_STOP);
+        comm.push_back(CycleControlInterface::CycleControlOperationalCommand::OPERATIONAL_COMMAND_PAUSE);
+        comm.push_back(CycleControlInterface::CycleControlOperationalCommand::OPERATIONAL_COMMAND_RESUME);
+        m_cycleControlIntfControllee->SetSupportedCommands(comm);
+
+        CycleControlInterface::SupportedOperationalStates states;
+        states.push_back(CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_IDLE);
+        states.push_back(CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_PAUSED);
+        states.push_back(CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_READY_TO_START);
+        states.push_back(CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_END_OF_CYCLE);
+        states.push_back(CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_DELAYED_START);
+        states.push_back(CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_WORKING);
+
+        m_cycleControlIntfControllee->SetSupportedStates(states);
+    }
+
+    if(m_dishWashingCyclePhaseIntfControllee) {
+        DishWashingCyclePhaseInterface::SupportedCyclePhases supportedCyclePhase 
+        = {
+            DishWashingCyclePhaseInterface::DISH_WASHING_PHASE_UNAVAILABLE,
+            DishWashingCyclePhaseInterface::DISH_WASHING_PHASE_PRE_WASH,
+            DishWashingCyclePhaseInterface::DISH_WASHING_PHASE_WASH,
+            DishWashingCyclePhaseInterface::DISH_WASHING_PHASE_RINSE,
+            DishWashingCyclePhaseInterface::DISH_WASHING_PHASE_DRY,
+            0x80,
+            0x81
+        };
+        uint8_t cyclePhase = DishWashingCyclePhaseInterface::DISH_WASHING_PHASE_PRE_WASH;
+        m_dishWashingCyclePhaseIntfControllee->SetSupportedCyclePhases(supportedCyclePhase);
+        m_dishWashingCyclePhaseIntfControllee->SetCyclePhase(cyclePhase);
+    }
+
+    if(m_heatingZoneIntfControllee) {
+        uint8_t numberOfHeatingZones = 4;
+        uint8_t maxLvl = 6;
+        uint8_t initialHeatingLevel = 0;
+        std::vector<uint8_t> maxHeatingLevels;
+        std::vector<uint8_t> heatingLevels;
+
+        for(int i = 0 ; i < numberOfHeatingZones; i++) {
+            maxHeatingLevels.push_back(maxLvl);
+            heatingLevels.push_back(initialHeatingLevel);
+        }            
+        m_heatingZoneIntfControllee->SetNumberOfHeatingZones(numberOfHeatingZones);
+        m_heatingZoneIntfControllee->SetMaxHeatingLevels(maxHeatingLevels);
+        m_heatingZoneIntfControllee->SetHeatingLevels(heatingLevels);
+    }
+
+    if(m_laundryCyclePhaseIntfControllee) {
+        LaundryCyclePhaseInterface::SupportedCyclePhases supportedCyclePhase 
+        = {
+            LaundryCyclePhaseInterface::LAUNDRY_PHASE_UNAVAILABLE,
+            LaundryCyclePhaseInterface::LAUNDRY_PHASE_PRE_WASHING,
+            LaundryCyclePhaseInterface::LAUNDRY_PHASE_WASHING,
+            LaundryCyclePhaseInterface::LAUNDRY_PHASE_RINSING,
+            LaundryCyclePhaseInterface::LAUNDRY_PHASE_SPINNING,
+            LaundryCyclePhaseInterface::LAUNDRY_PHASE_STEAM,
+            LaundryCyclePhaseInterface::LAUNDRY_PHASE_DRYING,
+            LaundryCyclePhaseInterface::LAUNDRY_PHASE_COOLING,
+            LaundryCyclePhaseInterface::LAUNDRY_PHASE_ANTICREASING,
+            0x80,
+            0x81
+        };
+        uint8_t cyclePhase = LaundryCyclePhaseInterface::LAUNDRY_PHASE_PRE_WASHING;
+        m_laundryCyclePhaseIntfControllee->SetSupportedCyclePhases(supportedCyclePhase);
+        m_laundryCyclePhaseIntfControllee->SetCyclePhase(cyclePhase);
+        
+    }
+
+    if(m_ovenCyclePhaseIntfControllee) {
+        OvenCyclePhaseInterface::SupportedCyclePhases supportedCyclePhase 
+        = {
+            OvenCyclePhaseInterface::OVEN_PHASE_UNAVAILABLE,
+            OvenCyclePhaseInterface::OVEN_PHASE_PREHEATING,
+            OvenCyclePhaseInterface::OVEN_PHASE_COOKING,
+            OvenCyclePhaseInterface::OVEN_PHASE_CLEANING,
+            0x80,
+            0x81
+        };
+        uint8_t cyclePhase = OvenCyclePhaseInterface::OVEN_PHASE_PREHEATING;
+        m_ovenCyclePhaseIntfControllee->SetSupportedCyclePhases(supportedCyclePhase);
+        m_ovenCyclePhaseIntfControllee->SetCyclePhase(cyclePhase);
+    }
+
+    if(m_rapidModeIntfControllee) {
+        m_rapidModeIntfControllee->SetRapidMode(false);
+    }
+
+    if(m_remoteControllabilityIntfControllee) {
+        m_remoteControllabilityIntfControllee->SetIsControllable(true);
+    }
+
+    if(m_soilLevelIntfControllee) {
+        uint8_t initialMaxLvl = 5;
+        uint8_t targetLevel = 0;
+
+        std::vector<uint8_t> selectableLevels;
+        for(uint8_t i = 0; i < initialMaxLvl; i++)
+            selectableLevels.push_back(i);
+
+        m_soilLevelIntfControllee->SetMaxLevel(initialMaxLvl);
+        m_soilLevelIntfControllee->SetSelectableLevels(selectableLevels);
+        m_soilLevelIntfControllee->SetTargetLevel(targetLevel);
+    }
+
+    if(m_spinSpeedLevelIntfControllee) {
+        uint8_t initialMaxLvl = 5;
+        uint8_t targetLevel = 0;
+
+        std::vector<uint8_t> selectableLevels;
+        for(uint8_t i = 0; i < initialMaxLvl; i++)
+            selectableLevels.push_back(i);
+
+        m_spinSpeedLevelIntfControllee->SetMaxLevel(initialMaxLvl);
+        m_spinSpeedLevelIntfControllee->SetSelectableLevels(selectableLevels);
+        m_spinSpeedLevelIntfControllee->SetTargetLevel(targetLevel);
+
+    }
+
+    if(m_timerIntfControllee) {
+        m_timerIntfControllee->SetReferenceTimer(0);
+    }
+
+    if(m_waterLevelIntfControllee) {
+
+        WaterLevelInterface::WaterLevelSupplySource supplySource = WaterLevelInterface::SUPPLY_SOURCE_TANK;
+        uint8_t maxLvl = 5;
+        uint8_t currentLvl = 0;
+
+        m_waterLevelIntfControllee->SetMaxLevel(maxLvl);
+        m_waterLevelIntfControllee->SetCurrentLevel(currentLvl);
+        m_waterLevelIntfControllee->SetSupplySource(supplySource);
     }
 }
 
