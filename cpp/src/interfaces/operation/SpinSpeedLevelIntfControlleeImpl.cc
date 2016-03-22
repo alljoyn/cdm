@@ -71,7 +71,7 @@ QStatus SpinSpeedLevelIntfControlleeImpl::OnGetProperty(const String propName, M
         {
             vals[i] = (uint8_t)levels[i];
         }
-        val.Set("ay", sizeof(vals)/ sizeof(uint8_t), vals);
+        val.Set("ay", levels.size(), vals);
         val.Stabilize();
         delete[] vals;
     }
@@ -233,7 +233,7 @@ QStatus SpinSpeedLevelIntfControlleeImpl::SetSelectableLevels(const std::vector<
     {
         vals[i] = (uint8_t)selectableLevels[i];
     }
-    arg.Set("ay", sizeof(vals)/sizeof(uint8_t), vals);
+    arg.Set("ay", selectableLevels.size(), vals);
     arg.Stabilize();
 
     if(m_selectableLevels.size() > 0)

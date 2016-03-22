@@ -85,7 +85,7 @@ QStatus HeatingZoneIntfControlleeImpl::OnGetProperty(const String propName, MsgA
                 {
                     vals[i] = (uint8_t)maxHeatingLevels[i];
                 }
-                val.Set("ay", sizeof(vals)/ sizeof(uint8_t), vals);
+                val.Set("ay", maxHeatingLevels.size(), vals);
                 val.Stabilize();
                 delete[] vals;
             }
@@ -110,7 +110,7 @@ QStatus HeatingZoneIntfControlleeImpl::OnGetProperty(const String propName, MsgA
                 {
                     vals[i] = (uint8_t)heatingLevels[i];
                 }
-                val.Set("ay", sizeof(vals)/ sizeof(uint8_t), vals);
+                val.Set("ay", heatingLevels.size(), vals);
                 val.Stabilize();
                 delete[] vals;
             }
@@ -146,7 +146,7 @@ QStatus HeatingZoneIntfControlleeImpl::OnGetProperty(const String propName, MsgA
                 {
                     vals[i] = (uint8_t)heatingLevels[i];
                 }
-                val.Set("ay", sizeof(vals)/ sizeof(uint8_t), vals);
+                val.Set("ay", heatingLevels.size(), vals);
                 val.Stabilize();
                 delete[] vals;
             }
@@ -161,7 +161,7 @@ QStatus HeatingZoneIntfControlleeImpl::OnGetProperty(const String propName, MsgA
                 {
                     vals[i] = (uint8_t)maxHeatingLevels[i];
                 }
-                val.Set("ay", sizeof(vals)/ sizeof(uint8_t), vals);
+                val.Set("ay", maxHeatingLevels.size(), vals);
                 val.Stabilize();
                 delete[] vals;
             }
@@ -256,7 +256,7 @@ QStatus HeatingZoneIntfControlleeImpl::SetMaxHeatingLevels(const std::vector<uin
         {
             vals[i] = (uint8_t)m_maxHeatingLevels[i];
         }
-        val.Set("ay", sizeof(vals)/ sizeof(uint8_t), vals);
+        val.Set("ay", m_maxHeatingLevels.size(), vals);
         val.Stabilize();
         m_busObject.EmitPropChanged(GetInterfaceName().c_str(),s_prop_MaxHeatingLevels.c_str(), val, 0, ALLJOYN_FLAG_GLOBAL_BROADCAST);
         delete[] vals;
@@ -296,7 +296,7 @@ QStatus HeatingZoneIntfControlleeImpl::SetHeatingLevels(const std::vector<uint8_
         {
             vals[i] = (uint8_t)m_heatingLevels[i];
         }
-        val.Set("ay", sizeof(vals)/ sizeof(uint8_t), vals);
+        val.Set("ay", m_heatingLevels.size(), vals);
         val.Stabilize();
         m_busObject.EmitPropChanged(GetInterfaceName().c_str(),s_prop_HeatingLevels.c_str(), val, 0, ALLJOYN_FLAG_GLOBAL_BROADCAST);
         delete[] vals;

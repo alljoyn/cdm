@@ -206,7 +206,7 @@ void CycleControlIntfControllerImpl::GetSupportedOperationalStatesPropertyCB(QSt
     value.Get("ay", &numVals, &vals);
 
     SupportedOperationalStates states;
-    for (size_t i = 0; i < numVals; ++i) {
+    for (size_t i = 0; i < numVals; i++) {
         states.push_back((CycleControlOperationalState)vals[i]);
     }
     m_interfaceListener.GetSupportedStatesPropertyCallbalck(status, obj->GetPath(), states, context);

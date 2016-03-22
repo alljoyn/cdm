@@ -107,7 +107,7 @@ QStatus DishWashingCyclePhaseIntfControlleeImpl::OnGetProperty(const String prop
                 {
                     vals[i] = (uint8_t)supportedCyclePhases[i];
                 }
-                val.Set("ay", sizeof(vals)/ sizeof(uint8_t), vals);
+                val.Set("ay", supportedCyclePhases.size(), vals);
                 val.Stabilize();
                 delete[] vals;
             }
@@ -137,7 +137,7 @@ QStatus DishWashingCyclePhaseIntfControlleeImpl::OnGetProperty(const String prop
                 {
                     vals[i] = (uint8_t)supportedCyclePhases[i];
                 }
-                val.Set("ay", sizeof(vals)/ sizeof(uint8_t), vals);
+                val.Set("ay", supportedCyclePhases.size(), vals);
                 val.Stabilize();
                 delete[] vals;
             }
@@ -235,8 +235,9 @@ QStatus DishWashingCyclePhaseIntfControlleeImpl::SetSupportedCyclePhases(const S
 
     if(listChanged)
     {
-        uint8_t* vals = new uint8_t[supportedPhases.size()];
         m_supportedCyclePhases.clear();
+
+        uint8_t* vals = new uint8_t[supportedPhases.size()];
 
         for(size_t i = 0 ; i < supportedPhases.size(); i ++)
         {
@@ -245,7 +246,7 @@ QStatus DishWashingCyclePhaseIntfControlleeImpl::SetSupportedCyclePhases(const S
         }
 
         MsgArg arg;
-        arg.Set("ay", sizeof(vals)/ sizeof(uint8_t), vals);
+        arg.Set("ay", m_supportedCyclePhases.size(), vals);
         arg.Stabilize();
 
         m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_SupportedCyclePhases.c_str(), arg, 0 , ALLJOYN_FLAG_GLOBAL_BROADCAST);

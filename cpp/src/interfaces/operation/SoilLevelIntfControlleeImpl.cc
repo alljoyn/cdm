@@ -70,7 +70,7 @@ QStatus SoilLevelIntfControlleeImpl::OnGetProperty(const String propName, MsgArg
         for(i = 0; i < levels.size(); i++)
             vals[i] = (uint8_t)levels[i];
 
-        val.Set("ay", sizeof(vals)/ sizeof(uint8_t), vals);
+        val.Set("ay", levels.size(), vals);
         val.Stabilize();
         delete[] vals;
     }
@@ -229,7 +229,7 @@ QStatus SoilLevelIntfControlleeImpl::SetSelectableLevels(const std::vector<uint8
 
     for(i = 0; i < selectableLevels.size(); i++)
         vals[i] = (uint8_t)selectableLevels[i];
-    arg.Set("ay", sizeof(vals)/sizeof(uint8_t), vals);
+    arg.Set("ay", selectableLevels.size(), vals);
     arg.Stabilize();
 
     if(m_selectableLevels.size() > 0)

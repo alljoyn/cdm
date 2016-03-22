@@ -107,7 +107,7 @@ QStatus LaundryCyclePhaseIntfControlleeImpl::OnGetProperty(const String propName
                 {
                     vals[i] = (uint8_t)supportedCyclePhases[i];
                 }
-                val.Set("ay", sizeof(vals)/ sizeof(uint8_t), vals);
+                val.Set("ay", supportedCyclePhases.size(), vals);
                 val.Stabilize();
                 delete[] vals;
             }
@@ -137,7 +137,7 @@ QStatus LaundryCyclePhaseIntfControlleeImpl::OnGetProperty(const String propName
                 {
                     vals[i] = (uint8_t)supportedCyclePhases[i];
                 }
-                val.Set("ay", sizeof(vals)/ sizeof(uint8_t), vals);
+                val.Set("ay", supportedCyclePhases.size(), vals);
                 val.Stabilize();
                 delete[] vals;
             }
@@ -234,8 +234,8 @@ QStatus LaundryCyclePhaseIntfControlleeImpl::SetSupportedCyclePhases(const Suppo
 
     if(listChanged)
     {
-        uint8_t* vals = new uint8_t[supportedPhases.size()];
         m_supportedCyclePhases.clear();
+        uint8_t* vals = new uint8_t[supportedPhases.size()];
         for(size_t i = 0 ; i < supportedPhases.size(); i ++)
         {
             m_supportedCyclePhases.push_back(supportedPhases[i]);
@@ -243,7 +243,7 @@ QStatus LaundryCyclePhaseIntfControlleeImpl::SetSupportedCyclePhases(const Suppo
         }
 
         MsgArg arg;
-        arg.Set("ay", sizeof(vals)/ sizeof(uint8_t), vals);
+        arg.Set("ay", m_supportedCyclePhases.size(), vals);
         arg.Stabilize();
 
         m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_SupportedCyclePhases.c_str(), arg, 0 , ALLJOYN_FLAG_GLOBAL_BROADCAST);
