@@ -234,7 +234,7 @@ QStatus CycleControlIntfControlleeImpl::SetOperationalState(CycleControlOperatio
         val.typeId = ALLJOYN_BYTE;
         val.v_byte = (uint8_t)state;
         m_currentState = state;
-        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_OperationalState.c_str(), val, 0, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_OperationalState.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
     }
     return status;
 }
