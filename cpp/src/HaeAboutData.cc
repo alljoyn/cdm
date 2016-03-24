@@ -14,11 +14,14 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
+#include <sstream>
 #include <assert.h>
 #include <alljoyn/hae/LogModule.h>
 #include <alljoyn/hae/HaeAboutData.h>
 #include <alljoyn/hae/DeviceTypeDescription.h>
 #include <HaeAboutKeys.h>
+#include <qcc/StringSource.h>
+#include <qcc/XmlElement.h>
 
 //#include "HaeAboutCustomFields.h"
 using ajn::services::HaeAboutKeys;
@@ -51,6 +54,70 @@ HaeAboutData::HaeAboutData(const MsgArg arg, const char* language) :
 
 HaeAboutData::~HaeAboutData()
 {
+}
+
+QStatus HaeAboutData::CreateFromXml(const char* aboutDataXml)
+{
+    return CreateFromXml(qcc::String(aboutDataXml));
+}
+    
+QStatus HaeAboutData::CreateFromXml(const qcc::String& aboutDataXml)
+{
+    qcc::String  deviceDescriptionOpen ="<" + DEVICE_TYPE_DESCRIPTION + ">";
+    qcc::String  deviceDescriptionClose ="</" + DEVICE_TYPE_DESCRIPTION + ">";
+    size_t deviceBegin = aboutDataXml.find(deviceDescriptionOpen);
+    size_t deviceEnd = aboutDataXml.find( deviceDescriptionClose ) + deviceDescriptionClose.length();
+
+    QStatus status = AboutData::CreateFromXml(aboutDataXml);
+    if (status != ER_OK  ){
+        QCC_LogError(status, ("%s: unexpected return from AboutData::CreateFromXml.", __func__));
+    } else{
+        qcc::StringSource source(aboutDataXml);
+        qcc::XmlParseContext pc(source);
+        status = qcc::XmlElement::Parse(pc);
+        if (status != ER_OK) {
+            QCC_LogError(status, ("%s: unable to parse DeviceTypeDescriptionXml.", __func__));
+            status = ER_ABOUT_ABOUTDATA_MISSING_REQUIRED_FIELD;
+        } else {
+            
+            const qcc::XmlElement* root = pc.GetRoot();
+            
+            qcc::String descriptionXmlTag = "TypeDescription";
+            qcc::String descriptionXmlTypeTag = "device_type";
+            qcc::String descriptionXmlPathTag = "object_path";
+            
+            std::vector<const qcc::XmlElement*> descriptionChildren = root->GetChild(DEVICE_TYPE_DESCRIPTION)->GetChildren(descriptionXmlTag);
+            if(0 == descriptionChildren.size()){
+                status = ER_ABOUT_ABOUTDATA_MISSING_REQUIRED_FIELD;
+                QCC_LogError(status, ("%s: unable to find descriptions Xml Tag.", __func__));
+            } else {
+                DeviceTypeDescription description;
+                int numberDescriptions =0;
+                for (int i = 0; i < descriptionChildren.size(); i++){
+                    qcc::String codeText =descriptionChildren[i]->GetChild(descriptionXmlTypeTag)->GetContent();
+                    qcc::String pathText =descriptionChildren[i]->GetChild(descriptionXmlPathTag)->GetContent();
+                    std::stringstream convert(codeText.c_str());
+                    uint code;
+                    if (!(convert>>code)){
+                        status = ER_ABOUT_ABOUTDATA_MISSING_REQUIRED_FIELD;
+                        QCC_LogError(status, ("%s: Could not convert device type to a uint", __func__));
+                        continue;
+                    } else {
+                        description.AddDeviceType((DeviceType)code , pathText);
+                        numberDescriptions++;
+                    }
+                }
+                if (numberDescriptions){
+                    status = SetDeviceTypeDescription(&description);
+                }
+                //Check to see if location included in XML  About::CreateFromXml will return ER_OK without a location
+                if (NULL == root->GetChild(LOCATION)){
+                    status = ER_ABOUT_ABOUTDATA_MISSING_REQUIRED_FIELD;
+                }
+            }
+        }
+    }
+    return status;
 }
 
 QStatus HaeAboutData::SetCountryOfProduction(const char* country, const char* language)

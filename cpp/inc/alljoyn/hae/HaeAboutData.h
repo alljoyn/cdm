@@ -66,6 +66,47 @@ class HaeAboutData : public AboutData , public HaeAboutKeys {
     ~HaeAboutData();
 
     /**
+     * This fuction extends the base CreateFromXML in alljoyn::AboutData to 
+     * create Device Type Description with HAE specific fields included.
+     *@param[in] aboutDataXml the about XML to create the About Data from.
+     *@return 
+     *   - ER_OK on success
+     *   - ER_ABOUT_ABOUTDATA_MISSING_REQUIRED_FIELD if the XML representation
+     *     did not include all required AboutData fields.
+     *   - ER_ABOUT_DEFAULT_LANGUAGE_NOT_SPECIFIED if a localizable value was
+     *     was found with out the `lang` attribute and the DefaultLanguage
+     *     field is missing.
+     */
+    QStatus CreateFromXml(const char* aboutDataXml);
+    
+    
+    /**
+     * This fuction extends the base CreateFromXML in alljoyn::AboutData to
+     * create Device Type Description with HAE specific fields included.
+     *@param[in] aboutDataXml the about XML to create the About Data from.
+     *@return
+     *   - ER_OK on success
+     *   - ER_ABOUT_ABOUTDATA_MISSING_REQUIRED_FIELD if the XML representation
+     *     did not include all required AboutData fields.
+     *   - ER_ABOUT_DEFAULT_LANGUAGE_NOT_SPECIFIED if a localizable value was
+     *     was found with out the `lang` attribute and the DefaultLanguage
+     *     field is missing.
+     *
+     *  Sample about Data for HAE
+     *  "<AboutData>"
+     *  .......
+     *  <Standard About Data>
+     *  ...........
+     *  "  <Location>upstairs bedroom</Location>"
+     *  "  <Location lang='es'>habitación del segundo piso</Location>"
+     *  "  <DeviceTypeDescription><TypeDescription><device_type>2</device_type><object_path>/Hae/Alpha</object_path></TypeDescription><TypeDescription><device_type>3</device_type><object_path>/Hae/Beta</object_path></TypeDescription><TypeDescription><device_type>4</device_type><object_path>/Hae/Gamma</object_path></TypeDescription></DeviceTypeDescription>"
+     *  "</AboutData>";
+     *
+     */
+    QStatus CreateFromXml(const qcc::String& aboutDataXml);
+    
+    
+    /**
      * Set country of production
      * @param[in] country the country
      * @param[in] language the IETF language tag specified by RFC 5646
