@@ -22,6 +22,10 @@ if local_env['BR'] == 'on':
     # Build apps with bundled daemon support
     local_env.Prepend(LIBS = [local_env['ajrlib']])
 
+if local_env.get('UINPUT') == 'on':
+	# Add uinput integration in samples
+    local_env.Prepend(CPPDEFINES = [ 'UINPUT' ])
+
 # Sample programs
 
 sample_dirs = [

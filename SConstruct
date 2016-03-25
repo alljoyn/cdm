@@ -25,6 +25,10 @@ vars.Add(EnumVariable('BUILD_HAE_SAMPLES',
 vars.Add(PathVariable('ALLJOYN_DISTDIR',
                       'Directory containing a built AllJoyn Core dist directory.',
                       os.environ.get('ALLJOYN_DISTDIR')))
+vars.Add(EnumVariable('UINPUT',
+                      'Activate uinput integration in samples.',
+                      'off',
+                      allowed_values = ['on', 'off']))
 
 vars.Update(env)
 Help(vars.GenerateHelpText(env))

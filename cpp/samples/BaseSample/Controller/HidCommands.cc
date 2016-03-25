@@ -16,9 +16,17 @@
 
 #include <cstdlib>
 #include <sstream>
+#include <map>
 #include <alljoyn/hae/interfaces/HaeInterfaceTypes.h>
 #include "HidCommands.h"
 #include "ControllerSample.h"
+
+// Integration of UInput functionalities
+// Default activation status = OFF
+// To activate it : scons BINDINGS=... UINPUT=on
+#ifdef UINPUT
+#include "UInput.h"
+#endif
 
 using namespace std;
 
@@ -132,6 +140,68 @@ void HidCommands::OnCmdInjectGenericEvent(Commands* commands, std::string& cmd)
     long int code = strtol(cmd_args[1].c_str(), NULL, 0);
     long int value = strtol(cmd_args[2].c_str(), NULL, 0);
 
+#ifdef UINPUT
+    // for available event types and code
+    // see event types : https://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/tree/include/uapi/linux/input-event-codes.h
+
+    // check type
+    if(type < EV_SYN || type > EV_MAX) {
+        cout << "Input argument 'type' out of range. (0x00 <= type <= 0x1f)" << endl;
+        return;
+    }
+
+    // check code
+    std::map<uint16_t, uint16_t> codeMinByTypes;
+    std::map<uint16_t, uint16_t> codeMaxByTypes;
+    codeMinByTypes[EV_SYN] = SYN_REPORT;
+    codeMaxByTypes[EV_SYN] = SYN_MAX;
+    codeMinByTypes[EV_KEY] = KEY_RESERVED;
+    codeMaxByTypes[EV_KEY] = KEY_MAX;
+    codeMinByTypes[EV_REL] = REL_X;
+    codeMaxByTypes[EV_REL] = REL_MAX;
+    codeMinByTypes[EV_ABS] = ABS_X;
+    codeMaxByTypes[EV_ABS] = ABS_MAX;
+    codeMinByTypes[EV_MSC] = MSC_SERIAL;
+    codeMaxByTypes[EV_MSC] = MSC_MAX;
+    codeMinByTypes[EV_SW]  = SW_LID;
+    codeMaxByTypes[EV_SW]  = SW_MAX;
+    codeMinByTypes[EV_LED] = LED_NUML;
+    codeMaxByTypes[EV_LED] = LED_MAX;
+    codeMinByTypes[EV_SND] = SND_CLICK;
+    codeMaxByTypes[EV_SND] = SND_MAX;
+    codeMinByTypes[EV_REP] = REP_DELAY;
+    codeMaxByTypes[EV_REP] = REP_MAX;
+
+    if(codeMinByTypes.find(type) != codeMinByTypes.end() &&
+       codeMaxByTypes.find(type) != codeMaxByTypes.end()) {
+        if (code < codeMinByTypes[type] || code > codeMaxByTypes[type]) {
+            cout << "Input argument 'code' out of range. min = " << codeMinByTypes[type] << "  max = " << codeMaxByTypes[type] << endl;
+            return;
+        }
+    }
+    else {
+        if(code < 0 || code > UINT16_MAX) {
+            cout << "Input argument 'code' out of range. min = 0x0000  max = 0xffff" << endl;
+            return;
+        }
+    }
+    codeMinByTypes.clear();
+    codeMaxByTypes.clear();
+
+    //check value
+    if( type == EV_SYN || type == EV_KEY) {
+        if (value != 0 &&  value != 1) {
+            cout << "Input argument 'value' out of range. (syn value = 0 or 1)" << endl;
+            return;
+        }
+    }
+    else {
+        if(value < INT32_MIN || value > INT32_MAX) {
+            cout << "Input argument 'value' out of range." << endl;
+            return;
+        }
+    }
+#else
     // check type
     if(type < 0 || type > UINT16_MAX) {
         cout << "Input argument 'type' out of range. (0x0000 <= type <= 0xffff)" << endl;
@@ -148,6 +218,7 @@ void HidCommands::OnCmdInjectGenericEvent(Commands* commands, std::string& cmd)
         cout << "Input argument 'value' out of range." << endl;
         return;
     }
+#endif
 
     // type, code and value checked => inject event
     HidIntfController::InputEvents events;
@@ -170,10 +241,17 @@ void HidCommands::OnCmdInjectKeyEvent(Commands* commands, std::string& cmd)
 
     int keyCode = strtol(cmd.c_str(), NULL, 0);
 
+#ifdef UINPUT
+    if(keyCode < KEY_RESERVED || keyCode > KEY_MAX) {
+        cout << "Input argument 'key code' out of range. (0 <= key code <= 0x2ff)" << endl;
+        return;
+    }
+#else
     if(keyCode < 0 || keyCode > UINT16_MAX) {
         cout << "Input argument 'key code' out of range. min = 0x0000  max = 0xffff" << endl;
         return;
     }
+#endif
 
     HidIntfController::InputEvents events;
     HidIntfController::InputEvent event;
