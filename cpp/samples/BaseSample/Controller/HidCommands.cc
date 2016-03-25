@@ -81,6 +81,7 @@ void HidCommands::Init()
 
     RegisterCommand(&HidCommands::OnCmdGetSupportedEvents, "gse", "get supported events");
     RegisterCommand(&HidCommands::OnCmdInjectGenericEvent, "ige", "inject generic event (use 'ige <type> <code> <value>')");
+    RegisterCommand(&HidCommands::OnCmdInjectKeyEvent,     "ike", "inject key event (use 'ike <key code>')");
 
     // event types and codes are defined in <linux/input.h>
     // see : https://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/tree/include/uapi/linux/input-event-codes.h
@@ -154,6 +155,42 @@ void HidCommands::OnCmdInjectGenericEvent(Commands* commands, std::string& cmd)
     event.type = type;
     event.code = code;
     event.value = value;
+    events.push_back(event);
+    intfController->InjectEvents(events);
+}
+
+void HidCommands::OnCmdInjectKeyEvent(Commands* commands, std::string& cmd)
+{
+    HidIntfController* intfController = static_cast<HidCommands*>(commands)->GetInterface();
+
+    if (!intfController) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    int keyCode = strtol(cmd.c_str(), NULL, 0);
+
+    if(keyCode < 0 || keyCode > UINT16_MAX) {
+        cout << "Input argument 'key code' out of range. min = 0x0000  max = 0xffff" << endl;
+        return;
+    }
+
+    HidIntfController::InputEvents events;
+    HidIntfController::InputEvent event;
+    // press key
+    event.type = 0x01; // EV_KEY;
+    event.code = keyCode;
+    event.value = 1;
+    events.push_back(event);
+    // release key
+    event.type = 0x01; // EV_KEY;
+    event.code = keyCode;
+    event.value = 0;
+    events.push_back(event);
+    //sync
+    event.type = 0x00; // EV_SYN;
+    event.code = 0; // SYN_REPORT;
+    event.value = 0;
     events.push_back(event);
     intfController->InjectEvents(events);
 }

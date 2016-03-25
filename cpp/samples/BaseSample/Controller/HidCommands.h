@@ -46,6 +46,7 @@ class HidCommands : public InterfaceCommands
 
     static void OnCmdGetSupportedEvents(Commands* commands, std::string& cmd);
     static void OnCmdInjectGenericEvent(Commands* commands, std::string& cmd);
+    static void OnCmdInjectKeyEvent(Commands* commands, std::string& cmd);
 
   private:
     HidIntfController* m_intfController;
