@@ -34,6 +34,7 @@
 #include "OvenCyclePhaseCommands.h"
 #include "TimerCommands.h"
 #include "ClosedStatusCommands.h"
+#include "AlertsCommands.h"
 
 DeviceCommands::DeviceCommands(ControllerSample* sample, DeviceInfoPtr& info)
 : ControllerCommands(sample)
@@ -171,6 +172,8 @@ Commands* DeviceCommands::CreateInterfaceCommands(Commands* commands, const char
         intfCommands = new RemoteControllabilityCommands(sample, info, objectPath);
     } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Operation.ClosedStatus", strlen(intfName))) {
         intfCommands = new ClosedStatusCommands(sample, info, objectPath);
+    } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Operation.Alerts", strlen(intfName))) {
+        intfCommands = new AlertsCommands(sample, info, objectPath);
     }
     return intfCommands;
 }

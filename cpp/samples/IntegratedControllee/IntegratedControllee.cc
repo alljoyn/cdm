@@ -40,6 +40,7 @@
 #include "SpinSpeedLevelListener.h"
 #include "TimerListener.h"
 #include "WaterLevelListener.h"
+#include "AlertsListener.h"
 
 #include <alljoyn/hae/interfaces/input/HidIntfControllee.h>
 #include <alljoyn/hae/interfaces/environment/CurrentTemperatureIntfControllee.h>
@@ -71,6 +72,7 @@
 #include <alljoyn/hae/interfaces/operation/SoilLevelIntfControllee.h>
 #include <alljoyn/hae/interfaces/operation/SpinSpeedLevelIntfControllee.h>
 #include <alljoyn/hae/interfaces/operation/TimerIntfControllee.h>
+#include <alljoyn/hae/interfaces/operation/AlertsIntfControllee.h>
 #include <alljoyn/hae/interfaces/environment/WaterLevelIntfControllee.h>
 
 using namespace std;
@@ -110,6 +112,7 @@ class IntegratedControllee : public ControlleeSample
     SpinSpeedLevelListener m_spinSpeedLevelListener;
     TimerListener m_timerListener;
     WaterLevelListener m_waterLevelListener;
+    AlertsListener m_alertsListener;
 
     HidIntfControllee* m_hidIntfControllee;
     CurrentTemperatureIntfControllee* m_currentTemperatureIntfControllee;
@@ -142,6 +145,7 @@ class IntegratedControllee : public ControlleeSample
     SpinSpeedLevelIntfControllee* m_spinSpeedLevelIntfControllee;
     TimerIntfControllee* m_timerIntfControllee;
     WaterLevelIntfControllee* m_waterLevelIntfControllee;
+    AlertsIntfControllee* m_alertsIntfControllee;
 
   public:
     IntegratedControllee(BusAttachment* bus, HaeAboutData* aboutData);
@@ -183,6 +187,7 @@ IntegratedControllee::IntegratedControllee(BusAttachment* bus, HaeAboutData* abo
   ,m_spinSpeedLevelIntfControllee(NULL)
   ,m_timerIntfControllee(NULL)
   ,m_waterLevelIntfControllee(NULL)
+  ,m_alertsIntfControllee(NULL)
 {
 }
 
@@ -290,6 +295,9 @@ void IntegratedControllee::CreateInterfaces()
 
     intf = haeControllee->CreateInterface(WATER_LEVEL_INTERFACE, "/Hae/IntegratedControllee", m_waterLevelListener);
     m_waterLevelIntfControllee = static_cast<WaterLevelIntfControllee*>(intf);
+
+    intf = haeControllee->CreateInterface(ALERTS_INTERFACE, "/Hae/IntegratedControllee", m_alertsListener);
+    m_alertsIntfControllee = static_cast<AlertsIntfControllee*>(intf);
 }
 
 void IntegratedControllee::SetInitialProperty()
@@ -585,11 +593,33 @@ void IntegratedControllee::SetInitialProperty()
         m_waterLevelIntfControllee->SetCurrentLevel(currentLvl);
         m_waterLevelIntfControllee->SetSupplySource(supplySource);
     }
+    if(m_alertsIntfControllee) {
+        AlertsInterface::Alerts alerts;
+        AlertsInterface::AlertRecord aRecord;
+
+        aRecord.severity = AlertsInterface::ALERT_SEVERITY_WARRNING;
+        aRecord.alertCode = 0x8000;
+        aRecord.needAcknowledgement = false;
+        alerts.push_back(aRecord);
+
+        aRecord.severity = AlertsInterface::ALERT_SEVERITY_ALARM;
+        aRecord.alertCode = 0x8001;
+        aRecord.needAcknowledgement = false;
+        alerts.push_back(aRecord);
+
+        aRecord.severity = AlertsInterface::ALERT_SEVERITY_FAULT;
+        aRecord.alertCode = 0x8002;
+        aRecord.needAcknowledgement = true;
+        alerts.push_back(aRecord);
+
+        m_alertsIntfControllee->SetAlerts(alerts);
+
+    }
 }
 
 QStatus FillAboutData(HaeAboutData* aboutData)
 {
-    String const& defaultLanguage = "en";
+    String const defaultLanguage = "en";
     String device_id = "deviceID";
     String app_id = "4a354637-5649-4518-8a48-323c158bc02d";
     String app_name = "IntergratedControllee";
