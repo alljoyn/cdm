@@ -88,7 +88,6 @@ void CycleControlIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, cons
 {
     MsgArg* entries;
     size_t numEntries;
-
     changed.Get("a{sv}", &numEntries, &entries);
     for (size_t i = 0; i < numEntries; ++i) {
         const char* propName;
@@ -96,6 +95,7 @@ void CycleControlIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, cons
         entries[i].Get("{sv}", &propName, &propValue);
         String propNameStr(propName);
 
+        cout << "CycleControlIntfControllerImpl::PropertiesChanged. propName: " << propNameStr << endl;
         if (!s_prop_OperationalState.compare(propNameStr)) {
             if (propValue->typeId == ALLJOYN_BYTE) {
                 uint8_t state = propValue->v_byte;
