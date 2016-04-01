@@ -34,21 +34,47 @@ QStatus OvenCyclePhaseListener::OnGetSupportedCyclePhases(OvenCyclePhaseInterfac
     return status;
 }
 
-QStatus OvenCyclePhaseListener::OnGetCyclePhasesDescriptions(const qcc::String language, OvenCyclePhaseInterface::CyclePhaseDescriptions& listOfPhaseDescs, ErrorCode& errorCode)
+QStatus OvenCyclePhaseListener::OnGetCyclePhasesDescriptions(const qcc::String& language, OvenCyclePhaseInterface::CyclePhaseDescriptions& listOfPhaseDescs, ErrorCode& errorCode)
 {
     QStatus status = ER_OK;
     cout << "OvenCyclePhaseListener::OnGetCyclePhasesDescriptions" << endl;
+    if(language == "en")
+    {
+        OvenCyclePhaseInterface::OvenPhaseDescriptor disc;
+        disc.phase = 1;
+        disc.name = "Oven phase1";
+        disc.description = "Oven this is phase 1";
+        listOfPhaseDescs.push_back(disc);
 
-    OvenCyclePhaseInterface::OvenPhaseDescriptor disc;
-    disc.phase = 0x80;
-    disc.name = "VendorPhase1";
-    disc.description = "this is vendor defined phase 1 for Oven";
-    listOfPhaseDescs.push_back(disc);
+        disc.phase = 2;
+        disc.name = "Oven phase2";
+        disc.description = "Oven this is phase 2";
+        listOfPhaseDescs.push_back(disc);
 
-    disc.phase = 0x81;
-    disc.name = "VendorPhase1";
-    disc.description = "this is vendor defined phase 1 for Oven";
-    listOfPhaseDescs.push_back(disc);
+        disc.phase = 3;
+        disc.name = "Oven phase3";
+        disc.description = "Oven this is phase 3";
+        listOfPhaseDescs.push_back(disc);
 
+        disc.phase = 4;
+        disc.name = "Oven phase4";
+        disc.description = "Oven this is phase 4";
+        listOfPhaseDescs.push_back(disc);
+
+        disc.phase = 0x80;
+        disc.name = "VendorPhase1";
+        disc.description = "this is vendor defined phase 1 for Oven";
+        listOfPhaseDescs.push_back(disc);
+
+        disc.phase = 0x81;
+        disc.name = "VendorPhase1";
+        disc.description = "this is vendor defined phase 1 for Oven";
+        listOfPhaseDescs.push_back(disc);
+    }
+    else
+    {
+        errorCode = LANGUAGE_NOT_SUPPORTED;
+        return ER_LANGUAGE_NOT_SUPPORTED;
+    }
     return status;
 }

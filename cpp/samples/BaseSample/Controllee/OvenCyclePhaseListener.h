@@ -29,7 +29,7 @@ public:
 
         virtual QStatus OnGetSupportedCyclePhases(OvenCyclePhaseInterface::SupportedCyclePhases& listOfSupportedCyclePhases);
 
-        virtual QStatus OnGetCyclePhasesDescriptions(const qcc::String language,
+        virtual QStatus OnGetCyclePhasesDescriptions(const qcc::String& language,
                                                      OvenCyclePhaseInterface::CyclePhaseDescriptions& listOfPhasesDescs,
                                                      ErrorCode& errorCode);
 

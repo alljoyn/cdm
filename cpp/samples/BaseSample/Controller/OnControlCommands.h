@@ -30,8 +30,8 @@ class OnControlListener : public OnControlIntfControllerListener {
   public:
     OnControlListener();
     virtual ~OnControlListener();
-    virtual void OnSwitchOn(QStatus status, const qcc::String& objectPath, void* context,
-                                         const char* errorName, const char* errorMessage);
+    virtual void OnResponseSwitchOn(QStatus status, const qcc::String& objectPath, void* context,
+                                    const char* errorName, const char* errorMessage);
 };
 
 class OnControlCommands : public InterfaceCommands

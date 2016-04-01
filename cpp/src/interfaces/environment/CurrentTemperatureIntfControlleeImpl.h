@@ -135,8 +135,8 @@ class CurrentTemperatureIntfControlleeImpl : public InterfaceControllee, public 
     BusAttachment& m_busAttachment;
     CurrentTemperatureIntfControlleeListener& m_interfaceListener;
     double m_CurrentValue;                       // read-only, EmitsChangedSignal
-    double m_precision;
-    uint16_t m_updateMinTime;
+    double m_precision;                          // read-only, EmitsChangedSignal
+    uint16_t m_updateMinTime;                    // read-only, EmitsChangedSignal
     MethodHandlers m_methodHandlers;
 };
 

@@ -39,16 +39,43 @@ QStatus LaundryCyclePhaseListener::OnGetCyclePhasesDescriptions(const qcc::Strin
     QStatus status = ER_OK;
     cout << "LaundryCyclePhaseListener::OnGetCyclePhasesDescriptions" << endl;
 
-    LaundryCyclePhaseInterface::LaundryPhaseDescriptor disc;
-    disc.phase = 0x80;
-    disc.name = "VendorPhase1";
-    disc.description = "this is vendor defined phase 1 for Laundry device";
-    listOfPhaseDescs.push_back(disc);
+    if(language == "en")
+    {
+        LaundryCyclePhaseInterface::LaundryPhaseDescriptor disc;
+        disc.phase = 1;
+        disc.name = "laundy phase1";
+        disc.description = "laundry this is phase 1";
+        listOfPhaseDescs.push_back(disc);
 
-    disc.phase = 0x81;
-    disc.name = "VendorPhase1";
-    disc.description = "this is vendor defined phase 1 for Laundry device";
-    listOfPhaseDescs.push_back(disc);
+        disc.phase = 2;
+        disc.name = "laundry phase2";
+        disc.description = "laundry this is phase 2";
+        listOfPhaseDescs.push_back(disc);
 
+        disc.phase = 3;
+        disc.name = "laundry phase3";
+        disc.description = "laundry this is phase 3";
+        listOfPhaseDescs.push_back(disc);
+
+        disc.phase = 4;
+        disc.name = "laundry phase4";
+        disc.description = "laundry this is phase 4";
+        listOfPhaseDescs.push_back(disc);
+
+        disc.phase = 0x80;
+        disc.name = "VendorPhase1";
+        disc.description = "this is vendor defined phase 1 for Laundry device";
+        listOfPhaseDescs.push_back(disc);
+
+        disc.phase = 0x81;
+        disc.name = "VendorPhase2";
+        disc.description = "this is vendor defined phase 2 for Laundry device";
+        listOfPhaseDescs.push_back(disc);
+    }
+    else 
+    {
+        errorCode = LANGUAGE_NOT_SUPPORTED;
+        status = ER_LANGUAGE_NOT_SUPPORTED;
+    }
     return status;
 }

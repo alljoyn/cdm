@@ -29,7 +29,7 @@ public:
 
         virtual QStatus OnGetSupportedCyclePhases(DishWashingCyclePhaseInterface::SupportedCyclePhases& listOfSupportedCyclePhases);
 
-        virtual QStatus OnGetCyclePhasesDescriptions(const qcc::String language,
+        virtual QStatus OnGetCyclePhasesDescriptions(const qcc::String& language,
                                                      DishWashingCyclePhaseInterface::CyclePhaseDescriptions& listOfPhasesDescs,
                                                      ErrorCode& errorCode);
 

@@ -35,7 +35,7 @@ using namespace qcc;
 
 class TvControllee : public ControlleeSample
 {
-  private:
+private:
     AudioVolumeListener* m_audioVolumeListener;
     ChannelListener* m_channelListener;
     AudioVideoInputListener* m_avInputListener;
@@ -47,17 +47,17 @@ class TvControllee : public ControlleeSample
     HidIntfControllee* m_hidIntfControllee;
     ClosedStatusIntfControllee* m_closedStatusIntfControllee;
 
-  public:
+public:
     TvControllee(BusAttachment* bus, HaeAboutData* aboutData);
     virtual ~TvControllee();
     void CreateInterfaces();
     void SetInitialProperty();
 };
 
-TvControllee::TvControllee(BusAttachment* bus, HaeAboutData* aboutData)
-  : ControlleeSample(bus, aboutData),
-    m_audioVolumeListener(NULL), m_channelListener(NULL), m_avInputListener(NULL), m_hidListener(NULL),
-    m_audioVolumeIntfControllee(NULL), m_channelIntfControllee(NULL), m_avInputIntfControllee(NULL), m_hidIntfControllee(NULL), m_closedStatusIntfControllee(NULL)
+TvControllee::TvControllee(BusAttachment* bus, HaeAboutData* aboutData) :
+    ControlleeSample(bus, aboutData), m_audioVolumeListener(NULL), m_channelListener(NULL), m_avInputListener(NULL), m_hidListener(NULL),
+    m_audioVolumeIntfControllee(NULL), m_channelIntfControllee(NULL), m_avInputIntfControllee(NULL), m_hidIntfControllee(NULL),
+    m_closedStatusIntfControllee(NULL)
 {
     m_audioVolumeListener = new AudioVolumeListener();
     m_channelListener = new ChannelListener();
@@ -80,7 +80,7 @@ TvControllee::~TvControllee()
     if (m_hidListener) {
         delete m_hidListener;
     }
-    if(m_closedStatusListener){
+    if (m_closedStatusListener) {
         delete m_closedStatusListener;
     }
 }
@@ -118,8 +118,8 @@ void TvControllee::SetInitialProperty()
     }
 
     if (m_channelIntfControllee) {
-        String channelId = "0_1_2_3_4";
-        uint16_t totalNumberOfChannels = 50;
+        String channelId = CHANNELID_PREFIX + qcc::String('0');
+        uint16_t totalNumberOfChannels = TOTAL_NUM_OF_CHANNEL;
         m_channelIntfControllee->SetChannelId(channelId);
         m_channelIntfControllee->SetTotalNumberOfChannels(totalNumberOfChannels);
     }

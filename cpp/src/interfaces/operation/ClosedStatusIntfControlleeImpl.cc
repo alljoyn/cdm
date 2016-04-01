@@ -57,7 +57,7 @@ QStatus ClosedStatusIntfControlleeImpl::SetIsClosed(const bool isClosed)
         MsgArg val;
         val.typeId = ALLJOYN_BOOLEAN;
         val.v_bool = isClosed;
-        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_IsClosed.c_str(), val, 0, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_IsClosed.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
         m_isClosed= isClosed;
     }
     return ER_OK;

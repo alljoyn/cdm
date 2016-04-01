@@ -21,7 +21,7 @@ using namespace std;
 
 QStatus AudioVolumeListener::OnSetVolume(const uint8_t& volume)
 {
-    cout << "AudioVolumeListener::OnSetVolume() - volume : " << volume << endl;
+    cout << "AudioVolumeListener::OnSetVolume() - volume : " << (int)volume << endl;
     return ER_OK;
 }
 

@@ -70,7 +70,7 @@ TEST(HaeAboutDataTest, VerifyFieldValues) {
     EXPECT_TRUE(aboutData.IsFieldRequired(HaeAboutData::DEVICE_TYPE_DESCRIPTION.c_str()));
     EXPECT_TRUE(aboutData.IsFieldAnnounced(HaeAboutData::DEVICE_TYPE_DESCRIPTION.c_str()));
     EXPECT_FALSE(aboutData.IsFieldLocalized(HaeAboutData::DEVICE_TYPE_DESCRIPTION.c_str()));
-    EXPECT_STREQ("a(ou)", aboutData.GetFieldSignature(HaeAboutData::DEVICE_TYPE_DESCRIPTION.c_str()));
+    EXPECT_STREQ("a(uo)", aboutData.GetFieldSignature(HaeAboutData::DEVICE_TYPE_DESCRIPTION.c_str()));
 
 }
 

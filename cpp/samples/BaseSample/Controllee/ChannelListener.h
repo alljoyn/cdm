@@ -22,6 +22,9 @@
 using namespace ajn;
 using namespace services;
 
+#define TOTAL_NUM_OF_CHANNEL 50
+#define CHANNELID_PREFIX "CHANNEL_ID_"
+
 class ChannelListener : public ChannelIntfControlleeListener
 {
   public:

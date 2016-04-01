@@ -185,7 +185,7 @@ QStatus SpinSpeedLevelIntfControlleeImpl::SetMaxLevel(uint8_t maxLevel)
         MsgArg arg;
         arg.typeId = ALLJOYN_BYTE;
         arg.v_byte = maxLevel;
-        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_MaxLevel.c_str(), arg, 0, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_MaxLevel.c_str(), arg, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
         m_maxLevel = maxLevel;
     }
     return ER_OK;
@@ -204,7 +204,7 @@ QStatus SpinSpeedLevelIntfControlleeImpl::SetTargetLevel(uint8_t targetLevel)
         MsgArg arg;
         arg.typeId = ALLJOYN_BYTE;
         arg.v_byte = targetLevel;
-        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_TargetLevel.c_str(), arg, 0, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_TargetLevel.c_str(), arg, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
         m_targetLevel = targetLevel;
     }
     return ER_OK;

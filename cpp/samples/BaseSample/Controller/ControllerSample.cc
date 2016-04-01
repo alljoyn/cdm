@@ -13,7 +13,7 @@ using namespace services;
 static const char* KEYX_ECDHE_NULL = "ALLJOYN_ECDHE_NULL";
 static const char* KEYX_ECDHE_PSK = "ALLJOYN_ECDHE_PSK";
 static const char* KEYX_ECDHE_ECDSA = "ALLJOYN_ECDHE_ECDSA";
-static const char* ECDHE_KEYX = "ALLJOYN_ECDHE_ECDSA";
+static const char* ECDHE_KEYX = "ALLJOYN_ECDHE_PSK";
 
 /* Client's ECDSA certificate and private key. These were generated with the command:
  *

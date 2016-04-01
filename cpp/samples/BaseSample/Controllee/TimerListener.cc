@@ -17,7 +17,6 @@
 #include <iostream>
 
 #include "TimerListener.h"
-
 using namespace std;
 
 QStatus TimerListener::GetReferenceTimer(int32_t& time)
@@ -57,14 +56,28 @@ QStatus TimerListener::GetTargetDuration(int32_t& time)
 
 QStatus TimerListener::OnSetTargetTimeToStart(int32_t time, ErrorCode& errorCode)
 {
+    QStatus status = ER_OK;
     cout << "TimerListener::OnSetTargetTimeToStart" <<endl;
+    if(time == TimerInterface::TIMER_FEATURE_NOT_APPLIED || 
+       time == TimerInterface::TIMER_NOT_SUPPORTED )
+    {
+        errorCode = ErrorCode::INVALID_VALUE;
+        status = ER_FAIL;
+    }
     cout << "time: " << (int)time << endl;
-    return ER_OK;
+    return status;
 }
 
 QStatus TimerListener::OnSetTargetTimeToStop(int32_t time, ErrorCode& errorCode)
 {
+    QStatus status = ER_OK;
     cout << "TimerListener::OnSetTargetTimeToStop" <<endl;
+    if(time == TimerInterface::TIMER_FEATURE_NOT_APPLIED || 
+       time == TimerInterface::TIMER_NOT_SUPPORTED )
+    {
+        errorCode = ErrorCode::INVALID_VALUE;
+        status = ER_FAIL;
+    }
     cout << "time: " << (int)time << endl;
-    return ER_OK;
+    return status;
 }

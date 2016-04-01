@@ -21,31 +21,31 @@ using namespace std;
 
 QStatus FanSpeedLevelListener::OnSetFanSpeedLevel(const uint8_t& value)
 {
-    cout << "FanSpeedLevelListener::OnSetFanSpeedLevel() - FanSpeedLevel : " << value << endl;
+    cout << "FanSpeedLevelListener::OnSetFanSpeedLevel() - FanSpeedLevel : " << (int)value << endl;
     return ER_OK;
 }
 
 QStatus FanSpeedLevelListener::OnGetFanSpeedLevel(uint8_t& value)
 {
-    cout << "FanSpeedLevelListener::OnGetFanSpeedLevel() - FanSpeedLevel : " << value << endl;
+    cout << "FanSpeedLevelListener::OnGetFanSpeedLevel() - FanSpeedLevel : " << (int)value << endl;
     return ER_OK;
 }
 
 QStatus FanSpeedLevelListener::OnGetMaxFanSpeedLevel(uint8_t& value)
 {
-    cout << "FanSpeedLevelListener::OnGetMaxFanSpeedLevel() - MaxFanSpeedLevel : " << value << endl;
+    cout << "FanSpeedLevelListener::OnGetMaxFanSpeedLevel() - MaxFanSpeedLevel : " << (int)value << endl;
     return ER_OK;
 }
 
 QStatus FanSpeedLevelListener::OnSetAutoMode(const uint8_t& value)
 {
-    cout << "FanSpeedLevelListener::OnSetAutoMode() - AutoMode : " << value << endl;
+    cout << "FanSpeedLevelListener::OnSetAutoMode() - AutoMode : " << (int)value << endl;
     return ER_OK;
 }
 
 QStatus FanSpeedLevelListener::OnGetAutoMode(uint8_t& value)
 {
-    cout << "FanSpeedLevelListener::OnGetAutoMode() - AutoMode : " << value << endl;
+    cout << "FanSpeedLevelListener::OnGetAutoMode() - AutoMode : " << (int)value << endl;
     return ER_OK;
 }
 

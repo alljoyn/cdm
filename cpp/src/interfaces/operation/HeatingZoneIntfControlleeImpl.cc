@@ -232,7 +232,6 @@ QStatus HeatingZoneIntfControlleeImpl::SetMaxHeatingLevels(const std::vector<uin
     bool listChanged = false;
     for(size_t i = 0; i < maxHeatingLevels.size(); i ++)
     {
-
         std::vector<uint8_t>::iterator it;
         it = std::find(m_maxHeatingLevels.begin(),m_maxHeatingLevels.end(),maxHeatingLevels[i]);
         if(it == m_maxHeatingLevels.end())
@@ -258,7 +257,7 @@ QStatus HeatingZoneIntfControlleeImpl::SetMaxHeatingLevels(const std::vector<uin
         }
         val.Set("ay", m_maxHeatingLevels.size(), vals);
         val.Stabilize();
-        m_busObject.EmitPropChanged(GetInterfaceName().c_str(),s_prop_MaxHeatingLevels.c_str(), val, 0, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(),s_prop_MaxHeatingLevels.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
         delete[] vals;
     }
     return status;
@@ -267,6 +266,7 @@ QStatus HeatingZoneIntfControlleeImpl::SetMaxHeatingLevels(const std::vector<uin
 QStatus HeatingZoneIntfControlleeImpl::SetHeatingLevels(const std::vector<uint8_t>& heatingLevels)
 {
     QStatus status = ER_OK;
+
     if(heatingLevels.size() != m_numberOfHeatingLevels)
         return ER_BUS_BAD_VALUE;
 
@@ -298,7 +298,7 @@ QStatus HeatingZoneIntfControlleeImpl::SetHeatingLevels(const std::vector<uint8_
         }
         val.Set("ay", m_heatingLevels.size(), vals);
         val.Stabilize();
-        m_busObject.EmitPropChanged(GetInterfaceName().c_str(),s_prop_HeatingLevels.c_str(), val, 0, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(),s_prop_HeatingLevels.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
         delete[] vals;
     }
     return status;

@@ -20,7 +20,6 @@
 #include <alljoyn/hae/DeviceTypeDescription.h>
 #include <HaeAboutKeys.h>
 
-//#include "HaeAboutCustomFields.h"
 using ajn::services::HaeAboutKeys;
 
 namespace ajn {

@@ -21,6 +21,8 @@
 #include <alljoyn/Status.h>
 #include <alljoyn/hae/interfaces/HaeInterfaceErrors.h>
 #include <alljoyn/hae/interfaces/InterfaceControlleeListener.h>
+#include <alljoyn/hae/interfaces/operation/TimerInterface.h>
+
 
 namespace ajn {
 namespace services {
