@@ -55,6 +55,7 @@
 #include "interfaces/operation/LaundryCyclePhaseIntfControlleeImpl.h"
 #include "interfaces/operation/OvenCyclePhaseIntfControlleeImpl.h"
 #include "interfaces/operation/TimerIntfControlleeImpl.h"
+#include "interfaces/operation/AlertsIntfControlleeImpl.h"
 
 // Controller
 #include "interfaces/operation/AudioVolumeIntfControllerImpl.h"
@@ -88,6 +89,7 @@
 #include "interfaces/operation/LaundryCyclePhaseIntfControllerImpl.h"
 #include "interfaces/operation/OvenCyclePhaseIntfControllerImpl.h"
 #include "interfaces/operation/TimerIntfControllerImpl.h"
+#include "interfaces/operation/AlertsIntfControllerImpl.h"
 
 using namespace std;
 using namespace qcc;
@@ -140,6 +142,7 @@ InterfaceFactory::InterfaceFactory() :
     m_controllerCreators[LAUNDRY_CYCLE_PHASE_INTERFACE] = static_cast<CreateIntfControllerFptr>(&LaundryCyclePhaseIntfControllerImpl::CreateInterface);
     m_controllerCreators[OVEN_CYCLE_PHASE_INTERFACE] = static_cast<CreateIntfControllerFptr>(&OvenCyclePhaseIntfControllerImpl::CreateInterface);
     m_controllerCreators[TIMER_INTERFACE] = static_cast<CreateIntfControllerFptr>(&TimerIntfControllerImpl::CreateInterface);
+    m_controllerCreators[ALERTS_INTERFACE] = static_cast<CreateIntfControllerFptr>(&AlertsIntfControllerImpl::CreateInterface);
 
     // Controllee
     m_controlleeCreators[CHANNEL_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&ChannelIntfControlleeImpl::CreateInterface);
@@ -173,6 +176,7 @@ InterfaceFactory::InterfaceFactory() :
     m_controlleeCreators[LAUNDRY_CYCLE_PHASE_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&LaundryCyclePhaseIntfControlleeImpl::CreateInterface);
     m_controlleeCreators[OVEN_CYCLE_PHASE_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&OvenCyclePhaseIntfControlleeImpl::CreateInterface);
     m_controlleeCreators[TIMER_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&TimerIntfControlleeImpl::CreateInterface);
+    m_controlleeCreators[ALERTS_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&AlertsIntfControlleeImpl::CreateInterface);
 }
 
 InterfaceFactory::InterfaceFactory(const InterfaceFactory& src)
