@@ -58,12 +58,26 @@ class TimerIntfControllee : public TimerInterface {
      */
     virtual const int32_t GetTargetTimeToStart() const = 0;
 
+     /**
+     * Set TargetTimeToStart
+     * @param[in] time target time to start
+     * @return ER_OK on success
+     */
+    virtual QStatus SetTargetTimeToStart(const int32_t time) = 0;
+
     /**
      * Get TargetTimeToStop
      * @return Time to the stop
      */
     virtual const int32_t GetTargetTimeToStop() const = 0;
 
+     /**
+     * Set TargetTimeToStop
+     * @param[in] time target time to stop
+     * @return ER_OK on success
+     */
+    virtual QStatus SetTargetTimeToStop(const int32_t time) = 0;
+    
     /**
      * Get EstimatedTimeToEnd
      * @return estimated time to the end

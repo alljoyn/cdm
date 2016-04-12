@@ -39,7 +39,10 @@ TimerIntfControlleeImpl::TimerIntfControlleeImpl(BusAttachment& busAttachment, T
     m_interfaceListener(listener),
     m_referenceTimer(0),
     m_targetTimeToStart(0),
-    m_targetTimeToStop(0)
+    m_targetTimeToStop(0),
+    m_estimatedTimeToEnd(0),
+    m_runningTime(0),
+    m_targetDuration(0)
 {
 }
 
@@ -84,7 +87,7 @@ QStatus TimerIntfControlleeImpl::OnGetProperty(const String propName, MsgArg& va
                 status = m_interfaceListener.GetReferenceTimer(time);
                 if(status != ER_OK)
                 {
-                    //time = GetReferenceTimer();
+                    time = GetReferenceTimer();
                     QCC_LogError(status, ("%s: Failed to get property", __func__));
                 }
                 else
@@ -100,7 +103,7 @@ QStatus TimerIntfControlleeImpl::OnGetProperty(const String propName, MsgArg& va
                 status = m_interfaceListener.GetTargetTimeToStart(time);
                 if(status != ER_OK)
                 {
-                    //time = GetReferenceTimer();
+                    time = GetTargetTimeToStart();
                     QCC_LogError(status, ("%s: Failed to get property", __func__));
                 }
                 else
@@ -115,7 +118,7 @@ QStatus TimerIntfControlleeImpl::OnGetProperty(const String propName, MsgArg& va
                 status = m_interfaceListener.GetTargetTimeToStop(time);
                 if(status != ER_OK)
                 {
-                    //time = GetReferenceTimer();
+                    time = GetTargetTimeToStop();
                     QCC_LogError(status, ("%s: Failed to get property", __func__));
                 }
                 else
@@ -131,7 +134,7 @@ QStatus TimerIntfControlleeImpl::OnGetProperty(const String propName, MsgArg& va
                 status = m_interfaceListener.GetRunningTime(time);
                 if(status != ER_OK)
                 {
-                    //time = GetReferenceTimer();
+                    time = GetRunningTime();
                     QCC_LogError(status, ("%s: Failed to get property", __func__));
                 }
                 else
@@ -147,7 +150,7 @@ QStatus TimerIntfControlleeImpl::OnGetProperty(const String propName, MsgArg& va
                 status = m_interfaceListener.GetTargetDuration(time);
                 if(status != ER_OK)
                 {
-                    //time = GetReferenceTimer();
+                    time = GetTargetDuration();
                     QCC_LogError(status, ("%s: Failed to get property", __func__));
                 }
                 else
@@ -163,7 +166,7 @@ QStatus TimerIntfControlleeImpl::OnGetProperty(const String propName, MsgArg& va
                 status = m_interfaceListener.GetEstimatedTimeToEnd(time);
                 if(status != ER_OK)
                 {
-                    //time = GetReferenceTimer();
+                    time = GetEstimatedTimeToEnd();
                     QCC_LogError(status, ("%s: Failed to get property", __func__));
                 }
                 else
@@ -261,48 +264,76 @@ QStatus TimerIntfControlleeImpl::SetReferenceTimer(const int32_t time)
         MsgArg arg;
         arg.typeId = ALLJOYN_INT32;
         arg.v_int32 = time;
-        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_ReferenceTimer.c_str(), arg,0,ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_ReferenceTimer.c_str(), arg,SESSION_ID_ALL_HOSTED,ALLJOYN_FLAG_GLOBAL_BROADCAST);
         m_referenceTimer = time;
+        UpdateProperties();
+    }
+    return ER_OK;
+}
+QStatus TimerIntfControlleeImpl::SetTargetTimeToStart(const int32_t time)
+{
+    if(m_targetTimeToStart != time)
+    {
+        MsgArg arg;
+        arg.typeId = ALLJOYN_INT32;
+        arg.v_int32 = time;
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_TargetTimeToStart.c_str(), arg,SESSION_ID_ALL_HOSTED,ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        m_targetTimeToStart = time;
+        UpdateProperties();
+    }
+    return ER_OK;
+}
+
+QStatus TimerIntfControlleeImpl::SetTargetTimeToStop(const int32_t time)
+{
+    if(m_targetTimeToStop != time)
+    {
+        MsgArg arg;
+        arg.typeId = ALLJOYN_INT32;
+        arg.v_int32 = time;
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_TargetTimeToStop.c_str(), arg,SESSION_ID_ALL_HOSTED,ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        m_targetTimeToStop = time;
+        UpdateProperties();
     }
     return ER_OK;
 }
 
 QStatus TimerIntfControlleeImpl::SetEstimatedTimeToEnd(const int32_t time)
 {
-//    if(m != time)
-//    {
-//        MsgArg arg;
-//        arg.typeId = ALLJOYN_INT32;
-//        arg.v_int32 = time;
-//        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_ReferenceTimer.c_str(), arg,0,ALLJOYN_FLAG_GLOBAL_BROADCAST);
-//        m_referenceTimer = time;
-//    }
+   if(m_estimatedTimeToEnd != time)
+    {
+        MsgArg arg;
+        arg.typeId = ALLJOYN_INT32;
+        arg.v_int32 = time;
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_EstimatedTimeToEnd.c_str(), arg,SESSION_ID_ALL_HOSTED,ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        m_estimatedTimeToEnd = time;
+    }
     return ER_OK;
 }
 
 QStatus TimerIntfControlleeImpl::SetRunningTime(const int32_t time)
 {
-//    if(m_referenceTimer != time)
-//    {
-//        MsgArg arg;
-//        arg.typeId = ALLJOYN_INT32;
-//        arg.v_int32 = time;
-//        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_ReferenceTimer.c_str(), arg,0,ALLJOYN_FLAG_GLOBAL_BROADCAST);
-//        m_referenceTimer = time;
-//    }
+    if(m_runningTime != time)
+    {
+        MsgArg arg;
+        arg.typeId = ALLJOYN_INT32;
+        arg.v_int32 = time;
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_RunningTime.c_str(), arg,SESSION_ID_ALL_HOSTED,ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        m_runningTime = time;
+    }
     return ER_OK;
 }
 
 QStatus TimerIntfControlleeImpl::SetTargetDuration(const int32_t time)
 {
-//    if(m_referenceTimer != time)
-//    {
-//        MsgArg arg;
-//        arg.typeId = ALLJOYN_INT32;
-//        arg.v_int32 = time;
-//        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_ReferenceTimer.c_str(), arg,0,ALLJOYN_FLAG_GLOBAL_BROADCAST);
-//        m_referenceTimer = time;
-//    }
+    if(m_targetDuration != time)
+    {
+        MsgArg arg;
+        arg.typeId = ALLJOYN_INT32;
+        arg.v_int32 = time;
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_TargetDuration.c_str(), arg,SESSION_ID_ALL_HOSTED,ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        m_targetDuration = time;
+    }
     return ER_OK;
 }
 
@@ -324,7 +355,7 @@ void TimerIntfControlleeImpl::OnSetTargetTimeToStart(const InterfaceDescription:
         ErrorCode errorCode = NOT_ERROR;
         status = m_interfaceListener.OnSetTargetTimeToStart(time, errorCode);
         if (status == ER_OK) {
-            m_targetTimeToStart = time;
+            status = SetTargetTimeToStart(time); //update internal value
             m_busObject.ReplyMethodCall(msg, status);
         } else {
             if (errorCode == NOT_ERROR) {
@@ -359,7 +390,7 @@ void TimerIntfControlleeImpl::OnSetTargetTimeToStop(const InterfaceDescription::
         ErrorCode errorCode = NOT_ERROR;
         status = m_interfaceListener.OnSetTargetTimeToStop(time, errorCode);
         if (status == ER_OK) {
-            m_targetTimeToStop = time;
+            status = SetTargetTimeToStop(time); //update internal value
             m_busObject.ReplyMethodCall(msg, status);
         } else {
             if (errorCode == NOT_ERROR) {
@@ -375,6 +406,37 @@ void TimerIntfControlleeImpl::OnSetTargetTimeToStop(const InterfaceDescription::
     {
         m_busObject.ReplyMethodCall(msg, ER_INVALID_DATA);
     }
+}
+void TimerIntfControlleeImpl::UpdateProperties()
+{
+    int32_t estimatedTimeToEnd = 0;
+    int32_t runningTime = 0;
+    int32_t targetDuration = 0;
+
+    //recalculate timer values
+    if(m_referenceTimer < m_targetTimeToStart)
+    {
+        estimatedTimeToEnd = m_targetTimeToStop - m_targetTimeToStop;
+        runningTime = 0;
+    }
+    else if(m_referenceTimer >= m_targetTimeToStart && m_referenceTimer <= m_targetTimeToStop)
+    {
+        estimatedTimeToEnd = m_targetTimeToStop - m_referenceTimer;
+        runningTime = m_referenceTimer - m_targetTimeToStart;
+    }
+    else
+    {
+        estimatedTimeToEnd = 0;
+        runningTime = m_targetTimeToStop - m_targetTimeToStart;
+    }
+
+    if(m_targetTimeToStart > 0 &&  m_targetTimeToStop > 0)
+        targetDuration = m_targetTimeToStop - m_targetTimeToStart;
+
+    this->SetEstimatedTimeToEnd(estimatedTimeToEnd);
+    this->SetRunningTime(runningTime);
+    this->SetTargetDuration(targetDuration);
+
 }
 
 } //namespace services
