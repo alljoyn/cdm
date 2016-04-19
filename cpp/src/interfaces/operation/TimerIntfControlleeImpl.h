@@ -104,22 +104,36 @@ class TimerIntfControlleeImpl : public InterfaceControllee, public TimerIntfCont
     virtual QStatus SetReferenceTimer(const int32_t time);
 
     /**
-     * Get ReferenceTimer
+     * Get TargetTimeToStart
      * @return target time to start
      */
     virtual const int32_t GetTargetTimeToStart() const { return m_targetTimeToStart; }
 
     /**
-     * Get ReferenceTimer
+     * Set TargetTimeToStart
+     * @param[in] time
+     * @return status
+     */
+    virtual QStatus SetTargetTimeToStart(const int32_t time);
+
+    /**
+     * Get TargetTimeToStop
      * @return target time to stop
      */
     virtual const int32_t GetTargetTimeToStop() const { return m_targetTimeToStop; }
 
+     /**
+     * Set TargetTimeToStop
+     * @param[in] time
+     * @return status
+     */
+    virtual QStatus SetTargetTimeToStop(const int32_t time);
+
     /**
-     * Get ReferenceTimer
+     * Get EstimatedTimeToEnd
      * @return estimated time to end
      */
-    virtual const int32_t GetEstimatedTimeToEnd() const { return (m_targetTimeToStop - m_referenceTimer); }
+    virtual const int32_t GetEstimatedTimeToEnd() const { return m_estimatedTimeToEnd; }
 
     /**
      * Set EstimatedTimeToEnd
@@ -129,10 +143,10 @@ class TimerIntfControlleeImpl : public InterfaceControllee, public TimerIntfCont
     virtual QStatus SetEstimatedTimeToEnd(const int32_t time);
 
     /**
-     * Get ReferenceTimer
+     * Get RunningTime
      * @return running time
      */
-    virtual const int32_t GetRunningTime() const { return (m_referenceTimer - m_targetTimeToStart); }
+    virtual const int32_t GetRunningTime() const { return m_runningTime; }
 
     /**
      * Set RunningTime
@@ -142,10 +156,10 @@ class TimerIntfControlleeImpl : public InterfaceControllee, public TimerIntfCont
     virtual QStatus SetRunningTime(const int32_t time);
 
     /**
-     * Get ReferenceTimer
+     * Get TargetDuration
      * @return target duration
      */
-    virtual const int32_t GetTargetDuration() const { return (m_targetTimeToStop - m_targetTimeToStart); }
+    virtual const int32_t GetTargetDuration() const { return m_targetDuration; }
 
     /**
      * Set TargetDuration
@@ -170,6 +184,7 @@ class TimerIntfControlleeImpl : public InterfaceControllee, public TimerIntfCont
 
   private:
     TimerIntfControlleeImpl();
+    void UpdateProperties();
 
     BusAttachment& m_busAttachment;
     TimerIntfControlleeListener& m_interfaceListener;
@@ -177,6 +192,10 @@ class TimerIntfControlleeImpl : public InterfaceControllee, public TimerIntfCont
     int32_t m_referenceTimer;
     int32_t m_targetTimeToStart;
     int32_t m_targetTimeToStop;
+    int32_t m_estimatedTimeToEnd;
+    int32_t m_runningTime;
+    int32_t m_targetDuration;
+
 };
 
 } //namespace services
