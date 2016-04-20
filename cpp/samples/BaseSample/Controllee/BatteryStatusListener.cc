@@ -21,7 +21,7 @@ using namespace std;
 
 QStatus BatteryStatusListener::OnGetCurrentValue(uint8_t& currentValue)
 {
-    cout << "BatteryStatusListener::OnGetCurrentValue() - currentValue : " << currentValue << endl;
+    cout << "BatteryStatusListener::OnGetCurrentValue() - currentValue : " << (int)currentValue << endl;
     return ER_OK;
 }
 

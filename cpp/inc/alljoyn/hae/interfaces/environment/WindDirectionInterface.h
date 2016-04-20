@@ -63,6 +63,12 @@ class WindDirectionInterface : public HaeInterface {
      */
     virtual const uint16_t GetInterfaceVersion() const { return s_interfaceVersion; }
 
+    enum {
+        OFF = 0x00,
+        ON = 0x01,
+        NOT_SUPPORTED = 0xff
+    };
+
   protected:
     static const qcc::String s_prop_Version;
     static const qcc::String s_prop_HorizontalDirection;

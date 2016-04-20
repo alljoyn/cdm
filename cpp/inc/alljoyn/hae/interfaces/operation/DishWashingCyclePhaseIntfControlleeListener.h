@@ -59,7 +59,7 @@ class DishWashingCyclePhaseIntfControlleeListener : public InterfaceControlleeLi
      * @param[out] listOfPhaseDescs list of cycle phases descriptions
      * @return ER_OK on success
      */
-    virtual QStatus OnGetCyclePhasesDescriptions(const qcc::String language,
+    virtual QStatus OnGetCyclePhasesDescriptions(const qcc::String& language,
                                                  DishWashingCyclePhaseInterface::CyclePhaseDescriptions& listOfPhaseDescs,
                                                  ErrorCode& errorCode) = 0;
 

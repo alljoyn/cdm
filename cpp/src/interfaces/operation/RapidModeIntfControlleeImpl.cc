@@ -154,7 +154,7 @@ QStatus RapidModeIntfControlleeImpl::SetRapidMode(const bool rapidMode)
         val.typeId = ALLJOYN_BOOLEAN;
         val.v_bool = rapidMode;
 
-        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_RapidMode.c_str(), val, 0, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_RapidMode.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
         m_rapidMode = rapidMode;
     }
     return ER_OK;

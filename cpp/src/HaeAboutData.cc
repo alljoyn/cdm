@@ -23,7 +23,6 @@
 #include <qcc/StringSource.h>
 #include <qcc/XmlElement.h>
 
-//#include "HaeAboutCustomFields.h"
 using ajn::services::HaeAboutKeys;
 
 namespace ajn {

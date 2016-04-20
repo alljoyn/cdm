@@ -249,7 +249,7 @@ QStatus WindDirectionIntfControlleeImpl::OnSetProperty(const String propName, Ms
             return ER_BUS_SET_PROPERTY_REJECTED;
         }
 
-        uint16_t value = val.v_uint16;
+        uint16_t value = adjustVerticalDirection(val.v_uint16);
         status = m_interfaceListener.OnSetVerticalDirection(value);
         if (status != ER_OK) {
             QCC_LogError(status, ("%s: failed to set property value", __func__));

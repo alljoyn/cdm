@@ -19,10 +19,20 @@
 
 using namespace std;
 
+#define CHANNELNAME_PREFIX "CHANNEL_NAME_"
+#define CHANNELNO_PREFIX "CHANNEL_NO_"
+
 QStatus ChannelListener::OnSetChannelId(const qcc::String& channelId)
 {
     cout << "ChannelListener::OnSetChannelId() - channelId : " << channelId << endl;
-    return ER_OK;
+    for (int i = 0; i < TOTAL_NUM_OF_CHANNEL; i++) {
+        ChannelInterface::ChannelInfoRecord chInfo;
+        char buff[10];
+        sprintf(buff, "%d", i);
+        if (channelId.compare(CHANNELID_PREFIX + qcc::String(buff)) == 0)
+            return ER_OK;
+    }
+    return ER_FAIL;
 }
 
 QStatus ChannelListener::OnGetChannelId(qcc::String& channelId)
@@ -34,14 +44,27 @@ QStatus ChannelListener::OnGetChannelId(qcc::String& channelId)
 QStatus ChannelListener::OnGetTotalNumberOfChannels(uint16_t& totalNumberOfChannels)
 {
     cout << "ChannelListener::OnGetTotalNumberOfChannels()" << endl;
+    totalNumberOfChannels = TOTAL_NUM_OF_CHANNEL;
     return ER_OK;
 }
 
 QStatus ChannelListener::OnGetChannelList(const uint16_t& startingRecord, const uint16_t& numRecords,
-                                          ChannelInterface::ChannelInfoRecords& listOfChannelInfoRecords,
-                                          ErrorCode& errorCode)
+                                          ChannelInterface::ChannelInfoRecords& listOfChannelInfoRecords, ErrorCode& errorCode)
 {
     cout << "ChannelListener::OnGetChannelList()" << endl;
+    if (startingRecord > TOTAL_NUM_OF_CHANNEL - 1) {
+        errorCode = INVALID_VALUE;
+        return ER_FAIL;
+    }
 
+    for (int i = startingRecord; i < TOTAL_NUM_OF_CHANNEL && i < numRecords; i++) {
+        ChannelInterface::ChannelInfoRecord chInfo;
+        char buff[10];
+        sprintf(buff, "%d", i);
+        chInfo.channelId = CHANNELID_PREFIX + qcc::String(buff);
+        chInfo.channelName = CHANNELNAME_PREFIX + qcc::String(buff);
+        chInfo.channelNumber = CHANNELNO_PREFIX + qcc::String(buff);
+        listOfChannelInfoRecords.push_back(chInfo);
+    }
     return ER_OK;
 }

@@ -62,7 +62,6 @@ QStatus ClimateControlModeIntfControllerImpl::Init()
 
 QStatus ClimateControlModeIntfControllerImpl::GetMode(void* context)
 {
-    cout << "ClimateControlModeIntfControllerImpl::GetMode " << endl;
     QStatus status = ER_OK;
     status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_Mode.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&ClimateControlModeIntfControllerImpl::GetModePropertyCB, context);
     if(status != ER_OK)
@@ -76,7 +75,6 @@ QStatus ClimateControlModeIntfControllerImpl::GetMode(void* context)
 QStatus ClimateControlModeIntfControllerImpl::SetMode(const uint16_t mode, void* context)
 {
     QStatus status = ER_OK;
-    cout << "ClimateControlModeIntfControllerImpl::SetMode " << endl;
     MsgArg arg;
     arg.Set("q", mode);
     status = m_proxyObject.SetPropertyAsync(GetInterfaceName().c_str(), s_prop_Mode.c_str(), arg, this, (ProxyBusObject::Listener::SetPropertyCB)&ClimateControlModeIntfControllerImpl::SetModePropertyCB, context);
@@ -162,7 +160,6 @@ void ClimateControlModeIntfControllerImpl::GetModePropertyCB(QStatus status, Pro
 
 void ClimateControlModeIntfControllerImpl::GetSupportedModesPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
-    cout <<"ClimateControlModeIntfControllerImpl::GetSupportedModesPropertyCB" << endl;
     if (!obj) {
         cout <<"obj null !!" << endl;
         return;

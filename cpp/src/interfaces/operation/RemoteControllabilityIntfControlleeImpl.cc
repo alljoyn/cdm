@@ -121,7 +121,7 @@ QStatus RemoteControllabilityIntfControlleeImpl::SetIsControllable(const bool is
         MsgArg val;
         val.typeId = ALLJOYN_BOOLEAN;
         val.v_bool = isControllable;
-        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_IsControllable.c_str(), val, 0, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_IsControllable.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
         m_isControllable= isControllable;
     }
     return ER_OK;

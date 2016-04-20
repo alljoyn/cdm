@@ -66,7 +66,7 @@ class SoilLevelIntfControllerListener : public InterfaceControllerListener {
      * @param[in] selectableLevels selectableLevels
      * @param[in] context the context that is passed from application
      */
-    virtual void GetSelectableLevelsPropertyCallback(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t> selectableLevels, void* context) {};
+    virtual void GetSelectableLevelsPropertyCallback(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& selectableLevels, void* context) {};
 
     /**
      * Handler for MaxLevel property changed

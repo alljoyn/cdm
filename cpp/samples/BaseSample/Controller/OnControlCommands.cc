@@ -27,7 +27,7 @@ OnControlListener::~OnControlListener()
 {
 }
 
-void OnControlListener::OnSwitchOn(QStatus status, const qcc::String& objectPath, void* context,
+void OnControlListener::OnResponseSwitchOn(QStatus status, const qcc::String& objectPath, void* context,
                                          const char* errorName, const char* errorMessage)
 {
     cout << __func__ << endl;

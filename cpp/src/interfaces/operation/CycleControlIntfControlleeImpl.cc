@@ -275,7 +275,7 @@ QStatus CycleControlIntfControlleeImpl::SetSupportedCommands(SupportedOperationa
         }
         val.Set("ay", m_supportedCommands.size(), vals);
         val.Stabilize();
-        m_busObject.EmitPropChanged(GetInterfaceName().c_str(),s_prop_SupportedOperationalCommands.c_str(), val, 0, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(),s_prop_SupportedOperationalCommands.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
         delete[] vals;
     }
     return status;
@@ -305,9 +305,7 @@ QStatus CycleControlIntfControlleeImpl::SetSupportedStates(SupportedOperationalS
     {
         m_supportedStates.clear();
         for(unsigned int i =0;i<states.size();i++)
-        {
             m_supportedStates.push_back(states[i]);
-        }
         uint8_t* vals = new uint8_t[m_supportedStates.size()];
 
         MsgArg val;
@@ -319,7 +317,7 @@ QStatus CycleControlIntfControlleeImpl::SetSupportedStates(SupportedOperationalS
         }
         val.Set("ay", m_supportedStates.size(), vals);
         val.Stabilize();
-        m_busObject.EmitPropChanged(GetInterfaceName().c_str(),s_prop_SupportedOperationalStates.c_str(), val, 0, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(),s_prop_SupportedOperationalStates.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
         delete[] vals;
     }
     return status;

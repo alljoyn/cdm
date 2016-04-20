@@ -40,6 +40,7 @@ HaeBusObject::~HaeBusObject()
     for (map<String, HaeInterface*>::iterator it = m_haeInterfacesMap.begin(); it != m_haeInterfacesMap.end(); ++it) {
         delete it->second;
     }
+    m_busAttachment.UnregisterBusObject(*this);
     m_haeInterfacesMap.clear();
 }
 

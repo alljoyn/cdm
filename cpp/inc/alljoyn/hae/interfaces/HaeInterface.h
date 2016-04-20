@@ -68,7 +68,7 @@ class HaeInterface {
      * @param[in] type interface type
      * @return Interface name
      */
-    virtual const qcc::String& GetInterfaceName(HaeInterfaceType type) const { return InterfaceTypesMap.find(type)->second; }
+    static const qcc::String& GetInterfaceName(HaeInterfaceType type) { return InterfaceTypesMap.find(type)->second; }
 
     /**
      * Get Interface version

@@ -59,7 +59,7 @@ class OvenCyclePhaseIntfControlleeListener : public InterfaceControlleeListener 
      * @param[out] listOfPhaseDescs list of cycle phases descriptions
      * @return ER_OK on success
      */
-    virtual QStatus OnGetCyclePhasesDescriptions(const qcc::String language,
+    virtual QStatus OnGetCyclePhasesDescriptions(const qcc::String& language,
                                                  OvenCyclePhaseInterface::CyclePhaseDescriptions& listOfPhaseDescs,
                                                  ErrorCode& errorCode) = 0;
 };

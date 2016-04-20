@@ -39,13 +39,13 @@ QStatus WindDirectionListener::OnGetHorizontalMax(uint16_t& value)
 
 QStatus WindDirectionListener::OnSetHorizontalAutoMode(const uint8_t& value)
 {
-    cout << "WindDirectionListener::OnSetHorizontalAutoMode() - HorizontalAutoMode : " << value << endl;
+    cout << "WindDirectionListener::OnSetHorizontalAutoMode() - HorizontalAutoMode : " << (int)value << endl;
     return ER_OK;
 }
 
 QStatus WindDirectionListener::OnGetHorizontalAutoMode(uint8_t& value)
 {
-    cout << "WindDirectionListener::OnGetHorizontalAutoMode() - HorizontalAutoMode : " << value << endl;
+    cout << "WindDirectionListener::OnGetHorizontalAutoMode()" << endl;
     return ER_OK;
 }
 
@@ -57,7 +57,7 @@ QStatus WindDirectionListener::OnSetVerticalDirection(const uint16_t& value)
 
 QStatus WindDirectionListener::OnGetVerticalDirection(uint16_t& value)
 {
-    cout << "WindDirectionListener::OnGetVerticalDirection() - VerticalDirection : " << value << endl;
+    cout << "WindDirectionListener::OnGetVerticalDirection() - VerticalDirection : " << (int)value << endl;
     return ER_OK;
 }
 
@@ -69,13 +69,13 @@ QStatus WindDirectionListener::OnGetVerticalMax(uint16_t& value)
 
 QStatus WindDirectionListener::OnSetVerticalAutoMode(const uint8_t& value)
 {
-    cout << "WindDirectionListener::OnSetVerticalAutoMode() - VerticalAutoMode : " << value << endl;
+    cout << "WindDirectionListener::OnSetVerticalAutoMode() - VerticalAutoMode : " << (int)value << endl;
     return ER_OK;
 }
 
 QStatus WindDirectionListener::OnGetVerticalAutoMode(uint8_t& value)
 {
-    cout << "WindDirectionListener::OnGetVerticalAutoMode() - VerticalAutoMode : " << value << endl;
+    cout << "WindDirectionListener::OnGetVerticalAutoMode()" << endl;
     return ER_OK;
 }
 
