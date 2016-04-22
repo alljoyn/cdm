@@ -81,7 +81,7 @@ void AlertsIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char
 
             MsgArg* alertEntries;
             size_t numAlertEntries;
-            
+
             AlertsInterface::AlertRecord alertRecord;
             propValue[0].Get("a(yqb)", &numAlertEntries, &alertEntries);
             for (size_t i = 0; i < numAlertEntries; ++i)
@@ -89,7 +89,7 @@ void AlertsIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char
                 uint8_t severity;
                 uint16_t alertCode;
                 bool acknowledgeNeeded;
-                
+
                 alertEntries[i].Get("(yqb)", &severity, &alertCode, &acknowledgeNeeded);
                 alertRecord.severity = (AlertSeverity)severity;
                 alertRecord.alertCode = alertCode;
@@ -155,7 +155,7 @@ void AlertsIntfControllerImpl::GetAlertsPropertyCB(QStatus status, ProxyBusObjec
     MsgArg* entries;
     size_t numEntries;
     AlertsInterface::Alerts alerts;
-    
+
     AlertsInterface::AlertRecord alertRecord;
     value.Get("a(yqb)", &numEntries, &entries);
     for (size_t i = 0; i < numEntries; ++i)
@@ -163,7 +163,7 @@ void AlertsIntfControllerImpl::GetAlertsPropertyCB(QStatus status, ProxyBusObjec
         uint8_t severity;
         uint16_t alertCode;
         bool acknowledgeNeeded;
-        
+
         entries[i].Get("(yqb)", &severity, &alertCode, &acknowledgeNeeded);
         alertRecord.severity = (AlertSeverity)severity;
         alertRecord.alertCode = alertCode;

@@ -17,6 +17,8 @@
 #ifndef RESOURCESAVINGLISTENER_H_
 #define RESOURCESAVINGLISTENER_H_
 
+#include "InterfaceCommands.h"
+#include <alljoyn/hae/interfaces/operation/ResourceSavingIntfControllee.h>
 #include <alljoyn/hae/interfaces/operation/ResourceSavingIntfControlleeListener.h>
 
 using namespace ajn;
@@ -28,5 +30,26 @@ class ResourceSavingListener : public ResourceSavingIntfControlleeListener
     virtual QStatus OnSetResourceSavingMode(const bool& mode);
     virtual QStatus OnGetResourceSavingMode(bool& mode);
 };
+////////////////////////////////////////////////////////////////////////////////
+
+class ResourceSavingCommands : public InterfaceCommands
+{
+  public:
+    static ControlleeCommands* CreateCommands(ControlleeSample* sample, const char* objectPath);
+
+    ResourceSavingCommands(ControlleeSample* sample, const char* objectPath);
+    virtual ~ResourceSavingCommands();
+
+    virtual void Init();
+
+    ResourceSavingIntfControllee* GetInterface() { return m_intfControllee; }
+    static void OnCmdGetResourceSavingMode(Commands* commands, std::string& cmd);
+    static void OnCmdSetResourceSavingMode(Commands* commands, std::string& cmd);
+
+  private:
+    ResourceSavingIntfControllee* m_intfControllee;
+    ResourceSavingListener m_listener;
+};
+
 
 #endif /* RESOURCESAVINGLISTENER_H_ */

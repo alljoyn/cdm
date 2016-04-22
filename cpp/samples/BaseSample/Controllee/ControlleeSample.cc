@@ -136,6 +136,8 @@ class ECDHEKeyXListener : public AuthListener {
 
 };
 
+static ECDHEKeyXListener s_authListener;
+
 /////////////////////////////////////////////////////////////////////////////////////////
 ControlleeSample::ControlleeSample(BusAttachment* bus, HaeAboutData* aboutData)
   : m_bus(bus), m_aboutData(aboutData), m_aboutObj(NULL), m_aboutSessionListener(NULL),
@@ -145,6 +147,22 @@ ControlleeSample::ControlleeSample(BusAttachment* bus, HaeAboutData* aboutData)
 
 ControlleeSample::~ControlleeSample()
 {
+}
+
+
+void ControlleeSample::InitSample()
+{
+    m_rootCommands = new ControlleeCommands(this);
+    if (!m_rootCommands) {
+        printf("ControlleeCommands creation failed.\n");
+        delete m_controllee;
+    }
+    PushCommands(m_rootCommands);
+}
+
+HaeInterface* ControlleeSample::CreateInterface(const HaeInterfaceType type, const qcc::String& objectPath, InterfaceControlleeListener& listener)
+{
+    return m_controllee->CreateInterface(type, objectPath, listener);
 }
 
 QStatus ControlleeSample::Init()
@@ -169,20 +187,11 @@ QStatus ControlleeSample::Init()
         printf("HaeControllee creation failed. (%s)\n", QCC_StatusText(status));
         return status;
     }
-    m_rootCommands = new ControlleeCommands(this);
-    if (!m_rootCommands) {
-        status = ER_OUT_OF_MEMORY;
-        printf("ControlleeCommands creation failed. (%s)\n", QCC_StatusText(status));
-        delete m_controllee;
-        return status;
-    }
-    PushCommands(m_rootCommands);
-
     InitSample();
 
     CreateInterfaces();
 
-    status = m_controllee->EnablePeerSecurity(ECDHE_KEYX, new ECDHEKeyXListener(), "/.alljoyn_keystore/s_ecdhe.ks", false);
+    status = m_controllee->EnablePeerSecurity(ECDHE_KEYX, &s_authListener, "/.alljoyn_keystore/s_ecdhe.ks", false);
     if (ER_OK == status) {
         printf("EnablePeerSecurity successful.\n");
     } else {

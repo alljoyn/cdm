@@ -71,30 +71,30 @@ QStatus AlertsIntfControlleeImpl::OnGetProperty(const String propName, MsgArg& v
 {
     QStatus status = ER_OK;
 
-    if (!(s_prop_Version.compare(propName))) 
+    if (!(s_prop_Version.compare(propName)))
     {
         val.typeId = ALLJOYN_UINT16;
         val.v_uint16 = GetInterfaceVersion();
-    } 
-    else 
+    }
+    else
     {
-        if (s_retrievingActualPropertyValue) 
+        if (s_retrievingActualPropertyValue)
         {
-            if(!s_prop_Alerts.compare(propName)) 
+            if(!s_prop_Alerts.compare(propName))
             {
                 AlertsInterface::Alerts alerts;
                 status = m_interfaceListener.OnGetAlerts(alerts);
-                if(status != ER_OK) 
+                if(status != ER_OK)
                 {
                     alerts = GetAlerts();
                     QCC_LogError(status, ("%s: failed to get actual property value from application. use previous value.", __func__));
                     status = ER_OK;
-                } 
-                else 
+                }
+                else
                 {
                     SetAlerts(alerts); // update the value in ChannelIntfControllee.
                 }
-                
+
                 int numAlerts = alerts.size();
 
                 AlertsInterface::Alerts::const_iterator citer;
@@ -114,13 +114,13 @@ QStatus AlertsIntfControlleeImpl::OnGetProperty(const String propName, MsgArg& v
                 status = ER_BUS_NO_SUCH_PROPERTY;
             }
         }
-        else 
+        else
         {
-            if(!s_prop_Alerts.compare(propName)) 
+            if(!s_prop_Alerts.compare(propName))
             {
                 AlertsInterface::Alerts alerts;
                 alerts = GetAlerts();
-                
+
                 int numAlerts = alerts.size();
 
                 AlertsInterface::Alerts::const_iterator citer;
@@ -199,7 +199,7 @@ QStatus AlertsIntfControlleeImpl::SetAlerts(const Alerts& alerts)
         m_alerts.clear();
         for(size_t i =0; i < alerts.size(); i++)
             m_alerts.push_back(alerts[i]);
-        
+
 
         MsgArg val;
         int numAlerts = m_alerts.size();

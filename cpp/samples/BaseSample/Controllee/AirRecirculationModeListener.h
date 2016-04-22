@@ -17,6 +17,8 @@
 #ifndef AIRRECIRCULATIONMODELISTENER_H_
 #define AIRRECIRCULATIONMODELISTENER_H_
 
+#include "InterfaceCommands.h"
+#include <alljoyn/hae/interfaces/operation/AirRecirculationModeIntfControllee.h>
 #include <alljoyn/hae/interfaces/operation/AirRecirculationModeIntfControlleeListener.h>
 
 using namespace ajn;
@@ -28,5 +30,25 @@ class AirRecirculationModeListener : public AirRecirculationModeIntfControlleeLi
     virtual QStatus OnSetIsRecirculating(const bool& isRecirculating);
     virtual QStatus OnGetIsRecirculating(bool& isRecirculating);
 };
+
+class AirRecirculationModeCommands : public InterfaceCommands
+{
+  public:
+    static ControlleeCommands* CreateCommands(ControlleeSample* sample, const char* objectPath);
+
+    AirRecirculationModeCommands(ControlleeSample* sample, const char* objectPath);
+    virtual ~AirRecirculationModeCommands();
+
+    virtual void Init();
+
+    AirRecirculationModeIntfControllee* GetInterface() { return m_intfControllee; }
+    static void OnCmdGetIsRecirculating(Commands* commands, std::string& cmd);
+    static void OnCmdSetIsRecirculating(Commands* commands, std::string& cmd);
+
+  private:
+    AirRecirculationModeIntfControllee* m_intfControllee;
+    AirRecirculationModeListener m_listener;
+};
+
 
 #endif /* AIRRECIRCULATIONMODELISTENER_H_ */

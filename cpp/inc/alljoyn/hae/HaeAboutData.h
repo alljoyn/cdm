@@ -66,10 +66,10 @@ class HaeAboutData : public AboutData , public HaeAboutKeys {
     ~HaeAboutData();
 
     /**
-     * This fuction extends the base CreateFromXML in alljoyn::AboutData to 
+     * This fuction extends the base CreateFromXML in alljoyn::AboutData to
      * create Device Type Description with HAE specific fields included.
      *@param[in] aboutDataXml the about XML to create the About Data from.
-     *@return 
+     *@return
      *   - ER_OK on success
      *   - ER_ABOUT_ABOUTDATA_MISSING_REQUIRED_FIELD if the XML representation
      *     did not include all required AboutData fields.
@@ -78,8 +78,8 @@ class HaeAboutData : public AboutData , public HaeAboutKeys {
      *     field is missing.
      */
     QStatus CreateFromXml(const char* aboutDataXml);
-    
-    
+
+
     /**
      * This fuction extends the base CreateFromXML in alljoyn::AboutData to
      * create Device Type Description with HAE specific fields included.
@@ -104,8 +104,8 @@ class HaeAboutData : public AboutData , public HaeAboutKeys {
      *
      */
     QStatus CreateFromXml(const qcc::String& aboutDataXml);
-    
-    
+
+
     /**
      * Set country of production
      * @param[in] country the country

@@ -17,6 +17,8 @@
 #ifndef SPINSPEEDLEVELLISTENER_H_
 #define SPINSPEEDLEVELLISTENER_H_
 
+#include "InterfaceCommands.h"
+#include <alljoyn/hae/interfaces/operation/SpinSpeedLevelIntfControllee.h>
 #include <alljoyn/hae/interfaces/operation/SpinSpeedLevelIntfControlleeListener.h>
 
 using namespace ajn;
@@ -37,5 +39,32 @@ class SpinSpeedLevelListener : public SpinSpeedLevelIntfControlleeListener
 
     virtual QStatus OnSetSelectableLevels(const std::vector<uint8_t>& selectableLevels);
 };
+
+class SpinSpeedLevelCommands : public InterfaceCommands
+{
+  public:
+    static ControlleeCommands* CreateCommands(ControlleeSample* sample, const char* objectPath);
+
+    SpinSpeedLevelCommands(ControlleeSample* sample, const char* objectPath);
+    virtual ~SpinSpeedLevelCommands();
+
+    virtual void Init();
+    virtual void InitializeProperties();
+
+    SpinSpeedLevelIntfControllee* GetInterface() { return m_intfControllee; }
+    static void OnCmdGetMaxLevel(Commands* commands, std::string& cmd);
+    static void OnCmdSetMaxLevel(Commands* commands, std::string& cmd);
+
+    static void OnCmdGetTargetLevel(Commands* commands, std::string& cmd);
+    static void OnCmdSetTargetLevel(Commands* commands, std::string& cmd);
+
+    static void OnCmdGetSelectableLevels(Commands* commands, std::string& cmd);
+//    static void OnCmdSetSupportedCyclePhases(Commands* commands, std::string& cmd);
+
+  private:
+    SpinSpeedLevelIntfControllee* m_intfControllee;
+    SpinSpeedLevelListener m_listener;
+};
+
 
 #endif /* SPINSPEEDLEVELLISTENER_H_ */

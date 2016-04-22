@@ -38,9 +38,9 @@ CurrentTemperatureIntfControlleeImpl::CurrentTemperatureIntfControlleeImpl(BusAt
     InterfaceControllee(haeBusObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener),
-    m_CurrentValue(0),
-    m_precision(1.0),
-    m_updateMinTime(1000)
+    m_CurrentValue(0.0),
+    m_precision(0.0),
+    m_updateMinTime(0)
 {
 }
 

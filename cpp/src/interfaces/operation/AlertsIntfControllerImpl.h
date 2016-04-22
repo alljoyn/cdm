@@ -94,7 +94,7 @@ class AlertsIntfControllerImpl : public InterfaceController, public AlertsIntfCo
     AlertsIntfControllerImpl();
 
     void PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context);
-    
+
     void GetAlertsPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
     void GetAlertCodesDescriptionReplyHandler(Message& message, void* context);
     void AcknowledgeAlertReplyHandler(Message& message, void* context);

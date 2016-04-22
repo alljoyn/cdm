@@ -59,7 +59,7 @@ class TimerInterface : public HaeInterface {
 
     static const int32_t TIMER_FEATURE_NOT_APPLIED = 0x80000000;
     static const int32_t TIMER_NOT_SUPPORTED       = 0x80000001;
-  
+
   protected:
     static const qcc::String s_prop_Version;
     static const qcc::String s_prop_ReferenceTimer;

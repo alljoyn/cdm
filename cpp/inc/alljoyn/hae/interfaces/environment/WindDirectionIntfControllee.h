@@ -63,6 +63,13 @@ class WindDirectionIntfControllee : public WindDirectionInterface {
     virtual const uint16_t GetHorizontalMax() const = 0;
 
     /**
+     * Set horizontal max direction
+     * @param[in] value horizontal max direction
+     * @return ER_OK on success
+     */
+    virtual QStatus SetHorizontalMax(const uint16_t value) = 0;
+
+    /**
      * Get horizontal auto mode
      * @return Horizontal auto mode
      */
@@ -93,6 +100,13 @@ class WindDirectionIntfControllee : public WindDirectionInterface {
      * @return The maximum vertical direction
      */
     virtual const uint16_t GetVerticalMax() const = 0;
+
+    /**
+     * Set vertical max direction
+     * @param[in] value vertical max direction
+     * @return ER_OK on success
+     */
+    virtual QStatus SetVerticalMax(const uint16_t value) = 0;
 
     /**
      * Get vertical auto mode

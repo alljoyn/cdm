@@ -55,10 +55,12 @@ class ControlleeSample : public BaseSample
     ControlleeSample(BusAttachment* bus, HaeAboutData* aboutData);
     virtual ~ControlleeSample();
 
+    HaeAboutData* GetAboutData() { return m_aboutData; }
     HaeControllee* GetControllee() { return m_controllee; }
+    HaeInterface* CreateInterface(const HaeInterfaceType type, const qcc::String& objectPath, InterfaceControlleeListener& listener);
 
   protected:
-    virtual void InitSample() {}
+    virtual void InitSample();
     virtual void CreateInterfaces() = 0;
     virtual void SetInitialProperty() = 0;
 

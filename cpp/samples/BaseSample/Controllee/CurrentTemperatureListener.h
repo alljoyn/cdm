@@ -17,6 +17,8 @@
 #ifndef CURRENTTEMPERATURELISTENER_H_
 #define CURRENTTEMPERATURELISTENER_H_
 
+#include "InterfaceCommands.h"
+#include <alljoyn/hae/interfaces/environment/CurrentTemperatureIntfControllee.h>
 #include <alljoyn/hae/interfaces/environment/CurrentTemperatureIntfControlleeListener.h>
 
 using namespace ajn;
@@ -28,6 +30,29 @@ class CurrentTemperatureListener : public CurrentTemperatureIntfControlleeListen
     virtual QStatus OnGetCurrentValue(double& value);
     virtual QStatus OnGetPrecision(double& precision);
     virtual QStatus OnGetUpdateMinTime(uint16_t& updateMinTime);
+};
+
+class CurrentTemperatureCommands : public InterfaceCommands
+{
+  public:
+    static ControlleeCommands* CreateCommands(ControlleeSample* sample, const char* objectPath);
+
+    CurrentTemperatureCommands(ControlleeSample* sample, const char* objectPath);
+    virtual ~CurrentTemperatureCommands();
+
+    virtual void Init();
+
+    CurrentTemperatureIntfControllee* GetInterface() { return m_intfControllee; }
+    static void OnCmdGetCurrentValue(Commands* commands, std::string& cmd);
+    static void OnCmdSetCurrentValue(Commands* commands, std::string& cmd);
+    static void OnCmdGetPrecision(Commands* commands, std::string& cmd);
+    static void OnCmdSetPrecision(Commands* commands, std::string& cmd);
+    static void OnCmdGetUpdateMinTime(Commands* commands, std::string& cmd);
+    static void OnCmdSetUpdateMinTime(Commands* commands, std::string& cmd);
+
+  private:
+    CurrentTemperatureIntfControllee* m_intfControllee;
+    CurrentTemperatureListener m_listener;
 };
 
 #endif /* CURRENTTEMPERATURELISTENER_H_ */

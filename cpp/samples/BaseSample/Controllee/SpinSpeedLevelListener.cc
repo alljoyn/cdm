@@ -15,8 +15,8 @@
  ******************************************************************************/
 
 #include <iostream>
-
 #include "SpinSpeedLevelListener.h"
+#include "ControlleeSample.h"
 
 using namespace std;
 
@@ -55,4 +55,126 @@ QStatus SpinSpeedLevelListener::OnSetSelectableLevels(const std::vector<uint8_t>
 {
     cout << "SpinSpeedLevelListener::OnSetSelectableLevels " << endl;
     return ER_OK;
+}
+
+ControlleeCommands* SpinSpeedLevelCommands::CreateCommands(ControlleeSample* sample, const char* objectPath)
+{
+    return new SpinSpeedLevelCommands(sample, objectPath);
+}
+
+SpinSpeedLevelCommands::SpinSpeedLevelCommands(ControlleeSample* sample, const char* objectPath)
+: InterfaceCommands(sample, objectPath)
+, m_intfControllee(NULL)
+{
+}
+
+SpinSpeedLevelCommands::~SpinSpeedLevelCommands()
+{
+}
+
+void SpinSpeedLevelCommands::Init()
+{
+    if (!m_intfControllee) {
+        HaeInterface* haeInterface = m_sample->CreateInterface(SPIN_SPEED_LEVEL_INTERFACE, m_objectPath, m_listener);
+        if (!haeInterface) {
+            cout << "Interface creation failed." << endl;
+            return;
+        }
+
+        m_intfControllee = static_cast<SpinSpeedLevelIntfControllee*>(haeInterface);
+
+        RegisterCommand(&SpinSpeedLevelCommands::OnCmdGetMaxLevel, "gml", "get max level");
+        RegisterCommand(&SpinSpeedLevelCommands::OnCmdSetMaxLevel, "sml", "set max level (use 'sml <max level>')");
+
+        RegisterCommand(&SpinSpeedLevelCommands::OnCmdGetTargetLevel, "gtl", "get target level");
+        RegisterCommand(&SpinSpeedLevelCommands::OnCmdSetTargetLevel, "stl", "set target level (use 'stl <target level>')");
+
+        RegisterCommand(&SpinSpeedLevelCommands::OnCmdGetSelectableLevels, "gsell", "get selectable levels");
+    } else {
+        PrintCommands();
+    }
+}
+
+void SpinSpeedLevelCommands::InitializeProperties()
+{
+    if (m_intfControllee) {
+        uint8_t maxLevel = 6;
+        uint8_t targetLevel = 1;
+        std::vector<uint8_t> selectableLevels;
+
+        for (uint8_t i = 0 ; i <= maxLevel; i++ )
+            selectableLevels.push_back(i);
+
+        m_intfControllee->SetTargetLevel(targetLevel);
+        m_intfControllee->SetMaxLevel(maxLevel);
+        m_intfControllee->SetSelectableLevels(selectableLevels);
+    }
+}
+
+void SpinSpeedLevelCommands::OnCmdGetMaxLevel(Commands* commands, std::string& cmd)
+{
+    cout << "SpinSpeedLevelCommands::OnCmdGetMaxLevel" << endl;
+    SpinSpeedLevelIntfControllee* intfControllee = static_cast<SpinSpeedLevelCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+    cout << (int)intfControllee->GetMaxLevel() << endl;
+}
+void SpinSpeedLevelCommands::OnCmdSetMaxLevel(Commands* commands, std::string& cmd)
+{
+    cout << "SpinSpeedLevelCommands::OnCmdSetMaxLevel" << endl;
+    SpinSpeedLevelIntfControllee* intfControllee = static_cast<SpinSpeedLevelCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    uint8_t maxLevel = strtol(cmd.c_str(), NULL, 10);
+    intfControllee->SetMaxLevel(maxLevel);
+}
+
+void SpinSpeedLevelCommands::OnCmdGetTargetLevel(Commands* commands, std::string& cmd)
+{
+    cout << "SpinSpeedLevelCommands::OnCmdGetTargetLevel" << endl;
+    SpinSpeedLevelIntfControllee* intfControllee = static_cast<SpinSpeedLevelCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+    cout << (int)intfControllee->GetTargetLevel() << endl;
+
+}
+void SpinSpeedLevelCommands::OnCmdSetTargetLevel(Commands* commands, std::string& cmd)
+{
+    cout << "SpinSpeedLevelCommands::OnCmdSetTargetLevel" << endl;
+    SpinSpeedLevelIntfControllee* intfControllee = static_cast<SpinSpeedLevelCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    uint8_t targetLevel = strtol(cmd.c_str(), NULL, 10);
+    intfControllee->SetTargetLevel(targetLevel);
+}
+
+void SpinSpeedLevelCommands::OnCmdGetSelectableLevels(Commands* commands, std::string& cmd)
+{
+    cout << "SpinSpeedLevelCommands::OnCmdGetSelectableLevels" << endl;
+    SpinSpeedLevelIntfControllee* intfControllee = static_cast<SpinSpeedLevelCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    const std::vector<uint8_t> selectableLevels = intfControllee->GetSelectableLevels();
+
+    for(size_t i = 0; i < selectableLevels.size(); i++)
+        cout << (int)selectableLevels[i] << " ";
+    cout << endl;
 }

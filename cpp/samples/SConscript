@@ -23,7 +23,7 @@ if local_env['BR'] == 'on':
     local_env.Prepend(LIBS = [local_env['ajrlib']])
 
 if local_env.get('UINPUT') == 'on':
-	# Add uinput integration in samples
+    # Add uinput integration in samples
     local_env.Prepend(CPPDEFINES = [ 'UINPUT' ])
 
 # Sample programs
@@ -37,7 +37,8 @@ sample_dirs = [
     'RobotCleanerControllee',
     'CookTopControllee',
     'LaundryControllee',
-    'TimerSimulator'
+    'TimerSimulator',
+    'DeviceEmulator'
     ]
 
 exports = { 'env': local_env }

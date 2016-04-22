@@ -16,8 +16,10 @@
 
 #ifndef HEATINGZONELISTENER_H_
 #define HEATINGZONELISTENER_H_
-
+#include "InterfaceCommands.h"
+#include <alljoyn/hae/interfaces/operation/HeatingZoneIntfControllee.h>
 #include <alljoyn/hae/interfaces/operation/HeatingZoneIntfControlleeListener.h>
+
 using namespace ajn;
 using namespace services;
 
@@ -48,6 +50,28 @@ public:
          */
         virtual QStatus OnGetHeatingLevels(std::vector<uint8_t>& heatingLevels);
 
+};
+
+class HeatingZoneCommands : public InterfaceCommands
+{
+  public:
+    static ControlleeCommands* CreateCommands(ControlleeSample* sample, const char* objectPath);
+
+    HeatingZoneCommands(ControlleeSample* sample, const char* objectPath);
+    virtual ~HeatingZoneCommands();
+
+    virtual void Init();
+    virtual void InitializeProperties();
+
+    HeatingZoneIntfControllee* GetInterface() { return m_intfControllee; }
+    static void OnCmdGetNumberOfHeatingZones(Commands* commands, std::string& cmd);
+    static void OnCmdSetNumberOfHeatingZones(Commands* commands, std::string& cmd);
+
+    static void OnCmdGetMaxHeatingLevels(Commands* commands, std::string& cmd);
+    static void OnCmdGetHeatingLevels(Commands* commands, std::string& cmd);
+  private:
+    HeatingZoneIntfControllee* m_intfControllee;
+    HeatingZoneListener m_listener;
 };
 
 #endif /* HEATINGZONELISTENER_H_ */

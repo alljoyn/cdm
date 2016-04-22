@@ -138,7 +138,7 @@ QStatus FillAboutData(HaeAboutData* aboutData)
 {
     String const& defaultLanguage = "en";
     String device_id = "deviceID";
-    String app_id = "4a354637-5649-4518-8a48-323c158bc03e";
+    String app_id = "4a354637-5649-4518-8a48-323c158bc003";
     String app_name = "RCControllee";
     map<String, String> deviceNames;
     deviceNames.insert(pair<String, String>("en", "RobotCleaner"));

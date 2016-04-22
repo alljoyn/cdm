@@ -47,7 +47,7 @@ class AlertsIntfControlleeListener : public InterfaceControlleeListener {
 
     /**
      * Handler for GetGetAlertCodesDescription method
-     * @param[in] language language 
+     * @param[in] language language
      * @param[out] description alert codes description
      * @param[out] error Internal error code occurred during command execution
      * @return ER_OK on success

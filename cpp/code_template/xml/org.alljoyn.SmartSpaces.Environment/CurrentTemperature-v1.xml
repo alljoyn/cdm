@@ -6,7 +6,7 @@
             <description language="en">The interface version</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
-        <property name="CurrentValue" type="double" access="read">
+        <property name="CurrentValue" type="d" access="read">
             <description language="en">Current temperature expressed in Celsius</description>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>

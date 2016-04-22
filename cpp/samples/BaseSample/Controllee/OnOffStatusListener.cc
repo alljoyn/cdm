@@ -14,8 +14,8 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include <iostream>
 #include "OnOffStatusListener.h"
+#include "ControlleeSample.h"
 
 using namespace std;
 
@@ -23,4 +23,70 @@ QStatus OnOffStatusListener::OnGetOnOff(bool& value)
 {
     cout << "OnOffStatusListener::OnGetOnOff() - OnOff : " << value << endl;
     return ER_OK;
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+
+ControlleeCommands* OnOffStatusCommands::CreateCommands(ControlleeSample* sample, const char* objectPath)
+{
+    return new OnOffStatusCommands(sample, objectPath);
+}
+
+OnOffStatusCommands::OnOffStatusCommands(ControlleeSample* sample, const char* objectPath)
+: InterfaceCommands(sample, objectPath)
+, m_intfControllee(NULL)
+{
+}
+
+OnOffStatusCommands::~OnOffStatusCommands()
+{
+}
+
+void OnOffStatusCommands::Init()
+{
+    if (!m_intfControllee) {
+        HaeInterface* haeInterface = m_sample->CreateInterface(ON_OFF_STATUS_INTERFACE, m_objectPath, m_listener);
+        if (!haeInterface) {
+            cout << "Interface creation failed." << endl;
+            return;
+        }
+
+        m_intfControllee = static_cast<OnOffStatusIntfControllee*>(haeInterface);
+
+        RegisterCommand(&OnOffStatusCommands::OnCmdGetOnOffStatus, "gos", "get on/off status");
+        RegisterCommand(&OnOffStatusCommands::OnCmdSetOnOffStatus, "sos", "set on/off status(use 'sos <0/1>'");
+
+    } else {
+        PrintCommands();
+    }
+}
+
+void OnOffStatusCommands::OnCmdGetOnOffStatus(Commands* commands, std::string& cmd)
+{
+    OnOffStatusIntfControllee* intfControllee = static_cast<OnOffStatusCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    cout << intfControllee->GetOnOff() << endl;
+}
+
+void OnOffStatusCommands::OnCmdSetOnOffStatus(Commands* commands, std::string& cmd)
+{
+    OnOffStatusIntfControllee* intfControllee = static_cast<OnOffStatusCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    int status = strtol(cmd.c_str(), NULL, 10);
+    if (status == 0 || status == 1) {
+        intfControllee->SetOnOff(status);
+    } else {
+        cout << "Input argument is wrong." << endl;
+        return;
+    }
 }

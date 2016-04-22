@@ -17,6 +17,8 @@
 #ifndef ONOFFSTATUSLISTENER_H_
 #define ONOFFSTATUSLISTENER_H_
 
+#include "InterfaceCommands.h"
+#include <alljoyn/hae/interfaces/operation/OnOffStatusIntfControllee.h>
 #include <alljoyn/hae/interfaces/operation/OnOffStatusIntfControlleeListener.h>
 
 using namespace ajn;
@@ -26,6 +28,27 @@ class OnOffStatusListener : public OnOffStatusIntfControlleeListener
 {
   public:
     virtual QStatus OnGetOnOff(bool& value);
+};
+
+////////////////////////////////////////////////////////////////////////////////
+
+class OnOffStatusCommands : public InterfaceCommands
+{
+  public:
+    static ControlleeCommands* CreateCommands(ControlleeSample* sample, const char* objectPath);
+
+    OnOffStatusCommands(ControlleeSample* sample, const char* objectPath);
+    virtual ~OnOffStatusCommands();
+
+    virtual void Init();
+
+    OnOffStatusIntfControllee* GetInterface() { return m_intfControllee; }
+    static void OnCmdGetOnOffStatus(Commands* commands, std::string& cmd);
+    static void OnCmdSetOnOffStatus(Commands* commands, std::string& cmd);
+
+  private:
+    OnOffStatusIntfControllee* m_intfControllee;
+    OnOffStatusListener m_listener;
 };
 
 #endif /* ONOFFSTATUSLISTENER_H_ */

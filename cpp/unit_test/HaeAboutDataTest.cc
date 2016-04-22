@@ -476,7 +476,7 @@ TEST(HaeAboutDataTest, GetAboutData)
     EXPECT_EQ(ER_OK, status);
     EXPECT_EQ(1, elemSize);
 //    printf("********\n%s\n********\n", entries[0].ToString().c_str());
-    
+
     DeviceType deviceType;
     char* objectPath;
     status = entries[0].Get("(uo)", &deviceType, &objectPath);
@@ -534,7 +534,7 @@ TEST(HaeAboutDataTest, GetMsgArg_es_language)
     //printf("*****\n%s\n*****\n", aboutArg.ToString().c_str());
 
     MsgArg* args;
-    
+
     aboutArg.GetElement("{sv}", HaeAboutData::LOCATION.c_str(), &args);
     char* location;
     args->Get("s", &location);
@@ -578,20 +578,20 @@ TEST(HaeAboutDataTest, GetAnnouncedAboutData)
     MsgArg* args;
 
 
-    
+
     announceArg.GetElement("{sv}", HaeAboutData::LOCATION.c_str(), &args);
     char* location;
     args->Get("s", &location);
     EXPECT_STREQ("upstairs bedroom", location);
-    
+
     announceArg.GetElement("{sv}", HaeAboutData::DEVICE_TYPE_DESCRIPTION.c_str(), &args);
-    
+
     MsgArg* entries;
     size_t elemSize = 0;
     status = args->Get("a(uo)", &elemSize, &entries);
     EXPECT_EQ(ER_OK, status);
     EXPECT_EQ(1, elemSize);
-    
+
     DeviceType deviceType;
     char* objectPath;
     status = entries[0].Get("(uo)", &deviceType, &objectPath);
@@ -599,7 +599,7 @@ TEST(HaeAboutDataTest, GetAnnouncedAboutData)
     EXPECT_EQ(THERMOSTAT, deviceType);
     EXPECT_STREQ("/Hae/Thermostat", objectPath );
 }
-    
+
 
 TEST(HaeAboutDataTest, InitUsingMsgArgBadSignature) {
     QStatus status = ER_FAIL;
@@ -671,20 +671,20 @@ TEST(HaeAboutDataTest, InitUsingMsgArg)
     HaeAboutData aboutDataInit("en");
     status = aboutDataInit.CreatefromMsgArg(aboutArg);
     EXPECT_EQ(ER_OK, status);
-    
+
     DeviceTypeDescription*  returnedDescription = new DeviceTypeDescription();
     status = aboutDataInit.GetDeviceTypeDescription( &returnedDescription);
     EXPECT_EQ(ER_OK, status);
-    
+
     std::multimap<DeviceType, qcc::String>::const_iterator it = returnedDescription->GetDescriptions().begin();
     EXPECT_EQ(THERMOSTAT, it->first);
     EXPECT_STREQ("/Hae/Thermostat", it->second.c_str() );
-    
+
     char* location;
     status = aboutData.GetLocation(&location);
     EXPECT_EQ(ER_OK, status);
     EXPECT_STREQ("upstairs bedroom", location);
-    
+
     status = aboutData.GetLocation(&location, "es");
     EXPECT_EQ(ER_OK, status);
     EXPECT_STREQ("habitación del segundo piso", location);
@@ -720,9 +720,9 @@ TEST(HaeAboutDataTest, InitUsingMsgArg)
         status = aboutData.CreateFromXml(xml);
         EXPECT_EQ(ER_ABOUT_ABOUTDATA_MISSING_REQUIRED_FIELD, status);
     }
-    
-    
-    
+
+
+
 TEST(HaeAboutDataTest, CreateFromXml_fails_missingDeviceTypeDescription) {
         QStatus status = ER_FAIL;
         HaeAboutData aboutData;
@@ -753,7 +753,7 @@ TEST(HaeAboutDataTest, CreateFromXml_fails_missingDeviceTypeDescription) {
         status = aboutData.CreateFromXml(xml);
         EXPECT_EQ(ER_ABOUT_ABOUTDATA_MISSING_REQUIRED_FIELD, status);
 }
-    
+
 TEST(HaeAboutDataTest, CreateFromXml_fails_missingDeviceTypeDescriptionStructureTag) {
         QStatus status = ER_FAIL;
         HaeAboutData aboutData;
@@ -815,9 +815,9 @@ TEST(HaeAboutDataTest, CreateFromXml_fails_stringDeviceType) {
         status = aboutData.CreateFromXml(xml);
         EXPECT_EQ(ER_ABOUT_ABOUTDATA_MISSING_REQUIRED_FIELD, status);
     }
-    
-    
-    
+
+
+
 TEST(HaeAboutDataTest, CreateFromXml_from_qcc_string) {
     QStatus status = ER_FAIL;
     HaeAboutData aboutData;
@@ -847,18 +847,18 @@ TEST(HaeAboutDataTest, CreateFromXml_from_qcc_string) {
         "</AboutData>";
     status = aboutData.CreateFromXml(xml);
     EXPECT_EQ(ER_OK, status);
-    
+
     MsgArg aboutArg;
     status = aboutData.GetAboutData(&aboutArg);
     EXPECT_EQ(ER_OK, status);
-    
+
 //    printf("*****\n%s\n*****\n", aboutArg.ToString().c_str());
 
     char* location;
     status = aboutData.GetLocation(&location);
     EXPECT_EQ(ER_OK, status);
     EXPECT_STREQ("upstairs bedroom", location);
-    
+
     status = aboutData.GetLocation(&location, "es");
     EXPECT_EQ(ER_OK, status);
     EXPECT_STREQ("habitación del segundo piso", location);
@@ -871,8 +871,8 @@ TEST(HaeAboutDataTest, CreateFromXml_from_qcc_string) {
     EXPECT_EQ(THERMOSTAT, it->first);
     EXPECT_STREQ("/Hae/Thermostat", it->second.c_str() );
 }
-    
-    
+
+
 /*
  * This test is identical to HaeAboutDataTest.CreateFromXml_from_qcc_string except
  * the xml string is passed in as a const char* not a qcc::String
@@ -911,21 +911,21 @@ TEST(HaeAboutDataTest, CreateFromXml_from_char_string) {
     status = aboutData.GetLocation(&location);
     EXPECT_EQ(ER_OK, status);
     EXPECT_STREQ("upstairs bedroom", location);
-    
+
     status = aboutData.GetLocation(&location, "es");
     EXPECT_EQ(ER_OK, status);
     EXPECT_STREQ("habitación del segundo piso", location);
-    
+
     DeviceTypeDescription*  returnedDescription = new DeviceTypeDescription();
     status = aboutData.GetDeviceTypeDescription( &returnedDescription);
     EXPECT_EQ(ER_OK, status);
-    
+
     std::multimap<DeviceType, qcc::String>::const_iterator it = returnedDescription->GetDescriptions().begin();
     EXPECT_EQ(THERMOSTAT, it->first);
     EXPECT_STREQ("/Hae/Thermostat", it->second.c_str() );
 }
-    
-    
+
+
 TEST(HaeAboutDataTest, CreateFromXml_multiple_device_types) {
         QStatus status = ER_FAIL;
         HaeAboutData aboutData;
@@ -955,37 +955,37 @@ TEST(HaeAboutDataTest, CreateFromXml_multiple_device_types) {
         "</AboutData>";
         status = aboutData.CreateFromXml(xml);
         EXPECT_EQ(ER_OK, status);
-        
+
         MsgArg aboutArg;
         status = aboutData.GetAboutData(&aboutArg);
         EXPECT_EQ(ER_OK, status);
-        
+
 //        printf("*****\n%s\n*****\n", aboutArg.ToString().c_str());
-    
+
         char* location;
         status = aboutData.GetLocation(&location);
         EXPECT_EQ(ER_OK, status);
         EXPECT_STREQ("upstairs bedroom", location);
-        
+
         status = aboutData.GetLocation(&location, "es");
         EXPECT_EQ(ER_OK, status);
         EXPECT_STREQ("habitación del segundo piso", location);
-        
+
         DeviceTypeDescription*  returnedDescription = new DeviceTypeDescription();
         status = aboutData.GetDeviceTypeDescription( &returnedDescription);
         EXPECT_EQ(ER_OK, status);
-    
+
         std::multimap<DeviceType, qcc::String> returnedDescriptions = returnedDescription->GetDescriptions();
         EXPECT_EQ(3, returnedDescriptions.size());
         EXPECT_EQ(1, returnedDescriptions.count(REFRIGERATOR));
         EXPECT_EQ(1, returnedDescriptions.count(FREEZER));
         EXPECT_EQ(1, returnedDescriptions.count(ICE_MAKER));
-        
+
         std::multimap<DeviceType, qcc::String>::const_iterator it = returnedDescriptions.find(REFRIGERATOR);
         EXPECT_STREQ("/Hae/Alpha", it->second.c_str() );
     }
-    
 
-    
+
+
 }//namespace services
 }//namespace ajn

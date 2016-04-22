@@ -17,6 +17,8 @@
 #ifndef ENERGYUSAGELISTENER_H_
 #define ENERGYUSAGELISTENER_H_
 
+#include "InterfaceCommands.h"
+#include <alljoyn/hae/interfaces/operation/EnergyUsageIntfControllee.h>
 #include <alljoyn/hae/interfaces/operation/EnergyUsageIntfControlleeListener.h>
 
 using namespace ajn;
@@ -29,6 +31,29 @@ class EnergyUsageListener : public EnergyUsageIntfControlleeListener
     virtual QStatus OnGetPrecision(double& precision);
     virtual QStatus OnGetUpdateMinTime(uint16_t& updateMinTime);
     virtual QStatus OnResetCumulativeEnergy(ErrorCode& errorCode);
+};
+
+class EnergyUsageCommands : public InterfaceCommands
+{
+  public:
+    static ControlleeCommands* CreateCommands(ControlleeSample* sample, const char* objectPath);
+
+    EnergyUsageCommands(ControlleeSample* sample, const char* objectPath);
+    virtual ~EnergyUsageCommands();
+
+    virtual void Init();
+
+    EnergyUsageIntfControllee* GetInterface() { return m_intfControllee; }
+    static void OnCmdGetCumulativeEnergy(Commands* commands, std::string& cmd);
+    static void OnCmdSetCumulativeEnergy(Commands* commands, std::string& cmd);
+    static void OnCmdGetPrecision(Commands* commands, std::string& cmd);
+    static void OnCmdSetPrecision(Commands* commands, std::string& cmd);
+    static void OnCmdGetUpdateMinTime(Commands* commands, std::string& cmd);
+    static void OnCmdSetUpdateMinTime(Commands* commands, std::string& cmd);
+
+  private:
+    EnergyUsageIntfControllee* m_intfControllee;
+    EnergyUsageListener m_listener;
 };
 
 #endif /* ENERGYUSAGELISTENER_H_ */

@@ -16,6 +16,7 @@
 
 #include <iostream>
 #include "LaundryCyclePhaseListener.h"
+#include "ControlleeSample.h"
 
 using namespace std;
 
@@ -78,4 +79,110 @@ QStatus LaundryCyclePhaseListener::OnGetCyclePhasesDescriptions(const qcc::Strin
         status = ER_LANGUAGE_NOT_SUPPORTED;
     }
     return status;
+}
+
+
+
+ControlleeCommands* LaundryCyclePhaseCommands::CreateCommands(ControlleeSample* sample, const char* objectPath)
+{
+    return new LaundryCyclePhaseCommands(sample, objectPath);
+}
+
+LaundryCyclePhaseCommands::LaundryCyclePhaseCommands(ControlleeSample* sample, const char* objectPath)
+: InterfaceCommands(sample, objectPath)
+, m_intfControllee(NULL)
+{
+}
+
+LaundryCyclePhaseCommands::~LaundryCyclePhaseCommands()
+{
+}
+
+void LaundryCyclePhaseCommands::Init()
+{
+    if (!m_intfControllee) {
+        HaeInterface* haeInterface = m_sample->CreateInterface(LAUNDRY_CYCLE_PHASE_INTERFACE, m_objectPath, m_listener);
+        if (!haeInterface) {
+            cout << "Interface creation failed." << endl;
+            return;
+        }
+
+        m_intfControllee = static_cast<LaundryCyclePhaseIntfControllee*>(haeInterface);
+
+        RegisterCommand(&LaundryCyclePhaseCommands::OnCmdGetCyclePhase, "gcp", "get cycle phase");
+        RegisterCommand(&LaundryCyclePhaseCommands::OnCmdSetCyclePhase, "scp", "set cycle phase (use 'sic <cycle phase>')");
+
+        RegisterCommand(&LaundryCyclePhaseCommands::OnCmdGetSupportedCyclePhases, "gscp", "get supported cycle phases");
+    } else {
+        PrintCommands();
+    }
+}
+
+void LaundryCyclePhaseCommands::InitializeProperties()
+{
+    if (m_intfControllee) {
+        LaundryCyclePhaseInterface::SupportedCyclePhases supportedCyclePhase = {
+            LaundryCyclePhaseInterface::LAUNDRY_PHASE_UNAVAILABLE,
+            LaundryCyclePhaseInterface::LAUNDRY_PHASE_PRE_WASHING,
+            LaundryCyclePhaseInterface::LAUNDRY_PHASE_WASHING,
+            LaundryCyclePhaseInterface::LAUNDRY_PHASE_RINSING,
+            LaundryCyclePhaseInterface::LAUNDRY_PHASE_SPINNING,
+            LaundryCyclePhaseInterface::LAUNDRY_PHASE_STEAM,
+            LaundryCyclePhaseInterface::LAUNDRY_PHASE_DRYING,
+            LaundryCyclePhaseInterface::LAUNDRY_PHASE_COOLING,
+            LaundryCyclePhaseInterface::LAUNDRY_PHASE_ANTICREASING,
+            0x80 };
+        uint8_t cyclePhase = LaundryCyclePhaseInterface::LAUNDRY_PHASE_PRE_WASHING;
+        m_intfControllee->SetSupportedCyclePhases(supportedCyclePhase);
+        m_intfControllee->SetCyclePhase(cyclePhase);
+    }
+}
+
+void LaundryCyclePhaseCommands::OnCmdGetCyclePhase(Commands* commands, std::string& cmd)
+{
+    cout << "LaundryCyclePhaseCommands::OnCmdGetCyclePhase" << endl;
+    LaundryCyclePhaseIntfControllee* intfControllee = static_cast<LaundryCyclePhaseCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+    cout << (int)intfControllee->GetCyclePhase() << endl;
+
+}
+void LaundryCyclePhaseCommands::OnCmdSetCyclePhase(Commands* commands, std::string& cmd)
+{
+    cout << "LaundryCyclePhaseCommands::OnCmdSetCyclePhase" << endl;
+    LaundryCyclePhaseIntfControllee* intfControllee = static_cast<LaundryCyclePhaseCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    uint8_t cyclePhase = strtol(cmd.c_str(), NULL, 10);
+    if(cyclePhase < (uint8_t)LaundryCyclePhaseInterface::LaundryCyclePhase::LAUNDRY_PHASE_UNAVAILABLE ||
+       cyclePhase > (uint8_t)LaundryCyclePhaseInterface::LaundryCyclePhase::LAUNDRY_PHASE_ANTICREASING)
+    {
+        cout << "input argument is wrong" << endl;
+        return;
+    }
+    intfControllee->SetCyclePhase(cyclePhase);
+
+}
+void LaundryCyclePhaseCommands::OnCmdGetSupportedCyclePhases(Commands* commands, std::string& cmd)
+{
+    cout << "LaundryCyclePhaseCommands::OnCmdGetSupportedCyclePhases" << endl;
+    LaundryCyclePhaseIntfControllee* intfControllee = static_cast<LaundryCyclePhaseCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    const LaundryCyclePhaseInterface::SupportedCyclePhases& supportedPhases = intfControllee->GetSupportedCyclePhases();
+
+    for(size_t i = 0; i < supportedPhases.size(); i++)
+        cout << (int)supportedPhases[i] << " ";
+    cout << endl;
 }

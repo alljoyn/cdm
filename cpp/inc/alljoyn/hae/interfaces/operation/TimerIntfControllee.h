@@ -77,7 +77,7 @@ class TimerIntfControllee : public TimerInterface {
      * @return ER_OK on success
      */
     virtual QStatus SetTargetTimeToStop(const int32_t time) = 0;
-    
+
     /**
      * Get EstimatedTimeToEnd
      * @return estimated time to the end

@@ -14,8 +14,8 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include <iostream>
 #include "ChannelListener.h"
+#include "ControlleeSample.h"
 
 using namespace std;
 
@@ -57,7 +57,7 @@ QStatus ChannelListener::OnGetChannelList(const uint16_t& startingRecord, const 
         return ER_FAIL;
     }
 
-    for (int i = startingRecord; i < TOTAL_NUM_OF_CHANNEL && i < numRecords; i++) {
+    for (int i = startingRecord; i < TOTAL_NUM_OF_CHANNEL && i < startingRecord+numRecords; i++) {
         ChannelInterface::ChannelInfoRecord chInfo;
         char buff[10];
         sprintf(buff, "%d", i);
@@ -67,4 +67,116 @@ QStatus ChannelListener::OnGetChannelList(const uint16_t& startingRecord, const 
         listOfChannelInfoRecords.push_back(chInfo);
     }
     return ER_OK;
+}
+////////////////////////////////////////////////////////////////////////////////
+
+ControlleeCommands* ChannelCommands::CreateCommands(ControlleeSample* sample, const char* objectPath)
+{
+    return new ChannelCommands(sample, objectPath);
+}
+
+ChannelCommands::ChannelCommands(ControlleeSample* sample, const char* objectPath)
+: InterfaceCommands(sample, objectPath)
+, m_intfControllee(NULL)
+{
+}
+
+ChannelCommands::~ChannelCommands()
+{
+}
+
+void ChannelCommands::Init()
+{
+    if (!m_intfControllee) {
+        HaeInterface* haeInterface = m_sample->CreateInterface(CHANNEL_INTERFACE, m_objectPath, m_listener);
+        if (!haeInterface) {
+            cout << "Interface creation failed." << endl;
+            return;
+        }
+
+        m_intfControllee = static_cast<ChannelIntfControllee*>(haeInterface);
+
+        RegisterCommand(&ChannelCommands::OnCmdGetChannelId, "gci", "get channel id");
+        RegisterCommand(&ChannelCommands::OnCmdSetChannelId, "sci", "set channel id (use 'sci <channel id>'");
+        RegisterCommand(&ChannelCommands::OnCmdGetTotalNumberOfChannels, "gtnc", "get total number of channels");
+        RegisterCommand(&ChannelCommands::OnCmdSetTotalNumberOfChannels, "stnc", "set total number of channels (use 'stnc <#>'");
+        RegisterCommand(&ChannelCommands::OnCmdEmitChannelListChanged, "eclc", "emit channel list changed");
+    } else {
+        PrintCommands();
+    }
+}
+
+void ChannelCommands::InitializeProperties()
+{
+    if (m_intfControllee) {
+        qcc::String channelId = CHANNELID_PREFIX;
+        channelId += "0";
+        m_intfControllee->SetChannelId(channelId);
+        m_intfControllee->SetTotalNumberOfChannels(TOTAL_NUM_OF_CHANNEL);
+    }
+}
+
+void ChannelCommands::OnCmdGetChannelId(Commands* commands, std::string& cmd)
+{
+    ChannelIntfControllee* intfControllee = static_cast<ChannelCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    cout << intfControllee->GetChannelId() << endl;
+}
+
+void ChannelCommands::OnCmdSetChannelId(Commands* commands, std::string& cmd)
+{
+    ChannelIntfControllee* intfControllee = static_cast<ChannelCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    intfControllee->SetChannelId(cmd.c_str());
+}
+
+void ChannelCommands::OnCmdGetTotalNumberOfChannels(Commands* commands, std::string& cmd)
+{
+    ChannelIntfControllee* intfControllee = static_cast<ChannelCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    cout << intfControllee->GetTotalNumberOfChannels() << endl;
+}
+
+void ChannelCommands::OnCmdSetTotalNumberOfChannels(Commands* commands, std::string& cmd)
+{
+    ChannelIntfControllee* intfControllee = static_cast<ChannelCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    int totalNumberOfChannels = strtol(cmd.c_str(), NULL, 10);
+    if (totalNumberOfChannels < 0 || totalNumberOfChannels >= 65536) {
+        cout << "Input argument is wrong." << endl;
+        return;
+    }
+    intfControllee->SetTotalNumberOfChannels((uint16_t)totalNumberOfChannels);
+}
+
+void ChannelCommands::OnCmdEmitChannelListChanged(Commands* commands, std::string& cmd)
+{
+    ChannelIntfControllee* intfControllee = static_cast<ChannelCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    intfControllee->EmitChannelListChanged();
 }

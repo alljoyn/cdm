@@ -154,40 +154,15 @@ class IntegratedControllee : public ControlleeSample
     void SetInitialProperty();
 };
 
-IntegratedControllee::IntegratedControllee(BusAttachment* bus, HaeAboutData* aboutData)
-  : ControlleeSample(bus, aboutData)
-  ,m_hidIntfControllee(NULL)
-  ,m_currentTemperatureIntfControllee(NULL)
-  ,m_targetTemperatureIntfControllee(NULL)
-  ,m_windDirectionIntfControllee(NULL)
-  ,m_airRecirculationModeIntfControllee(NULL)
-  ,m_audioVideoInputIntfControllee(NULL)
-  ,m_audioVolumeIntfControllee(NULL)
-  ,m_batteryStatusIntfControllee(NULL)
-  ,m_channelIntfControllee(NULL)
-  ,m_climateControlModeIntfControllee(NULL)
-  ,m_currentPowerIntfControllee(NULL)
-  ,m_energyUsageIntfControllee(NULL)
-  ,m_fanSpeedLevelIntfControllee(NULL)
-  ,m_offControlIntfControllee(NULL)
-  ,m_onControlIntfControllee(NULL)
-  ,m_onOffStatusIntfControllee(NULL)
-  ,m_repeatModeIntfControllee(NULL)
-  ,m_resourceSavingIntfControllee(NULL)
-  ,m_robotCleaningCyclePhaseIntfControllee(NULL)
-  ,m_closedStatusIntfControllee(NULL)
-  ,m_cycleControlIntfControllee(NULL)
-  ,m_dishWashingCyclePhaseIntfControllee(NULL)
-  ,m_heatingZoneIntfControllee(NULL)
-  ,m_laundryCyclePhaseIntfControllee(NULL)
-  ,m_ovenCyclePhaseIntfControllee(NULL)
-  ,m_rapidModeIntfControllee(NULL)
-  ,m_remoteControllabilityIntfControllee(NULL)
-  ,m_soilLevelIntfControllee(NULL)
-  ,m_spinSpeedLevelIntfControllee(NULL)
-  ,m_timerIntfControllee(NULL)
-  ,m_waterLevelIntfControllee(NULL)
-  ,m_alertsIntfControllee(NULL)
+IntegratedControllee::IntegratedControllee(BusAttachment* bus, HaeAboutData* aboutData) :
+    ControlleeSample(bus, aboutData), m_hidIntfControllee(NULL), m_currentTemperatureIntfControllee(NULL), m_targetTemperatureIntfControllee(NULL),
+    m_windDirectionIntfControllee(NULL), m_airRecirculationModeIntfControllee(NULL), m_audioVideoInputIntfControllee(NULL), m_audioVolumeIntfControllee(NULL),
+    m_batteryStatusIntfControllee(NULL), m_channelIntfControllee(NULL), m_climateControlModeIntfControllee(NULL), m_currentPowerIntfControllee(NULL),
+    m_energyUsageIntfControllee(NULL), m_fanSpeedLevelIntfControllee(NULL), m_offControlIntfControllee(NULL), m_onControlIntfControllee(NULL),
+    m_onOffStatusIntfControllee(NULL), m_repeatModeIntfControllee(NULL), m_resourceSavingIntfControllee(NULL), m_robotCleaningCyclePhaseIntfControllee(NULL),
+    m_closedStatusIntfControllee(NULL), m_cycleControlIntfControllee(NULL), m_dishWashingCyclePhaseIntfControllee(NULL), m_heatingZoneIntfControllee(NULL),
+    m_laundryCyclePhaseIntfControllee(NULL), m_ovenCyclePhaseIntfControllee(NULL), m_rapidModeIntfControllee(NULL), m_remoteControllabilityIntfControllee(NULL),
+    m_soilLevelIntfControllee(NULL), m_spinSpeedLevelIntfControllee(NULL), m_timerIntfControllee(NULL), m_waterLevelIntfControllee(NULL), m_alertsIntfControllee(NULL)
 {
 }
 
@@ -399,6 +374,10 @@ void IntegratedControllee::SetInitialProperty()
         m_climateControlModeIntfControllee->SetOperationalState(operationalState);
     }
 
+    if (m_closedStatusIntfControllee) {
+        m_closedStatusIntfControllee->SetIsClosed(true);
+    }
+
     if (m_currentPowerIntfControllee) {
         double currentPower = 20;
         double precision = 10;
@@ -454,10 +433,6 @@ void IntegratedControllee::SetInitialProperty()
         m_robotCleaningCyclePhaseIntfControllee->SetCyclePhase(cyclePhase);
     }
 
-    if (m_closedStatusIntfControllee) {
-        m_closedStatusIntfControllee->SetIsClosed(true);
-    }
-
     if (m_cycleControlIntfControllee) {
         CycleControlInterface::SupportedOperationalCommands comm;
         comm.push_back(CycleControlInterface::CycleControlOperationalCommand::OPERATIONAL_COMMAND_START);
@@ -500,7 +475,7 @@ void IntegratedControllee::SetInitialProperty()
         std::vector<uint8_t> maxHeatingLevels;
         std::vector<uint8_t> heatingLevels;
 
-        for (int i = 0 ; i < numberOfHeatingZones; i++) {
+        for (int i = 0; i < numberOfHeatingZones; i++) {
             maxHeatingLevels.push_back(maxLvl);
             heatingLevels.push_back(initialHeatingLevel);
         }
@@ -736,6 +711,7 @@ int main()
     IntegratedControllee controllee(bus, aboutData);
 
     controllee.Startup();
+
     controllee.Shutdown();
 
     if (bus) {

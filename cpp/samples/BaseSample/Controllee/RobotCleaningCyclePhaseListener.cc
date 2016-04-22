@@ -14,8 +14,8 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include <iostream>
 #include "RobotCleaningCyclePhaseListener.h"
+#include "ControlleeSample.h"
 
 using namespace std;
 
@@ -52,3 +52,93 @@ QStatus RobotCleaningCyclePhaseListener::OnGetVendorPhasesDescription(const qcc:
 
     return ER_OK;
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+ControlleeCommands* RobotCleaningCyclePhaseCommands::CreateCommands(ControlleeSample* sample, const char* objectPath)
+{
+    return new RobotCleaningCyclePhaseCommands(sample, objectPath);
+}
+
+RobotCleaningCyclePhaseCommands::RobotCleaningCyclePhaseCommands(ControlleeSample* sample, const char* objectPath)
+: InterfaceCommands(sample, objectPath)
+, m_intfControllee(NULL)
+{
+}
+
+RobotCleaningCyclePhaseCommands::~RobotCleaningCyclePhaseCommands()
+{
+}
+
+void RobotCleaningCyclePhaseCommands::Init()
+{
+    if (!m_intfControllee) {
+        HaeInterface* haeInterface = m_sample->CreateInterface(ROBOT_CLEANING_CYCLE_PHASE_INTERFACE, m_objectPath, m_listener);
+        if (!haeInterface) {
+            cout << "Interface creation failed." << endl;
+            return;
+        }
+
+        m_intfControllee = static_cast<RobotCleaningCyclePhaseIntfControllee*>(haeInterface);
+
+        RegisterCommand(&RobotCleaningCyclePhaseCommands::OnCmdGetCyclePhase, "gcp", "get cycle phase");
+        RegisterCommand(&RobotCleaningCyclePhaseCommands::OnCmdSetCyclePhase, "scp", "set cycle phase (use 'scp <phase>'");
+        RegisterCommand(&RobotCleaningCyclePhaseCommands::OnCmdGetSupportedCyclePhases, "gsc", "get supported cylce phases");
+    } else {
+        PrintCommands();
+    }
+}
+
+void RobotCleaningCyclePhaseCommands::InitializeProperties()
+{
+    if (m_intfControllee) {
+        RobotCleaningCyclePhaseInterface::SupportedCyclePhases supportedCyclePhase = {
+            RobotCleaningCyclePhaseInterface::ROBOT_CLEANING_CYCLE_PHASE_CLEANING,
+            RobotCleaningCyclePhaseInterface::ROBOT_CLEANING_CYCLE_PHASE_HOMING,
+            0x80 };
+        uint8_t cyclePhase = RobotCleaningCyclePhaseInterface::ROBOT_CLEANING_CYCLE_PHASE_CLEANING;
+        m_intfControllee->SetSupportedCyclePhases(supportedCyclePhase);
+        m_intfControllee->SetCyclePhase(cyclePhase);
+    }
+}
+
+void RobotCleaningCyclePhaseCommands::OnCmdGetCyclePhase(Commands* commands, std::string& cmd)
+{
+    RobotCleaningCyclePhaseIntfControllee* intfControllee = static_cast<RobotCleaningCyclePhaseCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    cout << (int)intfControllee->GetCyclePhase() << endl;
+}
+
+void RobotCleaningCyclePhaseCommands::OnCmdSetCyclePhase(Commands* commands, std::string& cmd)
+{
+    RobotCleaningCyclePhaseIntfControllee* intfControllee = static_cast<RobotCleaningCyclePhaseCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    int phase = strtol(cmd.c_str(), NULL, 10);
+    intfControllee->SetCyclePhase(phase);
+}
+
+void RobotCleaningCyclePhaseCommands::OnCmdGetSupportedCyclePhases(Commands* commands, std::string& cmd)
+{
+    RobotCleaningCyclePhaseIntfControllee* intfControllee = static_cast<RobotCleaningCyclePhaseCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    const RobotCleaningCyclePhaseInterface::SupportedCyclePhases& phases = intfControllee->GetSupportedCyclePhases();
+    for (RobotCleaningCyclePhaseInterface::SupportedCyclePhases::const_iterator citer = phases.begin();
+            citer != phases.end(); citer++) {
+        cout << (int)*citer << endl;
+    }
+}
+

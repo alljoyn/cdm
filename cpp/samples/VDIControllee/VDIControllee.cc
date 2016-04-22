@@ -114,7 +114,7 @@ QStatus FillAboutData(HaeAboutData* aboutData)
 {
     String const& defaultLanguage = "en";
     String device_id = "deviceID";
-    String app_id = "4a354637-5649-4518-8a48-323c158bc01a";
+    String app_id = "4a354637-5649-4518-8a48-323c158bc005";
     String app_name = "VDIControllee";
     map<String, String> deviceNames;
     deviceNames.insert(pair<String, String>("en", "TV"));

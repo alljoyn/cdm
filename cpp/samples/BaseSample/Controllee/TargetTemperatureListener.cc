@@ -14,8 +14,8 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include <iostream>
 #include "TargetTemperatureListener.h"
+#include "ControlleeSample.h"
 
 using namespace std;
 
@@ -47,4 +47,166 @@ QStatus TargetTemperatureListener::OnGetStepValue(double& value)
 {
     cout << "TargetTemperatureListener::OnGetStepValue() - StepValue : " << value << endl;
     return ER_OK;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+ControlleeCommands* TargetTemperatureCommands::CreateCommands(ControlleeSample* sample, const char* objectPath)
+{
+    return new TargetTemperatureCommands(sample, objectPath);
+}
+
+TargetTemperatureCommands::TargetTemperatureCommands(ControlleeSample* sample, const char* objectPath)
+: InterfaceCommands(sample, objectPath)
+, m_intfControllee(NULL)
+{
+}
+
+TargetTemperatureCommands::~TargetTemperatureCommands()
+{
+}
+
+void TargetTemperatureCommands::Init()
+{
+    if (!m_intfControllee) {
+        HaeInterface* haeInterface = m_sample->CreateInterface(TARGET_TEMPERATURE_INTERFACE, m_objectPath, m_listener);
+        if (!haeInterface) {
+            cout << "Interface creation failed." << endl;
+            return;
+        }
+
+        m_intfControllee = static_cast<TargetTemperatureIntfControllee*>(haeInterface);
+
+        RegisterCommand(&TargetTemperatureCommands::OnCmdGetTargetValue, "gtv", "get target value");
+        RegisterCommand(&TargetTemperatureCommands::OnCmdSetTargetValue, "stv", "set target value (use 'stv <value>'");
+        RegisterCommand(&TargetTemperatureCommands::OnCmdGetMinValue, "gmn", "get min value");
+        RegisterCommand(&TargetTemperatureCommands::OnCmdSetMinValue, "smn", "set min value (use 'smn <value>'");
+        RegisterCommand(&TargetTemperatureCommands::OnCmdGetMaxValue, "gmx", "get max value");
+        RegisterCommand(&TargetTemperatureCommands::OnCmdSetMaxValue, "smx", "set max value (use 'smx <value>'");
+        RegisterCommand(&TargetTemperatureCommands::OnCmdGetStepValue, "gsv", "get step value");
+        RegisterCommand(&TargetTemperatureCommands::OnCmdSetStepValue, "ssv", "set step value (use 'ssv <value>'");
+    } else {
+        PrintCommands();
+    }
+}
+
+void TargetTemperatureCommands::InitializeProperties()
+{
+    if (m_intfControllee) {
+        double maxvalue = 30;
+        double minvalue = -30;
+        double targetvalue = 0;
+        double stepvalue = 5;
+
+        m_intfControllee->SetMaxValue(maxvalue);
+        m_intfControllee->SetMinValue(minvalue);
+        m_intfControllee->SetTargetValue(targetvalue);
+        m_intfControllee->SetStepValue(stepvalue);
+        m_intfControllee->SetStrategyOfAdjustingTargetValue(TargetTemperatureIntfControllee::ROUNDING_TO_NEAREST_VALUE);
+    }
+}
+
+void TargetTemperatureCommands::OnCmdGetTargetValue(Commands* commands, std::string& cmd)
+{
+    TargetTemperatureIntfControllee* intfControllee = static_cast<TargetTemperatureCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    cout << intfControllee->GetTargetValue() << endl;
+}
+
+void TargetTemperatureCommands::OnCmdSetTargetValue(Commands* commands, std::string& cmd)
+{
+    TargetTemperatureIntfControllee* intfControllee = static_cast<TargetTemperatureCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    double minValue = intfControllee->GetMinValue();
+    double maxValue = intfControllee->GetMaxValue();
+    double value = stod(cmd.c_str());
+    if (value < minValue || value > maxValue) {
+        cout << "Input argument is wrong." << endl;
+        return;
+    }
+    intfControllee->SetTargetValue(value);
+}
+
+void TargetTemperatureCommands::OnCmdGetMinValue(Commands* commands, std::string& cmd)
+{
+    TargetTemperatureIntfControllee* intfControllee = static_cast<TargetTemperatureCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    cout << intfControllee->GetMinValue() << endl;
+}
+
+void TargetTemperatureCommands::OnCmdSetMinValue(Commands* commands, std::string& cmd)
+{
+    TargetTemperatureIntfControllee* intfControllee = static_cast<TargetTemperatureCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    double value = stod(cmd.c_str());
+    intfControllee->SetMinValue(value);
+}
+
+void TargetTemperatureCommands::OnCmdGetMaxValue(Commands* commands, std::string& cmd)
+{
+    TargetTemperatureIntfControllee* intfControllee = static_cast<TargetTemperatureCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    cout << intfControllee->GetMaxValue() << endl;
+}
+
+void TargetTemperatureCommands::OnCmdSetMaxValue(Commands* commands, std::string& cmd)
+{
+    TargetTemperatureIntfControllee* intfControllee = static_cast<TargetTemperatureCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    double value = stod(cmd.c_str());
+    intfControllee->SetMaxValue(value);
+}
+
+void TargetTemperatureCommands::OnCmdGetStepValue(Commands* commands, std::string& cmd)
+{
+    TargetTemperatureIntfControllee* intfControllee = static_cast<TargetTemperatureCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    cout << intfControllee->GetStepValue() << endl;
+}
+
+void TargetTemperatureCommands::OnCmdSetStepValue(Commands* commands, std::string& cmd)
+{
+    TargetTemperatureIntfControllee* intfControllee = static_cast<TargetTemperatureCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    double value = stod(cmd.c_str());
+    intfControllee->SetStepValue(value);
 }

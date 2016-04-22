@@ -17,6 +17,8 @@
 #ifndef AUDIOVOLUMELISTENER_H_
 #define AUDIOVOLUMELISTENER_H_
 
+#include "InterfaceCommands.h"
+#include <alljoyn/hae/interfaces/operation/AudioVolumeIntfControllee.h>
 #include <alljoyn/hae/interfaces/operation/AudioVolumeIntfControlleeListener.h>
 
 using namespace ajn;
@@ -30,6 +32,29 @@ class AudioVolumeListener : public AudioVolumeIntfControlleeListener
     virtual QStatus OnSetMute(const bool& mute);
     virtual QStatus OnGetMute(bool& mute);
     virtual QStatus OnGetMaxVolume(uint8_t& maxVolume);
+};
+
+class AudioVolumeCommands : public InterfaceCommands
+{
+  public:
+    static ControlleeCommands* CreateCommands(ControlleeSample* sample, const char* objectPath);
+
+    AudioVolumeCommands(ControlleeSample* sample, const char* objectPath);
+    virtual ~AudioVolumeCommands();
+
+    virtual void Init();
+
+    AudioVolumeIntfControllee* GetInterface() { return m_intfControllee; }
+    static void OnCmdGetVolume(Commands* commands, std::string& cmd);
+    static void OnCmdSetVolume(Commands* commands, std::string& cmd);
+    static void OnCmdGetMute(Commands* commands, std::string& cmd);
+    static void OnCmdSetMute(Commands* commands, std::string& cmd);
+    static void OnCmdGetMaxVolume(Commands* commands, std::string& cmd);
+    static void OnCmdSetMaxVolume(Commands* commands, std::string& cmd);
+
+  private:
+    AudioVolumeIntfControllee* m_intfControllee;
+    AudioVolumeListener m_listener;
 };
 
 #endif /* AUDIOVOLUMELISTENER_H_ */

@@ -8,6 +8,8 @@
 #ifndef REPEATMODELISTENER_H_
 #define REPEATMODELISTENER_H_
 
+#include "InterfaceCommands.h"
+#include <alljoyn/hae/interfaces/operation/RepeatModeIntfControllee.h>
 #include <alljoyn/hae/interfaces/operation/RepeatModeIntfControlleeListener.h>
 
 namespace ajn {
@@ -19,6 +21,27 @@ public:
     virtual QStatus OnSetRepeatMode(const bool repeatMode);
     virtual QStatus OnGetRepeatMode(bool& repeatMode);
 };
+////////////////////////////////////////////////////////////////////////////////
+
+class RepeatModeCommands : public InterfaceCommands
+{
+  public:
+    static ControlleeCommands* CreateCommands(ControlleeSample* sample, const char* objectPath);
+
+    RepeatModeCommands(ControlleeSample* sample, const char* objectPath);
+    virtual ~RepeatModeCommands();
+
+    virtual void Init();
+
+    RepeatModeIntfControllee* GetInterface() { return m_intfControllee; }
+    static void OnCmdGetRepeatMode(Commands* commands, std::string& cmd);
+    static void OnCmdSetRepeatMode(Commands* commands, std::string& cmd);
+
+  private:
+    RepeatModeIntfControllee* m_intfControllee;
+    RepeatModeListener m_listener;
+};
+
 
 } /* namespace services */
 } /* namespace ajn */

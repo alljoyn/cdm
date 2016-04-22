@@ -17,6 +17,8 @@
 #ifndef TIMERLISTENER_H_
 #define TIMERLISTENER_H_
 
+#include "InterfaceCommands.h"
+#include <alljoyn/hae/interfaces/operation/TimerIntfControllee.h>
 #include <alljoyn/hae/interfaces/operation/TimerIntfControlleeListener.h>
 
 using namespace ajn;
@@ -42,5 +44,38 @@ class TimerListener : public TimerIntfControlleeListener
         virtual QStatus OnSetTargetTimeToStop(int32_t time, ErrorCode& errorCode) ;
 
 };
+
+class TimerCommands : public InterfaceCommands
+{
+  public:
+    static ControlleeCommands* CreateCommands(ControlleeSample* sample, const char* objectPath);
+
+    TimerCommands(ControlleeSample* sample, const char* objectPath);
+    virtual ~TimerCommands();
+
+    virtual void Init();
+    virtual void InitializeProperties();
+
+    TimerIntfControllee* GetInterface() { return m_intfControllee; }
+    static void OnCmdGetReferenceTimer(Commands* commands, std::string& cmd);
+    static void OnCmdSetReferenceTimer(Commands* commands, std::string& cmd);
+
+    static void OnCmdGetTargetTimeToStart(Commands* commands, std::string& cmd);
+    static void OnCmdSetTargetTimeToStart(Commands* commands, std::string& cmd);
+
+    static void OnCmdGetTargetTimeToStop(Commands* commands, std::string& cmd);
+    static void OnCmdSetTargetTimeToStop(Commands* commands, std::string& cmd);
+
+    static void OnCmdGetEstimatedTimeToEnd(Commands* commands, std::string& cmd);
+
+    static void OnCmdGetRunningTime(Commands* commands, std::string& cmd);
+
+    static void OnCmdGetTargetDuration(Commands* commands, std::string& cmd);
+
+  private:
+    TimerIntfControllee* m_intfControllee;
+    TimerListener m_listener;
+};
+
 
 #endif /* WATERLEVELLISTENER_H_ */

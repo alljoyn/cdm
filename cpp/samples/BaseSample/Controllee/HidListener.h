@@ -17,6 +17,8 @@
 #ifndef HIDLISTENER_H_
 #define HIDLISTENER_H_
 
+#include "InterfaceCommands.h"
+#include <alljoyn/hae/interfaces/input/HidIntfControllee.h>
 #include <alljoyn/hae/interfaces/input/HidIntfControlleeListener.h>
 
 using namespace ajn;
@@ -27,6 +29,25 @@ class HidListener : public HidIntfControlleeListener
   public:
     virtual QStatus OnGetSupportedEvents(HidInterface::SupportedInputEvents& supportedEvents);
     virtual void OnInjectEvents(HidInterface::InputEvents& inputEvents);
+};
+
+////////////////////////////////////////////////////////////////////////////////////////////
+class HidCommands : public InterfaceCommands
+{
+  public:
+    static ControlleeCommands* CreateCommands(ControlleeSample* sample, const char* objectPath);
+
+    HidCommands(ControlleeSample* sample, const char* objectPath);
+    virtual ~HidCommands();
+
+    virtual void Init();
+    virtual void InitializeProperties();
+    HidIntfControllee* GetInterface() { return m_intfControllee; }
+    static void OnCmdGetSupportedEvents(Commands* commands, std::string& cmd);
+
+  private:
+    HidIntfControllee* m_intfControllee;
+    HidListener m_listener;
 };
 
 #endif /* HIDLISTENER_H_ */

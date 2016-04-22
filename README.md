@@ -9,6 +9,7 @@ HAE Service Framework provides easy methods to implement HAE controllee and cont
 Folder Structure
 ----------------
 <pre>
+cpp
 +---code_template
 |   +---interface_template
 |   +---vendor_defined_interface_template
@@ -29,8 +30,10 @@ Folder Structure
 |   |   +---Controller
 |   |   \---VendorDefinedInterfaces
 |   +---IntegratedController
+|   +---IntegratedControllee
 |   +---TvControllee
-|   \---VDIControllee
+|   +---VDIControllee
+|   \---DeviceEmulator
 \---src
 |   \---interfaces
 |       +---environment
@@ -125,7 +128,7 @@ How to add new interface
   1. Generate the skeleton codes using make_interface.py script.
   2. Fill the codes for properties, methods and signals in all files generated.
 
-    * create skeleton codes for new interface
+  * Create skeleton codes for new interface
 <pre>
 cd root-source-dir/services/hae/cpp/code_template
 python make_interface.py -n InterfaceName -c CategoryName
@@ -144,7 +147,7 @@ Created: ../src/interfaces/environment/TargetTemperatureIntfControllerImpl.h
 Created: ../src/interfaces/environment/TargetTemperatureIntfControllerImpl.cc
 </pre>
 
-    * delete files related new interface
+  * Delete files related new interface
 <pre>
 cd root-source-dir/services/hae/cpp/code_template
 python make_interface.py -n InterfaceName -c Category -d
@@ -156,7 +159,7 @@ How to add vendor defined interface
   2. Copy all files to your application folder
   3. Fill the codes for properties, methods and signals in all files generated.
 
-    * create skeleton codes for vendor defined interface
+  * Create skeleton codes for vendor defined interface
 <pre>
 cd root-source-dir/services/hae/cpp/code_template
 python make_interface.py -n InterfaceName -v
@@ -175,9 +178,97 @@ Created: ./vendor_defined/TestIntfControllerImpl.h
 Created: ./vendor_defined/TestIntfControllerImpl.cc
 </pre>
 
-    * delete files related vendor defined interface
+  * Delete files related vendor defined interface
 <pre>
 cd root-source-dir/services/hae/cpp/code_template
 python make_interface.py -n InterfaceName -v -d
 </pre>
+
+Device Emulator
+---------------
+Device emulator is an emulator for the HAE Service Framework based devices.
+You can launch the virtual device using the configuration XML file.
+
+  * Run emulator
+<pre>
+cd <root-source-dir>/services/hae/build/{OS}/{CPU}/{VARIANT}/dist/hae/bin
+./DeviceEmulator config.xml
+</pre>
+
+ * Sample config.xml for air conditioner
+<pre>
+&ltDeviceEmulator&gt
+    &ltAboutData&gt
+        &ltAppId&gt000102030405060708090A0B0C0D0E0C&lt/AppId&gt
+        &ltDefaultLanguage&gten&lt/DefaultLanguage&gt
+        &ltDeviceName&gtMy Device Name&lt/DeviceName&gt
+        &ltDeviceName lang = 'es'&gtNombre de mi dispositivo&lt/DeviceName&gt
+        &ltDeviceId&gtbaddeviceid&lt/DeviceId&gt
+        &ltAppName&gtMy Application Name&lt/AppName&gt
+        &ltAppName lang = 'es'&gtMi Nombre de la aplicación&lt/AppName&gt
+        &ltManufacturer&gtCompany&lt/Manufacturer&gt
+        &ltManufacturer lang = 'es'&gtEmpresa&lt/Manufacturer&gt
+        &ltModelNumber&gtWxfy388i&lt/ModelNumber&gt
+        &ltDescription&gtA detailed description provided by the application.&lt/Description&gt
+        &ltDescription lang = 'es'&gtUna descripción detallada proporcionada por la aplicación.&lt/Description&gt
+        &ltDateOfManufacture&gt2014-01-08&lt/DateOfManufacture&gt
+        &ltSoftwareVersion&gt1.0.0&lt/SoftwareVersion&gt
+        &ltHardwareVersion&gt1.0.0&lt/HardwareVersion&gt
+        &ltSupportUrl&gtwww.example.com&lt/SupportUrl&gt
+        &ltUserDefinedTag&gtCan only accept strings anything other than strings must be done using the AboutData Class SetField method&lt/UserDefinedTag&gt
+        &ltUserDefinedTag lang='es'&gtSólo se puede aceptar cadenas distintas de cadenas nada debe hacerse utilizando el método AboutData Clase SetField&lt/UserDefinedTag&gt
+        &ltCountryOfProduction&gtRoom1&lt/CountryOfProduction&gt
+        &ltLocation&gtRoom1&lt/Location&gt
+        &ltProductBrand&gtRoom1&lt/ProductBrand&gt
+        &ltLocation&gtupstairs bedroom&lt/Location&gt
+        &ltLocation lang='es'&gthabitación del segundo piso&lt/Location&gt
+        &ltDeviceTypeDescription&gt
+            &ltTypeDescription&gt
+                &ltdevice_type&gt5&lt/device_type&gt
+                &ltobject_path&gt/Hae/AirConditioner&lt/object_path&gt
+            &lt/TypeDescription&gt
+        &lt/DeviceTypeDescription&gt
+    &lt/AboutData&gt
+    &ltInterfaceList&gt
+        &ltObject path='/Hae/AirConditioner'&gt
+            &ltInterface name='org.alljoyn.SmartSpaces.Environment.TargetTemperature'/&gt
+            &ltInterface name='org.alljoyn.SmartSpaces.Environment.CurrentTemperature'/&gt
+            &ltInterface name='org.alljoyn.SmartSpaces.Environment.WindDirection'/&gt
+            &ltInterface name='org.alljoyn.SmartSpaces.Operation.OnControl'/&gt
+            &ltInterface name='org.alljoyn.SmartSpaces.Operation.OffControl'/&gt
+            &ltInterface name='org.alljoyn.SmartSpaces.Operation.OnOffStatus'/&gt
+            &ltInterface name='org.alljoyn.SmartSpaces.Operation.FanSpeedLevel'/&gt
+            &ltInterface name='org.alljoyn.SmartSpaces.Operation.ClimateControlMode'/&gt
+        &lt/Object&gt
+    &lt/InterfaceList&gt
+&lt/DeviceEmulator&gt
+</pre>
+
+Android Controller
+==================
+
+Folder Structure
+----------------
+<pre>
+java
+   \---HaeController
+       +---app
+       |   +---libs
+       |   \---src
+       \---gradle
+</pre>
+
+ * java/HaeController/app/libs: alljoyn.jar, alljoyn_about.jar, liballjoyn_java.so
+ * java/HaeController/app/src: source files
+ * java/HaeController/gradle: build script for Android Studio
+
+Building
+--------
+ * Open project folder(/java/HaeController/) in the Android Studio
+ * If you are using the Android Studio 2.0, you should change your config of the Android Studio. (http://tools.android.com/tech-docs/instant-run)
+   1. Open the Settings or Preferences dialog.
+   2. Navigate to Build, Execution, Deployment > Instant Run.
+   3. Uncheck the box next to Restart activity on code changes.
+   4. Uncheck the box next to Enable Instant Run to ~~~
+   5. Run > Clean and Rerun 'app'
 

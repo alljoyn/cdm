@@ -44,7 +44,7 @@ void AlertsListener::OnAlertsPropertyChanged(const qcc::String& objectPath, cons
         cout << "severity: " << (int)alerts[i].severity << " - alertCode: " << alerts[i].alertCode << " - needAcknowledgement: " << (alerts[i].needAcknowledgement ? "true" : "false") << endl;
 }
 void AlertsListener::OnResponseGetAlertCodesDescription(QStatus status, const qcc::String& objectPath, const AlertsInterface::AlertCodesDescription& descriptions, void* context, const char* errorName, const char* errorMessage)
-{    
+{
     cout << __func__ << endl;
     cout << "# status: " << QCC_StatusText(status) << endl;
     cout << "# path: " << objectPath << endl;

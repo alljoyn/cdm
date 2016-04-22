@@ -17,7 +17,10 @@
 #ifndef LAUNDRYCYCLEPHASELISTENER_H_
 #define LAUNDRYCYCLEPHASELISTENER_H_
 
+#include "InterfaceCommands.h"
+#include <alljoyn/hae/interfaces/operation/LaundryCyclePhaseIntfControllee.h>
 #include <alljoyn/hae/interfaces/operation/LaundryCyclePhaseIntfControlleeListener.h>
+
 using namespace ajn;
 using namespace services;
 
@@ -33,6 +36,29 @@ public:
                                                      LaundryCyclePhaseInterface::CyclePhaseDescriptions& listOfPhasesDescs,
                                                      ErrorCode& errorCode);
 
+};
+
+class LaundryCyclePhaseCommands : public InterfaceCommands
+{
+  public:
+    static ControlleeCommands* CreateCommands(ControlleeSample* sample, const char* objectPath);
+
+    LaundryCyclePhaseCommands(ControlleeSample* sample, const char* objectPath);
+    virtual ~LaundryCyclePhaseCommands();
+
+    virtual void Init();
+    virtual void InitializeProperties();
+
+    LaundryCyclePhaseIntfControllee* GetInterface() { return m_intfControllee; }
+    static void OnCmdGetCyclePhase(Commands* commands, std::string& cmd);
+    static void OnCmdSetCyclePhase(Commands* commands, std::string& cmd);
+
+    static void OnCmdGetSupportedCyclePhases(Commands* commands, std::string& cmd);
+//    static void OnCmdSetSupportedCyclePhases(Commands* commands, std::string& cmd);
+
+  private:
+    LaundryCyclePhaseIntfControllee* m_intfControllee;
+    LaundryCyclePhaseListener m_listener;
 };
 
 #endif /* LAUNDRYCYCLEPHASELISTENER_H_ */

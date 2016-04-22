@@ -17,6 +17,8 @@
 #ifndef CHANNELLISTENER_H_
 #define CHANNELLISTENER_H_
 
+#include "InterfaceCommands.h"
+#include <alljoyn/hae/interfaces/operation/ChannelIntfControllee.h>
 #include <alljoyn/hae/interfaces/operation/ChannelIntfControlleeListener.h>
 
 using namespace ajn;
@@ -34,6 +36,29 @@ class ChannelListener : public ChannelIntfControlleeListener
     virtual QStatus OnGetChannelList(const uint16_t& startingRecord, const uint16_t& numRecords,
                                      ChannelInterface::ChannelInfoRecords& listOfChannelInfoRecords,
                                      ErrorCode& errorCode);
+};
+
+class ChannelCommands : public InterfaceCommands
+{
+  public:
+    static ControlleeCommands* CreateCommands(ControlleeSample* sample, const char* objectPath);
+
+    ChannelCommands(ControlleeSample* sample, const char* objectPath);
+    virtual ~ChannelCommands();
+
+    virtual void Init();
+    virtual void InitializeProperties();
+
+    ChannelIntfControllee* GetInterface() { return m_intfControllee; }
+    static void OnCmdGetChannelId(Commands* commands, std::string& cmd);
+    static void OnCmdSetChannelId(Commands* commands, std::string& cmd);
+    static void OnCmdGetTotalNumberOfChannels(Commands* commands, std::string& cmd);
+    static void OnCmdSetTotalNumberOfChannels(Commands* commands, std::string& cmd);
+    static void OnCmdEmitChannelListChanged(Commands* commands, std::string& cmd);
+
+  private:
+    ChannelIntfControllee* m_intfControllee;
+    ChannelListener m_listener;
 };
 
 #endif /* CHANNELLISTENER_H_ */

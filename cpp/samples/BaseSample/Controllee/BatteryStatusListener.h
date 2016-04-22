@@ -17,6 +17,8 @@
 #ifndef BATTERYSTATUSLISTENER_H_
 #define BATTERYSTATUSLISTENER_H_
 
+#include "InterfaceCommands.h"
+#include <alljoyn/hae/interfaces/operation/BatteryStatusIntfControllee.h>
 #include <alljoyn/hae/interfaces/operation/BatteryStatusIntfControlleeListener.h>
 
 using namespace ajn;
@@ -28,6 +30,27 @@ class BatteryStatusListener : public BatteryStatusIntfControlleeListener
     virtual QStatus OnGetCurrentValue(uint8_t& currentValue);
     virtual QStatus OnGetIsCharging(bool& isCharging);
 
+};
+
+class BatteryStatusCommands : public InterfaceCommands
+{
+  public:
+    static ControlleeCommands* CreateCommands(ControlleeSample* sample, const char* objectPath);
+
+    BatteryStatusCommands(ControlleeSample* sample, const char* objectPath);
+    virtual ~BatteryStatusCommands();
+
+    virtual void Init();
+
+    BatteryStatusIntfControllee* GetInterface() { return m_intfControllee; }
+    static void OnCmdGetCurrentValue(Commands* commands, std::string& cmd);
+    static void OnCmdSetCurrentValue(Commands* commands, std::string& cmd);
+    static void OnCmdGetIsCharging(Commands* commands, std::string& cmd);
+    static void OnCmdSetIsCharging(Commands* commands, std::string& cmd);
+
+  private:
+    BatteryStatusIntfControllee* m_intfControllee;
+    BatteryStatusListener m_listener;
 };
 
 #endif /* BATTERYSTATUSLISTENER_H_ */

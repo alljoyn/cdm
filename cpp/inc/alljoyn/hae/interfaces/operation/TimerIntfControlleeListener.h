@@ -23,7 +23,6 @@
 #include <alljoyn/hae/interfaces/InterfaceControlleeListener.h>
 #include <alljoyn/hae/interfaces/operation/TimerInterface.h>
 
-
 namespace ajn {
 namespace services {
 

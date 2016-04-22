@@ -17,6 +17,8 @@
 #ifndef RAPIDMODELISTENER_H_
 #define RAPIDMODELISTENER_H_
 
+#include "InterfaceCommands.h"
+#include <alljoyn/hae/interfaces/operation/RapidModeIntfControllee.h>
 #include <alljoyn/hae/interfaces/operation/RapidModeIntfControlleeListener.h>
 
 using namespace ajn;
@@ -31,4 +33,23 @@ class RapidModeListener : public RapidModeIntfControlleeListener
     virtual QStatus OnGetRapidMode(bool& rapidMode);
 };
 
+class RapidModeCommands : public InterfaceCommands
+{
+  public:
+    static ControlleeCommands* CreateCommands(ControlleeSample* sample, const char* objectPath);
+
+    RapidModeCommands(ControlleeSample* sample, const char* objectPath);
+    virtual ~RapidModeCommands();
+
+    virtual void Init();
+
+    RapidModeIntfControllee* GetInterface() { return m_intfControllee; }
+    static void OnCmdGetRapidMode(Commands* commands, std::string& cmd);
+    static void OnCmdSetRapidMode(Commands* commands, std::string& cmd);
+
+  private:
+    RapidModeIntfControllee* m_intfControllee;
+    RapidModeListener m_listener;
+
+};
 #endif /* RAPIDMODELISTENER_H_ */

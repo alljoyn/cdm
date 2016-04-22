@@ -150,6 +150,9 @@ class ECDHEKeyXListener : public AuthListener {
     }
 };
 
+static ECDHEKeyXListener s_authListener;
+
+/////////////////////////////////////////////////////////////////////////////////////////
 ControllerSample::ControllerSample(BusAttachment* bus)
   : m_bus(bus), m_controller(NULL), m_rootCommands(NULL)
 {
@@ -199,7 +202,7 @@ QStatus ControllerSample::Init()
      * isShared parameter is being set to true. So this keystore file can
      * be used by multiple applications.
      */
-    status = m_controller->EnablePeerSecurity(ECDHE_KEYX, new ECDHEKeyXListener(), "/.alljoyn_keystore/c_ecdhe.ks", true);
+    status = m_controller->EnablePeerSecurity(ECDHE_KEYX, &s_authListener, "/.alljoyn_keystore/c_ecdhe.ks", true);
 
     if (ER_OK == status) {
         printf("EnablePeerSecurity successful.\n");

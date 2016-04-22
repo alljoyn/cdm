@@ -14,8 +14,8 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include <iostream>
 #include "FanSpeedLevelListener.h"
+#include "ControlleeSample.h"
 
 using namespace std;
 
@@ -48,4 +48,129 @@ QStatus FanSpeedLevelListener::OnGetAutoMode(uint8_t& value)
     cout << "FanSpeedLevelListener::OnGetAutoMode() - AutoMode : " << (int)value << endl;
     return ER_OK;
 }
+////////////////////////////////////////////////////////////////////////////////
 
+ControlleeCommands* FanSpeedLevelCommands::CreateCommands(ControlleeSample* sample, const char* objectPath)
+{
+    return new FanSpeedLevelCommands(sample, objectPath);
+}
+
+FanSpeedLevelCommands::FanSpeedLevelCommands(ControlleeSample* sample, const char* objectPath)
+: InterfaceCommands(sample, objectPath)
+, m_intfControllee(NULL)
+{
+}
+
+FanSpeedLevelCommands::~FanSpeedLevelCommands()
+{
+}
+
+void FanSpeedLevelCommands::Init()
+{
+    if (!m_intfControllee) {
+        HaeInterface* haeInterface = m_sample->CreateInterface(FAN_SPEED_LEVEL_INTERFACE, m_objectPath, m_listener);
+        if (!haeInterface) {
+            cout << "Interface creation failed." << endl;
+            return;
+        }
+
+        m_intfControllee = static_cast<FanSpeedLevelIntfControllee*>(haeInterface);
+
+        RegisterCommand(&FanSpeedLevelCommands::OnCmdGetFanSpeedLevel, "gfsl", "get fan speed level");
+        RegisterCommand(&FanSpeedLevelCommands::OnCmdSetFanSpeedLevel, "sfsl", "set fan speed level (use 'sfsl <fan spped level>'");
+        RegisterCommand(&FanSpeedLevelCommands::OnCmdGetMaxFanSpeedLevel, "gmfsl", "get max fan speed level");
+        RegisterCommand(&FanSpeedLevelCommands::OnCmdSetMaxFanSpeedLevel, "smfsl", "set max fan speed level (use 'smfsl <max fan speed level>'");
+        RegisterCommand(&FanSpeedLevelCommands::OnCmdGetAutoMode, "fslgam", "get auto mode");
+        RegisterCommand(&FanSpeedLevelCommands::OnCmdSetAutoMode, "fslsam", "set auto mode (use 'fslsam <0/1>'");
+    } else {
+        PrintCommands();
+    }
+}
+
+void FanSpeedLevelCommands::OnCmdGetFanSpeedLevel(Commands* commands, std::string& cmd)
+{
+    FanSpeedLevelIntfControllee* intfControllee = static_cast<FanSpeedLevelCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    cout << (int)intfControllee->GetFanSpeedLevel() << endl;
+}
+
+void FanSpeedLevelCommands::OnCmdSetFanSpeedLevel(Commands* commands, std::string& cmd)
+{
+    FanSpeedLevelIntfControllee* intfControllee = static_cast<FanSpeedLevelCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    int fanSpeedLevel = strtol(cmd.c_str(), NULL, 10);
+    if (fanSpeedLevel < 0 || fanSpeedLevel >= 256) {
+        cout << "Input argument is wrong." << endl;
+        return;
+    }
+    intfControllee->SetFanSpeedLevel((uint8_t)fanSpeedLevel);
+}
+
+void FanSpeedLevelCommands::OnCmdGetMaxFanSpeedLevel(Commands* commands, std::string& cmd)
+{
+    FanSpeedLevelIntfControllee* intfControllee = static_cast<FanSpeedLevelCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    cout << (int)intfControllee->GetMaxFanSpeedLevel() << endl;
+}
+
+void FanSpeedLevelCommands::OnCmdSetMaxFanSpeedLevel(Commands* commands, std::string& cmd)
+{
+    FanSpeedLevelIntfControllee* intfControllee = static_cast<FanSpeedLevelCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    int maxFanSpeedLevel = strtol(cmd.c_str(), NULL, 10);
+    if (maxFanSpeedLevel < 0 || maxFanSpeedLevel >= 256) {
+        cout << "Input argument is wrong." << endl;
+        return;
+    }
+    intfControllee->SetMaxFanSpeedLevel((uint8_t)maxFanSpeedLevel);
+}
+
+void FanSpeedLevelCommands::OnCmdGetAutoMode(Commands* commands, std::string& cmd)
+{
+    FanSpeedLevelIntfControllee* intfControllee = static_cast<FanSpeedLevelCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    cout << (int)intfControllee->GetAutoMode() << endl;
+}
+
+void FanSpeedLevelCommands::OnCmdSetAutoMode(Commands* commands, std::string& cmd)
+{
+    FanSpeedLevelIntfControllee* intfControllee = static_cast<FanSpeedLevelCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    int autoMode = strtol(cmd.c_str(), NULL, 10);
+    if (autoMode == 0x00 || autoMode == 0x01 || autoMode == 0xFF) {
+        intfControllee->SetAutoMode((uint8_t)autoMode);
+    } else {
+        cout << "Input argument is wrong." << endl;
+        return;
+    }
+}

@@ -17,6 +17,8 @@
 #ifndef SOILLEVELLISTENER_H_
 #define SOILLEVELLISTENER_H_
 
+#include "InterfaceCommands.h"
+#include <alljoyn/hae/interfaces/operation/SoilLevelIntfControllee.h>
 #include <alljoyn/hae/interfaces/operation/SoilLevelIntfControlleeListener.h>
 
 using namespace ajn;
@@ -37,5 +39,34 @@ class SoilLevelListener : public SoilLevelIntfControlleeListener
 
     virtual QStatus OnSetSelectableLevels(const std::vector<uint8_t>& selectableLevels);
 };
+
+class SoilLevelCommands : public InterfaceCommands
+{
+  public:
+    static ControlleeCommands* CreateCommands(ControlleeSample* sample, const char* objectPath);
+
+    SoilLevelCommands(ControlleeSample* sample, const char* objectPath);
+    virtual ~SoilLevelCommands();
+
+    virtual void Init();
+    virtual void InitializeProperties();
+
+    SoilLevelIntfControllee* GetInterface() { return m_intfControllee; }
+    static void OnCmdGetMaxLevel(Commands* commands, std::string& cmd);
+    static void OnCmdSetMaxLevel(Commands* commands, std::string& cmd);
+
+    static void OnCmdGetTargetLevel(Commands* commands, std::string& cmd);
+    static void OnCmdSetTargetLevel(Commands* commands, std::string& cmd);
+
+    static void OnCmdGetSelectableLevels(Commands* commands, std::string& cmd);
+//    static void OnCmdSetSupportedCyclePhases(Commands* commands, std::string& cmd);
+
+  private:
+    SoilLevelIntfControllee* m_intfControllee;
+    SoilLevelListener m_listener;
+};
+
+
+
 
 #endif /* SOILLEVELLISTENER_H_ */

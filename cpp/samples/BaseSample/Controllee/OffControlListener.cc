@@ -13,9 +13,8 @@
  *    ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-
-#include <iostream>
 #include "OffControlListener.h"
+#include "ControlleeSample.h"
 
 using namespace std;
 
@@ -23,4 +22,33 @@ QStatus OffControlListener::OnSwitchOff(ErrorCode& errorCode)
 {
     cout << "OffControlListener::OnSwitchOff() - ErrorCode : " << errorCode << endl;
     return ER_OK;
+}
+///////////////////////////////////////////////////////////////////////////////////
+
+ControlleeCommands* OffControlCommands::CreateCommands(ControlleeSample* sample, const char* objectPath)
+{
+    return new OffControlCommands(sample, objectPath);
+}
+
+OffControlCommands::OffControlCommands(ControlleeSample* sample, const char* objectPath)
+: InterfaceCommands(sample, objectPath)
+, m_intfControllee(NULL)
+{
+}
+
+OffControlCommands::~OffControlCommands()
+{
+}
+
+void OffControlCommands::Init()
+{
+    if (!m_intfControllee) {
+        HaeInterface* haeInterface = m_sample->CreateInterface(OFF_CONTROL_INTERFACE, m_objectPath, m_listener);
+        if (!haeInterface) {
+            cout << "Interface creation failed." << endl;
+            return;
+        }
+    } else {
+        PrintCommands();
+    }
 }

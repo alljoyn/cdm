@@ -36,7 +36,10 @@ HaeInterface* EnergyUsageIntfControlleeImpl::CreateInterface(BusAttachment& busA
 EnergyUsageIntfControlleeImpl::EnergyUsageIntfControlleeImpl(BusAttachment& busAttachment, EnergyUsageIntfControlleeListener& listener, HaeBusObject& haeBusObject) :
     InterfaceControllee(haeBusObject),
     m_busAttachment(busAttachment),
-    m_interfaceListener(listener)
+    m_interfaceListener(listener),
+    m_cumulativeEnergy(0.0),
+    m_precision(0.0),
+    m_updateMinTime(0)
 {
 }
 

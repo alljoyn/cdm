@@ -14,8 +14,8 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include <iostream>
 #include "BatteryStatusListener.h"
+#include "ControlleeSample.h"
 
 using namespace std;
 
@@ -29,4 +29,99 @@ QStatus BatteryStatusListener::OnGetIsCharging(bool& isCharging)
 {
     cout << "BatteryStatusListener::OnGetIsCharging() - isCharging : " << isCharging << endl;
     return ER_OK;
+}
+////////////////////////////////////////////////////////////////////////////////
+
+ControlleeCommands* BatteryStatusCommands::CreateCommands(ControlleeSample* sample, const char* objectPath)
+{
+    return new BatteryStatusCommands(sample, objectPath);
+}
+
+BatteryStatusCommands::BatteryStatusCommands(ControlleeSample* sample, const char* objectPath)
+: InterfaceCommands(sample, objectPath)
+, m_intfControllee(NULL)
+{
+}
+
+BatteryStatusCommands::~BatteryStatusCommands()
+{
+}
+
+void BatteryStatusCommands::Init()
+{
+    if (!m_intfControllee) {
+        HaeInterface* haeInterface = m_sample->CreateInterface(BATTERY_STATUS_INTERFACE, m_objectPath, m_listener);
+        if (!haeInterface) {
+            cout << "Interface creation failed." << endl;
+            return;
+        }
+
+        m_intfControllee = static_cast<BatteryStatusIntfControllee*>(haeInterface);
+
+        RegisterCommand(&BatteryStatusCommands::OnCmdGetCurrentValue, "bsgcv", "get current value");
+        RegisterCommand(&BatteryStatusCommands::OnCmdSetCurrentValue, "bsscv", "set current value (use 'bsscv <value>'");
+        RegisterCommand(&BatteryStatusCommands::OnCmdGetIsCharging, "bsgic", "get is charging");
+        RegisterCommand(&BatteryStatusCommands::OnCmdSetIsCharging, "bssic", "set is charging (use 'bssic <0/1>'");
+    } else {
+        PrintCommands();
+    }
+}
+
+void BatteryStatusCommands::OnCmdGetCurrentValue(Commands* commands, std::string& cmd)
+{
+    BatteryStatusIntfControllee* intfControllee = static_cast<BatteryStatusCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    cout << (int)intfControllee->GetCurrentValue() << endl;
+}
+
+void BatteryStatusCommands::OnCmdSetCurrentValue(Commands* commands, std::string& cmd)
+{
+    BatteryStatusIntfControllee* intfControllee = static_cast<BatteryStatusCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    int currentValue = strtol(cmd.c_str(), NULL, 10);
+    if (currentValue < 0 || currentValue > 100) {
+        cout << "Input argument is wrong." << endl;
+        return;
+    }
+    intfControllee->SetCurrentValue((uint8_t)currentValue);
+}
+
+void BatteryStatusCommands::OnCmdGetIsCharging(Commands* commands, std::string& cmd)
+{
+    BatteryStatusIntfControllee* intfControllee = static_cast<BatteryStatusCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    cout << intfControllee->GetIsCharging() << endl;
+}
+
+void BatteryStatusCommands::OnCmdSetIsCharging(Commands* commands, std::string& cmd)
+{
+    BatteryStatusIntfControllee* intfControllee = static_cast<BatteryStatusCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    int isCharging = strtol(cmd.c_str(), NULL, 10);
+    if (isCharging == 0 || isCharging == 1) {
+        intfControllee->SetIsCharging(isCharging);
+    } else {
+        cout << "Input argument is wrong." << endl;
+        return;
+    }
 }

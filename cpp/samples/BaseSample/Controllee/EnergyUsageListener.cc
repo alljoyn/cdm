@@ -14,8 +14,8 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include <iostream>
 #include "EnergyUsageListener.h"
+#include "ControlleeSample.h"
 
 using namespace std;
 
@@ -41,4 +41,121 @@ QStatus EnergyUsageListener::OnResetCumulativeEnergy(ErrorCode& errorCode)
 {
     cout << "EnergyUsageListener::OnResetCumulativeEnergy()" << endl;
     return ER_OK;
+}
+////////////////////////////////////////////////////////////////////////////////
+
+ControlleeCommands* EnergyUsageCommands::CreateCommands(ControlleeSample* sample, const char* objectPath)
+{
+    return new EnergyUsageCommands(sample, objectPath);
+}
+
+EnergyUsageCommands::EnergyUsageCommands(ControlleeSample* sample, const char* objectPath)
+: InterfaceCommands(sample, objectPath)
+, m_intfControllee(NULL)
+{
+}
+
+EnergyUsageCommands::~EnergyUsageCommands()
+{
+}
+
+void EnergyUsageCommands::Init()
+{
+    if (!m_intfControllee) {
+        HaeInterface* haeInterface = m_sample->CreateInterface(ENERGY_USAGE_INTERFACE, m_objectPath, m_listener);
+        if (!haeInterface) {
+            cout << "Interface creation failed." << endl;
+            return;
+        }
+
+        m_intfControllee = static_cast<EnergyUsageIntfControllee*>(haeInterface);
+
+        RegisterCommand(&EnergyUsageCommands::OnCmdGetCumulativeEnergy, "eugce", "get cumulative energy");
+        RegisterCommand(&EnergyUsageCommands::OnCmdSetCumulativeEnergy, "eusce", "set cumulative energy (use 'eusce <cumulative energy>'");
+        RegisterCommand(&EnergyUsageCommands::OnCmdGetPrecision, "eugp", "get precision");
+        RegisterCommand(&EnergyUsageCommands::OnCmdSetPrecision, "eusp", "set precision (use 'eusp <precision>'");
+        RegisterCommand(&EnergyUsageCommands::OnCmdGetUpdateMinTime, "eugumt", "get update min time");
+        RegisterCommand(&EnergyUsageCommands::OnCmdSetUpdateMinTime, "eusumt", "set update min time (use 'eusumt <update min time>'");
+    } else {
+        PrintCommands();
+    }
+}
+
+void EnergyUsageCommands::OnCmdGetCumulativeEnergy(Commands* commands, std::string& cmd)
+{
+    EnergyUsageIntfControllee* intfControllee = static_cast<EnergyUsageCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    cout << intfControllee->GetCumulativeEnergy() << endl;
+}
+
+void EnergyUsageCommands::OnCmdSetCumulativeEnergy(Commands* commands, std::string& cmd)
+{
+    EnergyUsageIntfControllee* intfControllee = static_cast<EnergyUsageCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    double cumulativeEnergy = strtod(cmd.c_str(), NULL);
+    intfControllee->SetCumulativeEnergy(cumulativeEnergy);
+}
+
+void EnergyUsageCommands::OnCmdGetPrecision(Commands* commands, std::string& cmd)
+{
+    EnergyUsageIntfControllee* intfControllee = static_cast<EnergyUsageCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    cout << intfControllee->GetPrecision() << endl;
+}
+
+void EnergyUsageCommands::OnCmdSetPrecision(Commands* commands, std::string& cmd)
+{
+    EnergyUsageIntfControllee* intfControllee = static_cast<EnergyUsageCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    double precision = strtod(cmd.c_str(), NULL);
+    intfControllee->SetPrecision(precision);
+}
+
+void EnergyUsageCommands::OnCmdGetUpdateMinTime(Commands* commands, std::string& cmd)
+{
+    EnergyUsageIntfControllee* intfControllee = static_cast<EnergyUsageCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    cout << intfControllee->GetUpdateMinTime() << endl;
+}
+
+void EnergyUsageCommands::OnCmdSetUpdateMinTime(Commands* commands, std::string& cmd)
+{
+    EnergyUsageIntfControllee* intfControllee = static_cast<EnergyUsageCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    int updateMinTime = strtol(cmd.c_str(), NULL, 10);
+    if (updateMinTime < 0 || updateMinTime >= 65536) {
+        cout << "Input argument is wrong." << endl;
+        return;
+    }
+    intfControllee->SetUpdateMinTime((uint16_t)updateMinTime);
 }

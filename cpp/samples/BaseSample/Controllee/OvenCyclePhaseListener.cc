@@ -16,6 +16,7 @@
 
 #include <iostream>
 #include "OvenCyclePhaseListener.h"
+#include "ControlleeSample.h"
 
 using namespace std;
 
@@ -77,4 +78,103 @@ QStatus OvenCyclePhaseListener::OnGetCyclePhasesDescriptions(const qcc::String& 
         return ER_LANGUAGE_NOT_SUPPORTED;
     }
     return status;
+}
+
+ControlleeCommands* OvenCyclePhaseCommands::CreateCommands(ControlleeSample* sample, const char* objectPath)
+{
+    return new OvenCyclePhaseCommands(sample, objectPath);
+}
+
+OvenCyclePhaseCommands::OvenCyclePhaseCommands(ControlleeSample* sample, const char* objectPath)
+: InterfaceCommands(sample, objectPath)
+, m_intfControllee(NULL)
+{
+}
+
+OvenCyclePhaseCommands::~OvenCyclePhaseCommands()
+{
+}
+
+void OvenCyclePhaseCommands::Init()
+{
+    if (!m_intfControllee) {
+        HaeInterface* haeInterface = m_sample->CreateInterface(OVEN_CYCLE_PHASE_INTERFACE, m_objectPath, m_listener);
+        if (!haeInterface) {
+            cout << "Interface creation failed." << endl;
+            return;
+        }
+
+        m_intfControllee = static_cast<OvenCyclePhaseIntfControllee*>(haeInterface);
+
+        RegisterCommand(&OvenCyclePhaseCommands::OnCmdGetCyclePhase, "gcp", "get cycle phase");
+        RegisterCommand(&OvenCyclePhaseCommands::OnCmdSetCyclePhase, "scp", "set cycle phase (use 'sic <cycle phase>')");
+
+        RegisterCommand(&OvenCyclePhaseCommands::OnCmdGetSupportedCyclePhases, "gscp", "get supported cycle phases");
+    } else {
+        PrintCommands();
+    }
+}
+
+void OvenCyclePhaseCommands::InitializeProperties()
+{
+    if (m_intfControllee) {
+        OvenCyclePhaseInterface::SupportedCyclePhases supportedCyclePhase = {
+            OvenCyclePhaseInterface::OVEN_PHASE_UNAVAILABLE,
+            OvenCyclePhaseInterface::OVEN_PHASE_PREHEATING,
+            OvenCyclePhaseInterface::OVEN_PHASE_COOKING,
+            OvenCyclePhaseInterface::OVEN_PHASE_CLEANING,
+            0x80 };
+        uint8_t cyclePhase = OvenCyclePhaseInterface::OVEN_PHASE_PREHEATING;
+        m_intfControllee->SetSupportedCyclePhases(supportedCyclePhase);
+        m_intfControllee->SetCyclePhase(cyclePhase);
+    }
+}
+
+void OvenCyclePhaseCommands::OnCmdGetCyclePhase(Commands* commands, std::string& cmd)
+{
+    cout << "OvenCyclePhaseCommands::OnCmdGetCyclePhase" << endl;
+    OvenCyclePhaseIntfControllee* intfControllee = static_cast<OvenCyclePhaseCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+    cout << (int)intfControllee->GetCyclePhase() << endl;
+
+}
+void OvenCyclePhaseCommands::OnCmdSetCyclePhase(Commands* commands, std::string& cmd)
+{
+    cout << "OvenCyclePhaseCommands::OnCmdSetCyclePhase" << endl;
+    OvenCyclePhaseIntfControllee* intfControllee = static_cast<OvenCyclePhaseCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    uint8_t cyclePhase = strtol(cmd.c_str(), NULL, 10);
+    if(cyclePhase < (uint8_t)OvenCyclePhaseInterface::OvenCyclePhase::OVEN_PHASE_UNAVAILABLE ||
+       cyclePhase > (uint8_t)OvenCyclePhaseInterface::OvenCyclePhase::OVEN_PHASE_CLEANING)
+    {
+        cout << "input argument is wrong" << endl;
+        return;
+    }
+    intfControllee->SetCyclePhase(cyclePhase);
+
+}
+void OvenCyclePhaseCommands::OnCmdGetSupportedCyclePhases(Commands* commands, std::string& cmd)
+{
+    cout << "OvenCyclePhaseCommands::OnCmdGetSupportedCyclePhases" << endl;
+    OvenCyclePhaseIntfControllee* intfControllee = static_cast<OvenCyclePhaseCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    const OvenCyclePhaseInterface::SupportedCyclePhases& supportedPhases = intfControllee->GetSupportedCyclePhases();
+
+    for(size_t i = 0; i < supportedPhases.size(); i++)
+        cout << (int)supportedPhases[i] << " ";
+    cout << endl;
 }

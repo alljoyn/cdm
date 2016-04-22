@@ -27,7 +27,7 @@ const qcc::String AlertsInterface::s_xml =
 "<node xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='http://www.allseenalliance.org/schemas/introspect.xsd'>"
 "    <interface name='org.alljoyn.SmartSpaces.Operation.Alerts'>"
 "        <description language='en'>This information provides the status of the alerts of an appliance</description>"
-"        <annotation name='org.alljoyn.Bus.Secure' value='false'/>"
+"        <annotation name='org.alljoyn.Bus.Secure' value='true'/>"
 // "        <struct name='AlertRecord'>"
 // "            <field name='severity' type='y'/>"
 // "            <field name='alertCode' type='q'/>"

@@ -17,6 +17,8 @@
 #ifndef OFFCONTROLLISTENER_H_
 #define OFFCONTROLLISTENER_H_
 
+#include "InterfaceCommands.h"
+#include <alljoyn/hae/interfaces/operation/OffControlIntfControllee.h>
 #include <alljoyn/hae/interfaces/operation/OffControlIntfControlleeListener.h>
 
 using namespace ajn;
@@ -27,5 +29,24 @@ class OffControlListener : public OffControlIntfControlleeListener
   public:
     virtual QStatus OnSwitchOff(ErrorCode& errorCode);
 };
+////////////////////////////////////////////////////////////////////////////////
+
+class OffControlCommands : public InterfaceCommands
+{
+  public:
+    static ControlleeCommands* CreateCommands(ControlleeSample* sample, const char* objectPath);
+
+    OffControlCommands(ControlleeSample* sample, const char* objectPath);
+    virtual ~OffControlCommands();
+
+    virtual void Init();
+
+    OffControlIntfControllee* GetInterface() { return m_intfControllee; }
+
+  private:
+    OffControlIntfControllee* m_intfControllee;
+    OffControlListener m_listener;
+};
+
 
 #endif /* OFFCONTROLLISTENER_H_ */

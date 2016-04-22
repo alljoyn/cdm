@@ -21,6 +21,9 @@
 #include "Commands.h"
 
 class ControlleeSample;
+class ControlleeCommands;
+
+typedef ControlleeCommands* (*CreateCommandsFptr)(ControlleeSample*, const char* objectPath);
 
 class ControlleeCommands : public Commands {
   public:
@@ -30,8 +33,10 @@ class ControlleeCommands : public Commands {
       virtual void Init();
       virtual void PrintCommands();
       virtual void Execute(std::string& cmd);
+      virtual void InitializeProperties();
 
       static void OnCmdHelp(Commands* commands, std::string& cmd);
+      static void OnCmdBack(Commands* commands, std::string& cmd);
       static void OnCmdQuit(Commands* commands, std::string& cmd);
 
       ControlleeSample* GetControlleeSample() { return m_sample; }

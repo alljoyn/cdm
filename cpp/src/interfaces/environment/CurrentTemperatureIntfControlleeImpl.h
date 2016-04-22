@@ -91,41 +91,41 @@ class CurrentTemperatureIntfControlleeImpl : public InterfaceControllee, public 
     virtual const MethodHandlers& GetMethodHanders() const { return m_methodHandlers; }
 
     /**
-     * Set CurrentValue
-     * @param[in] CurrentValue
+     * Set current temperature
+     * @param[in] value current temperature
      * @return status
      */
     virtual QStatus SetCurrentValue(const double value);
 
     /**
-     * Get CurrentValue
-     * @return CurrentValue
+     * Get current temperature
+     * @return Current temperature
      */
     virtual const double GetCurrentValue() const { return m_CurrentValue; }
 
     /**
-     * Set Precision
-     * @param[in] Precision
+     * Set precision
+     * @param[in] precision precision
      * @return status
      */
     virtual QStatus SetPrecision(const double precision);
 
     /**
-     * Get Precision
-     * @return state
+     * Get precision
+     * @return Precision
      */
     virtual const double GetPrecision() const { return m_precision; }
 
     /**
-     * Set UpdateMinTime
-     * @param[in] UpdateMinTime
+     * Set the minimum update time
+     * @param[in] updateMinTime the minimum update time
      * @return status
      */
-    virtual QStatus SetUpdateMinTime(const uint16_t currentPower);
+    virtual QStatus SetUpdateMinTime(const uint16_t updateMinTime);
 
     /**
-     * Get UpdateMinTime
-     * @return state
+     * Get the minimum update time
+     * @return The minimum update time
      */
     virtual const uint16_t GetUpdateMinTime() const { return m_updateMinTime; }
 

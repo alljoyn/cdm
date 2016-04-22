@@ -17,6 +17,8 @@
 #ifndef CLOSEDSTATUSLISTENER_H_
 #define CLOSEDSTATUSLISTENER_H_
 
+#include "InterfaceCommands.h"
+#include <alljoyn/hae/interfaces/operation/ClosedStatusIntfControllee.h>
 #include <alljoyn/hae/interfaces/operation/ClosedStatusIntfControlleeListener.h>
 
 using namespace ajn;
@@ -28,4 +30,25 @@ class ClosedStatusListener : public ClosedStatusIntfControlleeListener
     virtual QStatus OnGetIsClosed(bool& isClosed);
 };
 
+class ClosedStatusCommands : public InterfaceCommands
+{
+  public:
+    static ControlleeCommands* CreateCommands(ControlleeSample* sample, const char* objectPath);
+
+    ClosedStatusCommands(ControlleeSample* sample, const char* objectPath);
+    virtual ~ClosedStatusCommands();
+
+    virtual void Init();
+
+    ClosedStatusIntfControllee* GetInterface() { return m_intfControllee; }
+    static void OnCmdGetClosedStatus(Commands* commands, std::string& cmd);
+    static void OnCmdSetClosedStatus(Commands* commands, std::string& cmd);
+
+  private:
+    ClosedStatusIntfControllee* m_intfControllee;
+    ClosedStatusListener m_listener;
+};
+
+
 #endif /* CLOSEDSTATUSLISTENER_H_ */
+

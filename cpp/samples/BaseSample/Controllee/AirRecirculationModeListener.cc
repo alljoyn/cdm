@@ -14,8 +14,8 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include <iostream>
 #include "AirRecirculationModeListener.h"
+#include "ControlleeSample.h"
 
 using namespace std;
 
@@ -29,4 +29,68 @@ QStatus AirRecirculationModeListener::OnGetIsRecirculating(bool& isRecirculating
 {
     cout << "AirRecirculationModeListener::OnGetIsRecirculating()" << endl;
     return ER_OK;
+}
+////////////////////////////////////////////////////////////////////////////////
+
+ControlleeCommands* AirRecirculationModeCommands::CreateCommands(ControlleeSample* sample, const char* objectPath)
+{
+    return new AirRecirculationModeCommands(sample, objectPath);
+}
+
+AirRecirculationModeCommands::AirRecirculationModeCommands(ControlleeSample* sample, const char* objectPath)
+: InterfaceCommands(sample, objectPath)
+, m_intfControllee(NULL)
+{
+}
+
+AirRecirculationModeCommands::~AirRecirculationModeCommands()
+{
+}
+
+void AirRecirculationModeCommands::Init()
+{
+    if (!m_intfControllee) {
+        HaeInterface* haeInterface = m_sample->CreateInterface(AIR_RECIRCULATION_MODE_INTERFACE, m_objectPath, m_listener);
+        if (!haeInterface) {
+            cout << "Interface creation failed." << endl;
+            return;
+        }
+
+        m_intfControllee = static_cast<AirRecirculationModeIntfControllee*>(haeInterface);
+
+        RegisterCommand(&AirRecirculationModeCommands::OnCmdGetIsRecirculating, "gir", "get is recirculating");
+        RegisterCommand(&AirRecirculationModeCommands::OnCmdSetIsRecirculating, "sir", "set is recirculating (use 'sir <0/1>'");
+    } else {
+        PrintCommands();
+    }
+}
+
+void AirRecirculationModeCommands::OnCmdGetIsRecirculating(Commands* commands, std::string& cmd)
+{
+    AirRecirculationModeIntfControllee* intfControllee = static_cast<AirRecirculationModeCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    cout << intfControllee->GetIsRecirculating() << endl;
+}
+
+void AirRecirculationModeCommands::OnCmdSetIsRecirculating(Commands* commands, std::string& cmd)
+{
+    AirRecirculationModeIntfControllee* intfControllee = static_cast<AirRecirculationModeCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    int isRecirculating = strtol(cmd.c_str(), NULL, 10);
+    if (isRecirculating == 0 || isRecirculating == 1) {
+        intfControllee->SetIsRecirculating(isRecirculating);
+    } else {
+        cout << "Input argument is wrong." << endl;
+        return;
+    }
 }

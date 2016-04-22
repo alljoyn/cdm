@@ -17,6 +17,8 @@
 #ifndef ROBOTCLEANINGCYCLEPHASELISTENER_H_
 #define ROBOTCLEANINGCYCLEPHASELISTENER_H_
 
+#include "InterfaceCommands.h"
+#include <alljoyn/hae/interfaces/operation/RobotCleaningCyclePhaseIntfControllee.h>
 #include <alljoyn/hae/interfaces/operation/RobotCleaningCyclePhaseIntfControlleeListener.h>
 
 using namespace ajn;
@@ -31,5 +33,29 @@ class RobotCleaningCyclePhaseListener : public RobotCleaningCyclePhaseIntfContro
                                                  RobotCleaningCyclePhaseInterface::CyclePhaseDescriptors& phasesDescription,
                                                  ErrorCode& errorCode);
 };
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+class RobotCleaningCyclePhaseCommands : public InterfaceCommands
+{
+  public:
+    static ControlleeCommands* CreateCommands(ControlleeSample* sample, const char* objectPath);
+
+    RobotCleaningCyclePhaseCommands(ControlleeSample* sample, const char* objectPath);
+    virtual ~RobotCleaningCyclePhaseCommands();
+
+    virtual void Init();
+    virtual void InitializeProperties();
+
+    RobotCleaningCyclePhaseIntfControllee* GetInterface() { return m_intfControllee; }
+    static void OnCmdGetCyclePhase(Commands* commands, std::string& cmd);
+    static void OnCmdSetCyclePhase(Commands* commands, std::string& cmd);
+    static void OnCmdGetSupportedCyclePhases(Commands* commands, std::string& cmd);
+
+  private:
+    RobotCleaningCyclePhaseIntfControllee* m_intfControllee;
+    RobotCleaningCyclePhaseListener m_listener;
+};
+
+
 
 #endif /* ROBOTCLEANINGCYCLEPHASELISTENER_H_ */

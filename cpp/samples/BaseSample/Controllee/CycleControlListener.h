@@ -16,9 +16,10 @@
 
 #ifndef CYCLECONTROLLISTENER_H_
 #define CYCLECONTROLLISTENER_H_
-
-#include <alljoyn/hae/interfaces/operation/CycleControlInterface.h>
+#include "InterfaceCommands.h"
+#include <alljoyn/hae/interfaces/operation/CycleControlIntfControllee.h>
 #include <alljoyn/hae/interfaces/operation/CycleControlIntfControlleeListener.h>
+
 using namespace ajn;
 using namespace services;
 
@@ -30,6 +31,31 @@ public:
 
     virtual QStatus OnExecuteCommand(CycleControlInterface::CycleControlOperationalCommand command, CycleControlInterface::CycleControlOperationalState& newState, ErrorCode& error);
 
+};
+
+class CycleControlCommands : public InterfaceCommands
+{
+  public:
+    static ControlleeCommands* CreateCommands(ControlleeSample* sample, const char* objectPath);
+
+    CycleControlCommands(ControlleeSample* sample, const char* objectPath);
+    virtual ~CycleControlCommands();
+
+    virtual void Init();
+    virtual void InitializeProperties();
+
+    CycleControlIntfControllee* GetInterface() { return m_intfControllee; }
+    static void OnCmdGetOperationalState(Commands* commands, std::string& cmd);
+    static void OnCmdSetOperationalState(Commands* commands, std::string& cmd);
+
+    static void OnCmdGetSupportedOperationalCommands(Commands* commands, std::string& cmd);
+    static void OnCmdGetSupportedOperationalStates(Commands* commands, std::string& cmd);
+
+    static void OnCmdEmitEndOfCycle(Commands* commands, std::string& cmd);
+
+  private:
+    CycleControlIntfControllee* m_intfControllee;
+    CycleControlListener m_listener;
 };
 
 #endif /* CYCLECONTROLLISTENER_H_ */

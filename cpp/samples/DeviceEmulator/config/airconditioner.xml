@@ -1,0 +1,45 @@
+<DeviceEmulator>
+    <AboutData>
+        <AppId>000102030405060708090A0B0C0D0E0C</AppId>
+        <DefaultLanguage>en</DefaultLanguage>
+        <DeviceName>My Device Name</DeviceName>
+        <DeviceName lang = 'es'>Nombre de mi dispositivo</DeviceName>
+        <DeviceId>baddeviceid</DeviceId>
+        <AppName>My Application Name</AppName>
+        <AppName lang = 'es'>Mi Nombre de la aplicación</AppName>
+        <Manufacturer>Company</Manufacturer>
+        <Manufacturer lang = 'es'>Empresa</Manufacturer>
+        <ModelNumber>Wxfy388i</ModelNumber>
+        <Description>A detailed description provided by the application.</Description>
+        <Description lang = 'es'>Una descripción detallada proporcionada por la aplicación.</Description>
+        <DateOfManufacture>2014-01-08</DateOfManufacture>
+        <SoftwareVersion>1.0.0</SoftwareVersion>
+        <HardwareVersion>1.0.0</HardwareVersion>
+        <SupportUrl>www.example.com</SupportUrl>
+        <UserDefinedTag>Can only accept strings anything other than strings must be done using the AboutData Class SetField method</UserDefinedTag>
+        <UserDefinedTag lang='es'>Sólo se puede aceptar cadenas distintas de cadenas nada debe hacerse utilizando el método AboutData Clase SetField</UserDefinedTag>
+        <CountryOfProduction>Room1</CountryOfProduction>
+        <Location>Room1</Location>
+        <ProductBrand>Room1</ProductBrand>
+        <Location>upstairs bedroom</Location>
+        <Location lang='es'>habitación del segundo piso</Location>
+        <DeviceTypeDescription>
+            <TypeDescription>
+                <device_type>5</device_type>
+                <object_path>/Hae/AirConditioner</object_path>
+            </TypeDescription>
+        </DeviceTypeDescription>
+    </AboutData>
+    <InterfaceList>
+        <Object path='/Hae/AirConditioner'>
+            <Interface name='org.alljoyn.SmartSpaces.Environment.TargetTemperature'/>
+            <Interface name='org.alljoyn.SmartSpaces.Environment.CurrentTemperature'/>
+            <Interface name='org.alljoyn.SmartSpaces.Environment.WindDirection'/>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.OnControl'/>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.OffControl'/>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.OnOffStatus'/>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.FanSpeedLevel'/>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.ClimateControlMode'/>
+        </Object>
+    </InterfaceList>
+</DeviceEmulator>

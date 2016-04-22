@@ -16,6 +16,7 @@
 
 #include <iostream>
 #include "DishWashingCyclePhaseListener.h"
+#include "ControlleeSample.h"
 
 using namespace std;
 
@@ -77,4 +78,105 @@ QStatus DishWashingCyclePhaseListener::OnGetCyclePhasesDescriptions(const qcc::S
         status = ER_LANGUAGE_NOT_SUPPORTED;
     }
     return status;
+}
+
+
+ControlleeCommands* DishWashingCyclePhaseCommands::CreateCommands(ControlleeSample* sample, const char* objectPath)
+{
+    return new DishWashingCyclePhaseCommands(sample, objectPath);
+}
+
+DishWashingCyclePhaseCommands::DishWashingCyclePhaseCommands(ControlleeSample* sample, const char* objectPath)
+: InterfaceCommands(sample, objectPath)
+, m_intfControllee(NULL)
+{
+}
+
+DishWashingCyclePhaseCommands::~DishWashingCyclePhaseCommands()
+{
+}
+
+void DishWashingCyclePhaseCommands::Init()
+{
+    if (!m_intfControllee) {
+        HaeInterface* haeInterface = m_sample->CreateInterface(DISH_WASHING_CYCLE_PHASE_INTERFACE, m_objectPath, m_listener);
+        if (!haeInterface) {
+            cout << "Interface creation failed." << endl;
+            return;
+        }
+
+        m_intfControllee = static_cast<DishWashingCyclePhaseIntfControllee*>(haeInterface);
+
+        RegisterCommand(&DishWashingCyclePhaseCommands::OnCmdGetCyclePhase, "gcp", "get cycle phase");
+        RegisterCommand(&DishWashingCyclePhaseCommands::OnCmdSetCyclePhase, "scp", "set cycle phase (use 'sic <cycle phase>')");
+
+        RegisterCommand(&DishWashingCyclePhaseCommands::OnCmdGetSupportedCyclePhases, "gscp", "get supported cycle phases");
+    } else {
+        PrintCommands();
+    }
+}
+
+void DishWashingCyclePhaseCommands::InitializeProperties()
+{
+    if (m_intfControllee) {
+        DishWashingCyclePhaseInterface::SupportedCyclePhases supportedCyclePhase = {
+            DishWashingCyclePhaseInterface::DISH_WASHING_PHASE_UNAVAILABLE,
+            DishWashingCyclePhaseInterface::DISH_WASHING_PHASE_PRE_WASH,
+            DishWashingCyclePhaseInterface::DISH_WASHING_PHASE_WASH,
+            DishWashingCyclePhaseInterface::DISH_WASHING_PHASE_RINSE,
+            DishWashingCyclePhaseInterface::DISH_WASHING_PHASE_DRY,
+            0x80 };
+        uint8_t cyclePhase = DishWashingCyclePhaseInterface::DISH_WASHING_PHASE_PRE_WASH;
+        m_intfControllee->SetSupportedCyclePhases(supportedCyclePhase);
+        m_intfControllee->SetCyclePhase(cyclePhase);
+    }
+}
+
+void DishWashingCyclePhaseCommands::OnCmdGetCyclePhase(Commands* commands, std::string& cmd)
+{
+    cout << "DishWashingCyclePhaseCommands::OnCmdGetCyclePhase" << endl;
+    DishWashingCyclePhaseIntfControllee* intfControllee = static_cast<DishWashingCyclePhaseCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+    cout << (int)intfControllee->GetCyclePhase() << endl;
+
+}
+void DishWashingCyclePhaseCommands::OnCmdSetCyclePhase(Commands* commands, std::string& cmd)
+{
+    cout << "DishWashingCyclePhaseCommands::OnCmdSetCyclePhase" << endl;
+    DishWashingCyclePhaseIntfControllee* intfControllee = static_cast<DishWashingCyclePhaseCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    uint8_t cyclePhase = strtol(cmd.c_str(), NULL, 10);
+    if(cyclePhase < (uint8_t)DishWashingCyclePhaseInterface::DishWashingCyclePhase::DISH_WASHING_PHASE_UNAVAILABLE ||
+       cyclePhase > (uint8_t)DishWashingCyclePhaseInterface::DishWashingCyclePhase::DISH_WASHING_PHASE_DRY)
+    {
+        cout << "input argument is wrong" << endl;
+        return;
+    }
+    intfControllee->SetCyclePhase(cyclePhase);
+
+}
+void DishWashingCyclePhaseCommands::OnCmdGetSupportedCyclePhases(Commands* commands, std::string& cmd)
+{
+    cout << "DishWashingCyclePhaseCommands::OnCmdGetSupportedCyclePhases" << endl;
+    DishWashingCyclePhaseIntfControllee* intfControllee = static_cast<DishWashingCyclePhaseCommands*>(commands)->GetInterface();
+
+    if (!intfControllee) {
+        cout << "Interface is not exist." << endl;
+        return;
+    }
+
+    const DishWashingCyclePhaseInterface::SupportedCyclePhases& supportedPhases = intfControllee->GetSupportedCyclePhases();
+
+    for(size_t i = 0; i < supportedPhases.size(); i++)
+        cout << (int)supportedPhases[i] << " ";
+    cout << endl;
 }

@@ -416,7 +416,7 @@ void TimerIntfControlleeImpl::UpdateProperties()
     //recalculate timer values
     if(m_referenceTimer < m_targetTimeToStart)
     {
-        estimatedTimeToEnd = m_targetTimeToStop - m_targetTimeToStop;
+        estimatedTimeToEnd = m_targetTimeToStop - m_targetTimeToStart;
         runningTime = 0;
     }
     else if(m_referenceTimer >= m_targetTimeToStart && m_referenceTimer <= m_targetTimeToStop)

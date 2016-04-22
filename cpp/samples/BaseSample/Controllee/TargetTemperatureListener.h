@@ -17,6 +17,8 @@
 #ifndef TARGETTEMPERATURELISTENER_H_
 #define TARGETTEMPERATURELISTENER_H_
 
+#include "InterfaceCommands.h"
+#include <alljoyn/hae/interfaces/environment/TargetTemperatureIntfControllee.h>
 #include <alljoyn/hae/interfaces/environment/TargetTemperatureIntfControlleeListener.h>
 
 using namespace ajn;
@@ -31,5 +33,33 @@ class TargetTemperatureListener : public TargetTemperatureIntfControlleeListener
     virtual QStatus OnGetMaxValue(double& value);
     virtual QStatus OnGetStepValue(double& value);
 };
+
+class TargetTemperatureCommands : public InterfaceCommands
+{
+  public:
+    static ControlleeCommands* CreateCommands(ControlleeSample* sample, const char* objectPath);
+
+    TargetTemperatureCommands(ControlleeSample* sample, const char* objectPath);
+    virtual ~TargetTemperatureCommands();
+
+    virtual void Init();
+    virtual void InitializeProperties();
+
+    TargetTemperatureIntfControllee* GetInterface() { return m_intfControllee; }
+    static void OnCmdGetTargetValue(Commands* commands, std::string& cmd);
+    static void OnCmdSetTargetValue(Commands* commands, std::string& cmd);
+    static void OnCmdGetMinValue(Commands* commands, std::string& cmd);
+    static void OnCmdSetMinValue(Commands* commands, std::string& cmd);
+    static void OnCmdGetMaxValue(Commands* commands, std::string& cmd);
+    static void OnCmdSetMaxValue(Commands* commands, std::string& cmd);
+    static void OnCmdGetStepValue(Commands* commands, std::string& cmd);
+    static void OnCmdSetStepValue(Commands* commands, std::string& cmd);
+
+  private:
+    TargetTemperatureIntfControllee* m_intfControllee;
+    TargetTemperatureListener m_listener;
+};
+
+
 
 #endif /* TARGETTEMPERATURELISTENER_H_ */
