@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/items_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="15dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:paddingTop="12dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/property_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Name"
+            android:layout_gravity="center"
+            android:textAppearance="@style/device_name" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/property_body"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/device_name"
+                android:text="Type(short)"
+                android:layout_weight="1"
+                android:id="@+id/type_name" />
+
+            <EditText
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/interface_name"
+                android:text=""
+                android:inputType="number"
+                android:id="@+id/type_value" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/device_name"
+                android:text="Code(short)"
+                android:layout_weight="1"
+                android:id="@+id/code_name" />
+            <EditText
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/interface_name"
+                android:text=""
+                android:inputType="number"
+                android:id="@+id/code_value" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/device_name"
+                android:text="Value(int)"
+                android:layout_weight="1"
+                android:id="@+id/value_name" />
+            <EditText
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/interface_name"
+                android:text=""
+                android:inputType="number"
+                android:id="@+id/value_value" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="Add Input"
+            android:textAppearance="@style/button_text" />
+        <Button
+            android:id="@+id/invoke"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="Invoke Method"
+            android:textAppearance="@style/button_text" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:background="@color/lighter_gray"
+            android:text="Params"
+            android:textAppearance="@style/interface_name" />
+        <TextView
+            android:id="@+id/params"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="5"
+            android:layout_marginBottom="5dp"
+            android:text=""
+            android:textAppearance="@style/interface_name" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/lighter_gray"
+            android:text="Result"
+            android:textAppearance="@style/interface_name" />
+        <TextView
+            android:id="@+id/result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="5"
+            android:text=""
+            android:textAppearance="@style/interface_name" />
+    </LinearLayout>
+</LinearLayout>

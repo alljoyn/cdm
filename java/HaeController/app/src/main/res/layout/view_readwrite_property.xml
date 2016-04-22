@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/items_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingBottom="15dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:paddingTop="12dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/device_name"
+        android:text="Name"
+        android:layout_weight="1"
+        android:id="@+id/property_name" />
+    <EditText
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/interface_name"
+        android:text="Value"
+        android:imeOptions="actionDone"
+        android:singleLine="true"
+        android:id="@+id/property_value" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:textAppearance="@style/interface_name"
+        android:text="Unit"
+        android:id="@+id/property_unit" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:layout_marginLeft="5dp"
+        android:textAppearance="@style/button_text"
+        android:id="@+id/submit" />
+</LinearLayout>

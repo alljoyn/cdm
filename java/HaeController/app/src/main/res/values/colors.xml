@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+   <!--
+
+      Copyright (c) 2014 Qualcomm Connected Experiences, Inc.
+           All Rights Reserved
+        QCE Proprietary and Confidential
+
+  -->
+<resources>
+    <color name="dark_gray">#ff666666</color>
+    <color name="gray">#ff4d4d4d</color>
+    <color name="red">#ffc7004c</color>
+    <color name="light_gray">#ffaaaaaa</color>
+    <color name="lighter_gray">#ffcccccc</color>
+    <color name="seperator_color">#ffc2c2c2</color>
+    <color name="item_color">#0c505050</color>
+    <color name="item_color2">#ffc2c2c2</color>
+    <color name="allseen_green">#008576</color>
+    <color name="allseen_light_green">#84DDB5</color>
+    <color name="allseen_teal">#00C0C1</color>
+</resources>
