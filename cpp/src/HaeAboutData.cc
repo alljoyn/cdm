@@ -92,7 +92,7 @@ QStatus HaeAboutData::CreateFromXml(const qcc::String& aboutDataXml)
             } else {
                 DeviceTypeDescription description;
                 int numberDescriptions =0;
-                for (int i = 0; i < descriptionChildren.size(); i++){
+                for (size_t i = 0; i < descriptionChildren.size(); i++){
                     qcc::String codeText =descriptionChildren[i]->GetChild(descriptionXmlTypeTag)->GetContent();
                     qcc::String pathText =descriptionChildren[i]->GetChild(descriptionXmlPathTag)->GetContent();
                     std::stringstream convert(codeText.c_str());
