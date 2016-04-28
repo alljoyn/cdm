@@ -13,7 +13,7 @@
  *    ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-
+#ifdef UINPUT
 #include "UInput.h"
 
 #include <string.h>
@@ -181,3 +181,4 @@ int UInput::InjectEvent(uint16_t type, uint16_t code, int32_t value)
     return -1;
 }
 // ------------------------------------------------------------------------------------
+#endif

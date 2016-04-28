@@ -13,7 +13,7 @@
  *    ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-
+#ifdef UINPUT
 #ifndef UINPUT_H_
 #define UINPUT_H_
 
@@ -104,3 +104,4 @@ class UInput
 };
 
 #endif /* UINPUT_H_ */
+#endif
