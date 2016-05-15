@@ -357,7 +357,7 @@ void IntegratedControllee::SetInitialProperty()
     }
 
     if (m_channelIntfControllee) {
-        String channelId = CHANNELID_PREFIX + qcc::String('0');
+        String channelId = CHANNELID_PREFIX + String("0");
         uint16_t totalNumberOfChannels = TOTAL_NUM_OF_CHANNEL;
         m_channelIntfControllee->SetChannelId(channelId);
         m_channelIntfControllee->SetTotalNumberOfChannels(totalNumberOfChannels);

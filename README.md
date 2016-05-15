@@ -1,7 +1,7 @@
 HAE Service Framework
 =====================
 
-Welcom to the HAE Service Framework.
+Welcome to the HAE Service Framework.
 
 HAE Service Framework provides easy methods to implement HAE controllee and controller applications.
 
@@ -25,22 +25,32 @@ cpp
 |               +---input
 |               \---operation
 +---samples
+|   +---ACControllee
 |   +---BaseSample
 |   |   +---Controllee
 |   |   +---Controller
 |   |   \---VendorDefinedInterfaces
+|   +---CookTopControllee
+|   +---DeviceEmulator
+|   |   \---config
 |   +---IntegratedController
 |   +---IntegratedControllee
+|   +---LaundryControllee
+|   +---RobotCleanerControllee
+|   +---TimerSimulator
 |   +---TvControllee
-|   +---VDIControllee
-|   \---DeviceEmulator
-\---src
+|   \---VDIControllee
++---src
 |   \---interfaces
 |       +---environment
 |       +---input
 |       \---operation
 \---unittest
-
+    +---DUT
+    |   +---environment
+    |   +---input
+    |   \---operation
+    \---ServiceFramework
 </pre>
 
  * cpp/code_template : Generator of HAE interfaces skeleton codes
@@ -48,10 +58,32 @@ cpp
  * cpp/inc/alljoyn/hae : HAE common header files
  * cpp/inc/alljoyn/hae/interfaces : HAE interface-related header files
  * cpp/samples/BaseSample : Base sample for making other device sample
+ * cpp/samples/ACControllee :
+   - Example of hae device composed of Base sample controllee
+   - Emulated virtual air conditioner sample. It has 11 interfaces. (OnOffStatus, OnControl,
+     OffControl, ResourceSaving, ClimateControlMode, FanSpeedLevel, CurrentPower, EnergyUsage,
+     CurrentTemperature, TargetTemperature, WindDirection)
+ * cpp/samples/CookTopControllee :
+   - Example of hae device composed of Base sample controllee
+   - Emulated virtual cook top sample. It has 3 interfaces. (HeatingZone, OvenCyclePhase, RapidMode)
+ * cpp/samples/DeviceEmulator :
+   - Device emulator (Refer to Device Emulator section in this document.)
+ * cpp/samples/IntegratedControllee :
+   - Integrated controllee based on Base sample controllee
+   - Integrated controllee is designed to make it easier to add other interfaces.
  * cpp/samples/IntegratedController :
-   - Integrated controller based on BaseSample controller
-   - The current version supports only TV-related interfaces. (Channel, AudioVolume, AudioVideoInput, Hid)
-   - Intergrated controller is designed to make it easier to add other interfaces.
+   - Integrated controller based on Base sample controller
+   - Integrated controller is designed to make it easier to add other interfaces.
+ * cpp/samples/LaundryControllee :
+   - Example of hae device composed of Base sample controllee
+   - Emulated virtual laundry sample. It has 8 interfaces. (OnOffStatus, CycleControl, SoilLevel,
+     SpinSpeedLevel, WaterLevel, DishWashingCyclePhase, LaundryCyclePhase, Timer)
+ * cpp/samples/RobotCleanerControllee :
+   - Example of hae device composed of Base sample controllee
+   - Emulated virtual robot cleaner sample. It has 5 interfaces. (OnOffStatus, BatteryStatus,
+     RepeatMode, RobotCleaningCyclePhase, CurrentPower)
+ * cpp/samples/TimerSimulator :
+   - Timer simulator. It has CycleControl and Timer interfaces.
  * cpp/samples/TVControllee :
    - Example of hae device composed of Base sample controllee
    - Emulated virtual TV sample. It has 4 interfaces. (Channel, AudioVolume, AudioVideoInput, Hid)
@@ -103,7 +135,7 @@ hae/
 Unit Tests
 -------
   * Build unit tests
-To build the unit tests add a GTEST_DIR='<your local path>/GTEST/googletest' 
+To build the unit tests add a GTEST_DIR='<your local path>/GTEST/googletest'
 parameter to the scons command line.
 
 tests can be found and run from:

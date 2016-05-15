@@ -86,7 +86,7 @@ TEST_F(HAETest, HAE_v1_WaterLevelTest)
         WaterLevelIntfController* controller = static_cast<WaterLevelIntfController*>(interface);
         QStatus status = ER_FAIL;
 
-        TEST_LOG_1("Get initial values for all properties.")
+        TEST_LOG_1("Get initial values for all properties.");
         {
             TEST_LOG_2("Retrieve the MaxLevel property.");
             status = controller->GetMaxLevel();
@@ -95,14 +95,14 @@ TEST_F(HAETest, HAE_v1_WaterLevelTest)
             listener.m_event.ResetEvent();
             EXPECT_EQ(listener.m_status, ER_OK);
 
-            TEST_LOG_2("Retrieve the CurrentLevel property.")
+            TEST_LOG_2("Retrieve the CurrentLevel property.");
             status = controller->GetCurrentLevel();
             EXPECT_EQ(status, ER_OK);
             EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
             listener.m_event.ResetEvent();
             EXPECT_EQ(listener.m_status, ER_OK);
 
-            TEST_LOG_2("Retrieve SupplySource property.")
+            TEST_LOG_2("Retrieve SupplySource property.");
             status = controller->GetSupplySource();
             EXPECT_EQ(status, ER_OK);
             EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));

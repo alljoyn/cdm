@@ -56,9 +56,9 @@ TEST_F(HAETest, HAE_v1_ClosedStatusTest)
         ClosedStatusIntfController* controller = static_cast<ClosedStatusIntfController*>(interface);
         QStatus status = ER_FAIL;
 
-        TEST_LOG_1("Get initial values for all properties.")
+        TEST_LOG_1("Get initial values for all properties.");
         {
-            TEST_LOG_2("Retrieve the IsClosed property.")
+            TEST_LOG_2("Retrieve the IsClosed property.");
             status = controller->GetIsClosed();
             EXPECT_EQ(status, ER_OK);
             EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));

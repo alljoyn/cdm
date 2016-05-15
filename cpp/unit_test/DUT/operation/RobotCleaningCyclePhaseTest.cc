@@ -58,10 +58,11 @@ public:
                                                       const RobotCleaningCyclePhaseInterface::CyclePhaseDescriptors& phasesDescription, void* context,
                                                       const char* errorName, const char* errorMessage)
     {
-        m_errorName = errorName;
-        m_errorMessage = errorMessage;
-
-        m_phasesDescriptions = phasesDescription;
+        if (status != ER_OK) {
+            if (errorName) m_errorName = errorName;
+            if (errorMessage) m_errorMessage = errorMessage;
+        }
+         m_phasesDescriptions = phasesDescription;
         m_status = status;
         m_event.SetEvent();
     }

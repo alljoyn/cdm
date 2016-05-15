@@ -1,26 +1,30 @@
-<node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
+<node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.allseenalliance.org/schemas/introspect" xsi:schemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
     <interface name="org.alljoyn.SmartSpaces.Environment.TargetTemperature">
-        <description language="en">This interface provides a capability to set target temperature</description>
+        <annotation name="org.alljoyn.Bus.DocString.En" value="This interface provides a capability to set target temperature."/>
         <annotation name="org.alljoyn.Bus.Secure" value="true"/>
         <property name="Version" type="q" access="read">
-            <description language="en">Interface version</description>
-            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+            <annotation name="org.alljoyn.Bus.DocString.En" value="The interface version."/>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const"/>
         </property>
         <property name="TargetValue" type="d" access="readwrite">
-            <description language="en">Target temperature expressed in Celsius</description>
+            <annotation name="org.alljoyn.Bus.DocString.En" value="Target temperature expressed in Celsius."/>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+            <annotation name="org.alljoyn.Bus.Type.Units" value="degrees Celsius"/>
         </property>
         <property name="MinValue" type="d" access="read">
-            <description language="en">Minimum value of target temperature</description>
+            <annotation name="org.alljoyn.Bus.DocString.En" value="Minimum value of target temperature."/>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+            <annotation name="org.alljoyn.Bus.Type.Units" value="degrees Celsius"/>
         </property>
         <property name="MaxValue" type="d" access="read">
-            <description language="en">Maximum value of target temperature</description>
+            <annotation name="org.alljoyn.Bus.DocString.En" value="Maximum value of target temperature."/>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+            <annotation name="org.alljoyn.Bus.Type.Units" value="degrees Celsius"/>
         </property>
         <property name="StepValue" type="d" access="read">
-            <description language="en">Step value allowed for the TargetTemperature setting</description>
+            <annotation name="org.alljoyn.Bus.DocString.En" value="Step value allowed for the TargetTemperature setting."/>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+            <annotation name="org.alljoyn.Bus.Type.Units" value="degrees Celsius"/>
         </property>
     </interface>
 </node>

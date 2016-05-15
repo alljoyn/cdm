@@ -14,7 +14,7 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 //Code Under Test
-#include <HaeAboutData.h>
+#include <alljoyn/hae/HaeAboutData.h>
 
 
 #include <alljoyn/version.h>

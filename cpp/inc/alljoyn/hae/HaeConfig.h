@@ -32,7 +32,7 @@ typedef enum {
     REFRIGERATOR         = 2,
     FREEZER              = 3,
     ICE_MAKER            = 4,
-    AIR_CONDIRIONER      = 5,
+    AIR_CONDITIONER      = 5,
     THERMOSTAT           = 6,
     HUMIDIFIER           = 7,
     DEHUMIDIFIER         = 8,

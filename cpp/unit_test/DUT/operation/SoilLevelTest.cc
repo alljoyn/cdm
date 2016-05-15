@@ -111,7 +111,7 @@ TEST_F(HAETest, HAE_v1_SoilLevelTest)
         SoilLevelIntfController* controller = static_cast<SoilLevelIntfController*>(interface);
         QStatus status = ER_FAIL;
 
-        TEST_LOG_1("Get initial values for all properties.")
+        TEST_LOG_1("Get initial values for all properties.");
         {
             TEST_LOG_2("Retrieve the MaxLevel property.");
             status = controller->GetMaxLevel();
@@ -120,14 +120,14 @@ TEST_F(HAETest, HAE_v1_SoilLevelTest)
             listener.m_event.ResetEvent();
             EXPECT_EQ(listener.m_status, ER_OK);
 
-            TEST_LOG_2("Retrieve the TargetLevel property.")
+            TEST_LOG_2("Retrieve the TargetLevel property.");
             status = controller->GetTargetLevel();
             EXPECT_EQ(status, ER_OK);
             EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
             listener.m_event.ResetEvent();
             EXPECT_EQ(listener.m_status, ER_OK);
 
-            TEST_LOG_2("Retrieve SelectableLevels property.")
+            TEST_LOG_2("Retrieve SelectableLevels property.");
             status = controller->GetSelectableLevels();
             EXPECT_EQ(status, ER_OK);
             EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
@@ -136,9 +136,9 @@ TEST_F(HAETest, HAE_v1_SoilLevelTest)
         }
 
         const uint8_t initTargetLevel = listener.m_selectableLevels[0];
-        TEST_LOG_1("Initialize all read-write properties.")
+        TEST_LOG_1("Initialize all read-write properties.");
         {
-            TEST_LOG_2("Set the TargetLevel property to the 1st item of the selectableLevels.")
+            TEST_LOG_2("Set the TargetLevel property to the 1st item of the selectableLevels.");
             if (listener.m_targetLevel != initTargetLevel) {
                 status = controller->SetTargetLevel(initTargetLevel);
                 EXPECT_EQ(status, ER_OK);
@@ -152,9 +152,9 @@ TEST_F(HAETest, HAE_v1_SoilLevelTest)
             }
         }
 
-        TEST_LOG_1("Set properties to invalid value.")
+        TEST_LOG_1("Set properties to invalid value.");
         {
-            TEST_LOG_2("Set the TargetLevel property to MaxLevel + 1.")
+            TEST_LOG_2("Set the TargetLevel property to MaxLevel + 1.");
             status = controller->SetTargetLevel(listener.m_maxLevel + 1);
             EXPECT_EQ(status, ER_OK);
             EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
@@ -169,7 +169,7 @@ TEST_F(HAETest, HAE_v1_SoilLevelTest)
             EXPECT_EQ(listener.m_status, ER_OK);
             EXPECT_EQ(listener.m_targetLevel, initTargetLevel);
 
-            TEST_LOG_2("Set the TargetLevel property to value outside SelectableLevels.")
+            TEST_LOG_2("Set the TargetLevel property to value outside SelectableLevels.");
             uint8_t unselectableLevel = 0;
             status = listener.GetUnselectableLevel(unselectableLevel);
             if(status == ER_OK)
@@ -190,9 +190,9 @@ TEST_F(HAETest, HAE_v1_SoilLevelTest)
             }
         }
 
-        TEST_LOG_1("Set properties to valid value.")
+        TEST_LOG_1("Set properties to valid value.");
         {
-            TEST_LOG_2("If SelectableLevels > 1, set the TargetLevel property to the 2nd item of the SelectableLevels.")
+            TEST_LOG_2("If SelectableLevels > 1, set the TargetLevel property to the 2nd item of the SelectableLevels.");
             if (listener.m_selectableLevels.size() > 1) {
                 const uint8_t validTargetLevel = listener.m_selectableLevels[1];
                 status = controller->SetTargetLevel(validTargetLevel);

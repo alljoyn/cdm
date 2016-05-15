@@ -91,7 +91,7 @@ TEST_F(HAETest, HAE_v1_03)
         AudioVideoInputIntfController* controller = static_cast<AudioVideoInputIntfController*>(interface);
         QStatus status = ER_FAIL;
 
-        TEST_LOG_1("Get initial values for all properties.")
+        TEST_LOG_1("Get initial values for all properties.");
         {
             TEST_LOG_2("Retrieve the InputSourceId property.");
             status = controller->GetInputSourceId();
@@ -118,9 +118,9 @@ TEST_F(HAETest, HAE_v1_03)
         }
 
         const uint16_t initSourceId = sourceIds[0];
-        TEST_LOG_1("Initialize all read-write properties.")
+        TEST_LOG_1("Initialize all read-write properties.");
         {
-            TEST_LOG_2("Initialize the InputSourceId property to the 1st item of the SupportedInputSources")
+            TEST_LOG_2("Initialize the InputSourceId property to the 1st item of the SupportedInputSources");
             if (listener.m_inputSourceId != initSourceId) {
                 status = controller->SetInputSourceId(initSourceId);
                 EXPECT_EQ(status, ER_OK);
@@ -134,9 +134,9 @@ TEST_F(HAETest, HAE_v1_03)
             }
         }
 
-        TEST_LOG_1("Set properties to invalid value")
+        TEST_LOG_1("Set properties to invalid value");
         {
-            TEST_LOG_2("Set the InputSourceId property to an invalid value.")
+            TEST_LOG_2("Set the InputSourceId property to an invalid value.");
             const uint16_t invalidInputSourceId = findInvalidInputSourceId(listener.m_supportedInputSources);
             status = controller->SetInputSourceId(invalidInputSourceId);
             EXPECT_EQ(status, ER_OK);
@@ -153,9 +153,9 @@ TEST_F(HAETest, HAE_v1_03)
             EXPECT_EQ(listener.m_inputSourceId, initSourceId);
         }
 
-        TEST_LOG_1("Set properties to valid value")
+        TEST_LOG_1("Set properties to valid value");
         {
-            TEST_LOG_2("If size of the SupportedInputSources is not 1, set InputSourceId property to 2nd item of SupportedInputSources.")
+            TEST_LOG_2("If size of the SupportedInputSources is not 1, set InputSourceId property to 2nd item of SupportedInputSources.");
             if (listener.m_supportedInputSources.size() > 1) {
                 const uint16_t secondSourceId = sourceIds[1];
                 status = controller->SetInputSourceId(secondSourceId);

@@ -83,8 +83,8 @@ public:
     {
         m_status = status;
         if (status != ER_OK) {
-            m_errorName = errorName;
-            m_errorMessage = errorMessage;
+            if (errorName) m_errorName = errorName;
+            if (errorMessage) m_errorMessage = errorMessage;
         }
         m_event.SetEvent();
     }
@@ -139,7 +139,7 @@ TEST_F(HAETest, HAE_v1_CycleControlTest)
         CycleControlIntfController* controller = static_cast<CycleControlIntfController*>(interface);
         QStatus status = ER_FAIL;
 
-        TEST_LOG_1("Get initial values for all properties.")
+        TEST_LOG_1("Get initial values for all properties.");
         {
             TEST_LOG_2("Retrieve the OperationalState property.");
             status = controller->GetOperationalState();
@@ -148,14 +148,14 @@ TEST_F(HAETest, HAE_v1_CycleControlTest)
             listener.m_event.ResetEvent();
             EXPECT_EQ(listener.m_status, ER_OK);
 
-            TEST_LOG_2("Retrieve the SupportedOperationalStates property.")
+            TEST_LOG_2("Retrieve the SupportedOperationalStates property.");
             status = controller->GetSupportedOperationalStates();
             EXPECT_EQ(status, ER_OK);
             EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
             listener.m_event.ResetEvent();
             EXPECT_EQ(listener.m_status, ER_OK);
 
-            TEST_LOG_2("Retrieve SupportedCommands property.")
+            TEST_LOG_2("Retrieve SupportedCommands property.");
             status = controller->GetSupportedOperationalCommands();
             EXPECT_EQ(status, ER_OK);
             EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
@@ -163,11 +163,11 @@ TEST_F(HAETest, HAE_v1_CycleControlTest)
             EXPECT_EQ(listener.m_status, ER_OK);
         }
 
-        TEST_LOG_1("Call ExecuteCommand method with invalid param.")
+        TEST_LOG_1("Call ExecuteCommand method with invalid param.");
         {
-            TEST_LOG_2("Generate list of unsupported commands")
+            TEST_LOG_2("Generate list of unsupported commands");
             listener.GenerateUsupportedCommandsList();
-            TEST_LOG_2("If size of unsupported commands list > 0, call ExecuteCommand method with 1st item of unsupported command list.")
+            TEST_LOG_2("If size of unsupported commands list > 0, call ExecuteCommand method with 1st item of unsupported command list.");
             if(listener.m_unSupportedOperationalCommands.size() > 0)
             {
                 const CycleControlInterface::CycleControlOperationalCommand invalidCommand = listener.m_unSupportedOperationalCommands[0];
@@ -180,9 +180,9 @@ TEST_F(HAETest, HAE_v1_CycleControlTest)
             }
         }
 
-        TEST_LOG_1("Call ExecuteCommand method with valid param.")
+        TEST_LOG_1("Call ExecuteCommand method with valid param.");
         {
-            TEST_LOG_2("If size of supported commands list > 0, call ExecuteCommand method with 1st item of supported command list.")
+            TEST_LOG_2("If size of supported commands list > 0, call ExecuteCommand method with 1st item of supported command list.");
             if(listener.m_supportedOperationalCommands.size() > 0)
             {
                 const CycleControlInterface::CycleControlOperationalCommand validCommand = listener.m_supportedOperationalCommands[0];

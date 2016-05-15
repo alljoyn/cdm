@@ -1,33 +1,40 @@
-<node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
+<node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.allseenalliance.org/schemas/introspect" xsi:schemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
     <interface name="org.alljoyn.SmartSpaces.Environment.CurrentAirQuality">
-        <description language="en">This interface provides capability to represent current value of air quality.</description>
+        <annotation name="org.alljoyn.Bus.DocString.En" value="This interface provides capability to represent current value of air quality."/>
         <annotation name="org.alljoyn.Bus.Secure" value="true"/>
         <property name="Version" type="q" access="read">
-            <description language="en"> Interface version</description>
-            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+            <annotation name="org.alljoyn.Bus.DocString.En" value="The interface version."/>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const"/>
         </property>
-		<property name="ContaminantType" type="y" access="read">
-            <description language="en"> The contaminant type.</description>
+        <annotation name="org.alljoyn.Bus.Enum.ContaminantType.Value.CH20" value="0"/>
+        <annotation name="org.alljoyn.Bus.Enum.ContaminantType.Value.CO2" value="1"/>
+        <annotation name="org.alljoyn.Bus.Enum.ContaminantType.Value.C0" value="2"/>
+        <annotation name="org.alljoyn.Bus.Enum.ContaminantType.Value.PM2.5" value="3"/>
+        <annotation name="org.alljoyn.Bus.Enum.ContaminantType.Value.PM10" value="4"/>
+        <annotation name="org.alljoyn.Bus.Enum.ContaminantType.Value.VOC" value="5"/>
+        <property name="ContaminantType" type="y" access="read">
+            <annotation name="org.alljoyn.Bus.Type.Name" value="[ContaminantType]"/>
+            <annotation name="org.alljoyn.Bus.DocString.En" value="The contaminant type."/>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
         <property name="CurrentValue" type="d" access="read">
-            <description language="en"> The current value of air quality.</description>
+            <annotation name="org.alljoyn.Bus.DocString.En" value="The current value of air quality."/>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
         <property name="MinValue" type="d" access="read">
-            <description language="en"> The minimum value allowed for CurrentValue.</description>
+            <annotation name="org.alljoyn.Bus.DocString.En" value="The minimum value allowed for CurrentValue."/>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
         <property name="MaxValue" type="d" access="read">
-            <description language="en"> The maximum value allowed for CurrentValue.</description>
+            <annotation name="org.alljoyn.Bus.DocString.En" value="The maximum value allowed for CurrentValue."/>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
         <property name="Precision" type="d" access="read">
-            <description language="en">The precision of the CurrentValue property. i.e. the number of ug/m3 or ppm the actual power consumption must change before CurrentValue is updated.</description>
+            <annotation name="org.alljoyn.Bus.DocString.En" value="The precision of the CurrentValue property. i.e. the number of ug/m3 or ppm the actual power consumption must change before CurrentValue is updated."/>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
         <property name="UpdateMinTime" type="q" access="read">
-            <description language="en">The minimum time between updates of the CurrentValue property in milliseconds.</description>
+            <annotation name="org.alljoyn.Bus.DocString.En" value="The minimum time between updates of the CurrentValue property in milliseconds."/>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
     </interface>

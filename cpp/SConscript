@@ -40,7 +40,8 @@ if hae_env['BUILD_HAE_SAMPLES'] == 'on':
     hae_env.Install('$HAE_DISTDIR/bin', hae_env.SConscript('samples/SConscript', exports = ['hae_env']))
 
 #Build Unit Tests
-hae_env.Install('$HAE_DISTDIR/hae/bin', hae_env.SConscript('unit_test/SConscript', exports = ['hae_env']))
+hae_env.Install('$HAE_DISTDIR/hae/bin', hae_env.SConscript('unit_test/DUT/SConscript', exports = ['hae_env']))
+hae_env.Install('$HAE_DISTDIR/hae/bin', hae_env.SConscript('unit_test/ServiceFramework/SConscript', exports = ['hae_env']))
 
 # Build docs
 installDocs = hae_env.SConscript('docs/SConscript', exports = ['hae_env'])

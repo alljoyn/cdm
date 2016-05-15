@@ -57,9 +57,9 @@ TEST_F(HAETest, HAE_v1_RemoteControllabilityTest)
         RemoteControllabilityIntfController* controller = static_cast<RemoteControllabilityIntfController*>(interface);
         QStatus status = ER_FAIL;
 
-        TEST_LOG_1("Get initial values for all properties.")
+        TEST_LOG_1("Get initial values for all properties.");
         {
-            TEST_LOG_2("Retrieve the IsControllable property.")
+            TEST_LOG_2("Retrieve the IsControllable property.");
             status = controller->GetIsControllable();
             EXPECT_EQ(status, ER_OK);
             EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));

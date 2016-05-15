@@ -62,9 +62,9 @@ TEST_F(HAETest, HAE_v1_02)
         AirRecirculationModeIntfController* controller = static_cast<AirRecirculationModeIntfController*>(interface);
         QStatus status = ER_FAIL;
 
-        TEST_LOG_1("Get initial values for all properties")
+        TEST_LOG_1("Get initial values for all properties");
         {
-            TEST_LOG_2("Retrieve the IsRecirculating property.")
+            TEST_LOG_2("Retrieve the IsRecirculating property.");
             status = controller->GetIsRecirculating();
             EXPECT_EQ(status, ER_OK);
             EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
@@ -73,9 +73,9 @@ TEST_F(HAETest, HAE_v1_02)
         }
 
         const bool initIsRecirculating = true;
-        TEST_LOG_1("Initialize all read-write properties.")
+        TEST_LOG_1("Initialize all read-write properties.");
         {
-            TEST_LOG_2("Initialize the IsRecirculating property to true.")
+            TEST_LOG_2("Initialize the IsRecirculating property to true.");
             if (listener.m_isRecirculating != initIsRecirculating) {
                 status = controller->SetIsRecirculating(initIsRecirculating);
                 EXPECT_EQ(status, ER_OK);
@@ -89,9 +89,9 @@ TEST_F(HAETest, HAE_v1_02)
             }
         }
 
-        TEST_LOG_1("Set properties to valid value")
+        TEST_LOG_1("Set properties to valid value");
         {
-            TEST_LOG_2("Set the IsRecirculating property to false.")
+            TEST_LOG_2("Set the IsRecirculating property to false.");
             {
                 const bool validIsRecirculating = false;
                 status = controller->SetIsRecirculating(validIsRecirculating);
@@ -101,12 +101,12 @@ TEST_F(HAETest, HAE_v1_02)
                 listener.m_event.ResetEvent();
                 EXPECT_EQ(listener.m_status, ER_OK);
 
-                TEST_LOG_3("Wait the PropertiesChanged signal for the IsRecirculating property.")
+                TEST_LOG_3("Wait the PropertiesChanged signal for the IsRecirculating property.");
                 EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_eventSignal, TIMEOUT));
                 listener.m_eventSignal.ResetEvent();
                 EXPECT_EQ(listener.m_isRecirculatingSignal, validIsRecirculating);
 
-                TEST_LOG_3("Get the IsRecirculating property.")
+                TEST_LOG_3("Get the IsRecirculating property.");
                 status = controller->GetIsRecirculating();
                 EXPECT_EQ(status, ER_OK);
                 EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));

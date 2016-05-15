@@ -63,9 +63,9 @@ TEST_F(HAETest, HAE_v1_RapidModeTest)
         RapidModeIntfController* controller = static_cast<RapidModeIntfController*>(interface);
         QStatus status = ER_FAIL;
 
-        TEST_LOG_1("Get initial values for all properties.")
+        TEST_LOG_1("Get initial values for all properties.");
         {
-            TEST_LOG_2("Retrieve the RapidMode property.")
+            TEST_LOG_2("Retrieve the RapidMode property.");
             status = controller->GetRapidMode();
             EXPECT_EQ(status, ER_OK);
             EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
@@ -74,9 +74,9 @@ TEST_F(HAETest, HAE_v1_RapidModeTest)
         }
 
         const bool initRapidMode = false;;
-        TEST_LOG_1("Initialize all read-write properties.")
+        TEST_LOG_1("Initialize all read-write properties.");
         {
-            TEST_LOG_2("Set the RapidMode property to false.")
+            TEST_LOG_2("Set the RapidMode property to false.");
             if (listener.m_rapidMode != initRapidMode) {
                 status = controller->SetRapidMode(initRapidMode);
                 EXPECT_EQ(status, ER_OK);

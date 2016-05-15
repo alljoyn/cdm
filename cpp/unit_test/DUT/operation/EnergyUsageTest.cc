@@ -58,8 +58,10 @@ public:
     virtual void OnResponseResetCumulativeEnergy(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage)
     {
         m_status = status;
-        m_errorName = errorName;
-        m_errorMessage = errorMessage;
+        if (status != ER_OK) {
+            if (errorName) m_errorName = errorName;
+            if (errorMessage) m_errorMessage = errorMessage;
+        }
         m_event.SetEvent();
     }
 

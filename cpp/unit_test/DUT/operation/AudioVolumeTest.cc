@@ -90,7 +90,7 @@ TEST_F(HAETest, HAE_v1_04)
 {
     WaitForControllee(AUDIO_VOLUME_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {
-        TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath)
+        TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
 
         AudioVolumeListener listener;
         HaeInterface* interface = m_controller->CreateInterface(AUDIO_VOLUME_INTERFACE, m_interfaces[i].busName,
@@ -98,9 +98,9 @@ TEST_F(HAETest, HAE_v1_04)
         AudioVolumeIntfController* controller = static_cast<AudioVolumeIntfController*>(interface);
         QStatus status = ER_FAIL;
 
-        TEST_LOG_1("Get initial values for all properties")
+        TEST_LOG_1("Get initial values for all properties");
         {
-            TEST_LOG_2("Retieve the Volume property.")
+            TEST_LOG_2("Retieve the Volume property.");
             status = controller->GetVolume();
             EXPECT_EQ(status, ER_OK);
             EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
@@ -114,7 +114,7 @@ TEST_F(HAETest, HAE_v1_04)
             listener.m_event.ResetEvent();
             EXPECT_EQ(listener.m_status, ER_OK);
 
-            TEST_LOG_2("Retieve the Mute property.")
+            TEST_LOG_2("Retieve the Mute property.");
             status = controller->GetMute();
             EXPECT_EQ(status, ER_OK);
             EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
@@ -124,9 +124,9 @@ TEST_F(HAETest, HAE_v1_04)
 
         const uint8_t initVolue = 0;
         const bool initMute = false;
-        TEST_LOG_1("Initialize all read-write properties.")
+        TEST_LOG_1("Initialize all read-write properties.");
         {
-            TEST_LOG_2("Initialize the Volume property to 0.")
+            TEST_LOG_2("Initialize the Volume property to 0.");
             if (listener.m_volume != initVolue) {
                 status = controller->SetVolume(initVolue);
                 EXPECT_EQ(status, ER_OK);
@@ -153,9 +153,9 @@ TEST_F(HAETest, HAE_v1_04)
             }
         }
 
-        TEST_LOG_1("Set properties to valid value.")
+        TEST_LOG_1("Set properties to valid value.");
         {
-            TEST_LOG_2("Set the Volume property to value 1.")
+            TEST_LOG_2("Set the Volume property to value 1.");
             {
                 const uint8_t validValue = 1;
                 status = controller->SetVolume(validValue);
@@ -178,7 +178,7 @@ TEST_F(HAETest, HAE_v1_04)
                 EXPECT_EQ(listener.m_volume, validValue);
             }
 
-            TEST_LOG_2("Set the Mute property to true.")
+            TEST_LOG_2("Set the Mute property to true.");
             {
                 const bool validMute = true;
                 status = controller->SetMute(validMute);
@@ -187,12 +187,12 @@ TEST_F(HAETest, HAE_v1_04)
                 listener.m_event.ResetEvent();
                 EXPECT_EQ(listener.m_status, ER_OK);
 
-                TEST_LOG_3("Wait the PropertiesChanged signal for the Mute property.")
+                TEST_LOG_3("Wait the PropertiesChanged signal for the Mute property.");
                 EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_eventSignal, TIMEOUT));
                 listener.m_eventSignal.ResetEvent();
                 EXPECT_EQ(listener.m_muteSignal, validMute);
 
-                TEST_LOG_3("Get the Mute property.")
+                TEST_LOG_3("Get the Mute property.");
                 status = controller->GetMute();
                 EXPECT_EQ(status, ER_OK);
                 EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
@@ -202,9 +202,9 @@ TEST_F(HAETest, HAE_v1_04)
             }
         }
 
-        TEST_LOG_1("Set properties to invalid value.")
+        TEST_LOG_1("Set properties to invalid value.");
         {
-            TEST_LOG_2("If MaxVolume != UINT8_MAX, Set the Volume property to MaxVolume + 1.")
+            TEST_LOG_2("If MaxVolume != UINT8_MAX, Set the Volume property to MaxVolume + 1.");
             if (listener.m_maxVolume != UINT8_MAX) {
                 const uint16_t invalidVolume = listener.m_maxVolume + 1;
                 status = controller->SetVolume(invalidVolume);
@@ -213,12 +213,12 @@ TEST_F(HAETest, HAE_v1_04)
                 listener.m_event.ResetEvent();
                 EXPECT_EQ(listener.m_status, ER_OK);
 
-                TEST_LOG_3("Wait the PropertiesChanged signal for the Volume property.")
+                TEST_LOG_3("Wait the PropertiesChanged signal for the Volume property.");
                 EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_eventSignal, TIMEOUT));
                 listener.m_eventSignal.ResetEvent();
                 EXPECT_EQ(listener.m_volumeSignal, listener.m_maxVolume);
 
-                TEST_LOG_3("Get the Volume property.")
+                TEST_LOG_3("Get the Volume property.");
                 status = controller->GetVolume();
                 EXPECT_EQ(status, ER_OK);
                 EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));

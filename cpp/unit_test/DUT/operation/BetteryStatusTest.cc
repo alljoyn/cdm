@@ -71,16 +71,16 @@ TEST_F(HAETest, HAE_v1_05)
         BatteryStatusIntfController* controller = static_cast<BatteryStatusIntfController*>(interface);
         QStatus status = ER_FAIL;
 
-        TEST_LOG_1("Get initial values for all properties.")
+        TEST_LOG_1("Get initial values for all properties.");
         {
-            TEST_LOG_2("Retrieve the CurrentValue property.")
+            TEST_LOG_2("Retrieve the CurrentValue property.");
             status = controller->GetCurrentValue();
             EXPECT_EQ(status, ER_OK);
             EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
             listener.m_event.ResetEvent();
             EXPECT_EQ(listener.m_status, ER_OK);
 
-            TEST_LOG_2("Retrieve the IsCharging property.")
+            TEST_LOG_2("Retrieve the IsCharging property.");
             status = controller->GetIsCharging();
             EXPECT_EQ(status, ER_OK);
             EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));

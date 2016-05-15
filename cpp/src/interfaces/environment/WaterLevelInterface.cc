@@ -24,30 +24,33 @@ const uint16_t WaterLevelInterface::s_interfaceVersion = 1;
 
 // Below none secure xml is only for test
 const qcc::String WaterLevelInterface::s_xml =
-"<node xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='http://www.allseenalliance.org/schemas/introspect.xsd'>"
+"<node xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns='http://www.allseenalliance.org/schemas/introspect' xsi:schemaLocation='http://www.allseenalliance.org/schemas/introspect.xsd'>"
 "    <interface name='org.alljoyn.SmartSpaces.Environment.WaterLevel'>"
-"        <description language='en'>This information provides level and supply source of water for an appliance.</description>"
+"        <annotation name='org.alljoyn.Bus.DocString.En' value='This information provides level and supply source of water for an appliance.'/>"
 "        <annotation name='org.alljoyn.Bus.Secure' value='true'/>"
 "        <property name='Version' type='q' access='read'>"
-"            <description language='en'>The interface version.</description>"
-"            <annotation name='org.freedesktop.DBus.Property.EmitsChangedSignal' value='true'/>"
+"            <annotation name='org.alljoyn.Bus.DocString.En' value='The interface version.'/>"
+"            <annotation name='org.freedesktop.DBus.Property.EmitsChangedSignal' value='const'/>"
 "        </property>"
+"        <annotation name='org.alljoyn.Bus.Enum.SupplySource.Value.Tank' value='0'/>"
+"        <annotation name='org.alljoyn.Bus.Enum.SupplySource.Value.Pipe' value='1'/>"
+"        <annotation name='org.alljoyn.Bus.Enum.SupplySource.Value.NotSupported' value='255'/>"
 "        <property name='SupplySource' type='y' access='read'>"
-"            <description language='en'>The supply source of water.</description>"
+"            <annotation name='org.alljoyn.Bus.DocString.En' value='The supply source of water.'/>"
+"            <annotation name='org.alljoyn.Bus.Type.Name' value='[SupplySource]'/>"
 "            <annotation name='org.freedesktop.DBus.Property.EmitsChangedSignal' value='true'/>"
 "        </property>"
 "        <property name='CurrentLevel' type='y' access='read'>"
-"            <description language='en'>The current level of water in the tank.</description>"
+"            <annotation name='org.alljoyn.Bus.DocString.En' value='The current level of water in the tank.'/>"
 "            <annotation name='org.freedesktop.DBus.Property.EmitsChangedSignal' value='true'/>"
+"            <annotation name='org.alljoyn.Bus.Type.Min' value='0'/>"
 "        </property>"
 "        <property name='MaxLevel' type='y' access='read'>"
-"            <description language='en'>Maximum level allowed for water level.</description>"
+"            <annotation name='org.alljoyn.Bus.DocString.En' value='Maximum level allowed for water level.'/>"
 "            <annotation name='org.freedesktop.DBus.Property.EmitsChangedSignal' value='true'/>"
 "        </property>"
 "    </interface>"
-"</node>"
-;
-
+"</node>";
 const qcc::String WaterLevelInterface::s_prop_Version = "Version";
 const qcc::String WaterLevelInterface::s_prop_SupplySource = "SupplySource";
 const qcc::String WaterLevelInterface::s_prop_CurrentLevel = "CurrentLevel";

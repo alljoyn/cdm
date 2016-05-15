@@ -118,8 +118,8 @@ public:
     {
         m_status = status;
         if (status != ER_OK) {
-            m_errorName = errorName;
-            m_errorMessage = errorMessage;
+            if (errorName) m_errorName = errorName;
+            if (errorMessage) m_errorMessage = errorMessage;
         }
         m_event.SetEvent();
     }
@@ -127,8 +127,8 @@ public:
     {
         m_status = status;
         if (status != ER_OK) {
-            m_errorName = errorName;
-            m_errorMessage = errorMessage;
+            if (errorName) m_errorName = errorName;
+            if (errorMessage) m_errorMessage = errorMessage;
         }
         m_event.SetEvent();
     }
@@ -147,7 +147,7 @@ TEST_F(HAETest, HAE_v1_TimerTest)
         TimerIntfController* controller = static_cast<TimerIntfController*>(interface);
         QStatus status = ER_FAIL;
 
-        TEST_LOG_1("Get initial values for all properties.")
+        TEST_LOG_1("Get initial values for all properties.");
         {
             TEST_LOG_2("Retrieve the ReferenceTimer property.");
             status = controller->GetReferenceTimer();
@@ -156,35 +156,35 @@ TEST_F(HAETest, HAE_v1_TimerTest)
             listener.m_event.ResetEvent();
             EXPECT_EQ(listener.m_status, ER_OK);
 
-            TEST_LOG_2("Retrieve the TargetTimeToStart property.")
+            TEST_LOG_2("Retrieve the TargetTimeToStart property.");
             status = controller->GetTargetTimeToStart();
             EXPECT_EQ(status, ER_OK);
             EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
             listener.m_event.ResetEvent();
             EXPECT_EQ(listener.m_status, ER_OK);
 
-            TEST_LOG_2("Retrieve TargetTimeToStop property.")
+            TEST_LOG_2("Retrieve TargetTimeToStop property.");
             status = controller->GetTargetTimeToStop();
             EXPECT_EQ(status, ER_OK);
             EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
             listener.m_event.ResetEvent();
             EXPECT_EQ(listener.m_status, ER_OK);
 
-            TEST_LOG_2("Retrieve EstimatedTimeToEnd property.")
+            TEST_LOG_2("Retrieve EstimatedTimeToEnd property.");
             status = controller->GetEstimatedTimeToEnd();
             EXPECT_EQ(status, ER_OK);
             EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
             listener.m_event.ResetEvent();
             EXPECT_EQ(listener.m_status, ER_OK);
 
-            TEST_LOG_2("Retrieve RunningTime property.")
+            TEST_LOG_2("Retrieve RunningTime property.");
             status = controller->GetRunningTime();
             EXPECT_EQ(status, ER_OK);
             EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
             listener.m_event.ResetEvent();
             EXPECT_EQ(listener.m_status, ER_OK);
 
-            TEST_LOG_2("Retrieve TargetDuration property.")
+            TEST_LOG_2("Retrieve TargetDuration property.");
             status = controller->GetTargetDuration();
             EXPECT_EQ(status, ER_OK);
             EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
@@ -192,7 +192,7 @@ TEST_F(HAETest, HAE_v1_TimerTest)
             EXPECT_EQ(listener.m_status, ER_OK);
         }
 
-        TEST_LOG_1("Call methods with invalid params.")
+        TEST_LOG_1("Call methods with invalid params.");
         {
             TEST_LOG_2("Call SetTargetTimerToStart method with 0x80000000.");
             status = controller->SetTargetTimeToStart(TimerInterface::TIMER_FEATURE_NOT_APPLIED);
@@ -227,7 +227,7 @@ TEST_F(HAETest, HAE_v1_TimerTest)
             EXPECT_STREQ(listener.m_errorName.c_str(), HaeInterface::GetInterfaceErrorName(INVALID_VALUE).c_str());
         }
 
-        TEST_LOG_1("Call methods with valid params.")
+        TEST_LOG_1("Call methods with valid params.");
         {
             TEST_LOG_2("Call SetTargetTimerToStart method with 100.");
             const int32_t validTimeToStart = 100;

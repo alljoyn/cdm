@@ -137,7 +137,7 @@ else:
         haetest_src = [l for l in hae_unittest_env.Glob('*.cc') if not l.path.endswith('DiscoveryTest.cc')]
 
     haetest_obj = hae_unittest_env.Object(haetest_src);
-    haetest_prog = hae_unittest_env.Program('haetest', haetest_obj)
+    haetest_prog = hae_unittest_env.Program('haeServiceFrameworkTest', haetest_obj)
     hae_unittest_env.Install('$TESTDIR/hae/bin', haetest_prog)
 
     hae_unittest_env.Append(LIBPATH = [ '#' + '$OBJDIR_SERVICES_HAE/cpp/src' ])

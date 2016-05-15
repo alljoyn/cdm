@@ -92,23 +92,23 @@ TEST_F(HAETest, HAE_v1_07)
         ClimateControlModeIntfController* controller = static_cast<ClimateControlModeIntfController*>(interface);
         QStatus status = ER_FAIL;
 
-        TEST_LOG_1("Get initial values for all properties.")
+        TEST_LOG_1("Get initial values for all properties.");
         {
-            TEST_LOG_2("Retrieve the Mode property.")
+            TEST_LOG_2("Retrieve the Mode property.");
             status = controller->GetMode();
             EXPECT_EQ(status, ER_OK);
             EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
             listener.m_event.ResetEvent();
             EXPECT_EQ(listener.m_status, ER_OK);
 
-            TEST_LOG_2("Retrieve the SupportedModes property.")
+            TEST_LOG_2("Retrieve the SupportedModes property.");
             status = controller->GetSupportedModes();
             EXPECT_EQ(status, ER_OK);
             EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
             listener.m_event.ResetEvent();
             EXPECT_EQ(listener.m_status, ER_OK);
 
-            TEST_LOG_2("Retrieve the OperationalState property.")
+            TEST_LOG_2("Retrieve the OperationalState property.");
             status = controller->GetOperationalState();
             EXPECT_EQ(status, ER_OK);
             EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
@@ -117,9 +117,9 @@ TEST_F(HAETest, HAE_v1_07)
         }
 
         const uint16_t initMode = listener.m_supportedModes[0];
-        TEST_LOG_1("Initialize all read-write properties.")
+        TEST_LOG_1("Initialize all read-write properties.");
         {
-            TEST_LOG_2("Set the Mode property to the 1st item of SupportedModes.")
+            TEST_LOG_2("Set the Mode property to the 1st item of SupportedModes.");
             if (listener.m_mode != initMode) {
                 status = controller->SetMode(initMode);
                 EXPECT_EQ(status, ER_OK);
@@ -133,9 +133,9 @@ TEST_F(HAETest, HAE_v1_07)
             }
         }
 
-        TEST_LOG_1("Set properties to invalid value.")
+        TEST_LOG_1("Set properties to invalid value.");
         {
-            TEST_LOG_2("Set the Mode property to 0xFF(not supported).")
+            TEST_LOG_2("Set the Mode property to 0xFF(not supported).");
             {
                 const uint8_t notSupportedMode = 0xff;
                 status = controller->SetMode(notSupportedMode);
@@ -144,7 +144,7 @@ TEST_F(HAETest, HAE_v1_07)
                 listener.m_event.ResetEvent();
                 EXPECT_NE(listener.m_status, ER_OK);
 
-                TEST_LOG_3("Get the Mode property.")
+                TEST_LOG_3("Get the Mode property.");
                 status = controller->GetMode();
                 EXPECT_EQ(status, ER_OK);
                 EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
@@ -154,9 +154,9 @@ TEST_F(HAETest, HAE_v1_07)
             }
 
         }
-        TEST_LOG_1("Set properties to valid value.")
+        TEST_LOG_1("Set properties to valid value.");
         {
-            TEST_LOG_2("If size of SupportedModes > 1, set the Mode property to the 2nd item of the SupportedModes.")
+            TEST_LOG_2("If size of SupportedModes > 1, set the Mode property to the 2nd item of the SupportedModes.");
             if (listener.m_supportedModes.size() > 1) {
                 uint16_t validMode = listener.m_supportedModes[1];
                 status = controller->SetMode(validMode);
@@ -165,12 +165,12 @@ TEST_F(HAETest, HAE_v1_07)
                 listener.m_event.ResetEvent();
                 EXPECT_EQ(listener.m_status, ER_OK);
 
-                TEST_LOG_3("Wait the PropertiesChanged signal for the Mode property.")
+                TEST_LOG_3("Wait the PropertiesChanged signal for the Mode property.");
                 EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_eventSignal, TIMEOUT)) << "property changed signal is missing";
                 listener.m_eventSignal.ResetEvent();
                 EXPECT_EQ(listener.m_modeSignal, validMode);
 
-                TEST_LOG_3("Get the Mode property")
+                TEST_LOG_3("Get the Mode property");
                 status = controller->GetMode();
                 EXPECT_EQ(status, ER_OK);
                 EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));

@@ -1,22 +1,25 @@
-<node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
+<node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.allseenalliance.org/schemas/introspect" xsi:schemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
     <interface name="org.alljoyn.SmartSpaces.Environment.CurrentTemperature">
-        <description language="en">This interface provides capability to represent current temperature.</description>
+        <annotation name="org.alljoyn.Bus.DocString.En" value="This interface provides capability to represent current temperature."/>
         <annotation name="org.alljoyn.Bus.Secure" value="true"/>
         <property name="Version" type="q" access="read">
-            <description language="en">The interface version</description>
-            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+            <annotation name="org.alljoyn.Bus.DocString.En" value="The interface version."/>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const"/>
         </property>
         <property name="CurrentValue" type="d" access="read">
-            <description language="en">Current temperature expressed in Celsius</description>
+            <annotation name="org.alljoyn.Bus.DocString.En" value="Current temperature expressed in Celsius."/>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+            <annotation name="org.alljoyn.Bus.Type.Units" value="degrees Celsius"/>
         </property>
         <property name="Precision" type="d" access="read">
-            <description language="en">The precision of the CurrentValue property. i.e. the number of degrees Celsius the actual power consumption must change before CurrentValue is updated.</description>
+            <annotation name="org.alljoyn.Bus.DocString.En" value="The precision of the CurrentValue property. i.e. the number of degrees Celsius the actual power consumption must change before CurrentValue is updated."/>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+            <annotation name="org.alljoyn.Bus.Type.Units" value="degrees Celsius"/>
         </property>
         <property name="UpdateMinTime" type="q" access="read">
-            <description language="en">The minimum time between updates of the CurrentValue property in milliseconds.</description>
+            <annotation name="org.alljoyn.Bus.DocString.En" value="The minimum time between updates of the CurrentValue property in milliseconds."/>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+            <annotation name="org.alljoyn.Bus.Type.Units" value="milliseconds"/>
         </property>
     </interface>
 </node>

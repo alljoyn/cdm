@@ -16,8 +16,10 @@
 
 #include "HaeTest.h"
 
-InterfaceInfo::InterfaceInfo(const char* name, SessionPort port, const char* path, HaeAboutData& data) :
-    busName(name), sessionPort(port), sessionId(0), objectPath(path)
+#define ALL_HAE_INTERFACE "*"
+
+InterfaceInfo::InterfaceInfo(const char* name, SessionPort port, const char* path, HaeAboutData& data, AboutObjectDescription& description) :
+    busName(name), sessionPort(port), sessionId(0), objectPath(path), aboutData(data), aboutDescription(description)
 {
     MsgArg* arg;
     data.GetField("DeviceName", arg, "en");
@@ -27,7 +29,8 @@ InterfaceInfo::InterfaceInfo(const char* name, SessionPort port, const char* pat
     deviceName = bus_name;
 }
 
-bool ECDHEKeyXListener::RequestCredentials(const char* authMechanism, const char* authPeer, uint16_t authCount, const char* userId, uint16_t credMask, Credentials& creds)
+bool ECDHEKeyXListener::RequestCredentials(const char* authMechanism, const char* authPeer, uint16_t authCount, const char* userId, uint16_t credMask,
+                                           Credentials& creds)
 {
     QCC_UNUSED(userId);
 
@@ -110,13 +113,18 @@ void HAETest::TearDown()
 
 void HAETest::WaitForControllee(HaeInterfaceType type)
 {
-    TEST_LOG_1("The test device listens for an About announcement from the application on the DUT.")
-    m_interfaceNameForTest = HaeInterface::GetInterfaceName(type);
-    ASSERT_EQ(qcc::Event::Wait(eventOnDeviceAdded, TIMEOUT), ER_OK)<< "Controllee device not found";
-    qcc::String name = HaeInterface::GetInterfaceName(type);
-    TEST_LOG_1("After receiving an About announcement from the application, the test device joins\n"
-                 "   a session with the application at the port specified in the received About announcement\n"
-                 "   if there is \"" + name.substr(name.find_last_of('.')+1) + "\" Interface on DUT.");
+    TEST_LOG_1("The test device listens for an About announcement from the application on the DUT.");
+    if (type == (HaeInterfaceType) -1) {
+        m_interfaceNameForTest = ALL_HAE_INTERFACE;
+        ASSERT_EQ(qcc::Event::Wait(eventOnDeviceAdded, TIMEOUT), ER_OK)<< "Controllee device not found";
+    } else {
+        m_interfaceNameForTest = HaeInterface::GetInterfaceName(type);
+        ASSERT_EQ(qcc::Event::Wait(eventOnDeviceAdded, TIMEOUT), ER_OK)<< "Controllee device not found";
+        std::string name = m_interfaceNameForTest.c_str();
+        TEST_LOG_1("After receiving an About announcement from the application, the test device joins\n"
+            "   a session with the application at the port specified in the received About announcement\n"
+            "   if there is \"" + name.substr(name.find_last_of('.') + 1) + "\" Interface on DUT.");
+    }
 }
 
 void HAETest::OnDeviceAdded(const char* busname, SessionPort port, const HaeAboutData& data, const AboutObjectDescription& description)
@@ -134,15 +142,17 @@ void HAETest::OnDeviceAdded(const char* busname, SessionPort port, const HaeAbou
         const char** interfaces = new const char*[numInterfaces];
         description.GetInterfaces(paths[i], interfaces, numInterfaces);
         for (size_t j = 0; j < numInterfaces; ++j) {
-            if (m_interfaceNameForTest.compare(interfaces[j]))
+            if (m_interfaceNameForTest.compare(interfaces[j]) && m_interfaceNameForTest.compare(ALL_HAE_INTERFACE))
                 continue;
 
-            InterfaceInfo info(busname, port, paths[i], const_cast<HaeAboutData&>(data));
+            InterfaceInfo info(busname, port, paths[i], const_cast<HaeAboutData&>(data), const_cast<AboutObjectDescription&>(description));
             m_controller->JoinDevice(info.busName, port, data, const_cast<AboutObjectDescription&>(description));
             m_interfaces.push_back(info);
             isFound = true;
         }
+        delete[] interfaces;
     }
+    delete[] paths;
     if (isFound)
         eventOnDeviceAdded.SetEvent();
 }

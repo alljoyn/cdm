@@ -16,20 +16,20 @@
 
 #include "HaeTest.h"
 
-#include <alljoyn/hae/interfaces/operation/DishWashingCyclePhaseIntfController.h>
-#include <alljoyn/hae/interfaces/operation/DishWashingCyclePhaseIntfControllerListener.h>
+#include <alljoyn/hae/interfaces/operation/LaundryCyclePhaseIntfController.h>
+#include <alljoyn/hae/interfaces/operation/LaundryCyclePhaseIntfControllerListener.h>
 using namespace std;
-class DishWashingCyclePhaseListener : public DishWashingCyclePhaseIntfControllerListener
+class LaundryCyclePhaseListener : public LaundryCyclePhaseIntfControllerListener
 {
 public:
     qcc::Event m_event;
     qcc::Event m_eventSignal;
     QStatus m_status;
     uint8_t m_cyclePhase;
-    DishWashingCyclePhaseInterface::SupportedCyclePhases m_supportedCyclePhases;
+    LaundryCyclePhaseInterface::SupportedCyclePhases m_supportedCyclePhases;
     uint8_t m_cyclePhaseSignal;
-    DishWashingCyclePhaseInterface::SupportedCyclePhases m_supportedCyclePhasesSignal;
-    DishWashingCyclePhaseInterface::CyclePhaseDescriptions m_phasesDescriptions;
+    LaundryCyclePhaseInterface::SupportedCyclePhases m_supportedCyclePhasesSignal;
+    LaundryCyclePhaseInterface::CyclePhaseDescriptions m_phasesDescriptions;
     qcc::String m_errorName;
     qcc::String m_errorMessage;
 
@@ -40,7 +40,7 @@ public:
         m_event.SetEvent();
     }
 
-    virtual void OnResponseGetSupportedCyclePhases(QStatus status, const qcc::String& objectPath, const DishWashingCyclePhaseInterface::SupportedCyclePhases& listOfCyclePhases, void* context)
+    virtual void OnResponseGetSupportedCyclePhases(QStatus status, const qcc::String& objectPath, const LaundryCyclePhaseInterface::SupportedCyclePhases& listOfCyclePhases, void* context)
     {
         m_supportedCyclePhases = listOfCyclePhases;
         m_status = status;
@@ -53,37 +53,35 @@ public:
         m_eventSignal.SetEvent();
     }
 
-    virtual void OnSupportedCyclePhasesPropertyChanged(const qcc::String& objectPath, const DishWashingCyclePhaseInterface::SupportedCyclePhases& listOfCyclePhases)
+    virtual void OnSupportedCyclePhasesPropertyChanged(const qcc::String& objectPath, const LaundryCyclePhaseInterface::SupportedCyclePhases& listOfCyclePhases)
     {
         m_supportedCyclePhasesSignal = listOfCyclePhases;
         m_eventSignal.SetEvent();
     }
 
-    virtual void OnResponseGetCyclePhasesDescriptions(QStatus status, const qcc::String& objectPath, const DishWashingCyclePhaseInterface::CyclePhaseDescriptions& listOfCycleDescriptions,
+    virtual void OnResponseGetCyclePhasesDescriptions(QStatus status, const qcc::String& objectPath, const LaundryCyclePhaseInterface::CyclePhaseDescriptions& listOfCycleDescriptions,
                                                       void* context, const char* errorName, const char* errorMessage)
     {
         m_phasesDescriptions = listOfCycleDescriptions;
-        if(status != ER_OK)
-        {
-            m_errorMessage = errorMessage;
-            m_errorName = errorName;
+        if (status != ER_OK) {
+            if (errorName) m_errorName = errorName;
+            if (errorMessage) m_errorMessage = errorMessage;
         }
-        
         m_status = status;
         m_event.SetEvent();
     }
 };
 
-TEST_F(HAETest, HAE_v1_DishWashingCyclePhaseTest)
+TEST_F(HAETest, HAE_v1_LaundryCyclePhaseTest)
 {
-    WaitForControllee(DISH_WASHING_CYCLE_PHASE_INTERFACE);
+    WaitForControllee(LAUNDRY_CYCLE_PHASE_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
 
-        DishWashingCyclePhaseListener listener;
-        HaeInterface* interface = m_controller->CreateInterface(DISH_WASHING_CYCLE_PHASE_INTERFACE, m_interfaces[i].busName,
+        LaundryCyclePhaseListener listener;
+        HaeInterface* interface = m_controller->CreateInterface(LAUNDRY_CYCLE_PHASE_INTERFACE, m_interfaces[i].busName,
                                                                 qcc::String(m_interfaces[i].objectPath.c_str()), m_interfaces[i].sessionId, listener);
-        DishWashingCyclePhaseIntfController* controller = static_cast<DishWashingCyclePhaseIntfController*>(interface);
+        LaundryCyclePhaseIntfController* controller = static_cast<LaundryCyclePhaseIntfController*>(interface);
         QStatus status = ER_FAIL;
 
         TEST_LOG_1("Get initial values for all properties.");

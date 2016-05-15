@@ -1,17 +1,18 @@
-<node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
+<node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.allseenalliance.org/schemas/introspect" xsi:schemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
     <interface name="org.alljoyn.SmartSpaces.Environment.CurrentHumidity">
-        <description language="en">This interface provides capability to represent current relative humidity.</description>
+        <annotation name="org.alljoyn.Bus.DocString.En" value="This interface provides capability to represent current relative humidity."/>
         <annotation name="org.alljoyn.Bus.Secure" value="true"/>
         <property name="Version" type="q" access="read">
-            <description language="en">The interface version</description>
-            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+            <annotation name="org.alljoyn.Bus.DocString.En" value="The interface version"/>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const"/>
         </property>
         <property name="CurrentValue" type="y" access="read">
-            <description language="en">Current relative humidity value</description>
+            <annotation name="org.alljoyn.Bus.DocString.En" value="Current relative humidity value"/>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+            <annotation name="org.alljoyn.Bus.Type.Min" value="0"/>
         </property>
         <property name="MaxValue" type="y" access="read">
-            <description language="en">Maximum value allowed for represented relative humidity</description>
+            <annotation name="org.alljoyn.Bus.DocString.En" value="Maximum value allowed for represented relative humidity"/>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
     </interface>

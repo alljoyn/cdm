@@ -295,7 +295,7 @@ QStatus FillAboutData(HaeAboutData* aboutData)
     aboutData->SetLocation("Living Room", "en");
 
     DeviceTypeDescription description;
-    description.AddDeviceType(AIR_CONDIRIONER, "/Hae/AirConditioner");
+    description.AddDeviceType(AIR_CONDITIONER, "/Hae/AirConditioner");
     aboutData->SetDeviceTypeDescription(&description);
 
     if (!aboutData->IsValid()) {
