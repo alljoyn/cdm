@@ -1,0 +1,11 @@
+   <!--
+
+      Copyright (c) 2014 Qualcomm Connected Experiences, Inc.
+           All Rights Reserved
+        QCE Proprietary and Confidential
+
+  -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android" >
+	<item android:state_pressed="true" android:drawable="@drawable/refresh_icon_pressed" />
+    <item android:drawable="@drawable/refresh_icon_reg" /> 
+</selector>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+   <!--
+
+      Copyright (c) 2014 Qualcomm Connected Experiences, Inc.
+           All Rights Reserved
+        QCE Proprietary and Confidential
+
+  -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/navtitleback_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="48dp"
+    android:background="@drawable/navigation_bar" >
+    	
+    	<LinearLayout android:id="@+id/navtitleback_title_block"
+			android:layout_width="wrap_content"
+		    android:layout_height="fill_parent"
+		    android:layout_centerVertical="true"
+		    android:paddingLeft="10dp"
+		    android:paddingRight="10dp">
+
+		    <ImageView android:id="@+id/navtitleback_title_arrorw"
+	    		android:layout_width="wrap_content"
+		    	android:layout_height="fill_parent"
+                android:tint="@color/allseen_green"
+		    	android:src="@drawable/nav_back" />
+		    		     		    
+		    <ImageView android:id="@+id/navtitleback_title_logo"
+	    		android:layout_width="36dp"
+		    	android:layout_height="36dp"
+				android:layout_gravity="center_vertical"
+		    	android:src="@drawable/alljoyn_logo"
+		    	android:layout_marginLeft="10dp" />		        		    	
+	    	
+	    	<TextView android:id="@+id/navtitleback_title_text"
+	    		android:layout_width="wrap_content"
+	    		android:layout_height="wrap_content"	    	
+	    		android:layout_marginLeft="5dp"	    		    		    
+	    		android:text="title"
+	    		android:layout_gravity="center"
+	    		android:textAppearance="@style/navmenu_text_title"
+	    		android:maxLines="1" />	    	
+    	</LinearLayout>
+    	
+    	<ImageView android:id="@+id/navtitleback_refresh_image"
+    		android:layout_width="48dp"
+    		android:layout_height="48dp"
+    		android:layout_centerVertical="true"
+    		android:layout_alignParentRight="true"
+			android:src="@drawable/refresh_icon"
+    		android:visibility="invisible" />
+</RelativeLayout>

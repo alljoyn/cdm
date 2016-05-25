@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+
+      Copyright (c) 2014 Qualcomm Connected Experiences, Inc.
+           All Rights Reserved
+        QCE Proprietary and Confidential
+
+  -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_centerVertical="true"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:background="@drawable/navigation_bar">
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/alljoyn_logo" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:maxLines="1"
+            android:text="title"
+            android:textAppearance="@style/device_name" />
+
+    </LinearLayout>
+    <include
+        android:id="@+id/sub_list"
+        layout="@layout/view_item_list" />
+</LinearLayout>
