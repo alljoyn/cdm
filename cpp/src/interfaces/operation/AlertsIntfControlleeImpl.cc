@@ -67,7 +67,7 @@ QStatus AlertsIntfControlleeImpl::Init()
     return status;
 }
 
-QStatus AlertsIntfControlleeImpl::OnGetProperty(const String propName, MsgArg& val)
+QStatus AlertsIntfControlleeImpl::OnGetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_OK;
 
@@ -145,7 +145,7 @@ QStatus AlertsIntfControlleeImpl::OnGetProperty(const String propName, MsgArg& v
     return status;
 }
 
-QStatus AlertsIntfControlleeImpl::OnSetProperty(const String propName, MsgArg& val)
+QStatus AlertsIntfControlleeImpl::OnSetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_OK;
 
@@ -168,7 +168,7 @@ void AlertsIntfControlleeImpl::OnMethodHandler(const InterfaceDescription::Membe
 
     if (!isFound) {
         status = ER_BUS_METHOD_CALL_ABORTED;
-        QCC_LogError(status, ("%s: could not found method handler.", __func__));
+        QCC_LogError(status, ("%s: could not find method handler.", __func__));
         m_busObject.ReplyMethodCall(msg, status);
     }
 }
@@ -179,7 +179,9 @@ QStatus AlertsIntfControlleeImpl::SetAlerts(const Alerts& alerts)
     bool listChanged = false;
 
     if(m_alerts.size() != alerts.size())
+    {
         listChanged = true;
+    }
     else
     {
         for (size_t i = 0; i < alerts.size(); i ++)

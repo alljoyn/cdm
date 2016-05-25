@@ -57,7 +57,7 @@ QStatus WindDirectionIntfControlleeImpl::Init()
     return status;
 }
 
-QStatus WindDirectionIntfControlleeImpl::OnGetProperty(const String propName, MsgArg& val)
+QStatus WindDirectionIntfControlleeImpl::OnGetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_OK;
 
@@ -183,7 +183,7 @@ QStatus WindDirectionIntfControlleeImpl::OnGetProperty(const String propName, Ms
     return status;
 }
 
-QStatus WindDirectionIntfControlleeImpl::OnSetProperty(const String propName, MsgArg& val)
+QStatus WindDirectionIntfControlleeImpl::OnSetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_OK;
 
@@ -310,7 +310,7 @@ void WindDirectionIntfControlleeImpl::OnMethodHandler(const InterfaceDescription
 
     if (!isFound) {
         status = ER_BUS_METHOD_CALL_ABORTED;
-        QCC_LogError(status, ("%s: could not found method handler.", __func__));
+        QCC_LogError(status, ("%s: could not find method handler.", __func__));
         m_busObject.ReplyMethodCall(msg, status);
     }
 }
@@ -431,8 +431,9 @@ uint16_t WindDirectionIntfControlleeImpl::adjustHorizontalDirection(uint16_t hor
 }
 
 bool WindDirectionIntfControlleeImpl::isHorizontalAutoModeValid(uint8_t horizontalAutoMode) {
-    if (m_HorizontalAutoMode == 0xFF)
+    if (m_HorizontalAutoMode == 0xFF) {
         return false;
+    }
 
     switch (horizontalAutoMode) {
     case 0x00:
@@ -450,8 +451,9 @@ uint16_t WindDirectionIntfControlleeImpl::adjustVerticalDirection(uint16_t verti
 }
 
 bool WindDirectionIntfControlleeImpl::isVerticalAutoModeValid(uint8_t verticalAutoMode) {
-    if (m_VerticalAutoMode == 0xFF)
+    if (m_VerticalAutoMode == 0xFF) {
         return false;
+    }
 
     switch (verticalAutoMode) {
     case 0x00:

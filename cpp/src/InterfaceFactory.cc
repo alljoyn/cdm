@@ -206,7 +206,7 @@ CreateIntfControlleeFptr InterfaceFactory::GetCreateIntfControlleeFptr(const Hae
 
     it = m_controlleeCreators.find(type);
     if (it == m_controlleeCreators.end()) {
-        QCC_LogError(ER_FAIL, ("%s: could not found interface", __func__));
+        QCC_LogError(ER_FAIL, ("%s: could not find interface", __func__));
         return NULL;
     }
 
@@ -219,7 +219,7 @@ CreateIntfControllerFptr InterfaceFactory::GetCreateIntfControllerFptr(const Hae
 
     it = m_controllerCreators.find(type);
     if (it == m_controllerCreators.end()) {
-        QCC_LogError(ER_FAIL, ("%s: could not found interface", __func__));
+        QCC_LogError(ER_FAIL, ("%s: could not find interface", __func__));
         return NULL;
     }
 
@@ -232,13 +232,13 @@ HaeInterface* InterfaceFactory::CreateIntfControllee(const HaeInterfaceType type
     QStatus status = ER_OK;
 
     if (!m_busAttachment) {
-        QCC_LogError(ER_FAIL, ("%s: could not initialized controllee", __func__));
+        QCC_LogError(ER_FAIL, ("%s: could not initialize controllee", __func__));
         return NULL;
     }
 
     CreateIntfControlleeFptr handler = GetCreateIntfControlleeFptr(type);
     if (!handler) {
-        QCC_LogError(status, ("%s: could not found interface", __func__));
+        QCC_LogError(status, ("%s: could not find interface", __func__));
         return NULL;
     }
 
@@ -270,7 +270,7 @@ HaeInterface* InterfaceFactory::CreateIntfController(const HaeInterfaceType type
 
     CreateIntfControllerFptr handler = GetCreateIntfControllerFptr(type);
     if (!handler) {
-        QCC_LogError(status, ("%s: could not found interface", __func__));
+        QCC_LogError(status, ("%s: could not find interface", __func__));
         return NULL;
     }
 

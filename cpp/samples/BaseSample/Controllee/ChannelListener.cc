@@ -29,8 +29,9 @@ QStatus ChannelListener::OnSetChannelId(const qcc::String& channelId)
         ChannelInterface::ChannelInfoRecord chInfo;
         char buff[10];
         sprintf(buff, "%d", i);
-        if (channelId.compare(CHANNELID_PREFIX + qcc::String(buff)) == 0)
+        if (channelId.compare(CHANNELID_PREFIX + qcc::String(buff)) == 0) {
             return ER_OK;
+        }
     }
     return ER_FAIL;
 }

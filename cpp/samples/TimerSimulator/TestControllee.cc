@@ -93,7 +93,9 @@ void TestControllee::SetInitialProperty()
     m_cycleControlIntfControllee->SetSupportedStates(states);
 
     if(IsRecipeSet())
+    {
         m_cycleControlIntfControllee->SetOperationalState(CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_READY_TO_START);
+    }
 }
 
 void TestControllee::TimeChangedCallback(int sec)
@@ -136,6 +138,8 @@ void TestControllee::TimeChangedCallback(int sec)
     }
 
     if(status != ER_OK)
+    {
         cout << "Error in TimeChanged callback" << endl;
+    }
 }
 

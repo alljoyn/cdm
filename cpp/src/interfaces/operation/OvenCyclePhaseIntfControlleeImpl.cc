@@ -58,7 +58,7 @@ QStatus OvenCyclePhaseIntfControlleeImpl::Init()
     return status;
 }
 
-QStatus OvenCyclePhaseIntfControlleeImpl::OnGetProperty(const String propName, MsgArg& val)
+QStatus OvenCyclePhaseIntfControlleeImpl::OnGetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_OK;
 
@@ -151,7 +151,7 @@ QStatus OvenCyclePhaseIntfControlleeImpl::OnGetProperty(const String propName, M
     return status;
 }
 
-QStatus OvenCyclePhaseIntfControlleeImpl::OnSetProperty(const String propName, MsgArg& val)
+QStatus OvenCyclePhaseIntfControlleeImpl::OnSetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_OK;
 
@@ -174,7 +174,7 @@ void OvenCyclePhaseIntfControlleeImpl::OnMethodHandler(const InterfaceDescriptio
 
     if (!isFound) {
         status = ER_BUS_METHOD_CALL_ABORTED;
-        QCC_LogError(status, ("%s: could not found method handler.", __func__));
+        QCC_LogError(status, ("%s: could not find method handler.", __func__));
         m_busObject.ReplyMethodCall(msg, status);
     }
 }
@@ -187,12 +187,16 @@ QStatus OvenCyclePhaseIntfControlleeImpl::SetCyclePhase(const uint8_t cyclePhase
     vend_it = std::find(m_vendorDefinedCyclePhases.begin(),m_vendorDefinedCyclePhases.end(),cyclePhase);
 
     if(vend_it == m_vendorDefinedCyclePhases.end() && stand_it == m_standardCyclePhases.end())
+    {
         return ER_FAIL;
+    }
 
     SupportedCyclePhases::iterator supp_it;
     supp_it = std::find(m_supportedCyclePhases.begin(),m_supportedCyclePhases.end(),cyclePhase);
     if(supp_it == m_supportedCyclePhases.end())
+    {
         return ER_FAIL;
+    }
 
     if(m_cyclePhase != cyclePhase)
     {

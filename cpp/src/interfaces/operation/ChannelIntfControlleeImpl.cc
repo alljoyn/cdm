@@ -80,7 +80,7 @@ QStatus ChannelIntfControlleeImpl::SetTotalNumberOfChannels(const uint16_t total
     return ER_OK;
 }
 
-QStatus ChannelIntfControlleeImpl::OnGetProperty(const String propName, MsgArg& val)
+QStatus ChannelIntfControlleeImpl::OnGetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_OK;
 
@@ -138,7 +138,7 @@ QStatus ChannelIntfControlleeImpl::OnGetProperty(const String propName, MsgArg& 
     return status;
 }
 
-QStatus ChannelIntfControlleeImpl::OnSetProperty(const String propName, MsgArg& val)
+QStatus ChannelIntfControlleeImpl::OnSetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_OK;
 
@@ -178,7 +178,7 @@ void ChannelIntfControlleeImpl::OnMethodHandler(const InterfaceDescription::Memb
 
     if (!isFound) {
         status = ER_BUS_METHOD_CALL_ABORTED;
-        QCC_LogError(status, ("%s: could not found method handler.", __func__));
+        QCC_LogError(status, ("%s: could not find method handler.", __func__));
         m_busObject.ReplyMethodCall(msg, status);
     }
 }

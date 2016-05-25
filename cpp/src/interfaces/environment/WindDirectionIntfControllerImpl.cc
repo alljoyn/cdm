@@ -76,12 +76,12 @@ void WindDirectionIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, con
                 uint16_t value = propValue->v_uint16;
                 m_interfaceListener.OnHorizontalDirectionChanged(obj.GetPath(), value);
             }
-        } else if  (!s_prop_HorizontalMax.compare(propNameStr)) {
+        } else if (!s_prop_HorizontalMax.compare(propNameStr)) {
             if (propValue->typeId == ALLJOYN_UINT16) {
                 uint16_t value = propValue->v_uint16;
                 m_interfaceListener.OnHorizontalMaxChanged(obj.GetPath(), value);
             }
-        } else if  (!s_prop_HorizontalAutoMode.compare(propNameStr)) {
+        } else if (!s_prop_HorizontalAutoMode.compare(propNameStr)) {
             if (propValue->typeId == ALLJOYN_BYTE) {
                 uint8_t value = propValue->v_byte;
                 m_interfaceListener.OnHorizontalAutoModeChanged(obj.GetPath(), value);
@@ -91,12 +91,12 @@ void WindDirectionIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, con
                 uint16_t value = propValue->v_uint16;
                 m_interfaceListener.OnVerticalDirectionChanged(obj.GetPath(), value);
             }
-        } else if  (!s_prop_VerticalMax.compare(propNameStr)) {
+        } else if (!s_prop_VerticalMax.compare(propNameStr)) {
             if (propValue->typeId == ALLJOYN_UINT16) {
                 uint16_t value = propValue->v_uint16;
                 m_interfaceListener.OnVerticalMaxChanged(obj.GetPath(), value);
             }
-        } else if  (!s_prop_VerticalAutoMode.compare(propNameStr)) {
+        } else if (!s_prop_VerticalAutoMode.compare(propNameStr)) {
             if (propValue->typeId == ALLJOYN_BYTE) {
                 uint8_t value = propValue->v_byte;
                 m_interfaceListener.OnVerticalAutoModeChanged(obj.GetPath(), value);
@@ -195,7 +195,7 @@ void WindDirectionIntfControllerImpl::SetHorizontalDirectionPropertyCB(QStatus s
 void WindDirectionIntfControllerImpl::GetHorizontalDirectionPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
     if (!obj) {
-            return;
+        return;
     }
     uint16_t val;
     value.Get("q", &val);
@@ -205,7 +205,7 @@ void WindDirectionIntfControllerImpl::GetHorizontalDirectionPropertyCB(QStatus s
 void WindDirectionIntfControllerImpl::GetHorizontalMaxPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
     if (!obj) {
-            return;
+        return;
     }
     uint16_t val;
     value.Get("q", &val);
@@ -222,7 +222,7 @@ void WindDirectionIntfControllerImpl::SetHorizontalAutoModePropertyCB(QStatus st
 void WindDirectionIntfControllerImpl::GetHorizontalAutoModePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
     if (!obj) {
-            return;
+        return;
     }
     uint8_t val;
     value.Get("y", &val);
@@ -241,7 +241,7 @@ void WindDirectionIntfControllerImpl::SetVerticalDirectionPropertyCB(QStatus sta
 void WindDirectionIntfControllerImpl::GetVerticalDirectionPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
     if (!obj) {
-            return;
+        return;
     }
     uint16_t val;
     value.Get("q", &val);
@@ -251,7 +251,7 @@ void WindDirectionIntfControllerImpl::GetVerticalDirectionPropertyCB(QStatus sta
 void WindDirectionIntfControllerImpl::GetVerticalMaxPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
     if (!obj) {
-            return;
+        return;
     }
     uint16_t val;
     value.Get("q", &val);
@@ -268,7 +268,7 @@ void WindDirectionIntfControllerImpl::SetVerticalAutoModePropertyCB(QStatus stat
 void WindDirectionIntfControllerImpl::GetVerticalAutoModePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
     if (!obj) {
-            return;
+        return;
     }
     uint8_t val;
     value.Get("y", &val);

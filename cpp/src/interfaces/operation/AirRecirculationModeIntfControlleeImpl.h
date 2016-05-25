@@ -62,14 +62,14 @@ class AirRecirculationModeIntfControlleeImpl : public InterfaceControllee, publi
      * @param[out] val   Returns the property value. The type of this value is the actual value type.
      * @return status
      */
-    virtual QStatus OnGetProperty(const qcc::String propName, MsgArg& val);
+    virtual QStatus OnGetProperty(const qcc::String& propName, MsgArg& val);
 
     /**
      * a callback function for setting property.
      * @param[in] propName  Identifies the property to set
      * @param[in] val       The property value to set. The type of this value is the actual value type.
      */
-    virtual QStatus OnSetProperty(const qcc::String propName, MsgArg& val);
+    virtual QStatus OnSetProperty(const qcc::String& propName, MsgArg& val);
 
     /**
      * method handler

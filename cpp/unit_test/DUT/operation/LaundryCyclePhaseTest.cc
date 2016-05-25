@@ -64,8 +64,12 @@ public:
     {
         m_phasesDescriptions = listOfCycleDescriptions;
         if (status != ER_OK) {
-            if (errorName) m_errorName = errorName;
-            if (errorMessage) m_errorMessage = errorMessage;
+            if (errorName) {
+                m_errorName = errorName;
+            }
+            if (errorMessage) {
+                m_errorMessage = errorMessage;
+            }
         }
         m_status = status;
         m_event.SetEvent();

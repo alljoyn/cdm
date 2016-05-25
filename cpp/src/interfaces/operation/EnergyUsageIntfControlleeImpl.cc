@@ -57,7 +57,7 @@ QStatus EnergyUsageIntfControlleeImpl::Init()
     return status;
 }
 
-QStatus EnergyUsageIntfControlleeImpl::OnGetProperty(const String propName, MsgArg& val)
+QStatus EnergyUsageIntfControlleeImpl::OnGetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_OK;
 
@@ -130,7 +130,7 @@ QStatus EnergyUsageIntfControlleeImpl::OnGetProperty(const String propName, MsgA
     return status;
 }
 
-QStatus EnergyUsageIntfControlleeImpl::OnSetProperty(const String propName, MsgArg& val)
+QStatus EnergyUsageIntfControlleeImpl::OnSetProperty(const String& propName, MsgArg& val)
 {
     return ER_BUS_NO_SUCH_PROPERTY;
 }
@@ -151,7 +151,7 @@ void EnergyUsageIntfControlleeImpl::OnMethodHandler(const InterfaceDescription::
 
     if (!isFound) {
         status = ER_BUS_METHOD_CALL_ABORTED;
-        QCC_LogError(status, ("%s: could not found method handler.", __func__));
+        QCC_LogError(status, ("%s: could not find method handler.", __func__));
         m_busObject.ReplyMethodCall(msg, status);
     }
 }

@@ -177,6 +177,7 @@ QStatus HaeAboutData::SetProductBrand(const char* brand, const char* language)
     MsgArg arg;
     status = arg.Set(GetFieldSignature(HaeAboutKeys::PRODUCT_BRAND.c_str()), brand);
     if (status != ER_OK) {
+        QCC_LogError(status, ("%s: failed to set MsgArg.", __func__));
         return status;
     }
     status = SetField(HaeAboutKeys::PRODUCT_BRAND.c_str(), arg, language);
@@ -202,6 +203,7 @@ QStatus HaeAboutData::SetLocation(const char* location, const char* language)
     MsgArg arg;
     status = arg.Set(GetFieldSignature(HaeAboutKeys::LOCATION.c_str()), location);
     if (status != ER_OK) {
+        QCC_LogError(status, ("%s: failed to set MsgArg.", __func__));
         return status;
     }
     status = SetField(HaeAboutKeys::LOCATION.c_str(), arg, language);

@@ -118,8 +118,12 @@ public:
     {
         m_status = status;
         if (status != ER_OK) {
-            if (errorName) m_errorName = errorName;
-            if (errorMessage) m_errorMessage = errorMessage;
+            if (errorName) {
+                m_errorName = errorName;
+            }
+            if (errorMessage) {
+                m_errorMessage = errorMessage;
+            }
         }
         m_event.SetEvent();
     }
@@ -127,8 +131,12 @@ public:
     {
         m_status = status;
         if (status != ER_OK) {
-            if (errorName) m_errorName = errorName;
-            if (errorMessage) m_errorMessage = errorMessage;
+            if (errorName) {
+                m_errorName = errorName;
+            }
+            if (errorMessage) {
+                m_errorMessage = errorMessage;
+            }
         }
         m_event.SetEvent();
     }

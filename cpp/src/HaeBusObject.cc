@@ -115,11 +115,11 @@ QStatus HaeBusObject::Get(const char* ifcName, const char* propName, MsgArg& val
         if (controllee) {
             status = controllee->OnGetProperty(propName, val);
         } else {
-            QCC_LogError(ER_FAIL, ("%s: interface object could not found.", __func__));
+            QCC_LogError(ER_FAIL, ("%s: interface object not found.", __func__));
             status = ER_FAIL;
         }
     } else {
-        QCC_LogError(ER_FAIL, ("%s: interface object could not found.", __func__));
+        QCC_LogError(ER_FAIL, ("%s: interface object not found.", __func__));
         status = ER_FAIL;
     }
 
@@ -136,11 +136,11 @@ QStatus HaeBusObject::Set(const char* ifcName, const char* propName, MsgArg& val
         if (controllee) {
             status = controllee->OnSetProperty(propName, val);
         } else {
-            QCC_LogError(ER_FAIL, ("%s: interface object could not found.", __func__));
+            QCC_LogError(ER_FAIL, ("%s: interface object not found.", __func__));
             status = ER_FAIL;
         }
     } else {
-        QCC_LogError(ER_FAIL, ("%s: interface object could not found.", __func__));
+        QCC_LogError(ER_FAIL, ("%s: interface object not found.", __func__));
         status = ER_FAIL;
     }
 
@@ -160,12 +160,12 @@ void HaeBusObject::OnMethodHandler(const InterfaceDescription::Member* member, M
             controllee->OnMethodHandler(member, msg);
         } else {
             status = ER_BUS_METHOD_CALL_ABORTED;
-            QCC_LogError(status, ("%s: interface object could not found.", __func__));
+            QCC_LogError(status, ("%s: interface object not found.", __func__));
             MethodReply(msg, status);
         }
     } else {
         status = ER_BUS_METHOD_CALL_ABORTED;
-        QCC_LogError(status, ("%s: could not found method handler.", __func__));
+        QCC_LogError(status, ("%s: method handler not found.", __func__));
         MethodReply(msg, status);
     }
 }

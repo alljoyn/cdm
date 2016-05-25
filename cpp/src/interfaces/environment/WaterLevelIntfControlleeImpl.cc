@@ -53,7 +53,7 @@ QStatus WaterLevelIntfControlleeImpl::Init()
     return status;
 }
 
-QStatus WaterLevelIntfControlleeImpl::OnGetProperty(const String propName, MsgArg& val)
+QStatus WaterLevelIntfControlleeImpl::OnGetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_OK;
 
@@ -123,7 +123,7 @@ QStatus WaterLevelIntfControlleeImpl::OnGetProperty(const String propName, MsgAr
     return status;
 }
 
-QStatus WaterLevelIntfControlleeImpl::OnSetProperty(const String propName, MsgArg& val)
+QStatus WaterLevelIntfControlleeImpl::OnSetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_OK;
 
@@ -146,7 +146,7 @@ void WaterLevelIntfControlleeImpl::OnMethodHandler(const InterfaceDescription::M
 
     if (!isFound) {
         status = ER_BUS_METHOD_CALL_ABORTED;
-        QCC_LogError(status, ("%s: could not found method handler.", __func__));
+        QCC_LogError(status, ("%s: could not find method handler.", __func__));
         m_busObject.ReplyMethodCall(msg, status);
     }
 }
@@ -155,7 +155,9 @@ QStatus WaterLevelIntfControlleeImpl::SetCurrentLevel(const uint8_t currentLevel
     WaterLevelSupplySource src = GetSupplySource();
 
     if((src == WaterLevelSupplySource::SUPPLY_SOURCE_NOT_SUPPORTED || src == WaterLevelSupplySource::SUPPLY_SOURCE_PIPE) && currentLevel !=0 )
+    {
         return ER_FAIL;
+    }
 
     if(currentLevel > m_maxLevel)
     {
@@ -178,7 +180,9 @@ QStatus WaterLevelIntfControlleeImpl::SetMaxLevel(const uint8_t maxLevel)
 {
     WaterLevelSupplySource src = GetSupplySource();
     if((src == WaterLevelSupplySource::SUPPLY_SOURCE_NOT_SUPPORTED || src == WaterLevelSupplySource::SUPPLY_SOURCE_PIPE) && maxLevel !=0 )
+    {
         return ER_FAIL;
+    }
 
     if(maxLevel != m_maxLevel)
     {

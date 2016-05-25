@@ -55,7 +55,7 @@ QStatus VendorDefinedIntfControlleeImpl::Init()
     return status;
 }
 
-QStatus VendorDefinedIntfControlleeImpl::OnGetProperty(const String propName, MsgArg& val)
+QStatus VendorDefinedIntfControlleeImpl::OnGetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_OK;
 
@@ -96,7 +96,7 @@ QStatus VendorDefinedIntfControlleeImpl::OnGetProperty(const String propName, Ms
     return status;
 }
 
-QStatus VendorDefinedIntfControlleeImpl::OnSetProperty(const String propName, MsgArg& val)
+QStatus VendorDefinedIntfControlleeImpl::OnSetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_OK;
 

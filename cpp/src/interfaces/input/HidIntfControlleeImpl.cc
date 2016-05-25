@@ -97,7 +97,7 @@ QStatus HidIntfControlleeImpl::SetSupportedEvents(const HidInterface::SupportedI
     return ER_OK;
 }
 
-QStatus HidIntfControlleeImpl::OnGetProperty(const String propName, MsgArg& val)
+QStatus HidIntfControlleeImpl::OnGetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_OK;
 
@@ -156,7 +156,7 @@ QStatus HidIntfControlleeImpl::OnGetProperty(const String propName, MsgArg& val)
     return status;
 }
 
-QStatus HidIntfControlleeImpl::OnSetProperty(const String propName, MsgArg& val)
+QStatus HidIntfControlleeImpl::OnSetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_BUS_NO_SUCH_PROPERTY;
 
@@ -179,7 +179,7 @@ void HidIntfControlleeImpl::OnMethodHandler(const InterfaceDescription::Member* 
 
     if (!isFound) {
         status = ER_BUS_METHOD_CALL_ABORTED;
-        QCC_LogError(status, ("%s: could not found method handler.", __func__));
+        QCC_LogError(status, ("%s: could not find method handler.", __func__));
     }
 }
 

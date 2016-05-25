@@ -54,7 +54,7 @@ QStatus SpinSpeedLevelIntfControlleeImpl::Init()
     return status;
 }
 
-QStatus SpinSpeedLevelIntfControlleeImpl::OnGetProperty(const String propName, MsgArg& val)
+QStatus SpinSpeedLevelIntfControlleeImpl::OnGetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_OK;
     if (!(s_prop_Version.compare(propName))) {
@@ -127,7 +127,7 @@ QStatus SpinSpeedLevelIntfControlleeImpl::OnGetProperty(const String propName, M
     return status;
 }
 
-QStatus SpinSpeedLevelIntfControlleeImpl::OnSetProperty(const String propName, MsgArg& val)
+QStatus SpinSpeedLevelIntfControlleeImpl::OnSetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_OK;
 
@@ -174,7 +174,7 @@ void SpinSpeedLevelIntfControlleeImpl::OnMethodHandler(const InterfaceDescriptio
 
     if (!isFound) {
         status = ER_BUS_METHOD_CALL_ABORTED;
-        QCC_LogError(status, ("%s: could not found method handler.", __func__));
+        QCC_LogError(status, ("%s: could not find method handler.", __func__));
         m_busObject.ReplyMethodCall(msg, status);
     }
 }
@@ -224,7 +224,9 @@ QStatus SpinSpeedLevelIntfControlleeImpl::SetSelectableLevels(const std::vector<
     }
 
     if (!isValid)
+    {
         return ER_INVALID_DATA;
+    }
 
     MsgArg arg;
     uint8_t* vals = new uint8_t[selectableLevels.size()];
@@ -237,7 +239,9 @@ QStatus SpinSpeedLevelIntfControlleeImpl::SetSelectableLevels(const std::vector<
     arg.Stabilize();
 
     if(m_selectableLevels.size() > 0)
+    {
         m_selectableLevels.clear();
+    }
 
     for(size_t i = 0; i < selectableLevels.size(); i ++)
         m_selectableLevels.push_back(selectableLevels[i]);

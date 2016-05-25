@@ -53,7 +53,7 @@ class InterfaceControllee : public MessageReceiver {
      * @param[out] val returns the property value. The type of this value is the actual value type.
      * @return ER_OK on success
      */
-    virtual QStatus OnGetProperty(const qcc::String propName, MsgArg& val) = 0;
+    virtual QStatus OnGetProperty(const qcc::String& propName, MsgArg& val) = 0;
 
     /**
      * Callback handler for setting property.
@@ -61,7 +61,7 @@ class InterfaceControllee : public MessageReceiver {
      * @param[in] val returns the property value. The type of this value is the actual value type.
      * @return ER_OK on success
      */
-    virtual QStatus OnSetProperty(const qcc::String propName, MsgArg& val) = 0;
+    virtual QStatus OnSetProperty(const qcc::String& propName, MsgArg& val) = 0;
 
     /**
      * Handler for method

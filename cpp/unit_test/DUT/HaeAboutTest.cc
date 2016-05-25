@@ -81,8 +81,9 @@ bool HasDefaultInterfaces(const qcc::String& objPath, const AboutObjectDescripti
     description.GetPaths(paths, path_num);
 
     for (size_t i = 0; i < path_num; ++i) {
-        if (strstr(paths[i], objPath.c_str()) != paths[i])
+        if (strstr(paths[i], objPath.c_str()) != paths[i]) {
             continue;
+        }
 
         size_t numInterfaces = description.GetInterfaces(paths[i], NULL, 0);
         const char** interfaces = new const char*[numInterfaces];
@@ -91,8 +92,9 @@ bool HasDefaultInterfaces(const qcc::String& objPath, const AboutObjectDescripti
             qcc::String intf = interfaces[i];
 
             removeInterface(intf, defaultInterfaces);
-            if (defaultInterfaces.empty())
+            if (defaultInterfaces.empty()) {
                 return true;
+            }
         }
         delete[] interfaces;
     }

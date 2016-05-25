@@ -58,7 +58,7 @@ QStatus CycleControlIntfControlleeImpl::Init()
     return status;
 }
 
-QStatus CycleControlIntfControlleeImpl::OnGetProperty(const String propName, MsgArg& val)
+QStatus CycleControlIntfControlleeImpl::OnGetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_OK;
 
@@ -139,7 +139,7 @@ QStatus CycleControlIntfControlleeImpl::OnGetProperty(const String propName, Msg
     return status;
 }
 
-QStatus CycleControlIntfControlleeImpl::OnSetProperty(const String propName, MsgArg& val)
+QStatus CycleControlIntfControlleeImpl::OnSetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_OK;
 
@@ -162,7 +162,7 @@ void CycleControlIntfControlleeImpl::OnMethodHandler(const InterfaceDescription:
 
     if (!isFound) {
         status = ER_BUS_METHOD_CALL_ABORTED;
-        QCC_LogError(status, ("%s: could not found method handler.", __func__));
+        QCC_LogError(status, ("%s: could not find method handler.", __func__));
         m_busObject.ReplyMethodCall(msg, status);
     }
 }
@@ -201,9 +201,13 @@ void CycleControlIntfControlleeImpl::OnExecuteCommand(const InterfaceDescription
         else //status was not set (status is ER_OK)
         {
             if(error != ErrorCode::NOT_ERROR)
+            {
                 m_busObject.ReplyMethodCall(msg, HaeInterface::GetInterfaceErrorName(error).c_str(), HaeInterface::GetInterfaceErrorMessage(error).c_str());
+            }
             else
+            {
                 m_busObject.ReplyMethodCall(msg, status);
+            }
         }
     }
     else
@@ -215,7 +219,9 @@ void CycleControlIntfControlleeImpl::OnExecuteCommand(const InterfaceDescription
     {
         status = EmitEndOfCycle();
         if(status != ER_OK)
+        {
             QCC_LogError(status, ("%s: failed to emit EndOfCycle signal.", __func__));
+        }
     }
 }
 
@@ -224,7 +230,9 @@ QStatus CycleControlIntfControlleeImpl::SetOperationalState(CycleControlOperatio
     SupportedOperationalStates::iterator it;
     it = std::find(m_supportedStates.begin(),m_supportedStates.end(),state);
     if(it == m_supportedStates.end())
+    {
         return ER_FAIL;
+    }
 
     QStatus status = ER_OK;
 
@@ -245,7 +253,9 @@ QStatus CycleControlIntfControlleeImpl::SetSupportedCommands(SupportedOperationa
 
     bool listChanged = false;
     if(m_supportedCommands.size() != commands.size())
+    {
         listChanged = true;
+    }
     else
     {
         for (size_t i = 0; i < commands.size(); i ++)
@@ -286,7 +296,9 @@ QStatus CycleControlIntfControlleeImpl::SetSupportedStates(SupportedOperationalS
 
     bool listChanged = false;
     if(m_supportedStates.size() != states.size())
+    {
         listChanged  = true;
+    }
     else
     {
         for (size_t i = 0; i < states.size(); i ++)

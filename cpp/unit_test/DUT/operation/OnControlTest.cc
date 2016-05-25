@@ -30,8 +30,12 @@ public:
     virtual void OnResponseSwitchOn(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage)
     {
         if (status != ER_OK) {
-            if (errorName) m_errorName = errorName;
-            if (errorMessage) m_errorMessage = errorMessage;
+            if (errorName) {
+                m_errorName = errorName;
+            }
+            if (errorMessage) {
+                m_errorMessage = errorMessage;
+            }
         }
         m_status = status;
         m_event.SetEvent();

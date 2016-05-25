@@ -88,10 +88,6 @@ QStatus AudioVolumeIntfControllerImpl::GetVolume(void* context)
 
     status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_Volume.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&AudioVolumeIntfControllerImpl::GetVolumePropertyCB, context);
 
-    if (ER_OK != status) {
-        QCC_LogError(status, ("%s: error .", __func__));
-    }
-
     return status;
 }
 

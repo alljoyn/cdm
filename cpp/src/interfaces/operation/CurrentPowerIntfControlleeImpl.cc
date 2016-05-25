@@ -50,7 +50,7 @@ QStatus CurrentPowerIntfControlleeImpl::Init()
     return status;
 }
 
-QStatus CurrentPowerIntfControlleeImpl::OnGetProperty(const String propName, MsgArg& val)
+QStatus CurrentPowerIntfControlleeImpl::OnGetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_OK;
 
@@ -119,7 +119,7 @@ QStatus CurrentPowerIntfControlleeImpl::OnGetProperty(const String propName, Msg
     return status;
 }
 
-QStatus CurrentPowerIntfControlleeImpl::OnSetProperty(const String propName, MsgArg& val)
+QStatus CurrentPowerIntfControlleeImpl::OnSetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_OK;
 
@@ -183,7 +183,7 @@ void CurrentPowerIntfControlleeImpl::OnMethodHandler(const InterfaceDescription:
 
     if (!isFound) {
         status = ER_BUS_METHOD_CALL_ABORTED;
-        QCC_LogError(status, ("%s: could not found method handler.", __func__));
+        QCC_LogError(status, ("%s: could not find method handler.", __func__));
         m_busObject.ReplyMethodCall(msg, status);
     }
 }

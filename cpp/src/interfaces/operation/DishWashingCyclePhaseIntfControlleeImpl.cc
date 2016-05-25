@@ -58,7 +58,7 @@ QStatus DishWashingCyclePhaseIntfControlleeImpl::Init()
     return status;
 }
 
-QStatus DishWashingCyclePhaseIntfControlleeImpl::OnGetProperty(const String propName, MsgArg& val)
+QStatus DishWashingCyclePhaseIntfControlleeImpl::OnGetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_OK;
 
@@ -151,7 +151,7 @@ QStatus DishWashingCyclePhaseIntfControlleeImpl::OnGetProperty(const String prop
     return status;
 }
 
-QStatus DishWashingCyclePhaseIntfControlleeImpl::OnSetProperty(const String propName, MsgArg& val)
+QStatus DishWashingCyclePhaseIntfControlleeImpl::OnSetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_OK;
 
@@ -174,7 +174,7 @@ void DishWashingCyclePhaseIntfControlleeImpl::OnMethodHandler(const InterfaceDes
 
     if (!isFound) {
         status = ER_BUS_METHOD_CALL_ABORTED;
-        QCC_LogError(status, ("%s: could not found method handler.", __func__));
+        QCC_LogError(status, ("%s: could not find method handler.", __func__));
         m_busObject.ReplyMethodCall(msg, status);
     }
 }
@@ -187,12 +187,16 @@ QStatus DishWashingCyclePhaseIntfControlleeImpl::SetCyclePhase(const uint8_t cyc
     vend_it = std::find(m_vendorDefinedCyclePhases.begin(),m_vendorDefinedCyclePhases.end(),cyclePhase);
 
     if(vend_it == m_vendorDefinedCyclePhases.end() && stand_it == m_standardCyclePhases.end())
+    {
         return ER_FAIL;
+    }
 
     SupportedCyclePhases::iterator supp_it;
     supp_it = std::find(m_supportedCyclePhases.begin(),m_supportedCyclePhases.end(),cyclePhase);
     if(supp_it == m_supportedCyclePhases.end())
+    {
         return ER_FAIL;
+    }
 
     if(m_cyclePhase != cyclePhase)
     {
@@ -209,7 +213,9 @@ QStatus DishWashingCyclePhaseIntfControlleeImpl::SetSupportedCyclePhases(const S
 {
     bool listChanged = false;
     if(m_supportedCyclePhases.size() != supportedPhases.size())
+    {
         listChanged = true;
+    }
     else
     {
         for(size_t i = 0 ; i < supportedPhases.size(); i++)
@@ -221,7 +227,9 @@ QStatus DishWashingCyclePhaseIntfControlleeImpl::SetSupportedCyclePhases(const S
             vend_it = std::find(m_vendorDefinedCyclePhases.begin(),m_vendorDefinedCyclePhases.end(),supportedPhases[i]);
 
             if(vend_it == m_vendorDefinedCyclePhases.end() && stand_it == m_standardCyclePhases.end())
+            {
                 return ER_FAIL;
+            }
 
             SupportedCyclePhases::iterator it;
             it = std::find(m_supportedCyclePhases.begin(),m_supportedCyclePhases.end(), supportedPhases[i]);
@@ -311,11 +319,15 @@ QStatus DishWashingCyclePhaseIntfControlleeImpl::SetVendorDefinedCyclePhases(con
     for(size_t i = 0 ; i < vendorPhases.size(); i++)
     {
         if(vendorPhases[i] < 0x80 )
+        {
             return ER_FAIL;
+        }
     }
     bool listChanged = false;
     if(m_vendorDefinedCyclePhases.size() != vendorPhases.size())
-            listChanged = true;
+    {
+        listChanged = true;
+    }
     else
     {
         for(size_t i = 0 ; i < vendorPhases.size(); i++)

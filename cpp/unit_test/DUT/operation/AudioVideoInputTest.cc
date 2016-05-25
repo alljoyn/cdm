@@ -72,8 +72,9 @@ uint16_t findInvalidInputSourceId(const AudioVideoInputInterface::InputSources& 
     bool isValid = true;
 
     while (invalidInputSourceId != (uint16_t) -1) {
-        if (supportedInputSources.find(invalidInputSourceId) == supportedInputSources.end())
+        if (supportedInputSources.find(invalidInputSourceId) == supportedInputSources.end()) {
             return invalidInputSourceId;
+        }
         invalidInputSourceId++;
     }
     return (uint16_t) -1;

@@ -51,7 +51,7 @@ QStatus HeatingZoneIntfControlleeImpl::Init()
     return status;
 }
 
-QStatus HeatingZoneIntfControlleeImpl::OnGetProperty(const String propName, MsgArg& val)
+QStatus HeatingZoneIntfControlleeImpl::OnGetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_OK;
 
@@ -182,7 +182,7 @@ QStatus HeatingZoneIntfControlleeImpl::OnGetProperty(const String propName, MsgA
     return status;
 }
 
-QStatus HeatingZoneIntfControlleeImpl::OnSetProperty(const String propName, MsgArg& val)
+QStatus HeatingZoneIntfControlleeImpl::OnSetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_OK;
 
@@ -205,7 +205,7 @@ void HeatingZoneIntfControlleeImpl::OnMethodHandler(const InterfaceDescription::
 
     if (!isFound) {
         status = ER_BUS_METHOD_CALL_ABORTED;
-        QCC_LogError(status, ("%s: could not found method handler.", __func__));
+        QCC_LogError(status, ("%s: could not find method handler.", __func__));
         m_busObject.ReplyMethodCall(msg, status);
     }
 }
@@ -227,7 +227,9 @@ QStatus HeatingZoneIntfControlleeImpl::SetMaxHeatingLevels(const std::vector<uin
     QStatus status = ER_OK;
 
     if(maxHeatingLevels.size() != m_numberOfHeatingLevels)
+    {
         return ER_BUS_BAD_VALUE;
+    }
 
     bool listChanged = false;
     for(size_t i = 0; i < maxHeatingLevels.size(); i ++)
@@ -268,7 +270,9 @@ QStatus HeatingZoneIntfControlleeImpl::SetHeatingLevels(const std::vector<uint8_
     QStatus status = ER_OK;
 
     if(heatingLevels.size() != m_numberOfHeatingLevels)
+    {
         return ER_BUS_BAD_VALUE;
+    }
 
     bool listChanged = false;
     for(size_t i = 0; i < heatingLevels.size(); i ++)

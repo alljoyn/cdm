@@ -42,7 +42,7 @@ HaeControllerImpl::HaeControllerImpl(BusAttachment& bus, DeviceListener* listene
 
     QStatus status = InterfaceFactory::GetInstance()->InitInterfaceFactory(&m_bus);
     if (status != ER_OK) {
-        QCC_LogError(status, ("%s: Interface factory initialization  is failed.", __func__));
+        QCC_LogError(status, ("%s: Interface factory initialization is failed.", __func__));
     }
 
     m_security.m_authMechanisms = NULL;
@@ -248,36 +248,6 @@ const HaeInterfaceType HaeControllerImpl::RegisterVendorDefinedInterface(const q
     return newVendorType;
 }
 
-/*
-QStatus HaeControllerImpl::GetAboutObjectDescription(const DeviceInfo& deviceInfo, AboutObjectDescription& aboutObjectDesc)
-{
-    QStatus status = ER_OK;
-    SessionId sessionId = deviceInfo.GetSessionId();
-
-    if (sessionId == 0) {
-        status = ER_FAIL;
-        QCC_LogError(status, ("Session is not exist"));
-        return status;
-    }
-
-    AboutProxy aboutProxy(m_bus, deviceInfo.GetBusName().c_str(), sessionId);
-    MsgArg objectDesc;
-
-    status = aboutProxy.GetObjectDescription(objectDesc);
-    if (status != ER_OK) {
-        QCC_LogError(status, ("GetObjectDescription is failed."));
-        return status;
-    }
-
-    status = aboutObjectDesc.CreateFromMsgArg(objectDesc);
-    if (status != ER_OK) {
-        QCC_LogError(status, ("CreateFromMsgArg is failed."));
-        return status;
-    }
-
-    return status;
-}
-*/
 void HaeControllerImpl::Announced(const char* busName, uint16_t version, SessionPort port, const MsgArg& objectDescriptionArg, const MsgArg& aboutDataArg)
 {
     QCC_DbgPrintf(("%s", __func__));
@@ -335,26 +305,3 @@ void HaeControllerImpl::SessionLost(ajn::SessionId sessionId, ajn::SessionListen
         m_deviceListener->OnDeviceSessionLost(sessionId);
     }
 }
-
-/*
-void HaeControllerImpl::JoinSessionCB(QStatus status, ajn::SessionId id, const ajn::SessionOpts& opts, void* context)
-{
-    if (status != ER_OK) {
-        QCC_LogError(status, ("Joining session failed."));
-////        ControlPanelListener* listener = m_Device->getListener();
-////        if (listener) {
-////            listener->errorOccured(m_Device, status, SESSION_JOIN, "Could not join session");
-////        }
-        return;
-    }
-//
-    QCC_DbgPrintf(("Joining session succeeded. SessionId: %u", id));
-//
-    if (m_deviceListener) {
-        DeviceInfoPtr info;
-        if (ER_OK == m_deviceManager.FindDeviceInfo(id, info)) {
-            m_deviceListener->OnDeviceSessionJoined(info);
-        }
-    }
-}
-*/

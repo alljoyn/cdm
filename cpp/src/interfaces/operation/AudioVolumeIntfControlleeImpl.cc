@@ -97,7 +97,7 @@ QStatus AudioVolumeIntfControlleeImpl::SetMaxVolume(const uint8_t maxVolume)
     return ER_OK;
 }
 
-QStatus AudioVolumeIntfControlleeImpl::OnGetProperty(const String propName, MsgArg& val)
+QStatus AudioVolumeIntfControlleeImpl::OnGetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_OK;
 
@@ -170,7 +170,7 @@ QStatus AudioVolumeIntfControlleeImpl::OnGetProperty(const String propName, MsgA
     return status;
 }
 
-QStatus AudioVolumeIntfControlleeImpl::OnSetProperty(const String propName, MsgArg& val)
+QStatus AudioVolumeIntfControlleeImpl::OnSetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_OK;
 
@@ -226,7 +226,7 @@ void AudioVolumeIntfControlleeImpl::OnMethodHandler(const InterfaceDescription::
 
     if (!isFound) {
         status = ER_BUS_METHOD_CALL_ABORTED;
-        QCC_LogError(status, ("%s: could not found method handler.", __func__));
+        QCC_LogError(status, ("%s: could not find method handler.", __func__));
         m_busObject.ReplyMethodCall(msg, status);
     }
 }

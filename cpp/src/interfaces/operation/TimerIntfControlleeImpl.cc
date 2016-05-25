@@ -67,7 +67,7 @@ QStatus TimerIntfControlleeImpl::Init()
     return status;
 }
 
-QStatus TimerIntfControlleeImpl::OnGetProperty(const String propName, MsgArg& val)
+QStatus TimerIntfControlleeImpl::OnGetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_OK;
 
@@ -228,7 +228,7 @@ QStatus TimerIntfControlleeImpl::OnGetProperty(const String propName, MsgArg& va
     return status;
 }
 
-QStatus TimerIntfControlleeImpl::OnSetProperty(const String propName, MsgArg& val)
+QStatus TimerIntfControlleeImpl::OnSetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_OK;
 
@@ -251,7 +251,7 @@ void TimerIntfControlleeImpl::OnMethodHandler(const InterfaceDescription::Member
 
     if (!isFound) {
         status = ER_BUS_METHOD_CALL_ABORTED;
-        QCC_LogError(status, ("%s: could not found method handler.", __func__));
+        QCC_LogError(status, ("%s: could not find method handler.", __func__));
         m_busObject.ReplyMethodCall(msg, status);
     }
 }
@@ -349,8 +349,9 @@ void TimerIntfControlleeImpl::OnSetTargetTimeToStart(const InterfaceDescription:
 
     if (numArgs == 1)
     {
-        if(args[0].typeId != ALLJOYN_INT32)
+        if(args[0].typeId != ALLJOYN_INT32) {
             m_busObject.ReplyMethodCall(msg, ER_BAD_ARG_1);
+        }
         int32_t time = args[0].v_int32;
         ErrorCode errorCode = NOT_ERROR;
         status = m_interfaceListener.OnSetTargetTimeToStart(time, errorCode);
@@ -384,8 +385,9 @@ void TimerIntfControlleeImpl::OnSetTargetTimeToStop(const InterfaceDescription::
 
     if (numArgs == 1)
     {
-        if(args[0].typeId != ALLJOYN_INT32)
+        if(args[0].typeId != ALLJOYN_INT32) {
             m_busObject.ReplyMethodCall(msg, ER_BAD_ARG_1);
+        }
         int32_t time = args[0].v_int32;
         ErrorCode errorCode = NOT_ERROR;
         status = m_interfaceListener.OnSetTargetTimeToStop(time, errorCode);
@@ -431,7 +433,9 @@ void TimerIntfControlleeImpl::UpdateProperties()
     }
 
     if(m_targetTimeToStart > 0 &&  m_targetTimeToStop > 0)
+    {
         targetDuration = m_targetTimeToStop - m_targetTimeToStart;
+    }
 
     this->SetEstimatedTimeToEnd(estimatedTimeToEnd);
     this->SetRunningTime(runningTime);

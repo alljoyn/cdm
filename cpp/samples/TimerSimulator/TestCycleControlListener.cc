@@ -45,9 +45,13 @@ QStatus TestCycleControlListener::OnExecuteCommand(CycleControlInterface::CycleC
             if(currentState == CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_READY_TO_START)
             {
                 if(controllee->TimerIntf()->GetTargetTimeToStart() > 0 )
+                {
                     controllee->CycleIntf()->SetOperationalState(CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_DELAYED_START);
+                }
                 else
+                {
                     controllee->CycleIntf()->SetOperationalState(CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_WORKING);
+                }
             }
             else
             {

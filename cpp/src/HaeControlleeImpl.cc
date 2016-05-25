@@ -53,7 +53,7 @@ HaeControlleeImpl::HaeControlleeImpl(BusAttachment& bus, HaeAboutData* aboutData
 
     QStatus status = InterfaceFactory::GetInstance()->InitInterfaceFactory(&m_bus);
     if (status != ER_OK) {
-        QCC_LogError(status, ("%s: Interface factory initialization  is failed.", __func__));
+        QCC_LogError(status, ("%s: Interface factory initialization is failed.", __func__));
     }
 }
 

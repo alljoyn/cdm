@@ -55,7 +55,7 @@ QStatus RobotCleaningCyclePhaseIntfControlleeImpl::Init()
     return status;
 }
 
-QStatus RobotCleaningCyclePhaseIntfControlleeImpl::OnGetProperty(const String propName, MsgArg& val)
+QStatus RobotCleaningCyclePhaseIntfControlleeImpl::OnGetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_OK;
 
@@ -129,7 +129,7 @@ QStatus RobotCleaningCyclePhaseIntfControlleeImpl::OnGetProperty(const String pr
     return status;
 }
 
-QStatus RobotCleaningCyclePhaseIntfControlleeImpl::OnSetProperty(const String propName, MsgArg& val)
+QStatus RobotCleaningCyclePhaseIntfControlleeImpl::OnSetProperty(const String& propName, MsgArg& val)
 {
     return ER_BUS_NO_SUCH_PROPERTY;
 }
@@ -150,7 +150,7 @@ void RobotCleaningCyclePhaseIntfControlleeImpl::OnMethodHandler(const InterfaceD
 
     if (!isFound) {
         status = ER_BUS_METHOD_CALL_ABORTED;
-        QCC_LogError(status, ("%s: could not found method handler.", __func__));
+        QCC_LogError(status, ("%s: could not find method handler.", __func__));
         m_busObject.ReplyMethodCall(msg, status);
     }
 }

@@ -63,7 +63,7 @@ QStatus AirRecirculationModeIntfControlleeImpl::SetIsRecirculating(const bool is
     return ER_OK;
 }
 
-QStatus AirRecirculationModeIntfControlleeImpl::OnGetProperty(const String propName, MsgArg& val)
+QStatus AirRecirculationModeIntfControlleeImpl::OnGetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_OK;
 
@@ -102,7 +102,7 @@ QStatus AirRecirculationModeIntfControlleeImpl::OnGetProperty(const String propN
     return status;
 }
 
-QStatus AirRecirculationModeIntfControlleeImpl::OnSetProperty(const String propName, MsgArg& val)
+QStatus AirRecirculationModeIntfControlleeImpl::OnSetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_OK;
 
@@ -142,7 +142,7 @@ void AirRecirculationModeIntfControlleeImpl::OnMethodHandler(const InterfaceDesc
 
     if (!isFound) {
         status = ER_BUS_METHOD_CALL_ABORTED;
-        QCC_LogError(status, ("%s: could not found method handler.", __func__));
+        QCC_LogError(status, ("%s: could not find method handler.", __func__));
         m_busObject.ReplyMethodCall(msg, status);
     }
 }

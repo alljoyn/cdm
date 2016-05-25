@@ -53,7 +53,7 @@ QStatus RepeatModeIntfControlleeImpl::Init()
     return status;
 }
 
-QStatus RepeatModeIntfControlleeImpl::OnGetProperty(const String propName, MsgArg& val)
+QStatus RepeatModeIntfControlleeImpl::OnGetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_OK;
 
@@ -84,7 +84,7 @@ QStatus RepeatModeIntfControlleeImpl::OnGetProperty(const String propName, MsgAr
     return status;
 }
 
-QStatus RepeatModeIntfControlleeImpl::OnSetProperty(const String propName, MsgArg& val)
+QStatus RepeatModeIntfControlleeImpl::OnSetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_OK;
 
@@ -123,7 +123,7 @@ void RepeatModeIntfControlleeImpl::OnMethodHandler(const InterfaceDescription::M
 
     if (!isFound) {
         status = ER_BUS_METHOD_CALL_ABORTED;
-        QCC_LogError(status, ("%s: could not found method handler.", __func__));
+        QCC_LogError(status, ("%s: could not find method handler.", __func__));
         m_busObject.ReplyMethodCall(msg, status);
     }
 }

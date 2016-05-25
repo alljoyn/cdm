@@ -124,7 +124,7 @@ QStatus AudioVideoInputIntfControlleeImpl::SetSupportedInputSources(const InputS
     return ER_OK;
 }
 
-QStatus AudioVideoInputIntfControlleeImpl::OnGetProperty(const String propName, MsgArg& val)
+QStatus AudioVideoInputIntfControlleeImpl::OnGetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_OK;
 
@@ -201,7 +201,7 @@ QStatus AudioVideoInputIntfControlleeImpl::OnGetProperty(const String propName, 
     return status;
 }
 
-QStatus AudioVideoInputIntfControlleeImpl::OnSetProperty(const String propName, MsgArg& val)
+QStatus AudioVideoInputIntfControlleeImpl::OnSetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_OK;
 
@@ -246,7 +246,7 @@ void AudioVideoInputIntfControlleeImpl::OnMethodHandler(const InterfaceDescripti
 
     if (!isFound) {
         status = ER_BUS_METHOD_CALL_ABORTED;
-        QCC_LogError(status, ("%s: could not found method handler.", __func__));
+        QCC_LogError(status, ("%s: could not find method handler.", __func__));
         m_busObject.ReplyMethodCall(msg, status);
     }
 }

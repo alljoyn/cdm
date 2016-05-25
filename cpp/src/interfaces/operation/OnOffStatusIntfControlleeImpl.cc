@@ -66,7 +66,7 @@ QStatus OnOffStatusIntfControlleeImpl::SetOnOff(const bool value)
     return status;
 }
 
-QStatus OnOffStatusIntfControlleeImpl::OnGetProperty(const String propName, MsgArg& val)
+QStatus OnOffStatusIntfControlleeImpl::OnGetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_OK;
 
@@ -101,7 +101,7 @@ QStatus OnOffStatusIntfControlleeImpl::OnGetProperty(const String propName, MsgA
     return status;
 }
 
-QStatus OnOffStatusIntfControlleeImpl::OnSetProperty(const String propName, MsgArg& val)
+QStatus OnOffStatusIntfControlleeImpl::OnSetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_OK;
 
@@ -137,7 +137,7 @@ void OnOffStatusIntfControlleeImpl::OnMethodHandler(const InterfaceDescription::
 
     if (!isFound) {
         status = ER_BUS_METHOD_CALL_ABORTED;
-        QCC_LogError(status, ("%s: could not found method handler.", __func__));
+        QCC_LogError(status, ("%s: could not find method handler.", __func__));
         m_busObject.ReplyMethodCall(msg, status);
     }
 }

@@ -9,7 +9,7 @@
         <annotation name="org.alljoyn.Bus.Enum.ContaminantType.Value.CH20" value="0"/>
         <annotation name="org.alljoyn.Bus.Enum.ContaminantType.Value.CO2" value="1"/>
         <annotation name="org.alljoyn.Bus.Enum.ContaminantType.Value.C0" value="2"/>
-        <annotation name="org.alljoyn.Bus.Enum.ContaminantType.Value.PM2.5" value="3"/>
+        <annotation name="org.alljoyn.Bus.Enum.ContaminantType.Value.PM2_5" value="3"/>
         <annotation name="org.alljoyn.Bus.Enum.ContaminantType.Value.PM10" value="4"/>
         <annotation name="org.alljoyn.Bus.Enum.ContaminantType.Value.VOC" value="5"/>
         <annotation name="org.alljoyn.Bus.Enum.ContaminantType.Value.Smoke" value="253"/>

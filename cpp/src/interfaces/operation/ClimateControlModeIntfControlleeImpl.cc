@@ -54,7 +54,7 @@ QStatus ClimateControlModeIntfControlleeImpl::Init()
 }
 
 
-QStatus ClimateControlModeIntfControlleeImpl::OnGetProperty(const String propName, MsgArg& val)
+QStatus ClimateControlModeIntfControlleeImpl::OnGetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_OK;
 
@@ -147,7 +147,7 @@ QStatus ClimateControlModeIntfControlleeImpl::OnGetProperty(const String propNam
     return status;
 }
 
-QStatus ClimateControlModeIntfControlleeImpl::OnSetProperty(const String propName, MsgArg& val)
+QStatus ClimateControlModeIntfControlleeImpl::OnSetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_OK;
     size_t i = 0;
@@ -162,7 +162,9 @@ QStatus ClimateControlModeIntfControlleeImpl::OnSetProperty(const String propNam
         for (i = 0; i < m_SupportedModes.size(); i++)
         {
             if (m_SupportedModes[i] == value)
+            {
                 break;
+            }
         }
 
         if (i != m_SupportedModes.size()) {
@@ -199,7 +201,7 @@ void ClimateControlModeIntfControlleeImpl::OnMethodHandler(const InterfaceDescri
 
     if (!isFound) {
         status = ER_BUS_METHOD_CALL_ABORTED;
-        QCC_LogError(status, ("%s: could not found method handler.", __func__));
+        QCC_LogError(status, ("%s: could not find method handler.", __func__));
         m_busObject.ReplyMethodCall(msg, status);
     }
 }

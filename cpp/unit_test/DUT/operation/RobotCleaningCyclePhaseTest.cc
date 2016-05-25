@@ -59,8 +59,12 @@ public:
                                                       const char* errorName, const char* errorMessage)
     {
         if (status != ER_OK) {
-            if (errorName) m_errorName = errorName;
-            if (errorMessage) m_errorMessage = errorMessage;
+            if (errorName) {
+                m_errorName = errorName;
+            }
+            if (errorMessage) {
+                m_errorMessage = errorMessage;
+            }
         }
          m_phasesDescriptions = phasesDescription;
         m_status = status;

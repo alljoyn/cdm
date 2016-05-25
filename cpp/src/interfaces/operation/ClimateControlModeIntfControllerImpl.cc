@@ -64,8 +64,9 @@ QStatus ClimateControlModeIntfControllerImpl::GetMode(void* context)
 {
     QStatus status = ER_OK;
     status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_Mode.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&ClimateControlModeIntfControllerImpl::GetModePropertyCB, context);
-    if(status != ER_OK)
+    if(status != ER_OK) {
         QCC_LogError(status, ("%s: GetMode failed.", __func__));
+    }
 
     return status;
 
@@ -78,8 +79,9 @@ QStatus ClimateControlModeIntfControllerImpl::SetMode(const uint16_t mode, void*
     MsgArg arg;
     arg.Set("q", mode);
     status = m_proxyObject.SetPropertyAsync(GetInterfaceName().c_str(), s_prop_Mode.c_str(), arg, this, (ProxyBusObject::Listener::SetPropertyCB)&ClimateControlModeIntfControllerImpl::SetModePropertyCB, context);
-    if(status != ER_OK)
+    if(status != ER_OK) {
         QCC_LogError(status, ("%s: SetMode failed.", __func__));
+    }
     return status;
 }
 

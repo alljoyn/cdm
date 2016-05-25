@@ -60,7 +60,7 @@ HaeProxyBusObject* DeviceInfo::GetHaeProxyBusObject(BusAttachment& bus, const qc
     if (citer == m_haeProxyObjectsMap.end()) {
         HaeProxyBusObject* haeProxyObject = new HaeProxyBusObject(bus, m_busName, objectPath, m_sessionId);
         if (!haeProxyObject) {
-            QCC_LogError(ER_OUT_OF_MEMORY, ("%s: could not create HaeBusObject cHaeProxyBusObjectlass.", __func__));
+            QCC_LogError(ER_OUT_OF_MEMORY, ("%s: could not create HaeProxyBusObject class.", __func__));
             return NULL;
         } else {
             m_haeProxyObjectsMap.insert(std::pair<qcc::String, HaeProxyBusObject*>(objectPath, haeProxyObject));

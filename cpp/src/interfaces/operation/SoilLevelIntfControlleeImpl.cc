@@ -53,7 +53,7 @@ QStatus SoilLevelIntfControlleeImpl::Init()
     return status;
 }
 
-QStatus SoilLevelIntfControlleeImpl::OnGetProperty(const String propName, MsgArg& val)
+QStatus SoilLevelIntfControlleeImpl::OnGetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_OK;
 
@@ -126,7 +126,7 @@ QStatus SoilLevelIntfControlleeImpl::OnGetProperty(const String propName, MsgArg
     return status;
 }
 
-QStatus SoilLevelIntfControlleeImpl::OnSetProperty(const String propName, MsgArg& val)
+QStatus SoilLevelIntfControlleeImpl::OnSetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_OK;
     if(!s_prop_TargetLevel.compare(propName)) {
@@ -170,7 +170,7 @@ void SoilLevelIntfControlleeImpl::OnMethodHandler(const InterfaceDescription::Me
 
     if (!isFound) {
         status = ER_BUS_METHOD_CALL_ABORTED;
-        QCC_LogError(status, ("%s: could not found method handler.", __func__));
+        QCC_LogError(status, ("%s: could not find method handler.", __func__));
         m_busObject.ReplyMethodCall(msg, status);
     }
 }
@@ -219,8 +219,9 @@ QStatus SoilLevelIntfControlleeImpl::SetSelectableLevels(const std::vector<uint8
         }
     }
 
-    if (!isValid)
+    if (!isValid) {
         return ER_INVALID_DATA;
+    }
 
     MsgArg arg;
     uint8_t* vals = new uint8_t[selectableLevels.size()];

@@ -58,7 +58,7 @@ QStatus TargetTemperatureIntfControlleeImpl::Init()
     return status;
 }
 
-QStatus TargetTemperatureIntfControlleeImpl::OnGetProperty(const String propName, MsgArg& val)
+QStatus TargetTemperatureIntfControlleeImpl::OnGetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_OK;
 
@@ -150,7 +150,7 @@ QStatus TargetTemperatureIntfControlleeImpl::OnGetProperty(const String propName
     return status;
 }
 
-QStatus TargetTemperatureIntfControlleeImpl::OnSetProperty(const String propName, MsgArg& val)
+QStatus TargetTemperatureIntfControlleeImpl::OnSetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_OK;
 
@@ -189,7 +189,7 @@ void TargetTemperatureIntfControlleeImpl::OnMethodHandler(const InterfaceDescrip
 
     if (!isFound) {
         status = ER_BUS_METHOD_CALL_ABORTED;
-        QCC_LogError(status, ("%s: could not found method handler.", __func__));
+        QCC_LogError(status, ("%s: could not find method handler.", __func__));
         m_busObject.ReplyMethodCall(msg, status);
     }
 }
