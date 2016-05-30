@@ -28,25 +28,6 @@ import org.alljoyn.bus.annotation.Position;
 @BusInterface(name="org.alljoyn.SmartSpaces.Operation.LaundryCyclePhase", descriptionLanguage="en")
 @Secure
 public interface LaundryCyclePhase {
-    public class CyclePhaseDescriptor {
-        @Position(0)
-        @Signature("y")
-        public byte phase;
-
-        @Position(1)
-        @Signature("s")
-        public String name;
-
-        @Position(2)
-        @Signature("s")
-        public String description;
-
-        @Override
-        public String toString() {
-            return "[" + " phase=" + String.valueOf(phase) + " name=" + "\"" + name + "\"" + " description=" + "\"" + description + "\"" + " ]";
-        }
-    }
-
     @BusProperty(annotation=BusProperty.ANNOTATE_EMIT_CHANGED_SIGNAL, signature="q")
     public short getVersion();
 
@@ -56,7 +37,6 @@ public interface LaundryCyclePhase {
     @BusProperty(annotation=BusProperty.ANNOTATE_EMIT_CHANGED_SIGNAL, signature="ay")
     public byte[] getSupportedCyclePhases();
 
-    @BusMethod(name="GetVendorPhasesDescription", signature="s", replySignature = "(yss)")
-    public CyclePhaseDescriptor getVendorPhasesDescription(String languageTag);
-
+    @BusMethod(name="GetVendorPhasesDescription", signature="s", replySignature = "a(yss)")
+    public CyclePhaseDescriptor[] getVendorPhasesDescription(String languageTag);
 }

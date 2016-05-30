@@ -29,25 +29,6 @@ import org.alljoyn.smartspaces.EnumBase;
 @BusInterface(name="org.alljoyn.SmartSpaces.Operation.DishWashingCyclePhase", descriptionLanguage="en")
 @Secure
 public interface DishWashingCyclePhase {
-    public class CyclePhaseDescriptor {
-        @Position(0)
-        @Signature("y")
-        public byte phase;
-
-        @Position(1)
-        @Signature("s")
-        public String name;
-
-        @Position(2)
-        @Signature("s")
-        public String description;
-
-        @Override
-        public String toString() {
-            return "[" + " phase=" + String.valueOf(phase) + " name=" + "\"" + name + "\"" + " description=" + "\"" + description + "\"" + " ]";
-        }
-    }
-
     @BusProperty(annotation=BusProperty.ANNOTATE_EMIT_CHANGED_SIGNAL, signature="q")
     public short getVersion();
 
@@ -57,8 +38,8 @@ public interface DishWashingCyclePhase {
     @BusProperty(annotation=BusProperty.ANNOTATE_EMIT_CHANGED_SIGNAL, signature="ay")
     public byte[] getSupportedCyclePhases();
 
-    @BusMethod(name="GetVendorPhasesDescription", signature="s", replySignature = "(yss)")
-    public CyclePhaseDescriptor getVendorPhasesDescription(String languageTag);
+    @BusMethod(name="GetVendorPhasesDescription", signature="s", replySignature = "a(yss)")
+    public CyclePhaseDescriptor[] getVendorPhasesDescription(String languageTag);
 
     public enum CyclePhase implements EnumBase<Byte> {
         Unavailable((byte)0x00),
@@ -72,8 +53,9 @@ public interface DishWashingCyclePhase {
             this.value = value;
         }
         @Override
+      //  public Byte toValue() { return null; }
         public Byte toValue() {
-            return null;
+            return this.value;
         }
     }
 }

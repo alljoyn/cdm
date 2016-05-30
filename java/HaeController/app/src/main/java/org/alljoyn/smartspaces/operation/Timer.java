@@ -32,6 +32,9 @@ public interface Timer {
     public short getVersion();
 
     @BusProperty(annotation=BusProperty.ANNOTATE_EMIT_CHANGED_SIGNAL, signature="i")
+    public int getReferenceTimer();
+
+    @BusProperty(annotation=BusProperty.ANNOTATE_EMIT_CHANGED_SIGNAL, signature="i")
     public int getTargetTimeToStart();
 
     @BusProperty(annotation=BusProperty.ANNOTATE_EMIT_CHANGED_SIGNAL, signature="i")

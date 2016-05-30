@@ -24,6 +24,7 @@ import org.alljoyn.bus.annotation.Secure;
 import org.alljoyn.bus.BusException;
 import org.alljoyn.bus.annotation.Signature;
 import org.alljoyn.bus.annotation.Position;
+import org.alljoyn.smartspaces.EnumBase;
 
 @BusInterface(name="org.alljoyn.SmartSpaces.Operation.RemoteControllability", descriptionLanguage="en")
 @Secure
@@ -34,4 +35,18 @@ public interface RemoteControllability {
     @BusProperty(annotation=BusProperty.ANNOTATE_EMIT_CHANGED_SIGNAL, signature="b")
     public boolean getIsControllable();
 
+    public enum Status implements EnumBase<Boolean> {
+        Off(false),
+        On(true);
+
+        private boolean value;
+
+        private Status(boolean value) {
+            this.value = value;
+        }
+        @Override
+        public Boolean toValue() {
+            return this.value;
+        }
+    }
 }

@@ -18,25 +18,21 @@ package org.alljoyn.smartspaces.operation;
 
 import org.alljoyn.bus.annotation.BusInterface;
 import org.alljoyn.bus.annotation.BusMethod;
-import org.alljoyn.bus.annotation.BusSignal;
 import org.alljoyn.bus.annotation.BusProperty;
 import org.alljoyn.bus.annotation.Secure;
 import org.alljoyn.bus.BusException;
-import org.alljoyn.bus.annotation.Signature;
-import org.alljoyn.bus.annotation.Position;
 
 @BusInterface(name="org.alljoyn.SmartSpaces.Operation.RobotCleaningCyclePhase", descriptionLanguage="en")
 @Secure
 public interface RobotCleaningCyclePhase {
-    public class PhaseDescription {
+/*
+    public class CyclePhaseDescriptor {
         @Position(0)
         @Signature("y")
         public byte phase;
-
         @Position(1)
         @Signature("s")
         public String name;
-
         @Position(2)
         @Signature("s")
         public String description;
@@ -46,7 +42,7 @@ public interface RobotCleaningCyclePhase {
             return "[" + " phase=" + String.valueOf(phase) + " name=" + "\"" + name + "\"" + " description=" + "\"" + description + "\"" + " ]";
         }
     }
-
+*/
     @BusProperty(annotation=BusProperty.ANNOTATE_EMIT_CHANGED_SIGNAL, signature="q")
     public short getVersion();
 
@@ -56,7 +52,7 @@ public interface RobotCleaningCyclePhase {
     @BusProperty(annotation=BusProperty.ANNOTATE_EMIT_CHANGED_SIGNAL, signature="ay")
     public byte[] getSupportedCyclePhases();
 
-    @BusMethod(name="GetVendorPhasesDescription", signature="s", replySignature = "a(yss)")
-    public PhaseDescription[] getVendorPhasesDescription(String languageTag);
+    @BusMethod(name="GetVendorPhasesDescription", signature="s", replySignature="a(yss)")
+    public CyclePhaseDescriptor[] getVendorPhasesDescription(String languageTag) throws BusException;
 
 }

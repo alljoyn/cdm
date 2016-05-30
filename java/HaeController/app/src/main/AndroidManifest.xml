@@ -168,31 +168,55 @@
             android:theme="@android:style/Theme.NoTitleBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.environment.CurrentAirQualityActivity"
+            android:name=".activity.operation.CurrentAirQualityActivity"
             android:configChanges="keyboardHidden"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.NoTitleBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.environment.CurrentAirQualityLevelActivity"
+            android:name=".activity.operation.ClosedStatusActivity"
             android:configChanges="keyboardHidden"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.NoTitleBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.environment.CurrentHumidityActivity"
+            android:name=".activity.operation.CurrentAirQualityLevelActivity"
             android:configChanges="keyboardHidden"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.NoTitleBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.environment.TargetHumidityActivity"
+            android:name=".activity.operation.RapidModeActivity"
             android:configChanges="keyboardHidden"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.NoTitleBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.environment.TargetTemperatureLevelActivity"
+            android:name=".activity.operation.CurrentHumidityActivity"
+            android:configChanges="keyboardHidden"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activity.operation.WaterLevelActivity"
+            android:configChanges="keyboardHidden"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activity.operation.TargetHumidityActivity"
+            android:configChanges="keyboardHidden"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activity.operation.CycleControlActivity"
+            android:configChanges="keyboardHidden"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activity.operation.HeatingZoneActivity"
             android:configChanges="keyboardHidden"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.NoTitleBar"
@@ -204,11 +228,36 @@
             android:theme="@android:style/Theme.NoTitleBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
+            android:name=".activity.operation.SoilLevelActivity"
+            android:configChanges="keyboardHidden"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
             android:name=".activity.operation.PlugInUnitsActivity"
             android:configChanges="keyboardHidden"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.NoTitleBar"
             android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activity.operation.SpinSpeedLevelActivity"
+            android:configChanges="keyboardHidden"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activity.operation.TimerActivity"
+            android:configChanges="keyboardHidden"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activity.operation.RemoteControllabilityActivity"
+            android:configChanges="keyboardHidden"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="stateHidden" />
+
     </application>
     <uses-sdk android:minSdkVersion="16"></uses-sdk>
 </manifest>

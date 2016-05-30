@@ -44,12 +44,12 @@ public class SupportedEnumPropertyView<T extends EnumBase<T>> extends PropertyVi
     private String supportedName;
 
     private TextView nameView;
-    private Spinner valuesView;
+    protected Spinner valuesView;
 
-    private Class<T> clazz;
+    protected Class<T> clazz;
 
-    private ArrayAdapter<T> valuesAdapter;
-    private AdapterView.OnItemSelectedListener listener = null;
+    protected ArrayAdapter<T> valuesAdapter;
+    protected AdapterView.OnItemSelectedListener listener = null;
 
     public SupportedEnumPropertyView(Context context, Object obj, String propertyName, String supportedEnumPropertyName, Class<T> clazz) {
         super(context, obj, propertyName, null);

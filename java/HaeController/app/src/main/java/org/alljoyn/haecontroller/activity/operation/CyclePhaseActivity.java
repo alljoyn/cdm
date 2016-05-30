@@ -19,21 +19,20 @@ package org.alljoyn.haecontroller.activity.operation;
 import android.view.View;
 
 import org.alljoyn.haecontroller.activity.InterfaceActivity;
-import org.alljoyn.haecontroller.view.method.MethodView;
-import org.alljoyn.haecontroller.view.property.ReadOnlyEnumPropertyView;
-import org.alljoyn.haecontroller.view.property.ReadOnlyValuePropertyView;
+import org.alljoyn.haecontroller.view.method.MethodResultEventView;
+import org.alljoyn.haecontroller.view.property.OnMethodResultListener;
+import org.alljoyn.haecontroller.view.property.SupportedVendorValuesAndEnumPropertyView;
 import org.alljoyn.smartspaces.operation.DishWashingCyclePhase;
 
 public class CyclePhaseActivity extends InterfaceActivity {
     @Override
     protected void generatePropertyView(InterfaceActivity.CustomView properties, CustomView methods) {
-        View cyclePhaseView = new ReadOnlyValuePropertyView(this, this.intf, "CyclePhase", null);
-        properties.addView(cyclePhaseView);
 
-        View supportedCyclePhasesView = new ReadOnlyEnumPropertyView(this, this.intf, "SupportedCyclePhases", DishWashingCyclePhase.CyclePhase.class);
-        properties.addView(supportedCyclePhasesView);
+        View cycleView = new SupportedVendorValuesAndEnumPropertyView(this, this.intf, "CyclePhase", null, 1, 0, "SupportedCyclePhases", DishWashingCyclePhase.CyclePhase.class, "GetVendorPhasesDescription", "en");
+        properties.addView(cycleView);
 
-        View getVendorPhasesDescriptionView = new MethodView(this, this.intf, "GetVendorPhasesDescription", "languageTag");
+        View getVendorPhasesDescriptionView = new MethodResultEventView(this, this.intf, "GetVendorPhasesDescription", "languageTag");
         methods.addView(getVendorPhasesDescriptionView);
+        ((MethodResultEventView)getVendorPhasesDescriptionView).addOnResultListener((OnMethodResultListener)cycleView);
     }
 }
