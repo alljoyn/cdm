@@ -1,4 +1,3 @@
-
 /******************************************************************************
  * Copyright (c) 2013-2014, AllSeen Alliance. All rights reserved.
  *
@@ -23,25 +22,27 @@ namespace services {
 
 const uint16_t ResourceSavingInterface::s_interfaceVersion = 1;
 
+// Below none secure xml is only for test
 const qcc::String ResourceSavingInterface::s_xml =
-        "<node>"
-        "   <interface name='org.alljoyn.SmartSpaces.Operation.ResourceSaving'>"
-        "        <description language='en'>Interface that exposes the resource saving mode.  Depending on the device this resource could be electricity, water, natural gas, etc. </description>"
-        "        <annotation name='org.alljoyn.Bus.Secure' value='true'/>"
-        "        <property name='Version' type='q' access='read'>"
-        "            <description language='en'>The version of this interface</description>"
-        "            <annotation name='org.freedesktop.DBus.Property.EmitsChangedSignal' value='true'/>"
-        "        </property>"
-        "        <property name='ResourceSavingMode' type='b' access='readwrite'>"
-        "           <description language='en'>The current resource saving mode of the device</description>"
-        "           <annotation name='org.freedesktop.DBus.Property.EmitsChangedSignal' value='true'/>"
-        "       </property>"
-        "   </interface>"
-        "</node>";
+"<node xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='http://www.allseenalliance.org/schemas/introspect.xsd'>"
+"    <interface name='org.alljoyn.SmartSpaces.Operation.ResourceSaving'>"
+"         <annotation name='org.alljoyn.Bus.DocString.En' value='Interface that exposes the resource saving mode.  Depending on the device this resource could be electricity, water, natural gas, etc.'/>"
+"        <annotation name='org.alljoyn.Bus.Secure' value='true'/>"
+"        <property name='Version' type='q' access='read'>"
+"            <annotation name='org.alljoyn.Bus.DocString.En' value='The interface version.'/>"
+"            <annotation name='org.freedesktop.DBus.Property.EmitsChangedSignal' value='const'/>"
+"        </property>"
+"        <property name='ResourceSavingMode' type='b' access='readwrite'>"
+"            <description language='en'>The current resource saving mode of the device</description>"
+"            <annotation name='org.alljoyn.Bus.DocString.En' value='The current resource saving mode of the device; true if device in saving mode.'/>"
+"            <annotation name='org.freedesktop.DBus.Property.EmitsChangedSignal' value='true'/>"
+"        </property>"
+"    </interface>"
+"</node>"
+;
 
 const qcc::String ResourceSavingInterface::s_prop_Version = "Version";
 const qcc::String ResourceSavingInterface::s_prop_ResourceSavingMode = "ResourceSavingMode";
 
 } //namespace services
 } //namespace ajn
-

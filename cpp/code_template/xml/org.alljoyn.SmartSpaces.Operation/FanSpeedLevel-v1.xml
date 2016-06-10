@@ -1,21 +1,25 @@
 <node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
     <interface name="org.alljoyn.SmartSpaces.Operation.FanSpeedLevel">
-        <description language="en">This interface is for controlling fan speed level of a device.</description>
+        <annotation name="org.alljoyn.Bus.DocString.En" value="This interface is for controlling fan speed level of a device."/>
         <annotation name="org.alljoyn.Bus.Secure" value="true"/>
         <property name="Version" type="q" access="read">
-            <description language="en">Interface version</description>
-            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+            <annotation name="org.alljoyn.Bus.DocString.En" value="The interface version."/>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const"/>
         </property>
         <property name="FanSpeedLevel" type="y" access="readwrite">
-            <description language="en">Fan speed level of a device</description>
+            <annotation name="org.alljoyn.Bus.DocString.En" value="Fan speed level of a device. Special value: 0x00 - Fan operation is turned off and controller shall not set 0x00. Turning on/off shall be operated by a different interface (OnOff)."/>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
         <property name="MaxFanSpeedLevel" type="y" access="read">
-            <description language="en">Maximum level allowed for target fan speed level</description>
+            <annotation name="org.alljoyn.Bus.DocString.En" value="Maximum level allowed for target fan speed level."/>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
         </property>
+        <annotation name="org.alljoyn.Bus.Enum.AutoMode.Value.Off" value="0x00"/>
+        <annotation name="org.alljoyn.Bus.Enum.AutoMode.Value.On" value="0x01"/>
+        <annotation name="org.alljoyn.Bus.Enum.AutoMode.Value.NotSupported" value="0xFF"/>
         <property name="AutoMode" type="y" access="readwrite">
-            <description language="en">Represent enabled/disabled state of the auto mode.</description>
+            <annotation name="org.alljoyn.Bus.DocString.En" value="Enabled/disabled state of the auto mode."/>
+            <annotation name="org.alljoyn.Bus.Type.Name" value="[AutoMode]"/>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
     </interface>

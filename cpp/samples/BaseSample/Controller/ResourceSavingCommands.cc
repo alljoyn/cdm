@@ -39,14 +39,14 @@ void ResourceSavingListener::OnResponseGetResourceSavingMode(QStatus status, con
     cout << __func__ << endl;
     cout << "status: " << QCC_StatusText(status) << endl;
     cout << "path: " << objectPath << endl;
-    cout << "ResoucrceSavingMode: " << value << endl;
+    cout << "ResourceSavingMode: " << value << endl;
 }
 
 void ResourceSavingListener::OnResourceSavingModeChanged(const qcc::String& objectPath, const bool value)
 {
     cout << __func__ << endl;
     cout << "path: " << objectPath << endl;
-    cout << "ResoucrceSavingMode: " << value << endl;
+    cout << "ResourceSavingMode: " << value << endl;
 }
 
 ResourceSavingCommands::ResourceSavingCommands(ControllerSample* sample, DeviceInfoPtr& info, const char* objectPath)
@@ -71,8 +71,8 @@ void ResourceSavingCommands::Init()
         m_intfController = static_cast<ResourceSavingIntfController*>(haeInterface);
     }
 
-    RegisterCommand(&ResourceSavingCommands::OnCmdGetResourceSavingMode, "getrs", "Get ResoucrceSavingMode");
-    RegisterCommand(&ResourceSavingCommands::OnCmdSetResourceSavingMode, "setrs", "Set ResoucrceSavingMode");
+    RegisterCommand(&ResourceSavingCommands::OnCmdGetResourceSavingMode, "getrs", "Get ResourceSavingMode");
+    RegisterCommand(&ResourceSavingCommands::OnCmdSetResourceSavingMode, "setrs", "Set ResourceSavingMode");
 
     PrintCommands();
 }

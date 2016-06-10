@@ -1,6 +1,7 @@
 <node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
     <interface name="org.alljoyn.SmartSpaces.Operation.LaundryCyclePhase">
         <annotation name="org.alljoyn.Bus.DocString.En" value="This interface provides a capability to control the phase of the operational cycle of appliances used to wash and dry clothes."/>
+        <annotation name="org.alljoyn.Bus.Secure" value="true"/>
         <annotation name="org.alljoyn.Bus.Struct.CyclePhaseDescriptor.Field.phase.Type" value="y"/>
         <annotation name="org.alljoyn.Bus.Struct.CyclePhaseDescriptor.Field.name.Type" value="s"/>
         <annotation name="org.alljoyn.Bus.Struct.CyclePhaseDescriptor.Field.description.Type" value="s"/>
