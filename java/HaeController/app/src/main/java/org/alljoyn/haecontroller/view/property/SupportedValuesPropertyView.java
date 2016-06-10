@@ -20,6 +20,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -51,7 +52,30 @@ public class SupportedValuesPropertyView extends PropertyView {
     private int position = -1;
 
     private ArrayAdapter<Object> valuesAdapter;
-    private AdapterView.OnItemSelectedListener listener = null;
+
+    public class SpinnerInteractionListener implements AdapterView.OnItemSelectedListener, View.OnTouchListener {
+
+        boolean userSelect = false;
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            userSelect = true;
+            return false;
+        }
+
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+            if (userSelect) {
+                SupportedValuesPropertyView.this.setProperty(SupportedValuesPropertyView.this.valuesAdapter.getItem(pos));
+                userSelect = false;
+            }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+    }
 
     public SupportedValuesPropertyView(Context context, Object obj, String propertyName, String unit, int position, String supportedListPropertyName) {
         super(context, obj, propertyName, unit);
@@ -113,6 +137,10 @@ public class SupportedValuesPropertyView extends PropertyView {
             this.unitView.setText(this.unit);
         else
             this.unitView.setVisibility(View.GONE);
+
+        SpinnerInteractionListener listener = new SpinnerInteractionListener();
+        this.valuesView.setOnTouchListener(listener);
+        this.valuesView.setOnItemSelectedListener(listener);
     }
 
     public void onPropertiesChangedSignal(String name, Variant value) {
@@ -159,27 +187,11 @@ public class SupportedValuesPropertyView extends PropertyView {
 
     @Override
     public void setValueView(Object value) {
-        this.valuesView.setSelection(this.valuesAdapter.getPosition(HaeUtil.toString(value)));
-        if (this.listener == null) {
-            this.listener = new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    SupportedValuesPropertyView.this.setProperty(SupportedValuesPropertyView.this.valuesAdapter.getItem(position));
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
-                }
-            };
-            this.valuesView.setOnItemSelectedListener(this.listener);
-        }
+        this.valuesView.setSelection(this.valuesAdapter.getPosition(value));
     }
 
     @Override
     public void getProperty() {
-        super.getProperty();
-
         AsyncTask<Void, Void, Object> execute = new AsyncTask<Void, Void, Object>() {
             @Override
             protected Object doInBackground(Void... voids) {
@@ -208,5 +220,6 @@ public class SupportedValuesPropertyView extends PropertyView {
                 setSupportedListView(o);
             }
         }.execute();
+        super.getProperty();
     }
 }

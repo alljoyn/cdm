@@ -18,8 +18,13 @@ package org.alljoyn.haecontroller.activity;
 
 import android.app.Activity;
 
+import org.alljoyn.haecontroller.activity.environment.CurrentAirQualityActivity;
+import org.alljoyn.haecontroller.activity.environment.CurrentAirQualityLevelActivity;
+import org.alljoyn.haecontroller.activity.environment.CurrentHumidityActivity;
 import org.alljoyn.haecontroller.activity.environment.CurrentTemperatureActivity;
+import org.alljoyn.haecontroller.activity.environment.TargetHumidityActivity;
 import org.alljoyn.haecontroller.activity.environment.TargetTemperatureActivity;
+import org.alljoyn.haecontroller.activity.environment.TargetTemperatureLevelActivity;
 import org.alljoyn.haecontroller.activity.environment.WindDirectionActivity;
 import org.alljoyn.haecontroller.activity.input.HidActivity;
 import org.alljoyn.haecontroller.activity.operation.AirRecirculationModeActivity;
@@ -32,9 +37,14 @@ import org.alljoyn.haecontroller.activity.operation.CurrentPowerActivity;
 import org.alljoyn.haecontroller.activity.operation.CyclePhaseActivity;
 import org.alljoyn.haecontroller.activity.operation.EnergyUsageActivity;
 import org.alljoyn.haecontroller.activity.operation.FanSpeedLevelActivity;
+import org.alljoyn.haecontroller.activity.operation.FilterStatusActivity;
+import org.alljoyn.haecontroller.activity.operation.HvacFanModeActivity;
+import org.alljoyn.haecontroller.activity.operation.MoistureOutputLevelActivity;
 import org.alljoyn.haecontroller.activity.operation.OffControlActivity;
 import org.alljoyn.haecontroller.activity.operation.OnControlActivity;
 import org.alljoyn.haecontroller.activity.operation.OnOffStatusActivity;
+import org.alljoyn.haecontroller.activity.operation.PlugInUnitsActivity;
+import org.alljoyn.haecontroller.activity.operation.RapidModeTimedActivity;
 import org.alljoyn.haecontroller.activity.operation.RepeatModeActivity;
 import org.alljoyn.haecontroller.activity.operation.ResourceSavingActivity;
 
@@ -47,6 +57,11 @@ public class InterfaceActivityMap {
         put("org.alljoyn.SmartSpaces.Environment.CurrentTemperature", CurrentTemperatureActivity.class);
         put("org.alljoyn.SmartSpaces.Environment.TargetTemperature", TargetTemperatureActivity.class);
         put("org.alljoyn.SmartSpaces.Environment.WindDirection", WindDirectionActivity.class);
+        put("org.alljoyn.SmartSpaces.Environment.CurrentAirQuality", CurrentAirQualityActivity.class);
+        put("org.alljoyn.SmartSpaces.Environment.CurrentAirQualityLevel", CurrentAirQualityLevelActivity.class);
+        put("org.alljoyn.SmartSpaces.Environment.CurrentHumidity", CurrentHumidityActivity.class);
+        put("org.alljoyn.SmartSpaces.Environment.TargetHumidity", TargetHumidityActivity.class);
+        put("org.alljoyn.SmartSpaces.Environment.TargetTemperatureLevel", TargetTemperatureLevelActivity.class);
         put("org.alljoyn.SmartSpaces.Operation.AirRecirculationMode", AirRecirculationModeActivity.class);
         put("org.alljoyn.SmartSpaces.Operation.AudioVideoInput", AudioVideoInputActivity.class);
         put("org.alljoyn.SmartSpaces.Operation.AudioVolume", AudioVolumeActivity.class);
@@ -56,11 +71,16 @@ public class InterfaceActivityMap {
         put("org.alljoyn.SmartSpaces.Operation.CurrentPower", CurrentPowerActivity.class);
         put("org.alljoyn.SmartSpaces.Operation.EnergyUsage", EnergyUsageActivity.class);
         put("org.alljoyn.SmartSpaces.Operation.FanSpeedLevel", FanSpeedLevelActivity.class);
+        put("org.alljoyn.SmartSpaces.Operation.FilterStatus", FilterStatusActivity.class);
+        put("org.alljoyn.SmartSpaces.Operation.MoistureOutputLevel", MoistureOutputLevelActivity.class);
         put("org.alljoyn.SmartSpaces.Operation.OnControl", OnControlActivity.class);
         put("org.alljoyn.SmartSpaces.Operation.OffControl", OffControlActivity.class);
         put("org.alljoyn.SmartSpaces.Operation.OnOffStatus", OnOffStatusActivity.class);
+        put("org.alljoyn.SmartSpaces.Operation.RapidModeTimed", RapidModeTimedActivity.class);
         put("org.alljoyn.SmartSpaces.Operation.RepeatMode", RepeatModeActivity.class);
         put("org.alljoyn.SmartSpaces.Operation.ResourceSaving", ResourceSavingActivity.class);
         put("org.alljoyn.SmartSpaces.Operation.RobotCleaningCyclePhase", CyclePhaseActivity.class);
+        put("org.alljoyn.SmartSpaces.Operation.HvacFanMode", HvacFanModeActivity.class);
+        put("org.alljoyn.SmartSpaces.Operation.PlugInUnits", PlugInUnitsActivity.class);
     }};
 }
