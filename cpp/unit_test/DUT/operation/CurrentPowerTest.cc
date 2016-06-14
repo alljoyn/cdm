@@ -71,7 +71,7 @@ public:
     }
 };
 
-TEST_F(HAETest, HAE_v1_09)
+TEST_F(HAETest, HAE_v1_CurrentPower)
 {
     WaitForControllee(CURRENT_POWER_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {

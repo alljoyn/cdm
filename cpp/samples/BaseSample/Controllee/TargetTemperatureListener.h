@@ -27,7 +27,7 @@ using namespace services;
 class TargetTemperatureListener : public TargetTemperatureIntfControlleeListener
 {
   public:
-    virtual QStatus OnSetTargetValue(const double& value);
+    virtual QStatus OnSetTargetValue(const double value);
     virtual QStatus OnGetTargetValue(double& value);
     virtual QStatus OnGetMinValue(double& value);
     virtual QStatus OnGetMaxValue(double& value);

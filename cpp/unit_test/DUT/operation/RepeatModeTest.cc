@@ -56,7 +56,7 @@ public:
     }
 };
 
-TEST_F(HAETest, HAE_v1_24)
+TEST_F(HAETest, HAE_v1_RepeatMode)
 {
     WaitForControllee(REPEAT_MODE_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {

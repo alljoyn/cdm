@@ -143,7 +143,7 @@ void TargetTemperatureIntfControllerImpl::SetTargetValuePropertyCB(QStatus statu
 void TargetTemperatureIntfControllerImpl::GetTargetValuePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
     if (!obj) {
-            return;
+        return;
     }
     double val;
     value.Get("d", &val);
@@ -153,7 +153,7 @@ void TargetTemperatureIntfControllerImpl::GetTargetValuePropertyCB(QStatus statu
 void TargetTemperatureIntfControllerImpl::GetMinValuePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
     if (!obj) {
-            return;
+        return;
     }
     double val;
     value.Get("d", &val);
@@ -163,7 +163,7 @@ void TargetTemperatureIntfControllerImpl::GetMinValuePropertyCB(QStatus status, 
 void TargetTemperatureIntfControllerImpl::GetMaxValuePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
     if (!obj) {
-            return;
+        return;
     }
     double val;
     value.Get("d", &val);
@@ -173,7 +173,7 @@ void TargetTemperatureIntfControllerImpl::GetMaxValuePropertyCB(QStatus status, 
 void TargetTemperatureIntfControllerImpl::GetStepValuePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
     if (!obj) {
-            return;
+        return;
     }
     double val;
     value.Get("d", &val);

@@ -99,7 +99,7 @@ public:
     }
 };
 
-TEST_F(HAETest, HAE_v1_SoilLevelTest)
+TEST_F(HAETest, HAE_v1_SoilLevel)
 {
     WaitForControllee(SOIL_LEVEL_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {

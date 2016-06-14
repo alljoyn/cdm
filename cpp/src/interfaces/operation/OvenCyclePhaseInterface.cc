@@ -22,12 +22,11 @@ namespace services {
 
 const uint16_t OvenCyclePhaseInterface::s_interfaceVersion = 1;
 
-// Below none secure xml is only for test
 const qcc::String OvenCyclePhaseInterface::s_xml =
 "<node xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='http://www.allseenalliance.org/schemas/introspect.xsd'>"
 "    <interface name='org.alljoyn.SmartSpaces.Operation.OvenCyclePhase'>"
 "        <annotation name='org.alljoyn.Bus.DocString.En' value='This interface provides a capability to monitor the phase of the operational cycle of the Oven.'/>"
-"        <annotation name='org.alljoyn.Bus.Secure' value='false'/>"
+"        <annotation name='org.alljoyn.Bus.Secure' value='true'/>"
 "        <annotation name='org.alljoyn.Bus.Struct.CyclePhaseDescriptor.Field.phase.Type' value='y'/>"
 "        <annotation name='org.alljoyn.Bus.Struct.CyclePhaseDescriptor.Field.name.Type' value='s'/>"
 "        <annotation name='org.alljoyn.Bus.Struct.CyclePhaseDescriptor.Field.description.Type' value='s'/>"

@@ -86,7 +86,7 @@ public:
     }
 };
 
-TEST_F(HAETest, HAE_v1_04)
+TEST_F(HAETest, HAE_v1_AudioVolume)
 {
     WaitForControllee(AUDIO_VOLUME_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {
@@ -122,13 +122,13 @@ TEST_F(HAETest, HAE_v1_04)
             EXPECT_EQ(listener.m_status, ER_OK);
         }
 
-        const uint8_t initVolue = 0;
+        const uint8_t initVolume = 0;
         const bool initMute = false;
         TEST_LOG_1("Initialize all read-write properties.");
         {
             TEST_LOG_2("Initialize the Volume property to 0.");
-            if (listener.m_volume != initVolue) {
-                status = controller->SetVolume(initVolue);
+            if (listener.m_volume != initVolume) {
+                status = controller->SetVolume(initVolume);
                 EXPECT_EQ(status, ER_OK);
                 EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
                 listener.m_event.ResetEvent();
@@ -136,7 +136,7 @@ TEST_F(HAETest, HAE_v1_04)
 
                 EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_eventSignal, TIMEOUT));
                 listener.m_eventSignal.ResetEvent();
-                EXPECT_EQ(listener.m_volumeSignal, initVolue);
+                EXPECT_EQ(listener.m_volumeSignal, initVolume);
             }
 
             TEST_LOG_2("Initialize the Mute property to false.");

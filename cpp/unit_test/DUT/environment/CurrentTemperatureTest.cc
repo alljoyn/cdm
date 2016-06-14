@@ -61,7 +61,7 @@ public:
     }
 };
 
-TEST_F(HAETest, HAE_v1_10)
+TEST_F(HAETest, HAE_v1_CurrentTemperature)
 {
     WaitForControllee(CURRENT_TEMPERATURE_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {

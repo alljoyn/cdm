@@ -79,7 +79,7 @@ public:
     }
 };
 
-TEST_F(HAETest, HAE_v1_14)
+TEST_F(HAETest, HAE_v1_FanSpeedLevel)
 {
     WaitForControllee(FAN_SPEED_LEVEL_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {

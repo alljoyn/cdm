@@ -19,7 +19,7 @@
 
 using namespace std;
 
-QStatus TargetTemperatureListener::OnSetTargetValue(const double& value)
+QStatus TargetTemperatureListener::OnSetTargetValue(const double value)
 {
     cout << "TargetTemperatureListener::OnSetTargetValue() - TargetValue : " << value << endl;
     return ER_OK;

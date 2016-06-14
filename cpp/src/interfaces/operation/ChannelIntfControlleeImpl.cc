@@ -100,10 +100,9 @@ QStatus ChannelIntfControlleeImpl::OnGetProperty(const String& propName, MsgArg&
                     SetChannelId(channelId); // update the value in ChannelIntfControllee.
                 }
 
-                status = val.Set("s", channelId.c_str());
-                if(status != ER_OK)
-                    QCC_LogError(status, ("%s: Failed to set val", __func__));
-                val.Stabilize();                
+                val.typeId = ALLJOYN_STRING;
+                val.v_string.str = channelId.c_str();
+                val.v_string.len = channelId.size();
             } else if (!(s_prop_TotalNumberOfChannels.compare(propName))) {
                 uint16_t totalNumberOfChannels;
                 status = m_interfaceListener.OnGetTotalNumberOfChannels(totalNumberOfChannels);
@@ -123,10 +122,9 @@ QStatus ChannelIntfControlleeImpl::OnGetProperty(const String& propName, MsgArg&
         } else {
             if (!(s_prop_ChannelId.compare(propName))) {
                 const qcc::String channelId = GetChannelId();
-                status = val.Set("s", channelId.c_str());
-                if(status != ER_OK)
-                    QCC_LogError(status, ("%s: Failed to set val", __func__));
-                val.Stabilize();            
+                val.typeId = ALLJOYN_STRING;
+                val.v_string.str = channelId.c_str();
+                val.v_string.len = channelId.size();
             } else if (!(s_prop_TotalNumberOfChannels.compare(propName))) {
                 const uint16_t totalNumberOfChannels = GetTotalNumberOfChannels();
                 val.typeId = ALLJOYN_UINT16;

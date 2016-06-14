@@ -47,7 +47,7 @@ public:
     }
 };
 
-TEST_F(HAETest, HAE_v1_20)
+TEST_F(HAETest, HAE_v1_OnOffStatus)
 {
     WaitForControllee (ON_OFF_STATUS_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {

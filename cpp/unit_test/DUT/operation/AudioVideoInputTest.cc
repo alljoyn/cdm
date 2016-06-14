@@ -80,7 +80,7 @@ uint16_t findInvalidInputSourceId(const AudioVideoInputInterface::InputSources& 
     return (uint16_t) -1;
 }
 
-TEST_F(HAETest, HAE_v1_03)
+TEST_F(HAETest, HAE_v1_AudioVideoInput)
 {
     WaitForControllee(AUDIO_VIDEO_INPUT_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {

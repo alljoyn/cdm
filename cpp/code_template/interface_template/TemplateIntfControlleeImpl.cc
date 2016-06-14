@@ -53,7 +53,7 @@ QStatus {interface_name}IntfControlleeImpl::Init()
     return status;
 }
 
-QStatus {interface_name}IntfControlleeImpl::OnGetProperty(const String propName, MsgArg& val)
+QStatus {interface_name}IntfControlleeImpl::OnGetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_OK;
 
@@ -75,7 +75,7 @@ QStatus {interface_name}IntfControlleeImpl::OnGetProperty(const String propName,
     return status;
 }
 
-QStatus {interface_name}IntfControlleeImpl::OnSetProperty(const String propName, MsgArg& val)
+QStatus {interface_name}IntfControlleeImpl::OnSetProperty(const String& propName, MsgArg& val)
 {
     QStatus status = ER_OK;
 

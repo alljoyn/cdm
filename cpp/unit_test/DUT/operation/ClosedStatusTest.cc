@@ -44,7 +44,7 @@ public:
     }
 };
 
-TEST_F(HAETest, HAE_v1_ClosedStatusTest)
+TEST_F(HAETest, HAE_v1_ClosedStatus)
 {
     WaitForControllee(CLOSED_STATUS_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {

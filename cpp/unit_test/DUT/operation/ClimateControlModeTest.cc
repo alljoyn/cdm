@@ -80,7 +80,7 @@ public:
     }
 };
 
-TEST_F(HAETest, HAE_v1_07)
+TEST_F(HAETest, HAE_v1_ClimateControlMode)
 {
     WaitForControllee(CLIMATE_CONTROL_MODE_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {

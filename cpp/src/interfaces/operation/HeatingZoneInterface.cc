@@ -27,7 +27,7 @@ const qcc::String HeatingZoneInterface::s_xml =
 "<node xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='http://www.allseenalliance.org/schemas/introspect.xsd'>"
 "    <interface name='org.alljoyn.SmartSpaces.Operation.HeatingZone'>"
 "        <annotation name='org.alljoyn.Bus.DocString.En' value='This interface provides a capability to monitor the status of heating zones.'/>"
-"        <annotation name='org.alljoyn.Bus.Secure' value='false'/>"
+"        <annotation name='org.alljoyn.Bus.Secure' value='true'/>"
 "        <property name='Version' type='q' access='read'>"
 "            <annotation name='org.alljoyn.Bus.DocString.En' value='The interface version.'/>"
 "            <annotation name='org.freedesktop.DBus.Property.EmitsChangedSignal' value='const'/>"

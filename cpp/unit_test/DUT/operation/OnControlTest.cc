@@ -42,7 +42,7 @@ public:
     }
 };
 
-TEST_F(HAETest, HAE_v1_19)
+TEST_F(HAETest, HAE_v1_OnControl)
 {
     WaitForControllee (ON_CONTROL_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {

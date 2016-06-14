@@ -53,6 +53,17 @@
 #include "../BaseSample/Controllee/TimerListener.h"
 #include "../BaseSample/Controllee/CycleControlListener.h"
 
+#include "../BaseSample/Controllee/CurrentAirQualityListener.h"
+#include "../BaseSample/Controllee/CurrentAirQualityLevelListener.h"
+#include "../BaseSample/Controllee/CurrentHumidityListener.h"
+#include "../BaseSample/Controllee/TargetHumidityListener.h"
+#include "../BaseSample/Controllee/TargetTemperatureLevelListener.h"
+#include "../BaseSample/Controllee/MoistureOutputLevelListener.h"
+#include "../BaseSample/Controllee/FilterStatusListener.h"
+#include "../BaseSample/Controllee/HvacFanModeListener.h"
+#include "../BaseSample/Controllee/PlugInUnitsListener.h"
+#include "../BaseSample/Controllee/RapidModeTimedListener.h"
+
 using namespace std;
 using namespace qcc;
 using namespace ajn;
@@ -114,7 +125,16 @@ void DeviceEmulator::InitCommandsFactory()
     factory->RegisterCreator(TIMER_INTERFACE, TimerCommands::CreateCommands);
     factory->RegisterCreator(CYCLE_CONTROL_INTERFACE, CycleControlCommands::CreateCommands);
 
-
+    factory->RegisterCreator(CURRENT_AIR_QUALITY_INTERFACE, CurrentAirQualityCommands::CreateCommands);
+    factory->RegisterCreator(CURRENT_AIR_QUALITY_LEVEL_INTERFACE, CurrentAirQualityLevelCommands::CreateCommands);
+    factory->RegisterCreator(CURRENT_HUMIDITY_INTERFACE, CurrentHumidityCommands::CreateCommands);
+    factory->RegisterCreator(TARGET_HUMIDITY_INTERFACE, TargetHumidityCommands::CreateCommands);
+    factory->RegisterCreator(TARGET_TEMPERATURE_LEVEL_INTERFACE, TargetTemperatureLevelCommands::CreateCommands);
+    factory->RegisterCreator(MOISTURE_OUTPUT_LEVEL_INTERFACE, MoistureOutputLevelCommands::CreateCommands);
+    factory->RegisterCreator(FILTER_STATUS_INTERFACE, FilterStatusCommands::CreateCommands);
+    factory->RegisterCreator(HVAC_FAN_MODE_INTERFACE, HvacFanModeCommands::CreateCommands);
+    factory->RegisterCreator(PLUG_IN_UNITS_INTERFACE, PlugInUnitsCommands::CreateCommands);
+    factory->RegisterCreator(RAPID_MODE_TIMED_INTERFACE, RapidModeTimedCommands::CreateCommands);
 }
 
 void DeviceEmulator::Startup()
@@ -168,7 +188,7 @@ void DeviceEmulator::Startup()
 
         m_virtualDevice->Shutdown();
     } else {
-        printf("Virtual Device createtion failed.\n");
+        printf("Virtual Device creation failed.\n");
     }
 }
 

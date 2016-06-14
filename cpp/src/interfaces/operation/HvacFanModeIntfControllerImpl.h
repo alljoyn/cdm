@@ -1,0 +1,103 @@
+/******************************************************************************
+ * Copyright AllSeen Alliance. All rights reserved.
+ *
+ *    Permission to use, copy, modify, and/or distribute this software for any
+ *    purpose with or without fee is hereby granted, provided that the above
+ *    copyright notice and this permission notice appear in all copies.
+ *
+ *    THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ *    WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ *    MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ *    ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ *    WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ *    ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ ******************************************************************************/
+
+#ifndef HVACFANMODEINTFCONTROLLERIMPL_H_
+#define HVACFANMODEINTFCONTROLLERIMPL_H_
+
+#include <alljoyn/Status.h>
+#include <alljoyn/BusAttachment.h>
+#include <alljoyn/InterfaceDescription.h>
+#include <alljoyn/hae/interfaces/InterfaceController.h>
+#include <alljoyn/hae/interfaces/InterfaceControllerListener.h>
+#include <alljoyn/hae/interfaces/operation/HvacFanModeIntfController.h>
+
+namespace ajn {
+namespace services {
+
+class HvacFanModeIntfControllerListener;
+class HaeProxyBusObject;
+
+/**
+ * HvacFanMode interface controllee implementation class
+ */
+class HvacFanModeIntfControllerImpl : public InterfaceController, public HvacFanModeIntfController {
+  public:
+
+    /**
+     * Create interface
+     */
+    static HaeInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, HaeProxyBusObject& haeProxyBusObject);
+
+    /**
+     * Constructor of HvacFanModeIntfControllerImpl
+     */
+    HvacFanModeIntfControllerImpl(BusAttachment& busAttachment, HvacFanModeIntfControllerListener& listener, HaeProxyBusObject& haeProxyBusObject);
+
+    /**
+     * Destructor of HvacFanModeIntfControllerImpl
+     */
+    virtual ~HvacFanModeIntfControllerImpl();
+
+    /**
+     * Initialize interface
+     * @return status
+     */
+    virtual QStatus Init();
+
+    /**
+     * Get bus attachment
+     * @return bus attachment
+     */
+    virtual BusAttachment& GetBusAttachment() const { return m_busAttachment; }
+
+    /**
+     * Get current Mode status
+     * @param[in] context
+     * @return status
+     */
+    virtual QStatus GetMode(void* context);
+
+    /**
+     * Set Mode
+     * @param[in] Mode
+     * @param[in] context
+     * @return status
+     */
+    virtual QStatus SetMode(const uint16_t mode, void* context);
+
+    /**
+     * Get SupportedModes
+     * @param[in] context
+     * @return status
+     */
+    virtual QStatus GetSupportedModes(void* context);
+
+  private:
+    HvacFanModeIntfControllerImpl();
+
+    void PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context);
+    void SetModePropertyCB(QStatus status, ProxyBusObject* obj, void* context);
+    void GetModePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+    void GetSupportedModesPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+
+    BusAttachment& m_busAttachment;
+    HvacFanModeIntfControllerListener& m_interfaceListener;
+};
+
+} //namespace services
+} //namespace ajn
+
+#endif /* HVACFANMODEINTFCONTROLLERIMPL_H_ */

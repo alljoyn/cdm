@@ -41,6 +41,16 @@
 #include "TimerListener.h"
 #include "WaterLevelListener.h"
 #include "AlertsListener.h"
+#include "CurrentAirQualityListener.h"
+#include "CurrentAirQualityLevelListener.h"
+#include "CurrentHumidityListener.h"
+#include "TargetHumidityListener.h"
+#include "TargetTemperatureLevelListener.h"
+#include "MoistureOutputLevelListener.h"
+#include "FilterStatusListener.h"
+#include "HvacFanModeListener.h"
+#include "PlugInUnitsListener.h"
+#include "RapidModeTimedListener.h"
 
 #include <alljoyn/hae/interfaces/input/HidIntfControllee.h>
 #include <alljoyn/hae/interfaces/environment/CurrentTemperatureIntfControllee.h>
@@ -73,7 +83,17 @@
 #include <alljoyn/hae/interfaces/operation/SpinSpeedLevelIntfControllee.h>
 #include <alljoyn/hae/interfaces/operation/TimerIntfControllee.h>
 #include <alljoyn/hae/interfaces/operation/AlertsIntfControllee.h>
+#include <alljoyn/hae/interfaces/operation/MoistureOutputLevelIntfControllee.h>
+#include <alljoyn/hae/interfaces/operation/FilterStatusIntfControllee.h>
+#include <alljoyn/hae/interfaces/operation/HvacFanModeIntfControllee.h>
+#include <alljoyn/hae/interfaces/operation/PlugInUnitsIntfControllee.h>
+#include <alljoyn/hae/interfaces/operation/RapidModeTimedIntfControllee.h>
 #include <alljoyn/hae/interfaces/environment/WaterLevelIntfControllee.h>
+#include <alljoyn/hae/interfaces/environment/CurrentHumidityIntfControllee.h>
+#include <alljoyn/hae/interfaces/environment/TargetHumidityIntfControllee.h>
+#include <alljoyn/hae/interfaces/environment/TargetTemperatureLevelIntfControllee.h>
+#include <alljoyn/hae/interfaces/environment/CurrentAirQualityIntfControllee.h>
+#include <alljoyn/hae/interfaces/environment/CurrentAirQualityLevelIntfControllee.h>
 
 using namespace std;
 using namespace qcc;
@@ -113,6 +133,16 @@ class IntegratedControllee : public ControlleeSample
     TimerListener m_timerListener;
     WaterLevelListener m_waterLevelListener;
     AlertsListener m_alertsListener;
+    CurrentAirQualityListener m_currentAirQualityListener;
+    CurrentAirQualityLevelListener m_currentAirQualityLevelListener;
+    CurrentHumidityListener m_currentHumidityListener;
+    TargetHumidityListener m_targetHumidityListener;
+    TargetTemperatureLevelListener m_targetTemperatureLevelListener;
+    MoistureOutputLevelListener m_moistureOutputLevelListener;
+    FilterStatusListener m_filterStatusListener;
+    HvacFanModeListener m_hvacFanModeListener;
+    PlugInUnitsListener m_plugInUnitsListener;
+    RapidModeTimedListener m_rapidModeTimedListener;
 
     HidIntfControllee* m_hidIntfControllee;
     CurrentTemperatureIntfControllee* m_currentTemperatureIntfControllee;
@@ -146,6 +176,16 @@ class IntegratedControllee : public ControlleeSample
     TimerIntfControllee* m_timerIntfControllee;
     WaterLevelIntfControllee* m_waterLevelIntfControllee;
     AlertsIntfControllee* m_alertsIntfControllee;
+    CurrentAirQualityIntfControllee* m_currentAirQualityIntfControllee;
+    CurrentAirQualityLevelIntfControllee* m_currentAirQualityLevelIntfControllee;
+    CurrentHumidityIntfControllee* m_currentHumidityIntfControllee;
+    TargetHumidityIntfControllee* m_targetHumidityIntfControllee;
+    TargetTemperatureLevelIntfControllee* m_targetTemperatureLevelIntfControllee;
+    MoistureOutputLevelIntfControllee* m_moistureOutputLevelIntfControllee;
+    FilterStatusIntfControllee* m_filterStatusIntfControllee;
+    HvacFanModeIntfControllee* m_hvacFanModeIntfControllee;
+    PlugInUnitsIntfControllee* m_plugInUnitsIntfControllee;
+    RapidModeTimedIntfControllee* m_rapidModeTimedIntfControllee;
 
   public:
     IntegratedControllee(BusAttachment* bus, HaeAboutData* aboutData);
@@ -162,7 +202,10 @@ IntegratedControllee::IntegratedControllee(BusAttachment* bus, HaeAboutData* abo
     m_onOffStatusIntfControllee(NULL), m_repeatModeIntfControllee(NULL), m_resourceSavingIntfControllee(NULL), m_robotCleaningCyclePhaseIntfControllee(NULL),
     m_closedStatusIntfControllee(NULL), m_cycleControlIntfControllee(NULL), m_dishWashingCyclePhaseIntfControllee(NULL), m_heatingZoneIntfControllee(NULL),
     m_laundryCyclePhaseIntfControllee(NULL), m_ovenCyclePhaseIntfControllee(NULL), m_rapidModeIntfControllee(NULL), m_remoteControllabilityIntfControllee(NULL),
-    m_soilLevelIntfControllee(NULL), m_spinSpeedLevelIntfControllee(NULL), m_timerIntfControllee(NULL), m_waterLevelIntfControllee(NULL), m_alertsIntfControllee(NULL)
+    m_soilLevelIntfControllee(NULL), m_spinSpeedLevelIntfControllee(NULL), m_timerIntfControllee(NULL), m_waterLevelIntfControllee(NULL), m_alertsIntfControllee(NULL),
+    m_currentAirQualityIntfControllee(NULL), m_currentAirQualityLevelIntfControllee(NULL), m_currentHumidityIntfControllee(NULL), m_targetHumidityIntfControllee(NULL),
+    m_targetTemperatureLevelIntfControllee(NULL), m_moistureOutputLevelIntfControllee(NULL), m_filterStatusIntfControllee(NULL), m_hvacFanModeIntfControllee(NULL),
+    m_plugInUnitsIntfControllee(NULL), m_rapidModeTimedIntfControllee(NULL)
 {
 }
 
@@ -273,6 +316,36 @@ void IntegratedControllee::CreateInterfaces()
 
     intf = haeControllee->CreateInterface(ALERTS_INTERFACE, "/Hae/IntegratedControllee", m_alertsListener);
     m_alertsIntfControllee = static_cast<AlertsIntfControllee*>(intf);
+
+    intf = haeControllee->CreateInterface(CURRENT_AIR_QUALITY_INTERFACE, "/Hae/IntegratedControllee", m_currentAirQualityListener);
+    m_currentAirQualityIntfControllee = static_cast<CurrentAirQualityIntfControllee*>(intf);
+
+    intf = haeControllee->CreateInterface(CURRENT_AIR_QUALITY_LEVEL_INTERFACE, "/Hae/IntegratedControllee", m_currentAirQualityLevelListener);
+    m_currentAirQualityLevelIntfControllee = static_cast<CurrentAirQualityLevelIntfControllee*>(intf);
+
+    intf = haeControllee->CreateInterface(CURRENT_HUMIDITY_INTERFACE, "/Hae/IntegratedControllee", m_currentHumidityListener);
+    m_currentHumidityIntfControllee = static_cast<CurrentHumidityIntfControllee*>(intf);
+
+    intf = haeControllee->CreateInterface(TARGET_HUMIDITY_INTERFACE, "/Hae/IntegratedControllee", m_targetHumidityListener);
+    m_targetHumidityIntfControllee = static_cast<TargetHumidityIntfControllee*>(intf);
+
+    intf = haeControllee->CreateInterface(TARGET_TEMPERATURE_LEVEL_INTERFACE, "/Hae/IntegratedControllee", m_targetTemperatureLevelListener);
+    m_targetTemperatureLevelIntfControllee = static_cast<TargetTemperatureLevelIntfControllee*>(intf);
+
+    intf = haeControllee->CreateInterface(MOISTURE_OUTPUT_LEVEL_INTERFACE, "/Hae/IntegratedControllee", m_moistureOutputLevelListener);
+    m_moistureOutputLevelIntfControllee = static_cast<MoistureOutputLevelIntfControllee*>(intf);
+
+    intf = haeControllee->CreateInterface(FILTER_STATUS_INTERFACE, "/Hae/IntegratedControllee", m_filterStatusListener);
+    m_filterStatusIntfControllee = static_cast<FilterStatusIntfControllee*>(intf);
+
+    intf = haeControllee->CreateInterface(HVAC_FAN_MODE_INTERFACE, "/Hae/IntegratedControllee", m_hvacFanModeListener);
+    m_hvacFanModeIntfControllee = static_cast<HvacFanModeIntfControllee*>(intf);
+
+    intf = haeControllee->CreateInterface(PLUG_IN_UNITS_INTERFACE, "/Hae/IntegratedControllee", m_plugInUnitsListener);
+    m_plugInUnitsIntfControllee = static_cast<PlugInUnitsIntfControllee*>(intf);
+
+    intf = haeControllee->CreateInterface(RAPID_MODE_TIMED_INTERFACE, "/Hae/IntegratedControllee", m_rapidModeTimedListener);
+    m_rapidModeTimedIntfControllee = static_cast<RapidModeTimedIntfControllee*>(intf);
 }
 
 void IntegratedControllee::SetInitialProperty()
@@ -589,7 +662,115 @@ void IntegratedControllee::SetInitialProperty()
         alerts.push_back(aRecord);
 
         m_alertsIntfControllee->SetAlerts(alerts);
+    }
+    if (m_currentAirQualityIntfControllee) {
+        uint8_t contaminatType = CurrentAirQualityInterface::CONTAMINANT_TYPE_CH20;
+        double maxValue = 30.0;
+        double minValue = 10.0;
+        double currentValue = 15.0;
+        double precision = 10;
+        uint16_t updateMinTime = 1;
 
+        m_currentAirQualityIntfControllee->SetContaminantType(contaminatType);
+        m_currentAirQualityIntfControllee->SetMaxValue(maxValue);
+        m_currentAirQualityIntfControllee->SetMinValue(minValue);
+        m_currentAirQualityIntfControllee->SetCurrentValue(currentValue);
+        m_currentAirQualityIntfControllee->SetPrecision(precision);
+        m_currentAirQualityIntfControllee->SetUpdateMinTime(updateMinTime);
+    }
+
+    if (m_currentAirQualityLevelIntfControllee) {
+        uint8_t contaminatType = CurrentAirQualityLevelInterface::CONTAMINANT_TYPE_CH20;
+        uint8_t maxLevel = 30;
+        uint8_t currentLevel = 15;
+
+        m_currentAirQualityLevelIntfControllee->SetContaminantType(contaminatType);
+        m_currentAirQualityLevelIntfControllee->SetCurrentLevel(currentLevel);
+        m_currentAirQualityLevelIntfControllee->SetMaxLevel(maxLevel);
+    }
+
+    if (m_currentHumidityIntfControllee) {
+        uint8_t currentValue = 0;
+        uint8_t maxValue = 100;
+        m_currentHumidityIntfControllee->SetCurrentValue(currentValue);
+        m_currentHumidityIntfControllee->SetMaxValue(maxValue);
+    }
+
+    if (m_targetHumidityIntfControllee) {
+        uint8_t maxvalue = 80;
+        uint8_t minvalue = 10;
+        uint8_t targetvalue = 20;
+        uint8_t stepvalue = 5;
+
+        m_targetHumidityIntfControllee->SetMaxValue(maxvalue);
+        m_targetHumidityIntfControllee->SetMinValue(minvalue);
+        m_targetHumidityIntfControllee->SetTargetValue(targetvalue);
+        m_targetHumidityIntfControllee->SetStepValue(stepvalue);
+        m_targetHumidityIntfControllee->SetStrategyOfAdjustingTargetValue(TargetHumidityIntfControllee::ROUNDING_TO_NEAREST_VALUE);
+    }
+
+    if (m_targetTemperatureLevelIntfControllee) {
+        uint8_t maxlevel = 80;
+        uint8_t targetlevel = 20;
+
+        m_targetTemperatureLevelIntfControllee->SetMaxLevel(maxlevel);
+        m_targetTemperatureLevelIntfControllee->SetTargetLevel(targetlevel);
+    }
+
+    if (m_moistureOutputLevelIntfControllee) {
+        uint8_t value = 0;
+        uint8_t autoMode = MoistureOutputLevelInterface::OFF;
+
+        m_moistureOutputLevelIntfControllee->SetMoistureOutputLevel(value);
+        m_moistureOutputLevelIntfControllee->SetAutoMode(autoMode);
+    }
+
+    if (m_filterStatusIntfControllee) {
+        uint16_t expectedLifeInDays = 30;
+        bool isCleanable = true;
+        uint8_t orderPercentage = 0;
+        qcc::String manufacturer = "HAE";
+        uint8_t lifeRemaining = 100;
+
+        m_filterStatusIntfControllee->SetExpectedLifeInDays(expectedLifeInDays);
+        m_filterStatusIntfControllee->SetIsCleanable(isCleanable);
+        m_filterStatusIntfControllee->SetOrderPercentage(orderPercentage);
+        m_filterStatusIntfControllee->SetManufacturer(manufacturer);
+        m_filterStatusIntfControllee->SetLifeRemaining(lifeRemaining);
+    }
+
+    if (m_hvacFanModeIntfControllee) {
+        HvacFanModeInterface::SupportedModes supportedModes;
+        supportedModes.push_back(HvacFanModeInterface::HVAC_FAN_MODE_AUTO);
+        supportedModes.push_back(HvacFanModeInterface::HVAC_FAN_MODE_CIRCULATION);
+        m_hvacFanModeIntfControllee->SetSupportedModes(supportedModes);
+        uint16_t mode = HvacFanModeInterface::HVAC_FAN_MODE_AUTO;
+        m_hvacFanModeIntfControllee->SetMode(mode);
+    }
+
+    if (m_plugInUnitsIntfControllee) {
+        PlugInUnitsInterface::PlugInInfo info1, info2;
+        info1.objectPath = "/Hae/IntegratedControllee";
+        info1.deviceId = 1;
+        info1.pluggedIn = false;
+
+        info2.objectPath = "/Hae/IntegratedControllee";
+        info2.deviceId = 2;
+        info2.pluggedIn = true;
+
+        PlugInUnitsInterface::PlugInUnits units;
+        units.push_back(info1);
+        units.push_back(info2);
+
+        m_plugInUnitsIntfControllee->SetPlugInUnits(units);
+    }
+
+    if (m_rapidModeTimedIntfControllee) {
+        uint16_t maxSetMinutes = 30;
+        uint16_t rapidModeMinutesRemaining = 15;
+
+        m_rapidModeTimedIntfControllee->SetMaxSetMinutes(maxSetMinutes);
+        m_rapidModeTimedIntfControllee->SetRapidModeMinutesRemaining(rapidModeMinutesRemaining);
     }
 }
 

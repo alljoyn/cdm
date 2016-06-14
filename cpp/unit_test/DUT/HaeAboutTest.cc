@@ -103,7 +103,7 @@ bool HasDefaultInterfaces(const qcc::String& objPath, const AboutObjectDescripti
 }
 
 
-TEST_F(HAETest, HAE_v1_01)
+TEST_F(HAETest, HAE_v1_HaeAbout)
 {
     WaitForControllee();
     HaeAboutData &aboutData = m_interfaces[0].aboutData;

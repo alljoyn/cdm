@@ -35,6 +35,16 @@
 #include "TimerCommands.h"
 #include "ClosedStatusCommands.h"
 #include "AlertsCommands.h"
+#include "CurrentAirQualityCommands.h"
+#include "CurrentAirQualityLevelCommands.h"
+#include "CurrentHumidityCommands.h"
+#include "TargetHumidityCommands.h"
+#include "TargetTemperatureLevelCommands.h"
+#include "MoistureOutputLevelCommands.h"
+#include "FilterStatusCommands.h"
+#include "HvacFanModeCommands.h"
+#include "PlugInUnitsCommands.h"
+#include "RapidModeTimedCommands.h"
 
 DeviceCommands::DeviceCommands(ControllerSample* sample, DeviceInfoPtr& info)
 : ControllerCommands(sample)
@@ -174,6 +184,26 @@ Commands* DeviceCommands::CreateInterfaceCommands(Commands* commands, const char
         intfCommands = new ClosedStatusCommands(sample, info, objectPath);
     } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Operation.Alerts", strlen(intfName))) {
         intfCommands = new AlertsCommands(sample, info, objectPath);
+    } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Environment.CurrentAirQuality", strlen(intfName))) {
+        intfCommands = new CurrentAirQualityCommands(sample, info, objectPath);
+    } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Environment.CurrentAirQualityLevel", strlen(intfName))) {
+        intfCommands = new CurrentAirQualityLevelCommands(sample, info, objectPath);
+    } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Environment.CurrentHumidity", strlen(intfName))) {
+        intfCommands = new CurrentHumidityCommands(sample, info, objectPath);
+    } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Environment.TargetHumidity", strlen(intfName))) {
+        intfCommands = new TargetHumidityCommands(sample, info, objectPath);
+    } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Environment.TargetTemperatureLevel", strlen(intfName))) {
+        intfCommands = new TargetTemperatureLevelCommands(sample, info, objectPath);
+    } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Operation.MoistureOutputLevel", strlen(intfName))) {
+        intfCommands = new MoistureOutputLevelCommands(sample, info, objectPath);
+    } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Operation.FilterStatus", strlen(intfName))) {
+        intfCommands = new FilterStatusCommands(sample, info, objectPath);
+    } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Operation.HvacFanMode", strlen(intfName))) {
+        intfCommands = new HvacFanModeCommands(sample, info, objectPath);
+    } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Operation.PlugInUnits", strlen(intfName))) {
+        intfCommands = new PlugInUnitsCommands(sample, info, objectPath);
+    } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Operation.RapidModeTimed", strlen(intfName))) {
+        intfCommands = new RapidModeTimedCommands(sample, info, objectPath);
     }
     return intfCommands;
 }

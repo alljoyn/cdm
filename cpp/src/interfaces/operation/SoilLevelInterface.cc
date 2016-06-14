@@ -27,7 +27,7 @@ const qcc::String SoilLevelInterface::s_xml =
 "<node xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='http://www.allseenalliance.org/schemas/introspect.xsd'>"
 "    <interface name='org.alljoyn.SmartSpaces.Operation.SoilLevel'>"
 "        <annotation name='org.alljoyn.Bus.DocString.En' value='This interface provides a capability to set target soil level.'/>"
-"        <annotation name='org.alljoyn.Bus.Secure' value='false'/>"
+"        <annotation name='org.alljoyn.Bus.Secure' value='true'/>"
 "        <property name='Version' type='q' access='read'>"
 "            <annotation name='org.alljoyn.Bus.DocString.En' value='The interface version.'/>"
 "            <annotation name='org.freedesktop.DBus.Property.EmitsChangedSignal' value='const'/>"

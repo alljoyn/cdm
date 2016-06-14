@@ -88,7 +88,7 @@ public:
     }
 };
 
-TEST_F(HAETest, HAE_v1_13)
+TEST_F(HAETest, HAE_v1_EnergyUsage)
 {
     WaitForControllee(ENERGY_USAGE_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {

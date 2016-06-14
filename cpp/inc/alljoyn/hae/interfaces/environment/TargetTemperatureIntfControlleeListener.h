@@ -43,7 +43,7 @@ class TargetTemperatureIntfControlleeListener : public InterfaceControlleeListen
      * @param[in] value the target temperature
      * @return ER_OK on success
      */
-    virtual QStatus OnSetTargetValue(const double& value) = 0;
+    virtual QStatus OnSetTargetValue(const double value) = 0;
 
     /**
      * Handler for getting target temperature

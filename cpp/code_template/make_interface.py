@@ -16,9 +16,9 @@ import argparse
 import datetime
 
 interfaceTypeMap = {
-    'Hid':                     'HID_INTERFACE',
-    'AirQuality' :             'CURRENT_AIR_QUALITY_INTERFACE',
-    'AirQualityLevel' :        'CURRENT_AIR_QUALITY_LEVEL_INTERFACE',
+    'Hid':                    'HID_INTERFACE',
+    'CurrentAirQuality' :     'CURRENT_AIR_QUALITY_INTERFACE',
+    'CurrentAirQualityLevel' :'CURRENT_AIR_QUALITY_LEVEL_INTERFACE',
     'CurrentHumidity' :        'CURRENT_HUMIDITY_INTERFACE',
     'CurrentTemperature' :     'CURRENT_TEMPERATURE_INTERFACE',
     'TargetHumidity' :         'TARGET_HUMIDITY_INTERFACE',
@@ -77,7 +77,6 @@ def get_xml(name, category):
         line = f.readline()
         if not line: break
         line = line.rstrip('\n')
-        line = line.replace('<annotation name="org.alljoyn.Bus.Secure" value="true"/>', '<annotation name="org.alljoyn.Bus.Secure" value="false"/>')
         line = line.replace('"', "'")
         xml += '\"'+ line + '\"\n'
     f.close()

@@ -44,7 +44,7 @@ public:
     }
 };
 
-TEST_F(HAETest, HAE_v1_16)
+TEST_F(HAETest, HAE_v1_Hid)
 {
     WaitForControllee (HID_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {

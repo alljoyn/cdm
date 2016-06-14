@@ -31,13 +31,13 @@ using namespace ajn;
 using namespace services;
 
 #define TEST_LOG_1(logMsg)  \
-    std::cout << ++LOG_NO << ". " << (logMsg) << std::endl
+    std::cout << ++LOG_NO << ". " << logMsg << std::endl
 #define TEST_LOG_2(logMsg)  \
-    std::cout << "  * " << (logMsg) << std::endl
+    std::cout << "  * " << logMsg << std::endl
 #define TEST_LOG_3(logMsg)  \
-    std::cout << "    - " << (logMsg) << std::endl
+    std::cout << "    - " << logMsg << std::endl
 #define TEST_LOG_OBJECT_PATH(logMsg)  \
-    std::cout << "[ObjectPath : " << (logMsg) << "]" << std::endl
+    std::cout << "[ObjectPath : " << logMsg << "]" << std::endl
 
 class InterfaceInfo
 {

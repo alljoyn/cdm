@@ -97,7 +97,7 @@ public:
     }
 };
 
-TEST_F(HAETest, HAE_v1_29)
+TEST_F(HAETest, HAE_v1_TargetTemperature)
 {
     WaitForControllee(TARGET_TEMPERATURE_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {
@@ -230,7 +230,7 @@ TEST_F(HAETest, HAE_v1_29)
                 EXPECT_DOUBLE_EQ(listener.m_targetValue, listener.m_minValue);
             }
 
-            TEST_LOG_2("If MinValue > DBL_MAX, Set the TargetValue property to the DBL_MAX.");
+            TEST_LOG_2("If MaxValue < DBL_MAX, Set the TargetValue property to the DBL_MAX.");
             if (listener.m_maxValue < DBL_MAX) {
                 status =  controller->SetTargetValue(DBL_MAX);
                 EXPECT_EQ(status, ER_OK);

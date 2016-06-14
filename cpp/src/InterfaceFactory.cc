@@ -56,6 +56,16 @@
 #include "interfaces/operation/OvenCyclePhaseIntfControlleeImpl.h"
 #include "interfaces/operation/TimerIntfControlleeImpl.h"
 #include "interfaces/operation/AlertsIntfControlleeImpl.h"
+#include "interfaces/environment/CurrentAirQualityIntfControlleeImpl.h"
+#include "interfaces/environment/CurrentAirQualityLevelIntfControlleeImpl.h"
+#include "interfaces/environment/CurrentHumidityIntfControlleeImpl.h"
+#include "interfaces/environment/TargetHumidityIntfControlleeImpl.h"
+#include "interfaces/environment/TargetTemperatureLevelIntfControlleeImpl.h"
+#include "interfaces/operation/MoistureOutputLevelIntfControlleeImpl.h"
+#include "interfaces/operation/FilterStatusIntfControlleeImpl.h"
+#include "interfaces/operation/HvacFanModeIntfControlleeImpl.h"
+#include "interfaces/operation/PlugInUnitsIntfControlleeImpl.h"
+#include "interfaces/operation/RapidModeTimedIntfControlleeImpl.h"
 
 // Controller
 #include "interfaces/operation/AudioVolumeIntfControllerImpl.h"
@@ -90,6 +100,16 @@
 #include "interfaces/operation/OvenCyclePhaseIntfControllerImpl.h"
 #include "interfaces/operation/TimerIntfControllerImpl.h"
 #include "interfaces/operation/AlertsIntfControllerImpl.h"
+#include "interfaces/environment/CurrentAirQualityIntfControllerImpl.h"
+#include "interfaces/environment/CurrentAirQualityLevelIntfControllerImpl.h"
+#include "interfaces/environment/CurrentHumidityIntfControllerImpl.h"
+#include "interfaces/environment/TargetHumidityIntfControllerImpl.h"
+#include "interfaces/environment/TargetTemperatureLevelIntfControllerImpl.h"
+#include "interfaces/operation/MoistureOutputLevelIntfControllerImpl.h"
+#include "interfaces/operation/FilterStatusIntfControllerImpl.h"
+#include "interfaces/operation/HvacFanModeIntfControllerImpl.h"
+#include "interfaces/operation/PlugInUnitsIntfControllerImpl.h"
+#include "interfaces/operation/RapidModeTimedIntfControllerImpl.h"
 
 using namespace std;
 using namespace qcc;
@@ -143,6 +163,16 @@ InterfaceFactory::InterfaceFactory() :
     m_controllerCreators[OVEN_CYCLE_PHASE_INTERFACE] = static_cast<CreateIntfControllerFptr>(&OvenCyclePhaseIntfControllerImpl::CreateInterface);
     m_controllerCreators[TIMER_INTERFACE] = static_cast<CreateIntfControllerFptr>(&TimerIntfControllerImpl::CreateInterface);
     m_controllerCreators[ALERTS_INTERFACE] = static_cast<CreateIntfControllerFptr>(&AlertsIntfControllerImpl::CreateInterface);
+    m_controllerCreators[CURRENT_AIR_QUALITY_INTERFACE] = static_cast<CreateIntfControllerFptr>(&CurrentAirQualityIntfControllerImpl::CreateInterface);
+    m_controllerCreators[CURRENT_AIR_QUALITY_LEVEL_INTERFACE] = static_cast<CreateIntfControllerFptr>(&CurrentAirQualityLevelIntfControllerImpl::CreateInterface);
+    m_controllerCreators[CURRENT_HUMIDITY_INTERFACE] = static_cast<CreateIntfControllerFptr>(&CurrentHumidityIntfControllerImpl::CreateInterface);
+    m_controllerCreators[TARGET_HUMIDITY_INTERFACE] = static_cast<CreateIntfControllerFptr>(&TargetHumidityIntfControllerImpl::CreateInterface);
+    m_controllerCreators[TARGET_TEMPERATURE_LEVEL_INTERFACE] = static_cast<CreateIntfControllerFptr>(&TargetTemperatureLevelIntfControllerImpl::CreateInterface);
+    m_controllerCreators[MOISTURE_OUTPUT_LEVEL_INTERFACE] = static_cast<CreateIntfControllerFptr>(&MoistureOutputLevelIntfControllerImpl::CreateInterface);
+    m_controllerCreators[FILTER_STATUS_INTERFACE] = static_cast<CreateIntfControllerFptr>(&FilterStatusIntfControllerImpl::CreateInterface);
+    m_controllerCreators[HVAC_FAN_MODE_INTERFACE] = static_cast<CreateIntfControllerFptr>(&HvacFanModeIntfControllerImpl::CreateInterface);
+    m_controllerCreators[PLUG_IN_UNITS_INTERFACE] = static_cast<CreateIntfControllerFptr>(&PlugInUnitsIntfControllerImpl::CreateInterface);
+    m_controllerCreators[RAPID_MODE_TIMED_INTERFACE] = static_cast<CreateIntfControllerFptr>(&RapidModeTimedIntfControllerImpl::CreateInterface);
 
     // Controllee
     m_controlleeCreators[CHANNEL_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&ChannelIntfControlleeImpl::CreateInterface);
@@ -177,6 +207,16 @@ InterfaceFactory::InterfaceFactory() :
     m_controlleeCreators[OVEN_CYCLE_PHASE_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&OvenCyclePhaseIntfControlleeImpl::CreateInterface);
     m_controlleeCreators[TIMER_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&TimerIntfControlleeImpl::CreateInterface);
     m_controlleeCreators[ALERTS_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&AlertsIntfControlleeImpl::CreateInterface);
+    m_controlleeCreators[CURRENT_AIR_QUALITY_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&CurrentAirQualityIntfControlleeImpl::CreateInterface);
+    m_controlleeCreators[CURRENT_AIR_QUALITY_LEVEL_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&CurrentAirQualityLevelIntfControlleeImpl::CreateInterface);
+    m_controlleeCreators[CURRENT_HUMIDITY_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&CurrentHumidityIntfControlleeImpl::CreateInterface);
+    m_controlleeCreators[TARGET_HUMIDITY_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&TargetHumidityIntfControlleeImpl::CreateInterface);
+    m_controlleeCreators[TARGET_TEMPERATURE_LEVEL_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&TargetTemperatureLevelIntfControlleeImpl::CreateInterface);
+    m_controlleeCreators[MOISTURE_OUTPUT_LEVEL_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&MoistureOutputLevelIntfControlleeImpl::CreateInterface);
+    m_controlleeCreators[FILTER_STATUS_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&FilterStatusIntfControlleeImpl::CreateInterface);
+    m_controlleeCreators[HVAC_FAN_MODE_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&HvacFanModeIntfControlleeImpl::CreateInterface);
+    m_controlleeCreators[PLUG_IN_UNITS_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&PlugInUnitsIntfControlleeImpl::CreateInterface);
+    m_controlleeCreators[RAPID_MODE_TIMED_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&RapidModeTimedIntfControlleeImpl::CreateInterface);
 }
 
 InterfaceFactory::InterfaceFactory(const InterfaceFactory& src)

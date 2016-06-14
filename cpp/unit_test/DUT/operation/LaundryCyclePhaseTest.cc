@@ -76,7 +76,7 @@ public:
     }
 };
 
-TEST_F(HAETest, HAE_v1_LaundryCyclePhaseTest)
+TEST_F(HAETest, HAE_v1_LaundryCyclePhase)
 {
     WaitForControllee(LAUNDRY_CYCLE_PHASE_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {
