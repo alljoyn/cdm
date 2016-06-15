@@ -63,6 +63,9 @@ class CurrentHumidityInterface : public HaeInterface {
      */
     virtual const uint16_t GetInterfaceVersion() const { return s_interfaceVersion; }
 
+    enum {
+        MAX_HUMIDITY = 100
+    };
   protected:
     static const qcc::String s_prop_Version;
     static const qcc::String s_prop_CurrentValue;

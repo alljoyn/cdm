@@ -138,6 +138,12 @@ void CurrentHumidityIntfControlleeImpl::OnMethodHandler(const InterfaceDescripti
 
 QStatus CurrentHumidityIntfControlleeImpl::SetCurrentValue(const uint8_t value)
 {
+    uint8_t maxVal = GetMaxValue();
+    if (value > maxVal)
+    {
+        QCC_LogError(ER_FAIL, ("%s: CurrentValue is invalid Value. ", __func__));
+        return ER_FAIL;
+    }
     if (m_currentValue != value) {
         MsgArg val;
         val.typeId = ALLJOYN_BYTE;
@@ -151,6 +157,11 @@ QStatus CurrentHumidityIntfControlleeImpl::SetCurrentValue(const uint8_t value)
 
 QStatus CurrentHumidityIntfControlleeImpl::SetMaxValue(const uint8_t value)
 {
+    if (value > MAX_HUMIDITY)
+    {
+        QCC_LogError(ER_FAIL, ("%s: MaxValue is invalid Value. ", __func__));
+        return ER_FAIL;
+    }
     QStatus status = ER_OK;
     if (m_maxValue != value) {
         m_maxValue = value;

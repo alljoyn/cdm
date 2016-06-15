@@ -211,6 +211,12 @@ void CurrentAirQualityIntfControlleeImpl::OnMethodHandler(const InterfaceDescrip
 
 QStatus CurrentAirQualityIntfControlleeImpl::SetContaminantType(const uint8_t type)
 {
+    if( type < (uint8_t)CONTAMINANT_TYPE_CH20 || 
+        type > (uint8_t)CONTAMINANT_TYPE_VOC)
+    {
+        QCC_LogError(ER_FAIL, ("%s: ContaminantType is invalid Value. ", __func__));
+        return ER_FAIL;
+    }
     if (m_contaminantType != type) {
         MsgArg val;
         val.typeId = ALLJOYN_BYTE;
@@ -224,6 +230,14 @@ QStatus CurrentAirQualityIntfControlleeImpl::SetContaminantType(const uint8_t ty
 
 QStatus CurrentAirQualityIntfControlleeImpl::SetCurrentValue(const double value)
 {
+    double maxVal = GetMaxValue();
+    double minVal = GetMinValue();
+    if((value > maxVal && maxVal != DEFAULT_MAX_VALUE) || value < minVal)
+    {
+        QCC_LogError(ER_FAIL, ("%s: CurrentValue is invalid Value. ", __func__));
+        return ER_FAIL;
+    }
+
     if (m_currentValue != value) {
         MsgArg val;
         val.typeId = ALLJOYN_DOUBLE;
@@ -237,6 +251,12 @@ QStatus CurrentAirQualityIntfControlleeImpl::SetCurrentValue(const double value)
 
 QStatus CurrentAirQualityIntfControlleeImpl::SetMaxValue(const double value)
 {
+    double minVal = GetMinValue();
+    if (value < minVal)
+    {
+        QCC_LogError(ER_FAIL, ("%s: MaxValue is invalid Value. ", __func__));
+        return ER_FAIL;
+    }
     if (m_maxValue != value) {
         MsgArg val;
         val.typeId = ALLJOYN_DOUBLE;
@@ -250,6 +270,12 @@ QStatus CurrentAirQualityIntfControlleeImpl::SetMaxValue(const double value)
 
 QStatus CurrentAirQualityIntfControlleeImpl::SetMinValue(const double value)
 {
+    double maxVal = GetMaxValue();
+    if(value > maxVal)
+    {
+        QCC_LogError(ER_FAIL, ("%s: MinValue is invalid Value. ", __func__));
+        return ER_FAIL;
+    }
     if (m_minValue != value) {
         MsgArg val;
         val.typeId = ALLJOYN_DOUBLE;

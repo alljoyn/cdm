@@ -63,7 +63,7 @@ class CurrentAirQualityInterface : public HaeInterface {
         CONTAMINANT_TYPE_CO = 2,
         CONTAMINANT_TYPE_PM2_5 = 3,
         CONTAMINANT_TYPE_PM10 = 4,
-        CONTAMINANT_TYHE_VOC = 5
+        CONTAMINANT_TYPE_VOC = 5
     };
     enum {
         DEFAULT_MAX_VALUE = 0x7FF0000000000000,

@@ -155,6 +155,12 @@ void CurrentAirQualityLevelIntfControlleeImpl::OnMethodHandler(const InterfaceDe
 
 QStatus CurrentAirQualityLevelIntfControlleeImpl::SetContaminantType(const uint8_t type)
 {
+    if(!((type >= (uint8_t)CONTAMINANT_TYPE_CH20  && type <= (uint8_t)CONTAMINANT_TYPE_VOC) ||
+         (type >= (uint8_t)CONTAMINANT_TYPE_SMOKE && type <= (uint8_t)CONTAMINANT_TYPE_AIR_POLLUTION)))
+    {
+        QCC_LogError(ER_FAIL, ("%s: ContaminantType is invalid Value. ", __func__));
+        return ER_FAIL;
+    }
     if (m_contaminantType != type) {
         MsgArg val;
         val.typeId = ALLJOYN_BYTE;
@@ -168,6 +174,12 @@ QStatus CurrentAirQualityLevelIntfControlleeImpl::SetContaminantType(const uint8
 
 QStatus CurrentAirQualityLevelIntfControlleeImpl::SetCurrentLevel(const uint8_t value)
 {
+    uint8_t maxLevel = GetMaxLevel();
+    if(value > maxLevel)
+    {
+        QCC_LogError(ER_FAIL, ("%s: CurrentValue is invalid Value. ", __func__));
+        return ER_FAIL;
+    }
     if (m_currentLevel != value) {
         MsgArg val;
         val.typeId = ALLJOYN_BYTE;
