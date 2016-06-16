@@ -237,45 +237,36 @@ void AlertsIntfControlleeImpl::OnGetAlertCodesDescription(const InterfaceDescrip
     if (numArgs == 1)
     {
         qcc::String lang(args[0].v_string.str);
-        if(lang.compare("en"))
+        AlertsInterface::AlertCodesDescription listOfDescriptions;
+        ErrorCode errorCode = NOT_ERROR;
+        status = m_interfaceListener.OnGetAlertCodesDescription(lang, listOfDescriptions, errorCode);
+        if(status == ER_OK)
         {
-            status = ER_LANGUAGE_NOT_SUPPORTED;
-            QCC_LogError(status, ("%s: language not suppoerted", __func__));
-            m_busObject.ReplyMethodCall(msg, status);
+            int numReturned = listOfDescriptions.size();
+            AlertsInterface::AlertCodesDescription::const_iterator citer;
+            MsgArg *args = new MsgArg[numReturned];
+            MsgArg retArgs[1];
+            int i=0;
+
+            for(citer = listOfDescriptions.begin(); citer != listOfDescriptions.end(); citer++, i++) {
+                status = args[i].Set("(qs)", citer->code, citer->description.c_str());
+                args[i].Stabilize();
+            }
+            status = retArgs[0].Set("a(qs)", i, args);
+            retArgs[0].Stabilize();
+            status = m_busObject.ReplyMethodCall(msg, retArgs, ArraySize(retArgs));
+            delete [] args;
         }
         else
         {
-            AlertsInterface::AlertCodesDescription listOfDescriptions;
-            ErrorCode errorCode = NOT_ERROR;
-            status = m_interfaceListener.OnGetAlertCodesDescription(lang, listOfDescriptions, errorCode);
-            if(status == ER_OK)
+            if (errorCode == NOT_ERROR)
             {
-                int numReturned = listOfDescriptions.size();
-                AlertsInterface::AlertCodesDescription::const_iterator citer;
-                MsgArg *args = new MsgArg[numReturned];
-                MsgArg retArgs[1];
-                int i=0;
-
-                for(citer = listOfDescriptions.begin(); citer != listOfDescriptions.end(); citer++, i++) {
-                    status = args[i].Set("(qs)", citer->code, citer->description.c_str());
-                    args[i].Stabilize();
-                }
-                status = retArgs[0].Set("a(qs)", i, args);
-                retArgs[0].Stabilize();
-                status = m_busObject.ReplyMethodCall(msg, retArgs, ArraySize(retArgs));
-                delete [] args;
+                QCC_LogError(status, ("%s: status is not ER_OK, but errorCode was not set.", __func__));
+                m_busObject.ReplyMethodCall(msg, status);
             }
             else
             {
-                if (errorCode == NOT_ERROR)
-                {
-                    QCC_LogError(status, ("%s: status is not ER_OK, but errorCode was not set.", __func__));
-                    m_busObject.ReplyMethodCall(msg, status);
-                }
-                else
-                {
-                    m_busObject.ReplyMethodCall(msg, HaeInterface::GetInterfaceErrorName(errorCode).c_str(),HaeInterface::GetInterfaceErrorMessage(errorCode).c_str());
-                }
+                m_busObject.ReplyMethodCall(msg, HaeInterface::GetInterfaceErrorName(errorCode).c_str(),HaeInterface::GetInterfaceErrorMessage(errorCode).c_str());
             }
         }
     }
@@ -311,7 +302,7 @@ void AlertsIntfControlleeImpl::OnAcknowledgeAlert(const InterfaceDescription::Me
 
         if(i == m_alerts.size() || !m_alerts[i].needAcknowledgement)
         {
-            status = ER_BAD_ARG_1;
+            //status = ER_BAD_ARG_1;
             QCC_LogError(status, ("%s: invalid value", __func__));
             m_busObject.ReplyMethodCall(msg, status);
         }

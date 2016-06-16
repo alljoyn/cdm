@@ -35,19 +35,24 @@ QStatus AlertsListener::OnGetAlertCodesDescription(const qcc::String& language, 
 {
     cout << "AlertsListener::OnGetAlertCodesDescription" << endl;
     QStatus status = ER_OK;
-    AlertsInterface::AlertCodeDescriptor desc;
-    desc.code = 0x8000;
-    desc.description = "alert code 0x8000";
-    description.push_back(desc);
-    desc.code = 0x8001;
-    desc.description = "alert code 0x8001";
-    description.push_back(desc);
-    desc.code = 0x8002;
-    desc.description = "alert code 0x8002";
-    description.push_back(desc);
-
-    error = ErrorCode::NOT_ERROR;
-
+    if(language == "en")
+    {
+        AlertsInterface::AlertCodeDescriptor desc;
+        desc.code = 0x8000;
+        desc.description = "alert code 0x8000";
+        description.push_back(desc);
+        desc.code = 0x8001;
+        desc.description = "alert code 0x8001";
+        description.push_back(desc);
+        desc.code = 0x8002;
+        desc.description = "alert code 0x8002";
+        description.push_back(desc);
+    }
+    else 
+    {
+        error = LANGUAGE_NOT_SUPPORTED;
+        status = ER_LANGUAGE_NOT_SUPPORTED;
+    }
     return status;
 }
 
