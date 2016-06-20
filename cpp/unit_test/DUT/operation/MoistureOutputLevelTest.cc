@@ -100,21 +100,21 @@ TEST_F(HAETest, HAE_v1_MoistureOutputLevel)
 
         TEST_LOG_1("Get initial values for all properties");
         {
-            TEST_LOG_2("Retieve the MoistureOutputLevel property.");
+            TEST_LOG_2("Retrieve the MoistureOutputLevel property.");
+            status = controller->GetMoistureOutputLevel();
+            EXPECT_EQ(status, ER_OK);
+            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
+            listener.m_event.ResetEvent();
+            EXPECT_EQ(listener.m_status, ER_OK);
+
+            TEST_LOG_2("Retrieve the MaxMoistureOutputLevel property.");
             status = controller->GetMaxMoistureOutputLevel();
             EXPECT_EQ(status, ER_OK);
             EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
             listener.m_event.ResetEvent();
             EXPECT_EQ(listener.m_status, ER_OK);
 
-            TEST_LOG_2("Retieve the MaxMoistureOutputLevel property.");
-            status = controller->GetMaxMoistureOutputLevel();
-            EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            listener.m_event.ResetEvent();
-            EXPECT_EQ(listener.m_status, ER_OK);
-
-            TEST_LOG_2("Retieve the AutoMode property.");
+            TEST_LOG_2("Retrieve the AutoMode property.");
             status = controller->GetAutoMode();
             EXPECT_EQ(status, ER_OK);
             EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
@@ -126,7 +126,7 @@ TEST_F(HAETest, HAE_v1_MoistureOutputLevel)
         TEST_LOG_1("Initialize all read-write properties.");
         {
             TEST_LOG_2("Initialize the MoistureOutputLevel property to 0.");
-            if (listener.m_moistureOutputLevelSignal != initMoistureOutputLevel) {
+            if (listener.m_moistureOutputLevel != initMoistureOutputLevel) {
                 status = controller->SetMoistureOutputLevel(initMoistureOutputLevel);
                 EXPECT_EQ(status, ER_OK);
                 EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
