@@ -220,6 +220,13 @@ QStatus TargetTemperatureIntfControlleeImpl::SetTargetValue(const double value)
 
 QStatus TargetTemperatureIntfControlleeImpl::SetMinValue(const double value)
 {
+    double maxValue = GetMaxValue();
+    if (value > maxValue)
+    {
+        QCC_LogError(ER_FAIL, ("%s: MinValue is invalid Value. ", __func__));
+        return ER_FAIL;
+    }
+
     if (m_MinValue != value) {
         MsgArg val;
         val.typeId = ALLJOYN_DOUBLE;
@@ -233,6 +240,12 @@ QStatus TargetTemperatureIntfControlleeImpl::SetMinValue(const double value)
 
 QStatus TargetTemperatureIntfControlleeImpl::SetMaxValue(const double value)
 {
+    double minValue = GetMinValue();
+    if(value < minValue)
+    {
+        QCC_LogError(ER_FAIL, ("%s: MaxValue is invalid Value. ", __func__));
+        return ER_FAIL;
+    }
     if (m_MaxValue != value) {
         MsgArg val;
         val.typeId = ALLJOYN_DOUBLE;

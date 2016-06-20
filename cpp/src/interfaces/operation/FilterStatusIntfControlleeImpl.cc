@@ -117,9 +117,12 @@ QStatus FilterStatusIntfControlleeImpl::OnGetProperty(const String& propName, Ms
                     SetManufacturer(manufacturer);
                 }
 
-                val.typeId = ALLJOYN_STRING;
-                val.v_string.str = manufacturer.c_str();
-                val.v_string.len = manufacturer.size();
+                status = val.Set("s", manufacturer.c_str());
+                if(status != ER_OK){
+                    QCC_LogError(status, ("%s: failed to set return value ", __func__));
+                }
+                val.Stabilize();
+
             } else if (!(s_prop_PartNumber.compare(propName))) {
                 qcc::String partNumber;
                 status = m_interfaceListener.OnGetPartNumber(partNumber);
@@ -131,9 +134,11 @@ QStatus FilterStatusIntfControlleeImpl::OnGetProperty(const String& propName, Ms
                     SetPartNumber(partNumber);
                 }
 
-                val.typeId = ALLJOYN_STRING;
-                val.v_string.str = partNumber.c_str();
-                val.v_string.len = partNumber.size();
+                status = val.Set("s", partNumber.c_str());
+                if(status != ER_OK){
+                    QCC_LogError(status, ("%s: failed to set return value ", __func__));
+                }
+                val.Stabilize();
             } else if (!(s_prop_Url.compare(propName))) {
                 qcc::String url;
                 status = m_interfaceListener.OnGetUrl(url);
@@ -145,9 +150,11 @@ QStatus FilterStatusIntfControlleeImpl::OnGetProperty(const String& propName, Ms
                     SetUrl(url);
                 }
 
-                val.typeId = ALLJOYN_STRING;
-                val.v_string.str = url.c_str();
-                val.v_string.len = url.size();
+                status = val.Set("s", url.c_str());
+                if(status != ER_OK){
+                    QCC_LogError(status, ("%s: failed to set return value ", __func__));
+                }
+                val.Stabilize();
             } else if (!(s_prop_LifeRemaining.compare(propName))) {
                 uint8_t value;
                 status = m_interfaceListener.OnGetLifeRemaining(value);
@@ -177,19 +184,25 @@ QStatus FilterStatusIntfControlleeImpl::OnGetProperty(const String& propName, Ms
                 val.v_byte = value;
             } else if (!(s_prop_Manufacturer.compare(propName))) {
                 const qcc::String manufacturer = GetManufacturer();
-                val.typeId = ALLJOYN_STRING;
-                val.v_string.str = manufacturer.c_str();
-                val.v_string.len = manufacturer.size();
+                status = val.Set("s", manufacturer.c_str());
+                if(status != ER_OK){
+                    QCC_LogError(status, ("%s: failed to set return value ", __func__));
+                }
+                val.Stabilize();
             } else if (!(s_prop_PartNumber.compare(propName))) {
                 const qcc::String partNumber = GetPartNumber();
-                val.typeId = ALLJOYN_STRING;
-                val.v_string.str = partNumber.c_str();
-                val.v_string.len = partNumber.size();
+                status = val.Set("s", partNumber.c_str());
+                if(status != ER_OK){
+                    QCC_LogError(status, ("%s: failed to set return value ", __func__));
+                }
+                val.Stabilize();
             } else if (!(s_prop_Url.compare(propName))) {
                 const qcc::String url = GetUrl();
-                val.typeId = ALLJOYN_STRING;
-                val.v_string.str = url.c_str();
-                val.v_string.len = url.size();
+                status = val.Set("s", url.c_str());
+                if(status != ER_OK){
+                    QCC_LogError(status, ("%s: failed to set return value ", __func__));
+                }
+                val.Stabilize();
             } else if (!(s_prop_LifeRemaining.compare(propName))) {
                 const uint8_t value = GetLifeRemaining();
                 val.typeId = ALLJOYN_BYTE;

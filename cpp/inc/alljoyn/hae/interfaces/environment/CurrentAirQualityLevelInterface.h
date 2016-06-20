@@ -63,12 +63,11 @@ class CurrentAirQualityLevelInterface : public HaeInterface {
         CONTAMINANT_TYPE_CO = 2,
         CONTAMINANT_TYPE_PM2_5 = 3,
         CONTAMINANT_TYPE_PM10 = 4,
-        CONTAMINANT_TYHE_VOC = 5,
+        CONTAMINANT_TYPE_VOC = 5,
         CONTAMINANT_TYPE_SMOKE = 253,
         CONTAMINANT_TYPE_ODOR = 254,
         CONTAMINANT_TYPE_AIR_POLLUTION = 255
     };
-
 
   protected:
     static const qcc::String s_prop_Version;

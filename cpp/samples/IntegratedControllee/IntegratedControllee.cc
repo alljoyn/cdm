@@ -685,8 +685,8 @@ void IntegratedControllee::SetInitialProperty()
         uint8_t currentLevel = 15;
 
         m_currentAirQualityLevelIntfControllee->SetContaminantType(contaminatType);
-        m_currentAirQualityLevelIntfControllee->SetCurrentLevel(currentLevel);
         m_currentAirQualityLevelIntfControllee->SetMaxLevel(maxLevel);
+        m_currentAirQualityLevelIntfControllee->SetCurrentLevel(currentLevel);
     }
 
     if (m_currentHumidityIntfControllee) {
