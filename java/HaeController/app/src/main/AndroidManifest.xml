@@ -120,6 +120,18 @@
             android:theme="@android:style/Theme.NoTitleBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
+            android:name=".activity.operation.FilterStatusActivity"
+            android:configChanges="keyboardHidden"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activity.operation.MoistureOutputLevelActivity"
+            android:configChanges="keyboardHidden"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
             android:name=".activity.operation.OnControlActivity"
             android:configChanges="keyboardHidden"
             android:launchMode="singleTop"
@@ -138,6 +150,12 @@
             android:theme="@android:style/Theme.NoTitleBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
+            android:name=".activity.operation.RapidModeTimedActivity"
+            android:configChanges="keyboardHidden"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
             android:name=".activity.operation.RepeatModeActivity"
             android:configChanges="keyboardHidden"
             android:launchMode="singleTop"
@@ -145,6 +163,48 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activity.operation.ResourceSavingActivity"
+            android:configChanges="keyboardHidden"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activity.environment.CurrentAirQualityActivity"
+            android:configChanges="keyboardHidden"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activity.environment.CurrentAirQualityLevelActivity"
+            android:configChanges="keyboardHidden"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activity.environment.CurrentHumidityActivity"
+            android:configChanges="keyboardHidden"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activity.environment.TargetHumidityActivity"
+            android:configChanges="keyboardHidden"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activity.environment.TargetTemperatureLevelActivity"
+            android:configChanges="keyboardHidden"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activity.operation.HvacFanModeActivity"
+            android:configChanges="keyboardHidden"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activity.operation.PlugInUnitsActivity"
             android:configChanges="keyboardHidden"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.NoTitleBar"

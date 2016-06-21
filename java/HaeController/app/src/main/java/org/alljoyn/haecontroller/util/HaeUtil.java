@@ -98,11 +98,15 @@ public class HaeUtil {
             return removeDot(outputs.toString());
         }
         String strResult = "";
-        Object[] objects = toObjectArray(outputs);
-        for (int i = 0; i < objects.length; i++) {
-            strResult += objects[i].toString();
-            if (i < objects.length-1) {
-                strResult += ",\n";
+        if (outputs.getClass() == String.class) {
+            strResult = outputs.toString();
+        } else {
+            Object[] objects = toObjectArray(outputs);
+            for (int i = 0; i < objects.length; i++) {
+                strResult += objects[i].toString();
+                if (i < objects.length - 1) {
+                    strResult += ",\n";
+                }
             }
         }
         return strResult;
