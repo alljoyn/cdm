@@ -159,13 +159,15 @@ TEST_F(HAETest, HAE_v1_Alerts)
             listener.m_event.ResetEvent();
             EXPECT_EQ(listener.m_status, ER_OK);
 
-            TEST_LOG_2("Call AcknowledgeAlert method with 1st value from Alerts property.");
-            uint16_t validCode = listener.m_Alerts[0].alertCode;
-            status = controller->AcknowledgeAlert(validCode);
-            EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            listener.m_event.ResetEvent();
-            EXPECT_EQ(listener.m_status, ER_OK);
+            TEST_LOG_2("If size of the Alerts > 0, Call AcknowledgeAlert method with 1st value from Alerts property.");
+            if (listener.m_Alerts.size() > 0) {
+                uint16_t validCode = listener.m_Alerts[0].alertCode;
+                status = controller->AcknowledgeAlert(validCode);
+                EXPECT_EQ(status, ER_OK);
+                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
+                listener.m_event.ResetEvent();
+                EXPECT_EQ(listener.m_status, ER_OK);
+            }
 
             TEST_LOG_2("Call AcknowledgeAllAlerts method.");
             status = controller->AcknowledgeAllAlerts();
