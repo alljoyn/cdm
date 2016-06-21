@@ -48,6 +48,12 @@
             android:theme="@android:style/Theme.NoTitleBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
+            android:name=".activity.environment.TargetTemperatureLevelActivity"
+            android:configChanges="keyboardHidden"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
             android:name=".activity.environment.WindDirectionActivity"
             android:configChanges="keyboardHidden"
             android:launchMode="singleTop"
@@ -168,7 +174,7 @@
             android:theme="@android:style/Theme.NoTitleBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.operation.CurrentAirQualityActivity"
+            android:name=".activity.environment.CurrentAirQualityActivity"
             android:configChanges="keyboardHidden"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.NoTitleBar"
@@ -180,7 +186,7 @@
             android:theme="@android:style/Theme.NoTitleBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.operation.CurrentAirQualityLevelActivity"
+            android:name=".activity.environment.CurrentAirQualityLevelActivity"
             android:configChanges="keyboardHidden"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.NoTitleBar"
@@ -192,7 +198,7 @@
             android:theme="@android:style/Theme.NoTitleBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.operation.CurrentHumidityActivity"
+            android:name=".activity.environment.CurrentHumidityActivity"
             android:configChanges="keyboardHidden"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.NoTitleBar"
@@ -204,7 +210,7 @@
             android:theme="@android:style/Theme.NoTitleBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.operation.TargetHumidityActivity"
+            android:name=".activity.environment.TargetHumidityActivity"
             android:configChanges="keyboardHidden"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.NoTitleBar"
