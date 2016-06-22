@@ -204,7 +204,7 @@
             android:theme="@android:style/Theme.NoTitleBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.operation.WaterLevelActivity"
+            android:name=".activity.environment.WaterLevelActivity"
             android:configChanges="keyboardHidden"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.NoTitleBar"
