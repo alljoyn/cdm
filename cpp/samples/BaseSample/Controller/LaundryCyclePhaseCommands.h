@@ -36,7 +36,7 @@ class LaundryCyclePhaseListener : public LaundryCyclePhaseIntfControllerListener
 
     virtual void OnCyclePhasePropertyChanged(const qcc::String& objectPath, const uint8_t cyclePhase);
 
-    virtual void OnSupportedCyclePhasesPropertyChanged(const qcc::String& objectPath, const LaundryCyclePhaseInterface::SupportedCyclePhases listOfCyclePhases);
+    virtual void OnSupportedCyclePhasesPropertyChanged(const qcc::String& objectPath, const LaundryCyclePhaseInterface::SupportedCyclePhases& listOfCyclePhases);
 
     virtual void OnResponseGetCyclePhasesDescriptions(QStatus status, const qcc::String& objectPath, const LaundryCyclePhaseInterface::CyclePhaseDescriptions& listOfCycleDescriptions, void* context, const char* errorName, const char* errorMessage);
 };

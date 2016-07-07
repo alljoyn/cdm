@@ -48,7 +48,7 @@ HaeControllerImpl::HaeControllerImpl(BusAttachment& bus, DeviceListener* listene
     m_security.m_authMechanisms = NULL;
     m_security.m_authListener = NULL;
     m_security.m_keyStoreFileName = NULL;
-    m_security.m_isKeyStoreShared = NULL;
+    m_security.m_isKeyStoreShared = false;
 
 }
 

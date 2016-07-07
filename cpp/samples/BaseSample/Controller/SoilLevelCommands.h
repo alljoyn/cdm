@@ -26,7 +26,7 @@ class ControllerSample;
 using namespace ajn;
 using namespace services;
 
-class SoilLevelListener : public SoilLevelIntfControllerListener{
+class SoilLevelListener : public SoilLevelIntfControllerListener {
   public:
     SoilLevelListener();
     virtual ~SoilLevelListener();
@@ -36,13 +36,13 @@ class SoilLevelListener : public SoilLevelIntfControllerListener{
 
     virtual void SetTargetLevelPropertyCallback(QStatus status, const qcc::String& objectPath, void* context);
 
-    virtual void GetSelectableLevelsPropertyCallback(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t> selectableLevels, void* context);
+    virtual void GetSelectableLevelsPropertyCallback(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& selectableLevels, void* context);
 
     virtual void MaxLevelPropertyChanged(const qcc::String& objectPath, const uint8_t maxLevel);
 
     virtual void TargetLevelPropertyChanged(const qcc::String& objectPath, const uint8_t targetLevel);
 
-    virtual void SelectableLevelsPropertyChanged(const qcc::String& objectPath, const std::vector<uint8_t> selectableLevels);
+    virtual void SelectableLevelsPropertyChanged(const qcc::String& objectPath, const std::vector<uint8_t>& selectableLevels);
 
 };
 

@@ -93,6 +93,8 @@ bool HasDefaultInterfaces(const qcc::String& objPath, const AboutObjectDescripti
 
             removeInterface(intf, defaultInterfaces);
             if (defaultInterfaces.empty()) {
+                delete[] interfaces;
+                delete[] paths;
                 return true;
             }
         }

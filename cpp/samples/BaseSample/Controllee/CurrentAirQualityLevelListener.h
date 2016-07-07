@@ -15,7 +15,7 @@
  ******************************************************************************/
 
 #ifndef CURRENTAIRQUALITYLEVELLISTENER_H_
-#define CURRENTAIRQAULITYLEVELLISTENER_H_
+#define CURRENTAIRQUALITYLEVELLISTENER_H_
 
 #include "InterfaceCommands.h"
 #include <alljoyn/hae/interfaces/environment/CurrentAirQualityLevelIntfControllee.h>
@@ -58,4 +58,4 @@ class CurrentAirQualityLevelCommands : public InterfaceCommands
 
 
 
-#endif /* CURRENTAIRQAULITYLEVELLISTENER_H_ */
+#endif /* CURRENTAIRQUALITYLEVELLISTENER_H_ */

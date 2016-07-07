@@ -51,7 +51,7 @@ void OvenCyclePhaseListener::OnCyclePhasePropertyChanged(const qcc::String& obje
     cout << "# cyclePhase: " << (int)cyclePhase << endl;
 }
 
-void OvenCyclePhaseListener::OnSupportedCyclePhasesPropertyChanged(const qcc::String& objectPath, const OvenCyclePhaseInterface::SupportedCyclePhases listOfCyclePhases)
+void OvenCyclePhaseListener::OnSupportedCyclePhasesPropertyChanged(const qcc::String& objectPath, const OvenCyclePhaseInterface::SupportedCyclePhases& listOfCyclePhases)
 {
     cout << __func__ << endl;
     cout << "# path: " << objectPath << endl;

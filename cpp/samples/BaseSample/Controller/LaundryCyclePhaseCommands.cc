@@ -51,7 +51,7 @@ void LaundryCyclePhaseListener::OnCyclePhasePropertyChanged(const qcc::String& o
     cout << "# cyclePhase: " << (int)cyclePhase << endl;
 }
 
-void LaundryCyclePhaseListener::OnSupportedCyclePhasesPropertyChanged(const qcc::String& objectPath, const LaundryCyclePhaseInterface::SupportedCyclePhases listOfCyclePhases)
+void LaundryCyclePhaseListener::OnSupportedCyclePhasesPropertyChanged(const qcc::String& objectPath, const LaundryCyclePhaseInterface::SupportedCyclePhases& listOfCyclePhases)
 {
     cout << __func__ << endl;
     cout << "# path: " << objectPath << endl;

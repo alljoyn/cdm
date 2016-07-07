@@ -49,7 +49,7 @@ HaeControlleeImpl::HaeControlleeImpl(BusAttachment& bus, HaeAboutData* aboutData
     m_security.m_authMechanisms = NULL;
     m_security.m_authListener = NULL;
     m_security.m_keyStoreFileName = NULL;
-    m_security.m_isKeyStoreShared = NULL;
+    m_security.m_isKeyStoreShared = false;
 
     QStatus status = InterfaceFactory::GetInstance()->InitInterfaceFactory(&m_bus);
     if (status != ER_OK) {

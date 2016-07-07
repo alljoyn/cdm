@@ -174,7 +174,7 @@ void CycleControlIntfControlleeImpl::OnExecuteCommand(const InterfaceDescription
     size_t numArgs = 0;
     msg->GetArgs(numArgs, args);
     ErrorCode  error = ErrorCode::NOT_ERROR;
-    CycleControlOperationalState newState;
+    CycleControlOperationalState newState = OPERATIONAL_STATE_IDLE;
 
     if (numArgs == 1)
     {

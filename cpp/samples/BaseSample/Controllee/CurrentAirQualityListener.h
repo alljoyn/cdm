@@ -15,7 +15,7 @@
  ******************************************************************************/
 
 #ifndef CURRENTAIRQUALITYLISTENER_H_
-#define CURRENTAIRQAULITYLISTENER_H_
+#define CURRENTAIRQUALITYLISTENER_H_
 
 #include "InterfaceCommands.h"
 #include <alljoyn/hae/interfaces/environment/CurrentAirQualityIntfControllee.h>

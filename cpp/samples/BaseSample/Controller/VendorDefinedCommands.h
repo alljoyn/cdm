@@ -15,7 +15,7 @@
  ******************************************************************************/
 
 #ifndef VENDORDEFINEDCOMMANDS_H_
-#define VENDORDEFINEDCOMMANDS_H__
+#define VENDORDEFINEDCOMMANDS_H_
 
 #include "InterfaceCommands.h"
 #include "VendorDefinedIntfController.h"
