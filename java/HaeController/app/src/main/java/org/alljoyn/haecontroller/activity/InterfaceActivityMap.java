@@ -56,6 +56,9 @@ import org.alljoyn.haecontroller.activity.environment.WaterLevelActivity;
 import org.alljoyn.haecontroller.activity.operation.SoilLevelActivity;
 import org.alljoyn.haecontroller.activity.operation.SpinSpeedLevelActivity;
 import org.alljoyn.haecontroller.activity.operation.TimerActivity;
+import org.alljoyn.haecontroller.activity.userinterfacesettings.LanguageDisplayActivity;
+import org.alljoyn.haecontroller.activity.userinterfacesettings.TemperatureDisplayActivity;
+import org.alljoyn.haecontroller.activity.userinterfacesettings.TimeDisplayActivity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -103,5 +106,8 @@ public class InterfaceActivityMap {
         put("org.alljoyn.SmartSpaces.Operation.DishWashingCyclePhase", CyclePhaseActivity.class);
         put("org.alljoyn.SmartSpaces.Operation.LaundryCyclePhase", CyclePhaseActivity.class);
         put("org.alljoyn.SmartSpaces.Operation.OvenCyclePhase", CyclePhaseActivity.class);
+        put("org.alljoyn.SmartSpaces.UserInterfaceSettings.LanguageDisplay", LanguageDisplayActivity.class);
+        put("org.alljoyn.SmartSpaces.UserInterfaceSettings.TemperatureDisplay", TemperatureDisplayActivity.class);
+        put("org.alljoyn.SmartSpaces.UserInterfaceSettings.TimeDisplay", TimeDisplayActivity.class);
     }};
 }

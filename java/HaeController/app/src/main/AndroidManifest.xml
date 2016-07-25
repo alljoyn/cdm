@@ -263,6 +263,24 @@
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.NoTitleBar"
             android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activity.userinterfacesettings.LanguageDisplayActivity"
+            android:configChanges="keyboardHidden"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activity.userinterfacesettings.TimeDisplayActivity"
+            android:configChanges="keyboardHidden"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activity.userinterfacesettings.TemperatureDisplayActivity"
+            android:configChanges="keyboardHidden"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="stateHidden" />
 
     </application>
     <uses-sdk android:minSdkVersion="16"></uses-sdk>
