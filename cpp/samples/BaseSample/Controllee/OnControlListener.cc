@@ -48,6 +48,7 @@ void OnControlCommands::Init()
             cout << "Interface creation failed." << endl;
             return;
         }
+        m_intfControllee = static_cast<OnControlIntfControllee*>(haeInterface);
     } else {
         PrintCommands();
     }

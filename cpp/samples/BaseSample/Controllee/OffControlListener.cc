@@ -48,6 +48,7 @@ void OffControlCommands::Init()
             cout << "Interface creation failed." << endl;
             return;
         }
+        m_intfControllee = static_cast<OffControlIntfControllee*>(haeInterface);
     } else {
         PrintCommands();
     }
