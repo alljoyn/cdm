@@ -94,12 +94,25 @@ void BaseSample::PushCommands(Commands* commands)
 void BaseSample::PopCommands()
 {
     if (static_cast<int>(m_CommandsQueue.size()) > 1) {
+        Commands* m_oldCommand = m_CurrentCommands;
+
         m_CommandsQueue.pop();
         UpdateCurrentCommands();
+
+        ChildCommandMap &children = m_CurrentCommands->GetChildren();
+        ChildCommandMap::iterator itr = children.begin();
+        while(itr != children.end()) {
+            if(itr->second == m_oldCommand) {
+                itr->second = nullptr;
+            }
+            ++itr;
+        }
+
+        delete m_oldCommand;
+        m_oldCommand = nullptr;
+
         m_CurrentCommands->PrintCommands();
     }
-
-    // Todo: delete commands 처리 어떻게 할지??
 }
 
 //////////////////////////////////////////////////////////////

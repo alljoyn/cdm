@@ -51,6 +51,7 @@ DeviceCommands::DeviceCommands(ControllerSample* sample, DeviceInfoPtr& info)
 , m_sample(sample)
 , m_deviceInfo(info)
 {
+    RegisterCommand(&DeviceCommands::OnCmdBack, "-b", "go to previous commands");
 }
 
 DeviceCommands::~DeviceCommands()
@@ -206,4 +207,11 @@ Commands* DeviceCommands::CreateInterfaceCommands(Commands* commands, const char
         intfCommands = new RapidModeTimedCommands(sample, info, objectPath);
     }
     return intfCommands;
+}
+
+void DeviceCommands::OnCmdBack(Commands* commands, std::string& cmd)
+{
+    ControllerCommands::OnCmdBack(commands, cmd);
+    ControllerSample* sample = static_cast<ControllerCommands*>(commands)->GetControllerSample();
+    sample->DropDeviceSession();
 }

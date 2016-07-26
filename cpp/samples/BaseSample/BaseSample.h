@@ -34,6 +34,7 @@ class BaseSample {
     void PushCommands(Commands* commands);
     void PopCommands();
     Commands* GetCurrentCommands() { return m_CurrentCommands; }
+    int GetCommandsQueueSize() {return static_cast<int>(m_CommandsQueue.size());}
 
     void Quit() { m_Quit = true; }
 

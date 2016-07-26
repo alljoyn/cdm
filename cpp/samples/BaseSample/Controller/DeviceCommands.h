@@ -36,6 +36,7 @@ class DeviceCommands : public ControllerCommands
     ControllerSample* GetControllerSample() { return m_sample; }
     DeviceInfoPtr& GetDeviceInfo() { return m_deviceInfo; }
     static void OnCmdSelectInterface(Commands* commands, std::string&);
+    static void OnCmdBack(Commands* commands, std::string& cmd);
 
   private:
     ControllerSample* m_sample;

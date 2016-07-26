@@ -31,6 +31,7 @@ typedef struct CommandItem_t {
 }CommandItem;
 
 typedef std::map<std::string, CommandItem> CommandFuncMap;
+typedef std::map<std::string, Commands*> ChildCommandMap;
 
 class Commands {
   public:
@@ -40,6 +41,7 @@ class Commands {
       bool RegisterCommand(CommandFunc func, const std::string& name, const std::string& description);
       bool RegisterChildCommands(const std::string& key, Commands* commands);
       Commands* GetChild(const std::string& key);
+      ChildCommandMap& GetChildren();
 
       virtual void Init() = 0;
       virtual void PrintCommands() = 0;
@@ -55,8 +57,7 @@ class Commands {
   protected:
       std::string m_CommandText;
       CommandFuncMap m_Commands;
-      std::map<std::string, Commands*> m_Children;
-
+      ChildCommandMap m_Children;
 };
 
 #endif // COMMAND_H_
