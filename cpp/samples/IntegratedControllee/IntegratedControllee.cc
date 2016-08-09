@@ -51,6 +51,11 @@
 #include "HvacFanModeListener.h"
 #include "PlugInUnitsListener.h"
 #include "RapidModeTimedListener.h"
+//--------------------------------------------------
+#include "TimeDisplayListener.h"
+#include "TemperatureDisplayListener.h"
+#include "LanguageDisplayListener.h"
+//--------------------------------------------------
 
 #include <alljoyn/hae/interfaces/input/HidIntfControllee.h>
 #include <alljoyn/hae/interfaces/environment/CurrentTemperatureIntfControllee.h>
@@ -94,6 +99,12 @@
 #include <alljoyn/hae/interfaces/environment/TargetTemperatureLevelIntfControllee.h>
 #include <alljoyn/hae/interfaces/environment/CurrentAirQualityIntfControllee.h>
 #include <alljoyn/hae/interfaces/environment/CurrentAirQualityLevelIntfControllee.h>
+
+//--------------------------------------------------
+#include <alljoyn/hae/interfaces/userinterfacesettings/TimeDisplayIntfControllee.h>
+#include <alljoyn/hae/interfaces/userinterfacesettings/TemperatureDisplayIntfControllee.h>
+#include <alljoyn/hae/interfaces/userinterfacesettings/LanguageDisplayIntfControllee.h>
+//--------------------------------------------------
 
 using namespace std;
 using namespace qcc;
@@ -144,6 +155,13 @@ class IntegratedControllee : public ControlleeSample
     PlugInUnitsListener m_plugInUnitsListener;
     RapidModeTimedListener m_rapidModeTimedListener;
 
+
+//--------------------------------------------------
+    TimeDisplayListener m_timeDisplayListener;
+    TemperatureDisplayListener m_temperatureDisplayListener;
+    LanguageDisplayListener m_languageDisplayListener;
+//--------------------------------------------------
+
     HidIntfControllee* m_hidIntfControllee;
     CurrentTemperatureIntfControllee* m_currentTemperatureIntfControllee;
     TargetTemperatureIntfControllee* m_targetTemperatureIntfControllee;
@@ -187,6 +205,11 @@ class IntegratedControllee : public ControlleeSample
     PlugInUnitsIntfControllee* m_plugInUnitsIntfControllee;
     RapidModeTimedIntfControllee* m_rapidModeTimedIntfControllee;
 
+//--------------------------------------------------
+    TimeDisplayIntfControllee* m_timeDisplayIntfControllee;
+    TemperatureDisplayIntfControllee* m_temperatureDisplayIntfControllee;
+    LanguageDisplayIntfControllee* m_languageDisplayIntfControllee;
+//--------------------------------------------------
   public:
     IntegratedControllee(BusAttachment* bus, HaeAboutData* aboutData);
     virtual ~IntegratedControllee();
@@ -205,7 +228,8 @@ IntegratedControllee::IntegratedControllee(BusAttachment* bus, HaeAboutData* abo
     m_soilLevelIntfControllee(NULL), m_spinSpeedLevelIntfControllee(NULL), m_timerIntfControllee(NULL), m_waterLevelIntfControllee(NULL), m_alertsIntfControllee(NULL),
     m_currentAirQualityIntfControllee(NULL), m_currentAirQualityLevelIntfControllee(NULL), m_currentHumidityIntfControllee(NULL), m_targetHumidityIntfControllee(NULL),
     m_targetTemperatureLevelIntfControllee(NULL), m_moistureOutputLevelIntfControllee(NULL), m_filterStatusIntfControllee(NULL), m_hvacFanModeIntfControllee(NULL),
-    m_plugInUnitsIntfControllee(NULL), m_rapidModeTimedIntfControllee(NULL)
+    m_plugInUnitsIntfControllee(NULL), m_rapidModeTimedIntfControllee(NULL), m_timeDisplayIntfControllee(NULL), m_temperatureDisplayIntfControllee(NULL),
+    m_languageDisplayIntfControllee(NULL)
 {
 }
 
@@ -346,6 +370,17 @@ void IntegratedControllee::CreateInterfaces()
 
     intf = haeControllee->CreateInterface(RAPID_MODE_TIMED_INTERFACE, "/Hae/IntegratedControllee", m_rapidModeTimedListener);
     m_rapidModeTimedIntfControllee = static_cast<RapidModeTimedIntfControllee*>(intf);
+
+//----------------------------------------------
+    intf = haeControllee->CreateInterface(TIME_DISPLAY_INTERFACE, "/Hae/IntegratedControllee", m_timeDisplayListener);
+    m_timeDisplayIntfControllee = static_cast<TimeDisplayIntfControllee*>(intf);
+
+    intf = haeControllee->CreateInterface(TEMPERATURE_DISPLAY_INTERFACE, "/Hae/IntegratedControllee", m_temperatureDisplayListener);
+    m_temperatureDisplayIntfControllee = static_cast<TemperatureDisplayIntfControllee*>(intf);
+
+    intf = haeControllee->CreateInterface(LANGUAGE_DISPLAY_INTERFACE, "/Hae/IntegratedControllee", m_languageDisplayListener);
+    m_languageDisplayIntfControllee = static_cast<LanguageDisplayIntfControllee*>(intf);
+//----------------------------------------------
 }
 
 void IntegratedControllee::SetInitialProperty()
@@ -713,8 +748,15 @@ void IntegratedControllee::SetInitialProperty()
         uint8_t maxlevel = 80;
         uint8_t targetlevel = 20;
 
+
+        TargetTemperatureLevelInterface::TemperatureLevels levels;
+        levels.push_back(10);
+        levels.push_back(20);
+        levels.push_back(50);
+        levels.push_back(80);
         m_targetTemperatureLevelIntfControllee->SetMaxLevel(maxlevel);
         m_targetTemperatureLevelIntfControllee->SetTargetLevel(targetlevel);
+        m_targetTemperatureLevelIntfControllee->SetSelectableTemperatureLevels(levels);
     }
 
     if (m_moistureOutputLevelIntfControllee) {
@@ -772,6 +814,44 @@ void IntegratedControllee::SetInitialProperty()
         m_rapidModeTimedIntfControllee->SetMaxSetMinutes(maxSetMinutes);
         m_rapidModeTimedIntfControllee->SetRapidModeMinutesRemaining(rapidModeMinutesRemaining);
     }
+
+//----------------------------------------------
+    if(m_timeDisplayIntfControllee) {
+        uint8_t timeFormat = 0;
+        std::vector<uint8_t> supportedTimeFormats;
+        supportedTimeFormats.push_back(0);
+        supportedTimeFormats.push_back(1);
+
+        m_timeDisplayIntfControllee->SetSupportedDisplayTimeFormats(supportedTimeFormats);
+        m_timeDisplayIntfControllee->SetDisplayTimeFormat(timeFormat);
+    }
+
+    if(m_temperatureDisplayIntfControllee) {
+        uint8_t temperatureUnit = 0;
+        std::vector<uint8_t> supportedTemperatureUnits;
+        supportedTemperatureUnits.push_back(0);
+        supportedTemperatureUnits.push_back(1);
+        supportedTemperatureUnits.push_back(2);
+
+        m_temperatureDisplayIntfControllee->SetSupportedDisplayTemperatureUnits(supportedTemperatureUnits);
+        m_temperatureDisplayIntfControllee->SetDisplayTemperatureUnit(temperatureUnit);
+
+    }
+
+    if(m_languageDisplayIntfControllee) {
+        qcc::String languageDisplay("en");
+        std::vector<qcc::String> supportedDisplayLanguages;
+        supportedDisplayLanguages.push_back(qcc::String("en"));
+        supportedDisplayLanguages.push_back(qcc::String("es"));
+        supportedDisplayLanguages.push_back(qcc::String("fr"));
+
+        m_languageDisplayIntfControllee->SetSupportedDisplayLanguages(supportedDisplayLanguages);
+        m_languageDisplayIntfControllee->SetDisplayLanguage(languageDisplay);
+    }
+//----------------------------------------------
+
+
+
 }
 
 QStatus FillAboutData(HaeAboutData* aboutData)

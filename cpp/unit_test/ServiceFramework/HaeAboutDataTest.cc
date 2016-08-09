@@ -474,7 +474,7 @@ TEST(HaeAboutDataTest, GetAboutData)
     size_t elemSize = 0;
     status = args->Get("a(uo)", &elemSize, &entries);
     EXPECT_EQ(ER_OK, status);
-    EXPECT_EQ(1, elemSize);
+    EXPECT_EQ(1, (int)elemSize);
 //    printf("********\n%s\n********\n", entries[0].ToString().c_str());
 
     DeviceType deviceType;
@@ -590,7 +590,7 @@ TEST(HaeAboutDataTest, GetAnnouncedAboutData)
     size_t elemSize = 0;
     status = args->Get("a(uo)", &elemSize, &entries);
     EXPECT_EQ(ER_OK, status);
-    EXPECT_EQ(1, elemSize);
+    EXPECT_EQ(1, (int)elemSize);
 
     DeviceType deviceType;
     char* objectPath;
@@ -976,10 +976,10 @@ TEST(HaeAboutDataTest, CreateFromXml_multiple_device_types) {
         EXPECT_EQ(ER_OK, status);
 
         std::multimap<DeviceType, qcc::String> returnedDescriptions = returnedDescription->GetDescriptions();
-        EXPECT_EQ(3, returnedDescriptions.size());
-        EXPECT_EQ(1, returnedDescriptions.count(REFRIGERATOR));
-        EXPECT_EQ(1, returnedDescriptions.count(FREEZER));
-        EXPECT_EQ(1, returnedDescriptions.count(ICE_MAKER));
+        EXPECT_EQ(3, (int)returnedDescriptions.size());
+        EXPECT_EQ(1, (int)returnedDescriptions.count(REFRIGERATOR));
+        EXPECT_EQ(1, (int)returnedDescriptions.count(FREEZER));
+        EXPECT_EQ(1, (int)returnedDescriptions.count(ICE_MAKER));
 
         std::multimap<DeviceType, qcc::String>::const_iterator it = returnedDescriptions.find(REFRIGERATOR);
         EXPECT_STREQ("/Hae/Alpha", it->second.c_str() );

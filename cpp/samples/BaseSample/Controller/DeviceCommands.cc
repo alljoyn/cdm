@@ -45,6 +45,9 @@
 #include "HvacFanModeCommands.h"
 #include "PlugInUnitsCommands.h"
 #include "RapidModeTimedCommands.h"
+#include "TimeDisplayCommands.h"
+#include "TemperatureDisplayCommands.h"
+#include "LanguageDisplayCommands.h"
 
 DeviceCommands::DeviceCommands(ControllerSample* sample, DeviceInfoPtr& info)
 : ControllerCommands(sample)
@@ -204,6 +207,12 @@ Commands* DeviceCommands::CreateInterfaceCommands(Commands* commands, const char
         intfCommands = new PlugInUnitsCommands(sample, info, objectPath);
     } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.Operation.RapidModeTimed", strlen(intfName))) {
         intfCommands = new RapidModeTimedCommands(sample, info, objectPath);
+    } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.UserInterfaceSettings.TimeDisplay", strlen(intfName))) {
+        intfCommands = new TimeDisplayCommands(sample, info, objectPath);
+    } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.UserInterfaceSettings.TemperatureDisplay", strlen(intfName))) {
+        intfCommands = new TemperatureDisplayCommands(sample, info, objectPath);
+    } else if (!strncmp(intfName, "org.alljoyn.SmartSpaces.UserInterfaceSettings.LanguageDisplay", strlen(intfName))) {
+        intfCommands = new LanguageDisplayCommands(sample, info, objectPath);
     }
     return intfCommands;
 }

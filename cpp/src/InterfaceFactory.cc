@@ -66,7 +66,9 @@
 #include "interfaces/operation/HvacFanModeIntfControlleeImpl.h"
 #include "interfaces/operation/PlugInUnitsIntfControlleeImpl.h"
 #include "interfaces/operation/RapidModeTimedIntfControlleeImpl.h"
-
+#include "interfaces/userinterfacesettings/TimeDisplayIntfControlleeImpl.h"
+#include "interfaces/userinterfacesettings/TemperatureDisplayIntfControlleeImpl.h"
+#include "interfaces/userinterfacesettings/LanguageDisplayIntfControlleeImpl.h"
 // Controller
 #include "interfaces/operation/AudioVolumeIntfControllerImpl.h"
 #include "interfaces/operation/ChannelIntfControllerImpl.h"
@@ -110,6 +112,9 @@
 #include "interfaces/operation/HvacFanModeIntfControllerImpl.h"
 #include "interfaces/operation/PlugInUnitsIntfControllerImpl.h"
 #include "interfaces/operation/RapidModeTimedIntfControllerImpl.h"
+#include "interfaces/userinterfacesettings/TimeDisplayIntfControllerImpl.h"
+#include "interfaces/userinterfacesettings/TemperatureDisplayIntfControllerImpl.h"
+#include "interfaces/userinterfacesettings/LanguageDisplayIntfControllerImpl.h"
 
 using namespace std;
 using namespace qcc;
@@ -173,6 +178,9 @@ InterfaceFactory::InterfaceFactory() :
     m_controllerCreators[HVAC_FAN_MODE_INTERFACE] = static_cast<CreateIntfControllerFptr>(&HvacFanModeIntfControllerImpl::CreateInterface);
     m_controllerCreators[PLUG_IN_UNITS_INTERFACE] = static_cast<CreateIntfControllerFptr>(&PlugInUnitsIntfControllerImpl::CreateInterface);
     m_controllerCreators[RAPID_MODE_TIMED_INTERFACE] = static_cast<CreateIntfControllerFptr>(&RapidModeTimedIntfControllerImpl::CreateInterface);
+    m_controllerCreators[TIME_DISPLAY_INTERFACE] = static_cast<CreateIntfControllerFptr>(&TimeDisplayIntfControllerImpl::CreateInterface);
+    m_controllerCreators[TEMPERATURE_DISPLAY_INTERFACE] = static_cast<CreateIntfControllerFptr>(&TemperatureDisplayIntfControllerImpl::CreateInterface);
+    m_controllerCreators[LANGUAGE_DISPLAY_INTERFACE] = static_cast<CreateIntfControllerFptr>(&LanguageDisplayIntfControllerImpl::CreateInterface);
 
     // Controllee
     m_controlleeCreators[CHANNEL_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&ChannelIntfControlleeImpl::CreateInterface);
@@ -217,6 +225,9 @@ InterfaceFactory::InterfaceFactory() :
     m_controlleeCreators[HVAC_FAN_MODE_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&HvacFanModeIntfControlleeImpl::CreateInterface);
     m_controlleeCreators[PLUG_IN_UNITS_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&PlugInUnitsIntfControlleeImpl::CreateInterface);
     m_controlleeCreators[RAPID_MODE_TIMED_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&RapidModeTimedIntfControlleeImpl::CreateInterface);
+    m_controlleeCreators[TIME_DISPLAY_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&TimeDisplayIntfControlleeImpl::CreateInterface);
+    m_controlleeCreators[TEMPERATURE_DISPLAY_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&TemperatureDisplayIntfControlleeImpl::CreateInterface);
+    m_controlleeCreators[LANGUAGE_DISPLAY_INTERFACE] = static_cast<CreateIntfControlleeFptr>(&LanguageDisplayIntfControlleeImpl::CreateInterface);
 }
 
 InterfaceFactory::InterfaceFactory(const InterfaceFactory& src)

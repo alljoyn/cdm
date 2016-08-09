@@ -64,6 +64,10 @@
 #include "../BaseSample/Controllee/PlugInUnitsListener.h"
 #include "../BaseSample/Controllee/RapidModeTimedListener.h"
 
+#include "../BaseSample/Controllee/TimeDisplayListener.h"
+#include "../BaseSample/Controllee/TemperatureDisplayListener.h"
+#include "../BaseSample/Controllee/LanguageDisplayListener.h"
+
 using namespace std;
 using namespace qcc;
 using namespace ajn;
@@ -135,6 +139,10 @@ void DeviceEmulator::InitCommandsFactory()
     factory->RegisterCreator(HVAC_FAN_MODE_INTERFACE, HvacFanModeCommands::CreateCommands);
     factory->RegisterCreator(PLUG_IN_UNITS_INTERFACE, PlugInUnitsCommands::CreateCommands);
     factory->RegisterCreator(RAPID_MODE_TIMED_INTERFACE, RapidModeTimedCommands::CreateCommands);
+
+    factory->RegisterCreator(TIME_DISPLAY_INTERFACE, TimeDisplayCommands::CreateCommands);
+    factory->RegisterCreator(TEMPERATURE_DISPLAY_INTERFACE, TemperatureDisplayCommands::CreateCommands);
+    factory->RegisterCreator(LANGUAGE_DISPLAY_INTERFACE, LanguageDisplayCommands::CreateCommands);
 }
 
 void DeviceEmulator::Startup()

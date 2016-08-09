@@ -69,7 +69,6 @@ public:
 uint16_t findInvalidInputSourceId(const AudioVideoInputInterface::InputSources& supportedInputSources)
 {
     uint16_t invalidInputSourceId = 0;
-    bool isValid = true;
 
     while (invalidInputSourceId != (uint16_t) -1) {
         if (supportedInputSources.find(invalidInputSourceId) == supportedInputSources.end()) {
@@ -107,7 +106,7 @@ TEST_F(HAETest, HAE_v1_AudioVideoInput)
             EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
             listener.m_event.ResetEvent();
             EXPECT_EQ(listener.m_status, ER_OK);
-            ASSERT_NE(listener.m_supportedInputSources.size(), 0);
+            ASSERT_NE((int)listener.m_supportedInputSources.size(), 0);
         }
 
         std::vector<uint16_t> sourceIds;

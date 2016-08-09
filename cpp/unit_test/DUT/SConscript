@@ -131,7 +131,7 @@ else:
     hae_unittest_env.Prepend(LIBS = ['gtest'])
     hae_unittest_env.Prepend(LIBS = ['alljoyn_hae'])
 
-    haetest_src = hae_unittest_env.Glob('*.cc') + hae_unittest_env.Glob('environment/*.cc') + hae_unittest_env.Glob('operation/*.cc') + hae_unittest_env.Glob('input/*.cc')
+    haetest_src = hae_unittest_env.Glob('*.cc') + hae_unittest_env.Glob('environment/*.cc') + hae_unittest_env.Glob('operation/*.cc') + hae_unittest_env.Glob('input/*.cc') + hae_unittest_env.Glob('userinterfacesettings/*.cc')
     if hae_unittest_env['BR'] != 'on':
         # need to remove DiscoveryTest.cc from sources
         haetest_src = [l for l in hae_unittest_env.Glob('*.cc') if not l.path.endswith('DiscoveryTest.cc')]

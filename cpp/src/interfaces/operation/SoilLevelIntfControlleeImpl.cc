@@ -135,10 +135,12 @@ QStatus SoilLevelIntfControlleeImpl::OnSetProperty(const String& propName, MsgAr
             return status;
         } else {
             std::vector<uint8_t>::iterator it;
-            it = std::find(m_selectableLevels.begin(), m_selectableLevels.end(), val.v_byte);
+            uint8_t inputValue = val.v_byte;
+            it = std::find(m_selectableLevels.begin(), m_selectableLevels.end(), inputValue);
             if(it == m_selectableLevels.end() || val.v_byte > GetMaxLevel()) {
                 status = ER_INVALID_DATA;
                 QCC_LogError(status, ("%s: property value not set ", __func__));
+                return status;
             }
             status = m_interfaceListener.OnSetTargetLevel(val.v_byte);
             if(status != ER_OK) {

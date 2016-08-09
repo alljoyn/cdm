@@ -20,6 +20,7 @@ srcs += hae_env.Glob('interfaces/*.cc')
 srcs += hae_env.Glob('interfaces/operation/*.cc')
 srcs += hae_env.Glob('interfaces/environment/*.cc')
 srcs += hae_env.Glob('interfaces/input/*.cc')
+srcs += hae_env.Glob('interfaces/userinterfacesettings/*.cc')
 hae_env.Append(CPPPATH = '.');
 
 # Platform specific sources

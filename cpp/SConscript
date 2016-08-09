@@ -31,6 +31,7 @@ hae_env.Install('$HAE_DISTDIR/inc/alljoyn/hae/interfaces', hae_env.Glob('inc/all
 hae_env.Install('$HAE_DISTDIR/inc/alljoyn/hae/interfaces/operation', hae_env.Glob('inc/alljoyn/hae/interfaces/operation/*.h'))
 hae_env.Install('$HAE_DISTDIR/inc/alljoyn/hae/interfaces/environment', hae_env.Glob('inc/alljoyn/hae/interfaces/environment/*.h'))
 hae_env.Install('$HAE_DISTDIR/inc/alljoyn/hae/interfaces/input', hae_env.Glob('inc/alljoyn/hae/interfaces/input/*.h'))
+hae_env.Install('$HAE_DISTDIR/inc/alljoyn/hae/interfaces/userinterfacesettings', hae_env.Glob('inc/alljoyn/hae/interfaces/userinterfacesettings/*.h'))
 
 # Libraries
 hae_env.Install('$HAE_DISTDIR/lib', hae_env.SConscript('src/SConscript', exports = ['hae_env']))

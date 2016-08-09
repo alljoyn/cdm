@@ -73,6 +73,9 @@
         <Interface name='org.alljoyn.SmartSpaces.Environment.CurrentHumidity'/>
         <Interface name='org.alljoyn.SmartSpaces.Environment.TargetHumidity'/>
         <Interface name='org.alljoyn.SmartSpaces.Environment.TargetTemperatureLevel'/>
+        <Interface name='org.alljoyn.SmartSpaces.UserInterfaceSettings.TimeDisplay'/>
+        <Interface name='org.alljoyn.SmartSpaces.UserInterfaceSettings.TemperatureDisplay'/>
+        <Interface name='org.alljoyn.SmartSpaces.UserInterfaceSettings.LanguageDisplay'/>
       </Object>
     </InterfaceList>
 </DeviceEmulator>

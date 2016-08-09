@@ -220,7 +220,7 @@ TEST_F(HAETest, HAE_v1_Channel)
                 EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
                 listener.m_event.ResetEvent();
                 EXPECT_EQ(listener.m_status, ER_OK);
-                EXPECT_EQ(listener.m_channelInfoRecords.size(), listener.m_totalNumberOfChannels - startingRecord);
+                EXPECT_EQ((int)listener.m_channelInfoRecords.size(), listener.m_totalNumberOfChannels - startingRecord);
             }
         }
 
