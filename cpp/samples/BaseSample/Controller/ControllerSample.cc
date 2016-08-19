@@ -251,7 +251,15 @@ void ControllerSample::OnDeviceAdded(const char* busname,
 
 void ControllerSample::OnDeviceRemoved(const char* busname)
 {
-    // printf("lost device \n");
+    cout << "Device lost(device name: "<< busname << ")" << endl;
+
+    FoundDeviceMap::iterator itr = m_deviceList.begin();
+    while (itr != m_deviceList.end()) {
+        if (itr->first.compare(busname) == 0) {
+            m_deviceList.erase(itr);
+        }
+        ++itr;
+    }
 }
 
 void ControllerSample::OnDeviceSessionJoined(const DeviceInfoPtr& info)
@@ -259,6 +267,8 @@ void ControllerSample::OnDeviceSessionJoined(const DeviceInfoPtr& info)
     cout << "Device session joined (session id: "<< info->GetSessionId() << ")" << endl;
 
     m_deviceList[info->GetBusName()].sessionId = info->GetSessionId();
+
+    m_lastSession = info->GetSessionId();
 
     DeviceCommands* command = new DeviceCommands(this, const_cast<DeviceInfoPtr&>(info));
     GetCurrentCommands()->RegisterChildCommands(info->GetBusName(), command);
@@ -269,7 +279,9 @@ void ControllerSample::OnDeviceSessionLost(SessionId id)
 {
     cout << "Device session lost(session id: "<< id << ")" << endl;
 
-    //sessionId info of FoundDeviceInfo object in g_deviceList should be updated.
+    while(GetCommandsQueueSize() > 1) {
+        PopCommands();
+    }
 }
 
 FoundDeviceInfo* ControllerSample::GetFoundDeviceInfo(int index)
@@ -294,4 +306,16 @@ HaeInterface* ControllerSample::CreateInterface(const HaeInterfaceType type, con
 const HaeInterfaceType ControllerSample::RegisterVendorDefinedInterface(const qcc::String& interfaceName, CreateIntfControllerFptr createIntfController)
 {
     return m_controller->RegisterVendorDefinedInterface(interfaceName, createIntfController);
+}
+
+void ControllerSample::DropDeviceSession()
+{
+    QStatus status = ER_OK;
+
+    cout << "Dropping session for device: " << m_lastSession << endl;
+
+    status = m_bus->LeaveSession(m_lastSession);
+    if(status != ER_OK) {
+        cout << "Failed to leave the session: " << status << endl;
+    }
 }

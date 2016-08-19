@@ -82,3 +82,8 @@ Commands* Commands::GetChild(const std::string& key)
     }
     return 0;
 }
+
+ChildCommandMap& Commands::GetChildren()
+{
+    return m_Children;
+}
