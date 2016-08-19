@@ -14,7 +14,7 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package org.alljoyn.haecontroller.view.custom;
+package org.alljoyn.cdmcontroller.view.custom;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -34,8 +34,8 @@ import android.widget.Toast;
 
 import org.alljoyn.bus.BusException;
 import org.alljoyn.bus.Variant;
-import org.alljoyn.haecontroller.R;
-import org.alljoyn.haecontroller.util.HaeUtil;
+import org.alljoyn.cdmcontroller.R;
+import org.alljoyn.cdmcontroller.util.CdmUtil;
 import org.alljoyn.smartspaces.EnumBase;
 
 import java.lang.reflect.InvocationTargetException;
@@ -146,7 +146,7 @@ public class ParamSupportedEnumDialog<T extends EnumBase<T>> extends Dialog {
                                 Toast.makeText(ParamSupportedEnumDialog.this.getContext(), "Fill all Parameter", Toast.LENGTH_SHORT).show();
                                 return;
                             }
-                            params[i] = HaeUtil.parseParams(ParamSupportedEnumDialog.this.paramTypes[i], ((TextView)vi).getText())[0];
+                            params[i] = CdmUtil.parseParams(ParamSupportedEnumDialog.this.paramTypes[i], ((TextView)vi).getText())[0];
 
                         }
                         if (vi instanceof Spinner) {
@@ -155,7 +155,7 @@ public class ParamSupportedEnumDialog<T extends EnumBase<T>> extends Dialog {
                                 return;
                             }
                             T item = (T)((Spinner) vi).getSelectedItem();
-                            params[i] = HaeUtil.parseParams(ParamSupportedEnumDialog.this.paramTypes[i], item.toValue()) [0];
+                            params[i] = CdmUtil.parseParams(ParamSupportedEnumDialog.this.paramTypes[i], item.toValue()) [0];
                         }
                     }
                     listener.onOkClick(params);
@@ -262,8 +262,8 @@ public class ParamSupportedEnumDialog<T extends EnumBase<T>> extends Dialog {
         private void setSupportedEnumView(Object enumList) {
             if (enumList != null) {
                 valuesSupportedAdapter.clear();
-                for (Object obj : HaeUtil.toObjectArray(enumList)) {
-                    T item = (T) HaeUtil.findEnum(obj, clazz);
+                for (Object obj : CdmUtil.toObjectArray(enumList)) {
+                    T item = (T) CdmUtil.findEnum(obj, clazz);
                     valuesSupportedAdapter.add(item);
                 }
             }

@@ -14,14 +14,14 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package org.alljoyn.haecontroller.activity.input;
+package org.alljoyn.cdmcontroller.activity.input;
 
 
 import android.view.View;
 
-import org.alljoyn.haecontroller.activity.InterfaceActivity;
-import org.alljoyn.haecontroller.view.method.InjectEventsMethodView;
-import org.alljoyn.haecontroller.view.property.ReadOnlyValuePropertyView;
+import org.alljoyn.cdmcontroller.activity.InterfaceActivity;
+import org.alljoyn.cdmcontroller.view.method.InjectEventsMethodView;
+import org.alljoyn.cdmcontroller.view.property.ReadOnlyValuePropertyView;
 
 public class HidActivity extends InterfaceActivity {
     @Override

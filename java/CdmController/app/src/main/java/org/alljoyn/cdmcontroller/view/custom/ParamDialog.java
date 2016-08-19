@@ -14,7 +14,7 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package org.alljoyn.haecontroller.view.custom;
+package org.alljoyn.cdmcontroller.view.custom;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -27,8 +27,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.alljoyn.haecontroller.R;
-import org.alljoyn.haecontroller.util.HaeUtil;
+import org.alljoyn.cdmcontroller.R;
+import org.alljoyn.cdmcontroller.util.CdmUtil;
 
 public class ParamDialog extends Dialog {
     public interface OnOkClickListener {
@@ -92,7 +92,7 @@ public class ParamDialog extends Dialog {
                             Toast.makeText(ParamDialog.this.getContext(), "Fill all Parameter", Toast.LENGTH_SHORT).show();
                             return;
                         }
-                        params[i] = HaeUtil.parseParams(ParamDialog.this.paramTypes[i], ParamDialog.this.valueViews[i].getText())[0];
+                        params[i] = CdmUtil.parseParams(ParamDialog.this.paramTypes[i], ParamDialog.this.valueViews[i].getText())[0];
                     }
                     listener.onOkClick(params);
                 }

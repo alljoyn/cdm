@@ -14,7 +14,7 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package org.alljoyn.haecontroller.view.property;
+package org.alljoyn.cdmcontroller.view.property;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -22,9 +22,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.alljoyn.haecontroller.R;
-import org.alljoyn.haecontroller.util.HaeUtil;
-import org.alljoyn.haecontroller.view.PropertyView;
+import org.alljoyn.cdmcontroller.R;
+import org.alljoyn.cdmcontroller.util.CdmUtil;
+import org.alljoyn.cdmcontroller.view.PropertyView;
 
 public class ReadOnlyValuePropertyView extends PropertyView {
     private TextView nameView;
@@ -61,9 +61,9 @@ public class ReadOnlyValuePropertyView extends PropertyView {
         if (value.getClass().isArray()){
             this.valueView.setText("");
             this.valueViewExt.setVisibility(View.VISIBLE);
-            this.valueViewExt.setText(HaeUtil.toString(value));
+            this.valueViewExt.setText(CdmUtil.toString(value));
         } else {
-            this.valueView.setText(HaeUtil.toString(value));
+            this.valueView.setText(CdmUtil.toString(value));
         }
     }
 }

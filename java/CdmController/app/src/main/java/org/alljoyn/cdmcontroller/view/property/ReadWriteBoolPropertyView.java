@@ -14,7 +14,7 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package org.alljoyn.haecontroller.view.property;
+package org.alljoyn.cdmcontroller.view.property;
 
 import android.content.Context;
 import android.util.Log;
@@ -22,12 +22,12 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.alljoyn.haecontroller.R;
-import org.alljoyn.haecontroller.view.PropertyView;
-import org.alljoyn.haecontroller.view.custom.ToggleButton;
+import org.alljoyn.cdmcontroller.R;
+import org.alljoyn.cdmcontroller.view.PropertyView;
+import org.alljoyn.cdmcontroller.view.custom.ToggleButton;
 
 public class ReadWriteBoolPropertyView extends PropertyView {
-    private static final String TAG = "HAE_ReadWriteProperty";
+    private static final String TAG = "CDM_ReadWriteProperty";
 
     public ReadWriteBoolPropertyView(Context context, Object obj, String propertyName) {
         super(context, obj, propertyName, null);

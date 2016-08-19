@@ -14,7 +14,7 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package org.alljoyn.haecontroller.view.property;
+package org.alljoyn.cdmcontroller.view.property;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -31,16 +31,16 @@ import android.widget.Toast;
 
 import org.alljoyn.bus.BusException;
 import org.alljoyn.bus.Variant;
-import org.alljoyn.haecontroller.R;
-import org.alljoyn.haecontroller.util.HaeUtil;
-import org.alljoyn.haecontroller.view.PropertyView;
+import org.alljoyn.cdmcontroller.R;
+import org.alljoyn.cdmcontroller.util.CdmUtil;
+import org.alljoyn.cdmcontroller.view.PropertyView;
 import org.alljoyn.smartspaces.EnumBase;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public class ReadOnlySupportedEnumPropertyView<T extends EnumBase<T>> extends SupportedEnumPropertyView {
-    private static final String TAG = "HAE_ReadProperty";
+    private static final String TAG = "CDM_ReadProperty";
     private SpinnerInteractionListener listener = null;
 
     public class SpinnerInteractionListener implements AdapterView.OnItemSelectedListener, View.OnTouchListener {
@@ -77,7 +77,7 @@ public class ReadOnlySupportedEnumPropertyView<T extends EnumBase<T>> extends Su
 
     @Override
     public void setValueView(Object value) {
-        T item = (T)HaeUtil.findEnum(value, clazz);
+        T item = (T)CdmUtil.findEnum(value, clazz);
 
         if (item != null && valuesAdapter.getCount() > 0) {
             this.valuesView.setSelection(valuesAdapter.getPosition(item));

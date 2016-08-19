@@ -14,7 +14,7 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package org.alljoyn.haecontroller.activity;
+package org.alljoyn.cdmcontroller.activity;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -37,13 +37,13 @@ import org.alljoyn.bus.PropertiesChangedListener;
 import org.alljoyn.bus.ProxyBusObject;
 import org.alljoyn.bus.Status;
 import org.alljoyn.bus.Variant;
-import org.alljoyn.haecontroller.R;
-import org.alljoyn.haecontroller.adapter.InterfaceListAdapter;
-import org.alljoyn.haecontroller.logic.DeviceManager;
-import org.alljoyn.haecontroller.logic.IntentKeys;
-import org.alljoyn.haecontroller.logic.MessageType;
-import org.alljoyn.haecontroller.util.HaeUtil;
-import org.alljoyn.haecontroller.view.PropertyView;
+import org.alljoyn.cdmcontroller.R;
+import org.alljoyn.cdmcontroller.adapter.InterfaceListAdapter;
+import org.alljoyn.cdmcontroller.logic.DeviceManager;
+import org.alljoyn.cdmcontroller.logic.IntentKeys;
+import org.alljoyn.cdmcontroller.logic.MessageType;
+import org.alljoyn.cdmcontroller.util.CdmUtil;
+import org.alljoyn.cdmcontroller.view.PropertyView;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -53,7 +53,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public abstract class InterfaceActivity extends Activity implements BusObject {
-    private final static String TAG = "HAE_IntfActivity";
+    private final static String TAG = "CDM_IntfActivity";
 
     protected class HandleMsg {
         public static final int PROPERTIES_CHANGED = 0;
@@ -268,7 +268,7 @@ public abstract class InterfaceActivity extends Activity implements BusObject {
 
     @Override
     public void finish() {
-        HaeUtil.hideKeyboard(this);
+        CdmUtil.hideKeyboard(this);
         super.finish();
     }
 

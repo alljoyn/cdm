@@ -14,12 +14,12 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package org.alljoyn.haecontroller.activity.environment;
+package org.alljoyn.cdmcontroller.activity.environment;
 
 import android.view.View;
 
-import org.alljoyn.haecontroller.activity.InterfaceActivity;
-import org.alljoyn.haecontroller.view.property.MinMaxPropertyView;
+import org.alljoyn.cdmcontroller.activity.InterfaceActivity;
+import org.alljoyn.cdmcontroller.view.property.MinMaxPropertyView;
 
 public class TargetTemperatureActivity extends InterfaceActivity {
     @Override

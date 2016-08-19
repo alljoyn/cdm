@@ -14,7 +14,7 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package org.alljoyn.haecontroller.view.property;
+package org.alljoyn.cdmcontroller.view.property;
 
 import android.app.Activity;
 import android.content.Context;
@@ -27,12 +27,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import org.alljoyn.haecontroller.R;
-import org.alljoyn.haecontroller.util.HaeUtil;
-import org.alljoyn.haecontroller.view.PropertyView;
+import org.alljoyn.cdmcontroller.R;
+import org.alljoyn.cdmcontroller.util.CdmUtil;
+import org.alljoyn.cdmcontroller.view.PropertyView;
 
 public class ReadWriteValuePropertyView extends PropertyView {
-    private static final String TAG = "HAE_ReadWriteProperty";
+    private static final String TAG = "CDM_ReadWriteProperty";
 
     private TextView nameView;
     private TextView valueView;
@@ -82,7 +82,7 @@ public class ReadWriteValuePropertyView extends PropertyView {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (keyCode == KeyEvent.KEYCODE_ENTER) {
-                    HaeUtil.hideKeyboard((Activity) ReadWriteValuePropertyView.this.getContext());
+                    CdmUtil.hideKeyboard((Activity) ReadWriteValuePropertyView.this.getContext());
                 }
                 return false;
             }
@@ -98,6 +98,6 @@ public class ReadWriteValuePropertyView extends PropertyView {
 
     @Override
     public void setValueView(Object value) {
-        this.valueView.setText(HaeUtil.toString(value));
+        this.valueView.setText(CdmUtil.toString(value));
     }
 }

@@ -14,7 +14,7 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package org.alljoyn.haecontroller.logic;
+package org.alljoyn.cdmcontroller.logic;
 
 import android.content.Context;
 import android.content.Intent;
@@ -30,7 +30,7 @@ import org.alljoyn.bus.BusListener;
 import org.alljoyn.bus.BusObject;
 import org.alljoyn.bus.Status;
 import org.alljoyn.bus.Variant;
-import org.alljoyn.haecontroller.util.HaeUtil;
+import org.alljoyn.cdmcontroller.util.CdmUtil;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -39,7 +39,7 @@ import java.util.UUID;
 
 public class DeviceManagerImpl extends DeviceManager {
 
-    private final static String TAG = "HAE_DeviceManager";
+    private final static String TAG = "CDM_DeviceManager";
 
     private Map<UUID, Device> deviceMap = new HashMap<UUID, Device>();
 
@@ -47,7 +47,7 @@ public class DeviceManagerImpl extends DeviceManager {
 
     private ECDHEPSKKeyXListener authListener = new ECDHEPSKKeyXListener();
 
-    private BusListener haeBusListener = new BusListener() {
+    private BusListener cdmBusListener = new BusListener() {
         @Override
         public void busDisconnected() {
             super.busDisconnected();
@@ -60,7 +60,7 @@ public class DeviceManagerImpl extends DeviceManager {
     };
 
     public class ECDHEPSKKeyXListener implements AuthListener {
-        private static final String TAG = "HAE_AuthListener";
+        private static final String TAG = "CDM_AuthListener";
         private boolean sendBackKeys = true;
 
         public ECDHEPSKKeyXListener() {
@@ -196,7 +196,7 @@ public class DeviceManagerImpl extends DeviceManager {
 
             try {
                 byte[] byteUUID = aboutData.get(AboutKeys.ABOUT_APP_ID).getObject(byte[].class);
-                UUID appId = HaeUtil.byteArrayToUUID(byteUUID);
+                UUID appId = CdmUtil.byteArrayToUUID(byteUUID);
                 Device device = new DeviceImpl(DeviceManagerImpl.this.context, DeviceManagerImpl.this.bus, appId, busName, version, port, aboutObjectDescriptions, aboutData);
                 deviceMap.put(appId, device);
                 Intent intent = new Intent(MessageType.ON_DEVICE_ADDED);
@@ -227,7 +227,7 @@ public class DeviceManagerImpl extends DeviceManager {
 
         this.bus.registerAuthListener(this.authListener.getMechanisms(), this.authListener, this.authListener.getKeyStoreFileName(), true);
 
-        this.bus.registerBusListener(haeBusListener);
+        this.bus.registerBusListener(cdmBusListener);
         this.bus.registerAboutListener(m_aboutListener);
 
         String[] interfaces = {"*"};

@@ -14,7 +14,7 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package org.alljoyn.haecontroller.view.method;
+package org.alljoyn.cdmcontroller.view.method;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -26,14 +26,14 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.alljoyn.haecontroller.R;
-import org.alljoyn.haecontroller.view.custom.ParamDialog;
+import org.alljoyn.cdmcontroller.R;
+import org.alljoyn.cdmcontroller.view.custom.ParamDialog;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public class MethodView extends LinearLayout {
-    private static final String TAG = "HAE_Method";
+    private static final String TAG = "CDM_Method";
 
     private static final int PARAM_RESULT = 1;
 

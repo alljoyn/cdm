@@ -14,7 +14,7 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package org.alljoyn.haecontroller.adapter;
+package org.alljoyn.cdmcontroller.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -27,8 +27,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.alljoyn.haecontroller.R;
-import org.alljoyn.haecontroller.logic.Device;
+import org.alljoyn.cdmcontroller.R;
+import org.alljoyn.cdmcontroller.logic.Device;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

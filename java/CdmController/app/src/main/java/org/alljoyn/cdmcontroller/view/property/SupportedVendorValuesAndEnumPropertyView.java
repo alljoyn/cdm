@@ -14,7 +14,7 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package org.alljoyn.haecontroller.view.property;
+package org.alljoyn.cdmcontroller.view.property;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -32,9 +32,9 @@ import android.widget.Toast;
 import org.alljoyn.bus.BusException;
 import org.alljoyn.bus.Variant;
 import org.alljoyn.bus.annotation.Position;
-import org.alljoyn.haecontroller.R;
-import org.alljoyn.haecontroller.util.HaeUtil;
-import org.alljoyn.haecontroller.view.PropertyView;
+import org.alljoyn.cdmcontroller.R;
+import org.alljoyn.cdmcontroller.util.CdmUtil;
+import org.alljoyn.cdmcontroller.view.PropertyView;
 import org.alljoyn.smartspaces.EnumBase;
 
 import java.lang.reflect.Field;
@@ -43,7 +43,7 @@ import java.lang.reflect.Method;
 
 public class SupportedVendorValuesAndEnumPropertyView<T extends EnumBase<T>> extends PropertyView
         implements OnMethodResultListener{
-    private static final String TAG = "HAE_ReadProperty";
+    private static final String TAG = "CDM_ReadProperty";
 
     private Method supportedGetter = null;
 
@@ -200,8 +200,8 @@ public class SupportedVendorValuesAndEnumPropertyView<T extends EnumBase<T>> ext
     private synchronized void setSupportedListView(Object supportedVendorList, Object supportedList) {
         SupportedVendorValuesAndEnumPropertyView.this.valuesAdapter.clear();
         if (supportedList != null) {
-            for (Object obj : HaeUtil.toObjectArray(supportedList)) {
-                T item = (T) HaeUtil.findEnum(obj, SupportedVendorValuesAndEnumPropertyView.this.enumClazz);
+            for (Object obj : CdmUtil.toObjectArray(supportedList)) {
+                T item = (T) CdmUtil.findEnum(obj, SupportedVendorValuesAndEnumPropertyView.this.enumClazz);
                 if (item != null) {
                     try {
                         Object valueI = item.toValue();
@@ -213,7 +213,7 @@ public class SupportedVendorValuesAndEnumPropertyView<T extends EnumBase<T>> ext
                     }
                 } else {
                     if (supportedVendorList != null) {
-                        for (Object obj1 : HaeUtil.toObjectArray(supportedVendorList)) {
+                        for (Object obj1 : CdmUtil.toObjectArray(supportedVendorList)) {
                             if (SupportedVendorValuesAndEnumPropertyView.this.positionValue == -1)
                                 SupportedVendorValuesAndEnumPropertyView.this.valuesAdapter.add(new Item<Object>(null,obj1));
                             else {
@@ -290,7 +290,7 @@ public class SupportedVendorValuesAndEnumPropertyView<T extends EnumBase<T>> ext
                         Object[] params = new Object[paramTypes.length];
                         int idx = 0;
                         for (Class<?> clazz : paramTypes) {
-                            SupportedVendorValuesAndEnumPropertyView.this.params[idx] = HaeUtil.parseParam(clazz, SupportedVendorValuesAndEnumPropertyView.this.params[idx]);
+                            SupportedVendorValuesAndEnumPropertyView.this.params[idx] = CdmUtil.parseParam(clazz, SupportedVendorValuesAndEnumPropertyView.this.params[idx]);
                             idx++;
                         }
                         returnObj = SupportedVendorValuesAndEnumPropertyView.this.supportedGetter.invoke(SupportedVendorValuesAndEnumPropertyView.this.busObject, SupportedVendorValuesAndEnumPropertyView.this.params);

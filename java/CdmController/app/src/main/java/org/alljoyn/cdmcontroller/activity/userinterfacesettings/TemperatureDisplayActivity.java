@@ -14,12 +14,12 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package org.alljoyn.haecontroller.activity.userinterfacesettings;
+package org.alljoyn.cdmcontroller.activity.userinterfacesettings;
 
 import android.view.View;
 
-import org.alljoyn.haecontroller.activity.InterfaceActivity;
-import org.alljoyn.haecontroller.view.property.SupportedEnumPropertyView;
+import org.alljoyn.cdmcontroller.activity.InterfaceActivity;
+import org.alljoyn.cdmcontroller.view.property.SupportedEnumPropertyView;
 import org.alljoyn.smartspaces.userinterfacesettings.TemperatureDisplay;
 
 public class TemperatureDisplayActivity extends InterfaceActivity {

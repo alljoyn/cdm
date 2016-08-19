@@ -14,7 +14,7 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package org.alljoyn.haecontroller;
+package org.alljoyn.cdmcontroller;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

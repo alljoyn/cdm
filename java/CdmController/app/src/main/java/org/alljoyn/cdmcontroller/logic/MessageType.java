@@ -14,7 +14,7 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package org.alljoyn.haecontroller.logic;
+package org.alljoyn.cdmcontroller.logic;
 
 public class MessageType {
     public final static String ON_DEVICE_ADDED = "org.alljoyn.smartspaces.onDeviceAdded";

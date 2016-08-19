@@ -17,7 +17,7 @@
         android:text="Name"
         android:textAppearance="@style/device_name" />
 
-    <org.alljoyn.haecontroller.view.custom.ToggleButton
+    <org.alljoyn.cdmcontroller.view.custom.ToggleButton
         android:id="@+id/property_value"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"

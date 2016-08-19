@@ -14,7 +14,7 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package org.alljoyn.haecontroller.view.property;
+package org.alljoyn.cdmcontroller.view.property;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -25,16 +25,16 @@ import android.widget.TextView;
 
 import org.alljoyn.bus.BusException;
 import org.alljoyn.bus.Variant;
-import org.alljoyn.haecontroller.R;
-import org.alljoyn.haecontroller.util.HaeUtil;
-import org.alljoyn.haecontroller.view.PropertyView;
+import org.alljoyn.cdmcontroller.R;
+import org.alljoyn.cdmcontroller.util.CdmUtil;
+import org.alljoyn.cdmcontroller.view.PropertyView;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 public class ListWithSubValuesPropertyView extends PropertyView {
-    private static final String TAG = "HAE_ReadProperty";
+    private static final String TAG = "CDM_ReadProperty";
 
     private TextView nameView;
     private TextView valueView;
@@ -123,9 +123,9 @@ public class ListWithSubValuesPropertyView extends PropertyView {
         if (value.getClass().isArray()){
             this.valueView.setText("");
             this.valueViewExt.setVisibility(View.VISIBLE);
-            this.valueViewExt.setText(HaeUtil.toString(value));
+            this.valueViewExt.setText(CdmUtil.toString(value));
         } else {
-            this.valueView.setText(HaeUtil.toString(value));
+            this.valueView.setText(CdmUtil.toString(value));
         }
 
         ViewGroup rootView = (ViewGroup) findViewById(R.id.property_list);
@@ -245,7 +245,7 @@ public class ListWithSubValuesPropertyView extends PropertyView {
                             Object[] params = new Object[paramTypes.length];
                             int idx = 0;
                             for (Class<?> clazz : paramTypes) {
-                                params[idx] = HaeUtil.parseParam(clazz, params[idx]);
+                                params[idx] = CdmUtil.parseParam(clazz, params[idx]);
                                 idx++;
                             }
                             returnObj = supportedGetter.invoke(ListWithSubValuesPropertyView.this.busObject, params);
@@ -269,7 +269,7 @@ public class ListWithSubValuesPropertyView extends PropertyView {
             if (supportedList != null) {
                 values.clear();
 
-                for (Object obj : HaeUtil.toObjectArray(supportedList)) {
+                for (Object obj : CdmUtil.toObjectArray(supportedList)) {
                     values.add(obj);
                 }
                 parent.updateSupportedSubValueViews(id);

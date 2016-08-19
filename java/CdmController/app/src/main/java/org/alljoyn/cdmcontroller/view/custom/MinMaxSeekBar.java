@@ -14,7 +14,7 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package org.alljoyn.haecontroller.view.custom;
+package org.alljoyn.cdmcontroller.view.custom;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -23,7 +23,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 
-import org.alljoyn.haecontroller.R;
+import org.alljoyn.cdmcontroller.R;
 
 public class MinMaxSeekBar extends LinearLayout {
 

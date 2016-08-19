@@ -14,7 +14,7 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package org.alljoyn.haecontroller.logic;
+package org.alljoyn.cdmcontroller.logic;
 
 import android.content.Context;
 import android.content.Intent;
@@ -32,7 +32,7 @@ import org.alljoyn.bus.SessionListener;
 import org.alljoyn.bus.SessionOpts;
 import org.alljoyn.bus.Status;
 import org.alljoyn.bus.Variant;
-import org.alljoyn.haecontroller.util.HaeUtil;
+import org.alljoyn.cdmcontroller.util.CdmUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +40,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class DeviceImpl implements Device {
-    private static final String TAG = "HAE_DeviceImpl";
+    private static final String TAG = "CDM_DeviceImpl";
 
     private BusAttachment bus;
     private Context context;
@@ -97,7 +97,7 @@ public class DeviceImpl implements Device {
         }
         for (DeviceTypeDescription desc : deviceTypeDescriptions) {
             if (desc.objectPath.equals(objPath)) {
-                result.add((DeviceType)HaeUtil.findEnum(desc.deviceType, DeviceType.class));
+                result.add((DeviceType)CdmUtil.findEnum(desc.deviceType, DeviceType.class));
             }
         }
 

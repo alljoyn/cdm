@@ -14,7 +14,7 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package org.alljoyn.haecontroller.logic;
+package org.alljoyn.cdmcontroller.logic;
 
 public class IntentKeys {
     public final static String DEVICE_ID = "org.alljoyn.smartspaces.deviceId";

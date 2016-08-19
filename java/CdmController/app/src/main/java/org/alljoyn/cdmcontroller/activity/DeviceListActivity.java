@@ -14,7 +14,7 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package org.alljoyn.haecontroller.activity;
+package org.alljoyn.cdmcontroller.activity;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -30,18 +30,18 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.alljoyn.haecontroller.R;
-import org.alljoyn.haecontroller.logic.Device;
-import org.alljoyn.haecontroller.adapter.DeviceInfoAdapter;
-import org.alljoyn.haecontroller.logic.DeviceManager;
-import org.alljoyn.haecontroller.logic.IntentKeys;
-import org.alljoyn.haecontroller.logic.MessageType;
+import org.alljoyn.cdmcontroller.R;
+import org.alljoyn.cdmcontroller.logic.Device;
+import org.alljoyn.cdmcontroller.adapter.DeviceInfoAdapter;
+import org.alljoyn.cdmcontroller.logic.DeviceManager;
+import org.alljoyn.cdmcontroller.logic.IntentKeys;
+import org.alljoyn.cdmcontroller.logic.MessageType;
 
 import java.util.Collection;
 import java.util.UUID;
 
 public class DeviceListActivity extends Activity {
-    private final static String TAG = "HAE_DeviceListActivity";
+    private final static String TAG = "CDM_DeviceListActivity";
 
     private BroadcastReceiver receiver = null;
     private IntentFilter filter = new IntentFilter();

@@ -37,7 +37,7 @@
             android:text="Unit"
             android:textAppearance="@style/interface_name" />
     </LinearLayout>
-    <org.alljoyn.haecontroller.view.custom.ScrollableTextView
+    <org.alljoyn.cdmcontroller.view.custom.ScrollableTextView
         android:id="@+id/property_value_ext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

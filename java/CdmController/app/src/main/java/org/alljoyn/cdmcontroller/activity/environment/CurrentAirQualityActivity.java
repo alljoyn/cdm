@@ -14,15 +14,15 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package org.alljoyn.haecontroller.activity.environment;
+package org.alljoyn.cdmcontroller.activity.environment;
 
 
 import android.view.View;
 
-import org.alljoyn.haecontroller.activity.InterfaceActivity;
-import org.alljoyn.haecontroller.util.HaeUtil;
-import org.alljoyn.haecontroller.view.property.ReadOnlyEnumPropertyView;
-import org.alljoyn.haecontroller.view.property.ReadOnlyValuePropertyView;
+import org.alljoyn.cdmcontroller.activity.InterfaceActivity;
+import org.alljoyn.cdmcontroller.util.CdmUtil;
+import org.alljoyn.cdmcontroller.view.property.ReadOnlyEnumPropertyView;
+import org.alljoyn.cdmcontroller.view.property.ReadOnlyValuePropertyView;
 import org.alljoyn.smartspaces.environment.CurrentAirQuality;
 
 public class CurrentAirQualityActivity extends InterfaceActivity {
@@ -31,7 +31,7 @@ public class CurrentAirQualityActivity extends InterfaceActivity {
 
         CurrentAirQuality intf = (CurrentAirQuality)this.intf;
 
-        CurrentAirQuality.ContaminantType type = (CurrentAirQuality.ContaminantType)HaeUtil.findEnum(intf.getContaminantType(), CurrentAirQuality.ContaminantType.class);
+        CurrentAirQuality.ContaminantType type = (CurrentAirQuality.ContaminantType)CdmUtil.findEnum(intf.getContaminantType(), CurrentAirQuality.ContaminantType.class);
 
         View contaminantTypeView = new ReadOnlyEnumPropertyView(this, this.intf, "ContaminantType", CurrentAirQuality.ContaminantType.class);
         properties.addView(contaminantTypeView);

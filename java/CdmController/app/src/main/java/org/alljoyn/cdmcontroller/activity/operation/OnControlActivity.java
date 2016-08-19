@@ -14,12 +14,12 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package org.alljoyn.haecontroller.activity.operation;
+package org.alljoyn.cdmcontroller.activity.operation;
 
 import android.view.View;
 
-import org.alljoyn.haecontroller.activity.InterfaceActivity;
-import org.alljoyn.haecontroller.view.method.MethodView;
+import org.alljoyn.cdmcontroller.activity.InterfaceActivity;
+import org.alljoyn.cdmcontroller.view.method.MethodView;
 
 public class OnControlActivity extends InterfaceActivity {
     @Override

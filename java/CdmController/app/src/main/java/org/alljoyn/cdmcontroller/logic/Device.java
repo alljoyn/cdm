@@ -14,7 +14,7 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package org.alljoyn.haecontroller.logic;
+package org.alljoyn.cdmcontroller.logic;
 
 import org.alljoyn.bus.AboutObjectDescription;
 import org.alljoyn.bus.BusObject;
@@ -22,8 +22,8 @@ import org.alljoyn.bus.PropertiesChangedListener;
 import org.alljoyn.bus.Status;
 import org.alljoyn.bus.annotation.Position;
 import org.alljoyn.bus.annotation.Signature;
-import org.alljoyn.haecontroller.R;
-import org.alljoyn.haecontroller.util.HaeUtil;
+import org.alljoyn.cdmcontroller.R;
+import org.alljoyn.cdmcontroller.util.CdmUtil;
 import org.alljoyn.smartspaces.EnumBase;
 
 import java.util.List;

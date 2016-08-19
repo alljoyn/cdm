@@ -14,12 +14,12 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package org.alljoyn.haecontroller.view.method;
+package org.alljoyn.cdmcontroller.view.method;
 
 import android.content.Context;
 import android.view.View;
 
-import org.alljoyn.haecontroller.view.custom.ParamSupportedEnumDialog;
+import org.alljoyn.cdmcontroller.view.custom.ParamSupportedEnumDialog;
 import org.alljoyn.smartspaces.EnumBase;
 
 public class MethodSupportedParamEnumView<T extends EnumBase<T>> extends MethodView {

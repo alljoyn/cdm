@@ -38,7 +38,7 @@
             android:textAppearance="@style/interface_name" />
     </LinearLayout>
 
-    <org.alljoyn.haecontroller.view.custom.MinMaxSeekBar
+    <org.alljoyn.cdmcontroller.view.custom.MinMaxSeekBar
         android:id="@+id/seekBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

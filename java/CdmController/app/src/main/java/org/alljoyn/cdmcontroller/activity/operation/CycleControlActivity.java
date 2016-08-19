@@ -14,14 +14,14 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package org.alljoyn.haecontroller.activity.operation;
+package org.alljoyn.cdmcontroller.activity.operation;
 
 import android.view.View;
 
 import org.alljoyn.bus.annotation.BusSignalHandler;
-import org.alljoyn.haecontroller.activity.InterfaceActivity;
-import org.alljoyn.haecontroller.view.method.MethodSupportedParamEnumView;
-import org.alljoyn.haecontroller.view.property.ReadOnlySupportedEnumPropertyView;
+import org.alljoyn.cdmcontroller.activity.InterfaceActivity;
+import org.alljoyn.cdmcontroller.view.method.MethodSupportedParamEnumView;
+import org.alljoyn.cdmcontroller.view.property.ReadOnlySupportedEnumPropertyView;
 import org.alljoyn.smartspaces.operation.CycleControl;
 
 public class CycleControlActivity extends InterfaceActivity {

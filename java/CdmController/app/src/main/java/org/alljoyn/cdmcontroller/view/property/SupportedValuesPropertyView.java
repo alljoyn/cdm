@@ -14,7 +14,7 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package org.alljoyn.haecontroller.view.property;
+package org.alljoyn.cdmcontroller.view.property;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -31,9 +31,9 @@ import android.widget.TextView;
 import org.alljoyn.bus.BusException;
 import org.alljoyn.bus.Variant;
 import org.alljoyn.bus.annotation.Position;
-import org.alljoyn.haecontroller.R;
-import org.alljoyn.haecontroller.util.HaeUtil;
-import org.alljoyn.haecontroller.view.PropertyView;
+import org.alljoyn.cdmcontroller.R;
+import org.alljoyn.cdmcontroller.util.CdmUtil;
+import org.alljoyn.cdmcontroller.view.PropertyView;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -41,7 +41,7 @@ import java.lang.reflect.Method;
 import java.util.concurrent.Executor;
 
 public class SupportedValuesPropertyView extends PropertyView {
-    private static final String TAG = "HAE_ReadWriteProperty";
+    private static final String TAG = "CDM_ReadWriteProperty";
 
     private Method supportedGetter = null;
     private String supportedName = null;
@@ -162,7 +162,7 @@ public class SupportedValuesPropertyView extends PropertyView {
     private void setSupportedListView(Object supportedList) {
         if (supportedList != null) {
             SupportedValuesPropertyView.this.valuesAdapter.clear();
-            for (Object obj : HaeUtil.toObjectArray(supportedList)) {
+            for (Object obj : CdmUtil.toObjectArray(supportedList)) {
                 if (SupportedValuesPropertyView.this.position == -1)
                     SupportedValuesPropertyView.this.valuesAdapter.add(obj);
                 else {
@@ -203,7 +203,7 @@ public class SupportedValuesPropertyView extends PropertyView {
                         Object[] params = new Object[paramTypes.length];
                         int idx = 0;
                         for (Class<?> clazz : paramTypes) {
-                            SupportedValuesPropertyView.this.params[idx] = HaeUtil.parseParam(clazz, SupportedValuesPropertyView.this.params[idx]);
+                            SupportedValuesPropertyView.this.params[idx] = CdmUtil.parseParam(clazz, SupportedValuesPropertyView.this.params[idx]);
                             idx++;
                         }
                         returnObj = supportedGetter.invoke(SupportedValuesPropertyView.this.busObject, SupportedValuesPropertyView.this.params);

@@ -14,7 +14,7 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package org.alljoyn.haecontroller.view.property;
+package org.alljoyn.cdmcontroller.view.property;
 
 import android.content.Context;
 import android.util.Log;
@@ -23,13 +23,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.alljoyn.haecontroller.view.PropertyView;
+import org.alljoyn.cdmcontroller.view.PropertyView;
 import org.alljoyn.smartspaces.EnumBase;
-import org.alljoyn.haecontroller.R;
-import org.alljoyn.haecontroller.util.HaeUtil;
+import org.alljoyn.cdmcontroller.R;
+import org.alljoyn.cdmcontroller.util.CdmUtil;
 
 public class ReadOnlyEnumPropertyView<T extends EnumBase<?>> extends PropertyView {
-    private static final String TAG = "HAE_ReadWriteProperty";
+    private static final String TAG = "CDM_ReadWriteProperty";
 
     private TextView nameView;
     private TextView valueView;
@@ -59,7 +59,7 @@ public class ReadOnlyEnumPropertyView<T extends EnumBase<?>> extends PropertyVie
 
     @Override
     public void setValueView(Object value) {
-        T item = (T)HaeUtil.findEnum(value, this.clazz);
+        T item = (T)CdmUtil.findEnum(value, this.clazz);
         if (item != null) {
             this.valueView.setText(item.toString());
         } else {

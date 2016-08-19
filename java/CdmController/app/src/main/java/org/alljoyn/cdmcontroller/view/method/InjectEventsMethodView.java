@@ -14,7 +14,7 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package org.alljoyn.haecontroller.view.method;
+package org.alljoyn.cdmcontroller.view.method;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -26,7 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.alljoyn.input.Hid;
-import org.alljoyn.haecontroller.R;
+import org.alljoyn.cdmcontroller.R;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

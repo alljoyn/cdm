@@ -14,7 +14,7 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package org.alljoyn.haecontroller.view.property;
+package org.alljoyn.cdmcontroller.view.property;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -29,16 +29,16 @@ import android.widget.TextView;
 
 import org.alljoyn.bus.BusException;
 import org.alljoyn.bus.Variant;
-import org.alljoyn.haecontroller.view.PropertyView;
+import org.alljoyn.cdmcontroller.view.PropertyView;
 import org.alljoyn.smartspaces.EnumBase;
-import org.alljoyn.haecontroller.R;
-import org.alljoyn.haecontroller.util.HaeUtil;
+import org.alljoyn.cdmcontroller.R;
+import org.alljoyn.cdmcontroller.util.CdmUtil;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public class SupportedEnumPropertyView<T extends EnumBase<T>> extends PropertyView {
-    private static final String TAG = "HAE_ReadWriteProperty";
+    private static final String TAG = "CDM_ReadWriteProperty";
 
     private Method supportedGetter = null;
     private String supportedName;
@@ -103,8 +103,8 @@ public class SupportedEnumPropertyView<T extends EnumBase<T>> extends PropertyVi
     private void setSupportedEnumView(Object enumList) {
         if (enumList != null) {
             SupportedEnumPropertyView.this.valuesAdapter.clear();
-            for (Object obj : HaeUtil.toObjectArray(enumList)) {
-                T item = (T) HaeUtil.findEnum(obj, SupportedEnumPropertyView.this.clazz);
+            for (Object obj : CdmUtil.toObjectArray(enumList)) {
+                T item = (T) CdmUtil.findEnum(obj, SupportedEnumPropertyView.this.clazz);
                 SupportedEnumPropertyView.this.valuesAdapter.add(item);
             }
         }
@@ -115,7 +115,7 @@ public class SupportedEnumPropertyView<T extends EnumBase<T>> extends PropertyVi
 
     @Override
     public void setValueView(Object value) {
-        T item = (T)HaeUtil.findEnum(value, this.clazz);
+        T item = (T)CdmUtil.findEnum(value, this.clazz);
         if (item != null && this.valuesAdapter.getCount() > 0) {
             this.valuesView.setSelection(this.valuesAdapter.getPosition(item));
         }

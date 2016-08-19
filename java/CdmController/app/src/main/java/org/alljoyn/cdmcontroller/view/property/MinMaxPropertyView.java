@@ -14,7 +14,7 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package org.alljoyn.haecontroller.view.property;
+package org.alljoyn.cdmcontroller.view.property;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -27,10 +27,10 @@ import android.widget.TextView;
 
 import org.alljoyn.bus.BusException;
 import org.alljoyn.bus.Variant;
-import org.alljoyn.haecontroller.R;
-import org.alljoyn.haecontroller.view.PropertyView;
-import org.alljoyn.haecontroller.view.custom.MinMaxSeekBar;
-import org.alljoyn.haecontroller.util.HaeUtil;
+import org.alljoyn.cdmcontroller.R;
+import org.alljoyn.cdmcontroller.view.PropertyView;
+import org.alljoyn.cdmcontroller.view.custom.MinMaxSeekBar;
+import org.alljoyn.cdmcontroller.util.CdmUtil;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -109,13 +109,13 @@ public class MinMaxPropertyView extends PropertyView {
         this.seekBar.setOnSeekBarChangeListener(new MinMaxSeekBar.OnMinMaxSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, double progress) {
-                Object obj = HaeUtil.parseParam(MinMaxPropertyView.this.valueGetter.getReturnType(), progress);
+                Object obj = CdmUtil.parseParam(MinMaxPropertyView.this.valueGetter.getReturnType(), progress);
                 MinMaxPropertyView.this.setValueView(obj);
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar, double progress) {
-                Object obj = HaeUtil.parseParam(MinMaxPropertyView.this.valueGetter.getReturnType(), progress);
+                Object obj = CdmUtil.parseParam(MinMaxPropertyView.this.valueGetter.getReturnType(), progress);
                 MinMaxPropertyView.this.setProperty(obj);
             }
         });

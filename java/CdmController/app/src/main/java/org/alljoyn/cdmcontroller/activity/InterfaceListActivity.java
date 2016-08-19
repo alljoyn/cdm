@@ -14,7 +14,7 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package org.alljoyn.haecontroller.activity;
+package org.alljoyn.cdmcontroller.activity;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -31,18 +31,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.alljoyn.bus.AboutObjectDescription;
-import org.alljoyn.haecontroller.R;
-import org.alljoyn.haecontroller.adapter.InterfaceListAdapter;
-import org.alljoyn.haecontroller.logic.Device;
-import org.alljoyn.haecontroller.logic.DeviceManager;
-import org.alljoyn.haecontroller.logic.DeviceManagerImpl;
-import org.alljoyn.haecontroller.logic.IntentKeys;
-import org.alljoyn.haecontroller.logic.MessageType;
+import org.alljoyn.cdmcontroller.R;
+import org.alljoyn.cdmcontroller.adapter.InterfaceListAdapter;
+import org.alljoyn.cdmcontroller.logic.Device;
+import org.alljoyn.cdmcontroller.logic.DeviceManager;
+import org.alljoyn.cdmcontroller.logic.DeviceManagerImpl;
+import org.alljoyn.cdmcontroller.logic.IntentKeys;
+import org.alljoyn.cdmcontroller.logic.MessageType;
 
 import java.util.UUID;
 
 public class InterfaceListActivity extends Activity {
-    private final static String TAG = "HAE_IntfListActivity";
+    private final static String TAG = "CDM_IntfListActivity";
 
     private BroadcastReceiver receiver = null;
     private IntentFilter filter = new IntentFilter();
@@ -150,7 +150,7 @@ public class InterfaceListActivity extends Activity {
             protected void onPostExecute(Device device) {
                 if (device != null) {
                     for (AboutObjectDescription desc : device.getAboutObjectDescriptions()) {
-                        if (desc.path.toUpperCase().contains("HAE")) {
+                        if (desc.path.toUpperCase().contains("CDM")) {
                             InterfaceListActivity.this.aboutObjectDescriptionAdapter.add(desc.path, desc.interfaces, device.getDeviceType(desc.path));
                         }
                     }

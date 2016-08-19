@@ -1,4 +1,4 @@
-package org.alljoyn.haecontroller.view.property;
+package org.alljoyn.cdmcontroller.view.property;
 
 /**
  * Created by Liubov on 08.06.2016.

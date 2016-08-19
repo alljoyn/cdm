@@ -14,13 +14,13 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package org.alljoyn.haecontroller.activity.operation;
+package org.alljoyn.cdmcontroller.activity.operation;
 
 import android.view.View;
 
-import org.alljoyn.haecontroller.activity.InterfaceActivity;
-import org.alljoyn.haecontroller.view.property.ReadOnlyValuePropertyView;
-import org.alljoyn.haecontroller.view.property.SupportedValuesPropertyView;
+import org.alljoyn.cdmcontroller.activity.InterfaceActivity;
+import org.alljoyn.cdmcontroller.view.property.ReadOnlyValuePropertyView;
+import org.alljoyn.cdmcontroller.view.property.SupportedValuesPropertyView;
 
 public class AudioVideoInputActivity extends InterfaceActivity {
     @Override

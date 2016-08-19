@@ -14,18 +14,18 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package org.alljoyn.haecontroller.logic;
+package org.alljoyn.cdmcontroller.logic;
 
 import android.app.Application;
 
-public class HaeControllerApplication extends Application {
+public class CdmControllerApplication extends Application {
    static {
         System.loadLibrary("alljoyn_java");
     }
 
-    private final static String TAG = "HAE_ControllerApp";
+    private final static String TAG = "CDM_ControllerApp";
 
-    public HaeControllerApplication() {
+    public CdmControllerApplication() {
         super();
     }
 

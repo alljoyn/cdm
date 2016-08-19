@@ -14,10 +14,10 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package org.alljoyn.haecontroller.view.method;
+package org.alljoyn.cdmcontroller.view.method;
 
 import android.content.Context;
-import org.alljoyn.haecontroller.view.property.OnMethodResultListener;
+import org.alljoyn.cdmcontroller.view.property.OnMethodResultListener;
 import java.util.ArrayList;
 
 public class MethodResultEventView extends MethodView {

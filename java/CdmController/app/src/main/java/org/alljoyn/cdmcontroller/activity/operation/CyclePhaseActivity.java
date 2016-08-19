@@ -14,14 +14,14 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package org.alljoyn.haecontroller.activity.operation;
+package org.alljoyn.cdmcontroller.activity.operation;
 
 import android.view.View;
 
-import org.alljoyn.haecontroller.activity.InterfaceActivity;
-import org.alljoyn.haecontroller.view.method.MethodResultEventView;
-import org.alljoyn.haecontroller.view.property.OnMethodResultListener;
-import org.alljoyn.haecontroller.view.property.SupportedVendorValuesAndEnumPropertyView;
+import org.alljoyn.cdmcontroller.activity.InterfaceActivity;
+import org.alljoyn.cdmcontroller.view.method.MethodResultEventView;
+import org.alljoyn.cdmcontroller.view.property.OnMethodResultListener;
+import org.alljoyn.cdmcontroller.view.property.SupportedVendorValuesAndEnumPropertyView;
 import org.alljoyn.smartspaces.operation.DishWashingCyclePhase;
 
 public class CyclePhaseActivity extends InterfaceActivity {

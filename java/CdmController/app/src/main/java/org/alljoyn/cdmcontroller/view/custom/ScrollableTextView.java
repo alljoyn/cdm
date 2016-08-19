@@ -14,7 +14,7 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package org.alljoyn.haecontroller.view.custom;
+package org.alljoyn.cdmcontroller.view.custom;
 
 import android.content.Context;
 import android.graphics.Rect;
@@ -25,7 +25,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
-import org.alljoyn.haecontroller.R;
+import org.alljoyn.cdmcontroller.R;
 
 public class ScrollableTextView extends TextView {
 

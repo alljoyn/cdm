@@ -14,7 +14,7 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package org.alljoyn.haecontroller.view;
+package org.alljoyn.cdmcontroller.view;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -23,7 +23,7 @@ import android.widget.Toast;
 
 import org.alljoyn.bus.BusException;
 import org.alljoyn.bus.Variant;
-import org.alljoyn.haecontroller.util.HaeUtil;
+import org.alljoyn.cdmcontroller.util.CdmUtil;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -87,7 +87,7 @@ public abstract class PropertyView extends LinearLayout {
             protected Boolean doInBackground(Object... params) {
                 try {
                     if (PropertyView.this.valueSetter != null) {
-                        Object param = HaeUtil.parseParam(PropertyView.this.valueGetter.getReturnType(), params[0]);
+                        Object param = CdmUtil.parseParam(PropertyView.this.valueGetter.getReturnType(), params[0]);
                         valueSetter.invoke(PropertyView.this.busObject, param);
                     } else
                         return false;

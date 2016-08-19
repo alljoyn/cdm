@@ -14,7 +14,7 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package org.alljoyn.haecontroller.util;
+package org.alljoyn.cdmcontroller.util;
 
 import android.app.Activity;
 import android.content.Context;
@@ -25,7 +25,7 @@ import org.alljoyn.smartspaces.EnumBase;
 import java.lang.reflect.Array;
 import java.util.UUID;
 
-public class HaeUtil {
+public class CdmUtil {
 
     public static String removeDot(String value) {
         return value.replaceAll("[.]0+$", "");
