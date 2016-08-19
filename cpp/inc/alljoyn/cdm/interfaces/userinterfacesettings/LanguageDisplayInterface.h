@@ -19,7 +19,7 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/HaeInterface.h>
+#include <alljoyn/cdm/interfaces/CdmInterface.h>
 
 namespace ajn {
 namespace services {
@@ -27,7 +27,7 @@ namespace services {
 /**
  * LanguageDisplay Interface class
  */
-class LanguageDisplayInterface : public HaeInterface {
+class LanguageDisplayInterface : public CdmInterface {
   public:
     /**
      * Constructor of LanguageDisplay
@@ -43,7 +43,7 @@ class LanguageDisplayInterface : public HaeInterface {
      * Get Interface Type
      * @return interface type
      */
-    const HaeInterfaceType GetInterfaceType() const { return LANGUAGE_DISPLAY_INTERFACE; }
+    const CdmInterfaceType GetInterfaceType() const { return LANGUAGE_DISPLAY_INTERFACE; }
 
     /**
      * Get Introspection Xml

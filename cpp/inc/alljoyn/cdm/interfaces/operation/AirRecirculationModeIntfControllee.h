@@ -19,7 +19,7 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/operation/AirRecirculationModeInterface.h>
+#include <alljoyn/cdm/interfaces/operation/AirRecirculationModeInterface.h>
 
 namespace ajn {
 namespace services {

@@ -19,7 +19,7 @@ cpp
 |       \---org.alljoyn.SmartSpaces.UserInterfaceSettings
 +---inc
 |   \---alljoyn
-|       \---hae
+|       \---cdm
 |           \---interfaces
 |               +---environment
 |               +---input
@@ -55,16 +55,16 @@ cpp
 
  * cpp/code_template : Generator of HAE interfaces skeleton codes
  * cpp/code_template/xml : Interospection XML files of HAE interfaces
- * cpp/inc/alljoyn/hae : HAE common header files
- * cpp/inc/alljoyn/hae/interfaces : HAE interface-related header files
+ * cpp/inc/alljoyn/cdm : HAE common header files
+ * cpp/inc/alljoyn/cdm/interfaces : HAE interface-related header files
  * cpp/samples/BaseSample : Base sample for making other device sample
  * cpp/samples/ACControllee :
-   - Example of hae device composed of Base sample controllee
+   - Example of cdm device composed of Base sample controllee
    - Emulated virtual air conditioner sample. It has 11 interfaces. (OnOffStatus, OnControl,
      OffControl, ResourceSaving, ClimateControlMode, FanSpeedLevel, CurrentPower, EnergyUsage,
      CurrentTemperature, TargetTemperature, WindDirection)
  * cpp/samples/CookTopControllee :
-   - Example of hae device composed of Base sample controllee
+   - Example of cdm device composed of Base sample controllee
    - Emulated virtual cook top sample. It has 3 interfaces. (HeatingZone, OvenCyclePhase, RapidMode)
  * cpp/samples/DeviceEmulator :
    - Device emulator (Refer to Device Emulator section in this document.)
@@ -75,17 +75,17 @@ cpp
    - Integrated controller based on Base sample controller
    - Integrated controller is designed to make it easier to add other interfaces.
  * cpp/samples/LaundryControllee :
-   - Example of hae device composed of Base sample controllee
+   - Example of cdm device composed of Base sample controllee
    - Emulated virtual laundry sample. It has 8 interfaces. (OnOffStatus, CycleControl, SoilLevel,
      SpinSpeedLevel, WaterLevel, DishWashingCyclePhase, LaundryCyclePhase, Timer)
  * cpp/samples/RobotCleanerControllee :
-   - Example of hae device composed of Base sample controllee
+   - Example of cdm device composed of Base sample controllee
    - Emulated virtual robot cleaner sample. It has 5 interfaces. (OnOffStatus, BatteryStatus,
      RepeatMode, RobotCleaningCyclePhase, CurrentPower)
  * cpp/samples/TimerSimulator :
    - Timer simulator. It has CycleControl and Timer interfaces.
  * cpp/samples/TVControllee :
-   - Example of hae device composed of Base sample controllee
+   - Example of cdm device composed of Base sample controllee
    - Emulated virtual TV sample. It has 4 interfaces. (Channel, AudioVolume, AudioVideoInput, Hid)
 
 
@@ -104,22 +104,22 @@ root-source-dir
     |   \---ajtcl
     \---services
         +---base
-        \---hae
+        \---cdm
 </pre>
 
   * Build
 <pre>
-cd root-source-dir/services/hae
+cd root-source-dir/services/cdm
 scons BINDINGS=cpp WS=off BT=off ICE=off
 </pre>
 
   * Output
 <pre>
-hae/
+cdm/
     +---bin
     +---inc
     |   \---alljoyn
-    |       \---hae
+    |       \---cdm
     |           \---interfaces
     |               +---environment
     |               +---input
@@ -127,9 +127,9 @@ hae/
     \---lib
 </pre>
 
-    - path : root-source-dir/services/hae/build/$OS/$TARGET_CPU/debug/dist/hae
+    - path : root-source-dir/services/cdm/build/$OS/$TARGET_CPU/debug/dist/cdm
     - bin : IntegratedController, TvControllee
-    - lib : liballjoyn_hae.a, liballjoyn_hae.so
+    - lib : liballjoyn_cdm.a, liballjoyn_cdm.so
     - inc : header files
 
 Unit Tests
@@ -139,19 +139,19 @@ To build the unit tests add a GTEST_DIR='<your local path>/GTEST/googletest'
 parameter to the scons command line.
 
 tests can be found and run from:
-<root-source-dir>/services/hae/build/{OS}/{CPU}/{VARIANT}/test/hae/bin
+<root-source-dir>/services/cdm/build/{OS}/{CPU}/{VARIANT}/test/cdm/bin
 
 Doxygen
 -------
   * Make manual
 <pre>
-cd root-source-dir/services/hae/cpp/docs
+cd root-source-dir/services/cdm/cpp/docs
 doxygen Doxygen_html
 </pre>
 
   * Make manual in the building step
 <pre>
-cd root-source-dir/services/hae
+cd root-source-dir/services/cdm
 scons BINDINGS=cpp WS=off BT=off ICE=off DOCS=html
 </pre>
 
@@ -162,16 +162,16 @@ How to add new interface
 
   * Create skeleton codes for new interface
 <pre>
-cd root-source-dir/services/hae/cpp/code_template
+cd root-source-dir/services/cdm/cpp/code_template
 python make_interface.py -n InterfaceName -c CategoryName
 (InterfaceName and CategoryName are case sensitive.)
 [example]
 python make_interface.py -n TargetTemperature -c Environment
-Created: ../inc/alljoyn/hae/interfaces/environment/TargetTemperatureInterface.h
-Created: ../inc/alljoyn/hae/interfaces/environment/TargetTemperatureIntfControllee.h
-Created: ../inc/alljoyn/hae/interfaces/environment/TargetTemperatureIntfControlleeListener.h
-Created: ../inc/alljoyn/hae/interfaces/environment/TargetTemperatureIntfController.h
-Created: ../inc/alljoyn/hae/interfaces/environment/TargetTemperatureIntfControllerListener.h
+Created: ../inc/alljoyn/cdm/interfaces/environment/TargetTemperatureInterface.h
+Created: ../inc/alljoyn/cdm/interfaces/environment/TargetTemperatureIntfControllee.h
+Created: ../inc/alljoyn/cdm/interfaces/environment/TargetTemperatureIntfControlleeListener.h
+Created: ../inc/alljoyn/cdm/interfaces/environment/TargetTemperatureIntfController.h
+Created: ../inc/alljoyn/cdm/interfaces/environment/TargetTemperatureIntfControllerListener.h
 Created: ../src/interfaces/environment/TargetTemperatureInterface.cc
 Created: ../src/interfaces/environment/TargetTemperatureIntfControlleeImpl.h
 Created: ../src/interfaces/environment/TargetTemperatureIntfControlleeImpl.cc
@@ -181,7 +181,7 @@ Created: ../src/interfaces/environment/TargetTemperatureIntfControllerImpl.cc
 
   * Delete files related new interface
 <pre>
-cd root-source-dir/services/hae/cpp/code_template
+cd root-source-dir/services/cdm/cpp/code_template
 python make_interface.py -n InterfaceName -c Category -d
 </pre>
 
@@ -193,7 +193,7 @@ How to add vendor defined interface
 
   * Create skeleton codes for vendor defined interface
 <pre>
-cd root-source-dir/services/hae/cpp/code_template
+cd root-source-dir/services/cdm/cpp/code_template
 python make_interface.py -n InterfaceName -v
 (InterfaceName is case sensitive.)
 [example]
@@ -212,7 +212,7 @@ Created: ./vendor_defined/TestIntfControllerImpl.cc
 
   * Delete files related vendor defined interface
 <pre>
-cd root-source-dir/services/hae/cpp/code_template
+cd root-source-dir/services/cdm/cpp/code_template
 python make_interface.py -n InterfaceName -v -d
 </pre>
 
@@ -223,7 +223,7 @@ You can launch the virtual device using the configuration XML file.
 
   * Run emulator
 <pre>
-cd <root-source-dir>/services/hae/build/{OS}/{CPU}/{VARIANT}/dist/hae/bin
+cd <root-source-dir>/services/cdm/build/{OS}/{CPU}/{VARIANT}/dist/cdm/bin
 ./DeviceEmulator config.xml
 </pre>
 
@@ -257,12 +257,12 @@ cd <root-source-dir>/services/hae/build/{OS}/{CPU}/{VARIANT}/dist/hae/bin
         &ltDeviceTypeDescription&gt
             &ltTypeDescription&gt
                 &ltdevice_type&gt5&lt/device_type&gt
-                &ltobject_path&gt/Hae/AirConditioner&lt/object_path&gt
+                &ltobject_path&gt/Cdm/AirConditioner&lt/object_path&gt
             &lt/TypeDescription&gt
         &lt/DeviceTypeDescription&gt
     &lt/AboutData&gt
     &ltInterfaceList&gt
-        &ltObject path='/Hae/AirConditioner'&gt
+        &ltObject path='/Cdm/AirConditioner'&gt
             &ltInterface name='org.alljoyn.SmartSpaces.Environment.TargetTemperature'/&gt
             &ltInterface name='org.alljoyn.SmartSpaces.Environment.CurrentTemperature'/&gt
             &ltInterface name='org.alljoyn.SmartSpaces.Environment.WindDirection'/&gt
@@ -283,20 +283,20 @@ Folder Structure
 ----------------
 <pre>
 java
-   \---HaeController
+   \---CdmController
        +---app
        |   +---libs
        |   \---src
        \---gradle
 </pre>
 
- * java/HaeController/app/libs: alljoyn.jar, alljoyn_about.jar, liballjoyn_java.so
- * java/HaeController/app/src: source files
- * java/HaeController/gradle: build script for Android Studio
+ * java/CdmController/app/libs: alljoyn.jar, alljoyn_about.jar, liballjoyn_java.so
+ * java/CdmController/app/src: source files
+ * java/CdmController/gradle: build script for Android Studio
 
 Building
 --------
- * Open project folder(/java/HaeController/) in the Android Studio
+ * Open project folder(/java/CdmController/) in the Android Studio
  * If you are using the Android Studio 2.0, you should change your config of the Android Studio. (http://tools.android.com/tech-docs/instant-run)
    1. Open the Settings or Preferences dialog.
    2. Navigate to Build, Execution, Deployment > Instant Run.

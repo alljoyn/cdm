@@ -20,15 +20,15 @@
 #include <alljoyn/Status.h>
 #include <alljoyn/BusAttachment.h>
 #include <alljoyn/InterfaceDescription.h>
-#include <alljoyn/hae/interfaces/InterfaceControllee.h>
-#include <alljoyn/hae/interfaces/InterfaceControlleeListener.h>
-#include <alljoyn/hae/interfaces/operation/AlertsIntfControllee.h>
+#include <alljoyn/cdm/interfaces/InterfaceControllee.h>
+#include <alljoyn/cdm/interfaces/InterfaceControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/AlertsIntfControllee.h>
 
 namespace ajn {
 namespace services {
 
 class AlertsIntfControlleeListener;
-class HaeBusObject;
+class CdmBusObject;
 
 /**
  * Alerts Interface Controllee implementation class
@@ -38,12 +38,12 @@ class AlertsIntfControlleeImpl : public InterfaceControllee, public AlertsIntfCo
     /**
      * Create interface
      */
-    static HaeInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject);
 
     /**
      * Constructor of AlertsIntfControlleeImpl
      */
-    AlertsIntfControlleeImpl(BusAttachment& busAttachment, AlertsIntfControlleeListener& listener, HaeBusObject& haeBusObject);
+    AlertsIntfControlleeImpl(BusAttachment& busAttachment, AlertsIntfControlleeListener& listener, CdmBusObject& cdmBusObject);
 
     /**
      * Destructor of AlertsIntfControlleeImpl

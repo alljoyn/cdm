@@ -24,8 +24,8 @@
 namespace ajn {
 
 
-static char const* const HAE_MODULE_LOG_NAME = "Hae";
-static char const* const QCC_MODULE = HAE_MODULE_LOG_NAME;
+static char const* const CDM_MODULE_LOG_NAME = "Cdm";
+static char const* const QCC_MODULE = CDM_MODULE_LOG_NAME;
 
 static const uint32_t ALL_LOG_LEVELS = 15;
 

@@ -21,13 +21,13 @@
 #include <map>
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/HaeConfig.h>
+#include <alljoyn/cdm/CdmConfig.h>
 
 namespace ajn {
 namespace services {
 
 /**
- * Hae device type description class.
+ * Cdm device type description class.
  */
 class DeviceTypeDescription {
   public:

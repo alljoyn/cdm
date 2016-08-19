@@ -19,7 +19,7 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/operation/BatteryStatusInterface.h>
+#include <alljoyn/cdm/interfaces/operation/BatteryStatusInterface.h>
 
 namespace ajn {
 namespace services {

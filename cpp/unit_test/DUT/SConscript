@@ -14,10 +14,10 @@
 #
 import subprocess
 
-Import('hae_env')
+Import('cdm_env')
 
-#include the hae source
-hae_env.Append(CPPPATH = '../inc/alljoyn/hae')
+#include the cdm source
+cdm_env.Append(CPPPATH = '../inc/alljoyn/cdm')
 
 # Call this function to verify there is a valid developer license to run the unit test.
 def have_developer_license():
@@ -38,114 +38,114 @@ def builder_check(target, source, env):
     check = str(source[0].abspath)
     return subprocess.call(check)
 
-hae_env.Append(BUILDERS = {'Check' : Builder(action = builder_check)})
+cdm_env.Append(BUILDERS = {'Check' : Builder(action = builder_check)})
 
-if not hae_env.has_key('GTEST_DIR'):
-    print('GTEST_DIR not specified skipping HAE unit test build')
+if not cdm_env.has_key('GTEST_DIR'):
+    print('GTEST_DIR not specified skipping CDM unit test build')
 
-elif hae_env['OS'] == 'darwin' and hae_env['CPU'] in ['arm', 'armv7', 'armv7s', 'arm64',]:
+elif cdm_env['OS'] == 'darwin' and cdm_env['CPU'] in ['arm', 'armv7', 'armv7s', 'arm64',]:
     # do not even try Google test if darwin and arm
     print 'GTEST_DIR ignored when building for OS=darwin CPU=arm, skipping alljoyn_core unit test build'
 
 else:
-    hae_gtest_env = hae_env.Clone();
-    gtest_dir = hae_gtest_env['GTEST_DIR']
+    cdm_gtest_env = cdm_env.Clone();
+    gtest_dir = cdm_gtest_env['GTEST_DIR']
     vars = Variables();
     vars.AddVariables(('GTEST_HOME', '', gtest_dir))
-    vars.Update(hae_gtest_env)
+    vars.Update(cdm_gtest_env)
 
-    if hae_gtest_env['CXX'].startswith('clang'):
+    if cdm_gtest_env['CXX'].startswith('clang'):
         # Suppress a clang warning in google-test code.
-        hae_gtest_env.Append(CPPFLAGS = ['-Wno-unused-private-field'])
+        cdm_gtest_env.Append(CPPFLAGS = ['-Wno-unused-private-field'])
 
     if gtest_dir == '/usr':
         gtest_src_base = '%s/src/gtest' % gtest_dir
     else:
         gtest_src_base = gtest_dir
 
-    if hae_gtest_env['OS_CONF'] == 'windows':
+    if cdm_gtest_env['OS_CONF'] == 'windows':
         # gTest does not require the same CPPDEFINES as AllJoyn core.
-        hae_gtest_env.Append(CPPDEFINES = ['WIN32', '_LIB'])
+        cdm_gtest_env.Append(CPPDEFINES = ['WIN32', '_LIB'])
         # don't use the _DEBUG define unless the /MDd compiler flag is specified
-        #hae_gtest_env.Append(CPPDEFINES = ['WIN32', '_DEBUG', '_LIB'])
-        hae_gtest_env.Append(CXXFLAGS = ['/EHsc'])
+        #cdm_gtest_env.Append(CPPDEFINES = ['WIN32', '_DEBUG', '_LIB'])
+        cdm_gtest_env.Append(CXXFLAGS = ['/EHsc'])
 
-    if hae_gtest_env['OS_CONF'] == 'android':
+    if cdm_gtest_env['OS_CONF'] == 'android':
         # used by gtest to prevent use of wcscasecmp and set GTEST_HAS_STD_WSTRING=0
-        hae_gtest_env.Append(CPPDEFINES = ['ANDROID'])
+        cdm_gtest_env.Append(CPPDEFINES = ['ANDROID'])
 
     # tr1::tuple is not avalible for android or darwin
-    if hae_gtest_env['OS_CONF'] == 'android' or hae_gtest_env['OS_CONF'] == 'darwin':
-        hae_gtest_env.Append(CPPDEFINES = ['GTEST_HAS_TR1_TUPLE=0'])
+    if cdm_gtest_env['OS_CONF'] == 'android' or cdm_gtest_env['OS_CONF'] == 'darwin':
+        cdm_gtest_env.Append(CPPDEFINES = ['GTEST_HAS_TR1_TUPLE=0'])
 
     # clone() library function is NOT available on android-x86
-    if hae_gtest_env['OS_CONF'] == 'android' and hae_gtest_env['CPU'] == 'x86':
-        hae_gtest_env.Append(CPPDEFINES = ['GTEST_HAS_CLONE=0'])
+    if cdm_gtest_env['OS_CONF'] == 'android' and cdm_gtest_env['CPU'] == 'x86':
+        cdm_gtest_env.Append(CPPDEFINES = ['GTEST_HAS_CLONE=0'])
 
     # we replace AllJoyn's include CPPPATH options.  AllJoyn includes stlport that will cause the
     # gTest code to not compile as expected at this time
-    hae_gtest_env.Append(CPPPATH = [ gtest_src_base ])
+    cdm_gtest_env.Append(CPPPATH = [ gtest_src_base ])
     if gtest_dir != '/usr':
-        hae_gtest_env.Append(CPPPATH = [ hae_gtest_env.Dir('$GTEST_DIR/include') ])
+        cdm_gtest_env.Append(CPPPATH = [ cdm_gtest_env.Dir('$GTEST_DIR/include') ])
 
-    gtest_obj = hae_gtest_env.StaticObject(target = 'gtest-all', source = [ '%s/src/gtest-all.cc' % gtest_src_base ])
-    hae_gtest_env.StaticLibrary(target = 'gtest', source = gtest_obj)
+    gtest_obj = cdm_gtest_env.StaticObject(target = 'gtest-all', source = [ '%s/src/gtest-all.cc' % gtest_src_base ])
+    cdm_gtest_env.StaticLibrary(target = 'gtest', source = gtest_obj)
 
-    hae_unittest_env = hae_env.Clone()
+    cdm_unittest_env = cdm_env.Clone()
 
-    if hae_unittest_env['BR'] == 'on':
+    if cdm_unittest_env['BR'] == 'on':
         # Build apps with bundled daemon support
-        hae_unittest_env.Prepend(LIBS = [hae_unittest_env['ajrlib']])
+        cdm_unittest_env.Prepend(LIBS = [cdm_unittest_env['ajrlib']])
     # Add private header include path to test bundled router code
-    hae_unittest_env.Append(CPPPATH = [ hae_unittest_env.Dir('../router').srcnode() ])
+    cdm_unittest_env.Append(CPPPATH = [ cdm_unittest_env.Dir('../router').srcnode() ])
 
-    hae_unittest_env.Append(CPPPATH = hae_unittest_env.Dir('..').srcnode())
+    cdm_unittest_env.Append(CPPPATH = cdm_unittest_env.Dir('..').srcnode())
 
-    gtest_dir = hae_unittest_env['GTEST_DIR']
+    gtest_dir = cdm_unittest_env['GTEST_DIR']
     if gtest_dir != '/usr':
-        hae_unittest_env.Append(CPPPATH = [gtest_dir + '/include'])
+        cdm_unittest_env.Append(CPPPATH = [gtest_dir + '/include'])
 
-    if hae_unittest_env['OS_GROUP'] == 'windows':
-       hae_unittest_env.Append(CXXFLAGS = ['/EHsc'])
+    if cdm_unittest_env['OS_GROUP'] == 'windows':
+       cdm_unittest_env.Append(CXXFLAGS = ['/EHsc'])
 
     # we compile with no rtti and we are not using exceptions.
-    hae_unittest_env.Append(CPPDEFINES = ['GTEST_HAS_RTTI=0'])
+    cdm_unittest_env.Append(CPPDEFINES = ['GTEST_HAS_RTTI=0'])
 
-    if hae_unittest_env['OS_CONF'] == 'android':
+    if cdm_unittest_env['OS_CONF'] == 'android':
         # used by gtest to prevent use of wcscasecmp and set GTEST_HAS_STD_WSTRING=0
-        hae_unittest_env.Append(CPPDEFINES = ['ANDROID'])
+        cdm_unittest_env.Append(CPPDEFINES = ['ANDROID'])
 
     # tr1::tuple is not avalible for android or darwin
-    if hae_unittest_env['OS_CONF'] == 'android' or hae_unittest_env['OS_CONF'] == 'darwin':
-        hae_unittest_env.Append(CPPDEFINES = ['GTEST_HAS_TR1_TUPLE=0'])
-    if hae_unittest_env['OS_CONF'] == 'android' and hae_unittest_env['CPU'] == 'x86':
-        hae_unittest_env.Append(CPPDEFINES = ['GTEST_HAS_CLONE=0'])
-    if hae_unittest_env['OS_CONF'] == 'windows' and hae_unittest_env['MSVC_VERSION'] == '11.0':
-        hae_unittest_env.Append(CPPDEFINES = ['_VARIADIC_MAX=10'])
+    if cdm_unittest_env['OS_CONF'] == 'android' or cdm_unittest_env['OS_CONF'] == 'darwin':
+        cdm_unittest_env.Append(CPPDEFINES = ['GTEST_HAS_TR1_TUPLE=0'])
+    if cdm_unittest_env['OS_CONF'] == 'android' and cdm_unittest_env['CPU'] == 'x86':
+        cdm_unittest_env.Append(CPPDEFINES = ['GTEST_HAS_CLONE=0'])
+    if cdm_unittest_env['OS_CONF'] == 'windows' and cdm_unittest_env['MSVC_VERSION'] == '11.0':
+        cdm_unittest_env.Append(CPPDEFINES = ['_VARIADIC_MAX=10'])
     # gtest library file is placed on folder above the the object files.
-    #hae_unittest_env.Append(LIBPATH = ['./'])
-    #did not work in HAE gtest was placed in ObjectDirectory
-    hae_unittest_env.Prepend(LIBPATH = ['.' , '../src'])
+    #cdm_unittest_env.Append(LIBPATH = ['./'])
+    #did not work in CDM gtest was placed in ObjectDirectory
+    cdm_unittest_env.Prepend(LIBPATH = ['.' , '../src'])
 
 
-    hae_unittest_env.Prepend(LIBS = ['gtest'])
-    hae_unittest_env.Prepend(LIBS = ['alljoyn_hae'])
+    cdm_unittest_env.Prepend(LIBS = ['gtest'])
+    cdm_unittest_env.Prepend(LIBS = ['alljoyn_cdm'])
 
-    haetest_src = hae_unittest_env.Glob('*.cc') + hae_unittest_env.Glob('environment/*.cc') + hae_unittest_env.Glob('operation/*.cc') + hae_unittest_env.Glob('input/*.cc') + hae_unittest_env.Glob('userinterfacesettings/*.cc')
-    if hae_unittest_env['BR'] != 'on':
+    cdmtest_src = cdm_unittest_env.Glob('*.cc') + cdm_unittest_env.Glob('environment/*.cc') + cdm_unittest_env.Glob('operation/*.cc') + cdm_unittest_env.Glob('input/*.cc') + cdm_unittest_env.Glob('userinterfacesettings/*.cc')
+    if cdm_unittest_env['BR'] != 'on':
         # need to remove DiscoveryTest.cc from sources
-        haetest_src = [l for l in hae_unittest_env.Glob('*.cc') if not l.path.endswith('DiscoveryTest.cc')]
+        cdmtest_src = [l for l in cdm_unittest_env.Glob('*.cc') if not l.path.endswith('DiscoveryTest.cc')]
 
-    haetest_obj = hae_unittest_env.Object(haetest_src);
-    haetest_prog = hae_unittest_env.Program('haeDeviceTest', haetest_obj)
-    hae_unittest_env.Install('$TESTDIR/hae/bin', haetest_prog)
+    cdmtest_obj = cdm_unittest_env.Object(cdmtest_src);
+    cdmtest_prog = cdm_unittest_env.Program('cdmDeviceTest', cdmtest_obj)
+    cdm_unittest_env.Install('$TESTDIR/cdm/bin', cdmtest_prog)
 
-    hae_unittest_env.Append(LIBPATH = [ '#' + '$OBJDIR_SERVICES_HAE/cpp/src' ])
+    cdm_unittest_env.Append(LIBPATH = [ '#' + '$OBJDIR_SERVICES_CDM/cpp/src' ])
 
 
 #######  TODO Figure out how this is supposed to work
     # install gtest utilities
-#    hae_unittest_env.Install('$TESTDIR/hae/bin', Dir('test_report').srcnode())
+#    cdm_unittest_env.Install('$TESTDIR/cdm/bin', Dir('test_report').srcnode())
 
 
 

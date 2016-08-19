@@ -23,7 +23,7 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/environment/WindDirectionInterface.h>
+#include <alljoyn/cdm/interfaces/environment/WindDirectionInterface.h>
 
 namespace ajn {
 namespace services {

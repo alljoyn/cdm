@@ -19,7 +19,7 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/HaeInterface.h>
+#include <alljoyn/cdm/interfaces/CdmInterface.h>
 
 namespace ajn {
 namespace services {
@@ -27,7 +27,7 @@ namespace services {
 /**
  * RepeatMode Interface class
  */
-class RepeatModeInterface : public HaeInterface {
+class RepeatModeInterface : public CdmInterface {
   public:
     /**
      * Constructor of RepeatMode
@@ -43,7 +43,7 @@ class RepeatModeInterface : public HaeInterface {
      * Get Interface Type
      * @return interface type
      */
-    const HaeInterfaceType GetInterfaceType() const { return REPEAT_MODE_INTERFACE; }
+    const CdmInterfaceType GetInterfaceType() const { return REPEAT_MODE_INTERFACE; }
 
     /**
      * Get Introspection Xml

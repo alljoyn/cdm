@@ -19,14 +19,14 @@
 
 #include <alljoyn/Status.h>
 #include <alljoyn/BusAttachment.h>
-#include <alljoyn/hae/interfaces/InterfaceController.h>
-#include <alljoyn/hae/interfaces/environment/CurrentAirQualityIntfController.h>
+#include <alljoyn/cdm/interfaces/InterfaceController.h>
+#include <alljoyn/cdm/interfaces/environment/CurrentAirQualityIntfController.h>
 
 namespace ajn {
 namespace services {
 
 class CurrentAirQualityIntfControllerListener;
-class HaeProxyBusObject;
+class CdmProxyBusObject;
 
 /**
  * CurrentAirQuality Interface Controller implementation class
@@ -36,12 +36,12 @@ class CurrentAirQualityIntfControllerImpl : public InterfaceController, public C
     /**
      * Create interface
      */
-    static HaeInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, HaeProxyBusObject& haeProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
 
     /**
      * Constructor of CurrentAirQualityIntfControllerImpl
      */
-    CurrentAirQualityIntfControllerImpl(BusAttachment& busAttachment, CurrentAirQualityIntfControllerListener& listener, HaeProxyBusObject& haeProxyObject);
+    CurrentAirQualityIntfControllerImpl(BusAttachment& busAttachment, CurrentAirQualityIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
 
     /**
      * Destructor of CurrentAirQualityIntfControllerImpl

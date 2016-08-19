@@ -18,8 +18,8 @@
 #define ENERGYUSAGECOMMANDS_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/EnergyUsageIntfController.h>
-#include <alljoyn/hae/interfaces/operation/EnergyUsageIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/EnergyUsageIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/EnergyUsageIntfControllerListener.h>
 
 class ControllerSample;
 

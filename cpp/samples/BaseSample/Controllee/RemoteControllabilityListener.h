@@ -18,8 +18,8 @@
 #define REMOTECONTROLLABILITYLISTENER_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/RemoteControllabilityIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/RemoteControllabilityIntfControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/RemoteControllabilityIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/RemoteControllabilityIntfControlleeListener.h>
 
 using namespace ajn;
 using namespace services;

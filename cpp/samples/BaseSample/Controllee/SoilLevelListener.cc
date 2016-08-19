@@ -75,13 +75,13 @@ SoilLevelCommands::~SoilLevelCommands()
 void SoilLevelCommands::Init()
 {
     if (!m_intfControllee) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(SOIL_LEVEL_INTERFACE, m_objectPath, m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(SOIL_LEVEL_INTERFACE, m_objectPath, m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfControllee = static_cast<SoilLevelIntfControllee*>(haeInterface);
+        m_intfControllee = static_cast<SoilLevelIntfControllee*>(cdmInterface);
 
         RegisterCommand(&SoilLevelCommands::OnCmdGetMaxLevel, "gml", "get max level");
         RegisterCommand(&SoilLevelCommands::OnCmdSetMaxLevel, "sml", "set max level (use 'sml <max level>')");

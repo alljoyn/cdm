@@ -18,8 +18,8 @@
 #define HEATINGZONECOMMANDS_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/HeatingZoneIntfController.h>
-#include <alljoyn/hae/interfaces/operation/HeatingZoneIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/HeatingZoneIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/HeatingZoneIntfControllerListener.h>
 
 class ControllerSample;
 

@@ -16,9 +16,9 @@
 
 #include <qcc/Util.h>
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/interfaces/environment/TargetTemperatureLevelIntfControllerListener.h>
-#include <alljoyn/hae/HaeProxyBusObject.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/interfaces/environment/TargetTemperatureLevelIntfControllerListener.h>
+#include <alljoyn/cdm/CdmProxyBusObject.h>
 #include "TargetTemperatureLevelIntfControllerImpl.h"
 
 using namespace qcc;
@@ -27,13 +27,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* TargetTemperatureLevelIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, HaeProxyBusObject& haeProxyObject)
+CdmInterface* TargetTemperatureLevelIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject)
 {
-    return new TargetTemperatureLevelIntfControllerImpl(busAttachment, dynamic_cast<TargetTemperatureLevelIntfControllerListener&>(listener), haeProxyObject);
+    return new TargetTemperatureLevelIntfControllerImpl(busAttachment, dynamic_cast<TargetTemperatureLevelIntfControllerListener&>(listener), cdmProxyObject);
 }
 
-TargetTemperatureLevelIntfControllerImpl::TargetTemperatureLevelIntfControllerImpl(BusAttachment& busAttachment, TargetTemperatureLevelIntfControllerListener& listener, HaeProxyBusObject& haeProxyObject) :
-    InterfaceController(haeProxyObject),
+TargetTemperatureLevelIntfControllerImpl::TargetTemperatureLevelIntfControllerImpl(BusAttachment& busAttachment, TargetTemperatureLevelIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject) :
+    InterfaceController(cdmProxyObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener)
 {
@@ -45,7 +45,7 @@ TargetTemperatureLevelIntfControllerImpl::~TargetTemperatureLevelIntfControllerI
 
 QStatus TargetTemperatureLevelIntfControllerImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
     if (ER_OK != status) {
         QCC_LogError(status, ("%s: Interface init failed.", __func__));
         return status;

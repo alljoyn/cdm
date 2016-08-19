@@ -23,7 +23,7 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/operation/HvacFanModeInterface.h>
+#include <alljoyn/cdm/interfaces/operation/HvacFanModeInterface.h>
 
 namespace ajn {
 namespace services {

@@ -19,14 +19,14 @@
 
 #include <alljoyn/Status.h>
 #include <alljoyn/BusAttachment.h>
-#include <alljoyn/hae/interfaces/InterfaceController.h>
-#include <alljoyn/hae/interfaces/operation/EnergyUsageIntfController.h>
+#include <alljoyn/cdm/interfaces/InterfaceController.h>
+#include <alljoyn/cdm/interfaces/operation/EnergyUsageIntfController.h>
 
 namespace ajn {
 namespace services {
 
 class EnergyUsageIntfControllerListener;
-class HaeProxyBusObject;
+class CdmProxyBusObject;
 
 /**
  * EnergyUsage Interface Controller implementation class
@@ -36,12 +36,12 @@ class EnergyUsageIntfControllerImpl : public InterfaceController, public EnergyU
     /**
      * Create interface
      */
-    static HaeInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, HaeProxyBusObject& haeProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
 
     /**
      * Constructor of EnergyUsageIntfControllerImpl
      */
-    EnergyUsageIntfControllerImpl(BusAttachment& busAttachment, EnergyUsageIntfControllerListener& listener, HaeProxyBusObject& haeProxyObject);
+    EnergyUsageIntfControllerImpl(BusAttachment& busAttachment, EnergyUsageIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
 
     /**
      * Destructor of EnergyUsageIntfControllerImpl

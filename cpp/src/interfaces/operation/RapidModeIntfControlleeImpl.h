@@ -20,15 +20,15 @@
 #include <alljoyn/Status.h>
 #include <alljoyn/BusAttachment.h>
 #include <alljoyn/InterfaceDescription.h>
-#include <alljoyn/hae/interfaces/InterfaceControllee.h>
-#include <alljoyn/hae/interfaces/InterfaceControlleeListener.h>
-#include <alljoyn/hae/interfaces/operation/RapidModeIntfControllee.h>
+#include <alljoyn/cdm/interfaces/InterfaceControllee.h>
+#include <alljoyn/cdm/interfaces/InterfaceControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/RapidModeIntfControllee.h>
 
 namespace ajn {
 namespace services {
 
 class RapidModeIntfControlleeListener;
-class HaeBusObject;
+class CdmBusObject;
 
 /**
  * RapidMode Interface Controllee implementation class
@@ -38,12 +38,12 @@ class RapidModeIntfControlleeImpl : public InterfaceControllee, public RapidMode
     /**
      * Create interface
      */
-    static HaeInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject);
 
     /**
      * Constructor of RapidModeIntfControlleeImpl
      */
-    RapidModeIntfControlleeImpl(BusAttachment& busAttachment, RapidModeIntfControlleeListener& listener, HaeBusObject& haeBusObject);
+    RapidModeIntfControlleeImpl(BusAttachment& busAttachment, RapidModeIntfControlleeListener& listener, CdmBusObject& cdmBusObject);
 
     /**
      * Destructor of RapidModeIntfControlleeImpl

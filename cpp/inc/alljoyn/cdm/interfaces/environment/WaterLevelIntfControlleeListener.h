@@ -19,9 +19,9 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/HaeInterfaceErrors.h>
-#include <alljoyn/hae/interfaces/InterfaceControlleeListener.h>
-#include <alljoyn/hae/interfaces/environment/WaterLevelInterface.h>
+#include <alljoyn/cdm/interfaces/CdmInterfaceErrors.h>
+#include <alljoyn/cdm/interfaces/InterfaceControlleeListener.h>
+#include <alljoyn/cdm/interfaces/environment/WaterLevelInterface.h>
 
 
 namespace ajn {

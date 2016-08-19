@@ -18,8 +18,8 @@
 #define RESOURCESAVINGLISTENER_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/ResourceSavingIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/ResourceSavingIntfControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/ResourceSavingIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/ResourceSavingIntfControlleeListener.h>
 
 using namespace ajn;
 using namespace services;

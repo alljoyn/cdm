@@ -12,11 +12,11 @@
 #    ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 #    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-Import('hae_env')
+Import('cdm_env')
 
-local_env = hae_env.Clone()
+local_env = cdm_env.Clone()
 
-local_env.Prepend(LIBS = ['alljoyn_hae', 'alljoyn_about' ])
+local_env.Prepend(LIBS = ['alljoyn_cdm', 'alljoyn_about' ])
 
 if local_env['BR'] == 'on':
     # Build apps with bundled daemon support

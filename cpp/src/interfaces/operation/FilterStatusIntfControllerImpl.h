@@ -19,14 +19,14 @@
 
 #include <alljoyn/Status.h>
 #include <alljoyn/BusAttachment.h>
-#include <alljoyn/hae/interfaces/InterfaceController.h>
-#include <alljoyn/hae/interfaces/operation/FilterStatusIntfController.h>
+#include <alljoyn/cdm/interfaces/InterfaceController.h>
+#include <alljoyn/cdm/interfaces/operation/FilterStatusIntfController.h>
 
 namespace ajn {
 namespace services {
 
 class FilterStatusIntfControllerListener;
-class HaeProxyBusObject;
+class CdmProxyBusObject;
 
 /**
  * FilterStatus Interface Controller implementation class
@@ -36,12 +36,12 @@ class FilterStatusIntfControllerImpl : public InterfaceController, public Filter
     /**
      * Create interface
      */
-    static HaeInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, HaeProxyBusObject& haeProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
 
     /**
      * Constructor of FilterStatusIntfControllerImpl
      */
-    FilterStatusIntfControllerImpl(BusAttachment& busAttachment, FilterStatusIntfControllerListener& listener, HaeProxyBusObject& haeProxyObject);
+    FilterStatusIntfControllerImpl(BusAttachment& busAttachment, FilterStatusIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
 
     /**
      * Destructor of FilterStatusIntfControllerImpl

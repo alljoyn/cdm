@@ -19,7 +19,7 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/HaeInterface.h>
+#include <alljoyn/cdm/interfaces/CdmInterface.h>
 
 namespace ajn {
 namespace services {
@@ -27,7 +27,7 @@ namespace services {
 /**
  * WaterLevel Interface class
  */
-class WaterLevelInterface : public HaeInterface {
+class WaterLevelInterface : public CdmInterface {
   public:
     typedef enum
     {
@@ -49,7 +49,7 @@ class WaterLevelInterface : public HaeInterface {
      * Get Interface Type
      * @return interface type
      */
-    const HaeInterfaceType GetInterfaceType() const { return WATER_LEVEL_INTERFACE; }
+    const CdmInterfaceType GetInterfaceType() const { return WATER_LEVEL_INTERFACE; }
 
     /**
      * Get Introspection Xml

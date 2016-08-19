@@ -16,9 +16,9 @@
 
 #include <qcc/Util.h>
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/interfaces/environment/TargetTemperatureLevelIntfControlleeListener.h>
-#include <alljoyn/hae/HaeBusObject.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/interfaces/environment/TargetTemperatureLevelIntfControlleeListener.h>
+#include <alljoyn/cdm/CdmBusObject.h>
 #include "TargetTemperatureLevelIntfControlleeImpl.h"
 #include <cmath>
 
@@ -29,14 +29,14 @@ namespace ajn {
 namespace services {
 
 
-HaeInterface* TargetTemperatureLevelIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject)
+CdmInterface* TargetTemperatureLevelIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject)
 {
-    return new TargetTemperatureLevelIntfControlleeImpl(busAttachment, static_cast<TargetTemperatureLevelIntfControlleeListener&>(listener), haeBusObject);
+    return new TargetTemperatureLevelIntfControlleeImpl(busAttachment, static_cast<TargetTemperatureLevelIntfControlleeListener&>(listener), cdmBusObject);
 }
 
 
-TargetTemperatureLevelIntfControlleeImpl::TargetTemperatureLevelIntfControlleeImpl(BusAttachment& busAttachment, TargetTemperatureLevelIntfControlleeListener& listener, HaeBusObject& haeBusObject) :
-    InterfaceControllee(haeBusObject),
+TargetTemperatureLevelIntfControlleeImpl::TargetTemperatureLevelIntfControlleeImpl(BusAttachment& busAttachment, TargetTemperatureLevelIntfControlleeListener& listener, CdmBusObject& cdmBusObject) :
+    InterfaceControllee(cdmBusObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener),
     m_TargetLevel(0),
@@ -50,7 +50,7 @@ TargetTemperatureLevelIntfControlleeImpl::~TargetTemperatureLevelIntfControlleeI
 
 QStatus TargetTemperatureLevelIntfControlleeImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
 
     return status;
 }

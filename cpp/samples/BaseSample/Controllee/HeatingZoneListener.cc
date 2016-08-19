@@ -56,13 +56,13 @@ HeatingZoneCommands::~HeatingZoneCommands()
 void HeatingZoneCommands::Init()
 {
     if (!m_intfControllee) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(HEATING_ZONE_INTERFACE, m_objectPath, m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(HEATING_ZONE_INTERFACE, m_objectPath, m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfControllee = static_cast<HeatingZoneIntfControllee*>(haeInterface);
+        m_intfControllee = static_cast<HeatingZoneIntfControllee*>(cdmInterface);
 
         RegisterCommand(&HeatingZoneCommands::OnCmdGetNumberOfHeatingZones, "gnhz", "get number of heating zones");
         RegisterCommand(&HeatingZoneCommands::OnCmdSetNumberOfHeatingZones, "snhz", "set number of heating zones (use 'snhz <number of heating zones>')");

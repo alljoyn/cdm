@@ -20,7 +20,7 @@
 #include <vector>
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/HaeInterface.h>
+#include <alljoyn/cdm/interfaces/CdmInterface.h>
 
 namespace ajn {
 namespace services {
@@ -28,7 +28,7 @@ namespace services {
 /**
  * PlugInUnits Interface class
  */
-class PlugInUnitsInterface : public HaeInterface {
+class PlugInUnitsInterface : public CdmInterface {
   public:
     /**
      * Constructor of PlugInUnits
@@ -44,7 +44,7 @@ class PlugInUnitsInterface : public HaeInterface {
      * Get Interface Type
      * @return interface type
      */
-    const HaeInterfaceType GetInterfaceType() const { return PLUG_IN_UNITS_INTERFACE; }
+    const CdmInterfaceType GetInterfaceType() const { return PLUG_IN_UNITS_INTERFACE; }
 
     /**
      * Get Introspection Xml

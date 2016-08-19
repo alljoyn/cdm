@@ -15,11 +15,11 @@
  ******************************************************************************/
 
 
-#ifndef HAEABOUTDATA_H_
-#define HAEABOUTDATA_H_
+#ifndef CDMABOUTDATA_H_
+#define CDMABOUTDATA_H_
 
 #include <alljoyn/AboutData.h>
-#include <alljoyn/hae/HaeAboutKeys.h>
+#include <alljoyn/cdm/CdmAboutKeys.h>
 #include <qcc/String.h>
 
 namespace ajn {
@@ -28,26 +28,26 @@ namespace services {
 class DeviceTypeDescription;
 
 /**
- * Hae BusObject class.
+ * Cdm BusObject class.
  */
-class HaeAboutData : public AboutData , public HaeAboutKeys {
+class CdmAboutData : public AboutData , public CdmAboutKeys {
   public:
     /**
-     * Constructor of HaeAboutData
+     * Constructor of CdmAboutData
      */
-    HaeAboutData();
+    CdmAboutData();
 
     /**
      * Constructor
      *
      * @param[in] defaultLanguage the default language for the AboutData fields
      */
-    HaeAboutData(const char* defaultLanguage);
+    CdmAboutData(const char* defaultLanguage);
 
     /**
      * Constructor
      *
-     * Fill in the fields of the HaeAboutData class using a MsgArg.  The provided
+     * Fill in the fields of the CdmAboutData class using a MsgArg.  The provided
      * MsgArg must contain a dictionary with signature a{sv} with AboutData fields.
      *
      * If the passed in MsgArg is an ill formed AboutData MsgArg this constructor
@@ -55,19 +55,19 @@ class HaeAboutData : public AboutData , public HaeAboutKeys {
      * it is best to create an empty AboutData class and use the CreatFromMsgArg
      * member function to fill in the AboutData class.
      *
-     * @param[in] arg MsgArg with signature a{sv}containing HaeAboutData fields.
+     * @param[in] arg MsgArg with signature a{sv}containing CdmAboutData fields.
      * @param[in] language the language of the arg MsgArg. Use NULL for default language
      */
-    HaeAboutData(const MsgArg arg, const char* language = NULL);
+    CdmAboutData(const MsgArg arg, const char* language = NULL);
 
     /**
-     * Destructor of HaeAboutData
+     * Destructor of CdmAboutData
      */
-    ~HaeAboutData();
+    ~CdmAboutData();
 
     /**
      * This fuction extends the base CreateFromXML in alljoyn::AboutData to
-     * create Device Type Description with HAE specific fields included.
+     * create Device Type Description with CDM specific fields included.
      *@param[in] aboutDataXml the about XML to create the About Data from.
      *@return
      *   - ER_OK on success
@@ -82,7 +82,7 @@ class HaeAboutData : public AboutData , public HaeAboutKeys {
 
     /**
      * This fuction extends the base CreateFromXML in alljoyn::AboutData to
-     * create Device Type Description with HAE specific fields included.
+     * create Device Type Description with CDM specific fields included.
      *@param[in] aboutDataXml the about XML to create the About Data from.
      *@return
      *   - ER_OK on success
@@ -92,14 +92,14 @@ class HaeAboutData : public AboutData , public HaeAboutKeys {
      *     was found with out the `lang` attribute and the DefaultLanguage
      *     field is missing.
      *
-     *  Sample about Data for HAE
+     *  Sample about Data for CDM
      *  "<AboutData>"
      *  .......
      *  <Standard About Data>
      *  ...........
      *  "  <Location>upstairs bedroom</Location>"
      *  "  <Location lang='es'>habitación del segundo piso</Location>"
-     *  "  <DeviceTypeDescription><TypeDescription><device_type>2</device_type><object_path>/Hae/Alpha</object_path></TypeDescription><TypeDescription><device_type>3</device_type><object_path>/Hae/Beta</object_path></TypeDescription><TypeDescription><device_type>4</device_type><object_path>/Hae/Gamma</object_path></TypeDescription></DeviceTypeDescription>"
+     *  "  <DeviceTypeDescription><TypeDescription><device_type>2</device_type><object_path>/Cdm/Alpha</object_path></TypeDescription><TypeDescription><device_type>3</device_type><object_path>/Cdm/Beta</object_path></TypeDescription><TypeDescription><device_type>4</device_type><object_path>/Cdm/Gamma</object_path></TypeDescription></DeviceTypeDescription>"
      *  "</AboutData>";
      *
      */
@@ -202,4 +202,4 @@ class HaeAboutData : public AboutData , public HaeAboutKeys {
 }
 }
 
-#endif // HAEABOUTDATA_H_
+#endif // CDMABOUTDATA_H_

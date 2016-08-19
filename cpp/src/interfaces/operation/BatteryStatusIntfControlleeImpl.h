@@ -20,15 +20,15 @@
 #include <alljoyn/Status.h>
 #include <alljoyn/BusAttachment.h>
 #include <alljoyn/InterfaceDescription.h>
-#include <alljoyn/hae/interfaces/InterfaceControllee.h>
-#include <alljoyn/hae/interfaces/InterfaceControlleeListener.h>
-#include <alljoyn/hae/interfaces/operation/BatteryStatusIntfControllee.h>
+#include <alljoyn/cdm/interfaces/InterfaceControllee.h>
+#include <alljoyn/cdm/interfaces/InterfaceControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/BatteryStatusIntfControllee.h>
 
 namespace ajn {
 namespace services {
 
 class BatteryStatusIntfControlleeListener;
-class HaeBusObject;
+class CdmBusObject;
 
 /**
  * BatteryStatus Interface Controllee implementation class
@@ -38,12 +38,12 @@ class BatteryStatusIntfControlleeImpl : public InterfaceControllee, public Batte
     /**
      * Create interface
      */
-    static HaeInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject);
 
     /**
      * Constructor of BatteryStatusIntfControlleeImpl
      */
-    BatteryStatusIntfControlleeImpl(BusAttachment& busAttachment, BatteryStatusIntfControlleeListener& listener, HaeBusObject& haeBusObject);
+    BatteryStatusIntfControlleeImpl(BusAttachment& busAttachment, BatteryStatusIntfControlleeListener& listener, CdmBusObject& cdmBusObject);
 
     /**
      * Destructor of BatteryStatusIntfControlleeImpl

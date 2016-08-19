@@ -16,9 +16,9 @@
 
 #include <qcc/Util.h>
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/interfaces/environment/TargetTemperatureIntfControllerListener.h>
-#include <alljoyn/hae/HaeProxyBusObject.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/interfaces/environment/TargetTemperatureIntfControllerListener.h>
+#include <alljoyn/cdm/CdmProxyBusObject.h>
 #include "TargetTemperatureIntfControllerImpl.h"
 
 using namespace qcc;
@@ -27,13 +27,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* TargetTemperatureIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, HaeProxyBusObject& haeProxyObject)
+CdmInterface* TargetTemperatureIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject)
 {
-    return new TargetTemperatureIntfControllerImpl(busAttachment, dynamic_cast<TargetTemperatureIntfControllerListener&>(listener), haeProxyObject);
+    return new TargetTemperatureIntfControllerImpl(busAttachment, dynamic_cast<TargetTemperatureIntfControllerListener&>(listener), cdmProxyObject);
 }
 
-TargetTemperatureIntfControllerImpl::TargetTemperatureIntfControllerImpl(BusAttachment& busAttachment, TargetTemperatureIntfControllerListener& listener, HaeProxyBusObject& haeProxyObject) :
-    InterfaceController(haeProxyObject),
+TargetTemperatureIntfControllerImpl::TargetTemperatureIntfControllerImpl(BusAttachment& busAttachment, TargetTemperatureIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject) :
+    InterfaceController(cdmProxyObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener)
 {
@@ -45,7 +45,7 @@ TargetTemperatureIntfControllerImpl::~TargetTemperatureIntfControllerImpl()
 
 QStatus TargetTemperatureIntfControllerImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
     if (ER_OK != status) {
         QCC_LogError(status, ("%s: Interface init failed.", __func__));
         return status;

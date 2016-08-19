@@ -18,8 +18,8 @@
 #define MOISTUREOUTPUTLEVELCOMMANDS_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/MoistureOutputLevelIntfController.h>
-#include <alljoyn/hae/interfaces/operation/MoistureOutputLevelIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/MoistureOutputLevelIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/MoistureOutputLevelIntfControllerListener.h>
 
 class ControllerSample;
 

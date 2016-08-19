@@ -19,14 +19,14 @@
 
 #include <alljoyn/Status.h>
 #include <alljoyn/BusAttachment.h>
-#include <alljoyn/hae/interfaces/InterfaceController.h>
-#include <alljoyn/hae/interfaces/operation/OffControlIntfController.h>
+#include <alljoyn/cdm/interfaces/InterfaceController.h>
+#include <alljoyn/cdm/interfaces/operation/OffControlIntfController.h>
 
 namespace ajn {
 namespace services {
 
 class OffControlIntfControllerListener;
-class HaeProxyBusObject;
+class CdmProxyBusObject;
 
 /**
  * OffControl Interface Controller implementation class
@@ -36,12 +36,12 @@ class OffControlIntfControllerImpl : public InterfaceController, public OffContr
     /**
      * Create interface
      */
-    static HaeInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, HaeProxyBusObject& haeProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
 
     /**
      * Constructor of OffControlIntfControllerImpl
      */
-    OffControlIntfControllerImpl(BusAttachment& busAttachment, OffControlIntfControllerListener& listener, HaeProxyBusObject& haeProxyObject);
+    OffControlIntfControllerImpl(BusAttachment& busAttachment, OffControlIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
 
     /**
      * Destructor of OffControlIntfControllerImpl

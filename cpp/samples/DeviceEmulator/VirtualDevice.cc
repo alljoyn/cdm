@@ -5,7 +5,7 @@
 using namespace ajn;
 using namespace services;
 
-VirtualDevice::VirtualDevice(BusAttachment* bus, HaeAboutData* aboutData, InterfaceList* list)
+VirtualDevice::VirtualDevice(BusAttachment* bus, CdmAboutData* aboutData, InterfaceList* list)
 : ControlleeSample(bus, aboutData)
 , m_interfaceList(list)
 {

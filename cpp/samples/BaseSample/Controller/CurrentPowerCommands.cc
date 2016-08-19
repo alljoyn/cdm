@@ -15,7 +15,7 @@
  ******************************************************************************/
 
 #include <cstdlib>
-#include <alljoyn/hae/interfaces/HaeInterfaceTypes.h>
+#include <alljoyn/cdm/interfaces/CdmInterfaceTypes.h>
 #include "CurrentPowerCommands.h"
 #include "ControllerSample.h"
 
@@ -85,13 +85,13 @@ CurrentPowerCommands::~CurrentPowerCommands()
 void CurrentPowerCommands::Init()
 {
     if (!m_intfController) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(CURRENT_POWER_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(CURRENT_POWER_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfController = static_cast<CurrentPowerIntfController*>(haeInterface);
+        m_intfController = static_cast<CurrentPowerIntfController*>(cdmInterface);
     }
 
     RegisterCommand(&CurrentPowerCommands::OnCmdGetCurrentPower, "grm", "get current power");

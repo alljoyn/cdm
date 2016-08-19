@@ -14,8 +14,8 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/interfaces/{interface_category}/{interface_name}Interface.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/interfaces/{interface_category}/{interface_name}Interface.h>
 
 namespace ajn {
 namespace services {

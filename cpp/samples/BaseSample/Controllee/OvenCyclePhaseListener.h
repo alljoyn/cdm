@@ -18,8 +18,8 @@
 #define OVENCYCLEPHASELISTENER_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/OvenCyclePhaseIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/OvenCyclePhaseIntfControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/OvenCyclePhaseIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/OvenCyclePhaseIntfControlleeListener.h>
 
 using namespace ajn;
 using namespace services;

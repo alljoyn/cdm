@@ -51,13 +51,13 @@ PlugInUnitsCommands::~PlugInUnitsCommands()
 void PlugInUnitsCommands::Init()
 {
     if (!m_intfControllee) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(PLUG_IN_UNITS_INTERFACE, m_objectPath, m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(PLUG_IN_UNITS_INTERFACE, m_objectPath, m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfControllee = static_cast<PlugInUnitsIntfControllee*>(haeInterface);
+        m_intfControllee = static_cast<PlugInUnitsIntfControllee*>(cdmInterface);
 
         RegisterCommand(&PlugInUnitsCommands::OnCmdGetPlugInUnits, "gct", "get plug in units");
     } else {
@@ -69,11 +69,11 @@ void PlugInUnitsCommands::InitializeProperties()
 {
     if (m_intfControllee) {
         PlugInUnitsInterface::PlugInInfo info1, info2;
-        info1.objectPath = "/Hae/IntegratedControllee";
+        info1.objectPath = "/Cdm/IntegratedControllee";
         info1.deviceId = 1;
         info1.pluggedIn = false;
 
-        info2.objectPath = "/Hae/IntegratedControllee";
+        info2.objectPath = "/Cdm/IntegratedControllee";
         info2.deviceId = 2;
         info2.pluggedIn = true;
 

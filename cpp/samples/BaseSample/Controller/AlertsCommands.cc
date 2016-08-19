@@ -95,13 +95,13 @@ AlertsCommands::~AlertsCommands()
 void AlertsCommands::Init()
 {
     if (!m_intfController) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(ALERTS_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(ALERTS_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfController = static_cast<AlertsIntfController*>(haeInterface);
+        m_intfController = static_cast<AlertsIntfController*>(cdmInterface);
     }
 
     RegisterCommand(&AlertsCommands::OnCmdGetAlerts, "ga", "get alerts");

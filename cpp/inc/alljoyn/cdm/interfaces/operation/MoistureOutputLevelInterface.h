@@ -20,7 +20,7 @@
 #include <vector>
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/HaeInterface.h>
+#include <alljoyn/cdm/interfaces/CdmInterface.h>
 
 namespace ajn {
 namespace services {
@@ -28,7 +28,7 @@ namespace services {
 /**
  * MoistureOutputLevel Interface class
  */
-class MoistureOutputLevelInterface : public HaeInterface {
+class MoistureOutputLevelInterface : public CdmInterface {
   public:
 
     /**
@@ -45,7 +45,7 @@ class MoistureOutputLevelInterface : public HaeInterface {
      * Get Interface Type
      * @return Interface type
      */
-    const HaeInterfaceType GetInterfaceType() const { return MOISTURE_OUTPUT_LEVEL_INTERFACE; }
+    const CdmInterfaceType GetInterfaceType() const { return MOISTURE_OUTPUT_LEVEL_INTERFACE; }
 
     /**
      * Get Introspection Xml

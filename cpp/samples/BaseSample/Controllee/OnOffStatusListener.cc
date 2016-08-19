@@ -45,13 +45,13 @@ OnOffStatusCommands::~OnOffStatusCommands()
 void OnOffStatusCommands::Init()
 {
     if (!m_intfControllee) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(ON_OFF_STATUS_INTERFACE, m_objectPath, m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(ON_OFF_STATUS_INTERFACE, m_objectPath, m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfControllee = static_cast<OnOffStatusIntfControllee*>(haeInterface);
+        m_intfControllee = static_cast<OnOffStatusIntfControllee*>(cdmInterface);
 
         RegisterCommand(&OnOffStatusCommands::OnCmdGetOnOffStatus, "gos", "get on/off status");
         RegisterCommand(&OnOffStatusCommands::OnCmdSetOnOffStatus, "sos", "set on/off status(use 'sos <0/1>'");

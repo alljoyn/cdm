@@ -4,7 +4,7 @@
 #include <qcc/String.h>
 #include <alljoyn/Init.h>
 #include <alljoyn/version.h>
-#include <alljoyn/hae/DeviceTypeDescription.h>
+#include <alljoyn/cdm/DeviceTypeDescription.h>
 
 #include "ControlleeSample.h"
 #include "ControlleeCommands.h"
@@ -57,53 +57,53 @@
 #include "LanguageDisplayListener.h"
 //--------------------------------------------------
 
-#include <alljoyn/hae/interfaces/input/HidIntfControllee.h>
-#include <alljoyn/hae/interfaces/environment/CurrentTemperatureIntfControllee.h>
-#include <alljoyn/hae/interfaces/environment/TargetTemperatureIntfControllee.h>
-#include <alljoyn/hae/interfaces/environment/WindDirectionIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/AirRecirculationModeIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/AudioVideoInputIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/AudioVolumeIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/BatteryStatusIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/ChannelIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/ClimateControlModeIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/CurrentPowerIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/EnergyUsageIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/FanSpeedLevelIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/OffControlIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/OnControlIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/OnOffStatusIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/RepeatModeIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/ResourceSavingIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/RobotCleaningCyclePhaseIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/ClosedStatusIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/CycleControlIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/DishWashingCyclePhaseIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/HeatingZoneIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/LaundryCyclePhaseIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/OvenCyclePhaseIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/RapidModeIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/RemoteControllabilityIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/SoilLevelIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/SpinSpeedLevelIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/TimerIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/AlertsIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/MoistureOutputLevelIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/FilterStatusIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/HvacFanModeIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/PlugInUnitsIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/RapidModeTimedIntfControllee.h>
-#include <alljoyn/hae/interfaces/environment/WaterLevelIntfControllee.h>
-#include <alljoyn/hae/interfaces/environment/CurrentHumidityIntfControllee.h>
-#include <alljoyn/hae/interfaces/environment/TargetHumidityIntfControllee.h>
-#include <alljoyn/hae/interfaces/environment/TargetTemperatureLevelIntfControllee.h>
-#include <alljoyn/hae/interfaces/environment/CurrentAirQualityIntfControllee.h>
-#include <alljoyn/hae/interfaces/environment/CurrentAirQualityLevelIntfControllee.h>
+#include <alljoyn/cdm/interfaces/input/HidIntfControllee.h>
+#include <alljoyn/cdm/interfaces/environment/CurrentTemperatureIntfControllee.h>
+#include <alljoyn/cdm/interfaces/environment/TargetTemperatureIntfControllee.h>
+#include <alljoyn/cdm/interfaces/environment/WindDirectionIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/AirRecirculationModeIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/AudioVideoInputIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/AudioVolumeIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/BatteryStatusIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/ChannelIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/ClimateControlModeIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/CurrentPowerIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/EnergyUsageIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/FanSpeedLevelIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/OffControlIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/OnControlIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/OnOffStatusIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/RepeatModeIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/ResourceSavingIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/RobotCleaningCyclePhaseIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/ClosedStatusIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/CycleControlIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/DishWashingCyclePhaseIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/HeatingZoneIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/LaundryCyclePhaseIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/OvenCyclePhaseIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/RapidModeIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/RemoteControllabilityIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/SoilLevelIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/SpinSpeedLevelIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/TimerIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/AlertsIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/MoistureOutputLevelIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/FilterStatusIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/HvacFanModeIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/PlugInUnitsIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/RapidModeTimedIntfControllee.h>
+#include <alljoyn/cdm/interfaces/environment/WaterLevelIntfControllee.h>
+#include <alljoyn/cdm/interfaces/environment/CurrentHumidityIntfControllee.h>
+#include <alljoyn/cdm/interfaces/environment/TargetHumidityIntfControllee.h>
+#include <alljoyn/cdm/interfaces/environment/TargetTemperatureLevelIntfControllee.h>
+#include <alljoyn/cdm/interfaces/environment/CurrentAirQualityIntfControllee.h>
+#include <alljoyn/cdm/interfaces/environment/CurrentAirQualityLevelIntfControllee.h>
 
 //--------------------------------------------------
-#include <alljoyn/hae/interfaces/userinterfacesettings/TimeDisplayIntfControllee.h>
-#include <alljoyn/hae/interfaces/userinterfacesettings/TemperatureDisplayIntfControllee.h>
-#include <alljoyn/hae/interfaces/userinterfacesettings/LanguageDisplayIntfControllee.h>
+#include <alljoyn/cdm/interfaces/userinterfacesettings/TimeDisplayIntfControllee.h>
+#include <alljoyn/cdm/interfaces/userinterfacesettings/TemperatureDisplayIntfControllee.h>
+#include <alljoyn/cdm/interfaces/userinterfacesettings/LanguageDisplayIntfControllee.h>
 //--------------------------------------------------
 
 using namespace std;
@@ -211,13 +211,13 @@ class IntegratedControllee : public ControlleeSample
     LanguageDisplayIntfControllee* m_languageDisplayIntfControllee;
 //--------------------------------------------------
   public:
-    IntegratedControllee(BusAttachment* bus, HaeAboutData* aboutData);
+    IntegratedControllee(BusAttachment* bus, CdmAboutData* aboutData);
     virtual ~IntegratedControllee();
     void CreateInterfaces();
     void SetInitialProperty();
 };
 
-IntegratedControllee::IntegratedControllee(BusAttachment* bus, HaeAboutData* aboutData) :
+IntegratedControllee::IntegratedControllee(BusAttachment* bus, CdmAboutData* aboutData) :
     ControlleeSample(bus, aboutData), m_hidIntfControllee(NULL), m_currentTemperatureIntfControllee(NULL), m_targetTemperatureIntfControllee(NULL),
     m_windDirectionIntfControllee(NULL), m_airRecirculationModeIntfControllee(NULL), m_audioVideoInputIntfControllee(NULL), m_audioVolumeIntfControllee(NULL),
     m_batteryStatusIntfControllee(NULL), m_channelIntfControllee(NULL), m_climateControlModeIntfControllee(NULL), m_currentPowerIntfControllee(NULL),
@@ -239,146 +239,146 @@ IntegratedControllee::~IntegratedControllee()
 
 void IntegratedControllee::CreateInterfaces()
 {
-    HaeInterface* intf = NULL;
-    HaeControllee* haeControllee = GetControllee();
-    if (!haeControllee) {
+    CdmInterface* intf = NULL;
+    CdmControllee* cdmControllee = GetControllee();
+    if (!cdmControllee) {
         return;
     }
 
-    intf = haeControllee->CreateInterface(HID_INTERFACE, "/Hae/IntegratedControllee", m_hidListener);
+    intf = cdmControllee->CreateInterface(HID_INTERFACE, "/Cdm/IntegratedControllee", m_hidListener);
     m_hidIntfControllee = static_cast<HidIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(CURRENT_TEMPERATURE_INTERFACE, "/Hae/IntegratedControllee", m_currentTemperatureListener);
+    intf = cdmControllee->CreateInterface(CURRENT_TEMPERATURE_INTERFACE, "/Cdm/IntegratedControllee", m_currentTemperatureListener);
     m_currentTemperatureIntfControllee = static_cast<CurrentTemperatureIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(TARGET_TEMPERATURE_INTERFACE, "/Hae/IntegratedControllee", m_targetTemperatureListener);
+    intf = cdmControllee->CreateInterface(TARGET_TEMPERATURE_INTERFACE, "/Cdm/IntegratedControllee", m_targetTemperatureListener);
     m_targetTemperatureIntfControllee = static_cast<TargetTemperatureIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(WIND_DIRECTION_INTERFACE, "/Hae/IntegratedControllee", m_windDirectionListener);
+    intf = cdmControllee->CreateInterface(WIND_DIRECTION_INTERFACE, "/Cdm/IntegratedControllee", m_windDirectionListener);
     m_windDirectionIntfControllee = static_cast<WindDirectionIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(AIR_RECIRCULATION_MODE_INTERFACE, "/Hae/IntegratedControllee", m_airRecirculationModeListener);
+    intf = cdmControllee->CreateInterface(AIR_RECIRCULATION_MODE_INTERFACE, "/Cdm/IntegratedControllee", m_airRecirculationModeListener);
     m_airRecirculationModeIntfControllee = static_cast<AirRecirculationModeIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(AUDIO_VIDEO_INPUT_INTERFACE, "/Hae/IntegratedControllee", m_audioVideoInputListener);
+    intf = cdmControllee->CreateInterface(AUDIO_VIDEO_INPUT_INTERFACE, "/Cdm/IntegratedControllee", m_audioVideoInputListener);
     m_audioVideoInputIntfControllee = static_cast<AudioVideoInputIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(AUDIO_VOLUME_INTERFACE, "/Hae/IntegratedControllee", m_audioVolumeListener);
+    intf = cdmControllee->CreateInterface(AUDIO_VOLUME_INTERFACE, "/Cdm/IntegratedControllee", m_audioVolumeListener);
     m_audioVolumeIntfControllee = static_cast<AudioVolumeIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(BATTERY_STATUS_INTERFACE, "/Hae/IntegratedControllee", m_batteryStatusListener);
+    intf = cdmControllee->CreateInterface(BATTERY_STATUS_INTERFACE, "/Cdm/IntegratedControllee", m_batteryStatusListener);
     m_batteryStatusIntfControllee = static_cast<BatteryStatusIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(CHANNEL_INTERFACE, "/Hae/IntegratedControllee", m_channelListener);
+    intf = cdmControllee->CreateInterface(CHANNEL_INTERFACE, "/Cdm/IntegratedControllee", m_channelListener);
     m_channelIntfControllee = static_cast<ChannelIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(CLIMATE_CONTROL_MODE_INTERFACE, "/Hae/IntegratedControllee", m_climateControlModeListener);
+    intf = cdmControllee->CreateInterface(CLIMATE_CONTROL_MODE_INTERFACE, "/Cdm/IntegratedControllee", m_climateControlModeListener);
     m_climateControlModeIntfControllee = static_cast<ClimateControlModeIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(CURRENT_POWER_INTERFACE, "/Hae/IntegratedControllee", m_currentPowerListener);
+    intf = cdmControllee->CreateInterface(CURRENT_POWER_INTERFACE, "/Cdm/IntegratedControllee", m_currentPowerListener);
     m_currentPowerIntfControllee = static_cast<CurrentPowerIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(ENERGY_USAGE_INTERFACE, "/Hae/IntegratedControllee", m_energyUsageListener);
+    intf = cdmControllee->CreateInterface(ENERGY_USAGE_INTERFACE, "/Cdm/IntegratedControllee", m_energyUsageListener);
     m_energyUsageIntfControllee = static_cast<EnergyUsageIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(FAN_SPEED_LEVEL_INTERFACE, "/Hae/IntegratedControllee", m_fanSpeedLevelListener);
+    intf = cdmControllee->CreateInterface(FAN_SPEED_LEVEL_INTERFACE, "/Cdm/IntegratedControllee", m_fanSpeedLevelListener);
     m_fanSpeedLevelIntfControllee = static_cast<FanSpeedLevelIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(OFF_CONTROL_INTERFACE, "/Hae/IntegratedControllee", m_offControlListener);
+    intf = cdmControllee->CreateInterface(OFF_CONTROL_INTERFACE, "/Cdm/IntegratedControllee", m_offControlListener);
     m_offControlIntfControllee = static_cast<OffControlIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(ON_CONTROL_INTERFACE, "/Hae/IntegratedControllee", m_onControlListener);
+    intf = cdmControllee->CreateInterface(ON_CONTROL_INTERFACE, "/Cdm/IntegratedControllee", m_onControlListener);
     m_onControlIntfControllee = static_cast<OnControlIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(ON_OFF_STATUS_INTERFACE, "/Hae/IntegratedControllee", m_onOffStatusListener);
+    intf = cdmControllee->CreateInterface(ON_OFF_STATUS_INTERFACE, "/Cdm/IntegratedControllee", m_onOffStatusListener);
     m_onOffStatusIntfControllee = static_cast<OnOffStatusIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(REPEAT_MODE_INTERFACE, "/Hae/IntegratedControllee", m_repeatModeListener);
+    intf = cdmControllee->CreateInterface(REPEAT_MODE_INTERFACE, "/Cdm/IntegratedControllee", m_repeatModeListener);
     m_repeatModeIntfControllee = static_cast<RepeatModeIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(RESOURCE_SAVING_INTERFACE, "/Hae/IntegratedControllee", m_resourceSavingListener);
+    intf = cdmControllee->CreateInterface(RESOURCE_SAVING_INTERFACE, "/Cdm/IntegratedControllee", m_resourceSavingListener);
     m_resourceSavingIntfControllee = static_cast<ResourceSavingIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(ROBOT_CLEANING_CYCLE_PHASE_INTERFACE, "/Hae/IntegratedControllee", m_robotCleaningCyclePhaseListener);
+    intf = cdmControllee->CreateInterface(ROBOT_CLEANING_CYCLE_PHASE_INTERFACE, "/Cdm/IntegratedControllee", m_robotCleaningCyclePhaseListener);
     m_robotCleaningCyclePhaseIntfControllee = static_cast<RobotCleaningCyclePhaseIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(CLOSED_STATUS_INTERFACE, "/Hae/IntegratedControllee", m_closedStatusListener);
+    intf = cdmControllee->CreateInterface(CLOSED_STATUS_INTERFACE, "/Cdm/IntegratedControllee", m_closedStatusListener);
     m_closedStatusIntfControllee = static_cast<ClosedStatusIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(CYCLE_CONTROL_INTERFACE, "/Hae/IntegratedControllee", m_cycleControlListener);
+    intf = cdmControllee->CreateInterface(CYCLE_CONTROL_INTERFACE, "/Cdm/IntegratedControllee", m_cycleControlListener);
     m_cycleControlIntfControllee = static_cast<CycleControlIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(DISH_WASHING_CYCLE_PHASE_INTERFACE, "/Hae/IntegratedControllee", m_dishWashingCycleListener);
+    intf = cdmControllee->CreateInterface(DISH_WASHING_CYCLE_PHASE_INTERFACE, "/Cdm/IntegratedControllee", m_dishWashingCycleListener);
     m_dishWashingCyclePhaseIntfControllee = static_cast<DishWashingCyclePhaseIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(HEATING_ZONE_INTERFACE, "/Hae/IntegratedControllee", m_heatingZoneListener);
+    intf = cdmControllee->CreateInterface(HEATING_ZONE_INTERFACE, "/Cdm/IntegratedControllee", m_heatingZoneListener);
     m_heatingZoneIntfControllee = static_cast<HeatingZoneIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(LAUNDRY_CYCLE_PHASE_INTERFACE, "/Hae/IntegratedControllee", m_laundryCyclePhaseListener);
+    intf = cdmControllee->CreateInterface(LAUNDRY_CYCLE_PHASE_INTERFACE, "/Cdm/IntegratedControllee", m_laundryCyclePhaseListener);
     m_laundryCyclePhaseIntfControllee = static_cast<LaundryCyclePhaseIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(OVEN_CYCLE_PHASE_INTERFACE, "/Hae/IntegratedControllee", m_ovenCyclePhaseListener);
+    intf = cdmControllee->CreateInterface(OVEN_CYCLE_PHASE_INTERFACE, "/Cdm/IntegratedControllee", m_ovenCyclePhaseListener);
     m_ovenCyclePhaseIntfControllee = static_cast<OvenCyclePhaseIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(RAPID_MODE_INTERFACE, "/Hae/IntegratedControllee", m_rapidModeListener);
+    intf = cdmControllee->CreateInterface(RAPID_MODE_INTERFACE, "/Cdm/IntegratedControllee", m_rapidModeListener);
     m_rapidModeIntfControllee = static_cast<RapidModeIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(REMOTE_CONTROLLABILITY_INTERFACE, "/Hae/IntegratedControllee", m_remoteControllabilityListener);
+    intf = cdmControllee->CreateInterface(REMOTE_CONTROLLABILITY_INTERFACE, "/Cdm/IntegratedControllee", m_remoteControllabilityListener);
     m_remoteControllabilityIntfControllee = static_cast<RemoteControllabilityIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(SOIL_LEVEL_INTERFACE, "/Hae/IntegratedControllee", m_soilLevelListener);
+    intf = cdmControllee->CreateInterface(SOIL_LEVEL_INTERFACE, "/Cdm/IntegratedControllee", m_soilLevelListener);
     m_soilLevelIntfControllee = static_cast<SoilLevelIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(SPIN_SPEED_LEVEL_INTERFACE, "/Hae/IntegratedControllee", m_spinSpeedLevelListener);
+    intf = cdmControllee->CreateInterface(SPIN_SPEED_LEVEL_INTERFACE, "/Cdm/IntegratedControllee", m_spinSpeedLevelListener);
     m_spinSpeedLevelIntfControllee = static_cast<SpinSpeedLevelIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(TIMER_INTERFACE, "/Hae/IntegratedControllee", m_timerListener);
+    intf = cdmControllee->CreateInterface(TIMER_INTERFACE, "/Cdm/IntegratedControllee", m_timerListener);
     m_timerIntfControllee = static_cast<TimerIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(WATER_LEVEL_INTERFACE, "/Hae/IntegratedControllee", m_waterLevelListener);
+    intf = cdmControllee->CreateInterface(WATER_LEVEL_INTERFACE, "/Cdm/IntegratedControllee", m_waterLevelListener);
     m_waterLevelIntfControllee = static_cast<WaterLevelIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(ALERTS_INTERFACE, "/Hae/IntegratedControllee", m_alertsListener);
+    intf = cdmControllee->CreateInterface(ALERTS_INTERFACE, "/Cdm/IntegratedControllee", m_alertsListener);
     m_alertsIntfControllee = static_cast<AlertsIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(CURRENT_AIR_QUALITY_INTERFACE, "/Hae/IntegratedControllee", m_currentAirQualityListener);
+    intf = cdmControllee->CreateInterface(CURRENT_AIR_QUALITY_INTERFACE, "/Cdm/IntegratedControllee", m_currentAirQualityListener);
     m_currentAirQualityIntfControllee = static_cast<CurrentAirQualityIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(CURRENT_AIR_QUALITY_LEVEL_INTERFACE, "/Hae/IntegratedControllee", m_currentAirQualityLevelListener);
+    intf = cdmControllee->CreateInterface(CURRENT_AIR_QUALITY_LEVEL_INTERFACE, "/Cdm/IntegratedControllee", m_currentAirQualityLevelListener);
     m_currentAirQualityLevelIntfControllee = static_cast<CurrentAirQualityLevelIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(CURRENT_HUMIDITY_INTERFACE, "/Hae/IntegratedControllee", m_currentHumidityListener);
+    intf = cdmControllee->CreateInterface(CURRENT_HUMIDITY_INTERFACE, "/Cdm/IntegratedControllee", m_currentHumidityListener);
     m_currentHumidityIntfControllee = static_cast<CurrentHumidityIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(TARGET_HUMIDITY_INTERFACE, "/Hae/IntegratedControllee", m_targetHumidityListener);
+    intf = cdmControllee->CreateInterface(TARGET_HUMIDITY_INTERFACE, "/Cdm/IntegratedControllee", m_targetHumidityListener);
     m_targetHumidityIntfControllee = static_cast<TargetHumidityIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(TARGET_TEMPERATURE_LEVEL_INTERFACE, "/Hae/IntegratedControllee", m_targetTemperatureLevelListener);
+    intf = cdmControllee->CreateInterface(TARGET_TEMPERATURE_LEVEL_INTERFACE, "/Cdm/IntegratedControllee", m_targetTemperatureLevelListener);
     m_targetTemperatureLevelIntfControllee = static_cast<TargetTemperatureLevelIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(MOISTURE_OUTPUT_LEVEL_INTERFACE, "/Hae/IntegratedControllee", m_moistureOutputLevelListener);
+    intf = cdmControllee->CreateInterface(MOISTURE_OUTPUT_LEVEL_INTERFACE, "/Cdm/IntegratedControllee", m_moistureOutputLevelListener);
     m_moistureOutputLevelIntfControllee = static_cast<MoistureOutputLevelIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(FILTER_STATUS_INTERFACE, "/Hae/IntegratedControllee", m_filterStatusListener);
+    intf = cdmControllee->CreateInterface(FILTER_STATUS_INTERFACE, "/Cdm/IntegratedControllee", m_filterStatusListener);
     m_filterStatusIntfControllee = static_cast<FilterStatusIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(HVAC_FAN_MODE_INTERFACE, "/Hae/IntegratedControllee", m_hvacFanModeListener);
+    intf = cdmControllee->CreateInterface(HVAC_FAN_MODE_INTERFACE, "/Cdm/IntegratedControllee", m_hvacFanModeListener);
     m_hvacFanModeIntfControllee = static_cast<HvacFanModeIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(PLUG_IN_UNITS_INTERFACE, "/Hae/IntegratedControllee", m_plugInUnitsListener);
+    intf = cdmControllee->CreateInterface(PLUG_IN_UNITS_INTERFACE, "/Cdm/IntegratedControllee", m_plugInUnitsListener);
     m_plugInUnitsIntfControllee = static_cast<PlugInUnitsIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(RAPID_MODE_TIMED_INTERFACE, "/Hae/IntegratedControllee", m_rapidModeTimedListener);
+    intf = cdmControllee->CreateInterface(RAPID_MODE_TIMED_INTERFACE, "/Cdm/IntegratedControllee", m_rapidModeTimedListener);
     m_rapidModeTimedIntfControllee = static_cast<RapidModeTimedIntfControllee*>(intf);
 
 //----------------------------------------------
-    intf = haeControllee->CreateInterface(TIME_DISPLAY_INTERFACE, "/Hae/IntegratedControllee", m_timeDisplayListener);
+    intf = cdmControllee->CreateInterface(TIME_DISPLAY_INTERFACE, "/Cdm/IntegratedControllee", m_timeDisplayListener);
     m_timeDisplayIntfControllee = static_cast<TimeDisplayIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(TEMPERATURE_DISPLAY_INTERFACE, "/Hae/IntegratedControllee", m_temperatureDisplayListener);
+    intf = cdmControllee->CreateInterface(TEMPERATURE_DISPLAY_INTERFACE, "/Cdm/IntegratedControllee", m_temperatureDisplayListener);
     m_temperatureDisplayIntfControllee = static_cast<TemperatureDisplayIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(LANGUAGE_DISPLAY_INTERFACE, "/Hae/IntegratedControllee", m_languageDisplayListener);
+    intf = cdmControllee->CreateInterface(LANGUAGE_DISPLAY_INTERFACE, "/Cdm/IntegratedControllee", m_languageDisplayListener);
     m_languageDisplayIntfControllee = static_cast<LanguageDisplayIntfControllee*>(intf);
 //----------------------------------------------
 }
@@ -771,7 +771,7 @@ void IntegratedControllee::SetInitialProperty()
         uint16_t expectedLifeInDays = 30;
         bool isCleanable = true;
         uint8_t orderPercentage = 0;
-        qcc::String manufacturer = "HAE";
+        qcc::String manufacturer = "CDM";
         uint8_t lifeRemaining = 100;
 
         m_filterStatusIntfControllee->SetExpectedLifeInDays(expectedLifeInDays);
@@ -792,11 +792,11 @@ void IntegratedControllee::SetInitialProperty()
 
     if (m_plugInUnitsIntfControllee) {
         PlugInUnitsInterface::PlugInInfo info1, info2;
-        info1.objectPath = "/Hae/IntegratedControllee";
+        info1.objectPath = "/Cdm/IntegratedControllee";
         info1.deviceId = 1;
         info1.pluggedIn = false;
 
-        info2.objectPath = "/Hae/IntegratedControllee";
+        info2.objectPath = "/Cdm/IntegratedControllee";
         info2.deviceId = 2;
         info2.pluggedIn = true;
 
@@ -854,7 +854,7 @@ void IntegratedControllee::SetInitialProperty()
 
 }
 
-QStatus FillAboutData(HaeAboutData* aboutData)
+QStatus FillAboutData(CdmAboutData* aboutData)
 {
     String const defaultLanguage = "en";
     String device_id = "deviceID";
@@ -902,14 +902,14 @@ QStatus FillAboutData(HaeAboutData* aboutData)
     aboutData->SetManufacturer("Manufacturer", "en");
     aboutData->SetSupportUrl("http://www.alljoyn.org");
 
-    // HAE custom metadata fields
+    // CDM custom metadata fields
     aboutData->SetCountryOfProduction("USA", "en");
     aboutData->SetCorporateBrand("Controllee Brand", "en");
     aboutData->SetProductBrand("IntegratedControllee", "en");
     aboutData->SetLocation("Room1", "en");
 
     DeviceTypeDescription description;
-    description.AddDeviceType(OTHER, "/Hae/IntegratedControllee");
+    description.AddDeviceType(OTHER, "/Cdm/IntegratedControllee");
     aboutData->SetDeviceTypeDescription(&description);
 
     if (!aboutData->IsValid()) {
@@ -935,7 +935,7 @@ int main()
 #endif
     printf("AllJoyn Library version: %s\n", ajn::GetVersion());
     printf("AllJoyn Library build info: %s\n", ajn::GetBuildInfo());
-    QCC_SetLogLevels("HAE_MODULE_LOG_NAME=15;");
+    QCC_SetLogLevels("CDM_MODULE_LOG_NAME=15;");
 
     BusAttachment* bus = new BusAttachment("IntegratedControllee", true);
     if (!bus) {
@@ -943,7 +943,7 @@ int main()
         exit(1);
     }
 
-    HaeAboutData* aboutData = new HaeAboutData();
+    CdmAboutData* aboutData = new CdmAboutData();
     if (!aboutData) {
         printf("AboutData creation failed.\n");
         delete bus;

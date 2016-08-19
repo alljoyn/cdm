@@ -14,10 +14,10 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include "HaeTest.h"
+#include "CdmTest.h"
 
-#include <alljoyn/hae/interfaces/operation/RemoteControllabilityIntfController.h>
-#include <alljoyn/hae/interfaces/operation/RemoteControllabilityIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/RemoteControllabilityIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/RemoteControllabilityIntfControllerListener.h>
 
 class RemoteControllabilityListener : public RemoteControllabilityIntfControllerListener
 {
@@ -45,14 +45,14 @@ public:
     }
 };
 
-TEST_F(HAETest, HAE_v1_RemoteControllability)
+TEST_F(CDMTest, CDM_v1_RemoteControllability)
 {
     WaitForControllee(REMOTE_CONTROLLABILITY_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
 
         RemoteControllabilityListener listener;
-        HaeInterface* interface = m_controller->CreateInterface(REMOTE_CONTROLLABILITY_INTERFACE, m_interfaces[i].busName,
+        CdmInterface* interface = m_controller->CreateInterface(REMOTE_CONTROLLABILITY_INTERFACE, m_interfaces[i].busName,
                                                                 qcc::String(m_interfaces[i].objectPath.c_str()), m_interfaces[i].sessionId, listener);
         RemoteControllabilityIntfController* controller = static_cast<RemoteControllabilityIntfController*>(interface);
         QStatus status = ER_FAIL;

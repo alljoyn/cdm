@@ -16,9 +16,9 @@
 
 #include <qcc/Util.h>
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/interfaces/environment/TargetHumidityIntfControlleeListener.h>
-#include <alljoyn/hae/HaeBusObject.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/interfaces/environment/TargetHumidityIntfControlleeListener.h>
+#include <alljoyn/cdm/CdmBusObject.h>
 #include "TargetHumidityIntfControlleeImpl.h"
 #include <cmath>
 
@@ -29,14 +29,14 @@ namespace ajn {
 namespace services {
 
 
-HaeInterface* TargetHumidityIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject)
+CdmInterface* TargetHumidityIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject)
 {
-    return new TargetHumidityIntfControlleeImpl(busAttachment, static_cast<TargetHumidityIntfControlleeListener&>(listener), haeBusObject);
+    return new TargetHumidityIntfControlleeImpl(busAttachment, static_cast<TargetHumidityIntfControlleeListener&>(listener), cdmBusObject);
 }
 
 
-TargetHumidityIntfControlleeImpl::TargetHumidityIntfControlleeImpl(BusAttachment& busAttachment, TargetHumidityIntfControlleeListener& listener, HaeBusObject& haeBusObject) :
-    InterfaceControllee(haeBusObject),
+TargetHumidityIntfControlleeImpl::TargetHumidityIntfControlleeImpl(BusAttachment& busAttachment, TargetHumidityIntfControlleeListener& listener, CdmBusObject& cdmBusObject) :
+    InterfaceControllee(cdmBusObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener),
     m_TargetValue(0),
@@ -53,7 +53,7 @@ TargetHumidityIntfControlleeImpl::~TargetHumidityIntfControlleeImpl()
 
 QStatus TargetHumidityIntfControlleeImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
 
     return status;
 }

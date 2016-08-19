@@ -14,15 +14,15 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#ifndef HAECONSTANTS_H_
-#define HAECONSTANTS_H_
+#ifndef CDMCONSTANTS_H_
+#define CDMCONSTANTS_H_
 
 #include <qcc/String.h>
 
 namespace ajn {
 namespace services {
 
-static const uint16_t HAE_SERVICE_PORT = 1000;
+static const uint16_t CDM_SERVICE_PORT = 1000;
 
 } //namespace services
 } //namespace ajn

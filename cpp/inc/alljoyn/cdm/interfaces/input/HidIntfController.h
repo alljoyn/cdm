@@ -20,7 +20,7 @@
 #include <vector>
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/input/HidInterface.h>
+#include <alljoyn/cdm/interfaces/input/HidInterface.h>
 
 namespace ajn {
 namespace services {

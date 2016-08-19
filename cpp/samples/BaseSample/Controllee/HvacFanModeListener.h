@@ -18,8 +18,8 @@
 #define HVACFANMODELISTENER_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/HvacFanModeIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/HvacFanModeIntfControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/HvacFanModeIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/HvacFanModeIntfControlleeListener.h>
 
 using namespace ajn;
 using namespace services;

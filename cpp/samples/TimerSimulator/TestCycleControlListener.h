@@ -17,8 +17,8 @@
 #ifndef TESTCYCLECONTROLLISTENER_H_
 #define TESTCYCLECONTROLLISTENER_H_
 
-#include <alljoyn/hae/interfaces/operation/CycleControlInterface.h>
-#include <alljoyn/hae/interfaces/operation/CycleControlIntfControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/CycleControlInterface.h>
+#include <alljoyn/cdm/interfaces/operation/CycleControlIntfControlleeListener.h>
 
 using namespace ajn;
 using namespace services;

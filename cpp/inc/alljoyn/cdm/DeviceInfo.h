@@ -21,7 +21,7 @@
 #include <map>
 #include <memory>
 #include <alljoyn/Session.h>
-#include <alljoyn/hae/HaeAboutData.h>
+#include <alljoyn/cdm/CdmAboutData.h>
 #include <alljoyn/AboutObjectDescription.h>
 
 namespace ajn {
@@ -30,8 +30,8 @@ class BusAttachment;
 
 namespace services {
 
-class HaeProxyBusObject;
-typedef std::map<qcc::String, HaeProxyBusObject*> HaeProxyObjectMap;
+class CdmProxyBusObject;
+typedef std::map<qcc::String, CdmProxyBusObject*> CdmProxyObjectMap;
 
 /**
  * Device Info class
@@ -55,10 +55,10 @@ class DeviceInfo {
      * @param[in] name device name
      * @param[in] id session id
      * @param[in] port session port
-     * @param[in] data HAE About data
+     * @param[in] data CDM About data
      * @param[in] description About object description
      */
-    DeviceInfo(const char* name, SessionId id, SessionPort port, const HaeAboutData& data, const AboutObjectDescription& description);
+    DeviceInfo(const char* name, SessionId id, SessionPort port, const CdmAboutData& data, const AboutObjectDescription& description);
 
     /**
      * Destructor of DeviceInfo
@@ -84,12 +84,12 @@ class DeviceInfo {
     SessionPort GetSessionPort() const { return m_sessionPort; }
 
     /**
-     * Get HAE Proxy bus object
+     * Get CDM Proxy bus object
      * @param[in] bus bus attachment
      * @param[in] objectPath the object path
-     * @return HAE Proxy bus object
+     * @return CDM Proxy bus object
      */
-    HaeProxyBusObject* GetHaeProxyBusObject(BusAttachment& bus, const qcc::String& objectPath);
+    CdmProxyBusObject* GetCdmProxyBusObject(BusAttachment& bus, const qcc::String& objectPath);
 
     /**
      * Get About object description
@@ -101,9 +101,9 @@ class DeviceInfo {
     std::string m_busName;
     SessionId m_sessionId;
     SessionPort m_sessionPort;
-    HaeAboutData m_aboutData;
+    CdmAboutData m_aboutData;
     AboutObjectDescription m_aboutObjectDescription;
-    HaeProxyObjectMap m_haeProxyObjectsMap;
+    CdmProxyObjectMap m_cdmProxyObjectsMap;
 };
 
 typedef std::shared_ptr<DeviceInfo> DeviceInfoPtr;

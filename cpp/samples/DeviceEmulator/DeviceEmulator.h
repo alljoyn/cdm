@@ -21,7 +21,7 @@
 #include <qcc/String.h>
 #include <alljoyn/Init.h>
 #include <alljoyn/version.h>
-#include <alljoyn/hae/HaeAboutData.h>
+#include <alljoyn/cdm/CdmAboutData.h>
 #include "ConfigLoader.h"
 #include "VirtualDevice.h"
 
@@ -37,7 +37,7 @@ namespace services {
 class DeviceEmulator
 {
 private:
-    HaeAboutData m_aboutData;
+    CdmAboutData m_aboutData;
     BusAttachment* m_bus;
     ConfigLoader m_configLoader;
     VirtualDevice* m_virtualDevice;

@@ -15,13 +15,13 @@
  ******************************************************************************/
 
 
-#ifndef HAECONTROLLEE_H_
-#define HAECONTROLLEE_H_
+#ifndef CDMCONTROLLEE_H_
+#define CDMCONTROLLEE_H_
 
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/HaeConfig.h>
-#include <alljoyn/hae/interfaces/HaeInterface.h>
-#include <alljoyn/hae/interfaces/HaeInterfaceTypes.h>
+#include <alljoyn/cdm/CdmConfig.h>
+#include <alljoyn/cdm/interfaces/CdmInterface.h>
+#include <alljoyn/cdm/interfaces/CdmInterfaceTypes.h>
 
 namespace ajn {
 
@@ -30,28 +30,28 @@ class AuthListener;
 
 namespace services {
 
-class HaeInterface;
+class CdmInterface;
 class InterfaceControlleeListener;
-class HaeAboutData;
-class HaeControlleeImpl;
+class CdmAboutData;
+class CdmControlleeImpl;
 
 /**
- * Hae Controllee class.
- * Used to create hae controllee device.
+ * Cdm Controllee class.
+ * Used to create cdm controllee device.
  */
-class HaeControllee {
+class CdmControllee {
   public:
     /**
-     * Constructor of HaeControllee
+     * Constructor of CdmControllee
      * @param[in] bus bus attachment
-     * @param[in] aboutData HAE About data
+     * @param[in] aboutData CDM About data
      */
-    HaeControllee(BusAttachment& bus, HaeAboutData* aboutData);
+    CdmControllee(BusAttachment& bus, CdmAboutData* aboutData);
 
     /**
-     * Destructor of HaeControllee
+     * Destructor of CdmControllee
      */
-    virtual ~HaeControllee();
+    virtual ~CdmControllee();
 
     /**
      * Enable peer-to-peer security.
@@ -86,22 +86,22 @@ class HaeControllee {
      * @param[in] listener interface listener
      * @return Interface
      */
-    HaeInterface* CreateInterface(const HaeInterfaceType type, const qcc::String& objectPath, InterfaceControlleeListener& listener);
+    CdmInterface* CreateInterface(const CdmInterfaceType type, const qcc::String& objectPath, InterfaceControlleeListener& listener);
 
     /**
      * Register vendor defined interface
      * @param[in] interfaceName interface name
      * @param[in] createIntfControllee interface creator function
-     * @return HAE interface type
+     * @return CDM interface type
      */
-    const HaeInterfaceType RegisterVendorDefinedInterface(const qcc::String& interfaceName, CreateIntfControlleeFptr createIntfControllee);
+    const CdmInterfaceType RegisterVendorDefinedInterface(const qcc::String& interfaceName, CreateIntfControlleeFptr createIntfControllee);
 
   private:
-    HaeControlleeImpl* m_impl;
+    CdmControlleeImpl* m_impl;
 
 };
 
 }
 }
 
-#endif // HAECONTROLLEE_H_
+#endif // CDMCONTROLLEE_H_

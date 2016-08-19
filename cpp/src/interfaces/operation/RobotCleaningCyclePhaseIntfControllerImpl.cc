@@ -16,9 +16,9 @@
 
 #include <qcc/Util.h>
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/HaeProxyBusObject.h>
-#include <alljoyn/hae/interfaces/operation/RobotCleaningCyclePhaseIntfControllerListener.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/CdmProxyBusObject.h>
+#include <alljoyn/cdm/interfaces/operation/RobotCleaningCyclePhaseIntfControllerListener.h>
 
 #include "RobotCleaningCyclePhaseIntfControllerImpl.h"
 
@@ -28,13 +28,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* RobotCleaningCyclePhaseIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, HaeProxyBusObject& haeProxyObject)
+CdmInterface* RobotCleaningCyclePhaseIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject)
 {
-    return new RobotCleaningCyclePhaseIntfControllerImpl(busAttachment, dynamic_cast<RobotCleaningCyclePhaseIntfControllerListener&>(listener), haeProxyObject);
+    return new RobotCleaningCyclePhaseIntfControllerImpl(busAttachment, dynamic_cast<RobotCleaningCyclePhaseIntfControllerListener&>(listener), cdmProxyObject);
 }
 
-RobotCleaningCyclePhaseIntfControllerImpl::RobotCleaningCyclePhaseIntfControllerImpl(BusAttachment& busAttachment, RobotCleaningCyclePhaseIntfControllerListener& listener, HaeProxyBusObject& haeProxyObject) :
-    InterfaceController(haeProxyObject),
+RobotCleaningCyclePhaseIntfControllerImpl::RobotCleaningCyclePhaseIntfControllerImpl(BusAttachment& busAttachment, RobotCleaningCyclePhaseIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject) :
+    InterfaceController(cdmProxyObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener)
 {
@@ -46,7 +46,7 @@ RobotCleaningCyclePhaseIntfControllerImpl::~RobotCleaningCyclePhaseIntfControlle
 
 QStatus RobotCleaningCyclePhaseIntfControllerImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
     if (ER_OK != status) {
         QCC_LogError(status, ("%s: Interface init failed.", __func__));
         return status;

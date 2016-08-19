@@ -14,11 +14,11 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#ifndef HAETEST_H_
-#define HAETEST_H_
+#ifndef CDMTEST_H_
+#define CDMTEST_H_
 
-#include <alljoyn/hae/HaeController.h>
-#include <alljoyn/hae/DeviceListener.h>
+#include <alljoyn/cdm/CdmController.h>
+#include <alljoyn/cdm/DeviceListener.h>
 #include <qcc/Event.h>
 #include <gtest/gtest.h>
 
@@ -47,13 +47,13 @@ public:
     SessionPort sessionPort;
     SessionId sessionId;
     std::string objectPath;
-    HaeAboutData aboutData;
+    CdmAboutData aboutData;
     AboutObjectDescription aboutDescription;
 
     InterfaceInfo()
     {
     }
-    InterfaceInfo(const char* name, SessionPort port, const char* path, HaeAboutData& data, AboutObjectDescription& description);
+    InterfaceInfo(const char* name, SessionPort port, const char* path, CdmAboutData& data, AboutObjectDescription& description);
 };
 
 static const char* KEYX_ECDHE_PSK = "ALLJOYN_ECDHE_PSK";
@@ -120,21 +120,21 @@ public:
     void AuthenticationComplete(const char* authMechanism, const char* authPeer, bool success);
 };
 
-class HAETest : public ::testing::Test, public DeviceListener, public SessionListener
+class CDMTest : public ::testing::Test, public DeviceListener, public SessionListener
 {
 public:
     virtual void SetUp();
 
     virtual void TearDown();
 
-    virtual void OnDeviceAdded(const char* busname, SessionPort port, const HaeAboutData& data, const AboutObjectDescription& description);
+    virtual void OnDeviceAdded(const char* busname, SessionPort port, const CdmAboutData& data, const AboutObjectDescription& description);
     virtual void OnDeviceRemoved(const char* busname);
     virtual void OnDeviceSessionJoined(const DeviceInfoPtr& info);
     virtual void OnDeviceSessionLost(SessionId sessionId);
 
-    void WaitForControllee(HaeInterfaceType type = (HaeInterfaceType)-1);
+    void WaitForControllee(CdmInterfaceType type = (CdmInterfaceType)-1);
 protected:
-    HaeController* m_controller;
+    CdmController* m_controller;
     BusAttachment* m_bus;
     qcc::String m_interfaceNameForTest;
     std::vector<InterfaceInfo> m_interfaces;
@@ -142,4 +142,4 @@ protected:
     int LOG_NO;
 };
 
-#endif  // HAETEST_H_
+#endif  // CDMTEST_H_

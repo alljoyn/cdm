@@ -20,15 +20,15 @@
 #include <alljoyn/Status.h>
 #include <alljoyn/BusAttachment.h>
 #include <alljoyn/InterfaceDescription.h>
-#include <alljoyn/hae/interfaces/InterfaceControllee.h>
-#include <alljoyn/hae/interfaces/InterfaceControlleeListener.h>
-#include <alljoyn/hae/interfaces/operation/AirRecirculationModeIntfControllee.h>
+#include <alljoyn/cdm/interfaces/InterfaceControllee.h>
+#include <alljoyn/cdm/interfaces/InterfaceControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/AirRecirculationModeIntfControllee.h>
 
 namespace ajn {
 namespace services {
 
 class AirRecirculationModeIntfControlleeListener;
-class HaeBusObject;
+class CdmBusObject;
 
 /**
  * AirRecirculationMode Interface Controllee implementation class
@@ -38,12 +38,12 @@ class AirRecirculationModeIntfControlleeImpl : public InterfaceControllee, publi
     /**
      * Create interface
      */
-    static HaeInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject);
 
     /**
      * Constructor of AirRecirculationModeIntfControlleeImpl
      */
-    AirRecirculationModeIntfControlleeImpl(BusAttachment& busAttachment, AirRecirculationModeIntfControlleeListener& listener, HaeBusObject& haeBusObject);
+    AirRecirculationModeIntfControlleeImpl(BusAttachment& busAttachment, AirRecirculationModeIntfControlleeListener& listener, CdmBusObject& cdmBusObject);
 
     /**
      * Destructor of AirRecirculationModeIntfControlleeImpl

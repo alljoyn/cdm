@@ -16,9 +16,9 @@
 
 #include <qcc/Util.h>
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/HaeProxyBusObject.h>
-#include <alljoyn/hae/interfaces/operation/ChannelIntfControllerListener.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/CdmProxyBusObject.h>
+#include <alljoyn/cdm/interfaces/operation/ChannelIntfControllerListener.h>
 
 #include "ChannelIntfControllerImpl.h"
 
@@ -28,13 +28,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* ChannelIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, HaeProxyBusObject& haeProxyObject)
+CdmInterface* ChannelIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject)
 {
-    return new ChannelIntfControllerImpl(busAttachment, static_cast<ChannelIntfControllerListener&>(listener), haeProxyObject);
+    return new ChannelIntfControllerImpl(busAttachment, static_cast<ChannelIntfControllerListener&>(listener), cdmProxyObject);
 }
 
-ChannelIntfControllerImpl::ChannelIntfControllerImpl(BusAttachment& busAttachment, ChannelIntfControllerListener& listener, HaeProxyBusObject& haeProxyObject) :
-    InterfaceController(haeProxyObject),
+ChannelIntfControllerImpl::ChannelIntfControllerImpl(BusAttachment& busAttachment, ChannelIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject) :
+    InterfaceController(cdmProxyObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener)
 {
@@ -46,7 +46,7 @@ ChannelIntfControllerImpl::~ChannelIntfControllerImpl()
 
 QStatus ChannelIntfControllerImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
     if (ER_OK != status) {
         QCC_LogError(status, ("%s: Interface init failed.", __func__));
         return status;

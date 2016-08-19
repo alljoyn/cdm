@@ -15,15 +15,15 @@
  ******************************************************************************/
 
 
-#ifndef HAECONTROLLERIMPL_H_
-#define HAECONTROLLERIMPL_H_
+#ifndef CDMCONTROLLERIMPL_H_
+#define CDMCONTROLLERIMPL_H_
 
 #include <qcc/Mutex.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/SessionListener.h>
-#include <alljoyn/hae/HaeConfig.h>
-#include <alljoyn/hae/interfaces/HaeInterface.h>
-#include "HaeBusListener.h"
+#include <alljoyn/cdm/CdmConfig.h>
+#include <alljoyn/cdm/interfaces/CdmInterface.h>
+#include "CdmBusListener.h"
 
 #include "DeviceManager.h"
 #include "SecurityInfo.h"
@@ -37,22 +37,22 @@ namespace services {
 
 class DeviceListener;
 /**
- * Hae ControllerImpl class.
+ * Cdm ControllerImpl class.
  */
-class HaeControllerImpl : public ajn::AboutListener
+class CdmControllerImpl : public ajn::AboutListener
                         , public ajn::SessionListener
                         //, public ajn::BusAttachment::JoinSessionAsyncCB
 {
   public:
     /**
-     * Constructor of HaeControllerImpl
+     * Constructor of CdmControllerImpl
      */
-    HaeControllerImpl(BusAttachment& bus, DeviceListener* listener);
+    CdmControllerImpl(BusAttachment& bus, DeviceListener* listener);
 
     /**
-     * Destructor of HaeControllerImpl
+     * Destructor of CdmControllerImpl
      */
-    virtual ~HaeControllerImpl();
+    virtual ~CdmControllerImpl();
 
     /**
      * initiate controller
@@ -79,11 +79,11 @@ class HaeControllerImpl : public ajn::AboutListener
      * Join device
      * @param[in] bus name
      * @param[in] session port
-     * @param[in] hae about data
+     * @param[in] cdm about data
      * @param[in] about object description
      * @return interface
      */
-    QStatus JoinDevice(const std::string& busName, SessionPort port, const HaeAboutData& data,
+    QStatus JoinDevice(const std::string& busName, SessionPort port, const CdmAboutData& data,
                        AboutObjectDescription& description);
 
     /**
@@ -95,15 +95,15 @@ class HaeControllerImpl : public ajn::AboutListener
      * @param[in] listener
      * @return interface
      */
-    HaeInterface* CreateInterface(const HaeInterfaceType type, const std::string& busName, const qcc::String& objectPath, const SessionId& sessionId, InterfaceControllerListener& listener);
+    CdmInterface* CreateInterface(const CdmInterfaceType type, const std::string& busName, const qcc::String& objectPath, const SessionId& sessionId, InterfaceControllerListener& listener);
 
     /**
      * Register vendor defined interface
      * @param[in] interfaceName
      * @param[in] creator
-     * @return HaeInterfaceType
+     * @return CdmInterfaceType
      */
-    const HaeInterfaceType RegisterVendorDefinedInterface(const qcc::String& interfaceName, CreateIntfControllerFptr createIntfController);
+    const CdmInterfaceType RegisterVendorDefinedInterface(const qcc::String& interfaceName, CreateIntfControllerFptr createIntfController);
 
 
     QStatus EnablePeerSecurity(const char* authMechanisms,
@@ -136,7 +136,7 @@ class HaeControllerImpl : public ajn::AboutListener
     bool m_isStarted;
     qcc::Mutex m_lock;
     BusAttachment& m_bus;
-    HaeBusListener m_haeBusListener;
+    CdmBusListener m_cdmBusListener;
     DeviceManager m_deviceManager;
     DeviceListener* m_deviceListener;
     SecurityInfo m_security;
@@ -145,4 +145,4 @@ class HaeControllerImpl : public ajn::AboutListener
 }  /* ajn */
 }  /* services */
 
-#endif /* HAECONTROLLERIMPL_H_ */
+#endif /* CDMCONTROLLERIMPL_H_ */

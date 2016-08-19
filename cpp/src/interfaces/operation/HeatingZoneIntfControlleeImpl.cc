@@ -17,9 +17,9 @@
 #include <qcc/Util.h>
 #include <vector>
 #include <algorithm>
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/HaeBusObject.h>
-#include <alljoyn/hae/interfaces/operation/HeatingZoneIntfControlleeListener.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/CdmBusObject.h>
+#include <alljoyn/cdm/interfaces/operation/HeatingZoneIntfControlleeListener.h>
 
 #include "HeatingZoneIntfControlleeImpl.h"
 
@@ -29,13 +29,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* HeatingZoneIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject)
+CdmInterface* HeatingZoneIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject)
 {
-    return new HeatingZoneIntfControlleeImpl(busAttachment, dynamic_cast<HeatingZoneIntfControlleeListener&>(listener), haeBusObject);
+    return new HeatingZoneIntfControlleeImpl(busAttachment, dynamic_cast<HeatingZoneIntfControlleeListener&>(listener), cdmBusObject);
 }
 
-HeatingZoneIntfControlleeImpl::HeatingZoneIntfControlleeImpl(BusAttachment& busAttachment, HeatingZoneIntfControlleeListener& listener, HaeBusObject& haeBusObject) :
-    InterfaceControllee(haeBusObject),
+HeatingZoneIntfControlleeImpl::HeatingZoneIntfControlleeImpl(BusAttachment& busAttachment, HeatingZoneIntfControlleeListener& listener, CdmBusObject& cdmBusObject) :
+    InterfaceControllee(cdmBusObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener)
 {
@@ -47,7 +47,7 @@ HeatingZoneIntfControlleeImpl::~HeatingZoneIntfControlleeImpl()
 
 QStatus HeatingZoneIntfControlleeImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
     return status;
 }
 

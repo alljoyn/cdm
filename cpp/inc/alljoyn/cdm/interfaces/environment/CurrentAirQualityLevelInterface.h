@@ -19,7 +19,7 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/HaeInterface.h>
+#include <alljoyn/cdm/interfaces/CdmInterface.h>
 
 namespace ajn {
 namespace services {
@@ -27,7 +27,7 @@ namespace services {
 /**
  * CurrentAirQualityLevel Interface class
  */
-class CurrentAirQualityLevelInterface : public HaeInterface {
+class CurrentAirQualityLevelInterface : public CdmInterface {
   public:
     /**
      * Constructor of CurrentAirQualityLevel
@@ -43,7 +43,7 @@ class CurrentAirQualityLevelInterface : public HaeInterface {
      * Get Interface Type
      * @return interface type
      */
-    const HaeInterfaceType GetInterfaceType() const { return CURRENT_AIR_QUALITY_LEVEL_INTERFACE; }
+    const CdmInterfaceType GetInterfaceType() const { return CURRENT_AIR_QUALITY_LEVEL_INTERFACE; }
 
     /**
      * Get Introspection Xml

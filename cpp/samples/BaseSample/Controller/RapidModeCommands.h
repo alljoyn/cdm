@@ -18,8 +18,8 @@
 #define RAPIDMODECOMMANDS_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/RapidModeIntfController.h>
-#include <alljoyn/hae/interfaces/operation/RapidModeIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/RapidModeIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/RapidModeIntfControllerListener.h>
 
 class ControllerSample;
 

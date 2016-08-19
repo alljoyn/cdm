@@ -75,13 +75,13 @@ SpinSpeedLevelCommands::~SpinSpeedLevelCommands()
 void SpinSpeedLevelCommands::Init()
 {
     if (!m_intfControllee) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(SPIN_SPEED_LEVEL_INTERFACE, m_objectPath, m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(SPIN_SPEED_LEVEL_INTERFACE, m_objectPath, m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfControllee = static_cast<SpinSpeedLevelIntfControllee*>(haeInterface);
+        m_intfControllee = static_cast<SpinSpeedLevelIntfControllee*>(cdmInterface);
 
         RegisterCommand(&SpinSpeedLevelCommands::OnCmdGetMaxLevel, "gml", "get max level");
         RegisterCommand(&SpinSpeedLevelCommands::OnCmdSetMaxLevel, "sml", "set max level (use 'sml <max level>')");

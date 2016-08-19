@@ -63,13 +63,13 @@ RapidModeCommands::~RapidModeCommands()
 void RapidModeCommands::Init()
 {
     if (!m_intfController) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(RAPID_MODE_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(RAPID_MODE_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfController = static_cast<RapidModeIntfController*>(haeInterface);
+        m_intfController = static_cast<RapidModeIntfController*>(cdmInterface);
     }
     RegisterCommand(&RapidModeCommands::OnCmdGetRapidMode, "grm", "get rapidMode");
     RegisterCommand(&RapidModeCommands::OnCmdSetRapidMode, "srm", "set rapidMode (use 'scs <0/1>'");

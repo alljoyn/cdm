@@ -19,7 +19,7 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/HaeInterface.h>
+#include <alljoyn/cdm/interfaces/CdmInterface.h>
 
 namespace ajn {
 namespace services {
@@ -27,7 +27,7 @@ namespace services {
 /**
  * VendorDefined Interface class
  */
-class VendorDefinedInterface : public HaeInterface {
+class VendorDefinedInterface : public CdmInterface {
   public:
     /**
      * Constructor of VendorDefined
@@ -43,7 +43,7 @@ class VendorDefinedInterface : public HaeInterface {
      * Get Interface Type
      * @return interface type
      */
-    const HaeInterfaceType GetInterfaceType() const { return VENDOR_DEFINED_INTERFACE; }
+    const CdmInterfaceType GetInterfaceType() const { return VENDOR_DEFINED_INTERFACE; }
 
     /**
      * Get Introspection Xml

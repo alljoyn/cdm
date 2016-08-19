@@ -19,7 +19,7 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/HaeInterface.h>
+#include <alljoyn/cdm/interfaces/CdmInterface.h>
 
 namespace ajn {
 namespace services {
@@ -27,7 +27,7 @@ namespace services {
 /**
  * EnergyUsage Interface class
  */
-class EnergyUsageInterface : public HaeInterface {
+class EnergyUsageInterface : public CdmInterface {
   public:
     /**
      * Constructor of EnergyUsage
@@ -43,7 +43,7 @@ class EnergyUsageInterface : public HaeInterface {
      * Get Interface Type
      * @return interface type
      */
-    const HaeInterfaceType GetInterfaceType() const { return ENERGY_USAGE_INTERFACE; }
+    const CdmInterfaceType GetInterfaceType() const { return ENERGY_USAGE_INTERFACE; }
 
     /**
      * Get Introspection Xml

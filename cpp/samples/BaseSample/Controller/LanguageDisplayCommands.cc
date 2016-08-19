@@ -77,13 +77,13 @@ LanguageDisplayCommands::~LanguageDisplayCommands()
 void LanguageDisplayCommands::Init()
 {
     if (!m_intfController) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(LANGUAGE_DISPLAY_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(LANGUAGE_DISPLAY_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfController = static_cast<LanguageDisplayIntfController*>(haeInterface);
+        m_intfController = static_cast<LanguageDisplayIntfController*>(cdmInterface);
     }
 
     RegisterCommand(&LanguageDisplayCommands::OnCmdGetDisplayLanguage, "gdl", "get display language");

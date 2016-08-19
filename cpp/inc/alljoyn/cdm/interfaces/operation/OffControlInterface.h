@@ -19,7 +19,7 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/HaeInterface.h>
+#include <alljoyn/cdm/interfaces/CdmInterface.h>
 
 namespace ajn {
 namespace services {
@@ -27,7 +27,7 @@ namespace services {
 /**
  * OffControl Interface class
  */
-class OffControlInterface : public HaeInterface {
+class OffControlInterface : public CdmInterface {
   public:
     /**
      * Constructor of OffControl
@@ -43,7 +43,7 @@ class OffControlInterface : public HaeInterface {
      * Get Interface Type
      * @return interface type
      */
-    const HaeInterfaceType GetInterfaceType() const { return OFF_CONTROL_INTERFACE; }
+    const CdmInterfaceType GetInterfaceType() const { return OFF_CONTROL_INTERFACE; }
 
     /**
      * Get Introspection Xml

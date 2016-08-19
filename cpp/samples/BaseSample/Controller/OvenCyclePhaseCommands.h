@@ -18,8 +18,8 @@
 #define OVENCYCLEPHASECOMMANDS_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/OvenCyclePhaseIntfController.h>
-#include <alljoyn/hae/interfaces/operation/OvenCyclePhaseIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/OvenCyclePhaseIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/OvenCyclePhaseIntfControllerListener.h>
 
 class ControllerSample;
 

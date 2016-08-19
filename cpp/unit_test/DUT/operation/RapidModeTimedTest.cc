@@ -14,10 +14,10 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include "HaeTest.h"
+#include "CdmTest.h"
 
-#include <alljoyn/hae/interfaces/operation/RapidModeTimedIntfController.h>
-#include <alljoyn/hae/interfaces/operation/RapidModeTimedIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/RapidModeTimedIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/RapidModeTimedIntfControllerListener.h>
 
 class RapidModeTimedListener : public RapidModeTimedIntfControllerListener
 {
@@ -60,14 +60,14 @@ public:
     }
 };
 
-TEST_F(HAETest, HAE_v1_RapidModeTimed)
+TEST_F(CDMTest, CDM_v1_RapidModeTimed)
 {
     WaitForControllee(RAPID_MODE_TIMED_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
 
         RapidModeTimedListener listener;
-        HaeInterface* interface = m_controller->CreateInterface(RAPID_MODE_TIMED_INTERFACE, m_interfaces[i].busName,
+        CdmInterface* interface = m_controller->CreateInterface(RAPID_MODE_TIMED_INTERFACE, m_interfaces[i].busName,
                                                                 qcc::String(m_interfaces[i].objectPath.c_str()), m_interfaces[i].sessionId, listener);
         RapidModeTimedIntfController* controller = static_cast<RapidModeTimedIntfController*>(interface);
         QStatus status = ER_FAIL;

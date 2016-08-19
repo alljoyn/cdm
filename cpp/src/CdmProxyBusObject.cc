@@ -14,12 +14,12 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/interfaces/HaeInterface.h>
-#include <alljoyn/hae/interfaces/HaeInterfaceTypes.h>
-#include <alljoyn/hae/interfaces/InterfaceControllerListener.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/interfaces/CdmInterface.h>
+#include <alljoyn/cdm/interfaces/CdmInterfaceTypes.h>
+#include <alljoyn/cdm/interfaces/InterfaceControllerListener.h>
 
-#include <alljoyn/hae/HaeProxyBusObject.h>
+#include <alljoyn/cdm/CdmProxyBusObject.h>
 #include "InterfaceFactory.h"
 
 using namespace std;
@@ -28,35 +28,35 @@ using namespace qcc;
 namespace ajn {
 namespace services {
 
-HaeProxyBusObject::HaeProxyBusObject(BusAttachment& busAttachment, std::string const& busName, qcc::String const& objectPath, SessionId sessionId) :
+CdmProxyBusObject::CdmProxyBusObject(BusAttachment& busAttachment, std::string const& busName, qcc::String const& objectPath, SessionId sessionId) :
         ProxyBusObject(busAttachment, busName.c_str(), objectPath.c_str(), sessionId),
         m_busAttachment(busAttachment)
 {
 
 }
 
-HaeProxyBusObject::~HaeProxyBusObject()
+CdmProxyBusObject::~CdmProxyBusObject()
 {
-    for (map<String, HaeInterface*>::iterator it = m_haeInterfacesMap.begin(); it != m_haeInterfacesMap.end(); ++it) {
+    for (map<String, CdmInterface*>::iterator it = m_cdmInterfacesMap.begin(); it != m_cdmInterfacesMap.end(); ++it) {
         delete it->second;
     }
-    m_haeInterfacesMap.clear();
+    m_cdmInterfacesMap.clear();
 }
 
-HaeInterface* HaeProxyBusObject::CreateInterface(const HaeInterfaceType type, InterfaceControllerListener& listener)
+CdmInterface* CdmProxyBusObject::CreateInterface(const CdmInterfaceType type, InterfaceControllerListener& listener)
 {
     QStatus status = ER_OK;
-    HaeInterface* interface = NULL;
+    CdmInterface* interface = NULL;
 
     if (InterfaceTypesMap.find(type) == InterfaceTypesMap.end()) {
         QCC_LogError(ER_BAD_ARG_1, ("%s: Function call argument 1 is invalid.", __func__));
         return NULL;
     }
 
-    map<HaeInterfaceType, String>::const_iterator it = InterfaceTypesMap.find(type);
+    map<CdmInterfaceType, String>::const_iterator it = InterfaceTypesMap.find(type);
     if (it != InterfaceTypesMap.end()) {
         const String interfaceName = it->second;
-        if (m_haeInterfacesMap[interfaceName] == NULL) {
+        if (m_cdmInterfacesMap[interfaceName] == NULL) {
             interface = InterfaceFactory::GetInstance()->CreateIntfController(type, listener, *this);
             if (!interface) {
                 QCC_LogError(ER_FAIL, ("%s: could not create interface.", __func__));
@@ -71,7 +71,7 @@ HaeInterface* HaeProxyBusObject::CreateInterface(const HaeInterfaceType type, In
                 return NULL;
             }
 
-            m_haeInterfacesMap[interfaceName] = interface;
+            m_cdmInterfacesMap[interfaceName] = interface;
         } else {
             QCC_LogError(ER_FAIL, ("%s: the interface instance already exists.", __func__));
             return NULL;

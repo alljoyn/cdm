@@ -18,8 +18,8 @@
 #define TARGETTEMPERATURELEVELCOMMANDS_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/environment/TargetTemperatureLevelIntfController.h>
-#include <alljoyn/hae/interfaces/environment/TargetTemperatureLevelIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/environment/TargetTemperatureLevelIntfController.h>
+#include <alljoyn/cdm/interfaces/environment/TargetTemperatureLevelIntfControllerListener.h>
 
 class ControllerSample;
 

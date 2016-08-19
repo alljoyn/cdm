@@ -18,8 +18,8 @@
 #define REMOTECONTROLLABILITYCOMMANDS_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/RemoteControllabilityIntfController.h>
-#include <alljoyn/hae/interfaces/operation/RemoteControllabilityIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/RemoteControllabilityIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/RemoteControllabilityIntfControllerListener.h>
 
 class ControllerSample;
 

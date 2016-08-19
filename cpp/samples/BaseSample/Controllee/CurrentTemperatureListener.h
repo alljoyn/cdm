@@ -18,8 +18,8 @@
 #define CURRENTTEMPERATURELISTENER_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/environment/CurrentTemperatureIntfControllee.h>
-#include <alljoyn/hae/interfaces/environment/CurrentTemperatureIntfControlleeListener.h>
+#include <alljoyn/cdm/interfaces/environment/CurrentTemperatureIntfControllee.h>
+#include <alljoyn/cdm/interfaces/environment/CurrentTemperatureIntfControlleeListener.h>
 
 using namespace ajn;
 using namespace services;

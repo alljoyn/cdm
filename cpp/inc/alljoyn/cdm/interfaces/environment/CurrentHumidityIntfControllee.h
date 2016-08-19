@@ -23,7 +23,7 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/environment/CurrentHumidityInterface.h>
+#include <alljoyn/cdm/interfaces/environment/CurrentHumidityInterface.h>
 
 namespace ajn {
 namespace services {

@@ -18,7 +18,7 @@
 #define INTERFACECONTROLLEELISTENER_H_
 
 
-#include <alljoyn/hae/interfaces/HaeInterfaceListener.h>
+#include <alljoyn/cdm/interfaces/CdmInterfaceListener.h>
 
 namespace ajn {
 namespace services {
@@ -26,7 +26,7 @@ namespace services {
 /**
  * InterfaceControlleeListener class
  */
-class InterfaceControlleeListener : public HaeInterfaceListener {
+class InterfaceControlleeListener : public CdmInterfaceListener {
   public:
 
     /**

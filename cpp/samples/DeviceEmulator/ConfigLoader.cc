@@ -19,8 +19,8 @@
 #include <map>
 #include <utility>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/HaeAboutData.h>
-#include <alljoyn/hae/interfaces/HaeInterface.h>
+#include <alljoyn/cdm/CdmAboutData.h>
+#include <alljoyn/cdm/interfaces/CdmInterface.h>
 #include <qcc/String.h>
 #include <qcc/StringSource.h>
 #include <qcc/XmlElement.h>
@@ -38,9 +38,9 @@ const char* ConfigLoader::PATH = "path";
 const char* ConfigLoader::INTERFACE = "Interface";
 const char* ConfigLoader::NAME = "name";
 
-static HaeInterfaceType GetHaeInterfaceType(const String& intfName)
+static CdmInterfaceType GetCdmInterfaceType(const String& intfName)
 {
-    for (map<HaeInterfaceType, qcc::String>::const_iterator citr = InterfaceTypesMap.begin(); citr != InterfaceTypesMap.end(); ++citr) {
+    for (map<CdmInterfaceType, qcc::String>::const_iterator citr = InterfaceTypesMap.begin(); citr != InterfaceTypesMap.end(); ++citr) {
         if (citr->second == intfName) {
             return citr->first;
         }
@@ -74,7 +74,7 @@ static bool ParseInterfaceList(const String xml, InterfaceList& list)
         vector<const XmlElement*> intfs = object->GetChildren(ConfigLoader::INTERFACE);
         for (vector<const XmlElement*>::const_iterator citr2 = intfs.begin(); citr2 != intfs.end(); ++citr2) {
             const String& intfName = (*citr2)->GetAttribute(ConfigLoader::NAME);
-            HaeInterfaceType intfType = GetHaeInterfaceType(intfName);
+            CdmInterfaceType intfType = GetCdmInterfaceType(intfName);
             if (intfType == UNDEFINED_INTERFACE) {
                 continue;
             }
@@ -86,7 +86,7 @@ static bool ParseInterfaceList(const String xml, InterfaceList& list)
     return true;
 }
 
-static bool ParseXml(const String xml, HaeAboutData& data, InterfaceList& list)
+static bool ParseXml(const String xml, CdmAboutData& data, InterfaceList& list)
 {
     StringSource source(xml);
     XmlParseContext context(source);
@@ -120,7 +120,7 @@ static bool ParseXml(const String xml, HaeAboutData& data, InterfaceList& list)
     return ParseInterfaceList(intfList->Generate(), list);
 }
 
-bool ConfigLoader::Load(HaeAboutData& data, InterfaceList& list)
+bool ConfigLoader::Load(CdmAboutData& data, InterfaceList& list)
 {
     ifstream ifs(m_path.c_str());
     if (!ifs.is_open()) {

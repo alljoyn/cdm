@@ -18,8 +18,8 @@
 #define TIMERCOMMANDS_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/TimerIntfController.h>
-#include <alljoyn/hae/interfaces/operation/TimerIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/TimerIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/TimerIntfControllerListener.h>
 
 class ControllerSample;
 

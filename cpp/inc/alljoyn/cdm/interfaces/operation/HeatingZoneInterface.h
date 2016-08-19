@@ -19,7 +19,7 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/HaeInterface.h>
+#include <alljoyn/cdm/interfaces/CdmInterface.h>
 
 namespace ajn {
 namespace services {
@@ -27,7 +27,7 @@ namespace services {
 /**
  * HeatingZone Interface class
  */
-class HeatingZoneInterface : public HaeInterface {
+class HeatingZoneInterface : public CdmInterface {
   public:
     /**
      * Constructor of HeatingZone
@@ -43,7 +43,7 @@ class HeatingZoneInterface : public HaeInterface {
      * Get Interface Type
      * @return interface type
      */
-    const HaeInterfaceType GetInterfaceType() const { return HEATING_ZONE_INTERFACE; }
+    const CdmInterfaceType GetInterfaceType() const { return HEATING_ZONE_INTERFACE; }
 
     /**
      * Get Introspection Xml

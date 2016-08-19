@@ -19,7 +19,7 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/operation/RemoteControllabilityInterface.h>
+#include <alljoyn/cdm/interfaces/operation/RemoteControllabilityInterface.h>
 
 namespace ajn {
 namespace services {

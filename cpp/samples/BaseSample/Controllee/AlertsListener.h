@@ -18,8 +18,8 @@
 #define ALERTSLISTENER_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/AlertsIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/AlertsIntfControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/AlertsIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/AlertsIntfControlleeListener.h>
 
 using namespace ajn;
 using namespace services;

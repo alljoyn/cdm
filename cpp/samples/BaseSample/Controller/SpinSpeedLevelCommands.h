@@ -18,8 +18,8 @@
 #define SPINSPEEDLEVELCOMMANDS_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/SpinSpeedLevelIntfController.h>
-#include <alljoyn/hae/interfaces/operation/SpinSpeedLevelIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/SpinSpeedLevelIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/SpinSpeedLevelIntfControllerListener.h>
 
 class ControllerSample;
 

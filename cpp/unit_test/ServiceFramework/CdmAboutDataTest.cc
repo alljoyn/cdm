@@ -14,7 +14,7 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 //Code Under Test
-#include <alljoyn/hae/HaeAboutData.h>
+#include <alljoyn/cdm/CdmAboutData.h>
 
 
 #include <alljoyn/version.h>
@@ -22,64 +22,64 @@
 #include <qcc/String.h>
 
 #include <map>
-#include <alljoyn/hae/DeviceTypeDescription.h>
+#include <alljoyn/cdm/DeviceTypeDescription.h>
 
 namespace ajn{
 namespace services{
 
-TEST(HaeAboutDataTest, constants) {
-  //HAE Unique
-    EXPECT_STREQ("CountryOfProduction", ajn::services::HaeAboutData::HaeAboutKeys::COUNTRY_OF_PRODUCTION.c_str());
-    EXPECT_STREQ("CorporateBrand", ajn::services::HaeAboutData::CORPORATE_BRAND.c_str());
-    EXPECT_STREQ("ProductBrand", ajn::services::HaeAboutData::PRODUCT_BRAND.c_str());
-    EXPECT_STREQ("Location", ajn::services::HaeAboutData::LOCATION.c_str());
-    EXPECT_STREQ("DeviceTypeDescription", ajn::services::HaeAboutData::DEVICE_TYPE_DESCRIPTION.c_str());
+TEST(CdmAboutDataTest, constants) {
+  //CDM Unique
+    EXPECT_STREQ("CountryOfProduction", ajn::services::CdmAboutData::CdmAboutKeys::COUNTRY_OF_PRODUCTION.c_str());
+    EXPECT_STREQ("CorporateBrand", ajn::services::CdmAboutData::CORPORATE_BRAND.c_str());
+    EXPECT_STREQ("ProductBrand", ajn::services::CdmAboutData::PRODUCT_BRAND.c_str());
+    EXPECT_STREQ("Location", ajn::services::CdmAboutData::LOCATION.c_str());
+    EXPECT_STREQ("DeviceTypeDescription", ajn::services::CdmAboutData::DEVICE_TYPE_DESCRIPTION.c_str());
 
 }
     
 
 
-TEST(HaeAboutDataTest, VerifyFieldValues) {
-    HaeAboutData aboutData;
+TEST(CdmAboutDataTest, VerifyFieldValues) {
+    CdmAboutData aboutData;
 
     //CountryOfProduction
-    EXPECT_FALSE(aboutData.IsFieldRequired(HaeAboutData::COUNTRY_OF_PRODUCTION.c_str()));
-    EXPECT_FALSE(aboutData.IsFieldAnnounced(HaeAboutData::COUNTRY_OF_PRODUCTION.c_str()));
-    EXPECT_TRUE(aboutData.IsFieldLocalized(HaeAboutData::COUNTRY_OF_PRODUCTION.c_str()));
-    EXPECT_STREQ("s", aboutData.GetFieldSignature(HaeAboutData::COUNTRY_OF_PRODUCTION.c_str()));
+    EXPECT_FALSE(aboutData.IsFieldRequired(CdmAboutData::COUNTRY_OF_PRODUCTION.c_str()));
+    EXPECT_FALSE(aboutData.IsFieldAnnounced(CdmAboutData::COUNTRY_OF_PRODUCTION.c_str()));
+    EXPECT_TRUE(aboutData.IsFieldLocalized(CdmAboutData::COUNTRY_OF_PRODUCTION.c_str()));
+    EXPECT_STREQ("s", aboutData.GetFieldSignature(CdmAboutData::COUNTRY_OF_PRODUCTION.c_str()));
 
     //CorporateBrand
-    EXPECT_FALSE(aboutData.IsFieldRequired(HaeAboutData::CORPORATE_BRAND.c_str()));
-    EXPECT_FALSE(aboutData.IsFieldAnnounced(HaeAboutData::CORPORATE_BRAND.c_str()));
-    EXPECT_TRUE(aboutData.IsFieldLocalized(HaeAboutData::CORPORATE_BRAND.c_str()));
-    EXPECT_STREQ("s", aboutData.GetFieldSignature(HaeAboutData::CORPORATE_BRAND.c_str()));
+    EXPECT_FALSE(aboutData.IsFieldRequired(CdmAboutData::CORPORATE_BRAND.c_str()));
+    EXPECT_FALSE(aboutData.IsFieldAnnounced(CdmAboutData::CORPORATE_BRAND.c_str()));
+    EXPECT_TRUE(aboutData.IsFieldLocalized(CdmAboutData::CORPORATE_BRAND.c_str()));
+    EXPECT_STREQ("s", aboutData.GetFieldSignature(CdmAboutData::CORPORATE_BRAND.c_str()));
 
     //ProductBrand
-    EXPECT_FALSE(aboutData.IsFieldRequired(HaeAboutData::PRODUCT_BRAND.c_str()));
-    EXPECT_FALSE(aboutData.IsFieldAnnounced(HaeAboutData::PRODUCT_BRAND.c_str()));
-    EXPECT_TRUE(aboutData.IsFieldLocalized(HaeAboutData::PRODUCT_BRAND.c_str()));
-    EXPECT_STREQ("s", aboutData.GetFieldSignature(HaeAboutData::PRODUCT_BRAND.c_str()));
+    EXPECT_FALSE(aboutData.IsFieldRequired(CdmAboutData::PRODUCT_BRAND.c_str()));
+    EXPECT_FALSE(aboutData.IsFieldAnnounced(CdmAboutData::PRODUCT_BRAND.c_str()));
+    EXPECT_TRUE(aboutData.IsFieldLocalized(CdmAboutData::PRODUCT_BRAND.c_str()));
+    EXPECT_STREQ("s", aboutData.GetFieldSignature(CdmAboutData::PRODUCT_BRAND.c_str()));
 
     //Location
-    EXPECT_TRUE(aboutData.IsFieldRequired(HaeAboutData::LOCATION.c_str()));
-    EXPECT_TRUE(aboutData.IsFieldAnnounced(HaeAboutData::LOCATION.c_str()));
-    EXPECT_TRUE(aboutData.IsFieldLocalized(HaeAboutData::LOCATION.c_str()));
-    EXPECT_STREQ("s", aboutData.GetFieldSignature(HaeAboutData::LOCATION.c_str()));
+    EXPECT_TRUE(aboutData.IsFieldRequired(CdmAboutData::LOCATION.c_str()));
+    EXPECT_TRUE(aboutData.IsFieldAnnounced(CdmAboutData::LOCATION.c_str()));
+    EXPECT_TRUE(aboutData.IsFieldLocalized(CdmAboutData::LOCATION.c_str()));
+    EXPECT_STREQ("s", aboutData.GetFieldSignature(CdmAboutData::LOCATION.c_str()));
 
     //DeviceTypeDescription
-    EXPECT_TRUE(aboutData.IsFieldRequired(HaeAboutData::DEVICE_TYPE_DESCRIPTION.c_str()));
-    EXPECT_TRUE(aboutData.IsFieldAnnounced(HaeAboutData::DEVICE_TYPE_DESCRIPTION.c_str()));
-    EXPECT_FALSE(aboutData.IsFieldLocalized(HaeAboutData::DEVICE_TYPE_DESCRIPTION.c_str()));
-    EXPECT_STREQ("a(uo)", aboutData.GetFieldSignature(HaeAboutData::DEVICE_TYPE_DESCRIPTION.c_str()));
+    EXPECT_TRUE(aboutData.IsFieldRequired(CdmAboutData::DEVICE_TYPE_DESCRIPTION.c_str()));
+    EXPECT_TRUE(aboutData.IsFieldAnnounced(CdmAboutData::DEVICE_TYPE_DESCRIPTION.c_str()));
+    EXPECT_FALSE(aboutData.IsFieldLocalized(CdmAboutData::DEVICE_TYPE_DESCRIPTION.c_str()));
+    EXPECT_STREQ("a(uo)", aboutData.GetFieldSignature(CdmAboutData::DEVICE_TYPE_DESCRIPTION.c_str()));
 
 }
 
 
-TEST(HaeAboutDataTest, DefaultLanguageNotSpecified) {
+TEST(CdmAboutDataTest, DefaultLanguageNotSpecified) {
     QStatus status = ER_FAIL;
-    HaeAboutData aboutData;
+    CdmAboutData aboutData;
     
-    //HAE SPECIFIC
+    //CDM SPECIFIC
     status = aboutData.SetCountryOfProduction("A Country");
     EXPECT_EQ(ER_ABOUT_DEFAULT_LANGUAGE_NOT_SPECIFIED, status);
     
@@ -95,9 +95,9 @@ TEST(HaeAboutDataTest, DefaultLanguageNotSpecified) {
 }
 
 
-//MFF - Spot check changing new HAE fields
-TEST(HaeAboutDataTest, CopyConstructor) {
-    HaeAboutData aboutData("en");
+//MFF - Spot check changing new CDM fields
+TEST(CdmAboutDataTest, CopyConstructor) {
+    CdmAboutData aboutData("en");
     char* language;
     aboutData.GetDefaultLanguage(&language);
     EXPECT_STREQ("en", language);
@@ -105,7 +105,7 @@ TEST(HaeAboutDataTest, CopyConstructor) {
     aboutData.GetAJSoftwareVersion(&ajSoftwareVersion);
     EXPECT_STREQ(ajn::GetVersion(), ajSoftwareVersion);
 
-    HaeAboutData aboutDataCopy(aboutData);
+    CdmAboutData aboutDataCopy(aboutData);
     aboutDataCopy.GetDefaultLanguage(&language);
     EXPECT_STREQ("en", language);
 
@@ -130,9 +130,9 @@ TEST(HaeAboutDataTest, CopyConstructor) {
 }
     
     
-//MFF - Spot check changing new HAE fields
-TEST(HaeAboutDataTest, AssignmentOperator) {
-    HaeAboutData aboutData("en");
+//MFF - Spot check changing new CDM fields
+TEST(CdmAboutDataTest, AssignmentOperator) {
+    CdmAboutData aboutData("en");
     char* language;
     aboutData.GetDefaultLanguage(&language);
     EXPECT_STREQ("en", language);
@@ -142,7 +142,7 @@ TEST(HaeAboutDataTest, AssignmentOperator) {
 
     // Self assignment
     aboutData = aboutData;
-    HaeAboutData aboutDataCopy;
+    CdmAboutData aboutDataCopy;
     aboutDataCopy = aboutData;
     aboutDataCopy.GetDefaultLanguage(&language);
     EXPECT_STREQ("en", language);
@@ -168,9 +168,9 @@ TEST(HaeAboutDataTest, AssignmentOperator) {
 }
 
     
-TEST(HaeAboutDataTest, SetCountryOfProduction) {
+TEST(CdmAboutDataTest, SetCountryOfProduction) {
     QStatus status = ER_FAIL;
-    HaeAboutData aboutData("en");
+    CdmAboutData aboutData("en");
     char* language;
     status = aboutData.GetDefaultLanguage(&language);
     EXPECT_EQ(ER_OK, status);
@@ -197,9 +197,9 @@ TEST(HaeAboutDataTest, SetCountryOfProduction) {
 }
 
 
-TEST(HaeAboutDataTest, SetCorporateBrand) {
+TEST(CdmAboutDataTest, SetCorporateBrand) {
     QStatus status = ER_FAIL;
-    HaeAboutData aboutData("en");
+    CdmAboutData aboutData("en");
 
     status = aboutData.SetCorporateBrand("Company");
     EXPECT_EQ(ER_OK, status);
@@ -217,9 +217,9 @@ TEST(HaeAboutDataTest, SetCorporateBrand) {
     EXPECT_STREQ("회사", brand);
 }
 
-TEST(HaeAboutDataTest, SetProductBrand) {
+TEST(CdmAboutDataTest, SetProductBrand) {
     QStatus status = ER_FAIL;
-    HaeAboutData aboutData("en");
+    CdmAboutData aboutData("en");
 
     status = aboutData.SetProductBrand("Product");
     EXPECT_EQ(ER_OK, status);
@@ -238,9 +238,9 @@ TEST(HaeAboutDataTest, SetProductBrand) {
 }
 
 
-TEST(HaeAboutDataTest, SetLocation) {
+TEST(CdmAboutDataTest, SetLocation) {
     QStatus status = ER_FAIL;
-    HaeAboutData aboutData("en");
+    CdmAboutData aboutData("en");
 
     status = aboutData.SetLocation("upstairs bedroom");
     EXPECT_EQ(ER_OK, status);
@@ -259,12 +259,12 @@ TEST(HaeAboutDataTest, SetLocation) {
 }
 
 
-TEST(HaeAboutDataTest, SetDeviceTypeDescription) {
+TEST(CdmAboutDataTest, SetDeviceTypeDescription) {
     QStatus status = ER_FAIL;
-    HaeAboutData aboutData("en");
+    CdmAboutData aboutData("en");
     
     DeviceTypeDescription description;
-    description.AddDeviceType(THERMOSTAT, "/Hae/Thermostat");
+    description.AddDeviceType(THERMOSTAT, "/Cdm/Thermostat");
     status = aboutData.SetDeviceTypeDescription(&description);
     EXPECT_EQ(ER_OK, status);
 
@@ -274,15 +274,15 @@ TEST(HaeAboutDataTest, SetDeviceTypeDescription) {
 
     std::multimap<DeviceType, qcc::String>::const_iterator it = returnedDescription->GetDescriptions().begin();
     EXPECT_EQ(THERMOSTAT, it->first);
-    EXPECT_STREQ("/Hae/Thermostat", it->second.c_str() );
+    EXPECT_STREQ("/Cdm/Thermostat", it->second.c_str() );
     
 }
 
 
-TEST(HaeAboutDataTest, IsValid)
+TEST(CdmAboutDataTest, IsValid)
 {
     QStatus status = ER_FAIL;
-    HaeAboutData aboutData("en");
+    CdmAboutData aboutData("en");
 
     EXPECT_FALSE(aboutData.IsValid());
     uint8_t appId[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
@@ -303,7 +303,7 @@ TEST(HaeAboutDataTest, IsValid)
     status = aboutData.SetLocation("upstairs bedroom");
     EXPECT_EQ(ER_OK, status);
     DeviceTypeDescription description;
-    description.AddDeviceType(THERMOSTAT, "/Hae/Thermostat");
+    description.AddDeviceType(THERMOSTAT, "/Cdm/Thermostat");
     status = aboutData.SetDeviceTypeDescription(&description);
     EXPECT_EQ(ER_OK, status);
     
@@ -327,10 +327,10 @@ TEST(HaeAboutDataTest, IsValid)
 }
 
     
-TEST(HaeAboutDataTest, IsValid_Negative)
+TEST(CdmAboutDataTest, IsValid_Negative)
 {
     QStatus status = ER_FAIL;
-    HaeAboutData aboutData;
+    CdmAboutData aboutData;
 //Core fields are tested in Core test cases
     status = aboutData.SetDefaultLanguage("en");
     EXPECT_EQ(ER_OK, status);
@@ -350,12 +350,12 @@ TEST(HaeAboutDataTest, IsValid_Negative)
     status = aboutData.SetSoftwareVersion("0.1.2");
     EXPECT_EQ(ER_OK, status);
     
-    //Hae Fields Missing
+    //Cdm Fields Missing
     EXPECT_FALSE(aboutData.IsValid());;
     status = aboutData.SetLocation("upstairs bedroom");
     EXPECT_EQ(ER_OK, status);
     DeviceTypeDescription description;
-    description.AddDeviceType(THERMOSTAT, "/Hae/Thermostat");
+    description.AddDeviceType(THERMOSTAT, "/Cdm/Thermostat");
     status = aboutData.SetDeviceTypeDescription(&description);
     EXPECT_EQ(ER_OK, status);
     
@@ -372,7 +372,7 @@ TEST(HaeAboutDataTest, IsValid_Negative)
     EXPECT_EQ(ER_OK, status);
     status = aboutData.SetDescription("Una descripcion poetica de esta aplicacion", "es");
     EXPECT_EQ(ER_OK, status);
-    //Missing HAE mandatory localized field, location
+    //Missing CDM mandatory localized field, location
     EXPECT_FALSE(aboutData.IsValid("es"));
     
     status = aboutData.SetLocation("habitación del segundo piso", "es");
@@ -383,10 +383,10 @@ TEST(HaeAboutDataTest, IsValid_Negative)
 }
 
     
-TEST(HaeAboutDataTest, GetAboutData)
+TEST(CdmAboutDataTest, GetAboutData)
 {
     QStatus status = ER_FAIL;
-    HaeAboutData aboutData("en");
+    CdmAboutData aboutData("en");
 
     uint8_t appId[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
     status = aboutData.SetAppId(appId, 16);
@@ -412,7 +412,7 @@ TEST(HaeAboutDataTest, GetAboutData)
     status = aboutData.SetLocation("upstairs bedroom");
     EXPECT_EQ(ER_OK, status);
     DeviceTypeDescription description;
-    description.AddDeviceType(THERMOSTAT, "/Hae/Thermostat");
+    description.AddDeviceType(THERMOSTAT, "/Cdm/Thermostat");
     status = aboutData.SetDeviceTypeDescription(&description);
     EXPECT_EQ(ER_OK, status);
     EXPECT_TRUE(aboutData.IsValid());
@@ -447,27 +447,27 @@ TEST(HaeAboutDataTest, GetAboutData)
         EXPECT_EQ(appId[i], appIdOut[i]);
     }
 
-    aboutArg.GetElement("{sv}", HaeAboutData::COUNTRY_OF_PRODUCTION.c_str(), &args);
+    aboutArg.GetElement("{sv}", CdmAboutData::COUNTRY_OF_PRODUCTION.c_str(), &args);
     char* country;
     args->Get("s", &country);
     EXPECT_STREQ("Italy", country);
 
-    aboutArg.GetElement("{sv}", HaeAboutData::CORPORATE_BRAND.c_str(), &args);
+    aboutArg.GetElement("{sv}", CdmAboutData::CORPORATE_BRAND.c_str(), &args);
     char* company;
     args->Get("s", &company);
     EXPECT_STREQ("Company", company);
 
-    aboutArg.GetElement("{sv}", HaeAboutData::PRODUCT_BRAND.c_str(), &args);
+    aboutArg.GetElement("{sv}", CdmAboutData::PRODUCT_BRAND.c_str(), &args);
     char* brand;
     args->Get("s", &brand);
     EXPECT_STREQ("Product", brand);
 
-    aboutArg.GetElement("{sv}", HaeAboutData::LOCATION.c_str(), &args);
+    aboutArg.GetElement("{sv}", CdmAboutData::LOCATION.c_str(), &args);
     char* location;
     args->Get("s", &location);
     EXPECT_STREQ("upstairs bedroom", location);
 
-    aboutArg.GetElement("{sv}", HaeAboutData::DEVICE_TYPE_DESCRIPTION.c_str(), &args);
+    aboutArg.GetElement("{sv}", CdmAboutData::DEVICE_TYPE_DESCRIPTION.c_str(), &args);
 //    printf("********\n%s\n********\n", args->ToString().c_str());
 
     MsgArg* entries;
@@ -482,14 +482,14 @@ TEST(HaeAboutDataTest, GetAboutData)
     status = entries[0].Get("(uo)", &deviceType, &objectPath);
     EXPECT_EQ(ER_OK, status);
     EXPECT_EQ(THERMOSTAT, deviceType);
-    EXPECT_STREQ("/Hae/Thermostat", objectPath );
+    EXPECT_STREQ("/Cdm/Thermostat", objectPath );
 }
 
 
-TEST(HaeAboutDataTest, GetMsgArg_es_language)
+TEST(CdmAboutDataTest, GetMsgArg_es_language)
 {
     QStatus status = ER_FAIL;
-    HaeAboutData aboutData("en");
+    CdmAboutData aboutData("en");
 
     uint8_t appId[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
     status = aboutData.SetAppId(appId, 16);
@@ -509,7 +509,7 @@ TEST(HaeAboutDataTest, GetMsgArg_es_language)
     status = aboutData.SetLocation("upstairs bedroom");
     EXPECT_EQ(ER_OK, status);
     DeviceTypeDescription description;
-    description.AddDeviceType(THERMOSTAT, "/Hae/Thermostat");
+    description.AddDeviceType(THERMOSTAT, "/Cdm/Thermostat");
     status = aboutData.SetDeviceTypeDescription(&description);
     EXPECT_EQ(ER_OK, status);
     EXPECT_TRUE(aboutData.IsValid());
@@ -535,7 +535,7 @@ TEST(HaeAboutDataTest, GetMsgArg_es_language)
 
     MsgArg* args;
 
-    aboutArg.GetElement("{sv}", HaeAboutData::LOCATION.c_str(), &args);
+    aboutArg.GetElement("{sv}", CdmAboutData::LOCATION.c_str(), &args);
     char* location;
     args->Get("s", &location);
     EXPECT_STREQ("habitación del segundo piso", location);
@@ -543,10 +543,10 @@ TEST(HaeAboutDataTest, GetMsgArg_es_language)
 
 
 
-TEST(HaeAboutDataTest, GetAnnouncedAboutData)
+TEST(CdmAboutDataTest, GetAnnouncedAboutData)
 {
     QStatus status = ER_FAIL;
-    HaeAboutData aboutData("en");
+    CdmAboutData aboutData("en");
 
     uint8_t appId[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
     status = aboutData.SetAppId(appId, 16);
@@ -566,7 +566,7 @@ TEST(HaeAboutDataTest, GetAnnouncedAboutData)
     status = aboutData.SetLocation("upstairs bedroom");
     EXPECT_EQ(ER_OK, status);
     DeviceTypeDescription description;
-    description.AddDeviceType(THERMOSTAT, "/Hae/Thermostat");
+    description.AddDeviceType(THERMOSTAT, "/Cdm/Thermostat");
     status = aboutData.SetDeviceTypeDescription(&description);
     EXPECT_EQ(ER_OK, status);
     EXPECT_TRUE(aboutData.IsValid());
@@ -579,12 +579,12 @@ TEST(HaeAboutDataTest, GetAnnouncedAboutData)
 
 
 
-    announceArg.GetElement("{sv}", HaeAboutData::LOCATION.c_str(), &args);
+    announceArg.GetElement("{sv}", CdmAboutData::LOCATION.c_str(), &args);
     char* location;
     args->Get("s", &location);
     EXPECT_STREQ("upstairs bedroom", location);
 
-    announceArg.GetElement("{sv}", HaeAboutData::DEVICE_TYPE_DESCRIPTION.c_str(), &args);
+    announceArg.GetElement("{sv}", CdmAboutData::DEVICE_TYPE_DESCRIPTION.c_str(), &args);
 
     MsgArg* entries;
     size_t elemSize = 0;
@@ -597,23 +597,23 @@ TEST(HaeAboutDataTest, GetAnnouncedAboutData)
     status = entries[0].Get("(uo)", &deviceType, &objectPath);
     EXPECT_EQ(ER_OK, status);
     EXPECT_EQ(THERMOSTAT, deviceType);
-    EXPECT_STREQ("/Hae/Thermostat", objectPath );
+    EXPECT_STREQ("/Cdm/Thermostat", objectPath );
 }
 
 
-TEST(HaeAboutDataTest, InitUsingMsgArgBadSignature) {
+TEST(CdmAboutDataTest, InitUsingMsgArgBadSignature) {
     QStatus status = ER_FAIL;
-    HaeAboutData aboutData("en");
+    CdmAboutData aboutData("en");
     MsgArg notADictionary("s", "incorrect type.");
 
     status = aboutData.CreatefromMsgArg(notADictionary);
     EXPECT_EQ(ER_BUS_SIGNATURE_MISMATCH, status);
 }
 
-TEST(HaeAboutDataTest, InitUsingMsgArg)
+TEST(CdmAboutDataTest, InitUsingMsgArg)
 {
     QStatus status = ER_FAIL;
-    HaeAboutData aboutData("en");
+    CdmAboutData aboutData("en");
 
     uint8_t appId[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
     status = aboutData.SetAppId(appId, 16);
@@ -633,7 +633,7 @@ TEST(HaeAboutDataTest, InitUsingMsgArg)
     status = aboutData.SetLocation("upstairs bedroom");
     EXPECT_EQ(ER_OK, status);
     DeviceTypeDescription description;
-    description.AddDeviceType(THERMOSTAT, "/Hae/Thermostat");
+    description.AddDeviceType(THERMOSTAT, "/Cdm/Thermostat");
     status = aboutData.SetDeviceTypeDescription(&description);
     EXPECT_EQ(ER_OK, status);
     EXPECT_TRUE(aboutData.IsValid());
@@ -668,7 +668,7 @@ TEST(HaeAboutDataTest, InitUsingMsgArg)
     MsgArg aboutArg;
     aboutData.GetAboutData(&aboutArg);
 
-    HaeAboutData aboutDataInit("en");
+    CdmAboutData aboutDataInit("en");
     status = aboutDataInit.CreatefromMsgArg(aboutArg);
     EXPECT_EQ(ER_OK, status);
 
@@ -678,7 +678,7 @@ TEST(HaeAboutDataTest, InitUsingMsgArg)
 
     std::multimap<DeviceType, qcc::String>::const_iterator it = returnedDescription->GetDescriptions().begin();
     EXPECT_EQ(THERMOSTAT, it->first);
-    EXPECT_STREQ("/Hae/Thermostat", it->second.c_str() );
+    EXPECT_STREQ("/Cdm/Thermostat", it->second.c_str() );
 
     char* location;
     status = aboutData.GetLocation(&location);
@@ -690,9 +690,9 @@ TEST(HaeAboutDataTest, InitUsingMsgArg)
     EXPECT_STREQ("habitación del segundo piso", location);
 
 }
-    TEST(HaeAboutDataTest, CreateFromXml_fails_missingLocation) {
+    TEST(CdmAboutDataTest, CreateFromXml_fails_missingLocation) {
         QStatus status = ER_FAIL;
-        HaeAboutData aboutData;
+        CdmAboutData aboutData;
         qcc::String xml =
         "<AboutData>"
         "  <AppId>000102030405060708090A0B0C0D0E0C</AppId>"
@@ -715,7 +715,7 @@ TEST(HaeAboutDataTest, InitUsingMsgArg)
         "  <UserDefinedTag lang='es'>Sólo se puede aceptar cadenas distintas de cadenas nada debe hacerse utilizando el método AboutData Clase SetField</UserDefinedTag>"
 //        "  <Location>upstairs bedroom</Location>"
 //        "  <Location lang='es'>habitación del segundo piso</Location>"
-        "  <DeviceTypeDescription><TypeDescription><device_type>6</device_type><object_path>/Hae/Thermostat</object_path></TypeDescription></DeviceTypeDescription>"
+        "  <DeviceTypeDescription><TypeDescription><device_type>6</device_type><object_path>/Cdm/Thermostat</object_path></TypeDescription></DeviceTypeDescription>"
         "</AboutData>";
         status = aboutData.CreateFromXml(xml);
         EXPECT_EQ(ER_ABOUT_ABOUTDATA_MISSING_REQUIRED_FIELD, status);
@@ -723,9 +723,9 @@ TEST(HaeAboutDataTest, InitUsingMsgArg)
 
 
 
-TEST(HaeAboutDataTest, CreateFromXml_fails_missingDeviceTypeDescription) {
+TEST(CdmAboutDataTest, CreateFromXml_fails_missingDeviceTypeDescription) {
         QStatus status = ER_FAIL;
-        HaeAboutData aboutData;
+        CdmAboutData aboutData;
         qcc::String xml =
         "<AboutData>"
         "  <AppId>000102030405060708090A0B0C0D0E0C</AppId>"
@@ -748,15 +748,15 @@ TEST(HaeAboutDataTest, CreateFromXml_fails_missingDeviceTypeDescription) {
         "  <UserDefinedTag lang='es'>Sólo se puede aceptar cadenas distintas de cadenas nada debe hacerse utilizando el método AboutData Clase SetField</UserDefinedTag>"
         "  <Location>upstairs bedroom</Location>"
         "  <Location lang='es'>habitación del segundo piso</Location>"
-//        "  <DeviceTypeDescription><TypeDescription><device_type>6</device_type><object_path>/Hae/Thermostat</object_path></TypeDescription></DeviceTypeDescription>"
+//        "  <DeviceTypeDescription><TypeDescription><device_type>6</device_type><object_path>/Cdm/Thermostat</object_path></TypeDescription></DeviceTypeDescription>"
         "</AboutData>";
         status = aboutData.CreateFromXml(xml);
         EXPECT_EQ(ER_ABOUT_ABOUTDATA_MISSING_REQUIRED_FIELD, status);
 }
 
-TEST(HaeAboutDataTest, CreateFromXml_fails_missingDeviceTypeDescriptionStructureTag) {
+TEST(CdmAboutDataTest, CreateFromXml_fails_missingDeviceTypeDescriptionStructureTag) {
         QStatus status = ER_FAIL;
-        HaeAboutData aboutData;
+        CdmAboutData aboutData;
         qcc::String xml =
         "<AboutData>"
         "  <AppId>000102030405060708090A0B0C0D0E0C</AppId>"
@@ -779,15 +779,15 @@ TEST(HaeAboutDataTest, CreateFromXml_fails_missingDeviceTypeDescriptionStructure
         "  <UserDefinedTag lang='es'>Sólo se puede aceptar cadenas distintas de cadenas nada debe hacerse utilizando el método AboutData Clase SetField</UserDefinedTag>"
         "  <Location>upstairs bedroom</Location>"
         "  <Location lang='es'>habitación del segundo piso</Location>"
-        "  <DeviceTypeDescription><device_type>6</device_type><object_path>/Hae/Thermostat</object_path></DeviceTypeDescription>"
+        "  <DeviceTypeDescription><device_type>6</device_type><object_path>/Cdm/Thermostat</object_path></DeviceTypeDescription>"
         "</AboutData>";
         status = aboutData.CreateFromXml(xml);
         EXPECT_EQ(ER_ABOUT_ABOUTDATA_MISSING_REQUIRED_FIELD, status);
     }
 
-TEST(HaeAboutDataTest, CreateFromXml_fails_stringDeviceType) {
+TEST(CdmAboutDataTest, CreateFromXml_fails_stringDeviceType) {
         QStatus status = ER_FAIL;
-        HaeAboutData aboutData;
+        CdmAboutData aboutData;
         qcc::String xml =
         "<AboutData>"
         "  <AppId>000102030405060708090A0B0C0D0E0C</AppId>"
@@ -810,7 +810,7 @@ TEST(HaeAboutDataTest, CreateFromXml_fails_stringDeviceType) {
         "  <UserDefinedTag lang='es'>Sólo se puede aceptar cadenas distintas de cadenas nada debe hacerse utilizando el método AboutData Clase SetField</UserDefinedTag>"
         "  <Location>upstairs bedroom</Location>"
         "  <Location lang='es'>habitación del segundo piso</Location>"
-    "  <DeviceTypeDescription><TypeDescription><device_type>THERMOSTAT</device_type><object_path>/Hae/Thermostat</object_path></TypeDescription></DeviceTypeDescription>"
+    "  <DeviceTypeDescription><TypeDescription><device_type>THERMOSTAT</device_type><object_path>/Cdm/Thermostat</object_path></TypeDescription></DeviceTypeDescription>"
         "</AboutData>";
         status = aboutData.CreateFromXml(xml);
         EXPECT_EQ(ER_ABOUT_ABOUTDATA_MISSING_REQUIRED_FIELD, status);
@@ -818,9 +818,9 @@ TEST(HaeAboutDataTest, CreateFromXml_fails_stringDeviceType) {
 
 
 
-TEST(HaeAboutDataTest, CreateFromXml_from_qcc_string) {
+TEST(CdmAboutDataTest, CreateFromXml_from_qcc_string) {
     QStatus status = ER_FAIL;
-    HaeAboutData aboutData;
+    CdmAboutData aboutData;
     qcc::String xml =
         "<AboutData>"
         "  <AppId>000102030405060708090A0B0C0D0E0C</AppId>"
@@ -843,7 +843,7 @@ TEST(HaeAboutDataTest, CreateFromXml_from_qcc_string) {
         "  <UserDefinedTag lang='es'>Sólo se puede aceptar cadenas distintas de cadenas nada debe hacerse utilizando el método AboutData Clase SetField</UserDefinedTag>"
         "  <Location>upstairs bedroom</Location>"
         "  <Location lang='es'>habitación del segundo piso</Location>"
-        "  <DeviceTypeDescription><TypeDescription><device_type>6</device_type><object_path>/Hae/Thermostat</object_path></TypeDescription></DeviceTypeDescription>"
+        "  <DeviceTypeDescription><TypeDescription><device_type>6</device_type><object_path>/Cdm/Thermostat</object_path></TypeDescription></DeviceTypeDescription>"
         "</AboutData>";
     status = aboutData.CreateFromXml(xml);
     EXPECT_EQ(ER_OK, status);
@@ -869,17 +869,17 @@ TEST(HaeAboutDataTest, CreateFromXml_from_qcc_string) {
 
     std::multimap<DeviceType, qcc::String>::const_iterator it = returnedDescription->GetDescriptions().begin();
     EXPECT_EQ(THERMOSTAT, it->first);
-    EXPECT_STREQ("/Hae/Thermostat", it->second.c_str() );
+    EXPECT_STREQ("/Cdm/Thermostat", it->second.c_str() );
 }
 
 
 /*
- * This test is identical to HaeAboutDataTest.CreateFromXml_from_qcc_string except
+ * This test is identical to CdmAboutDataTest.CreateFromXml_from_qcc_string except
  * the xml string is passed in as a const char* not a qcc::String
  */
-TEST(HaeAboutDataTest, CreateFromXml_from_char_string) {
+TEST(CdmAboutDataTest, CreateFromXml_from_char_string) {
     QStatus status = ER_FAIL;
-    HaeAboutData aboutData;
+    CdmAboutData aboutData;
     const char* xml =
         "<AboutData>"
         "  <AppId>000102030405060708090A0B0C0D0E0C</AppId>"
@@ -902,7 +902,7 @@ TEST(HaeAboutDataTest, CreateFromXml_from_char_string) {
         "  <UserDefinedTag lang='es'>Sólo se puede aceptar cadenas distintas de cadenas nada debe hacerse utilizando el método AboutData Clase SetField</UserDefinedTag>"
         "  <Location>upstairs bedroom</Location>"
         "  <Location lang='es'>habitación del segundo piso</Location>"
-        "  <DeviceTypeDescription><TypeDescription><device_type>6</device_type><object_path>/Hae/Thermostat</object_path></TypeDescription></DeviceTypeDescription>"
+        "  <DeviceTypeDescription><TypeDescription><device_type>6</device_type><object_path>/Cdm/Thermostat</object_path></TypeDescription></DeviceTypeDescription>"
         "</AboutData>";
     status = aboutData.CreateFromXml(xml);
     EXPECT_EQ(ER_OK, status);
@@ -922,13 +922,13 @@ TEST(HaeAboutDataTest, CreateFromXml_from_char_string) {
 
     std::multimap<DeviceType, qcc::String>::const_iterator it = returnedDescription->GetDescriptions().begin();
     EXPECT_EQ(THERMOSTAT, it->first);
-    EXPECT_STREQ("/Hae/Thermostat", it->second.c_str() );
+    EXPECT_STREQ("/Cdm/Thermostat", it->second.c_str() );
 }
 
 
-TEST(HaeAboutDataTest, CreateFromXml_multiple_device_types) {
+TEST(CdmAboutDataTest, CreateFromXml_multiple_device_types) {
         QStatus status = ER_FAIL;
-        HaeAboutData aboutData;
+        CdmAboutData aboutData;
         qcc::String xml =
         "<AboutData>"
         "  <AppId>000102030405060708090A0B0C0D0E0C</AppId>"
@@ -951,7 +951,7 @@ TEST(HaeAboutDataTest, CreateFromXml_multiple_device_types) {
         "  <UserDefinedTag lang='es'>Sólo se puede aceptar cadenas distintas de cadenas nada debe hacerse utilizando el método AboutData Clase SetField</UserDefinedTag>"
         "  <Location>upstairs bedroom</Location>"
         "  <Location lang='es'>habitación del segundo piso</Location>"
-        "  <DeviceTypeDescription><TypeDescription><device_type>2</device_type><object_path>/Hae/Alpha</object_path></TypeDescription><TypeDescription><device_type>3</device_type><object_path>/Hae/Beta</object_path></TypeDescription><TypeDescription><device_type>4</device_type><object_path>/Hae/Gamma</object_path></TypeDescription></DeviceTypeDescription>"
+        "  <DeviceTypeDescription><TypeDescription><device_type>2</device_type><object_path>/Cdm/Alpha</object_path></TypeDescription><TypeDescription><device_type>3</device_type><object_path>/Cdm/Beta</object_path></TypeDescription><TypeDescription><device_type>4</device_type><object_path>/Cdm/Gamma</object_path></TypeDescription></DeviceTypeDescription>"
         "</AboutData>";
         status = aboutData.CreateFromXml(xml);
         EXPECT_EQ(ER_OK, status);
@@ -982,7 +982,7 @@ TEST(HaeAboutDataTest, CreateFromXml_multiple_device_types) {
         EXPECT_EQ(1, (int)returnedDescriptions.count(ICE_MAKER));
 
         std::multimap<DeviceType, qcc::String>::const_iterator it = returnedDescriptions.find(REFRIGERATOR);
-        EXPECT_STREQ("/Hae/Alpha", it->second.c_str() );
+        EXPECT_STREQ("/Cdm/Alpha", it->second.c_str() );
     }
 
 

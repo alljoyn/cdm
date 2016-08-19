@@ -14,26 +14,26 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#ifndef HAEINTERFACELISTENER_H_
-#define HAEINTERFACELISTENER_H_
+#ifndef CDMINTERFACELISTENER_H_
+#define CDMINTERFACELISTENER_H_
 
 
 namespace ajn {
 namespace services {
 
 /**
- * HaeInterfaceListener class
+ * CdmInterfaceListener class
  */
-class HaeInterfaceListener {
+class CdmInterfaceListener {
   public:
 
     /**
-     * Destructor of HaeInterfaceListener
+     * Destructor of CdmInterfaceListener
      */
-    virtual ~HaeInterfaceListener() {}
+    virtual ~CdmInterfaceListener() {}
 };
 
 } //namespace services
 } //namespace ajn
 
-#endif /* HAEINTERFACELISTENER_H_ */
+#endif /* CDMINTERFACELISTENER_H_ */

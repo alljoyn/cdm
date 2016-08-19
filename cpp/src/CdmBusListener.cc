@@ -15,35 +15,35 @@
  ******************************************************************************/
 
 #include <algorithm>
-#include <alljoyn/hae/LogModule.h>
+#include <alljoyn/cdm/LogModule.h>
 
-#include "HaeBusListener.h"
+#include "CdmBusListener.h"
 
 using namespace std;
 
 namespace ajn {
 namespace services {
 
-HaeBusListener::HaeBusListener(BusAttachment& bus) :
+CdmBusListener::CdmBusListener(BusAttachment& bus) :
     BusListener(), SessionPortListener(), SessionListener(), m_bus(bus), m_sessionPort(0)
 {
 }
 
-HaeBusListener::~HaeBusListener()
+CdmBusListener::~CdmBusListener()
 {
 }
 
-void HaeBusListener::SetSessionPort(ajn::SessionPort sessionPort)
+void CdmBusListener::SetSessionPort(ajn::SessionPort sessionPort)
 {
     m_sessionPort = sessionPort;
 }
 
-const SessionPort HaeBusListener::GetSessionPort() const
+const SessionPort CdmBusListener::GetSessionPort() const
 {
     return m_sessionPort;
 }
 
-bool HaeBusListener::AcceptSessionJoiner(ajn::SessionPort sessionPort, const char* joiner, const ajn::SessionOpts& opts)
+bool CdmBusListener::AcceptSessionJoiner(ajn::SessionPort sessionPort, const char* joiner, const ajn::SessionOpts& opts)
 {
     if (sessionPort != m_sessionPort) {
         return false;
@@ -53,7 +53,7 @@ bool HaeBusListener::AcceptSessionJoiner(ajn::SessionPort sessionPort, const cha
     return true;
 }
 
-void HaeBusListener::SessionJoined(SessionPort sessionPort, SessionId sessionId, const char* joiner)
+void CdmBusListener::SessionJoined(SessionPort sessionPort, SessionId sessionId, const char* joiner)
 {
     if (find(m_sessionIds.begin(), m_sessionIds.end(), sessionId) != m_sessionIds.end()) {
         return;
@@ -66,7 +66,7 @@ void HaeBusListener::SessionJoined(SessionPort sessionPort, SessionId sessionId,
     }
 }
 
-void HaeBusListener::SessionLost(SessionId sessionId, SessionLostReason reason)
+void CdmBusListener::SessionLost(SessionId sessionId, SessionLostReason reason)
 {
     vector<SessionId>::iterator it = find(m_sessionIds.begin(), m_sessionIds.end(), sessionId);
     if (it != m_sessionIds.end()) {
@@ -78,19 +78,19 @@ void HaeBusListener::SessionLost(SessionId sessionId, SessionLostReason reason)
     }
 }
 
-void HaeBusListener::BusStopping()
+void CdmBusListener::BusStopping()
 {
     // TBD
     QCC_LogError(ER_FAIL, ("TBD::%s", __func__));
 }
 
-void HaeBusListener::BusDisconnected()
+void CdmBusListener::BusDisconnected()
 {
     // TBD
     QCC_LogError(ER_FAIL, ("TBD::%s", __func__));
 }
 
-const vector<SessionId>& HaeBusListener::GetSessionIds() const
+const vector<SessionId>& CdmBusListener::GetSessionIds() const
 {
     return m_sessionIds;
 }

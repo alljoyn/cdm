@@ -16,9 +16,9 @@
 
 #include <qcc/Util.h>
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/HaeBusObject.h>
-#include <alljoyn/hae/interfaces/operation/AirRecirculationModeIntfControlleeListener.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/CdmBusObject.h>
+#include <alljoyn/cdm/interfaces/operation/AirRecirculationModeIntfControlleeListener.h>
 
 #include "AirRecirculationModeIntfControlleeImpl.h"
 
@@ -28,13 +28,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* AirRecirculationModeIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject)
+CdmInterface* AirRecirculationModeIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject)
 {
-    return new AirRecirculationModeIntfControlleeImpl(busAttachment, dynamic_cast<AirRecirculationModeIntfControlleeListener&>(listener), haeBusObject);
+    return new AirRecirculationModeIntfControlleeImpl(busAttachment, dynamic_cast<AirRecirculationModeIntfControlleeListener&>(listener), cdmBusObject);
 }
 
-AirRecirculationModeIntfControlleeImpl::AirRecirculationModeIntfControlleeImpl(BusAttachment& busAttachment, AirRecirculationModeIntfControlleeListener& listener, HaeBusObject& haeBusObject) :
-    InterfaceControllee(haeBusObject),
+AirRecirculationModeIntfControlleeImpl::AirRecirculationModeIntfControlleeImpl(BusAttachment& busAttachment, AirRecirculationModeIntfControlleeListener& listener, CdmBusObject& cdmBusObject) :
+    InterfaceControllee(cdmBusObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener)
 {
@@ -46,7 +46,7 @@ AirRecirculationModeIntfControlleeImpl::~AirRecirculationModeIntfControlleeImpl(
 
 QStatus AirRecirculationModeIntfControlleeImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
 
     return status;
 }

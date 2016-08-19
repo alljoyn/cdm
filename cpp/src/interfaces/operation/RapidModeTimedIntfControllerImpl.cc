@@ -16,9 +16,9 @@
 
 #include <qcc/Util.h>
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/HaeProxyBusObject.h>
-#include <alljoyn/hae/interfaces/operation/RapidModeTimedIntfControllerListener.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/CdmProxyBusObject.h>
+#include <alljoyn/cdm/interfaces/operation/RapidModeTimedIntfControllerListener.h>
 
 #include "RapidModeTimedIntfControllerImpl.h"
 
@@ -28,13 +28,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* RapidModeTimedIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, HaeProxyBusObject& haeProxyObject)
+CdmInterface* RapidModeTimedIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject)
 {
-    return new RapidModeTimedIntfControllerImpl(busAttachment, dynamic_cast<RapidModeTimedIntfControllerListener&>(listener), haeProxyObject);
+    return new RapidModeTimedIntfControllerImpl(busAttachment, dynamic_cast<RapidModeTimedIntfControllerListener&>(listener), cdmProxyObject);
 }
 
-RapidModeTimedIntfControllerImpl::RapidModeTimedIntfControllerImpl(BusAttachment& busAttachment, RapidModeTimedIntfControllerListener& listener, HaeProxyBusObject& haeProxyObject) :
-    InterfaceController(haeProxyObject),
+RapidModeTimedIntfControllerImpl::RapidModeTimedIntfControllerImpl(BusAttachment& busAttachment, RapidModeTimedIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject) :
+    InterfaceController(cdmProxyObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener)
 {
@@ -46,7 +46,7 @@ RapidModeTimedIntfControllerImpl::~RapidModeTimedIntfControllerImpl()
 
 QStatus RapidModeTimedIntfControllerImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
     if (ER_OK != status) {
         QCC_LogError(status, ("%s: Interface init failed.", __func__));
         return status;

@@ -20,17 +20,17 @@
 #include <alljoyn/Status.h>
 #include <alljoyn/BusAttachment.h>
 #include <alljoyn/AuthListener.h>
-#include <alljoyn/hae/HaeBusObject.h>
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/HaeAboutData.h>
-#include <alljoyn/hae/DeviceTypeDescription.h>
-#include <alljoyn/hae/interfaces/InterfaceControlleeListener.h>
+#include <alljoyn/cdm/CdmBusObject.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/CdmAboutData.h>
+#include <alljoyn/cdm/DeviceTypeDescription.h>
+#include <alljoyn/cdm/interfaces/InterfaceControlleeListener.h>
 
 #include "AutoLock.h"
-#include "HaeBusListener.h"
-#include "HaeConstants.h"
+#include "CdmBusListener.h"
+#include "CdmConstants.h"
 #include "InterfaceFactory.h"
-#include "HaeControlleeImpl.h"
+#include "CdmControlleeImpl.h"
 
 using namespace std;
 using namespace qcc;
@@ -38,13 +38,13 @@ using namespace qcc;
 namespace ajn {
 namespace services {
 
-HaeControlleeImpl::HaeControlleeImpl(BusAttachment& bus, HaeAboutData* aboutData) :
+CdmControlleeImpl::CdmControlleeImpl(BusAttachment& bus, CdmAboutData* aboutData) :
     m_bus(bus),
     m_aboutData(aboutData),
-    m_haeBusListener(new HaeBusListener(m_bus)),
+    m_cdmBusListener(new CdmBusListener(m_bus)),
     m_isStarted(false)
 {
-    m_haeBusListener->SetSessionPort(HAE_SERVICE_PORT);
+    m_cdmBusListener->SetSessionPort(CDM_SERVICE_PORT);
 
     m_security.m_authMechanisms = NULL;
     m_security.m_authListener = NULL;
@@ -57,31 +57,31 @@ HaeControlleeImpl::HaeControlleeImpl(BusAttachment& bus, HaeAboutData* aboutData
     }
 }
 
-HaeControlleeImpl::~HaeControlleeImpl()
+CdmControlleeImpl::~CdmControlleeImpl()
 {
-    map<String, HaeBusObject*>::const_iterator it;
-    for (it = m_haeBusObjectsMap.begin(); it != m_haeBusObjectsMap.end(); ++it) {
-        HaeBusObject* haeBusObject = it->second;
+    map<String, CdmBusObject*>::const_iterator it;
+    for (it = m_cdmBusObjectsMap.begin(); it != m_cdmBusObjectsMap.end(); ++it) {
+        CdmBusObject* cdmBusObject = it->second;
 
-        if (haeBusObject) {
-            delete haeBusObject;
-            haeBusObject = 0;
+        if (cdmBusObject) {
+            delete cdmBusObject;
+            cdmBusObject = 0;
         }
     }
 
-    if (m_haeBusListener) {
-        delete m_haeBusListener;
+    if (m_cdmBusListener) {
+        delete m_cdmBusListener;
     }
 }
 
-QStatus HaeControlleeImpl::EnablePeerSecurity(const char* authMechanisms,
+QStatus CdmControlleeImpl::EnablePeerSecurity(const char* authMechanisms,
                                           AuthListener* authListener,
                                           const char* keyStoreFileName,
                                           bool isKeyStoreShared)
 {
     AutoLock lock(m_lock);
     if (m_isStarted) {
-        QCC_DbgPrintf(("%s: HaeControllee is already started.", __func__));
+        QCC_DbgPrintf(("%s: CdmControllee is already started.", __func__));
         return ER_BUS_ALREADY_CONNECTED;
     }
 
@@ -100,13 +100,13 @@ QStatus HaeControlleeImpl::EnablePeerSecurity(const char* authMechanisms,
     return ER_OK;
 }
 
-QStatus HaeControlleeImpl::Start()
+QStatus CdmControlleeImpl::Start()
 {
     QStatus status = ER_OK;
 
     AutoLock lock(m_lock);
     if (m_isStarted) {
-        QCC_DbgPrintf(("%s: HaeControllee is already started.", __func__));
+        QCC_DbgPrintf(("%s: CdmControllee is already started.", __func__));
         return ER_OK;
     }
 
@@ -128,9 +128,9 @@ QStatus HaeControlleeImpl::Start()
         }
     }
 
-    status = RegisterBusListener(m_haeBusListener);
+    status = RegisterBusListener(m_cdmBusListener);
     if (status != ER_OK) {
-        QCC_LogError(status, ("%s: HaeBus listener registration is failed.", __func__));
+        QCC_LogError(status, ("%s: CdmBus listener registration is failed.", __func__));
         goto cleanup;
     }
 
@@ -145,26 +145,26 @@ QStatus HaeControlleeImpl::Start()
 
 cleanup:
     QStatus ret = ER_OK;
-    ret = UnregisterBusListener(m_haeBusListener);
+    ret = UnregisterBusListener(m_cdmBusListener);
     if (ret != ER_OK) {
-        QCC_LogError(ret, ("%s: HaeBus listener unregistration is failed.", __func__));
+        QCC_LogError(ret, ("%s: CdmBus listener unregistration is failed.", __func__));
     }
     return status;
 }
 
-QStatus HaeControlleeImpl::Stop()
+QStatus CdmControlleeImpl::Stop()
 {
     QStatus status = ER_OK;
     AutoLock lock(m_lock);
     if (!m_isStarted) {
-        QCC_DbgPrintf(("%s: HaeControllee is already stopped.", __func__));
+        QCC_DbgPrintf(("%s: CdmControllee is already stopped.", __func__));
         return ER_OK;
     }
 
     QStatus ret = ER_OK;
-    ret = UnregisterBusListener(m_haeBusListener);
+    ret = UnregisterBusListener(m_cdmBusListener);
     if (ret != ER_OK) {
-        QCC_LogError(ret, ("%s: HaeBus listener unregistration is failed.", __func__));
+        QCC_LogError(ret, ("%s: CdmBus listener unregistration is failed.", __func__));
     }
 
     m_isStarted = false;
@@ -172,15 +172,15 @@ QStatus HaeControlleeImpl::Stop()
     return status;
 }
 
-HaeInterface* HaeControlleeImpl::CreateInterface(const HaeInterfaceType type, const qcc::String& objectPath, InterfaceControlleeListener& listener)
+CdmInterface* CdmControlleeImpl::CreateInterface(const CdmInterfaceType type, const qcc::String& objectPath, InterfaceControlleeListener& listener)
 {
     QStatus status = ER_OK;
-    HaeInterface* interface = NULL;
+    CdmInterface* interface = NULL;
     {
         AutoLock lock(m_lock);
         if (m_isStarted) {
             status = ER_FAIL;
-            QCC_LogError(status, ("%s: HaeControllee is already started.", __func__));
+            QCC_LogError(status, ("%s: CdmControllee is already started.", __func__));
             return NULL;
         }
     }
@@ -195,36 +195,36 @@ HaeInterface* HaeControlleeImpl::CreateInterface(const HaeInterfaceType type, co
         return NULL;
     }
 
-    HaeBusObject* haeBusObject = NULL;
-    map<String, HaeBusObject*>::const_iterator it = m_haeBusObjectsMap.find(objectPath);
-    if (it != m_haeBusObjectsMap.end()) {
-        haeBusObject = it->second;
+    CdmBusObject* cdmBusObject = NULL;
+    map<String, CdmBusObject*>::const_iterator it = m_cdmBusObjectsMap.find(objectPath);
+    if (it != m_cdmBusObjectsMap.end()) {
+        cdmBusObject = it->second;
     } else {
-        haeBusObject = new HaeBusObject(m_bus, objectPath);
-        if (!haeBusObject) {
-            QCC_LogError(ER_OUT_OF_MEMORY, ("%s: could not create HaeBusObject class.", __func__));
+        cdmBusObject = new CdmBusObject(m_bus, objectPath);
+        if (!cdmBusObject) {
+            QCC_LogError(ER_OUT_OF_MEMORY, ("%s: could not create CdmBusObject class.", __func__));
             return NULL;
         }
-        m_haeBusObjectsMap[objectPath] = haeBusObject;
+        m_cdmBusObjectsMap[objectPath] = cdmBusObject;
     }
 
-    interface = haeBusObject->CreateInterface(type, listener);
+    interface = cdmBusObject->CreateInterface(type, listener);
     if (!interface) {
         QCC_LogError(ER_FAIL, ("%s: could not register bus object to bus attachment.", __func__));
-        delete haeBusObject;
+        delete cdmBusObject;
         return NULL;
     }
 
     return interface;
 }
 
-const HaeInterfaceType HaeControlleeImpl::RegisterVendorDefinedInterface(const qcc::String& interfaceName, CreateIntfControlleeFptr createIntfControllee)
+const CdmInterfaceType CdmControlleeImpl::RegisterVendorDefinedInterface(const qcc::String& interfaceName, CreateIntfControlleeFptr createIntfControllee)
 {
     InterfaceFactory* factory = InterfaceFactory::GetInstance();
-    HaeInterfaceType type = UNDEFINED_INTERFACE;
+    CdmInterfaceType type = UNDEFINED_INTERFACE;
     uint32_t vendorCnt = 0;
 
-    std::map<HaeInterfaceType, qcc::String>::iterator it;
+    std::map<CdmInterfaceType, qcc::String>::iterator it;
     for (it = InterfaceTypesMap.begin(); it != InterfaceTypesMap.end(); ++it) {
         type = it->first;
         if (type >= VENDOR_DEFINED_INTERFACE) {
@@ -244,7 +244,7 @@ const HaeInterfaceType HaeControlleeImpl::RegisterVendorDefinedInterface(const q
     }
 
     // Add new interface type
-    HaeInterfaceType newVendorType = VENDOR_DEFINED_INTERFACE + vendorCnt;
+    CdmInterfaceType newVendorType = VENDOR_DEFINED_INTERFACE + vendorCnt;
 
     InterfaceTypesMap[newVendorType] = interfaceName;
     factory->RegisterVendorDefinedIntfControllee(newVendorType, createIntfControllee);
@@ -252,7 +252,7 @@ const HaeInterfaceType HaeControlleeImpl::RegisterVendorDefinedInterface(const q
     return newVendorType;
 }
 
-QStatus HaeControlleeImpl::CheckAboutDeviceTypeValidation()
+QStatus CdmControlleeImpl::CheckAboutDeviceTypeValidation()
 {
     QStatus status;
     MsgArg* deviceTypeArg = NULL;
@@ -265,14 +265,14 @@ QStatus HaeControlleeImpl::CheckAboutDeviceTypeValidation()
         return ER_INVALID_DATA;
     }
 
-    status = m_aboutData->GetField(HaeAboutData::DEVICE_TYPE_DESCRIPTION.c_str(), deviceTypeArg);
+    status = m_aboutData->GetField(CdmAboutData::DEVICE_TYPE_DESCRIPTION.c_str(), deviceTypeArg);
     if (status != ER_OK) {
         return status;
     } else if (!deviceTypeArg) {
         return ER_FAIL;
     }
 
-    status = deviceTypeArg->Get(m_aboutData->GetFieldSignature(HaeAboutData::DEVICE_TYPE_DESCRIPTION.c_str()), &elemCount, &elemArg);
+    status = deviceTypeArg->Get(m_aboutData->GetFieldSignature(CdmAboutData::DEVICE_TYPE_DESCRIPTION.c_str()), &elemCount, &elemArg);
     if (status != ER_OK) {
         return status;
     }
@@ -287,21 +287,21 @@ QStatus HaeControlleeImpl::CheckAboutDeviceTypeValidation()
             return ER_FAIL;
         }
 
-        if (m_haeBusObjectsMap.find(objectPath) == m_haeBusObjectsMap.end()) {
+        if (m_cdmBusObjectsMap.find(objectPath) == m_cdmBusObjectsMap.end()) {
             return ER_FAIL;
         }
     }
     return status;
 }
 
-QStatus HaeControlleeImpl::RegisterBusObject()
+QStatus CdmControlleeImpl::RegisterBusObject()
 {
     QStatus status = ER_OK;
 
     /* Register bus objects */
-    for (map<String, HaeBusObject*>::const_iterator it = m_haeBusObjectsMap.begin(); it != m_haeBusObjectsMap.end(); ++it ) {
-        HaeBusObject* haeBusObject = it->second;
-        status = m_bus.RegisterBusObject(*haeBusObject, false);
+    for (map<String, CdmBusObject*>::const_iterator it = m_cdmBusObjectsMap.begin(); it != m_cdmBusObjectsMap.end(); ++it ) {
+        CdmBusObject* cdmBusObject = it->second;
+        status = m_bus.RegisterBusObject(*cdmBusObject, false);
         if (status != ER_OK) {
             QCC_LogError(status, ("%s: could not register bus object(%s) to bus attachment.", __func__, it->first.c_str()));
             return status;
@@ -311,13 +311,13 @@ QStatus HaeControlleeImpl::RegisterBusObject()
 }
 
 
-QStatus HaeControlleeImpl::RegisterBusListener(HaeBusListener* listener, TransportMask transportMask)
+QStatus CdmControlleeImpl::RegisterBusListener(CdmBusListener* listener, TransportMask transportMask)
 {
     QStatus status = ER_OK;
 
     if (!listener) {
         status = ER_FAIL;
-        QCC_LogError(status, ("%s: HaeBusListener is not allocated.", __func__));
+        QCC_LogError(status, ("%s: CdmBusListener is not allocated.", __func__));
         return status;
     }
 
@@ -330,13 +330,13 @@ QStatus HaeControlleeImpl::RegisterBusListener(HaeBusListener* listener, Transpo
     return status;
 }
 
-QStatus HaeControlleeImpl::UnregisterBusListener(HaeBusListener* listener)
+QStatus CdmControlleeImpl::UnregisterBusListener(CdmBusListener* listener)
 {
     QStatus status = ER_OK;
 
     if (!listener) {
         status = ER_FAIL;
-        QCC_LogError(status, ("%s: HaeBusListener is not allocated.", __func__));
+        QCC_LogError(status, ("%s: CdmBusListener is not allocated.", __func__));
         return status;
     }
 

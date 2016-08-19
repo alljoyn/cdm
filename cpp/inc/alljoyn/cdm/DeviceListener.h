@@ -20,7 +20,7 @@
 
 #include <map>
 #include <alljoyn/Session.h>
-#include <alljoyn/hae/DeviceInfo.h>
+#include <alljoyn/cdm/DeviceInfo.h>
 
 namespace ajn {
 namespace services {
@@ -28,7 +28,7 @@ namespace services {
 /**
  * Abstract base class implemented by User Application Developers. \n
  * The callbacks defined in this class allow the User Application
- * to be informed about some Hae Controller operations.
+ * to be informed about some Cdm Controller operations.
  */
 class DeviceListener {
   public:
@@ -41,10 +41,10 @@ class DeviceListener {
      * Added device in the network
      * @param[in] busname bus name
      * @param[in] port port
-     * @param[in] data HAE About data
+     * @param[in] data CDM About data
      * @param[in] description About object description
      */
-    virtual void OnDeviceAdded(const char* busname, SessionPort port, const HaeAboutData& data,
+    virtual void OnDeviceAdded(const char* busname, SessionPort port, const CdmAboutData& data,
                                const AboutObjectDescription& description) = 0;
 
     /**

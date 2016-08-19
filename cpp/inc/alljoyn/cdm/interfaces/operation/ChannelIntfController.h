@@ -19,7 +19,7 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/operation/ChannelInterface.h>
+#include <alljoyn/cdm/interfaces/operation/ChannelInterface.h>
 
 namespace ajn {
 namespace services {

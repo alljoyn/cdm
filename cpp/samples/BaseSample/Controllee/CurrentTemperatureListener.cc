@@ -56,13 +56,13 @@ CurrentTemperatureCommands::~CurrentTemperatureCommands()
 void CurrentTemperatureCommands::Init()
 {
     if (!m_intfControllee) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(CURRENT_TEMPERATURE_INTERFACE, m_objectPath, m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(CURRENT_TEMPERATURE_INTERFACE, m_objectPath, m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfControllee = static_cast<CurrentTemperatureIntfControllee*>(haeInterface);
+        m_intfControllee = static_cast<CurrentTemperatureIntfControllee*>(cdmInterface);
 
         RegisterCommand(&CurrentTemperatureCommands::OnCmdGetCurrentValue, "ctgcv", "get current value");
         RegisterCommand(&CurrentTemperatureCommands::OnCmdSetCurrentValue, "ctscv", "set current value (use 'ctscv <value>'");

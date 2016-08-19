@@ -4,7 +4,7 @@
 #include <qcc/String.h>
 #include <alljoyn/Init.h>
 #include <alljoyn/version.h>
-#include <alljoyn/hae/DeviceTypeDescription.h>
+#include <alljoyn/cdm/DeviceTypeDescription.h>
 
 #include "ControlleeSample.h"
 
@@ -20,17 +20,17 @@
 #include "TargetTemperatureListener.h"
 #include "WindDirectionListener.h"
 
-#include <alljoyn/hae/interfaces/operation/OnOffStatusIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/OnControlIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/OffControlIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/ResourceSavingIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/ClimateControlModeIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/FanSpeedLevelIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/CurrentPowerIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/EnergyUsageIntfControllee.h>
-#include <alljoyn/hae/interfaces/environment/CurrentTemperatureIntfControllee.h>
-#include <alljoyn/hae/interfaces/environment/TargetTemperatureIntfControllee.h>
-#include <alljoyn/hae/interfaces/environment/WindDirectionIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/OnOffStatusIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/OnControlIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/OffControlIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/ResourceSavingIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/ClimateControlModeIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/FanSpeedLevelIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/CurrentPowerIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/EnergyUsageIntfControllee.h>
+#include <alljoyn/cdm/interfaces/environment/CurrentTemperatureIntfControllee.h>
+#include <alljoyn/cdm/interfaces/environment/TargetTemperatureIntfControllee.h>
+#include <alljoyn/cdm/interfaces/environment/WindDirectionIntfControllee.h>
 
 using namespace std;
 using namespace qcc;
@@ -63,13 +63,13 @@ class ACControllee : public ControlleeSample
     WindDirectionIntfControllee* m_windDirectionIntfControllee;
 
   public:
-    ACControllee(BusAttachment* bus, HaeAboutData* aboutData);
+    ACControllee(BusAttachment* bus, CdmAboutData* aboutData);
     virtual ~ACControllee();
     void CreateInterfaces();
     void SetInitialProperty();
 };
 
-ACControllee::ACControllee(BusAttachment* bus, HaeAboutData* aboutData)
+ACControllee::ACControllee(BusAttachment* bus, CdmAboutData* aboutData)
   : ControlleeSample(bus, aboutData),
     m_onOffStatusListener(NULL), m_onControlListener(NULL), m_offControlListener(NULL), m_resourceSavingListener(NULL), m_climateControlModeListener(NULL), m_fanSpeedLevelListener(NULL), m_currentPowerListener(NULL), m_energyUsageListener(NULL), m_currentTemperatureListener(NULL), m_targetTemperatureListener(NULL), m_windDirectionListener(NULL),
     m_onOffStatusIntfControllee(NULL),  m_onControlIntfControllee(NULL), m_offControlIntfControllee(NULL), m_resourceSavingIntfControllee(NULL), m_climateControlModeIntfControllee(NULL),  m_fanSpeedLevelIntfControllee(NULL), m_currentPowerIntfControllee(NULL), m_energyUsageIntfControllee(NULL), m_currentTemperatureIntfControllee(NULL), m_targetTemperatureIntfControllee(NULL), m_windDirectionIntfControllee(NULL)
@@ -126,33 +126,33 @@ ACControllee::~ACControllee()
 
 void ACControllee::CreateInterfaces()
 {
-    HaeInterface* intf = NULL;
-    HaeControllee* haeControllee = GetControllee();
-    if (!haeControllee) {
+    CdmInterface* intf = NULL;
+    CdmControllee* cdmControllee = GetControllee();
+    if (!cdmControllee) {
         return;
     }
 
-    intf = haeControllee->CreateInterface(ON_OFF_STATUS_INTERFACE, "/Hae/AirConditioner", *m_onOffStatusListener);
+    intf = cdmControllee->CreateInterface(ON_OFF_STATUS_INTERFACE, "/Cdm/AirConditioner", *m_onOffStatusListener);
     m_onOffStatusIntfControllee = static_cast<OnOffStatusIntfControllee*>(intf);
-    intf = haeControllee->CreateInterface(ON_CONTROL_INTERFACE, "/Hae/AirConditioner", *m_onControlListener);
+    intf = cdmControllee->CreateInterface(ON_CONTROL_INTERFACE, "/Cdm/AirConditioner", *m_onControlListener);
     m_onControlIntfControllee = static_cast<OnControlIntfControllee*>(intf);
-    intf = haeControllee->CreateInterface(OFF_CONTROL_INTERFACE, "/Hae/AirConditioner", *m_offControlListener);
+    intf = cdmControllee->CreateInterface(OFF_CONTROL_INTERFACE, "/Cdm/AirConditioner", *m_offControlListener);
     m_offControlIntfControllee = static_cast<OffControlIntfControllee*>(intf);
-    intf = haeControllee->CreateInterface(RESOURCE_SAVING_INTERFACE, "/Hae/AirConditioner", *m_resourceSavingListener);
+    intf = cdmControllee->CreateInterface(RESOURCE_SAVING_INTERFACE, "/Cdm/AirConditioner", *m_resourceSavingListener);
     m_resourceSavingIntfControllee = static_cast<ResourceSavingIntfControllee*>(intf);
-    intf = haeControllee->CreateInterface(CLIMATE_CONTROL_MODE_INTERFACE, "/Hae/AirConditioner", *m_climateControlModeListener);
+    intf = cdmControllee->CreateInterface(CLIMATE_CONTROL_MODE_INTERFACE, "/Cdm/AirConditioner", *m_climateControlModeListener);
     m_climateControlModeIntfControllee = static_cast<ClimateControlModeIntfControllee*>(intf);
-    intf = haeControllee->CreateInterface(FAN_SPEED_LEVEL_INTERFACE, "/Hae/AirConditioner", *m_fanSpeedLevelListener);
+    intf = cdmControllee->CreateInterface(FAN_SPEED_LEVEL_INTERFACE, "/Cdm/AirConditioner", *m_fanSpeedLevelListener);
     m_fanSpeedLevelIntfControllee = static_cast<FanSpeedLevelIntfControllee*>(intf);
-    intf = haeControllee->CreateInterface(CURRENT_POWER_INTERFACE, "/Hae/AirConditioner", *m_currentPowerListener);
+    intf = cdmControllee->CreateInterface(CURRENT_POWER_INTERFACE, "/Cdm/AirConditioner", *m_currentPowerListener);
     m_currentPowerIntfControllee = static_cast<CurrentPowerIntfControllee*>(intf);
-    intf = haeControllee->CreateInterface(ENERGY_USAGE_INTERFACE, "/Hae/AirConditioner", *m_energyUsageListener);
+    intf = cdmControllee->CreateInterface(ENERGY_USAGE_INTERFACE, "/Cdm/AirConditioner", *m_energyUsageListener);
     m_energyUsageIntfControllee = static_cast<EnergyUsageIntfControllee*>(intf);
-    intf = haeControllee->CreateInterface(CURRENT_TEMPERATURE_INTERFACE, "/Hae/AirConditioner", *m_currentTemperatureListener);
+    intf = cdmControllee->CreateInterface(CURRENT_TEMPERATURE_INTERFACE, "/Cdm/AirConditioner", *m_currentTemperatureListener);
     m_currentTemperatureIntfControllee = static_cast<CurrentTemperatureIntfControllee*>(intf);
-    intf = haeControllee->CreateInterface(TARGET_TEMPERATURE_INTERFACE, "/Hae/AirConditioner", *m_targetTemperatureListener);
+    intf = cdmControllee->CreateInterface(TARGET_TEMPERATURE_INTERFACE, "/Cdm/AirConditioner", *m_targetTemperatureListener);
     m_targetTemperatureIntfControllee = static_cast<TargetTemperatureIntfControllee*>(intf);
-    intf = haeControllee->CreateInterface(WIND_DIRECTION_INTERFACE, "/Hae/AirConditioner", *m_windDirectionListener);
+    intf = cdmControllee->CreateInterface(WIND_DIRECTION_INTERFACE, "/Cdm/AirConditioner", *m_windDirectionListener);
     m_windDirectionIntfControllee = static_cast<WindDirectionIntfControllee*>(intf);
 }
 
@@ -240,7 +240,7 @@ void ACControllee::SetInitialProperty()
     }
 }
 
-QStatus FillAboutData(HaeAboutData* aboutData)
+QStatus FillAboutData(CdmAboutData* aboutData)
 {
     String const& defaultLanguage = "en";
     String device_id = "deviceID";
@@ -288,14 +288,14 @@ QStatus FillAboutData(HaeAboutData* aboutData)
     aboutData->SetManufacturer("Manufacturer", "en");
     aboutData->SetSupportUrl("http://www.alljoyn.org");
 
-    // HAE custom metadata fields
+    // CDM custom metadata fields
     aboutData->SetCountryOfProduction("USA", "en");
     aboutData->SetCorporateBrand("AirConditioner Brand", "en");
     aboutData->SetProductBrand("AirConditioner", "en");
     aboutData->SetLocation("Living Room", "en");
 
     DeviceTypeDescription description;
-    description.AddDeviceType(AIR_CONDITIONER, "/Hae/AirConditioner");
+    description.AddDeviceType(AIR_CONDITIONER, "/Cdm/AirConditioner");
     aboutData->SetDeviceTypeDescription(&description);
 
     if (!aboutData->IsValid()) {
@@ -321,7 +321,7 @@ int main()
 #endif
     printf("AllJoyn Library version: %s\n", ajn::GetVersion());
     printf("AllJoyn Library build info: %s\n", ajn::GetBuildInfo());
-    QCC_SetLogLevels("HAE_MODULE_LOG_NAME=15;");
+    QCC_SetLogLevels("CDM_MODULE_LOG_NAME=15;");
 
     BusAttachment* bus = new BusAttachment("TVControllee", true);
     if (!bus) {
@@ -329,7 +329,7 @@ int main()
         exit(1);
     }
 
-    HaeAboutData* aboutData = new HaeAboutData();
+    CdmAboutData* aboutData = new CdmAboutData();
     if (!aboutData) {
         printf("AboutData creation failed.\n");
         delete bus;

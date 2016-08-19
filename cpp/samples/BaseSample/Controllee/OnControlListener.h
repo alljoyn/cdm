@@ -18,8 +18,8 @@
 #define ONCONTROLLISTENER_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/OnControlIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/OnControlIntfControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/OnControlIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/OnControlIntfControlleeListener.h>
 
 using namespace ajn;
 using namespace services;

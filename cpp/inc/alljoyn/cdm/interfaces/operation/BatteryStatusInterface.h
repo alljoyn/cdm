@@ -19,7 +19,7 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/HaeInterface.h>
+#include <alljoyn/cdm/interfaces/CdmInterface.h>
 
 namespace ajn {
 namespace services {
@@ -27,7 +27,7 @@ namespace services {
 /**
  * BatteryStatus Interface class
  */
-class BatteryStatusInterface : public HaeInterface {
+class BatteryStatusInterface : public CdmInterface {
   public:
     /**
      * Constructor of BatteryStatus
@@ -43,7 +43,7 @@ class BatteryStatusInterface : public HaeInterface {
      * Get Interface Type
      * @return interface type
      */
-    const HaeInterfaceType GetInterfaceType() const { return BATTERY_STATUS_INTERFACE; }
+    const CdmInterfaceType GetInterfaceType() const { return BATTERY_STATUS_INTERFACE; }
 
     /**
      * Get Introspection Xml

@@ -21,7 +21,7 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/InterfaceControlleeListener.h>
+#include <alljoyn/cdm/interfaces/InterfaceControlleeListener.h>
 #include "ChannelInterface.h"
 
 namespace ajn {

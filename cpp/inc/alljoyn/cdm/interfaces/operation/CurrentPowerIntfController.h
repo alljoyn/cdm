@@ -19,7 +19,7 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/operation/CurrentPowerInterface.h>
+#include <alljoyn/cdm/interfaces/operation/CurrentPowerInterface.h>
 
 namespace ajn {
 namespace services {

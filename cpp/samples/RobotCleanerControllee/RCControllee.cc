@@ -4,7 +4,7 @@
 #include <qcc/String.h>
 #include <alljoyn/Init.h>
 #include <alljoyn/version.h>
-#include <alljoyn/hae/DeviceTypeDescription.h>
+#include <alljoyn/cdm/DeviceTypeDescription.h>
 
 #include "ControlleeSample.h"
 
@@ -14,11 +14,11 @@
 #include "RobotCleaningCyclePhaseListener.h"
 #include "CurrentPowerListener.h"
 
-#include <alljoyn/hae/interfaces/operation/OnOffStatusIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/BatteryStatusIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/RepeatModeIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/RobotCleaningCyclePhaseIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/CurrentPowerIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/OnOffStatusIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/BatteryStatusIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/RepeatModeIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/RobotCleaningCyclePhaseIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/CurrentPowerIntfControllee.h>
 
 using namespace std;
 using namespace qcc;
@@ -39,13 +39,13 @@ class RCControllee : public ControlleeSample
     CurrentPowerIntfControllee* m_currentPowerIntfControllee;
 
   public:
-    RCControllee(BusAttachment* bus, HaeAboutData* aboutData);
+    RCControllee(BusAttachment* bus, CdmAboutData* aboutData);
     virtual ~RCControllee();
     void CreateInterfaces();
     void SetInitialProperty();
 };
 
-RCControllee::RCControllee(BusAttachment* bus, HaeAboutData* aboutData)
+RCControllee::RCControllee(BusAttachment* bus, CdmAboutData* aboutData)
   : ControlleeSample(bus, aboutData),
     m_onOffStatusListener(NULL), m_batteryStatusListener(NULL), m_repeatModeListener(NULL), m_robotCleaningCyclePhaseListener(NULL), m_currentPowerListener(NULL),
     m_onOffStatusIntfControllee(NULL), m_batteryStatusIntfControllee(NULL), m_repeatModeIntfControllee(NULL),
@@ -79,21 +79,21 @@ RCControllee::~RCControllee()
 
 void RCControllee::CreateInterfaces()
 {
-    HaeInterface* intf = NULL;
-    HaeControllee* haeControllee = GetControllee();
-    if (!haeControllee) {
+    CdmInterface* intf = NULL;
+    CdmControllee* cdmControllee = GetControllee();
+    if (!cdmControllee) {
         return;
     }
 
-    intf = haeControllee->CreateInterface(ON_OFF_STATUS_INTERFACE, "/Hae/RobotCleaner", *m_onOffStatusListener);
+    intf = cdmControllee->CreateInterface(ON_OFF_STATUS_INTERFACE, "/Cdm/RobotCleaner", *m_onOffStatusListener);
     m_onOffStatusIntfControllee = static_cast<OnOffStatusIntfControllee*>(intf);
-    intf = haeControllee->CreateInterface(BATTERY_STATUS_INTERFACE, "/Hae/RobotCleaner", *m_batteryStatusListener);
+    intf = cdmControllee->CreateInterface(BATTERY_STATUS_INTERFACE, "/Cdm/RobotCleaner", *m_batteryStatusListener);
     m_batteryStatusIntfControllee = static_cast<BatteryStatusIntfControllee*>(intf);
-    intf = haeControllee->CreateInterface(REPEAT_MODE_INTERFACE, "/Hae/RobotCleaner", *m_repeatModeListener);
+    intf = cdmControllee->CreateInterface(REPEAT_MODE_INTERFACE, "/Cdm/RobotCleaner", *m_repeatModeListener);
     m_repeatModeIntfControllee = static_cast<RepeatModeIntfControllee*>(intf);
-    intf = haeControllee->CreateInterface(ROBOT_CLEANING_CYCLE_PHASE_INTERFACE, "/Hae/RobotCleaner", *m_robotCleaningCyclePhaseListener);
+    intf = cdmControllee->CreateInterface(ROBOT_CLEANING_CYCLE_PHASE_INTERFACE, "/Cdm/RobotCleaner", *m_robotCleaningCyclePhaseListener);
     m_robotCleaningCyclePhaseIntfControllee = static_cast<RobotCleaningCyclePhaseIntfControllee*>(intf);
-    intf = haeControllee->CreateInterface(CURRENT_POWER_INTERFACE, "/Hae/RobotCleaner", *m_currentPowerListener);
+    intf = cdmControllee->CreateInterface(CURRENT_POWER_INTERFACE, "/Cdm/RobotCleaner", *m_currentPowerListener);
     m_currentPowerIntfControllee = static_cast<CurrentPowerIntfControllee*>(intf);
 }
 
@@ -134,7 +134,7 @@ void RCControllee::SetInitialProperty()
     }
 }
 
-QStatus FillAboutData(HaeAboutData* aboutData)
+QStatus FillAboutData(CdmAboutData* aboutData)
 {
     String const& defaultLanguage = "en";
     String device_id = "deviceID";
@@ -182,14 +182,14 @@ QStatus FillAboutData(HaeAboutData* aboutData)
     aboutData->SetManufacturer("Manufacturer", "en");
     aboutData->SetSupportUrl("http://www.alljoyn.org");
 
-    // HAE custom metadata fields
+    // CDM custom metadata fields
     aboutData->SetCountryOfProduction("USA", "en");
     aboutData->SetCorporateBrand("RobotCleaner Brand", "en");
     aboutData->SetProductBrand("RobotCleaner", "en");
     aboutData->SetLocation("Living Room", "en");
 
     DeviceTypeDescription description;
-    description.AddDeviceType(ROBOT_CLEANER, "/Hae/RobotCleaner");
+    description.AddDeviceType(ROBOT_CLEANER, "/Cdm/RobotCleaner");
     aboutData->SetDeviceTypeDescription(&description);
 
     if (!aboutData->IsValid()) {
@@ -215,7 +215,7 @@ int main()
 #endif
     printf("AllJoyn Library version: %s\n", ajn::GetVersion());
     printf("AllJoyn Library build info: %s\n", ajn::GetBuildInfo());
-    QCC_SetLogLevels("HAE_MODULE_LOG_NAME=15;");
+    QCC_SetLogLevels("CDM_MODULE_LOG_NAME=15;");
 
     BusAttachment* bus = new BusAttachment("RCControllee", true);
     if (!bus) {
@@ -223,7 +223,7 @@ int main()
         exit(1);
     }
 
-    HaeAboutData* aboutData = new HaeAboutData();
+    CdmAboutData* aboutData = new CdmAboutData();
     if (!aboutData) {
         printf("AboutData creation failed.\n");
         delete bus;

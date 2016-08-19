@@ -51,13 +51,13 @@ RapidModeCommands::~RapidModeCommands()
 void RapidModeCommands::Init()
 {
     if (!m_intfControllee) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(RAPID_MODE_INTERFACE, m_objectPath, m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(RAPID_MODE_INTERFACE, m_objectPath, m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfControllee = static_cast<RapidModeIntfControllee*>(haeInterface);
+        m_intfControllee = static_cast<RapidModeIntfControllee*>(cdmInterface);
 
         RegisterCommand(&RapidModeCommands::OnCmdGetRapidMode, "grm", "get rapid mode");
         RegisterCommand(&RapidModeCommands::OnCmdSetRapidMode, "srm", "set rapid mode (use 'srm <0/1>'");

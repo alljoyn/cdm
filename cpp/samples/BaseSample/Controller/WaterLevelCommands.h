@@ -18,8 +18,8 @@
 #define WATERLEVELCOMMANDS_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/environment/WaterLevelIntfController.h>
-#include <alljoyn/hae/interfaces/environment/WaterLevelIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/environment/WaterLevelIntfController.h>
+#include <alljoyn/cdm/interfaces/environment/WaterLevelIntfControllerListener.h>
 
 class ControllerSample;
 

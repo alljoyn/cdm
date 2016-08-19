@@ -18,8 +18,8 @@
 #define AIRRECIRCULATIONMODELISTENER_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/AirRecirculationModeIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/AirRecirculationModeIntfControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/AirRecirculationModeIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/AirRecirculationModeIntfControlleeListener.h>
 
 using namespace ajn;
 using namespace services;

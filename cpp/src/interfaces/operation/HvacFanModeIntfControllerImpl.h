@@ -20,15 +20,15 @@
 #include <alljoyn/Status.h>
 #include <alljoyn/BusAttachment.h>
 #include <alljoyn/InterfaceDescription.h>
-#include <alljoyn/hae/interfaces/InterfaceController.h>
-#include <alljoyn/hae/interfaces/InterfaceControllerListener.h>
-#include <alljoyn/hae/interfaces/operation/HvacFanModeIntfController.h>
+#include <alljoyn/cdm/interfaces/InterfaceController.h>
+#include <alljoyn/cdm/interfaces/InterfaceControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/HvacFanModeIntfController.h>
 
 namespace ajn {
 namespace services {
 
 class HvacFanModeIntfControllerListener;
-class HaeProxyBusObject;
+class CdmProxyBusObject;
 
 /**
  * HvacFanMode interface controllee implementation class
@@ -39,12 +39,12 @@ class HvacFanModeIntfControllerImpl : public InterfaceController, public HvacFan
     /**
      * Create interface
      */
-    static HaeInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, HaeProxyBusObject& haeProxyBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Constructor of HvacFanModeIntfControllerImpl
      */
-    HvacFanModeIntfControllerImpl(BusAttachment& busAttachment, HvacFanModeIntfControllerListener& listener, HaeProxyBusObject& haeProxyBusObject);
+    HvacFanModeIntfControllerImpl(BusAttachment& busAttachment, HvacFanModeIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Destructor of HvacFanModeIntfControllerImpl

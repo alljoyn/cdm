@@ -23,7 +23,7 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/operation/ClimateControlModeInterface.h>
+#include <alljoyn/cdm/interfaces/operation/ClimateControlModeInterface.h>
 
 namespace ajn {
 namespace services {

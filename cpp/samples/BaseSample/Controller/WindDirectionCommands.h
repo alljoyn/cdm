@@ -18,8 +18,8 @@
 #define WINDDIRECTIONCOMMANDS_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/environment/WindDirectionIntfController.h>
-#include <alljoyn/hae/interfaces/environment/WindDirectionIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/environment/WindDirectionIntfController.h>
+#include <alljoyn/cdm/interfaces/environment/WindDirectionIntfControllerListener.h>
 
 class ControllerSample;
 

@@ -16,9 +16,9 @@
 
 #include <qcc/Util.h>
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/HaeBusObject.h>
-#include <alljoyn/hae/interfaces/operation/TimerIntfControlleeListener.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/CdmBusObject.h>
+#include <alljoyn/cdm/interfaces/operation/TimerIntfControlleeListener.h>
 
 #include "TimerIntfControlleeImpl.h"
 
@@ -28,13 +28,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* TimerIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject)
+CdmInterface* TimerIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject)
 {
-    return new TimerIntfControlleeImpl(busAttachment, dynamic_cast<TimerIntfControlleeListener&>(listener), haeBusObject);
+    return new TimerIntfControlleeImpl(busAttachment, dynamic_cast<TimerIntfControlleeListener&>(listener), cdmBusObject);
 }
 
-TimerIntfControlleeImpl::TimerIntfControlleeImpl(BusAttachment& busAttachment, TimerIntfControlleeListener& listener, HaeBusObject& haeBusObject) :
-    InterfaceControllee(haeBusObject),
+TimerIntfControlleeImpl::TimerIntfControlleeImpl(BusAttachment& busAttachment, TimerIntfControlleeListener& listener, CdmBusObject& cdmBusObject) :
+    InterfaceControllee(cdmBusObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener),
     m_referenceTimer(0),
@@ -52,7 +52,7 @@ TimerIntfControlleeImpl::~TimerIntfControlleeImpl()
 
 QStatus TimerIntfControlleeImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
 
     const InterfaceDescription::Member* memberStart = m_interfaceDescription->GetMember(s_method_SetTargetTimeToStart.c_str());
     MessageReceiver::MethodHandler methodHandlerStart = static_cast<MessageReceiver::MethodHandler>(&TimerIntfControlleeImpl::OnSetTargetTimeToStart);
@@ -363,8 +363,8 @@ void TimerIntfControlleeImpl::OnSetTargetTimeToStart(const InterfaceDescription:
                 QCC_LogError(status, ("%s: status is not ER_OK, but errorCode was not set.", __func__));
                 m_busObject.ReplyMethodCall(msg, status);
             } else {
-                    m_busObject.ReplyMethodCall(msg, HaeInterface::GetInterfaceErrorName(errorCode).c_str(),
-                            HaeInterface::GetInterfaceErrorMessage(errorCode).c_str());
+                    m_busObject.ReplyMethodCall(msg, CdmInterface::GetInterfaceErrorName(errorCode).c_str(),
+                            CdmInterface::GetInterfaceErrorMessage(errorCode).c_str());
             }
         }
     }
@@ -399,8 +399,8 @@ void TimerIntfControlleeImpl::OnSetTargetTimeToStop(const InterfaceDescription::
                 QCC_LogError(status, ("%s: status is not ER_OK, but errorCode was not set.", __func__));
                 m_busObject.ReplyMethodCall(msg, status);
             } else {
-                    m_busObject.ReplyMethodCall(msg, HaeInterface::GetInterfaceErrorName(errorCode).c_str(),
-                            HaeInterface::GetInterfaceErrorMessage(errorCode).c_str());
+                    m_busObject.ReplyMethodCall(msg, CdmInterface::GetInterfaceErrorName(errorCode).c_str(),
+                            CdmInterface::GetInterfaceErrorMessage(errorCode).c_str());
             }
         }
     }

@@ -18,8 +18,8 @@
 #define ENERGYUSAGELISTENER_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/EnergyUsageIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/EnergyUsageIntfControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/EnergyUsageIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/EnergyUsageIntfControlleeListener.h>
 
 using namespace ajn;
 using namespace services;

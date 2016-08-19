@@ -19,7 +19,7 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/HaeInterface.h>
+#include <alljoyn/cdm/interfaces/CdmInterface.h>
 
 namespace ajn {
 namespace services {
@@ -27,7 +27,7 @@ namespace services {
 /**
  * ClosedStatus Interface class
  */
-class ClosedStatusInterface : public HaeInterface {
+class ClosedStatusInterface : public CdmInterface {
   public:
     /**
      * Constructor of ClosedStatus
@@ -43,7 +43,7 @@ class ClosedStatusInterface : public HaeInterface {
      * Get Interface Type
      * @return interface type
      */
-    const HaeInterfaceType GetInterfaceType() const { return CLOSED_STATUS_INTERFACE; }
+    const CdmInterfaceType GetInterfaceType() const { return CLOSED_STATUS_INTERFACE; }
 
     /**
      * Get Introspection Xml

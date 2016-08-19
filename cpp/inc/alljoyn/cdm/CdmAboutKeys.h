@@ -13,23 +13,23 @@
  *    ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-#ifndef HAEABOUTKEYS_H_
-#define HAEABOUTKEYS_H_
+#ifndef CDMABOUTKEYS_H_
+#define CDMABOUTKEYS_H_
 
 #include <qcc/String.h>
 
 namespace ajn {
 namespace services {
     /**
-     * HaeAboutKeys
+     * CdmAboutKeys
      */
-    class HaeAboutKeys {
+    class CdmAboutKeys {
     public:
         /**
-         * @anchor HaeAboutFields
-         * @name Custome Hae AboutFields
+         * @anchor CdmAboutFields
+         * @name Custome Cdm AboutFields
          *
-         * The additional fields in the Hae About interface
+         * The additional fields in the Cdm About interface
          * TODO put in a table listing the properties for all of the about fields 
          *      when similar todo in <alljoyn/AboutKeys.h> is implemented
          */
@@ -45,4 +45,4 @@ static const qcc::String DEVICE_TYPE_DESCRIPTION;
 }
 }
 
-#endif //HAEABOUTKEYS_H_
+#endif //CDMABOUTKEYS_H_

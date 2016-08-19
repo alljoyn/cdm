@@ -18,8 +18,8 @@
 #define LANGUAGEDISPLAYLISTENER_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/userinterfacesettings/LanguageDisplayIntfControllee.h>
-#include <alljoyn/hae/interfaces/userinterfacesettings/LanguageDisplayIntfControlleeListener.h>
+#include <alljoyn/cdm/interfaces/userinterfacesettings/LanguageDisplayIntfControllee.h>
+#include <alljoyn/cdm/interfaces/userinterfacesettings/LanguageDisplayIntfControlleeListener.h>
 
 using namespace ajn;
 using namespace services;

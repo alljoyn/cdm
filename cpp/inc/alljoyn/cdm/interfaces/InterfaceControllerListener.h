@@ -18,7 +18,7 @@
 #define INTERFACECONTROLLERLISTENER_H_
 
 
-#include <alljoyn/hae/interfaces/HaeInterfaceListener.h>
+#include <alljoyn/cdm/interfaces/CdmInterfaceListener.h>
 #include <alljoyn/ProxyBusObject.h>
 
 namespace ajn {
@@ -27,7 +27,7 @@ namespace services {
 /**
  * InterfaceControllerListener class
  */
-class InterfaceControllerListener : public HaeInterfaceListener {
+class InterfaceControllerListener : public CdmInterfaceListener {
   public:
 
     /**

@@ -15,8 +15,8 @@
  ******************************************************************************/
 
 
-#ifndef HAECONFIG_H_
-#define HAECONFIG_H_
+#ifndef CDMCONFIG_H_
+#define CDMCONFIG_H_
 
 #include <vector>
 
@@ -60,4 +60,4 @@ typedef std::vector<DeviceType> InterestDeviceList;
 }  // services
 }  // ajn
 
-#endif //  HAECONFIG_H_
+#endif //  CDMCONFIG_H_

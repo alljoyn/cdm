@@ -14,35 +14,35 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#ifndef HAEPROXYBUSOBJECT_H_
-#define HAEPROXYBUSOBJECT_H_
+#ifndef CDMPROXYBUSOBJECT_H_
+#define CDMPROXYBUSOBJECT_H_
 
 #include <map>
 #include <qcc/String.h>
 #include <alljoyn/ProxyBusObject.h>
 #include <alljoyn/BusAttachment.h>
-#include <alljoyn/hae/interfaces/HaeInterfaceTypes.h>
+#include <alljoyn/cdm/interfaces/CdmInterfaceTypes.h>
 
 namespace ajn {
 namespace services {
 
-class HaeInterface;
+class CdmInterface;
 class InterfaceControllerListener;
 /**
- * Hae ProxyBusObject class.
+ * Cdm ProxyBusObject class.
  */
-class HaeProxyBusObject : public ProxyBusObject {
+class CdmProxyBusObject : public ProxyBusObject {
   public:
 
     /**
-     * Constructor of HaeProxyBusObject
+     * Constructor of CdmProxyBusObject
      */
-    HaeProxyBusObject(BusAttachment& busAttachment, std::string const& busName, qcc::String const& objectPath, SessionId sessionId);
+    CdmProxyBusObject(BusAttachment& busAttachment, std::string const& busName, qcc::String const& objectPath, SessionId sessionId);
 
     /**
-     * Destructor of HaeProxyBusObject
+     * Destructor of CdmProxyBusObject
      */
-    ~HaeProxyBusObject();
+    ~CdmProxyBusObject();
 
     /**
      * Create anb add interface to BusObject
@@ -50,16 +50,16 @@ class HaeProxyBusObject : public ProxyBusObject {
      * @param[in] listener  interface controller listener
      * @return interface
      */
-    HaeInterface* CreateInterface(const HaeInterfaceType type, InterfaceControllerListener& listener);
+    CdmInterface* CreateInterface(const CdmInterfaceType type, InterfaceControllerListener& listener);
 
 
   private:
 
     BusAttachment& m_busAttachment;
-    std::map<qcc::String, HaeInterface*> m_haeInterfacesMap;
+    std::map<qcc::String, CdmInterface*> m_cdmInterfacesMap;
 };
 
 }
 }
 
-#endif /* HAEPROXYBUSOBJECT_H_ */
+#endif /* CDMPROXYBUSOBJECT_H_ */

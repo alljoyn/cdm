@@ -20,7 +20,7 @@
 #include <vector>
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/HaeInterface.h>
+#include <alljoyn/cdm/interfaces/CdmInterface.h>
 
 namespace ajn {
 namespace services {
@@ -28,7 +28,7 @@ namespace services {
 /**
  * LaundryCyclePhase Interface class
  */
-class LaundryCyclePhaseInterface : public HaeInterface {
+class LaundryCyclePhaseInterface : public CdmInterface {
   public:
     typedef struct {
         uint8_t phase;
@@ -68,7 +68,7 @@ class LaundryCyclePhaseInterface : public HaeInterface {
      * Get Interface Type
      * @return interface type
      */
-    const HaeInterfaceType GetInterfaceType() const { return LAUNDRY_CYCLE_PHASE_INTERFACE; }
+    const CdmInterfaceType GetInterfaceType() const { return LAUNDRY_CYCLE_PHASE_INTERFACE; }
 
     /**
      * Get Introspection Xml

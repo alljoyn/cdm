@@ -57,13 +57,13 @@ LanguageDisplayCommands::~LanguageDisplayCommands()
 void LanguageDisplayCommands::Init()
 {
     if (!m_intfControllee) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(LANGUAGE_DISPLAY_INTERFACE, m_objectPath, m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(LANGUAGE_DISPLAY_INTERFACE, m_objectPath, m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfControllee = static_cast<LanguageDisplayIntfControllee*>(haeInterface);
+        m_intfControllee = static_cast<LanguageDisplayIntfControllee*>(cdmInterface);
 
         RegisterCommand(&LanguageDisplayCommands::OnCmdGetDisplayLanguage, "gdl", "get display language");
         RegisterCommand(&LanguageDisplayCommands::OnCmdSetDisplayLanguage, "sdl", "set display language(use 'sdl <lang>')");

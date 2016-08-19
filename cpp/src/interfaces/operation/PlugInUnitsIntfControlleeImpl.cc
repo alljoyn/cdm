@@ -17,9 +17,9 @@
 #include <algorithm>
 #include <qcc/Util.h>
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/HaeBusObject.h>
-#include <alljoyn/hae/interfaces/operation/PlugInUnitsIntfControlleeListener.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/CdmBusObject.h>
+#include <alljoyn/cdm/interfaces/operation/PlugInUnitsIntfControlleeListener.h>
 
 #include "PlugInUnitsIntfControlleeImpl.h"
 
@@ -29,13 +29,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* PlugInUnitsIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject)
+CdmInterface* PlugInUnitsIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject)
 {
-    return new PlugInUnitsIntfControlleeImpl(busAttachment, dynamic_cast<PlugInUnitsIntfControlleeListener&>(listener), haeBusObject);
+    return new PlugInUnitsIntfControlleeImpl(busAttachment, dynamic_cast<PlugInUnitsIntfControlleeListener&>(listener), cdmBusObject);
 }
 
-PlugInUnitsIntfControlleeImpl::PlugInUnitsIntfControlleeImpl(BusAttachment& busAttachment, PlugInUnitsIntfControlleeListener& listener, HaeBusObject& haeBusObject) :
-    InterfaceControllee(haeBusObject),
+PlugInUnitsIntfControlleeImpl::PlugInUnitsIntfControlleeImpl(BusAttachment& busAttachment, PlugInUnitsIntfControlleeListener& listener, CdmBusObject& cdmBusObject) :
+    InterfaceControllee(cdmBusObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener)
 {
@@ -47,7 +47,7 @@ PlugInUnitsIntfControlleeImpl::~PlugInUnitsIntfControlleeImpl()
 
 QStatus PlugInUnitsIntfControlleeImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
     return status;
 }
 

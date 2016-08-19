@@ -19,7 +19,7 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/HaeInterface.h>
+#include <alljoyn/cdm/interfaces/CdmInterface.h>
 
 namespace ajn {
 namespace services {
@@ -27,7 +27,7 @@ namespace services {
 /**
  * CurrentPower Interface class
  */
-class CurrentPowerInterface : public HaeInterface {
+class CurrentPowerInterface : public CdmInterface {
   public:
     /**
      * Constructor of CurrentPower
@@ -43,7 +43,7 @@ class CurrentPowerInterface : public HaeInterface {
      * Get Interface Type
      * @return interface type
      */
-    const HaeInterfaceType GetInterfaceType() const { return CURRENT_POWER_INTERFACE; }
+    const CdmInterfaceType GetInterfaceType() const { return CURRENT_POWER_INTERFACE; }
 
     /**
      * Get Introspection Xml

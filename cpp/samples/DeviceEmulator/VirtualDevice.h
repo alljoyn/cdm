@@ -31,7 +31,7 @@ private:
     InterfaceList* m_interfaceList;
 
 public:
-    VirtualDevice(BusAttachment* bus, HaeAboutData* aboutData, InterfaceList* list);
+    VirtualDevice(BusAttachment* bus, CdmAboutData* aboutData, InterfaceList* list);
     virtual ~VirtualDevice();
 
     void InitSample();

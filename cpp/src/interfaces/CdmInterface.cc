@@ -14,13 +14,13 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/interfaces/HaeInterface.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/interfaces/CdmInterface.h>
 
 namespace ajn {
 namespace services {
 
-std::map<HaeInterfaceType, qcc::String> InterfaceTypesMap = {
+std::map<CdmInterfaceType, qcc::String> InterfaceTypesMap = {
     {HID_INTERFACE, "org.alljoyn.Input.Hid"},
     {CURRENT_AIR_QUALITY_INTERFACE, "org.alljoyn.SmartSpaces.Environment.CurrentAirQuality"},
     {CURRENT_AIR_QUALITY_LEVEL_INTERFACE, "org.alljoyn.SmartSpaces.Environment.CurrentAirQualityLevel"},
@@ -68,7 +68,7 @@ std::map<HaeInterfaceType, qcc::String> InterfaceTypesMap = {
     {TIME_DISPLAY_INTERFACE, "org.alljoyn.SmartSpaces.UserInterfaceSettings.TimeDisplay"},
 };
 
-std::map<ErrorCode, qcc::String> HaeInterface::InterfaceErrorNameMap = {
+std::map<ErrorCode, qcc::String> CdmInterface::InterfaceErrorNameMap = {
     {INVALID_VALUE, "org.alljoyn.Error.InvalidValue"},
     {FEATURE_NOT_AVAILABLE, "org.alljoyn.Error.FeatureNotAvailable"},
     {LANGUAGE_NOT_SUPPORTED, "org.alljoyn.Error.LanguageNotSupported"},
@@ -76,7 +76,7 @@ std::map<ErrorCode, qcc::String> HaeInterface::InterfaceErrorNameMap = {
     {REMOTE_CONTROL_DISABLED, "org.alljoyn.SmartSpaces.Error.RemoteControlDisabled"},
 };
 
-std::map<ErrorCode, qcc::String> HaeInterface::InterfaceErrorMessageMap = {
+std::map<ErrorCode, qcc::String> CdmInterface::InterfaceErrorMessageMap = {
     {INVALID_VALUE, "Invalid value"},
     {FEATURE_NOT_AVAILABLE, "Feature not available"},
     {LANGUAGE_NOT_SUPPORTED, "The language specified is not supported."},
@@ -84,7 +84,7 @@ std::map<ErrorCode, qcc::String> HaeInterface::InterfaceErrorMessageMap = {
     {REMOTE_CONTROL_DISABLED, "Remote control disabled"},
 };
 
-QStatus HaeInterface::Init()
+QStatus CdmInterface::Init()
 {
     QStatus status = ER_OK;
 

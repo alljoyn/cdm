@@ -18,7 +18,7 @@
 
 #include <alljoyn/Status.h>
 #include <alljoyn/BusAttachment.h>
-#include <alljoyn/hae/LogModule.h>
+#include <alljoyn/cdm/LogModule.h>
 #include "CommandsFactory.h"
 
 using namespace std;
@@ -50,7 +50,7 @@ CommandsFactory& CommandsFactory::operator=(const CommandsFactory& src)
     return *this;
 }
 
-ControlleeCommands* CommandsFactory::CreateCommands(const HaeInterfaceType type, ControlleeSample* sample, const char* objectPath)
+ControlleeCommands* CommandsFactory::CreateCommands(const CdmInterfaceType type, ControlleeSample* sample, const char* objectPath)
 {
     ControlleeCommands* commands = NULL;
     if (m_creators.find(type) != m_creators.end()) {
@@ -63,7 +63,7 @@ ControlleeCommands* CommandsFactory::CreateCommands(const HaeInterfaceType type,
     return  commands;
 }
 
-void CommandsFactory::RegisterCreator(const HaeInterfaceType type, CreateCommandsFptr fptr)
+void CommandsFactory::RegisterCreator(const CdmInterfaceType type, CreateCommandsFptr fptr)
 {
     m_creators[type] = fptr;
 }

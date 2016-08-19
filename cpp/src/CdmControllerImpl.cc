@@ -18,27 +18,27 @@
 #include <alljoyn/BusAttachment.h>
 #include <alljoyn/AuthListener.h>
 #include <alljoyn/AboutProxy.h>
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/interfaces/InterfaceControllerListener.h>
-#include <alljoyn/hae/DeviceListener.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/interfaces/InterfaceControllerListener.h>
+#include <alljoyn/cdm/DeviceListener.h>
 #include "AutoLock.h"
-#include "HaeConstants.h"
-#include "HaeControllerImpl.h"
-#include "HaeBusListener.h"
+#include "CdmConstants.h"
+#include "CdmControllerImpl.h"
+#include "CdmBusListener.h"
 #include "InterfaceFactory.h"
-#include <alljoyn/hae/HaeProxyBusObject.h>
+#include <alljoyn/cdm/CdmProxyBusObject.h>
 
 using namespace ajn;
 using namespace services;
 using namespace qcc;
 
-HaeControllerImpl::HaeControllerImpl(BusAttachment& bus, DeviceListener* listener)
+CdmControllerImpl::CdmControllerImpl(BusAttachment& bus, DeviceListener* listener)
 : m_isStarted(false)
 , m_bus(bus)
-, m_haeBusListener(m_bus)
+, m_cdmBusListener(m_bus)
 , m_deviceListener(listener)
 {
-    m_haeBusListener.SetSessionPort(HAE_SERVICE_PORT);
+    m_cdmBusListener.SetSessionPort(CDM_SERVICE_PORT);
 
     QStatus status = InterfaceFactory::GetInstance()->InitInterfaceFactory(&m_bus);
     if (status != ER_OK) {
@@ -52,11 +52,11 @@ HaeControllerImpl::HaeControllerImpl(BusAttachment& bus, DeviceListener* listene
 
 }
 
-HaeControllerImpl::~HaeControllerImpl()
+CdmControllerImpl::~CdmControllerImpl()
 {
 }
 
-QStatus HaeControllerImpl::EnablePeerSecurity(const char* authMechanisms,
+QStatus CdmControllerImpl::EnablePeerSecurity(const char* authMechanisms,
                                           AuthListener* authListener,
                                           const char* keyStoreFileName,
                                           bool isKeyStoreShared)
@@ -82,18 +82,18 @@ QStatus HaeControllerImpl::EnablePeerSecurity(const char* authMechanisms,
     return ER_OK;
 }
 
-QStatus HaeControllerImpl::Init(const InterestDeviceList& list)
+QStatus CdmControllerImpl::Init(const InterestDeviceList& list)
 {
     return ER_OK;
 }
 
-QStatus HaeControllerImpl::Start()
+QStatus CdmControllerImpl::Start()
 {
     QStatus status = ER_OK;
 
     AutoLock lock(m_lock);
     if (m_isStarted) {
-        QCC_DbgPrintf(("%s: HaeController is already started.", __func__));
+        QCC_DbgPrintf(("%s: CdmController is already started.", __func__));
         return ER_OK;
     }
 
@@ -104,7 +104,7 @@ QStatus HaeControllerImpl::Start()
         }
     }
 
-    m_bus.RegisterBusListener(m_haeBusListener);
+    m_bus.RegisterBusListener(m_cdmBusListener);
     m_bus.RegisterAboutListener(*this);
 
     const char* interfaces[] = { "*" };
@@ -115,29 +115,29 @@ QStatus HaeControllerImpl::Start()
 
     m_isStarted = true;
 
-    QCC_DbgPrintf(("%s: HaeController started.", __func__));
+    QCC_DbgPrintf(("%s: CdmController started.", __func__));
 
     return status;
 }
 
-QStatus HaeControllerImpl::Stop()
+QStatus CdmControllerImpl::Stop()
 {
     QStatus status = ER_OK;
     AutoLock lock(m_lock);
     if (!m_isStarted) {
-        QCC_DbgPrintf(("%s: HaeController is already stopped.", __func__));
+        QCC_DbgPrintf(("%s: CdmController is already stopped.", __func__));
         return ER_OK;
     }
 
     m_bus.UnregisterAboutListener(*this);
-    m_bus.UnregisterBusListener(m_haeBusListener);
+    m_bus.UnregisterBusListener(m_cdmBusListener);
 
     m_isStarted = false;
 
     return status;
 }
 
-QStatus HaeControllerImpl::JoinDevice(const std::string& busName, SessionPort port, const HaeAboutData& data,
+QStatus CdmControllerImpl::JoinDevice(const std::string& busName, SessionPort port, const CdmAboutData& data,
                                       AboutObjectDescription& description)
 {
     SessionId sessionId;
@@ -166,15 +166,15 @@ QStatus HaeControllerImpl::JoinDevice(const std::string& busName, SessionPort po
     return status;
 }
 
-HaeInterface* HaeControllerImpl::CreateInterface(const HaeInterfaceType type, const std::string& busName, const qcc::String& objectPath, const SessionId& sessionId, InterfaceControllerListener& listener)
+CdmInterface* CdmControllerImpl::CreateInterface(const CdmInterfaceType type, const std::string& busName, const qcc::String& objectPath, const SessionId& sessionId, InterfaceControllerListener& listener)
 {
     QStatus status = ER_OK;
-    HaeInterface* interface = NULL;
+    CdmInterface* interface = NULL;
     {
         AutoLock lock(m_lock);
         if (!m_isStarted) {
             status = ER_FAIL;
-            QCC_LogError(status, ("%s: HaeControllee is currently stopped.", __func__));
+            QCC_LogError(status, ("%s: CdmControllee is currently stopped.", __func__));
             return NULL;
         }
     }
@@ -189,38 +189,38 @@ HaeInterface* HaeControllerImpl::CreateInterface(const HaeInterfaceType type, co
         return NULL;
     }
 
-    HaeProxyBusObject* haeProxyObject = NULL;
+    CdmProxyBusObject* cdmProxyObject = NULL;
     DeviceInfoPtr info(new DeviceInfo());
     status = m_deviceManager.FindDeviceInfoByBusName(busName, info);
     if (ER_OK != status) {
         QCC_LogError(status, ("Device is not exist.", __func__));
         return NULL;
     } else {
-        haeProxyObject = info->GetHaeProxyBusObject(m_bus, objectPath);
-        if(!haeProxyObject) {
+        cdmProxyObject = info->GetCdmProxyBusObject(m_bus, objectPath);
+        if(!cdmProxyObject) {
             status = ER_FAIL;
             QCC_LogError(status, ("Failed to get proxy bus object.", __func__));
             return NULL;
         }
     }
 
-    interface = haeProxyObject->CreateInterface(type, listener);
+    interface = cdmProxyObject->CreateInterface(type, listener);
     if (!interface) {
         QCC_LogError(ER_FAIL, ("%s: could not create interface.", __func__));
-        delete haeProxyObject;
+        delete cdmProxyObject;
         return NULL;
     }
 
     return interface;
 }
 
-const HaeInterfaceType HaeControllerImpl::RegisterVendorDefinedInterface(const qcc::String& interfaceName, CreateIntfControllerFptr createIntfController)
+const CdmInterfaceType CdmControllerImpl::RegisterVendorDefinedInterface(const qcc::String& interfaceName, CreateIntfControllerFptr createIntfController)
 {
     InterfaceFactory* factory = InterfaceFactory::GetInstance();
-    HaeInterfaceType type = UNDEFINED_INTERFACE;
+    CdmInterfaceType type = UNDEFINED_INTERFACE;
     uint32_t vendorCnt = 0;
 
-    std::map<HaeInterfaceType, qcc::String>::iterator it;
+    std::map<CdmInterfaceType, qcc::String>::iterator it;
     for (it = InterfaceTypesMap.begin(); it != InterfaceTypesMap.end(); ++it) {
         type = it->first;
         if (type >= VENDOR_DEFINED_INTERFACE) {
@@ -240,7 +240,7 @@ const HaeInterfaceType HaeControllerImpl::RegisterVendorDefinedInterface(const q
     }
 
     // Add new interface type
-    HaeInterfaceType newVendorType = VENDOR_DEFINED_INTERFACE + vendorCnt;
+    CdmInterfaceType newVendorType = VENDOR_DEFINED_INTERFACE + vendorCnt;
 
     InterfaceTypesMap[newVendorType] = interfaceName;
     factory->RegisterVendorDefinedIntfController(newVendorType, createIntfController);
@@ -248,7 +248,7 @@ const HaeInterfaceType HaeControllerImpl::RegisterVendorDefinedInterface(const q
     return newVendorType;
 }
 
-void HaeControllerImpl::Announced(const char* busName, uint16_t version, SessionPort port, const MsgArg& objectDescriptionArg, const MsgArg& aboutDataArg)
+void CdmControllerImpl::Announced(const char* busName, uint16_t version, SessionPort port, const MsgArg& objectDescriptionArg, const MsgArg& aboutDataArg)
 {
     QCC_DbgPrintf(("%s", __func__));
 
@@ -268,14 +268,14 @@ void HaeControllerImpl::Announced(const char* busName, uint16_t version, Session
 
     m_bus.EnableConcurrentCallbacks();
 
-    HaeAboutData aboutData(aboutDataArg);
+    CdmAboutData aboutData(aboutDataArg);
 
     aboutData.GetDeviceId(&deviceID);
     aboutData.GetDeviceName(&deviceName);
 
     QCC_DbgPrintf(("%s: Received Announce: busName=%s port=%u deviceID=%s deviceName=%s rank=%s isLeader=%d", __func__, busName, port, deviceID, deviceName));
 
-    status = aboutData.GetField(HaeAboutData::DEVICE_TYPE_DESCRIPTION.c_str(), deviceTypeArg);
+    status = aboutData.GetField(CdmAboutData::DEVICE_TYPE_DESCRIPTION.c_str(), deviceTypeArg);
     if (status != ER_OK) {
         QCC_DbgPrintf(("Error (%d)", status));
         return;
@@ -284,7 +284,7 @@ void HaeControllerImpl::Announced(const char* busName, uint16_t version, Session
         return;
     }
 
-    status = deviceTypeArg->Get(aboutData.GetFieldSignature(HaeAboutData::DEVICE_TYPE_DESCRIPTION.c_str()), &elemCount, &elemArg);
+    status = deviceTypeArg->Get(aboutData.GetFieldSignature(CdmAboutData::DEVICE_TYPE_DESCRIPTION.c_str()), &elemCount, &elemArg);
     if (status != ER_OK) {
         QCC_DbgPrintf(("Error (%d)", status));
         return;
@@ -295,7 +295,7 @@ void HaeControllerImpl::Announced(const char* busName, uint16_t version, Session
     }
 }
 
-void HaeControllerImpl::SessionLost(ajn::SessionId sessionId, ajn::SessionListener::SessionLostReason reason)
+void CdmControllerImpl::SessionLost(ajn::SessionId sessionId, ajn::SessionListener::SessionLostReason reason)
 {
     QCC_UNUSED(sessionId);
     QCC_UNUSED(reason);

@@ -139,7 +139,7 @@ class ECDHEKeyXListener : public AuthListener {
 static ECDHEKeyXListener s_authListener;
 
 /////////////////////////////////////////////////////////////////////////////////////////
-ControlleeSample::ControlleeSample(BusAttachment* bus, HaeAboutData* aboutData)
+ControlleeSample::ControlleeSample(BusAttachment* bus, CdmAboutData* aboutData)
   : m_bus(bus), m_aboutData(aboutData), m_aboutObj(NULL), m_aboutSessionListener(NULL),
     m_controllee(NULL), m_rootCommands(NULL)
 {
@@ -160,7 +160,7 @@ void ControlleeSample::InitSample()
     PushCommands(m_rootCommands);
 }
 
-HaeInterface* ControlleeSample::CreateInterface(const HaeInterfaceType type, const qcc::String& objectPath, InterfaceControlleeListener& listener)
+CdmInterface* ControlleeSample::CreateInterface(const CdmInterfaceType type, const qcc::String& objectPath, InterfaceControlleeListener& listener)
 {
     return m_controllee->CreateInterface(type, objectPath, listener);
 }
@@ -181,10 +181,10 @@ QStatus ControlleeSample::Init()
         return status;
     }
 
-    m_controllee = new HaeControllee(*m_bus, m_aboutData);
+    m_controllee = new CdmControllee(*m_bus, m_aboutData);
     if (!m_controllee) {
         status = ER_OUT_OF_MEMORY;
-        printf("HaeControllee creation failed. (%s)\n", QCC_StatusText(status));
+        printf("CdmControllee creation failed. (%s)\n", QCC_StatusText(status));
         return status;
     }
     InitSample();

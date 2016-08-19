@@ -18,8 +18,8 @@
 #define ONOFFSTATUSLISTENER_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/OnOffStatusIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/OnOffStatusIntfControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/OnOffStatusIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/OnOffStatusIntfControlleeListener.h>
 
 using namespace ajn;
 using namespace services;

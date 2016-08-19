@@ -19,7 +19,7 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/operation/RapidModeInterface.h>
+#include <alljoyn/cdm/interfaces/operation/RapidModeInterface.h>
 
 namespace ajn {
 namespace services {

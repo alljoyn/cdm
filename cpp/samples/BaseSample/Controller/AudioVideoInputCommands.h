@@ -18,8 +18,8 @@
 #define AUDIOVIDEOINPUTCOMMANDS_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/AudioVideoInputIntfController.h>
-#include <alljoyn/hae/interfaces/operation/AudioVideoInputIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/AudioVideoInputIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/AudioVideoInputIntfControllerListener.h>
 
 class ControllerSample;
 

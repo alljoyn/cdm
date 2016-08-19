@@ -20,7 +20,7 @@
 #include <vector>
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/HaeInterface.h>
+#include <alljoyn/cdm/interfaces/CdmInterface.h>
 
 namespace ajn {
 namespace services {
@@ -28,7 +28,7 @@ namespace services {
 /**
  * Alerts Interface class
  */
-class AlertsInterface : public HaeInterface {
+class AlertsInterface : public CdmInterface {
   public:
 
     typedef enum
@@ -72,7 +72,7 @@ class AlertsInterface : public HaeInterface {
      * Get Interface Type
      * @return interface type
      */
-    const HaeInterfaceType GetInterfaceType() const { return ALERTS_INTERFACE; }
+    const CdmInterfaceType GetInterfaceType() const { return ALERTS_INTERFACE; }
 
     /**
      * Get Introspection Xml

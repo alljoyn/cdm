@@ -16,9 +16,9 @@
 
 #include <qcc/Util.h>
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/HaeBusObject.h>
-#include <alljoyn/hae/interfaces/environment/CurrentAirQualityIntfControlleeListener.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/CdmBusObject.h>
+#include <alljoyn/cdm/interfaces/environment/CurrentAirQualityIntfControlleeListener.h>
 
 #include "CurrentAirQualityIntfControlleeImpl.h"
 
@@ -28,13 +28,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* CurrentAirQualityIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject)
+CdmInterface* CurrentAirQualityIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject)
 {
-    return new CurrentAirQualityIntfControlleeImpl(busAttachment, dynamic_cast<CurrentAirQualityIntfControlleeListener&>(listener), haeBusObject);
+    return new CurrentAirQualityIntfControlleeImpl(busAttachment, dynamic_cast<CurrentAirQualityIntfControlleeListener&>(listener), cdmBusObject);
 }
 
-CurrentAirQualityIntfControlleeImpl::CurrentAirQualityIntfControlleeImpl(BusAttachment& busAttachment, CurrentAirQualityIntfControlleeListener& listener, HaeBusObject& haeBusObject) :
-    InterfaceControllee(haeBusObject),
+CurrentAirQualityIntfControlleeImpl::CurrentAirQualityIntfControlleeImpl(BusAttachment& busAttachment, CurrentAirQualityIntfControlleeListener& listener, CdmBusObject& cdmBusObject) :
+    InterfaceControllee(cdmBusObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener),
     m_contaminantType(CurrentAirQualityInterface::CONTAMINANT_TYPE_CH20),
@@ -52,7 +52,7 @@ CurrentAirQualityIntfControlleeImpl::~CurrentAirQualityIntfControlleeImpl()
 
 QStatus CurrentAirQualityIntfControlleeImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
     return status;
 }
 

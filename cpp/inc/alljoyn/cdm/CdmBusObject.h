@@ -15,44 +15,44 @@
  ******************************************************************************/
 
 
-#ifndef HAEBUSOBJECT_H_
-#define HAEBUSOBJECT_H_
+#ifndef CDMBUSOBJECT_H_
+#define CDMBUSOBJECT_H_
 
 #include <map>
 #include <qcc/String.h>
 #include <alljoyn/BusObject.h>
 #include <alljoyn/BusAttachment.h>
-#include <alljoyn/hae/interfaces/HaeInterfaceTypes.h>
+#include <alljoyn/cdm/interfaces/CdmInterfaceTypes.h>
 
 namespace ajn {
 namespace services {
 
-class HaeInterface;
+class CdmInterface;
 class InterfaceControlleeListener;
 /**
- * Hae BusObject class.
+ * Cdm BusObject class.
  */
-class HaeBusObject : public BusObject {
+class CdmBusObject : public BusObject {
   public:
 
     /**
-     * Constructor of HaeBusObject
+     * Constructor of CdmBusObject
      */
-    HaeBusObject(BusAttachment& busAttachment, qcc::String const& objectPath);
+    CdmBusObject(BusAttachment& busAttachment, qcc::String const& objectPath);
 
     /**
-     * Destructor of HaeBusObject
+     * Destructor of CdmBusObject
      */
-    ~HaeBusObject();
+    ~CdmBusObject();
 
     /**
-     * Start Hae BusObject
+     * Start Cdm BusObject
      * @return status
      */
     QStatus Start();
 
     /**
-     * Stop Hae BusObject
+     * Stop Cdm BusObject
      * @return status
      */
     QStatus Stop();
@@ -63,7 +63,7 @@ class HaeBusObject : public BusObject {
      * @param[in] listener  interface controllee listener
      * @return interface
      */
-    HaeInterface* CreateInterface(const HaeInterfaceType type, InterfaceControlleeListener& listener);
+    CdmInterface* CreateInterface(const CdmInterfaceType type, InterfaceControlleeListener& listener);
 
     /**
      * Get property
@@ -134,13 +134,13 @@ class HaeBusObject : public BusObject {
      * @param interface
      * @return status
      */
-    QStatus AddInterfaceHandlers(HaeInterface* interface);
+    QStatus AddInterfaceHandlers(CdmInterface* interface);
 
     BusAttachment& m_busAttachment;
-    std::map<qcc::String, HaeInterface*> m_haeInterfacesMap;
+    std::map<qcc::String, CdmInterface*> m_cdmInterfacesMap;
 };
 
 }
 }
 
-#endif // HAEBUSOBJECT_H_
+#endif // CDMBUSOBJECT_H_

@@ -16,9 +16,9 @@
 
 #include <qcc/Util.h>
 #include <algorithm>
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/HaeBusObject.h>
-#include <alljoyn/hae/interfaces/operation/SpinSpeedLevelIntfControlleeListener.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/CdmBusObject.h>
+#include <alljoyn/cdm/interfaces/operation/SpinSpeedLevelIntfControlleeListener.h>
 
 #include "SpinSpeedLevelIntfControlleeImpl.h"
 
@@ -28,13 +28,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* SpinSpeedLevelIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject)
+CdmInterface* SpinSpeedLevelIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject)
 {
-    return new SpinSpeedLevelIntfControlleeImpl(busAttachment, dynamic_cast<SpinSpeedLevelIntfControlleeListener&>(listener), haeBusObject);
+    return new SpinSpeedLevelIntfControlleeImpl(busAttachment, dynamic_cast<SpinSpeedLevelIntfControlleeListener&>(listener), cdmBusObject);
 }
 
-SpinSpeedLevelIntfControlleeImpl::SpinSpeedLevelIntfControlleeImpl(BusAttachment& busAttachment, SpinSpeedLevelIntfControlleeListener& listener, HaeBusObject& haeBusObject) :
-    InterfaceControllee(haeBusObject),
+SpinSpeedLevelIntfControlleeImpl::SpinSpeedLevelIntfControlleeImpl(BusAttachment& busAttachment, SpinSpeedLevelIntfControlleeListener& listener, CdmBusObject& cdmBusObject) :
+    InterfaceControllee(cdmBusObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener),
     m_targetLevel(2),
@@ -48,7 +48,7 @@ SpinSpeedLevelIntfControlleeImpl::~SpinSpeedLevelIntfControlleeImpl()
 
 QStatus SpinSpeedLevelIntfControlleeImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
 
 
     return status;

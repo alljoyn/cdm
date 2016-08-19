@@ -20,14 +20,14 @@
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <vector>
-#include <alljoyn/hae/interfaces/HaeInterface.h>
+#include <alljoyn/cdm/interfaces/CdmInterface.h>
 
 namespace ajn {
 namespace services {
 /**
  * CycleControl Interface class
  */
-class CycleControlInterface : public HaeInterface {
+class CycleControlInterface : public CdmInterface {
   public:
     typedef enum
     {
@@ -67,7 +67,7 @@ class CycleControlInterface : public HaeInterface {
      * Get Interface Type
      * @return interface type
      */
-    const HaeInterfaceType GetInterfaceType() const { return CYCLE_CONTROL_INTERFACE; }
+    const CdmInterfaceType GetInterfaceType() const { return CYCLE_CONTROL_INTERFACE; }
 
     /**
      * Get Introspection Xml

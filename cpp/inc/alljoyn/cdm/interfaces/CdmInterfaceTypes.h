@@ -14,8 +14,8 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#ifndef HAEINTERFACETYPES_H_
-#define HAEINTERFACETYPES_H_
+#ifndef CDMINTERFACETYPES_H_
+#define CDMINTERFACETYPES_H_
 
 #include <map>
 #include <qcc/String.h>
@@ -23,7 +23,7 @@
 namespace ajn {
 namespace services {
 
-typedef uint32_t HaeInterfaceType;
+typedef uint32_t CdmInterfaceType;
 
 /**
  * DeviceType
@@ -91,11 +91,11 @@ typedef enum {
     // Vendor Defined Interface
     VENDOR_DEFINED_INTERFACE        = 0x1000,
 
-} HaeInterfaceTypes;
+} CdmInterfaceTypes;
 
-extern std::map<HaeInterfaceType, qcc::String> InterfaceTypesMap;
+extern std::map<CdmInterfaceType, qcc::String> InterfaceTypesMap;
 
 } //namespace services
 } //namespace ajn
 
-#endif /* HAEINTERFACETYPES_H_ */
+#endif /* CDMINTERFACETYPES_H_ */

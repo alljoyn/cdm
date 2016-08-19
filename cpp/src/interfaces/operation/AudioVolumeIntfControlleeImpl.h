@@ -20,15 +20,15 @@
 #include <alljoyn/Status.h>
 #include <alljoyn/BusAttachment.h>
 #include <alljoyn/InterfaceDescription.h>
-#include <alljoyn/hae/interfaces/InterfaceControllee.h>
-#include <alljoyn/hae/interfaces/InterfaceControlleeListener.h>
-#include <alljoyn/hae/interfaces/operation/AudioVolumeIntfControllee.h>
+#include <alljoyn/cdm/interfaces/InterfaceControllee.h>
+#include <alljoyn/cdm/interfaces/InterfaceControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/AudioVolumeIntfControllee.h>
 
 namespace ajn {
 namespace services {
 
 class AudioVolumeIntfControlleeListener;
-class HaeBusObject;
+class CdmBusObject;
 
 /**
  * AudioVolume Interface Controllee implementation class
@@ -38,12 +38,12 @@ class AudioVolumeIntfControlleeImpl : public InterfaceControllee, public AudioVo
     /**
      * Create interface
      */
-    static HaeInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject);
 
     /**
      * Constructor of AudioVolumeIntfControlleeImpl
      */
-    AudioVolumeIntfControlleeImpl(BusAttachment& busAttachment, AudioVolumeIntfControlleeListener& listener, HaeBusObject& haeBusObject);
+    AudioVolumeIntfControlleeImpl(BusAttachment& busAttachment, AudioVolumeIntfControlleeListener& listener, CdmBusObject& cdmBusObject);
 
     /**
      * Destructor of AudioVolumeIntfControlleeImpl

@@ -18,8 +18,8 @@
 #define TEMPERATUREDISPLAYLISTENER_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/userinterfacesettings/TemperatureDisplayIntfControllee.h>
-#include <alljoyn/hae/interfaces/userinterfacesettings/TemperatureDisplayIntfControlleeListener.h>
+#include <alljoyn/cdm/interfaces/userinterfacesettings/TemperatureDisplayIntfControllee.h>
+#include <alljoyn/cdm/interfaces/userinterfacesettings/TemperatureDisplayIntfControlleeListener.h>
 
 using namespace ajn;
 using namespace services;

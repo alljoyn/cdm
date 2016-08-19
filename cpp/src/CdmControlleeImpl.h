@@ -15,15 +15,15 @@
  ******************************************************************************/
 
 
-#ifndef HAECONTROLLEEIMPL_H_
-#define HAECONTROLLEEIMPL_H_
+#ifndef CDMCONTROLLEEIMPL_H_
+#define CDMCONTROLLEEIMPL_H_
 
 #include <map>
 #include <qcc/Mutex.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/AboutObj.h>
-#include <alljoyn/hae/interfaces/HaeInterface.h>
-#include <alljoyn/hae/interfaces/HaeInterfaceTypes.h>
+#include <alljoyn/cdm/interfaces/CdmInterface.h>
+#include <alljoyn/cdm/interfaces/CdmInterfaceTypes.h>
 
 #include "SecurityInfo.h"
 
@@ -34,27 +34,27 @@ class AuthListener;
 
 namespace services {
 
-class HaeInterface;
+class CdmInterface;
 class InterfaceControlleeListener;
-class HaeAboutData;
-class HaeBusObject;
-class HaeBusListener;
+class CdmAboutData;
+class CdmBusObject;
+class CdmBusListener;
 
 /**
- * Hae ControlleeImpl class.
- * Used to create hae controllee device.
+ * Cdm ControlleeImpl class.
+ * Used to create cdm controllee device.
  */
-class HaeControlleeImpl {
+class CdmControlleeImpl {
   public:
     /**
-     * Constructor of HaeControlleeImpl
+     * Constructor of CdmControlleeImpl
      */
-    HaeControlleeImpl(BusAttachment& bus, HaeAboutData* aboutData);
+    CdmControlleeImpl(BusAttachment& bus, CdmAboutData* aboutData);
 
     /**
-     * Destructor of HaeControlleeImpl
+     * Destructor of CdmControlleeImpl
      */
-    ~HaeControlleeImpl();
+    ~CdmControlleeImpl();
 
     /**
      * Enable peer-to-peer security.
@@ -91,19 +91,19 @@ class HaeControlleeImpl {
      * @param[in] listener
      * @return interface
      */
-    HaeInterface* CreateInterface(const HaeInterfaceType type, const qcc::String& objectPath, InterfaceControlleeListener& listener);
+    CdmInterface* CreateInterface(const CdmInterfaceType type, const qcc::String& objectPath, InterfaceControlleeListener& listener);
 
     /**
      * Register vendor defined interface
      * @param[in] interfaceName
      * @param[in] creator
-     * @return HaeInterfaceType
+     * @return CdmInterfaceType
      */
-    const HaeInterfaceType RegisterVendorDefinedInterface(const qcc::String& interfaceName, CreateIntfControlleeFptr createIntfControllee);
+    const CdmInterfaceType RegisterVendorDefinedInterface(const qcc::String& interfaceName, CreateIntfControlleeFptr createIntfControllee);
 
   private:
     /**
-     * Register Hae Bus object
+     * Register Cdm Bus object
      * @return status
      * @todo
      */
@@ -111,20 +111,20 @@ class HaeControlleeImpl {
 
 
     /**
-     * Register Hae Bus listener
+     * Register Cdm Bus listener
      * @param TBD
      * @return status
      * @todo
      */
-    QStatus RegisterBusListener(HaeBusListener* listener, TransportMask transportMask = TRANSPORT_ANY);
+    QStatus RegisterBusListener(CdmBusListener* listener, TransportMask transportMask = TRANSPORT_ANY);
 
     /**
-     * Unregister Hae Bus listener
+     * Unregister Cdm Bus listener
      * @param TBD
      * @return status
      * @todo
      */
-    QStatus UnregisterBusListener(HaeBusListener* listener);
+    QStatus UnregisterBusListener(CdmBusListener* listener);
 
     /**
      * Check device type validation in about custom fields
@@ -134,9 +134,9 @@ class HaeControlleeImpl {
 
     qcc::Mutex m_lock;             /* Mutex that protects m_isStarted */
     BusAttachment& m_bus;
-    HaeAboutData* m_aboutData;
-    std::map<qcc::String, HaeBusObject*> m_haeBusObjectsMap;
-    HaeBusListener* m_haeBusListener;
+    CdmAboutData* m_aboutData;
+    std::map<qcc::String, CdmBusObject*> m_cdmBusObjectsMap;
+    CdmBusListener* m_cdmBusListener;
     bool m_isStarted;
     SecurityInfo m_security;
 };
@@ -144,4 +144,4 @@ class HaeControlleeImpl {
 }
 }
 
-#endif  // HAECONTROLLEEIMPL_H_
+#endif  // CDMCONTROLLEEIMPL_H_

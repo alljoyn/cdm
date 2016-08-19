@@ -24,7 +24,7 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/HaeInterface.h>
+#include <alljoyn/cdm/interfaces/CdmInterface.h>
 
 namespace ajn {
 namespace services {
@@ -32,7 +32,7 @@ namespace services {
 /**
  * TargetHumidity Interface class
  */
-class TargetHumidityInterface : public HaeInterface {
+class TargetHumidityInterface : public CdmInterface {
   public:
     typedef std::vector<uint8_t> HumidityLevels;
     enum {
@@ -54,7 +54,7 @@ class TargetHumidityInterface : public HaeInterface {
      * Get Interface Type
      * @return Interface type
      */
-    const HaeInterfaceType GetInterfaceType() const { return TARGET_HUMIDITY_INTERFACE; }
+    const CdmInterfaceType GetInterfaceType() const { return TARGET_HUMIDITY_INTERFACE; }
 
     /**
      * Get Introspection Xml

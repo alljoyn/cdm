@@ -104,13 +104,13 @@ ChannelCommands::~ChannelCommands()
 void ChannelCommands::Init()
 {
     if (!m_intfController) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(CHANNEL_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(CHANNEL_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfController = static_cast<ChannelIntfController*>(haeInterface);
+        m_intfController = static_cast<ChannelIntfController*>(cdmInterface);
     }
 
     RegisterCommand(&ChannelCommands::OnCmdGetChannelId, "gci", "get channel id");

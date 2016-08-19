@@ -16,9 +16,9 @@
 
 #include <qcc/Util.h>
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/interfaces/operation/ChannelIntfControlleeListener.h>
-#include <alljoyn/hae/HaeBusObject.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/interfaces/operation/ChannelIntfControlleeListener.h>
+#include <alljoyn/cdm/CdmBusObject.h>
 #include "ChannelIntfControlleeImpl.h"
 
 using namespace qcc;
@@ -27,13 +27,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* ChannelIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject)
+CdmInterface* ChannelIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject)
 {
-    return new ChannelIntfControlleeImpl(busAttachment, static_cast<ChannelIntfControlleeListener&>(listener), haeBusObject);
+    return new ChannelIntfControlleeImpl(busAttachment, static_cast<ChannelIntfControlleeListener&>(listener), cdmBusObject);
 }
 
-ChannelIntfControlleeImpl::ChannelIntfControlleeImpl(BusAttachment& busAttachment, ChannelIntfControlleeListener& listener, HaeBusObject& haeBusObject) :
-    InterfaceControllee(haeBusObject),
+ChannelIntfControlleeImpl::ChannelIntfControlleeImpl(BusAttachment& busAttachment, ChannelIntfControlleeListener& listener, CdmBusObject& cdmBusObject) :
+    InterfaceControllee(cdmBusObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener),
     m_totalNumberOfChannels(0)
@@ -46,7 +46,7 @@ ChannelIntfControlleeImpl::~ChannelIntfControlleeImpl()
 
 QStatus ChannelIntfControlleeImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
 
     const InterfaceDescription::Member* member = m_interfaceDescription->GetMember(s_method_GetChannelList.c_str());
     MessageReceiver::MethodHandler methodHandler = static_cast<MessageReceiver::MethodHandler>(&ChannelIntfControlleeImpl::OnGetChannelList);
@@ -218,8 +218,8 @@ void ChannelIntfControlleeImpl::OnGetChannelList(const InterfaceDescription::Mem
                 QCC_LogError(status, ("%s: status is not ER_OK, but errorCode was not set.", __func__));
                 m_busObject.ReplyMethodCall(msg, status);
             } else {
-                m_busObject.ReplyMethodCall(msg, HaeInterface::GetInterfaceErrorName(errorCode).c_str(),
-                                            HaeInterface::GetInterfaceErrorMessage(errorCode).c_str());
+                m_busObject.ReplyMethodCall(msg, CdmInterface::GetInterfaceErrorName(errorCode).c_str(),
+                                            CdmInterface::GetInterfaceErrorMessage(errorCode).c_str());
             }
         }
     } else {

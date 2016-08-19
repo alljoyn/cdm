@@ -14,10 +14,10 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include "HaeTest.h"
+#include "CdmTest.h"
 
-#include <alljoyn/hae/interfaces/environment/TargetHumidityIntfController.h>
-#include <alljoyn/hae/interfaces/environment/TargetHumidityIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/environment/TargetHumidityIntfController.h>
+#include <alljoyn/cdm/interfaces/environment/TargetHumidityIntfControllerListener.h>
 #include <algorithm>
 
 class TargetHumidityListener : public TargetHumidityIntfControllerListener
@@ -121,14 +121,14 @@ uint8_t getInvalidValue(TargetHumidityInterface::HumidityLevels& levels) {
     return TargetHumidityInterface::MAX_HUMIDITY + 1;
 }
 
-TEST_F(HAETest, HAE_v1_TargetHumidity)
+TEST_F(CDMTest, CDM_v1_TargetHumidity)
 {
     WaitForControllee(TARGET_HUMIDITY_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
 
         TargetHumidityListener listener;
-        HaeInterface* interface = m_controller->CreateInterface(TARGET_HUMIDITY_INTERFACE, m_interfaces[i].busName,
+        CdmInterface* interface = m_controller->CreateInterface(TARGET_HUMIDITY_INTERFACE, m_interfaces[i].busName,
                                                                 qcc::String(m_interfaces[i].objectPath.c_str()), m_interfaces[i].sessionId, listener);
         TargetHumidityIntfController* controller = static_cast<TargetHumidityIntfController*>(interface);
         QStatus status = ER_FAIL;

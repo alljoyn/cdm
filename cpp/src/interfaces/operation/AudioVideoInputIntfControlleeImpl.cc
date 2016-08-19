@@ -16,9 +16,9 @@
 
 #include <qcc/Util.h>
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/interfaces/operation/AudioVideoInputIntfControlleeListener.h>
-#include <alljoyn/hae/HaeBusObject.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/interfaces/operation/AudioVideoInputIntfControlleeListener.h>
+#include <alljoyn/cdm/CdmBusObject.h>
 #include "AudioVideoInputIntfControlleeImpl.h"
 
 using namespace qcc;
@@ -27,13 +27,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* AudioVideoInputIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject)
+CdmInterface* AudioVideoInputIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject)
 {
-    return new AudioVideoInputIntfControlleeImpl(busAttachment, static_cast<AudioVideoInputIntfControlleeListener&>(listener), haeBusObject);
+    return new AudioVideoInputIntfControlleeImpl(busAttachment, static_cast<AudioVideoInputIntfControlleeListener&>(listener), cdmBusObject);
 }
 
-AudioVideoInputIntfControlleeImpl::AudioVideoInputIntfControlleeImpl(BusAttachment& busAttachment, AudioVideoInputIntfControlleeListener& listener, HaeBusObject& haeBusObject) :
-    InterfaceControllee(haeBusObject),
+AudioVideoInputIntfControlleeImpl::AudioVideoInputIntfControlleeImpl(BusAttachment& busAttachment, AudioVideoInputIntfControlleeListener& listener, CdmBusObject& cdmBusObject) :
+    InterfaceControllee(cdmBusObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener),
     m_inputSourceId (0)
@@ -46,7 +46,7 @@ AudioVideoInputIntfControlleeImpl::~AudioVideoInputIntfControlleeImpl()
 
 QStatus AudioVideoInputIntfControlleeImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
 
     return status;
 }

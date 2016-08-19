@@ -15,7 +15,7 @@
  ******************************************************************************/
 
 #include <cstdlib>
-#include <alljoyn/hae/interfaces/HaeInterfaceTypes.h>
+#include <alljoyn/cdm/interfaces/CdmInterfaceTypes.h>
 #include "WindDirectionCommands.h"
 #include "ControllerSample.h"
 
@@ -110,13 +110,13 @@ WindDirectionCommands::~WindDirectionCommands()
 void WindDirectionCommands::Init()
 {
     if (!m_intfController) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(WIND_DIRECTION_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(WIND_DIRECTION_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfController = static_cast<WindDirectionIntfController*>(haeInterface);
+        m_intfController = static_cast<WindDirectionIntfController*>(cdmInterface);
     }
 
     RegisterCommand(&WindDirectionCommands::OnCmdGetHorizontalDirection, "gethd", "Get HorizontalDirection");

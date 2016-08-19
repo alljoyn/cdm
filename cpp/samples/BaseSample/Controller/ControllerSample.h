@@ -21,10 +21,10 @@
 #include <string>
 #include <alljoyn/Session.h>
 #include <alljoyn/AboutObjectDescription.h>
-#include <alljoyn/hae/HaeController.h>
-#include <alljoyn/hae/HaeAboutData.h>
-#include <alljoyn/hae/DeviceListener.h>
-#include <alljoyn/hae/DeviceInfo.h>
+#include <alljoyn/cdm/CdmController.h>
+#include <alljoyn/cdm/CdmAboutData.h>
+#include <alljoyn/cdm/DeviceListener.h>
+#include <alljoyn/cdm/DeviceInfo.h>
 #include "BaseSample.h"
 
 class Commands;
@@ -39,11 +39,11 @@ class FoundDeviceInfo {
     std::string deviceName;
     SessionPort sessionPort;
     SessionId sessionId;
-    HaeAboutData aboutData;
+    CdmAboutData aboutData;
     AboutObjectDescription aboutObjectDescription;
 
     FoundDeviceInfo() { }
-    FoundDeviceInfo(const char* name, SessionPort port, HaeAboutData& data, AboutObjectDescription& description) : busName(name), sessionPort(port), sessionId(0), aboutData(data), aboutObjectDescription(description)
+    FoundDeviceInfo(const char* name, SessionPort port, CdmAboutData& data, AboutObjectDescription& description) : busName(name), sessionPort(port), sessionId(0), aboutData(data), aboutObjectDescription(description)
     {
         MsgArg* arg;
         data.GetField("DeviceName", arg, "en");
@@ -66,27 +66,27 @@ class ControllerSample : public BaseSample
 
     virtual void OnDeviceAdded(const char* busname,
                                 SessionPort port,
-                                const HaeAboutData& data,
+                                const CdmAboutData& data,
                                const AboutObjectDescription& description);
     virtual void OnDeviceRemoved(const char* busname);
     virtual void OnDeviceSessionJoined(const DeviceInfoPtr& info);
     virtual void OnDeviceSessionLost(SessionId sessionId);
 
-    HaeController* GetController() { return m_controller; }
+    CdmController* GetController() { return m_controller; }
     FoundDeviceMap& GetDeviceMap() { return m_deviceList; }
     FoundDeviceInfo* GetFoundDeviceInfo(int index);
 
-    HaeInterface* CreateInterface(const HaeInterfaceType type, const std::string& busName, const qcc::String& objectPath,
+    CdmInterface* CreateInterface(const CdmInterfaceType type, const std::string& busName, const qcc::String& objectPath,
                                   const SessionId& sessionId, InterfaceControllerListener& listener);
 
     void DropDeviceSession();
 
-    const HaeInterfaceType RegisterVendorDefinedInterface(const qcc::String& interfaceName, CreateIntfControllerFptr createIntfController);
+    const CdmInterfaceType RegisterVendorDefinedInterface(const qcc::String& interfaceName, CreateIntfControllerFptr createIntfController);
 
   private:
     BusAttachment* m_bus;
     FoundDeviceMap m_deviceList;
-    HaeController* m_controller;
+    CdmController* m_controller;
     Commands* m_rootCommands;
     SessionId m_lastSession;
 };

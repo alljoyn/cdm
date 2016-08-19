@@ -18,8 +18,8 @@
 #define AIRRECIRCULATIONMODECOMMANDS_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/AirRecirculationModeIntfController.h>
-#include <alljoyn/hae/interfaces/operation/AirRecirculationModeIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/AirRecirculationModeIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/AirRecirculationModeIntfControllerListener.h>
 
 class ControllerSample;
 

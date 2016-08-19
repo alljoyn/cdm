@@ -16,9 +16,9 @@
 
 #include <qcc/Util.h>
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/HaeProxyBusObject.h>
-#include <alljoyn/hae/interfaces/userinterfacesettings/TimeDisplayIntfControllerListener.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/CdmProxyBusObject.h>
+#include <alljoyn/cdm/interfaces/userinterfacesettings/TimeDisplayIntfControllerListener.h>
 
 #include "TimeDisplayIntfControllerImpl.h"
 
@@ -28,13 +28,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* TimeDisplayIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, HaeProxyBusObject& haeProxyObject)
+CdmInterface* TimeDisplayIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject)
 {
-    return new TimeDisplayIntfControllerImpl(busAttachment, dynamic_cast<TimeDisplayIntfControllerListener&>(listener), haeProxyObject);
+    return new TimeDisplayIntfControllerImpl(busAttachment, dynamic_cast<TimeDisplayIntfControllerListener&>(listener), cdmProxyObject);
 }
 
-TimeDisplayIntfControllerImpl::TimeDisplayIntfControllerImpl(BusAttachment& busAttachment, TimeDisplayIntfControllerListener& listener, HaeProxyBusObject& haeProxyObject) :
-    InterfaceController(haeProxyObject),
+TimeDisplayIntfControllerImpl::TimeDisplayIntfControllerImpl(BusAttachment& busAttachment, TimeDisplayIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject) :
+    InterfaceController(cdmProxyObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener)
 {
@@ -46,7 +46,7 @@ TimeDisplayIntfControllerImpl::~TimeDisplayIntfControllerImpl()
 
 QStatus TimeDisplayIntfControllerImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
     if (ER_OK != status) {
         QCC_LogError(status, ("%s: Interface init failed.", __func__));
         return status;

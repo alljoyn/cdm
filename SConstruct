@@ -18,8 +18,8 @@ env = SConscript('../../core/alljoyn/build_core/SConscript')
 
 vars = Variables()
 vars.Add('BINDINGS', 'Bindings to build (comma separated list): cpp, java', 'cpp,java')
-vars.Add(EnumVariable('BUILD_HAE_SAMPLES',
-                      'Build the HAE services samples.',
+vars.Add(EnumVariable('BUILD_CDM_SAMPLES',
+                      'Build the CDM services samples.',
                       'on',
                       allowed_values = ['on', 'off']))
 vars.Add(PathVariable('ALLJOYN_DISTDIR',

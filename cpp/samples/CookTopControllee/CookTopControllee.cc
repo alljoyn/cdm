@@ -5,14 +5,14 @@
 #include <qcc/String.h>
 #include <alljoyn/Init.h>
 #include <alljoyn/version.h>
-#include <alljoyn/hae/DeviceTypeDescription.h>
+#include <alljoyn/cdm/DeviceTypeDescription.h>
 #include "ControlleeSample.h"
 #include "HeatingZoneListener.h"
 #include "OvenCyclePhaseListener.h"
 #include "RapidModeListener.h"
-#include <alljoyn/hae/interfaces/operation/HeatingZoneIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/OvenCyclePhaseIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/RapidModeIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/HeatingZoneIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/OvenCyclePhaseIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/RapidModeIntfControllee.h>
 
 using namespace std;
 using namespace qcc;
@@ -29,13 +29,13 @@ class CookTopControllee : public ControlleeSample
     RapidModeIntfControllee* m_rapidModeIntfControllee;
 
   public:
-    CookTopControllee(BusAttachment* bus, HaeAboutData* aboutData);
+    CookTopControllee(BusAttachment* bus, CdmAboutData* aboutData);
     virtual ~CookTopControllee();
     void CreateInterfaces();
     void SetInitialProperty();
 };
 
-CookTopControllee::CookTopControllee(BusAttachment* bus, HaeAboutData* aboutData)
+CookTopControllee::CookTopControllee(BusAttachment* bus, CdmAboutData* aboutData)
   : ControlleeSample(bus, aboutData), m_heatingZoneIntfControllee(NULL), m_ovenCyclePhaseIntfControllee(NULL), m_rapidModeIntfControllee(NULL)
 {
     m_heatingZoneListener = new HeatingZoneListener();
@@ -58,19 +58,19 @@ CookTopControllee::~CookTopControllee()
 
 void CookTopControllee::CreateInterfaces()
 {
-    HaeInterface* intf = NULL;
-    HaeControllee* haeControllee = GetControllee();
-    if (!haeControllee) {
+    CdmInterface* intf = NULL;
+    CdmControllee* cdmControllee = GetControllee();
+    if (!cdmControllee) {
         return;
     }
 
-    intf = haeControllee->CreateInterface(HEATING_ZONE_INTERFACE, "/Hae/Cooktop", *m_heatingZoneListener);
+    intf = cdmControllee->CreateInterface(HEATING_ZONE_INTERFACE, "/Cdm/Cooktop", *m_heatingZoneListener);
     m_heatingZoneIntfControllee = static_cast<HeatingZoneIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(OVEN_CYCLE_PHASE_INTERFACE, "/Hae/Cooktop", *m_ovenCyclePhaseListener);
+    intf = cdmControllee->CreateInterface(OVEN_CYCLE_PHASE_INTERFACE, "/Cdm/Cooktop", *m_ovenCyclePhaseListener);
     m_ovenCyclePhaseIntfControllee = static_cast<OvenCyclePhaseIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(RAPID_MODE_INTERFACE, "/Hae/Cooktop", *m_rapidModeListener);
+    intf = cdmControllee->CreateInterface(RAPID_MODE_INTERFACE, "/Cdm/Cooktop", *m_rapidModeListener);
     m_rapidModeIntfControllee = static_cast<RapidModeIntfControllee*>(intf);
 }
 
@@ -99,7 +99,7 @@ void CookTopControllee::SetInitialProperty()
     m_ovenCyclePhaseIntfControllee->SetSupportedCyclePhases(phases);
 }
 
-QStatus FillAboutData(HaeAboutData* aboutData)
+QStatus FillAboutData(CdmAboutData* aboutData)
 {
     String const& defaultLanguage = "en";
     String device_id = "deviceID";
@@ -147,14 +147,14 @@ QStatus FillAboutData(HaeAboutData* aboutData)
     aboutData->SetManufacturer("Nik", "en");
     aboutData->SetSupportUrl("http://www.alljoyn.org");
 
-    // HAE custom metadata fields
+    // CDM custom metadata fields
     aboutData->SetCountryOfProduction("SP", "en");
     aboutData->SetCorporateBrand("CookEr", "en");
     aboutData->SetProductBrand("Model 3", "en");
     aboutData->SetLocation("Kitchen", "en");
 
     DeviceTypeDescription description;
-    description.AddDeviceType(COOKTOP, "/Hae/Cooktop");
+    description.AddDeviceType(COOKTOP, "/Cdm/Cooktop");
     aboutData->SetDeviceTypeDescription(&description);
 
     if (!aboutData->IsValid()) {
@@ -182,7 +182,7 @@ int main()
 #endif
     printf("AllJoyn Library version: %s\n", ajn::GetVersion());
     printf("AllJoyn Library build info: %s\n", ajn::GetBuildInfo());
-    QCC_SetLogLevels("HAE_MODULE_LOG_NAME=15;");
+    QCC_SetLogLevels("CDM_MODULE_LOG_NAME=15;");
     //CookTopControllee
     BusAttachment* bus = new BusAttachment("CookTopControllee", true);
     if (!bus) {
@@ -190,7 +190,7 @@ int main()
         exit(1);
     }
 
-    HaeAboutData* aboutData = new HaeAboutData();
+    CdmAboutData* aboutData = new CdmAboutData();
     if (!aboutData) {
         printf("AboutData creation failed.\n");
         delete bus;

@@ -18,8 +18,8 @@
 #define TARGETHUMIDITYLISTENER_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/environment/TargetHumidityIntfControllee.h>
-#include <alljoyn/hae/interfaces/environment/TargetHumidityIntfControlleeListener.h>
+#include <alljoyn/cdm/interfaces/environment/TargetHumidityIntfControllee.h>
+#include <alljoyn/cdm/interfaces/environment/TargetHumidityIntfControlleeListener.h>
 
 using namespace ajn;
 using namespace services;

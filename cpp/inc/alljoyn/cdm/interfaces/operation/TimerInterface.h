@@ -19,7 +19,7 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/HaeInterface.h>
+#include <alljoyn/cdm/interfaces/CdmInterface.h>
 
 namespace ajn {
 namespace services {
@@ -27,7 +27,7 @@ namespace services {
 /**
  * Timer Interface class
  */
-class TimerInterface : public HaeInterface {
+class TimerInterface : public CdmInterface {
   public:
     /**
      * Constructor of Timer
@@ -43,7 +43,7 @@ class TimerInterface : public HaeInterface {
      * Get Interface Type
      * @return interface type
      */
-    const HaeInterfaceType GetInterfaceType() const { return TIMER_INTERFACE; }
+    const CdmInterfaceType GetInterfaceType() const { return TIMER_INTERFACE; }
 
     /**
      * Get Introspection Xml

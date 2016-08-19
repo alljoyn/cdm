@@ -19,7 +19,7 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/InterfaceControllerListener.h>
+#include <alljoyn/cdm/interfaces/InterfaceControllerListener.h>
 #include "HidInterface.h"
 
 namespace ajn {

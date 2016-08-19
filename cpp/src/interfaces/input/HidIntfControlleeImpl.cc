@@ -16,9 +16,9 @@
 
 #include <qcc/Util.h>
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/interfaces/input/HidIntfControlleeListener.h>
-#include <alljoyn/hae/HaeBusObject.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/interfaces/input/HidIntfControlleeListener.h>
+#include <alljoyn/cdm/CdmBusObject.h>
 #include "HidIntfControlleeImpl.h"
 
 using namespace qcc;
@@ -27,13 +27,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* HidIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject)
+CdmInterface* HidIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject)
 {
-    return new HidIntfControlleeImpl(busAttachment, static_cast<HidIntfControlleeListener&>(listener), haeBusObject);
+    return new HidIntfControlleeImpl(busAttachment, static_cast<HidIntfControlleeListener&>(listener), cdmBusObject);
 }
 
-HidIntfControlleeImpl::HidIntfControlleeImpl(BusAttachment& busAttachment, HidIntfControlleeListener& listener, HaeBusObject& haeBusObject) :
-    InterfaceControllee(haeBusObject),
+HidIntfControlleeImpl::HidIntfControlleeImpl(BusAttachment& busAttachment, HidIntfControlleeListener& listener, CdmBusObject& cdmBusObject) :
+    InterfaceControllee(cdmBusObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener)
 {
@@ -45,7 +45,7 @@ HidIntfControlleeImpl::~HidIntfControlleeImpl()
 
 QStatus HidIntfControlleeImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
 
     const InterfaceDescription::Member* member = m_interfaceDescription->GetMember("InjectEvents");
     MessageReceiver::MethodHandler methodHandler = static_cast<MessageReceiver::MethodHandler>(&HidIntfControlleeImpl::OnInjectEvents);

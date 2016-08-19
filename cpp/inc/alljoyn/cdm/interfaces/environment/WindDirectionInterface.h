@@ -24,7 +24,7 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/HaeInterface.h>
+#include <alljoyn/cdm/interfaces/CdmInterface.h>
 
 namespace ajn {
 namespace services {
@@ -32,7 +32,7 @@ namespace services {
 /**
  * WindDirection Interface class
  */
-class WindDirectionInterface : public HaeInterface {
+class WindDirectionInterface : public CdmInterface {
   public:
 
     /**
@@ -49,7 +49,7 @@ class WindDirectionInterface : public HaeInterface {
      * Get Interface Type
      * @return Interface type
      */
-    const HaeInterfaceType GetInterfaceType() const { return WIND_DIRECTION_INTERFACE; }
+    const CdmInterfaceType GetInterfaceType() const { return WIND_DIRECTION_INTERFACE; }
 
     /**
      * Get Introspection Xml

@@ -22,8 +22,8 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/InterfaceControllerListener.h>
-#include <alljoyn/hae/interfaces/environment/TargetHumidityInterface.h>
+#include <alljoyn/cdm/interfaces/InterfaceControllerListener.h>
+#include <alljoyn/cdm/interfaces/environment/TargetHumidityInterface.h>
 
 namespace ajn {
 namespace services {

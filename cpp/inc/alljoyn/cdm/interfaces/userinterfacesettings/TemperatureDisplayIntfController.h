@@ -19,7 +19,7 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/userinterfacesettings/TemperatureDisplayInterface.h>
+#include <alljoyn/cdm/interfaces/userinterfacesettings/TemperatureDisplayInterface.h>
 
 namespace ajn {
 namespace services {

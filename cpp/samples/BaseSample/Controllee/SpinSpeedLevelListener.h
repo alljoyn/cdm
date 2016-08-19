@@ -18,8 +18,8 @@
 #define SPINSPEEDLEVELLISTENER_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/SpinSpeedLevelIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/SpinSpeedLevelIntfControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/SpinSpeedLevelIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/SpinSpeedLevelIntfControlleeListener.h>
 
 using namespace ajn;
 using namespace services;

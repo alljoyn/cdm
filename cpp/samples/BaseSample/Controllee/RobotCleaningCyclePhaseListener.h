@@ -18,8 +18,8 @@
 #define ROBOTCLEANINGCYCLEPHASELISTENER_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/RobotCleaningCyclePhaseIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/RobotCleaningCyclePhaseIntfControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/RobotCleaningCyclePhaseIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/RobotCleaningCyclePhaseIntfControlleeListener.h>
 
 using namespace ajn;
 using namespace services;

@@ -1,6 +1,6 @@
 #include <iomanip>
 #include <alljoyn/AboutObjectDescription.h>
-#include <alljoyn/hae/HaeAboutData.h>
+#include <alljoyn/cdm/CdmAboutData.h>
 #include "BasicCommands.h"
 #include "ControlleeSample.h"
 #include "VirtualDevice.h"
@@ -45,12 +45,12 @@ void BasicCommands::OnCmdSelectInterface(Commands* commands, std::string& cmd)
                     cout << citr->second << endl;
                     objPath = citr->second;
                 }
-                cout << ++count << " : " << HaeInterface::GetInterfaceName(citr->first) << endl;
+                cout << ++count << " : " << CdmInterface::GetInterfaceName(citr->first) << endl;
             }
 
             int index = ReadIndex();
             char buf[1024];
-            pair<HaeInterfaceType, string> intf = list->at(index-1);
+            pair<CdmInterfaceType, string> intf = list->at(index-1);
             sprintf(buf, "%u:%s", intf.first, intf.second.c_str());
             string key(buf);
             Commands* selected = device->GetCurrentCommands()->GetChild(key);
@@ -60,7 +60,7 @@ void BasicCommands::OnCmdSelectInterface(Commands* commands, std::string& cmd)
 }
 
 
-void BasicCommands::PrintAboutData(ajn::services::HaeAboutData& aboutData)
+void BasicCommands::PrintAboutData(ajn::services::CdmAboutData& aboutData)
 {
     cout << "About Data" << endl;
     size_t count = aboutData.GetFields();

@@ -18,8 +18,8 @@
 #define HVACFANMODECOMMANDS_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/HvacFanModeIntfController.h>
-#include <alljoyn/hae/interfaces/operation/HvacFanModeIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/HvacFanModeIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/HvacFanModeIntfControllerListener.h>
 
 class ControllerSample;
 

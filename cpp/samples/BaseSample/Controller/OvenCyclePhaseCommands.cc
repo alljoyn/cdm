@@ -89,13 +89,13 @@ OvenCyclePhaseCommands::~OvenCyclePhaseCommands()
 void OvenCyclePhaseCommands::Init()
 {
     if (!m_intfController) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(OVEN_CYCLE_PHASE_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(OVEN_CYCLE_PHASE_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfController = static_cast<OvenCyclePhaseIntfController*>(haeInterface);
+        m_intfController = static_cast<OvenCyclePhaseIntfController*>(cdmInterface);
     }
 
     RegisterCommand(&OvenCyclePhaseCommands::OnCmdGetCyclePhase, "gcp", "get cycle phase");

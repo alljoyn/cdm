@@ -18,8 +18,8 @@
 #define LAUNDRYCYCLEPHASELISTENER_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/LaundryCyclePhaseIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/LaundryCyclePhaseIntfControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/LaundryCyclePhaseIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/LaundryCyclePhaseIntfControlleeListener.h>
 
 using namespace ajn;
 using namespace services;

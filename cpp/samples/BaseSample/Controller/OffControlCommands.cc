@@ -15,7 +15,7 @@
  ******************************************************************************/
 
 #include <cstdlib>
-#include <alljoyn/hae/interfaces/HaeInterfaceTypes.h>
+#include <alljoyn/cdm/interfaces/CdmInterfaceTypes.h>
 #include "OffControlCommands.h"
 #include "ControllerSample.h"
 
@@ -52,13 +52,13 @@ OffControlCommands::~OffControlCommands()
 void OffControlCommands::Init()
 {
     if (!m_intfController) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(OFF_CONTROL_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(OFF_CONTROL_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfController = static_cast<OffControlIntfController*>(haeInterface);
+        m_intfController = static_cast<OffControlIntfController*>(cdmInterface);
     }
 
     RegisterCommand(&OffControlCommands::OffCmdSwitchOff, "off", "Switch Off");

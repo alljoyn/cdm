@@ -27,7 +27,7 @@
 namespace ajn {
 namespace services {
 
-class HaeBusObject;
+class CdmBusObject;
 
 /**
  * InterfaceControllee class
@@ -40,7 +40,7 @@ class InterfaceControllee : public MessageReceiver {
     /**
      * Constructor of InterfaceControllee
      */
-    InterfaceControllee(HaeBusObject& haeBusObject) : m_busObject(haeBusObject) {}
+    InterfaceControllee(CdmBusObject& cdmBusObject) : m_busObject(cdmBusObject) {}
 
     /**
      * Destructor of InterfaceControllee
@@ -84,7 +84,7 @@ class InterfaceControllee : public MessageReceiver {
      */
     static const bool s_retrievingActualPropertyValue = false;
 
-    HaeBusObject& m_busObject;
+    CdmBusObject& m_busObject;
 };
 
 } //namespace services

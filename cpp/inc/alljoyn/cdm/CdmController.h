@@ -15,13 +15,13 @@
  ******************************************************************************/
 
 
-#ifndef HAECONTROLLER_H_
-#define HAECONTROLLER_H_
+#ifndef CDMCONTROLLER_H_
+#define CDMCONTROLLER_H_
 
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/HaeConfig.h>
-#include <alljoyn/hae/interfaces/HaeInterface.h>
-#include <alljoyn/hae/interfaces/HaeInterfaceTypes.h>
+#include <alljoyn/cdm/CdmConfig.h>
+#include <alljoyn/cdm/interfaces/CdmInterface.h>
+#include <alljoyn/cdm/interfaces/CdmInterfaceTypes.h>
 
 namespace ajn {
 
@@ -29,31 +29,31 @@ class AboutObjectDescription;
 
 namespace services {
 
-class HaeProxyBusObject;
-class HaeControllerImpl;
-class HaeInterface;
+class CdmProxyBusObject;
+class CdmControllerImpl;
+class CdmInterface;
 class InterfaceControllerListener;
-class HaeAboutData;
+class CdmAboutData;
 class DeviceListener;
 class DeviceInfo;
 
 /**
- * Hae Controller class.
+ * Cdm Controller class.
  */
-class HaeController {
+class CdmController {
 
   public:
     /**
-     * Constructor of HaeController
+     * Constructor of CdmController
      * @param[in] bus bus attachment
-     * @param[in] aboutData HAE About data
+     * @param[in] aboutData CDM About data
      */
-    HaeController(BusAttachment& bus, DeviceListener* listener);
+    CdmController(BusAttachment& bus, DeviceListener* listener);
 
     /**
-     * Destructor of HaeController
+     * Destructor of CdmController
      */
-    virtual ~HaeController();
+    virtual ~CdmController();
 
     /**
      * Enable peer-to-peer security.
@@ -92,11 +92,11 @@ class HaeController {
      * Join device
      * @param[in] busName bus name
      * @param[in] port session port
-     * @param[in] data HAE About data
+     * @param[in] data CDM About data
      * @param[in] description About object description
      * @return ER_OK on success
      */
-    QStatus JoinDevice(const std::string& busName, SessionPort port, const HaeAboutData& data,
+    QStatus JoinDevice(const std::string& busName, SessionPort port, const CdmAboutData& data,
                        AboutObjectDescription& description);
 
     /**
@@ -108,21 +108,21 @@ class HaeController {
      * @param[in] listener interface listener
      * @return Interface
      */
-    HaeInterface* CreateInterface(const HaeInterfaceType type, const std::string& busName, const qcc::String& objectPath, const SessionId& sessionId, InterfaceControllerListener& listener);
+    CdmInterface* CreateInterface(const CdmInterfaceType type, const std::string& busName, const qcc::String& objectPath, const SessionId& sessionId, InterfaceControllerListener& listener);
 
     /**
      * Register vendor defined interface
      * @param[in] interfaceName interface name
      * @param[in] createIntfController interface creator function
-     * @return HAE interface type
+     * @return CDM interface type
      */
-    const HaeInterfaceType RegisterVendorDefinedInterface(const qcc::String& interfaceName, CreateIntfControllerFptr createIntfController);
+    const CdmInterfaceType RegisterVendorDefinedInterface(const qcc::String& interfaceName, CreateIntfControllerFptr createIntfController);
 
   private:
-    HaeControllerImpl* m_impl;
+    CdmControllerImpl* m_impl;
 };
 
 }  /* ajn */
 }  /* services */
 
-#endif /* HAECONTROLLER_H_ */
+#endif /* CDMCONTROLLER_H_ */

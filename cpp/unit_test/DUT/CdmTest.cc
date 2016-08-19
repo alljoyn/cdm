@@ -14,11 +14,11 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include "HaeTest.h"
+#include "CdmTest.h"
 
-#define ALL_HAE_INTERFACE "*"
+#define ALL_CDM_INTERFACE "*"
 
-InterfaceInfo::InterfaceInfo(const char* name, SessionPort port, const char* path, HaeAboutData& data, AboutObjectDescription& description) :
+InterfaceInfo::InterfaceInfo(const char* name, SessionPort port, const char* path, CdmAboutData& data, AboutObjectDescription& description) :
     busName(name), sessionPort(port), sessionId(0), objectPath(path), aboutData(data), aboutDescription(description)
 {
     MsgArg* arg;
@@ -63,7 +63,7 @@ void ECDHEKeyXListener::AuthenticationComplete(const char* authMechanism, const 
     printf("SampleClientECDHE::AuthenticationComplete Authentication %s %s\n", authMechanism, success ? "successful" : "failed");
 }
 
-void HAETest::SetUp()
+void CDMTest::SetUp()
 {
     LOG_NO = 0;
     m_bus = new BusAttachment("CurrentTemperatureTest", true);
@@ -86,7 +86,7 @@ void HAETest::SetUp()
         ASSERT_TRUE(false)<< "BusAttachment::Connect failed " << QCC_StatusText(status);
     }
 
-    m_controller = new HaeController(*m_bus, this);
+    m_controller = new CdmController(*m_bus, this);
     status = m_controller->EnablePeerSecurity(ECDHE_KEYX, new ECDHEKeyXListener(), "/.alljoyn_keystore/c_ecdhe.ks", true);
 
     if (ER_OK == status) {
@@ -97,7 +97,7 @@ void HAETest::SetUp()
     m_controller->Start();
 }
 
-void HAETest::TearDown()
+void CDMTest::TearDown()
 {
     m_controller->Stop();
     delete m_controller;
@@ -111,14 +111,14 @@ void HAETest::TearDown()
     m_interfaces.clear();
 }
 
-void HAETest::WaitForControllee(HaeInterfaceType type)
+void CDMTest::WaitForControllee(CdmInterfaceType type)
 {
     TEST_LOG_1("The test device listens for an About announcement from the application on the DUT.");
-    if (type == (HaeInterfaceType) -1) {
-        m_interfaceNameForTest = ALL_HAE_INTERFACE;
+    if (type == (CdmInterfaceType) -1) {
+        m_interfaceNameForTest = ALL_CDM_INTERFACE;
         ASSERT_EQ(qcc::Event::Wait(eventOnDeviceAdded, TIMEOUT), ER_OK)<< "Controllee device not found";
     } else {
-        m_interfaceNameForTest = HaeInterface::GetInterfaceName(type);
+        m_interfaceNameForTest = CdmInterface::GetInterfaceName(type);
         ASSERT_EQ(qcc::Event::Wait(eventOnDeviceAdded, TIMEOUT), ER_OK)<< "Controllee device not found";
         std::string name = m_interfaceNameForTest.c_str();
         TEST_LOG_1("After receiving an About announcement from the application, the test device joins\n"
@@ -127,7 +127,7 @@ void HAETest::WaitForControllee(HaeInterfaceType type)
     }
 }
 
-void HAETest::OnDeviceAdded(const char* busname, SessionPort port, const HaeAboutData& data, const AboutObjectDescription& description)
+void CDMTest::OnDeviceAdded(const char* busname, SessionPort port, const CdmAboutData& data, const AboutObjectDescription& description)
 {
     size_t path_num = description.GetPaths(NULL, 0);
     const char** paths = new const char*[path_num];
@@ -142,10 +142,10 @@ void HAETest::OnDeviceAdded(const char* busname, SessionPort port, const HaeAbou
         const char** interfaces = new const char*[numInterfaces];
         description.GetInterfaces(paths[i], interfaces, numInterfaces);
         for (size_t j = 0; j < numInterfaces; ++j) {
-            if (m_interfaceNameForTest.compare(interfaces[j]) && m_interfaceNameForTest.compare(ALL_HAE_INTERFACE))
+            if (m_interfaceNameForTest.compare(interfaces[j]) && m_interfaceNameForTest.compare(ALL_CDM_INTERFACE))
                 continue;
 
-            InterfaceInfo info(busname, port, paths[i], const_cast<HaeAboutData&>(data), const_cast<AboutObjectDescription&>(description));
+            InterfaceInfo info(busname, port, paths[i], const_cast<CdmAboutData&>(data), const_cast<AboutObjectDescription&>(description));
             m_controller->JoinDevice(info.busName, port, data, const_cast<AboutObjectDescription&>(description));
             m_interfaces.push_back(info);
             isFound = true;
@@ -157,15 +157,15 @@ void HAETest::OnDeviceAdded(const char* busname, SessionPort port, const HaeAbou
         eventOnDeviceAdded.SetEvent();
 }
 
-void HAETest::OnDeviceRemoved(const char* busname)
+void CDMTest::OnDeviceRemoved(const char* busname)
 {
 }
 
-void HAETest::OnDeviceSessionJoined(const DeviceInfoPtr& info)
+void CDMTest::OnDeviceSessionJoined(const DeviceInfoPtr& info)
 {
 }
 
-void HAETest::OnDeviceSessionLost(SessionId id)
+void CDMTest::OnDeviceSessionLost(SessionId id)
 {
     ASSERT_TRUE(false);
 }

@@ -19,7 +19,7 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/operation/RobotCleaningCyclePhaseInterface.h>
+#include <alljoyn/cdm/interfaces/operation/RobotCleaningCyclePhaseInterface.h>
 
 namespace ajn {
 namespace services {

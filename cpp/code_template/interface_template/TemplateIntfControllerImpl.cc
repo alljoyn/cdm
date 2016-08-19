@@ -16,9 +16,9 @@
 
 #include <qcc/Util.h>
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/HaeProxyBusObject.h>
-#include <alljoyn/hae/interfaces/{interface_category}/{interface_name}IntfControllerListener.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/CdmProxyBusObject.h>
+#include <alljoyn/cdm/interfaces/{interface_category}/{interface_name}IntfControllerListener.h>
 
 #include "{interface_name}IntfControllerImpl.h"
 
@@ -28,13 +28,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* {interface_name}IntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, HaeProxyBusObject& haeProxyObject)
+CdmInterface* {interface_name}IntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject)
 {
-    return new {interface_name}IntfControllerImpl(busAttachment, dynamic_cast<{interface_name}IntfControllerListener&>(listener), haeProxyObject);
+    return new {interface_name}IntfControllerImpl(busAttachment, dynamic_cast<{interface_name}IntfControllerListener&>(listener), cdmProxyObject);
 }
 
-{interface_name}IntfControllerImpl::{interface_name}IntfControllerImpl(BusAttachment& busAttachment, {interface_name}IntfControllerListener& listener, HaeProxyBusObject& haeProxyObject) :
-    InterfaceController(haeProxyObject),
+{interface_name}IntfControllerImpl::{interface_name}IntfControllerImpl(BusAttachment& busAttachment, {interface_name}IntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject) :
+    InterfaceController(cdmProxyObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener)
 {
@@ -46,7 +46,7 @@ HaeInterface* {interface_name}IntfControllerImpl::CreateInterface(BusAttachment&
 
 QStatus {interface_name}IntfControllerImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
     if (ER_OK != status) {
         QCC_LogError(status, ("%s: Interface init failed.", __func__));
         return status;

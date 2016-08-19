@@ -16,9 +16,9 @@
 
 #include <qcc/Util.h>
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/interfaces/operation/MoistureOutputLevelIntfControllerListener.h>
-#include <alljoyn/hae/HaeProxyBusObject.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/interfaces/operation/MoistureOutputLevelIntfControllerListener.h>
+#include <alljoyn/cdm/CdmProxyBusObject.h>
 #include "MoistureOutputLevelIntfControllerImpl.h"
 
 using namespace qcc;
@@ -27,13 +27,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* MoistureOutputLevelIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, HaeProxyBusObject& haeProxyObject)
+CdmInterface* MoistureOutputLevelIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject)
 {
-    return new MoistureOutputLevelIntfControllerImpl(busAttachment, dynamic_cast<MoistureOutputLevelIntfControllerListener&>(listener), haeProxyObject);
+    return new MoistureOutputLevelIntfControllerImpl(busAttachment, dynamic_cast<MoistureOutputLevelIntfControllerListener&>(listener), cdmProxyObject);
 }
 
-MoistureOutputLevelIntfControllerImpl::MoistureOutputLevelIntfControllerImpl(BusAttachment& busAttachment, MoistureOutputLevelIntfControllerListener& listener, HaeProxyBusObject& haeProxyObject) :
-    InterfaceController(haeProxyObject),
+MoistureOutputLevelIntfControllerImpl::MoistureOutputLevelIntfControllerImpl(BusAttachment& busAttachment, MoistureOutputLevelIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject) :
+    InterfaceController(cdmProxyObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener)
 {
@@ -45,7 +45,7 @@ MoistureOutputLevelIntfControllerImpl::~MoistureOutputLevelIntfControllerImpl()
 
 QStatus MoistureOutputLevelIntfControllerImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
     if (ER_OK != status) {
         QCC_LogError(status, ("%s: Interface init failed.", __func__));
         return status;

@@ -17,8 +17,8 @@
 #include <qcc/Debug.h>
 #include <qcc/String.h>
 
-#include <alljoyn/hae/HaeControllee.h>
-#include "HaeControlleeImpl.h"
+#include <alljoyn/cdm/CdmControllee.h>
+#include "CdmControlleeImpl.h"
 
 using namespace std;
 using namespace qcc;
@@ -26,12 +26,12 @@ using namespace qcc;
 namespace ajn {
 namespace services {
 
-HaeControllee::HaeControllee(BusAttachment& bus, HaeAboutData* aboutData) :
-    m_impl(new HaeControlleeImpl(bus, aboutData))
+CdmControllee::CdmControllee(BusAttachment& bus, CdmAboutData* aboutData) :
+    m_impl(new CdmControlleeImpl(bus, aboutData))
 {
 }
 
-HaeControllee::~HaeControllee()
+CdmControllee::~CdmControllee()
 {
     if (m_impl) {
         delete m_impl;
@@ -39,7 +39,7 @@ HaeControllee::~HaeControllee()
     }
 }
 
-QStatus HaeControllee::EnablePeerSecurity(const char* authMechanisms,
+QStatus CdmControllee::EnablePeerSecurity(const char* authMechanisms,
                                           AuthListener* authListener,
                                           const char* keyStoreFileName,
                                           bool isKeyStoreShared)
@@ -50,7 +50,7 @@ QStatus HaeControllee::EnablePeerSecurity(const char* authMechanisms,
     return m_impl->EnablePeerSecurity(authMechanisms, authListener, keyStoreFileName, isKeyStoreShared);
 }
 
-QStatus HaeControllee::Start()
+QStatus CdmControllee::Start()
 {
     if (!m_impl) {
         return ER_FAIL;
@@ -58,7 +58,7 @@ QStatus HaeControllee::Start()
     return m_impl->Start();
 }
 
-QStatus HaeControllee::Stop()
+QStatus CdmControllee::Stop()
 {
     if (!m_impl) {
         return ER_FAIL;
@@ -66,7 +66,7 @@ QStatus HaeControllee::Stop()
     return m_impl->Stop();
 }
 
-HaeInterface* HaeControllee::CreateInterface(const HaeInterfaceType type, const qcc::String& objectPath, InterfaceControlleeListener& listener)
+CdmInterface* CdmControllee::CreateInterface(const CdmInterfaceType type, const qcc::String& objectPath, InterfaceControlleeListener& listener)
 {
     if (!m_impl) {
         return NULL;
@@ -74,7 +74,7 @@ HaeInterface* HaeControllee::CreateInterface(const HaeInterfaceType type, const 
     return m_impl->CreateInterface(type, objectPath, listener);
 }
 
-const HaeInterfaceType HaeControllee::RegisterVendorDefinedInterface(const qcc::String& interfaceName, CreateIntfControlleeFptr createIntfControllee)
+const CdmInterfaceType CdmControllee::RegisterVendorDefinedInterface(const qcc::String& interfaceName, CreateIntfControlleeFptr createIntfControllee)
 {
     if (!m_impl) {
         return ER_FAIL;

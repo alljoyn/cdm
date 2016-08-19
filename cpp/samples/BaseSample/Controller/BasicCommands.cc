@@ -1,6 +1,6 @@
 #include <iomanip>
 #include <alljoyn/AboutObjectDescription.h>
-#include <alljoyn/hae/HaeAboutData.h>
+#include <alljoyn/cdm/CdmAboutData.h>
 #include "BasicCommands.h"
 #include "ControllerSample.h"
 
@@ -71,7 +71,7 @@ void BasicControllerCommands::OnCmdDeviceJoin(Commands* commands, std::string& c
     }
 }
 
-void BasicControllerCommands::PrintAboutData(ajn::services::HaeAboutData& aboutData)
+void BasicControllerCommands::PrintAboutData(ajn::services::CdmAboutData& aboutData)
 {
     cout << "About Data" << endl;
     size_t count = aboutData.GetFields();

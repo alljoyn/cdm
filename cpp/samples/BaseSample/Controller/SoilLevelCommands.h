@@ -18,8 +18,8 @@
 #define SOILLEVELCOMMANDS_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/SoilLevelIntfController.h>
-#include <alljoyn/hae/interfaces/operation/SoilLevelIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/SoilLevelIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/SoilLevelIntfControllerListener.h>
 
 class ControllerSample;
 

@@ -18,8 +18,8 @@
 #define BATTERYSTATUSLISTENER_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/BatteryStatusIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/BatteryStatusIntfControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/BatteryStatusIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/BatteryStatusIntfControlleeListener.h>
 
 using namespace ajn;
 using namespace services;

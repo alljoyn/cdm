@@ -19,7 +19,7 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/HaeInterface.h>
+#include <alljoyn/cdm/interfaces/CdmInterface.h>
 
 namespace ajn {
 namespace services {
@@ -27,7 +27,7 @@ namespace services {
 /**
  * RemoteControllability Interface class
  */
-class RemoteControllabilityInterface : public HaeInterface {
+class RemoteControllabilityInterface : public CdmInterface {
   public:
     /**
      * Constructor of RemoteControllability
@@ -43,7 +43,7 @@ class RemoteControllabilityInterface : public HaeInterface {
      * Get Interface Type
      * @return interface type
      */
-    const HaeInterfaceType GetInterfaceType() const { return REMOTE_CONTROLLABILITY_INTERFACE; }
+    const CdmInterfaceType GetInterfaceType() const { return REMOTE_CONTROLLABILITY_INTERFACE; }
 
     /**
      * Get Introspection Xml

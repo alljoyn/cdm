@@ -19,7 +19,7 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/HaeInterface.h>
+#include <alljoyn/cdm/interfaces/CdmInterface.h>
 
 namespace ajn {
 namespace services {
@@ -27,7 +27,7 @@ namespace services {
 /**
  * SoilLevel Interface class
  */
-class SoilLevelInterface : public HaeInterface {
+class SoilLevelInterface : public CdmInterface {
   public:
     /**
      * Constructor of SoilLevel
@@ -43,7 +43,7 @@ class SoilLevelInterface : public HaeInterface {
      * Get Interface Type
      * @return interface type
      */
-    const HaeInterfaceType GetInterfaceType() const { return SOIL_LEVEL_INTERFACE; }
+    const CdmInterfaceType GetInterfaceType() const { return SOIL_LEVEL_INTERFACE; }
 
     /**
      * Get Introspection Xml

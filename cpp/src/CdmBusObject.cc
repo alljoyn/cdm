@@ -14,12 +14,12 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/HaeBusObject.h>
-#include <alljoyn/hae/interfaces/HaeInterface.h>
-#include <alljoyn/hae/interfaces/HaeInterfaceTypes.h>
-#include <alljoyn/hae/interfaces/InterfaceControllee.h>
-#include <alljoyn/hae/interfaces/InterfaceControlleeListener.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/CdmBusObject.h>
+#include <alljoyn/cdm/interfaces/CdmInterface.h>
+#include <alljoyn/cdm/interfaces/CdmInterfaceTypes.h>
+#include <alljoyn/cdm/interfaces/InterfaceControllee.h>
+#include <alljoyn/cdm/interfaces/InterfaceControlleeListener.h>
 #include "InterfaceFactory.h"
 
 using namespace std;
@@ -28,48 +28,48 @@ using namespace qcc;
 namespace ajn {
 namespace services {
 
-HaeBusObject::HaeBusObject(BusAttachment& busAttachment, String const& objectPath) :
+CdmBusObject::CdmBusObject(BusAttachment& busAttachment, String const& objectPath) :
         BusObject(objectPath.c_str()),
         m_busAttachment(busAttachment)
 {
 
 }
 
-HaeBusObject::~HaeBusObject()
+CdmBusObject::~CdmBusObject()
 {
-    for (map<String, HaeInterface*>::iterator it = m_haeInterfacesMap.begin(); it != m_haeInterfacesMap.end(); ++it) {
+    for (map<String, CdmInterface*>::iterator it = m_cdmInterfacesMap.begin(); it != m_cdmInterfacesMap.end(); ++it) {
         delete it->second;
     }
     m_busAttachment.UnregisterBusObject(*this);
-    m_haeInterfacesMap.clear();
+    m_cdmInterfacesMap.clear();
 }
 
-QStatus HaeBusObject::Start()
+QStatus CdmBusObject::Start()
 {
     QStatus status = ER_OK;
 
     return status;
 }
 
-QStatus HaeBusObject::Stop()
+QStatus CdmBusObject::Stop()
 {
     return ER_OK;
 }
 
-HaeInterface* HaeBusObject::CreateInterface(const HaeInterfaceType type, InterfaceControlleeListener& listener)
+CdmInterface* CdmBusObject::CreateInterface(const CdmInterfaceType type, InterfaceControlleeListener& listener)
 {
     QStatus status = ER_OK;
-    HaeInterface* interface = NULL;
+    CdmInterface* interface = NULL;
 
     if (InterfaceTypesMap.find(type) == InterfaceTypesMap.end()) {
         QCC_LogError(ER_BAD_ARG_1, ("%s: Function call argument 1 is invalid.", __func__));
         return NULL;
     }
 
-    map<HaeInterfaceType, String>::const_iterator it = InterfaceTypesMap.find(type);
+    map<CdmInterfaceType, String>::const_iterator it = InterfaceTypesMap.find(type);
     if (it != InterfaceTypesMap.end()) {
         const String interfaceName = it->second;
-        if (m_haeInterfacesMap[interfaceName] == NULL) {
+        if (m_cdmInterfacesMap[interfaceName] == NULL) {
 
             interface = InterfaceFactory::GetInstance()->CreateIntfControllee(type, listener, *this);
             if (!interface) {
@@ -92,7 +92,7 @@ HaeInterface* HaeBusObject::CreateInterface(const HaeInterfaceType type, Interfa
                 delete interface;
                 return NULL;
             }
-            m_haeInterfacesMap[interfaceName] = interface;
+            m_cdmInterfacesMap[interfaceName] = interface;
 
         } else {
             QCC_LogError(ER_FAIL, ("%s: the interface instance already exists.", __func__));
@@ -105,12 +105,12 @@ HaeInterface* HaeBusObject::CreateInterface(const HaeInterfaceType type, Interfa
     return interface;
 }
 
-QStatus HaeBusObject::Get(const char* ifcName, const char* propName, MsgArg& val)
+QStatus CdmBusObject::Get(const char* ifcName, const char* propName, MsgArg& val)
 {
     QStatus status = ER_OK;
 
-    map<String, HaeInterface*>::const_iterator it = m_haeInterfacesMap.find(ifcName);
-    if (it != m_haeInterfacesMap.end() && it->second) {
+    map<String, CdmInterface*>::const_iterator it = m_cdmInterfacesMap.find(ifcName);
+    if (it != m_cdmInterfacesMap.end() && it->second) {
         InterfaceControllee* controllee = dynamic_cast<InterfaceControllee*>(it->second);
         if (controllee) {
             status = controllee->OnGetProperty(propName, val);
@@ -126,12 +126,12 @@ QStatus HaeBusObject::Get(const char* ifcName, const char* propName, MsgArg& val
     return status;
 }
 
-QStatus HaeBusObject::Set(const char* ifcName, const char* propName, MsgArg& val)
+QStatus CdmBusObject::Set(const char* ifcName, const char* propName, MsgArg& val)
 {
     QStatus status = ER_OK;
 
-    map<String, HaeInterface*>::const_iterator it = m_haeInterfacesMap.find(ifcName);
-    if (it != m_haeInterfacesMap.end() && it->second) {
+    map<String, CdmInterface*>::const_iterator it = m_cdmInterfacesMap.find(ifcName);
+    if (it != m_cdmInterfacesMap.end() && it->second) {
         InterfaceControllee* controllee = dynamic_cast<InterfaceControllee*>(it->second);
         if (controllee) {
             status = controllee->OnSetProperty(propName, val);
@@ -147,13 +147,13 @@ QStatus HaeBusObject::Set(const char* ifcName, const char* propName, MsgArg& val
     return status;
 }
 
-void HaeBusObject::OnMethodHandler(const InterfaceDescription::Member* member, Message& msg)
+void CdmBusObject::OnMethodHandler(const InterfaceDescription::Member* member, Message& msg)
 {
 
     QStatus status = ER_OK;
 
-    map<String, HaeInterface*>::const_iterator it = m_haeInterfacesMap.find(member->iface->GetName());
-    if (it != m_haeInterfacesMap.end() && it->second) {
+    map<String, CdmInterface*>::const_iterator it = m_cdmInterfacesMap.find(member->iface->GetName());
+    if (it != m_cdmInterfacesMap.end() && it->second) {
 
         InterfaceControllee* controllee = dynamic_cast<InterfaceControllee*>(it->second);
         if (controllee) {
@@ -171,7 +171,7 @@ void HaeBusObject::OnMethodHandler(const InterfaceDescription::Member* member, M
 }
 
 
-QStatus HaeBusObject::AddInterfaceHandlers(HaeInterface* interface)
+QStatus CdmBusObject::AddInterfaceHandlers(CdmInterface* interface)
 {
     QStatus status = ER_OK;
 
@@ -180,7 +180,7 @@ QStatus HaeBusObject::AddInterfaceHandlers(HaeInterface* interface)
     const InterfaceControllee::MethodHandlers& handlers = interfaceCtrll->GetMethodHanders();
 
     for (InterfaceControllee::MethodHandlers::const_iterator it = handlers.begin(); it != handlers.end(); ++it) {
-        status = AddMethodHandler(it->first, static_cast<MessageReceiver::MethodHandler>(&HaeBusObject::OnMethodHandler));
+        status = AddMethodHandler(it->first, static_cast<MessageReceiver::MethodHandler>(&CdmBusObject::OnMethodHandler));
         if (status != ER_OK) {
             QCC_LogError(status, ("%s: could not add method handler.", __func__));
             return status;

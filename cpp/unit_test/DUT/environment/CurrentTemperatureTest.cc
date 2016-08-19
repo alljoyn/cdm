@@ -14,10 +14,10 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include "HaeTest.h"
+#include "CdmTest.h"
 
-#include <alljoyn/hae/interfaces/environment/CurrentTemperatureIntfController.h>
-#include <alljoyn/hae/interfaces/environment/CurrentTemperatureIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/environment/CurrentTemperatureIntfController.h>
+#include <alljoyn/cdm/interfaces/environment/CurrentTemperatureIntfControllerListener.h>
 
 
 class CurrentTemperatureListener : public CurrentTemperatureIntfControllerListener
@@ -61,13 +61,13 @@ public:
     }
 };
 
-TEST_F(HAETest, HAE_v1_CurrentTemperature)
+TEST_F(CDMTest, CDM_v1_CurrentTemperature)
 {
     WaitForControllee(CURRENT_TEMPERATURE_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
         CurrentTemperatureListener listener;
-        HaeInterface* interface = m_controller->CreateInterface(CURRENT_TEMPERATURE_INTERFACE, m_interfaces[i].busName,
+        CdmInterface* interface = m_controller->CreateInterface(CURRENT_TEMPERATURE_INTERFACE, m_interfaces[i].busName,
                                                                 qcc::String(m_interfaces[i].objectPath.c_str()), m_interfaces[i].sessionId, listener);
         CurrentTemperatureIntfController* controller = static_cast<CurrentTemperatureIntfController*>(interface);
         QStatus status = ER_FAIL;

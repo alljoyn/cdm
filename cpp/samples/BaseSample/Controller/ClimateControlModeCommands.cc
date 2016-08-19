@@ -15,7 +15,7 @@
  ******************************************************************************/
 
 #include <cstdlib>
-#include <alljoyn/hae/interfaces/HaeInterfaceTypes.h>
+#include <alljoyn/cdm/interfaces/CdmInterfaceTypes.h>
 #include "ClimateControlModeCommands.h"
 #include "ControllerSample.h"
 
@@ -105,13 +105,13 @@ ClimateControlModeCommands::~ClimateControlModeCommands()
 void ClimateControlModeCommands::Init()
 {
     if (!m_intfController) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(CLIMATE_CONTROL_MODE_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(CLIMATE_CONTROL_MODE_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfController = static_cast<ClimateControlModeIntfController*>(haeInterface);
+        m_intfController = static_cast<ClimateControlModeIntfController*>(cdmInterface);
     }
 
     RegisterCommand(&ClimateControlModeCommands::OnCmdGetMode, "getmode", "Get Mode");

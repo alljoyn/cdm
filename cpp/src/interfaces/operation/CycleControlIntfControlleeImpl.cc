@@ -16,12 +16,12 @@
 
 #include <qcc/Util.h>
 #include <algorithm>
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/interfaces/operation/CycleControlIntfControlleeListener.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/interfaces/operation/CycleControlIntfControlleeListener.h>
 
 
 #include "CycleControlIntfControlleeImpl.h"
-#include <alljoyn/hae/HaeBusObject.h>
+#include <alljoyn/cdm/CdmBusObject.h>
 
 using namespace qcc;
 using namespace std;
@@ -29,13 +29,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* CycleControlIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject)
+CdmInterface* CycleControlIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject)
 {
-    return new CycleControlIntfControlleeImpl(busAttachment, dynamic_cast<CycleControlIntfControlleeListener&>(listener), haeBusObject);
+    return new CycleControlIntfControlleeImpl(busAttachment, dynamic_cast<CycleControlIntfControlleeListener&>(listener), cdmBusObject);
 }
 
-CycleControlIntfControlleeImpl::CycleControlIntfControlleeImpl(BusAttachment& busAttachment, CycleControlIntfControlleeListener& listener, HaeBusObject& haeBusObject) :
-    InterfaceControllee(haeBusObject),
+CycleControlIntfControlleeImpl::CycleControlIntfControlleeImpl(BusAttachment& busAttachment, CycleControlIntfControlleeListener& listener, CdmBusObject& cdmBusObject) :
+    InterfaceControllee(cdmBusObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener),
     m_currentState(OPERATIONAL_STATE_READY_TO_START)
@@ -48,7 +48,7 @@ CycleControlIntfControlleeImpl::~CycleControlIntfControlleeImpl()
 
 QStatus CycleControlIntfControlleeImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
 
     const InterfaceDescription::Member* member = m_interfaceDescription->GetMember(s_method_ExecuteCommand.c_str());
     MessageReceiver::MethodHandler methodHandler = static_cast<MessageReceiver::MethodHandler>(&CycleControlIntfControlleeImpl::OnExecuteCommand);
@@ -186,7 +186,7 @@ void CycleControlIntfControlleeImpl::OnExecuteCommand(const InterfaceDescription
         it = std::find(m_supportedCommands.begin(),m_supportedCommands.end(),command);
         if(it == m_supportedCommands.end())
         {
-            m_busObject.ReplyMethodCall(msg, HaeInterface::GetInterfaceErrorName(ErrorCode::INVALID_VALUE).c_str(), HaeInterface::GetInterfaceErrorMessage(ErrorCode::INVALID_VALUE).c_str());
+            m_busObject.ReplyMethodCall(msg, CdmInterface::GetInterfaceErrorName(ErrorCode::INVALID_VALUE).c_str(), CdmInterface::GetInterfaceErrorMessage(ErrorCode::INVALID_VALUE).c_str());
             return;
         }
 
@@ -202,7 +202,7 @@ void CycleControlIntfControlleeImpl::OnExecuteCommand(const InterfaceDescription
         {
             if(error != ErrorCode::NOT_ERROR)
             {
-                m_busObject.ReplyMethodCall(msg, HaeInterface::GetInterfaceErrorName(error).c_str(), HaeInterface::GetInterfaceErrorMessage(error).c_str());
+                m_busObject.ReplyMethodCall(msg, CdmInterface::GetInterfaceErrorName(error).c_str(), CdmInterface::GetInterfaceErrorMessage(error).c_str());
             }
             else
             {

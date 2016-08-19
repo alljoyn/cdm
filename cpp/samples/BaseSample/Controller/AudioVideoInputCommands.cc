@@ -15,7 +15,7 @@
  ******************************************************************************/
 
 #include <cstdlib>
-#include <alljoyn/hae/interfaces/HaeInterfaceTypes.h>
+#include <alljoyn/cdm/interfaces/CdmInterfaceTypes.h>
 #include "AudioVideoInputCommands.h"
 #include "ControllerSample.h"
 
@@ -93,13 +93,13 @@ AudioVideoInputCommands::~AudioVideoInputCommands()
 void AudioVideoInputCommands::Init()
 {
     if (!m_intfController) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(AUDIO_VIDEO_INPUT_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(AUDIO_VIDEO_INPUT_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfController = static_cast<AudioVideoInputIntfController*>(haeInterface);
+        m_intfController = static_cast<AudioVideoInputIntfController*>(cdmInterface);
     }
 
     RegisterCommand(&AudioVideoInputCommands::OnCmdGetInputSourceId, "gis", "get input source id");

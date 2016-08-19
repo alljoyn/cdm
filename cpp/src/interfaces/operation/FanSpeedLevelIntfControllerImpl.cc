@@ -16,9 +16,9 @@
 
 #include <qcc/Util.h>
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/interfaces/operation/FanSpeedLevelIntfControllerListener.h>
-#include <alljoyn/hae/HaeProxyBusObject.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/interfaces/operation/FanSpeedLevelIntfControllerListener.h>
+#include <alljoyn/cdm/CdmProxyBusObject.h>
 #include "FanSpeedLevelIntfControllerImpl.h"
 
 using namespace qcc;
@@ -27,13 +27,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* FanSpeedLevelIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, HaeProxyBusObject& haeProxyObject)
+CdmInterface* FanSpeedLevelIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject)
 {
-    return new FanSpeedLevelIntfControllerImpl(busAttachment, dynamic_cast<FanSpeedLevelIntfControllerListener&>(listener), haeProxyObject);
+    return new FanSpeedLevelIntfControllerImpl(busAttachment, dynamic_cast<FanSpeedLevelIntfControllerListener&>(listener), cdmProxyObject);
 }
 
-FanSpeedLevelIntfControllerImpl::FanSpeedLevelIntfControllerImpl(BusAttachment& busAttachment, FanSpeedLevelIntfControllerListener& listener, HaeProxyBusObject& haeProxyObject) :
-    InterfaceController(haeProxyObject),
+FanSpeedLevelIntfControllerImpl::FanSpeedLevelIntfControllerImpl(BusAttachment& busAttachment, FanSpeedLevelIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject) :
+    InterfaceController(cdmProxyObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener)
 {
@@ -45,7 +45,7 @@ FanSpeedLevelIntfControllerImpl::~FanSpeedLevelIntfControllerImpl()
 
 QStatus FanSpeedLevelIntfControllerImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
     if (ER_OK != status) {
         QCC_LogError(status, ("%s: Interface init failed.", __func__));
         return status;

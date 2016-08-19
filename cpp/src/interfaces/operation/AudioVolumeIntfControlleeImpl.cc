@@ -16,9 +16,9 @@
 
 #include <qcc/Util.h>
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/interfaces/operation/AudioVolumeIntfControlleeListener.h>
-#include <alljoyn/hae/HaeBusObject.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/interfaces/operation/AudioVolumeIntfControlleeListener.h>
+#include <alljoyn/cdm/CdmBusObject.h>
 #include "AudioVolumeIntfControlleeImpl.h"
 
 using namespace qcc;
@@ -27,13 +27,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* AudioVolumeIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject)
+CdmInterface* AudioVolumeIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject)
 {
-    return new AudioVolumeIntfControlleeImpl(busAttachment, static_cast<AudioVolumeIntfControlleeListener&>(listener), haeBusObject);
+    return new AudioVolumeIntfControlleeImpl(busAttachment, static_cast<AudioVolumeIntfControlleeListener&>(listener), cdmBusObject);
 }
 
-AudioVolumeIntfControlleeImpl::AudioVolumeIntfControlleeImpl(BusAttachment& busAttachment, AudioVolumeIntfControlleeListener& listener, HaeBusObject& haeBusObject) :
-    InterfaceControllee(haeBusObject),
+AudioVolumeIntfControlleeImpl::AudioVolumeIntfControlleeImpl(BusAttachment& busAttachment, AudioVolumeIntfControlleeListener& listener, CdmBusObject& cdmBusObject) :
+    InterfaceControllee(cdmBusObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener),
     m_volume(0),
@@ -48,7 +48,7 @@ AudioVolumeIntfControlleeImpl::~AudioVolumeIntfControlleeImpl()
 
 QStatus AudioVolumeIntfControlleeImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
 
     return status;
 }

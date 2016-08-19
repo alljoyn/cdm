@@ -18,8 +18,8 @@
 #define CURRENTHUMIDITYCOMMANDS_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/environment/CurrentHumidityIntfController.h>
-#include <alljoyn/hae/interfaces/environment/CurrentHumidityIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/environment/CurrentHumidityIntfController.h>
+#include <alljoyn/cdm/interfaces/environment/CurrentHumidityIntfControllerListener.h>
 
 class ControllerSample;
 

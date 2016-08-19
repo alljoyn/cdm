@@ -14,8 +14,8 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#ifndef HAEINTERFACEERRORS_H_
-#define HAEINTERFACEERRORS_H_
+#ifndef CDMINTERFACEERRORS_H_
+#define CDMINTERFACEERRORS_H_
 
 #include <map>
 #include <qcc/String.h>
@@ -38,4 +38,4 @@ typedef enum {
 } //namespace services
 } //namespace ajn
 
-#endif /* HAEINTERFACEERRORS_H_ */
+#endif /* CDMINTERFACEERRORS_H_ */

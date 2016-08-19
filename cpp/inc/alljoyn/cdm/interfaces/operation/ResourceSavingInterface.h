@@ -24,7 +24,7 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/HaeInterface.h>
+#include <alljoyn/cdm/interfaces/CdmInterface.h>
 
 namespace ajn {
 namespace services {
@@ -32,7 +32,7 @@ namespace services {
 /**
  * ResourceSaving Interface class
  */
-class ResourceSavingInterface : public HaeInterface {
+class ResourceSavingInterface : public CdmInterface {
   public:
     /**
      * Constructor of ResourceSavingInterface
@@ -48,7 +48,7 @@ class ResourceSavingInterface : public HaeInterface {
      * Get Interface Type
      * @return Interface type
      */
-    const HaeInterfaceType GetInterfaceType() const { return RESOURCE_SAVING_INTERFACE; }
+    const CdmInterfaceType GetInterfaceType() const { return RESOURCE_SAVING_INTERFACE; }
 
     /**
      * Get Introspection Xml

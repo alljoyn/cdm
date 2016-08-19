@@ -20,15 +20,15 @@
 #include <alljoyn/Status.h>
 #include <alljoyn/BusAttachment.h>
 #include <alljoyn/InterfaceDescription.h>
-#include <alljoyn/hae/interfaces/InterfaceControllee.h>
-#include <alljoyn/hae/interfaces/InterfaceControlleeListener.h>
-#include <alljoyn/hae/interfaces/operation/DishWashingCyclePhaseIntfControllee.h>
+#include <alljoyn/cdm/interfaces/InterfaceControllee.h>
+#include <alljoyn/cdm/interfaces/InterfaceControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/DishWashingCyclePhaseIntfControllee.h>
 
 namespace ajn {
 namespace services {
 
 class DishWashingCyclePhaseIntfControlleeListener;
-class HaeBusObject;
+class CdmBusObject;
 
 /**
  * DishWashingCyclePhase Interface Controllee implementation class
@@ -38,12 +38,12 @@ class DishWashingCyclePhaseIntfControlleeImpl : public InterfaceControllee, publ
     /**
      * Create interface
      */
-    static HaeInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject);
 
     /**
      * Constructor of DishWashingCyclePhaseIntfControlleeImpl
      */
-    DishWashingCyclePhaseIntfControlleeImpl(BusAttachment& busAttachment, DishWashingCyclePhaseIntfControlleeListener& listener, HaeBusObject& haeBusObject);
+    DishWashingCyclePhaseIntfControlleeImpl(BusAttachment& busAttachment, DishWashingCyclePhaseIntfControlleeListener& listener, CdmBusObject& cdmBusObject);
 
     /**
      * Destructor of DishWashingCyclePhaseIntfControlleeImpl

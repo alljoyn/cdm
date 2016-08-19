@@ -19,7 +19,7 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/environment/CurrentAirQualityLevelInterface.h>
+#include <alljoyn/cdm/interfaces/environment/CurrentAirQualityLevelInterface.h>
 
 namespace ajn {
 namespace services {

@@ -14,11 +14,11 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include "HaeTest.h"
+#include "CdmTest.h"
 #include <algorithm>
 
-#include <alljoyn/hae/interfaces/environment/WaterLevelIntfController.h>
-#include <alljoyn/hae/interfaces/environment/WaterLevelIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/environment/WaterLevelIntfController.h>
+#include <alljoyn/cdm/interfaces/environment/WaterLevelIntfControllerListener.h>
 
 class WaterLevelListener : public WaterLevelIntfControllerListener
 {
@@ -74,14 +74,14 @@ public:
     }
 };
 
-TEST_F(HAETest, HAE_v1_WaterLevel)
+TEST_F(CDMTest, CDM_v1_WaterLevel)
 {
     WaitForControllee(WATER_LEVEL_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
 
         WaterLevelListener listener;
-        HaeInterface* interface = m_controller->CreateInterface(WATER_LEVEL_INTERFACE, m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()),
+        CdmInterface* interface = m_controller->CreateInterface(WATER_LEVEL_INTERFACE, m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()),
                                                                 m_interfaces[i].sessionId, listener);
         WaterLevelIntfController* controller = static_cast<WaterLevelIntfController*>(interface);
         QStatus status = ER_FAIL;

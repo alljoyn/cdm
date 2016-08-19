@@ -19,7 +19,7 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/HaeInterface.h>
+#include <alljoyn/cdm/interfaces/CdmInterface.h>
 
 namespace ajn {
 namespace services {
@@ -27,7 +27,7 @@ namespace services {
 /**
  * FanSpeedLevel Interface class
  */
-class FanSpeedLevelInterface : public HaeInterface {
+class FanSpeedLevelInterface : public CdmInterface {
   public:
     /**
      * Constructor of FanSpeedLevel
@@ -43,7 +43,7 @@ class FanSpeedLevelInterface : public HaeInterface {
      * Get Interface Type
      * @return interface type
      */
-    const HaeInterfaceType GetInterfaceType() const { return FAN_SPEED_LEVEL_INTERFACE; }
+    const CdmInterfaceType GetInterfaceType() const { return FAN_SPEED_LEVEL_INTERFACE; }
 
     /**
      * Get Introspection Xml

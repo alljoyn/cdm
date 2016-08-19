@@ -89,13 +89,13 @@ ChannelCommands::~ChannelCommands()
 void ChannelCommands::Init()
 {
     if (!m_intfControllee) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(CHANNEL_INTERFACE, m_objectPath, m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(CHANNEL_INTERFACE, m_objectPath, m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfControllee = static_cast<ChannelIntfControllee*>(haeInterface);
+        m_intfControllee = static_cast<ChannelIntfControllee*>(cdmInterface);
 
         RegisterCommand(&ChannelCommands::OnCmdGetChannelId, "gci", "get channel id");
         RegisterCommand(&ChannelCommands::OnCmdSetChannelId, "sci", "set channel id (use 'sci <channel id>'");

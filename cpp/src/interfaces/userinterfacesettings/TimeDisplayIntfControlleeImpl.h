@@ -20,15 +20,15 @@
 #include <alljoyn/Status.h>
 #include <alljoyn/BusAttachment.h>
 #include <alljoyn/InterfaceDescription.h>
-#include <alljoyn/hae/interfaces/InterfaceControllee.h>
-#include <alljoyn/hae/interfaces/InterfaceControlleeListener.h>
-#include <alljoyn/hae/interfaces/userinterfacesettings/TimeDisplayIntfControllee.h>
+#include <alljoyn/cdm/interfaces/InterfaceControllee.h>
+#include <alljoyn/cdm/interfaces/InterfaceControlleeListener.h>
+#include <alljoyn/cdm/interfaces/userinterfacesettings/TimeDisplayIntfControllee.h>
 
 namespace ajn {
 namespace services {
 
 class TimeDisplayIntfControlleeListener;
-class HaeBusObject;
+class CdmBusObject;
 
 /**
  * TimeDisplay Interface Controllee implementation class
@@ -38,12 +38,12 @@ class TimeDisplayIntfControlleeImpl : public InterfaceControllee, public TimeDis
     /**
      * Create interface
      */
-    static HaeInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject);
 
     /**
      * Constructor of TimeDisplayIntfControlleeImpl
      */
-    TimeDisplayIntfControlleeImpl(BusAttachment& busAttachment, TimeDisplayIntfControlleeListener& listener, HaeBusObject& haeBusObject);
+    TimeDisplayIntfControlleeImpl(BusAttachment& busAttachment, TimeDisplayIntfControlleeListener& listener, CdmBusObject& cdmBusObject);
 
     /**
      * Destructor of TimeDisplayIntfControlleeImpl

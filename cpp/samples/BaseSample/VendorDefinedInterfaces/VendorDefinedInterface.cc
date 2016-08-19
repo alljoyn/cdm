@@ -14,7 +14,7 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include <alljoyn/hae/LogModule.h>
+#include <alljoyn/cdm/LogModule.h>
 #include "VendorDefinedInterface.h"
 
 namespace ajn {

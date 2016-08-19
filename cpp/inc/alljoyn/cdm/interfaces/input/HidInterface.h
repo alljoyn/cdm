@@ -21,7 +21,7 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/HaeInterface.h>
+#include <alljoyn/cdm/interfaces/CdmInterface.h>
 
 namespace ajn {
 namespace services {
@@ -29,7 +29,7 @@ namespace services {
 /**
  * Hid Interface class
  */
-class HidInterface : public HaeInterface {
+class HidInterface : public CdmInterface {
   public:
     /**
      * InputEvent struct
@@ -66,7 +66,7 @@ class HidInterface : public HaeInterface {
      * Get Interface Type
      * @return Interface type
      */
-    const HaeInterfaceType GetInterfaceType() const { return HID_INTERFACE; }
+    const CdmInterfaceType GetInterfaceType() const { return HID_INTERFACE; }
 
     /**
      * Get Introspection Xml

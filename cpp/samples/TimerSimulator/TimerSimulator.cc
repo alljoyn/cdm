@@ -7,13 +7,13 @@
 #include <qcc/String.h>
 #include <alljoyn/Init.h>
 #include <alljoyn/version.h>
-#include <alljoyn/hae/DeviceTypeDescription.h>
+#include <alljoyn/cdm/DeviceTypeDescription.h>
 #include "TestControllee.h"
 #include <signal.h>
 #include <limits>
 
 bool interrupt = false;
-QStatus FillAboutData(HaeAboutData* aboutData)
+QStatus FillAboutData(CdmAboutData* aboutData)
 {
     String const& defaultLanguage = "en";
     String device_id = "deviceID";
@@ -61,14 +61,14 @@ QStatus FillAboutData(HaeAboutData* aboutData)
     aboutData->SetManufacturer("Nik", "en");
     aboutData->SetSupportUrl("http://www.alljoyn.org");
 
-    // HAE custom metadata fields
+    // CDM custom metadata fields
     aboutData->SetCountryOfProduction("SP", "en");
     aboutData->SetCorporateBrand("TestControllee", "en");
     aboutData->SetProductBrand("Model 1", "en");
     aboutData->SetLocation("Basement", "en");
 
     DeviceTypeDescription description;
-    description.AddDeviceType(OTHER, "/Hae/TestControllee");
+    description.AddDeviceType(OTHER, "/Cdm/TestControllee");
     aboutData->SetDeviceTypeDescription(&description);
 
     if (!aboutData->IsValid()) {
@@ -118,7 +118,7 @@ int main()
 #endif
     printf("AllJoyn Library version: %s\n", ajn::GetVersion());
     printf("AllJoyn Library build info: %s\n", ajn::GetBuildInfo());
-    QCC_SetLogLevels("HAE_MODULE_LOG_NAME=15;");
+    QCC_SetLogLevels("CDM_MODULE_LOG_NAME=15;");
 
     BusAttachment* bus = new BusAttachment("TimerSimulator", true);
     if (!bus) {
@@ -126,7 +126,7 @@ int main()
         exit(1);
     }
 
-    HaeAboutData* aboutData = new HaeAboutData();
+    CdmAboutData* aboutData = new CdmAboutData();
     if (!aboutData) {
         printf("AboutData creation failed.\n");
         delete bus;

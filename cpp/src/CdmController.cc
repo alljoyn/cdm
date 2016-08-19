@@ -16,22 +16,22 @@
 
 #include <qcc/Debug.h>
 #include <alljoyn/Session.h>
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/HaeController.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/CdmController.h>
 
-#include "HaeControllerImpl.h"
+#include "CdmControllerImpl.h"
 
 using namespace ajn;
 using namespace services;
 using namespace qcc;
 
-HaeController::HaeController(BusAttachment& bus, DeviceListener* listener)
-    : m_impl(new HaeControllerImpl(bus, listener))
+CdmController::CdmController(BusAttachment& bus, DeviceListener* listener)
+    : m_impl(new CdmControllerImpl(bus, listener))
 {
 
 }
 
-HaeController::~HaeController()
+CdmController::~CdmController()
 {
     if (m_impl) {
         delete m_impl;
@@ -39,7 +39,7 @@ HaeController::~HaeController()
     }
 }
 
-QStatus HaeController::EnablePeerSecurity(const char* authMechanisms,
+QStatus CdmController::EnablePeerSecurity(const char* authMechanisms,
                                           AuthListener* authListener,
                                           const char* keyStoreFileName,
                                           bool isKeyStoreShared)
@@ -50,7 +50,7 @@ QStatus HaeController::EnablePeerSecurity(const char* authMechanisms,
     return m_impl->EnablePeerSecurity(authMechanisms, authListener, keyStoreFileName, isKeyStoreShared);
 }
 
-QStatus HaeController::Init(const InterestDeviceList& list)
+QStatus CdmController::Init(const InterestDeviceList& list)
 {
     if (!m_impl) {
         return ER_FAIL;
@@ -58,7 +58,7 @@ QStatus HaeController::Init(const InterestDeviceList& list)
     return m_impl->Init(list);
 }
 
-QStatus HaeController::Start()
+QStatus CdmController::Start()
 {
     if (!m_impl) {
         return ER_FAIL;
@@ -66,7 +66,7 @@ QStatus HaeController::Start()
     return m_impl->Start();
 }
 
-QStatus HaeController::Stop()
+QStatus CdmController::Stop()
 {
     if (!m_impl) {
         return ER_FAIL;
@@ -74,7 +74,7 @@ QStatus HaeController::Stop()
     return m_impl->Stop();
 }
 
-QStatus HaeController::JoinDevice(const std::string& busName, SessionPort port, const HaeAboutData& data,
+QStatus CdmController::JoinDevice(const std::string& busName, SessionPort port, const CdmAboutData& data,
                                   AboutObjectDescription& description)
 {
     if (!m_impl) {
@@ -84,7 +84,7 @@ QStatus HaeController::JoinDevice(const std::string& busName, SessionPort port, 
 }
 
 /*
-QStatus HaeController::GetAboutObjectDescription(const DeviceInfo& deviceInfo, AboutObjectDescription& aboutObjectDesc)
+QStatus CdmController::GetAboutObjectDescription(const DeviceInfo& deviceInfo, AboutObjectDescription& aboutObjectDesc)
 {
     if (!m_impl) {
         return ER_FAIL;
@@ -94,9 +94,9 @@ QStatus HaeController::GetAboutObjectDescription(const DeviceInfo& deviceInfo, A
 }
 */
 
-HaeInterface* HaeController::CreateInterface(const HaeInterfaceType type, const std::string& busName, const qcc::String& objectPath, const SessionId& sessionId, InterfaceControllerListener& listener)
+CdmInterface* CdmController::CreateInterface(const CdmInterfaceType type, const std::string& busName, const qcc::String& objectPath, const SessionId& sessionId, InterfaceControllerListener& listener)
 {
-    HaeInterface* interface = NULL;
+    CdmInterface* interface = NULL;
 
     if (m_impl) {
         return m_impl->CreateInterface(type, busName, objectPath, sessionId, listener);
@@ -105,9 +105,9 @@ HaeInterface* HaeController::CreateInterface(const HaeInterfaceType type, const 
     return interface;
 }
 
-const HaeInterfaceType HaeController::RegisterVendorDefinedInterface(const qcc::String& interfaceName, CreateIntfControllerFptr createIntfController)
+const CdmInterfaceType CdmController::RegisterVendorDefinedInterface(const qcc::String& interfaceName, CreateIntfControllerFptr createIntfController)
 {
-    HaeInterfaceType type = UNDEFINED_INTERFACE;
+    CdmInterfaceType type = UNDEFINED_INTERFACE;
 
     if (m_impl) {
         return m_impl->RegisterVendorDefinedInterface(interfaceName, createIntfController);

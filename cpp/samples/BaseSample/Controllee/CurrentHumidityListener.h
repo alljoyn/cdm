@@ -18,8 +18,8 @@
 #define CURRENTHUMIDITYLISTENER_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/environment/CurrentHumidityIntfControllee.h>
-#include <alljoyn/hae/interfaces/environment/CurrentHumidityIntfControlleeListener.h>
+#include <alljoyn/cdm/interfaces/environment/CurrentHumidityIntfControllee.h>
+#include <alljoyn/cdm/interfaces/environment/CurrentHumidityIntfControlleeListener.h>
 
 using namespace ajn;
 using namespace services;

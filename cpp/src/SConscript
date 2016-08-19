@@ -12,32 +12,32 @@
 #    ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 #    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-Import('hae_env')
+Import('cdm_env')
 
 # Sources
-srcs = hae_env.Glob('*.cc')
-srcs += hae_env.Glob('interfaces/*.cc')
-srcs += hae_env.Glob('interfaces/operation/*.cc')
-srcs += hae_env.Glob('interfaces/environment/*.cc')
-srcs += hae_env.Glob('interfaces/input/*.cc')
-srcs += hae_env.Glob('interfaces/userinterfacesettings/*.cc')
-hae_env.Append(CPPPATH = '.');
+srcs = cdm_env.Glob('*.cc')
+srcs += cdm_env.Glob('interfaces/*.cc')
+srcs += cdm_env.Glob('interfaces/operation/*.cc')
+srcs += cdm_env.Glob('interfaces/environment/*.cc')
+srcs += cdm_env.Glob('interfaces/input/*.cc')
+srcs += cdm_env.Glob('interfaces/userinterfacesettings/*.cc')
+cdm_env.Append(CPPPATH = '.');
 
 # Platform specific sources
-if hae_env['OS'] == 'android':
-    srcs += hae_env.Glob('$OS/*.cc')
+if cdm_env['OS'] == 'android':
+    srcs += cdm_env.Glob('$OS/*.cc')
 else:
-    srcs += hae_env.Glob('$OS_GROUP/*.cc')
+    srcs += cdm_env.Glob('$OS_GROUP/*.cc')
 
 libs = []
 
 # Static library
-objs = hae_env.Object(srcs)
-libs.append(hae_env.StaticLibrary('alljoyn_hae', objs))
+objs = cdm_env.Object(srcs)
+libs.append(cdm_env.StaticLibrary('alljoyn_cdm', objs))
 
 # Shared library
-if hae_env.get('LIBTYPE', 'static') != 'static':
-    shobjs = hae_env.SharedObject(srcs)
-    libs.append(hae_env.SharedLibrary('alljoyn_hae', shobjs))
+if cdm_env.get('LIBTYPE', 'static') != 'static':
+    shobjs = cdm_env.SharedObject(srcs)
+    libs.append(cdm_env.SharedLibrary('alljoyn_cdm', shobjs))
 
 Return('libs')

@@ -16,9 +16,9 @@
 
 #include <qcc/Util.h>
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/interfaces/operation/OnControlIntfControlleeListener.h>
-#include <alljoyn/hae/HaeBusObject.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/interfaces/operation/OnControlIntfControlleeListener.h>
+#include <alljoyn/cdm/CdmBusObject.h>
 #include "OnControlIntfControlleeImpl.h"
 
 using namespace qcc;
@@ -27,13 +27,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* OnControlIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject)
+CdmInterface* OnControlIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject)
 {
-    return new OnControlIntfControlleeImpl(busAttachment, dynamic_cast<OnControlIntfControlleeListener&>(listener), haeBusObject);
+    return new OnControlIntfControlleeImpl(busAttachment, dynamic_cast<OnControlIntfControlleeListener&>(listener), cdmBusObject);
 }
 
-OnControlIntfControlleeImpl::OnControlIntfControlleeImpl(BusAttachment& busAttachment, OnControlIntfControlleeListener& listener, HaeBusObject& haeBusObject) :
-    InterfaceControllee(haeBusObject),
+OnControlIntfControlleeImpl::OnControlIntfControlleeImpl(BusAttachment& busAttachment, OnControlIntfControlleeListener& listener, CdmBusObject& cdmBusObject) :
+    InterfaceControllee(cdmBusObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener)
 {
@@ -45,7 +45,7 @@ OnControlIntfControlleeImpl::~OnControlIntfControlleeImpl()
 
 QStatus OnControlIntfControlleeImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
 
     const InterfaceDescription::Member* member = m_interfaceDescription->GetMember(s_method_SwitchOn.c_str());
     MessageReceiver::MethodHandler methodHandler = static_cast<MessageReceiver::MethodHandler>(&OnControlIntfControlleeImpl::OnSwitchOn);
@@ -118,8 +118,8 @@ void OnControlIntfControlleeImpl::OnSwitchOn(const InterfaceDescription::Member*
             QCC_LogError(status, ("%s: status is not ER_OK, but errorCode was not set.", __func__));
             m_busObject.ReplyMethodCall(msg, status);
         } else {
-                m_busObject.ReplyMethodCall(msg, HaeInterface::GetInterfaceErrorName(errorCode).c_str(),
-                        HaeInterface::GetInterfaceErrorMessage(errorCode).c_str());
+                m_busObject.ReplyMethodCall(msg, CdmInterface::GetInterfaceErrorName(errorCode).c_str(),
+                        CdmInterface::GetInterfaceErrorMessage(errorCode).c_str());
         }
     }
 }

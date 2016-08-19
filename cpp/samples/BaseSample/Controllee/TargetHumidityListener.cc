@@ -76,13 +76,13 @@ TargetHumidityCommands::~TargetHumidityCommands()
 void TargetHumidityCommands::Init()
 {
     if (!m_intfControllee) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(TARGET_HUMIDITY_INTERFACE, m_objectPath, m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(TARGET_HUMIDITY_INTERFACE, m_objectPath, m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfControllee = static_cast<TargetHumidityIntfControllee*>(haeInterface);
+        m_intfControllee = static_cast<TargetHumidityIntfControllee*>(cdmInterface);
 
         RegisterCommand(&TargetHumidityCommands::OnCmdGetTargetValue, "gtv", "get target value");
         RegisterCommand(&TargetHumidityCommands::OnCmdSetTargetValue, "stv", "set target value (use 'stv <value>'");

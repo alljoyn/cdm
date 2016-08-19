@@ -17,9 +17,9 @@
 #include <qcc/Util.h>
 
 #include <algorithm>
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/HaeBusObject.h>
-#include <alljoyn/hae/interfaces/operation/AlertsIntfControlleeListener.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/CdmBusObject.h>
+#include <alljoyn/cdm/interfaces/operation/AlertsIntfControlleeListener.h>
 
 #include "AlertsIntfControlleeImpl.h"
 
@@ -29,13 +29,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* AlertsIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject)
+CdmInterface* AlertsIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject)
 {
-    return new AlertsIntfControlleeImpl(busAttachment, dynamic_cast<AlertsIntfControlleeListener&>(listener), haeBusObject);
+    return new AlertsIntfControlleeImpl(busAttachment, dynamic_cast<AlertsIntfControlleeListener&>(listener), cdmBusObject);
 }
 
-AlertsIntfControlleeImpl::AlertsIntfControlleeImpl(BusAttachment& busAttachment, AlertsIntfControlleeListener& listener, HaeBusObject& haeBusObject) :
-    InterfaceControllee(haeBusObject),
+AlertsIntfControlleeImpl::AlertsIntfControlleeImpl(BusAttachment& busAttachment, AlertsIntfControlleeListener& listener, CdmBusObject& cdmBusObject) :
+    InterfaceControllee(cdmBusObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener)
 {
@@ -47,7 +47,7 @@ AlertsIntfControlleeImpl::~AlertsIntfControlleeImpl()
 
 QStatus AlertsIntfControlleeImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
 
     const InterfaceDescription::Member* descMember = m_interfaceDescription->GetMember(s_method_GetAlertCodesDescription.c_str());
     MessageReceiver::MethodHandler descMethodHandler = static_cast<MessageReceiver::MethodHandler>(&AlertsIntfControlleeImpl::OnGetAlertCodesDescription);
@@ -266,7 +266,7 @@ void AlertsIntfControlleeImpl::OnGetAlertCodesDescription(const InterfaceDescrip
             }
             else
             {
-                m_busObject.ReplyMethodCall(msg, HaeInterface::GetInterfaceErrorName(errorCode).c_str(),HaeInterface::GetInterfaceErrorMessage(errorCode).c_str());
+                m_busObject.ReplyMethodCall(msg, CdmInterface::GetInterfaceErrorName(errorCode).c_str(),CdmInterface::GetInterfaceErrorMessage(errorCode).c_str());
             }
         }
     }
@@ -322,7 +322,7 @@ void AlertsIntfControlleeImpl::OnAcknowledgeAlert(const InterfaceDescription::Me
                 }
                 else
                 {
-                    m_busObject.ReplyMethodCall(msg, HaeInterface::GetInterfaceErrorName(errorCode).c_str(),HaeInterface::GetInterfaceErrorMessage(errorCode).c_str());
+                    m_busObject.ReplyMethodCall(msg, CdmInterface::GetInterfaceErrorName(errorCode).c_str(),CdmInterface::GetInterfaceErrorMessage(errorCode).c_str());
                 }
             }
         }
@@ -353,7 +353,7 @@ void AlertsIntfControlleeImpl::OnAcknowledgeAllAlerts(const InterfaceDescription
         }
         else
         {
-            m_busObject.ReplyMethodCall(msg, HaeInterface::GetInterfaceErrorName(errorCode).c_str(),HaeInterface::GetInterfaceErrorMessage(errorCode).c_str());
+            m_busObject.ReplyMethodCall(msg, CdmInterface::GetInterfaceErrorName(errorCode).c_str(),CdmInterface::GetInterfaceErrorMessage(errorCode).c_str());
         }
     }
 }

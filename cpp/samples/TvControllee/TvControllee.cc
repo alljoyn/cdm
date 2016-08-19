@@ -4,18 +4,18 @@
 #include <qcc/String.h>
 #include <alljoyn/Init.h>
 #include <alljoyn/version.h>
-#include <alljoyn/hae/DeviceTypeDescription.h>
+#include <alljoyn/cdm/DeviceTypeDescription.h>
 #include "ControlleeSample.h"
 #include "AudioVolumeListener.h"
 #include "ChannelListener.h"
 #include "AudioVideoInputListener.h"
 #include "ClosedStatusListener.h"
 #include "HidListener.h"
-#include <alljoyn/hae/interfaces/operation/AudioVolumeIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/ClosedStatusIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/ChannelIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/AudioVideoInputIntfControllee.h>
-#include <alljoyn/hae/interfaces/input/HidIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/AudioVolumeIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/ClosedStatusIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/ChannelIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/AudioVideoInputIntfControllee.h>
+#include <alljoyn/cdm/interfaces/input/HidIntfControllee.h>
 
 // Integration of UInput functionalities
 // Default activation status = OFF
@@ -48,13 +48,13 @@ private:
     ClosedStatusIntfControllee* m_closedStatusIntfControllee;
 
 public:
-    TvControllee(BusAttachment* bus, HaeAboutData* aboutData);
+    TvControllee(BusAttachment* bus, CdmAboutData* aboutData);
     virtual ~TvControllee();
     void CreateInterfaces();
     void SetInitialProperty();
 };
 
-TvControllee::TvControllee(BusAttachment* bus, HaeAboutData* aboutData) :
+TvControllee::TvControllee(BusAttachment* bus, CdmAboutData* aboutData) :
     ControlleeSample(bus, aboutData), m_audioVolumeListener(NULL), m_channelListener(NULL), m_avInputListener(NULL), m_hidListener(NULL),
     m_audioVolumeIntfControllee(NULL), m_channelIntfControllee(NULL), m_avInputIntfControllee(NULL), m_hidIntfControllee(NULL),
     m_closedStatusIntfControllee(NULL)
@@ -87,21 +87,21 @@ TvControllee::~TvControllee()
 
 void TvControllee::CreateInterfaces()
 {
-    HaeInterface* intf = NULL;
-    HaeControllee* haeControllee = GetControllee();
-    if (!haeControllee) {
+    CdmInterface* intf = NULL;
+    CdmControllee* cdmControllee = GetControllee();
+    if (!cdmControllee) {
         return;
     }
 
-    intf = haeControllee->CreateInterface(AUDIO_VOLUME_INTERFACE, "/Hae/Tv", *m_audioVolumeListener);
+    intf = cdmControllee->CreateInterface(AUDIO_VOLUME_INTERFACE, "/Cdm/Tv", *m_audioVolumeListener);
     m_audioVolumeIntfControllee = static_cast<AudioVolumeIntfControllee*>(intf);
-    intf = haeControllee->CreateInterface(CHANNEL_INTERFACE, "/Hae/Tv", *m_channelListener);
+    intf = cdmControllee->CreateInterface(CHANNEL_INTERFACE, "/Cdm/Tv", *m_channelListener);
     m_channelIntfControllee = static_cast<ChannelIntfControllee*>(intf);
-    intf = haeControllee->CreateInterface(AUDIO_VIDEO_INPUT_INTERFACE, "/Hae/Tv", *m_avInputListener);
+    intf = cdmControllee->CreateInterface(AUDIO_VIDEO_INPUT_INTERFACE, "/Cdm/Tv", *m_avInputListener);
     m_avInputIntfControllee = static_cast<AudioVideoInputIntfControllee*>(intf);
-    intf = haeControllee->CreateInterface(HID_INTERFACE, "/Hae/Tv", *m_hidListener);
+    intf = cdmControllee->CreateInterface(HID_INTERFACE, "/Cdm/Tv", *m_hidListener);
     m_hidIntfControllee = static_cast<HidIntfControllee*>(intf);
-    intf = haeControllee->CreateInterface(CLOSED_STATUS_INTERFACE, "/Hae/Tv", *m_closedStatusListener);
+    intf = cdmControllee->CreateInterface(CLOSED_STATUS_INTERFACE, "/Cdm/Tv", *m_closedStatusListener);
     m_closedStatusIntfControllee = static_cast<ClosedStatusIntfControllee*>(intf);
 
 }
@@ -178,7 +178,7 @@ void TvControllee::SetInitialProperty()
     }
 }
 
-QStatus FillAboutData(HaeAboutData* aboutData)
+QStatus FillAboutData(CdmAboutData* aboutData)
 {
     String const& defaultLanguage = "en";
     String device_id = "deviceID";
@@ -226,14 +226,14 @@ QStatus FillAboutData(HaeAboutData* aboutData)
     aboutData->SetManufacturer("Manufacturer", "en");
     aboutData->SetSupportUrl("http://www.alljoyn.org");
 
-    // HAE custom metadata fields
+    // CDM custom metadata fields
     aboutData->SetCountryOfProduction("USA", "en");
     aboutData->SetCorporateBrand("TV Brand", "en");
     aboutData->SetProductBrand("TV", "en");
     aboutData->SetLocation("Room1", "en");
 
     DeviceTypeDescription description;
-    description.AddDeviceType(TELEVISION, "/Hae/Tv");
+    description.AddDeviceType(TELEVISION, "/Cdm/Tv");
     aboutData->SetDeviceTypeDescription(&description);
 
     if (!aboutData->IsValid()) {
@@ -259,7 +259,7 @@ int main()
 #endif
     printf("AllJoyn Library version: %s\n", ajn::GetVersion());
     printf("AllJoyn Library build info: %s\n", ajn::GetBuildInfo());
-    QCC_SetLogLevels("HAE_MODULE_LOG_NAME=15;");
+    QCC_SetLogLevels("CDM_MODULE_LOG_NAME=15;");
 
     BusAttachment* bus = new BusAttachment("TVControllee", true);
     if (!bus) {
@@ -267,7 +267,7 @@ int main()
         exit(1);
     }
 
-    HaeAboutData* aboutData = new HaeAboutData();
+    CdmAboutData* aboutData = new CdmAboutData();
     if (!aboutData) {
         printf("AboutData creation failed.\n");
         delete bus;

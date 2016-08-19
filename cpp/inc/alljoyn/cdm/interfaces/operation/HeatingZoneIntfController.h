@@ -19,7 +19,7 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/operation/HeatingZoneInterface.h>
+#include <alljoyn/cdm/interfaces/operation/HeatingZoneInterface.h>
 
 namespace ajn {
 namespace services {

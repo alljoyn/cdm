@@ -15,8 +15,8 @@
  ******************************************************************************/
 
 
-#ifndef HAEBUSLISTENER_H_
-#define HAEBUSLISTENER_H_
+#ifndef CDMBUSLISTENER_H_
+#define CDMBUSLISTENER_H_
 
 #include <alljoyn/BusAttachment.h>
 #include <alljoyn/BusListener.h>
@@ -28,21 +28,21 @@ namespace services {
 
 
 /**
- * Hae bus listener class.
+ * Cdm bus listener class.
  * This class implements BusListener, SessionPortListener and SessionListener
  */
-class HaeBusListener : public BusListener, public SessionPortListener, public SessionListener {
+class CdmBusListener : public BusListener, public SessionPortListener, public SessionListener {
   public:
 
     /**
-     * Constructor of HaeBusListener
+     * Constructor of CdmBusListener
      */
-    HaeBusListener(BusAttachment& bus);
+    CdmBusListener(BusAttachment& bus);
 
     /**
-     * Destructor of HaeBusListener
+     * Destructor of CdmBusListener
      */
-    ~HaeBusListener();
+    ~CdmBusListener();
 
 
     /**
@@ -118,4 +118,4 @@ class HaeBusListener : public BusListener, public SessionPortListener, public Se
 }
 }
 
-#endif //HAEBUSLISTENER_H_
+#endif //CDMBUSLISTENER_H_

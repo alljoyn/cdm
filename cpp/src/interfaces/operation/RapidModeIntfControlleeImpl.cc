@@ -16,9 +16,9 @@
 
 #include <qcc/Util.h>
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/HaeBusObject.h>
-#include <alljoyn/hae/interfaces/operation/RapidModeIntfControlleeListener.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/CdmBusObject.h>
+#include <alljoyn/cdm/interfaces/operation/RapidModeIntfControlleeListener.h>
 
 #include "RapidModeIntfControlleeImpl.h"
 
@@ -28,13 +28,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* RapidModeIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject)
+CdmInterface* RapidModeIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject)
 {
-    return new RapidModeIntfControlleeImpl(busAttachment, dynamic_cast<RapidModeIntfControlleeListener&>(listener), haeBusObject);
+    return new RapidModeIntfControlleeImpl(busAttachment, dynamic_cast<RapidModeIntfControlleeListener&>(listener), cdmBusObject);
 }
 
-RapidModeIntfControlleeImpl::RapidModeIntfControlleeImpl(BusAttachment& busAttachment, RapidModeIntfControlleeListener& listener, HaeBusObject& haeBusObject) :
-    InterfaceControllee(haeBusObject),
+RapidModeIntfControlleeImpl::RapidModeIntfControlleeImpl(BusAttachment& busAttachment, RapidModeIntfControlleeListener& listener, CdmBusObject& cdmBusObject) :
+    InterfaceControllee(cdmBusObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener),
     m_rapidMode(false)
@@ -47,7 +47,7 @@ RapidModeIntfControlleeImpl::~RapidModeIntfControlleeImpl()
 
 QStatus RapidModeIntfControlleeImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
     return status;
 }
 

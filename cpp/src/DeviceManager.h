@@ -19,7 +19,7 @@
 #define DEVICEMANAGER_H_
 
 #include <qcc/Mutex.h>
-#include <alljoyn/hae/DeviceInfo.h>
+#include <alljoyn/cdm/DeviceInfo.h>
 
 namespace ajn {
 namespace services {

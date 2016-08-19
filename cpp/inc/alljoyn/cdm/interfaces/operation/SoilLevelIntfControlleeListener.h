@@ -20,8 +20,8 @@
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <vector>
-#include <alljoyn/hae/interfaces/HaeInterfaceErrors.h>
-#include <alljoyn/hae/interfaces/InterfaceControlleeListener.h>
+#include <alljoyn/cdm/interfaces/CdmInterfaceErrors.h>
+#include <alljoyn/cdm/interfaces/InterfaceControlleeListener.h>
 
 namespace ajn {
 namespace services {

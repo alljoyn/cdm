@@ -57,13 +57,13 @@ TemperatureDisplayCommands::~TemperatureDisplayCommands()
 void TemperatureDisplayCommands::Init()
 {
     if (!m_intfControllee) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(TEMPERATURE_DISPLAY_INTERFACE, m_objectPath, m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(TEMPERATURE_DISPLAY_INTERFACE, m_objectPath, m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfControllee = static_cast<TemperatureDisplayIntfControllee*>(haeInterface);
+        m_intfControllee = static_cast<TemperatureDisplayIntfControllee*>(cdmInterface);
 
         RegisterCommand(&TemperatureDisplayCommands::OnCmdGetDisplayTemperatureUnit, "gdtu", "get display temperature unit");
         RegisterCommand(&TemperatureDisplayCommands::OnCmdSetDisplayTemperatureUnit, "sdtu", "set display temperature unit(use 'sdtu <0-Celsius/1-Fahrenheit/2-Kelvin>')");

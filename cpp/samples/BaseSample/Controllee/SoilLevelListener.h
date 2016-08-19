@@ -18,8 +18,8 @@
 #define SOILLEVELLISTENER_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/SoilLevelIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/SoilLevelIntfControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/SoilLevelIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/SoilLevelIntfControlleeListener.h>
 
 using namespace ajn;
 using namespace services;

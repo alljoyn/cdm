@@ -19,7 +19,7 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/operation/LaundryCyclePhaseInterface.h>
+#include <alljoyn/cdm/interfaces/operation/LaundryCyclePhaseInterface.h>
 
 namespace ajn {
 namespace services {

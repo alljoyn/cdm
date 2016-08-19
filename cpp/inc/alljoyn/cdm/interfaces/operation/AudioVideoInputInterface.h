@@ -21,7 +21,7 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/HaeInterface.h>
+#include <alljoyn/cdm/interfaces/CdmInterface.h>
 
 namespace ajn {
 namespace services {
@@ -29,7 +29,7 @@ namespace services {
 /**
  * AudioVideoInput Interface class
  */
-class AudioVideoInputInterface : public HaeInterface {
+class AudioVideoInputInterface : public CdmInterface {
   public:
     /**
      * InputSource struct
@@ -56,7 +56,7 @@ class AudioVideoInputInterface : public HaeInterface {
      * Get Interface Type
      * @return Interface type
      */
-    const HaeInterfaceType GetInterfaceType() const { return AUDIO_VIDEO_INPUT_INTERFACE; }
+    const CdmInterfaceType GetInterfaceType() const { return AUDIO_VIDEO_INPUT_INTERFACE; }
 
     /**
      * Get Introspection Xml

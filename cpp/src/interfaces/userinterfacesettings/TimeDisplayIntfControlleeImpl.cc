@@ -16,9 +16,9 @@
 
 #include <qcc/Util.h>
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/HaeBusObject.h>
-#include <alljoyn/hae/interfaces/userinterfacesettings/TimeDisplayIntfControlleeListener.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/CdmBusObject.h>
+#include <alljoyn/cdm/interfaces/userinterfacesettings/TimeDisplayIntfControlleeListener.h>
 #include <algorithm>
 
 #include "TimeDisplayIntfControlleeImpl.h"
@@ -29,13 +29,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* TimeDisplayIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject)
+CdmInterface* TimeDisplayIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject)
 {
-    return new TimeDisplayIntfControlleeImpl(busAttachment, dynamic_cast<TimeDisplayIntfControlleeListener&>(listener), haeBusObject);
+    return new TimeDisplayIntfControlleeImpl(busAttachment, dynamic_cast<TimeDisplayIntfControlleeListener&>(listener), cdmBusObject);
 }
 
-TimeDisplayIntfControlleeImpl::TimeDisplayIntfControlleeImpl(BusAttachment& busAttachment, TimeDisplayIntfControlleeListener& listener, HaeBusObject& haeBusObject) :
-    InterfaceControllee(haeBusObject),
+TimeDisplayIntfControlleeImpl::TimeDisplayIntfControlleeImpl(BusAttachment& busAttachment, TimeDisplayIntfControlleeListener& listener, CdmBusObject& cdmBusObject) :
+    InterfaceControllee(cdmBusObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener)
 {
@@ -47,7 +47,7 @@ TimeDisplayIntfControlleeImpl::~TimeDisplayIntfControlleeImpl()
 
 QStatus TimeDisplayIntfControlleeImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
 
     return status;
 }

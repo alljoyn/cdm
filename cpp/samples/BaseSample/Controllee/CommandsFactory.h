@@ -20,8 +20,8 @@
 #include <map>
 #include <qcc/String.h>
 
-#include <alljoyn/hae/interfaces/HaeInterface.h>
-#include <alljoyn/hae/interfaces/HaeInterfaceListener.h>
+#include <alljoyn/cdm/interfaces/CdmInterface.h>
+#include <alljoyn/cdm/interfaces/CdmInterfaceListener.h>
 #include "ControlleeCommands.h"
 
 namespace ajn {
@@ -33,9 +33,9 @@ class CommandsFactory {
     static CommandsFactory* GetInstance();
     ~CommandsFactory() {}
 
-    ControlleeCommands* CreateCommands(const HaeInterfaceType type, ControlleeSample* sample, const char* objectPath);
+    ControlleeCommands* CreateCommands(const CdmInterfaceType type, ControlleeSample* sample, const char* objectPath);
 
-    void RegisterCreator(const HaeInterfaceType type, CreateCommandsFptr fptr);
+    void RegisterCreator(const CdmInterfaceType type, CreateCommandsFptr fptr);
 
   private:
     CommandsFactory();
@@ -43,7 +43,7 @@ class CommandsFactory {
     CommandsFactory& operator=(const CommandsFactory& src);
 
     static CommandsFactory* s_instance;
-    std::map<HaeInterfaceType, CreateCommandsFptr> m_creators;
+    std::map<CdmInterfaceType, CreateCommandsFptr> m_creators;
 };
 
 } //namespace services

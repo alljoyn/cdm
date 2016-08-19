@@ -9,7 +9,7 @@
 #include "TestControllee.h"
 
 
-TestControllee::TestControllee(BusAttachment* bus, HaeAboutData* aboutData)
+TestControllee::TestControllee(BusAttachment* bus, CdmAboutData* aboutData)
   : ControlleeSample(bus, aboutData), m_cycleControlIntfControllee(NULL), m_timerIntfControllee(NULL), m_recipeIsSet(true),endOfCycleEmitted(false)
 
 {
@@ -35,8 +35,8 @@ void TestControllee::SetRefTimer(int sec)
 }
 void TestControllee::InitSample()
 {
-    HaeControllee* haeControllee = GetControllee();
-    if (!haeControllee) {
+    CdmControllee* cdmControllee = GetControllee();
+    if (!cdmControllee) {
         return;
     }
     m_rootCommands->RegisterCommand(&TestControllee::OnCmdSetRecipe, "sr", "set recipe");
@@ -57,16 +57,16 @@ void TestControllee::OnCmdSetRecipe(Commands* commands, std::string& cmd)
 }
 void TestControllee::CreateInterfaces()
 {
-    HaeInterface* intf = NULL;
-    HaeControllee* haeControllee = GetControllee();
-    if (!haeControllee) {
+    CdmInterface* intf = NULL;
+    CdmControllee* cdmControllee = GetControllee();
+    if (!cdmControllee) {
         return;
     }
 
-    intf = haeControllee->CreateInterface(CYCLE_CONTROL_INTERFACE, "/Hae/TestControllee", *m_cycleControlListener);
+    intf = cdmControllee->CreateInterface(CYCLE_CONTROL_INTERFACE, "/Cdm/TestControllee", *m_cycleControlListener);
     m_cycleControlIntfControllee = static_cast<CycleControlIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(TIMER_INTERFACE, "/Hae/TestControllee", *m_timerListener);
+    intf = cdmControllee->CreateInterface(TIMER_INTERFACE, "/Cdm/TestControllee", *m_timerListener);
     m_timerIntfControllee = static_cast<TimerIntfControllee*>(intf);
 }
 
@@ -101,7 +101,7 @@ void TestControllee::SetInitialProperty()
 void TestControllee::TimeChangedCallback(int sec)
 {
     QStatus status = ER_OK;
-    HaeInterface* intf = NULL;
+    CdmInterface* intf = NULL;
     m_timerIntfControllee->SetReferenceTimer(sec);
     if(this->m_cycleControlIntfControllee->GetOperationalState() == CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_DELAYED_START)
     {

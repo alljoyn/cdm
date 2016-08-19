@@ -17,9 +17,9 @@
 #include <qcc/Util.h>
 #include <vector>
 #include <algorithm>
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/HaeBusObject.h>
-#include <alljoyn/hae/interfaces/operation/OvenCyclePhaseIntfControlleeListener.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/CdmBusObject.h>
+#include <alljoyn/cdm/interfaces/operation/OvenCyclePhaseIntfControlleeListener.h>
 
 #include "OvenCyclePhaseIntfControlleeImpl.h"
 
@@ -29,13 +29,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* OvenCyclePhaseIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject)
+CdmInterface* OvenCyclePhaseIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject)
 {
-    return new OvenCyclePhaseIntfControlleeImpl(busAttachment, dynamic_cast<OvenCyclePhaseIntfControlleeListener&>(listener), haeBusObject);
+    return new OvenCyclePhaseIntfControlleeImpl(busAttachment, dynamic_cast<OvenCyclePhaseIntfControlleeListener&>(listener), cdmBusObject);
 }
 
-OvenCyclePhaseIntfControlleeImpl::OvenCyclePhaseIntfControlleeImpl(BusAttachment& busAttachment, OvenCyclePhaseIntfControlleeListener& listener, HaeBusObject& haeBusObject) :
-    InterfaceControllee(haeBusObject),
+OvenCyclePhaseIntfControlleeImpl::OvenCyclePhaseIntfControlleeImpl(BusAttachment& busAttachment, OvenCyclePhaseIntfControlleeListener& listener, CdmBusObject& cdmBusObject) :
+    InterfaceControllee(cdmBusObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener),
     m_cyclePhase(OvenCyclePhaseInterface::OvenCyclePhase::OVEN_PHASE_PREHEATING)
@@ -48,7 +48,7 @@ OvenCyclePhaseIntfControlleeImpl::~OvenCyclePhaseIntfControlleeImpl()
 
 QStatus OvenCyclePhaseIntfControlleeImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
 
     const InterfaceDescription::Member* member = m_interfaceDescription->GetMember(s_method_GetVendorPhasesDescription.c_str());
     MessageReceiver::MethodHandler methodHandler = static_cast<MessageReceiver::MethodHandler>(&OvenCyclePhaseIntfControlleeImpl::OnGetCyclePhasesDescription);
@@ -298,7 +298,7 @@ void OvenCyclePhaseIntfControlleeImpl::OnGetCyclePhasesDescription(const Interfa
             }
             else
             {
-                m_busObject.ReplyMethodCall(msg, HaeInterface::GetInterfaceErrorName(errorCode).c_str(),HaeInterface::GetInterfaceErrorMessage(errorCode).c_str());
+                m_busObject.ReplyMethodCall(msg, CdmInterface::GetInterfaceErrorName(errorCode).c_str(),CdmInterface::GetInterfaceErrorMessage(errorCode).c_str());
             }
         }
     }

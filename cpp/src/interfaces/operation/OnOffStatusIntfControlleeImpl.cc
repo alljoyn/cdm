@@ -16,9 +16,9 @@
 
 #include <qcc/Util.h>
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/interfaces/operation/OnOffStatusIntfControlleeListener.h>
-#include <alljoyn/hae/HaeBusObject.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/interfaces/operation/OnOffStatusIntfControlleeListener.h>
+#include <alljoyn/cdm/CdmBusObject.h>
 #include "OnOffStatusIntfControlleeImpl.h"
 
 using namespace qcc;
@@ -27,13 +27,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* OnOffStatusIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject)
+CdmInterface* OnOffStatusIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject)
 {
-    return new OnOffStatusIntfControlleeImpl(busAttachment, dynamic_cast<OnOffStatusIntfControlleeListener&>(listener), haeBusObject);
+    return new OnOffStatusIntfControlleeImpl(busAttachment, dynamic_cast<OnOffStatusIntfControlleeListener&>(listener), cdmBusObject);
 }
 
-OnOffStatusIntfControlleeImpl::OnOffStatusIntfControlleeImpl(BusAttachment& busAttachment, OnOffStatusIntfControlleeListener& listener, HaeBusObject& haeBusObject) :
-    InterfaceControllee(haeBusObject),
+OnOffStatusIntfControlleeImpl::OnOffStatusIntfControlleeImpl(BusAttachment& busAttachment, OnOffStatusIntfControlleeListener& listener, CdmBusObject& cdmBusObject) :
+    InterfaceControllee(cdmBusObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener),
     m_OnOff(false)
@@ -46,7 +46,7 @@ OnOffStatusIntfControlleeImpl::~OnOffStatusIntfControlleeImpl()
 
 QStatus OnOffStatusIntfControlleeImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
 
     return status;
 }

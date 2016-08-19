@@ -14,42 +14,42 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#ifndef HAEINTERFACE_H_
-#define HAEINTERFACE_H_
+#ifndef CDMINTERFACE_H_
+#define CDMINTERFACE_H_
 
 #include <qcc/String.h>
 #include <alljoyn/BusAttachment.h>
 #include <alljoyn/InterfaceDescription.h>
-#include <alljoyn/hae/interfaces/HaeInterfaceTypes.h>
-#include <alljoyn/hae/interfaces/HaeInterfaceErrors.h>
+#include <alljoyn/cdm/interfaces/CdmInterfaceTypes.h>
+#include <alljoyn/cdm/interfaces/CdmInterfaceErrors.h>
 
 namespace ajn {
 namespace services {
 
-class HaeInterface;
+class CdmInterface;
 class InterfaceControlleeListener;
 class InterfaceControllerListener;
-class HaeBusObject;
-class HaeProxyBusObject;
+class CdmBusObject;
+class CdmProxyBusObject;
 
-typedef HaeInterface* (*CreateIntfControlleeFptr)(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject);
-typedef HaeInterface* (*CreateIntfControllerFptr)(BusAttachment& busAttachment, InterfaceControllerListener& listener, HaeProxyBusObject& haeProxyObject);
+typedef CdmInterface* (*CreateIntfControlleeFptr)(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject);
+typedef CdmInterface* (*CreateIntfControllerFptr)(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
 
 /**
- * Hae Interface class.
- * Used as a base class for other HAE interfaces.
+ * Cdm Interface class.
+ * Used as a base class for other CDM interfaces.
  */
-class HaeInterface {
+class CdmInterface {
   public:
     /**
-     * Constructor of HaeInterface
+     * Constructor of CdmInterface
      */
-    HaeInterface() : m_interfaceDescription(NULL) {}
+    CdmInterface() : m_interfaceDescription(NULL) {}
 
     /**
-     * Destructor of HaeInterface
+     * Destructor of CdmInterface
      */
-    virtual ~HaeInterface() {}
+    virtual ~CdmInterface() {}
 
     /**
      * Get bus attachment
@@ -61,14 +61,14 @@ class HaeInterface {
      * Get interface Type
      * @return Interface type
      */
-    virtual const HaeInterfaceType GetInterfaceType() const = 0;
+    virtual const CdmInterfaceType GetInterfaceType() const = 0;
 
     /**
      * Get specific interface name
      * @param[in] type interface type
      * @return Interface name
      */
-    static const qcc::String& GetInterfaceName(HaeInterfaceType type) { return InterfaceTypesMap.find(type)->second; }
+    static const qcc::String& GetInterfaceName(CdmInterfaceType type) { return InterfaceTypesMap.find(type)->second; }
 
     /**
      * Get Interface version
@@ -123,4 +123,4 @@ class HaeInterface {
 } //namespace services
 } //namespace ajn
 
-#endif /* HAEINTERFACE_H_ */
+#endif /* CDMINTERFACE_H_ */

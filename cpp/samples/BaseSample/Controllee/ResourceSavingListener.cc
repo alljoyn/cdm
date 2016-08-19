@@ -50,13 +50,13 @@ ResourceSavingCommands::~ResourceSavingCommands()
 void ResourceSavingCommands::Init()
 {
     if (!m_intfControllee) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(RESOURCE_SAVING_INTERFACE, m_objectPath, m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(RESOURCE_SAVING_INTERFACE, m_objectPath, m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfControllee = static_cast<ResourceSavingIntfControllee*>(haeInterface);
+        m_intfControllee = static_cast<ResourceSavingIntfControllee*>(cdmInterface);
 
         RegisterCommand(&ResourceSavingCommands::OnCmdGetResourceSavingMode, "grm", "get resource saving mode");
         RegisterCommand(&ResourceSavingCommands::OnCmdSetResourceSavingMode, "srm", "set resource saving mode(use 'srm <0/1>'");

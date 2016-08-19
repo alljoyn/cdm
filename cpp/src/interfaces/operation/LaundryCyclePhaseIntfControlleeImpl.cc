@@ -17,9 +17,9 @@
 #include <qcc/Util.h>
 #include <vector>
 #include <algorithm>
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/HaeBusObject.h>
-#include <alljoyn/hae/interfaces/operation/LaundryCyclePhaseIntfControlleeListener.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/CdmBusObject.h>
+#include <alljoyn/cdm/interfaces/operation/LaundryCyclePhaseIntfControlleeListener.h>
 
 #include "LaundryCyclePhaseIntfControlleeImpl.h"
 
@@ -29,13 +29,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* LaundryCyclePhaseIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject)
+CdmInterface* LaundryCyclePhaseIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject)
 {
-    return new LaundryCyclePhaseIntfControlleeImpl(busAttachment, dynamic_cast<LaundryCyclePhaseIntfControlleeListener&>(listener), haeBusObject);
+    return new LaundryCyclePhaseIntfControlleeImpl(busAttachment, dynamic_cast<LaundryCyclePhaseIntfControlleeListener&>(listener), cdmBusObject);
 }
 
-LaundryCyclePhaseIntfControlleeImpl::LaundryCyclePhaseIntfControlleeImpl(BusAttachment& busAttachment, LaundryCyclePhaseIntfControlleeListener& listener, HaeBusObject& haeBusObject) :
-    InterfaceControllee(haeBusObject),
+LaundryCyclePhaseIntfControlleeImpl::LaundryCyclePhaseIntfControlleeImpl(BusAttachment& busAttachment, LaundryCyclePhaseIntfControlleeListener& listener, CdmBusObject& cdmBusObject) :
+    InterfaceControllee(cdmBusObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener),
     m_cyclePhase(LaundryCyclePhase::LAUNDRY_PHASE_UNAVAILABLE)
@@ -48,7 +48,7 @@ LaundryCyclePhaseIntfControlleeImpl::~LaundryCyclePhaseIntfControlleeImpl()
 
 QStatus LaundryCyclePhaseIntfControlleeImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
 
     const InterfaceDescription::Member* member = m_interfaceDescription->GetMember(s_method_GetVendorPhasesDescription.c_str());
     MessageReceiver::MethodHandler methodHandler = static_cast<MessageReceiver::MethodHandler>(&LaundryCyclePhaseIntfControlleeImpl::OnGetCyclePhasesDescription);
@@ -302,7 +302,7 @@ void LaundryCyclePhaseIntfControlleeImpl::OnGetCyclePhasesDescription(const Inte
             }
             else
             {
-                m_busObject.ReplyMethodCall(msg, HaeInterface::GetInterfaceErrorName(errorCode).c_str(),HaeInterface::GetInterfaceErrorMessage(errorCode).c_str());
+                m_busObject.ReplyMethodCall(msg, CdmInterface::GetInterfaceErrorName(errorCode).c_str(),CdmInterface::GetInterfaceErrorMessage(errorCode).c_str());
             }
         }
     }

@@ -19,7 +19,7 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/userinterfacesettings/LanguageDisplayInterface.h>
+#include <alljoyn/cdm/interfaces/userinterfacesettings/LanguageDisplayInterface.h>
 
 namespace ajn {
 namespace services {

@@ -16,11 +16,11 @@
 
 #include <qcc/Util.h>
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/interfaces/operation/AudioVideoInputIntfControllerListener.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/interfaces/operation/AudioVideoInputIntfControllerListener.h>
 
 #include "AudioVideoInputIntfControllerImpl.h"
-#include <alljoyn/hae/HaeProxyBusObject.h>
+#include <alljoyn/cdm/CdmProxyBusObject.h>
 
 using namespace qcc;
 using namespace std;
@@ -28,13 +28,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* AudioVideoInputIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, HaeProxyBusObject& haeProxyObject)
+CdmInterface* AudioVideoInputIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject)
 {
-    return new AudioVideoInputIntfControllerImpl(busAttachment, static_cast<AudioVideoInputIntfControllerListener&>(listener), haeProxyObject);
+    return new AudioVideoInputIntfControllerImpl(busAttachment, static_cast<AudioVideoInputIntfControllerListener&>(listener), cdmProxyObject);
 }
 
-AudioVideoInputIntfControllerImpl::AudioVideoInputIntfControllerImpl(BusAttachment& busAttachment, AudioVideoInputIntfControllerListener& listener, HaeProxyBusObject& haeProxyObject) :
-    InterfaceController(haeProxyObject),
+AudioVideoInputIntfControllerImpl::AudioVideoInputIntfControllerImpl(BusAttachment& busAttachment, AudioVideoInputIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject) :
+    InterfaceController(cdmProxyObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener)
 {
@@ -46,7 +46,7 @@ AudioVideoInputIntfControllerImpl::~AudioVideoInputIntfControllerImpl()
 
 QStatus AudioVideoInputIntfControllerImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
     if (ER_OK != status) {
         QCC_LogError(status, ("%s: Interface init failed.", __func__));
         return status;

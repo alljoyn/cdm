@@ -19,7 +19,7 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/HaeInterface.h>
+#include <alljoyn/cdm/interfaces/CdmInterface.h>
 
 namespace ajn {
 namespace services {
@@ -27,7 +27,7 @@ namespace services {
 /**
  * AirRecirculationMode Interface class
  */
-class AirRecirculationModeInterface : public HaeInterface {
+class AirRecirculationModeInterface : public CdmInterface {
   public:
     /**
      * Constructor of AirRecirculationMode
@@ -43,7 +43,7 @@ class AirRecirculationModeInterface : public HaeInterface {
      * Get Interface Type
      * @return interface type
      */
-    const HaeInterfaceType GetInterfaceType() const { return AIR_RECIRCULATION_MODE_INTERFACE; }
+    const CdmInterfaceType GetInterfaceType() const { return AIR_RECIRCULATION_MODE_INTERFACE; }
 
     /**
      * Get Introspection Xml

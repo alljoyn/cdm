@@ -4,7 +4,7 @@
 #include <qcc/String.h>
 #include <alljoyn/Init.h>
 #include <alljoyn/version.h>
-#include <alljoyn/hae/DeviceTypeDescription.h>
+#include <alljoyn/cdm/DeviceTypeDescription.h>
 #include "ControlleeCommands.h"
 #include "ControlleeSample.h"
 #include "AudioVolumeListener.h"
@@ -12,7 +12,7 @@
 #include "VendorDefinedIntfControlleeImpl.h"
 #include "VendorDefinedIntfControlleeListener.h"
 #include "VendorDefinedListener.h"
-#include <alljoyn/hae/interfaces/operation/AudioVolumeIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/AudioVolumeIntfControllee.h>
 
 using namespace std;
 using namespace qcc;
@@ -20,14 +20,14 @@ using namespace qcc;
 class VDIControllee : public ControlleeSample
 {
   public:
-    HaeInterfaceType m_vendorDefinedIntfType;
+    CdmInterfaceType m_vendorDefinedIntfType;
     AudioVolumeListener* m_audioVolumeListener;
     VendorDefinedListener* m_vendorDefinedListener;
 
     AudioVolumeIntfControllee* m_audioVolumeIntfControllee;
     VendorDefinedIntfControllee* m_vendorDefinedIntfControllee;
 
-    VDIControllee(BusAttachment* bus, HaeAboutData* aboutData);
+    VDIControllee(BusAttachment* bus, CdmAboutData* aboutData);
     ~VDIControllee();
 
     void InitSample();
@@ -37,7 +37,7 @@ class VDIControllee : public ControlleeSample
     static void OnCmdEmitTestSignal(Commands* commands, std::string& cmd);
 };
 
-VDIControllee::VDIControllee(BusAttachment* bus, HaeAboutData* aboutData)
+VDIControllee::VDIControllee(BusAttachment* bus, CdmAboutData* aboutData)
 : ControlleeSample(bus, aboutData),
   m_audioVolumeListener(NULL), m_vendorDefinedListener(NULL),
   m_audioVolumeIntfControllee(NULL), m_vendorDefinedIntfControllee(NULL)
@@ -66,26 +66,26 @@ void VDIControllee::OnCmdEmitTestSignal(Commands* commands, std::string& cmd)
 
 void VDIControllee::InitSample()
 {
-    HaeControllee* haeControllee = GetControllee();
-    if (!haeControllee) {
+    CdmControllee* cdmControllee = GetControllee();
+    if (!cdmControllee) {
         return;
     }
-    m_vendorDefinedIntfType = haeControllee->RegisterVendorDefinedInterface("com.foo.bar.test", static_cast<CreateIntfControlleeFptr>(&VendorDefinedIntfControlleeImpl::CreateInterface));
+    m_vendorDefinedIntfType = cdmControllee->RegisterVendorDefinedInterface("com.foo.bar.test", static_cast<CreateIntfControlleeFptr>(&VendorDefinedIntfControlleeImpl::CreateInterface));
 
     m_rootCommands->RegisterCommand(&VDIControllee::OnCmdEmitTestSignal, "ets", "emit test signal");
 }
 
 void VDIControllee::CreateInterfaces()
 {
-    HaeInterface* intf = NULL;
-    HaeControllee* haeControllee = GetControllee();
-    if (!haeControllee) {
+    CdmInterface* intf = NULL;
+    CdmControllee* cdmControllee = GetControllee();
+    if (!cdmControllee) {
         return;
     }
 
-    intf = haeControllee->CreateInterface(AUDIO_VOLUME_INTERFACE, "/Hae/Test", *m_audioVolumeListener);
+    intf = cdmControllee->CreateInterface(AUDIO_VOLUME_INTERFACE, "/Cdm/Test", *m_audioVolumeListener);
     m_audioVolumeIntfControllee = static_cast<AudioVolumeIntfControllee*>(intf);
-    intf = haeControllee->CreateInterface(m_vendorDefinedIntfType, "/Hae/Test", *m_vendorDefinedListener);
+    intf = cdmControllee->CreateInterface(m_vendorDefinedIntfType, "/Cdm/Test", *m_vendorDefinedListener);
     m_vendorDefinedIntfControllee = static_cast<VendorDefinedIntfControllee*>(intf);
 }
 
@@ -110,7 +110,7 @@ void VDIControllee::SetInitialProperty()
 
 }
 
-QStatus FillAboutData(HaeAboutData* aboutData)
+QStatus FillAboutData(CdmAboutData* aboutData)
 {
     String const& defaultLanguage = "en";
     String device_id = "deviceID";
@@ -158,14 +158,14 @@ QStatus FillAboutData(HaeAboutData* aboutData)
     aboutData->SetManufacturer("Manufacturer", "en");
     aboutData->SetSupportUrl("http://www.alljoyn.org");
 
-    // HAE custom metadata fields
+    // CDM custom metadata fields
     aboutData->SetCountryOfProduction("USA", "en");
     aboutData->SetCorporateBrand("Test Brand", "en");
     aboutData->SetProductBrand("Test", "en");
     aboutData->SetLocation("Room1", "en");
 
     DeviceTypeDescription description;
-    description.AddDeviceType(TELEVISION, "/Hae/Test");
+    description.AddDeviceType(TELEVISION, "/Cdm/Test");
     aboutData->SetDeviceTypeDescription(&description);
 
     if (!aboutData->IsValid()) {
@@ -191,7 +191,7 @@ int main()
 #endif
     printf("AllJoyn Library version: %s\n", ajn::GetVersion());
     printf("AllJoyn Library build info: %s\n", ajn::GetBuildInfo());
-    QCC_SetLogLevels("HAE_MODULE_LOG_NAME=15;");
+    QCC_SetLogLevels("CDM_MODULE_LOG_NAME=15;");
 
     BusAttachment* bus = new BusAttachment("VDIControllee", true);
     if (!bus) {
@@ -199,7 +199,7 @@ int main()
         exit(1);
     }
 
-    HaeAboutData* aboutData = new HaeAboutData();
+    CdmAboutData* aboutData = new CdmAboutData();
     if (!aboutData) {
         printf("AboutData creation failed.\n");
         delete bus;

@@ -18,8 +18,8 @@
 #define OFFCONTROLCOMMANDS_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/OffControlIntfController.h>
-#include <alljoyn/hae/interfaces/operation/OffControlIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/OffControlIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/OffControlIntfControllerListener.h>
 
 class ControllerSample;
 

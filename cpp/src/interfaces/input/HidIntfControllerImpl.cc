@@ -16,11 +16,11 @@
 
 #include <qcc/Util.h>
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/interfaces/input/HidIntfControllerListener.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/interfaces/input/HidIntfControllerListener.h>
 
 #include "HidIntfControllerImpl.h"
-#include <alljoyn/hae/HaeProxyBusObject.h>
+#include <alljoyn/cdm/CdmProxyBusObject.h>
 
 using namespace qcc;
 using namespace std;
@@ -28,13 +28,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* HidIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, HaeProxyBusObject& haeProxyObject)
+CdmInterface* HidIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject)
 {
-    return new HidIntfControllerImpl(busAttachment, static_cast<HidIntfControllerListener&>(listener), haeProxyObject);
+    return new HidIntfControllerImpl(busAttachment, static_cast<HidIntfControllerListener&>(listener), cdmProxyObject);
 }
 
-HidIntfControllerImpl::HidIntfControllerImpl(BusAttachment& busAttachment, HidIntfControllerListener& listener, HaeProxyBusObject& haeProxyObject) :
-    InterfaceController(haeProxyObject),
+HidIntfControllerImpl::HidIntfControllerImpl(BusAttachment& busAttachment, HidIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject) :
+    InterfaceController(cdmProxyObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener)
 {
@@ -46,7 +46,7 @@ HidIntfControllerImpl::~HidIntfControllerImpl()
 
 QStatus HidIntfControllerImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
     if (ER_OK != status) {
         QCC_LogError(status, ("%s: Interface init failed.", __func__));
         return status;

@@ -20,15 +20,15 @@
 #include <alljoyn/Status.h>
 #include <alljoyn/BusAttachment.h>
 #include <alljoyn/InterfaceDescription.h>
-#include <alljoyn/hae/interfaces/InterfaceControllee.h>
-#include <alljoyn/hae/interfaces/InterfaceControlleeListener.h>
-#include <alljoyn/hae/interfaces/operation/ChannelIntfControllee.h>
+#include <alljoyn/cdm/interfaces/InterfaceControllee.h>
+#include <alljoyn/cdm/interfaces/InterfaceControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/ChannelIntfControllee.h>
 
 namespace ajn {
 namespace services {
 
 class ChannelIntfControlleeListener;
-class HaeBusObject;
+class CdmBusObject;
 
 /**
  * Channel Interface Controllee implementation class
@@ -38,12 +38,12 @@ class ChannelIntfControlleeImpl : public InterfaceControllee, public ChannelIntf
     /**
      * Create interface
      */
-    static HaeInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject);
 
     /**
      * Constructor of ChannelIntfControlleeImpl
      */
-    ChannelIntfControlleeImpl(BusAttachment& busAttachment, ChannelIntfControlleeListener& listener, HaeBusObject& haeBusObject);
+    ChannelIntfControlleeImpl(BusAttachment& busAttachment, ChannelIntfControlleeListener& listener, CdmBusObject& cdmBusObject);
 
     /**
      * Destructor of ChannelIntfControlleeImpl

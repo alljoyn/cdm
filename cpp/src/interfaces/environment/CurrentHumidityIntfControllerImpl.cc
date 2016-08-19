@@ -16,9 +16,9 @@
 
 #include <qcc/Util.h>
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/interfaces/environment/CurrentHumidityIntfControllerListener.h>
-#include <alljoyn/hae/HaeProxyBusObject.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/interfaces/environment/CurrentHumidityIntfControllerListener.h>
+#include <alljoyn/cdm/CdmProxyBusObject.h>
 #include "CurrentHumidityIntfControllerImpl.h"
 
 using namespace qcc;
@@ -27,13 +27,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* CurrentHumidityIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, HaeProxyBusObject& haeProxyObject)
+CdmInterface* CurrentHumidityIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject)
 {
-    return new CurrentHumidityIntfControllerImpl(busAttachment, dynamic_cast<CurrentHumidityIntfControllerListener&>(listener), haeProxyObject);
+    return new CurrentHumidityIntfControllerImpl(busAttachment, dynamic_cast<CurrentHumidityIntfControllerListener&>(listener), cdmProxyObject);
 }
 
-CurrentHumidityIntfControllerImpl::CurrentHumidityIntfControllerImpl(BusAttachment& busAttachment, CurrentHumidityIntfControllerListener& listener, HaeProxyBusObject& haeProxyObject) :
-    InterfaceController(haeProxyObject),
+CurrentHumidityIntfControllerImpl::CurrentHumidityIntfControllerImpl(BusAttachment& busAttachment, CurrentHumidityIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject) :
+    InterfaceController(cdmProxyObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener)
 {
@@ -45,7 +45,7 @@ CurrentHumidityIntfControllerImpl::~CurrentHumidityIntfControllerImpl()
 
 QStatus CurrentHumidityIntfControllerImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
     if (ER_OK != status) {
         QCC_LogError(status, ("%s: Interface init failed.", __func__));
         return status;

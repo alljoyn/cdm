@@ -19,7 +19,7 @@
 #include <alljoyn/Status.h>
 #include <alljoyn/BusAttachment.h>
 
-#include <alljoyn/hae/LogModule.h>
+#include <alljoyn/cdm/LogModule.h>
 
 #include "InterfaceFactory.h"
 
@@ -251,9 +251,9 @@ QStatus InterfaceFactory::InitInterfaceFactory(BusAttachment* busAttachment)
     return ER_OK;
 }
 
-CreateIntfControlleeFptr InterfaceFactory::GetCreateIntfControlleeFptr(const HaeInterfaceType type)
+CreateIntfControlleeFptr InterfaceFactory::GetCreateIntfControlleeFptr(const CdmInterfaceType type)
 {
-    map<HaeInterfaceType, CreateIntfControlleeFptr>::iterator it;
+    map<CdmInterfaceType, CreateIntfControlleeFptr>::iterator it;
 
     it = m_controlleeCreators.find(type);
     if (it == m_controlleeCreators.end()) {
@@ -264,9 +264,9 @@ CreateIntfControlleeFptr InterfaceFactory::GetCreateIntfControlleeFptr(const Hae
     return it->second;
 }
 
-CreateIntfControllerFptr InterfaceFactory::GetCreateIntfControllerFptr(const HaeInterfaceType type)
+CreateIntfControllerFptr InterfaceFactory::GetCreateIntfControllerFptr(const CdmInterfaceType type)
 {
-    map<HaeInterfaceType, CreateIntfControllerFptr>::iterator it;
+    map<CdmInterfaceType, CreateIntfControllerFptr>::iterator it;
 
     it = m_controllerCreators.find(type);
     if (it == m_controllerCreators.end()) {
@@ -277,9 +277,9 @@ CreateIntfControllerFptr InterfaceFactory::GetCreateIntfControllerFptr(const Hae
     return it->second;
 }
 
-HaeInterface* InterfaceFactory::CreateIntfControllee(const HaeInterfaceType type, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject)
+CdmInterface* InterfaceFactory::CreateIntfControllee(const CdmInterfaceType type, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject)
 {
-    HaeInterface* interface = NULL;
+    CdmInterface* interface = NULL;
     QStatus status = ER_OK;
 
     if (!m_busAttachment) {
@@ -293,7 +293,7 @@ HaeInterface* InterfaceFactory::CreateIntfControllee(const HaeInterfaceType type
         return NULL;
     }
 
-    interface = handler(*m_busAttachment, listener, haeBusObject);
+    interface = handler(*m_busAttachment, listener, cdmBusObject);
     if (!interface) {
         QCC_LogError(status, ("%s: could not create interface", __func__));
         return NULL;
@@ -309,9 +309,9 @@ HaeInterface* InterfaceFactory::CreateIntfControllee(const HaeInterfaceType type
     return interface;
 }
 
-HaeInterface* InterfaceFactory::CreateIntfController(const HaeInterfaceType type, InterfaceControllerListener& listener, HaeProxyBusObject& haeProxyObject)
+CdmInterface* InterfaceFactory::CreateIntfController(const CdmInterfaceType type, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject)
 {
-    HaeInterface* interface = NULL;
+    CdmInterface* interface = NULL;
     QStatus status = ER_OK;
 
     if (!m_busAttachment) {
@@ -325,7 +325,7 @@ HaeInterface* InterfaceFactory::CreateIntfController(const HaeInterfaceType type
         return NULL;
     }
 
-    interface = handler(*m_busAttachment, listener, haeProxyObject);
+    interface = handler(*m_busAttachment, listener, cdmProxyObject);
     if (!interface) {
         QCC_LogError(status, ("%s: could not create interface", __func__));
         return NULL;
@@ -341,12 +341,12 @@ HaeInterface* InterfaceFactory::CreateIntfController(const HaeInterfaceType type
     return interface;
 }
 
-void InterfaceFactory::RegisterVendorDefinedIntfControllee(const HaeInterfaceType type, CreateIntfControlleeFptr createIntfControllee)
+void InterfaceFactory::RegisterVendorDefinedIntfControllee(const CdmInterfaceType type, CreateIntfControlleeFptr createIntfControllee)
 {
     m_controlleeCreators[type] = createIntfControllee;
 }
 
-void InterfaceFactory::RegisterVendorDefinedIntfController(const HaeInterfaceType type, CreateIntfControllerFptr createIntfController)
+void InterfaceFactory::RegisterVendorDefinedIntfController(const CdmInterfaceType type, CreateIntfControllerFptr createIntfController)
 {
     m_controllerCreators[type] = createIntfController;
 }

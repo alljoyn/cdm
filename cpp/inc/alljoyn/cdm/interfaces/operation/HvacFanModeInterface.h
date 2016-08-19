@@ -24,7 +24,7 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/HaeInterface.h>
+#include <alljoyn/cdm/interfaces/CdmInterface.h>
 
 namespace ajn {
 namespace services {
@@ -32,7 +32,7 @@ namespace services {
 /**
  * HvacFanMode Interface class
  */
-class HvacFanModeInterface : public HaeInterface {
+class HvacFanModeInterface : public CdmInterface {
   public:
     typedef std::vector<uint16_t> SupportedModes;
 
@@ -50,7 +50,7 @@ class HvacFanModeInterface : public HaeInterface {
      * Get Interface Type
      * @return Interface type
      */
-    const HaeInterfaceType GetInterfaceType() const { return HVAC_FAN_MODE_INTERFACE; }
+    const CdmInterfaceType GetInterfaceType() const { return HVAC_FAN_MODE_INTERFACE; }
 
     /**
      * Get Introspection Xml

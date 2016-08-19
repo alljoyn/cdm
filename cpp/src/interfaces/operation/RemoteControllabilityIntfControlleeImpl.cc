@@ -16,11 +16,11 @@
 
 #include <qcc/Util.h>
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/interfaces/operation/RemoteControllabilityIntfControlleeListener.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/interfaces/operation/RemoteControllabilityIntfControlleeListener.h>
 
 #include "RemoteControllabilityIntfControlleeImpl.h"
-#include <alljoyn/hae/HaeBusObject.h>
+#include <alljoyn/cdm/CdmBusObject.h>
 
 using namespace qcc;
 using namespace std;
@@ -28,13 +28,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* RemoteControllabilityIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject)
+CdmInterface* RemoteControllabilityIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject)
 {
-    return new RemoteControllabilityIntfControlleeImpl(busAttachment, dynamic_cast<RemoteControllabilityIntfControlleeListener&>(listener), haeBusObject);
+    return new RemoteControllabilityIntfControlleeImpl(busAttachment, dynamic_cast<RemoteControllabilityIntfControlleeListener&>(listener), cdmBusObject);
 }
 
-RemoteControllabilityIntfControlleeImpl::RemoteControllabilityIntfControlleeImpl(BusAttachment& busAttachment, RemoteControllabilityIntfControlleeListener& listener, HaeBusObject& haeBusObject) :
-    InterfaceControllee(haeBusObject),
+RemoteControllabilityIntfControlleeImpl::RemoteControllabilityIntfControlleeImpl(BusAttachment& busAttachment, RemoteControllabilityIntfControlleeListener& listener, CdmBusObject& cdmBusObject) :
+    InterfaceControllee(cdmBusObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener),
     m_isControllable(true)
@@ -47,7 +47,7 @@ RemoteControllabilityIntfControlleeImpl::~RemoteControllabilityIntfControlleeImp
 
 QStatus RemoteControllabilityIntfControlleeImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
 
     return status;
 }

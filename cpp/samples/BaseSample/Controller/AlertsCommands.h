@@ -18,8 +18,8 @@
 #define ALERTSCOMMANDS_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/AlertsIntfController.h>
-#include <alljoyn/hae/interfaces/operation/AlertsIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/AlertsIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/AlertsIntfControllerListener.h>
 
 class ControllerSample;
 

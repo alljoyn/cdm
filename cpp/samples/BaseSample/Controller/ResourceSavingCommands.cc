@@ -15,7 +15,7 @@
  ******************************************************************************/
 
 #include <cstdlib>
-#include <alljoyn/hae/interfaces/HaeInterfaceTypes.h>
+#include <alljoyn/cdm/interfaces/CdmInterfaceTypes.h>
 #include "ResourceSavingCommands.h"
 #include "ControllerSample.h"
 
@@ -62,13 +62,13 @@ ResourceSavingCommands::~ResourceSavingCommands()
 void ResourceSavingCommands::Init()
 {
     if (!m_intfController) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(RESOURCE_SAVING_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(RESOURCE_SAVING_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfController = static_cast<ResourceSavingIntfController*>(haeInterface);
+        m_intfController = static_cast<ResourceSavingIntfController*>(cdmInterface);
     }
 
     RegisterCommand(&ResourceSavingCommands::OnCmdGetResourceSavingMode, "getrs", "Get ResourceSavingMode");

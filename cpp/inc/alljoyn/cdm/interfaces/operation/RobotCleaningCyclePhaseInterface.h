@@ -21,7 +21,7 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/HaeInterface.h>
+#include <alljoyn/cdm/interfaces/CdmInterface.h>
 
 namespace ajn {
 namespace services {
@@ -29,7 +29,7 @@ namespace services {
 /**
  * RobotCleaningCyclePhase Interface class
  */
-class RobotCleaningCyclePhaseInterface : public HaeInterface {
+class RobotCleaningCyclePhaseInterface : public CdmInterface {
   public:
     typedef std::vector<uint8_t> SupportedCyclePhases;
     /**
@@ -56,7 +56,7 @@ class RobotCleaningCyclePhaseInterface : public HaeInterface {
      * Get Interface Type
      * @return interface type
      */
-    const HaeInterfaceType GetInterfaceType() const { return ROBOT_CLEANING_CYCLE_PHASE_INTERFACE; }
+    const CdmInterfaceType GetInterfaceType() const { return ROBOT_CLEANING_CYCLE_PHASE_INTERFACE; }
 
     /**
      * Get Introspection Xml

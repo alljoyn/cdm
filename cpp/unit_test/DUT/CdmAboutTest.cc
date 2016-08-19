@@ -14,9 +14,9 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include "HaeTest.h"
-#include <alljoyn/hae/HaeAboutData.h>
-#include <alljoyn/hae/DeviceTypeDescription.h>
+#include "CdmTest.h"
+#include <alljoyn/cdm/CdmAboutData.h>
+#include <alljoyn/cdm/DeviceTypeDescription.h>
 #include <algorithm>
 
 const static std::map<DeviceType, std::vector<std::vector<qcc::String> > > defaultInterfacesForDeviceType = {
@@ -105,10 +105,10 @@ bool HasDefaultInterfaces(const qcc::String& objPath, const AboutObjectDescripti
 }
 
 
-TEST_F(HAETest, HAE_v1_HaeAbout)
+TEST_F(CDMTest, CDM_v1_CdmAbout)
 {
     WaitForControllee();
-    HaeAboutData &aboutData = m_interfaces[0].aboutData;
+    CdmAboutData &aboutData = m_interfaces[0].aboutData;
     AboutObjectDescription &aboutDescription = m_interfaces[0].aboutDescription;
     DeviceTypeDescription* deviceTypeDescription = new DeviceTypeDescription();
 

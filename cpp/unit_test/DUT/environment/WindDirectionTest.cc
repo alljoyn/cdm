@@ -14,10 +14,10 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include "HaeTest.h"
+#include "CdmTest.h"
 
-#include <alljoyn/hae/interfaces/environment/WindDirectionIntfController.h>
-#include <alljoyn/hae/interfaces/environment/WindDirectionIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/environment/WindDirectionIntfController.h>
+#include <alljoyn/cdm/interfaces/environment/WindDirectionIntfControllerListener.h>
 
 class WindDirectionListener : public WindDirectionIntfControllerListener
 {
@@ -145,12 +145,12 @@ public:
     }
 };
 
-TEST_F(HAETest, HAE_v1_WindDirection)
+TEST_F(CDMTest, CDM_v1_WindDirection)
 {
     WaitForControllee(WIND_DIRECTION_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         WindDirectionListener listener;
-        HaeInterface* interface = m_controller->CreateInterface(WIND_DIRECTION_INTERFACE, m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()), m_interfaces[i].sessionId, listener);
+        CdmInterface* interface = m_controller->CreateInterface(WIND_DIRECTION_INTERFACE, m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()), m_interfaces[i].sessionId, listener);
 
         WindDirectionIntfController* controller = static_cast<WindDirectionIntfController*>(interface);
         QStatus status = ER_FAIL;

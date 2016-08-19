@@ -65,7 +65,7 @@ int CDECL_CALL main(int argc, char** argv, char** envArg)
         QCC_RegisterOutputCallback(DebugOut, NULL);
     }
 
-    printf("\n Running alljoyn_hae unit test\n");
+    printf("\n Running alljoyn_cdm unit test\n");
     testing::InitGoogleTest(&argc, argv);
     status = RUN_ALL_TESTS();
 

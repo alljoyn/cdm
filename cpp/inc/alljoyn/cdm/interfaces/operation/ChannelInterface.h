@@ -21,7 +21,7 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/HaeInterface.h>
+#include <alljoyn/cdm/interfaces/CdmInterface.h>
 
 namespace ajn {
 namespace services {
@@ -29,7 +29,7 @@ namespace services {
 /**
  * Channel Interface class
  */
-class ChannelInterface : public HaeInterface {
+class ChannelInterface : public CdmInterface {
   public:
     /**
      * ChannelInfoRecord struct
@@ -55,7 +55,7 @@ class ChannelInterface : public HaeInterface {
      * Get Interface Type
      * @return Interface type
      */
-    const HaeInterfaceType GetInterfaceType() const { return CHANNEL_INTERFACE; }
+    const CdmInterfaceType GetInterfaceType() const { return CHANNEL_INTERFACE; }
 
     /**
      * Get Introspection Xml

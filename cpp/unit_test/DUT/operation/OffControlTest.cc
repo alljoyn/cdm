@@ -14,10 +14,10 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include "HaeTest.h"
+#include "CdmTest.h"
 
-#include <alljoyn/hae/interfaces/operation/OffControlIntfController.h>
-#include <alljoyn/hae/interfaces/operation/OffControlIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/OffControlIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/OffControlIntfControllerListener.h>
 
 class OffControlListener : public OffControlIntfControllerListener
 {
@@ -42,13 +42,13 @@ public:
     }
 };
 
-TEST_F(HAETest, HAE_v1_OffControl)
+TEST_F(CDMTest, CDM_v1_OffControl)
 {
     WaitForControllee (OFF_CONTROL_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
         OffControlListener listener;
-        HaeInterface* interface = m_controller->CreateInterface(OFF_CONTROL_INTERFACE, m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()),
+        CdmInterface* interface = m_controller->CreateInterface(OFF_CONTROL_INTERFACE, m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()),
                                                                 m_interfaces[i].sessionId, listener);
         OffControlIntfController* controller = static_cast<OffControlIntfController*>(interface);
         QStatus status = ER_FAIL;

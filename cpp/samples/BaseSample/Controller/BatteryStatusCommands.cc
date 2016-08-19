@@ -15,7 +15,7 @@
  ******************************************************************************/
 
 #include <cstdlib>
-#include <alljoyn/hae/interfaces/HaeInterfaceTypes.h>
+#include <alljoyn/cdm/interfaces/CdmInterfaceTypes.h>
 #include "BatteryStatusCommands.h"
 #include "ControllerSample.h"
 
@@ -70,13 +70,13 @@ BatteryStatusCommands::~BatteryStatusCommands()
 void BatteryStatusCommands::Init()
 {
     if (!m_intfController) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(BATTERY_STATUS_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(BATTERY_STATUS_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfController = static_cast<BatteryStatusIntfController*>(haeInterface);
+        m_intfController = static_cast<BatteryStatusIntfController*>(cdmInterface);
     }
 
     RegisterCommand(&BatteryStatusCommands::OnCmdGetCurrentValue, "gcv", "get current value of battery status");

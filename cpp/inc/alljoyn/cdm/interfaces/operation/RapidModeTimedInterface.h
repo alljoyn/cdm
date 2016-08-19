@@ -19,7 +19,7 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/HaeInterface.h>
+#include <alljoyn/cdm/interfaces/CdmInterface.h>
 
 namespace ajn {
 namespace services {
@@ -27,7 +27,7 @@ namespace services {
 /**
  * RapidModeTimed Interface class
  */
-class RapidModeTimedInterface : public HaeInterface {
+class RapidModeTimedInterface : public CdmInterface {
   public:
     /**
      * Constructor of RapidModeTimed
@@ -43,7 +43,7 @@ class RapidModeTimedInterface : public HaeInterface {
      * Get Interface Type
      * @return interface type
      */
-    const HaeInterfaceType GetInterfaceType() const { return RAPID_MODE_TIMED_INTERFACE; }
+    const CdmInterfaceType GetInterfaceType() const { return RAPID_MODE_TIMED_INTERFACE; }
 
     /**
      * Get Introspection Xml

@@ -16,9 +16,9 @@
 
 #include <qcc/Util.h>
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/interfaces/operation/ResourceSavingIntfControlleeListener.h>
-#include <alljoyn/hae/HaeBusObject.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/interfaces/operation/ResourceSavingIntfControlleeListener.h>
+#include <alljoyn/cdm/CdmBusObject.h>
 #include "ResourceSavingIntfControlleeImpl.h"
 
 using namespace qcc;
@@ -27,13 +27,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* ResourceSavingIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject)
+CdmInterface* ResourceSavingIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject)
 {
-    return new ResourceSavingIntfControlleeImpl(busAttachment, static_cast<ResourceSavingIntfControlleeListener&>(listener), haeBusObject);
+    return new ResourceSavingIntfControlleeImpl(busAttachment, static_cast<ResourceSavingIntfControlleeListener&>(listener), cdmBusObject);
 }
 
-ResourceSavingIntfControlleeImpl::ResourceSavingIntfControlleeImpl(BusAttachment& busAttachment, ResourceSavingIntfControlleeListener& listener, HaeBusObject& haeBusObject) :
-    InterfaceControllee(haeBusObject),
+ResourceSavingIntfControlleeImpl::ResourceSavingIntfControlleeImpl(BusAttachment& busAttachment, ResourceSavingIntfControlleeListener& listener, CdmBusObject& cdmBusObject) :
+    InterfaceControllee(cdmBusObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener),
     m_ResourceSavingMode(false)
@@ -46,7 +46,7 @@ ResourceSavingIntfControlleeImpl::~ResourceSavingIntfControlleeImpl()
 
 QStatus ResourceSavingIntfControlleeImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
 
     return status;
 }

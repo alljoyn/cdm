@@ -14,11 +14,11 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include "HaeTest.h"
+#include "CdmTest.h"
 #include <algorithm>
 #include <iostream>
-#include <alljoyn/hae/interfaces/operation/CycleControlIntfController.h>
-#include <alljoyn/hae/interfaces/operation/CycleControlIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/CycleControlIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/CycleControlIntfControllerListener.h>
 
 using namespace std;
 class CycleControlListener : public CycleControlIntfControllerListener
@@ -131,14 +131,14 @@ public:
     }
 };
 
-TEST_F(HAETest, HAE_v1_CycleControl)
+TEST_F(CDMTest, CDM_v1_CycleControl)
 {
     WaitForControllee(CYCLE_CONTROL_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
 
         CycleControlListener listener;
-        HaeInterface* interface = m_controller->CreateInterface(CYCLE_CONTROL_INTERFACE, m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()),
+        CdmInterface* interface = m_controller->CreateInterface(CYCLE_CONTROL_INTERFACE, m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()),
                                                                 m_interfaces[i].sessionId, listener);
         CycleControlIntfController* controller = static_cast<CycleControlIntfController*>(interface);
         QStatus status = ER_FAIL;
@@ -180,7 +180,7 @@ TEST_F(HAETest, HAE_v1_CycleControl)
                 EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
                 listener.m_event.ResetEvent();
                 EXPECT_NE(listener.m_status, ER_OK);
-                EXPECT_STREQ(listener.m_errorName.c_str(), HaeInterface::GetInterfaceErrorName(INVALID_VALUE).c_str());
+                EXPECT_STREQ(listener.m_errorName.c_str(), CdmInterface::GetInterfaceErrorName(INVALID_VALUE).c_str());
             }
         }
 

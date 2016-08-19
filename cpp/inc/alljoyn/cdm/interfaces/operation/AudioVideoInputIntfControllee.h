@@ -19,7 +19,7 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/hae/interfaces/operation/AudioVideoInputInterface.h>
+#include <alljoyn/cdm/interfaces/operation/AudioVideoInputInterface.h>
 
 namespace ajn {
 namespace services {

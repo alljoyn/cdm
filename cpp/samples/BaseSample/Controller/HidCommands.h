@@ -18,8 +18,8 @@
 #define HIDCOMMANDS_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/input/HidIntfController.h>
-#include <alljoyn/hae/interfaces/input/HidIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/input/HidIntfController.h>
+#include <alljoyn/cdm/interfaces/input/HidIntfControllerListener.h>
 
 class ControllerSample;
 

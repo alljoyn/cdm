@@ -17,7 +17,7 @@
 #include <cstdlib>
 #include <sstream>
 #include <map>
-#include <alljoyn/hae/interfaces/HaeInterfaceTypes.h>
+#include <alljoyn/cdm/interfaces/CdmInterfaceTypes.h>
 #include "HidCommands.h"
 #include "ControllerSample.h"
 
@@ -78,13 +78,13 @@ HidCommands::~HidCommands()
 void HidCommands::Init()
 {
     if (!m_intfController) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(HID_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(HID_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfController = static_cast<HidIntfController*>(haeInterface);
+        m_intfController = static_cast<HidIntfController*>(cdmInterface);
     }
 
     RegisterCommand(&HidCommands::OnCmdGetSupportedEvents, "gse", "get supported events");

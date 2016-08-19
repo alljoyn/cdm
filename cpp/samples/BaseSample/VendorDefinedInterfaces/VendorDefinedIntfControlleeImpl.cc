@@ -16,8 +16,8 @@
 
 #include <qcc/Util.h>
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/HaeBusObject.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/CdmBusObject.h>
 #include "VendorDefinedIntfControlleeListener.h"
 #include "VendorDefinedIntfControlleeImpl.h"
 
@@ -27,13 +27,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* VendorDefinedIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject)
+CdmInterface* VendorDefinedIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject)
 {
-    return new VendorDefinedIntfControlleeImpl(busAttachment, dynamic_cast<VendorDefinedIntfControlleeListener&>(listener), haeBusObject);
+    return new VendorDefinedIntfControlleeImpl(busAttachment, dynamic_cast<VendorDefinedIntfControlleeListener&>(listener), cdmBusObject);
 }
 
-VendorDefinedIntfControlleeImpl::VendorDefinedIntfControlleeImpl(BusAttachment& busAttachment, VendorDefinedIntfControlleeListener& listener, HaeBusObject& haeBusObject) :
-    InterfaceControllee(haeBusObject),
+VendorDefinedIntfControlleeImpl::VendorDefinedIntfControlleeImpl(BusAttachment& busAttachment, VendorDefinedIntfControlleeListener& listener, CdmBusObject& cdmBusObject) :
+    InterfaceControllee(cdmBusObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener),
     m_testProperty(100)
@@ -46,7 +46,7 @@ VendorDefinedIntfControlleeImpl::~VendorDefinedIntfControlleeImpl()
 
 QStatus VendorDefinedIntfControlleeImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
     const InterfaceDescription::Member* member = m_interfaceDescription->GetMember(s_method_TestMethod.c_str());
     MessageReceiver::MethodHandler methodHandler = static_cast<MessageReceiver::MethodHandler>(&VendorDefinedIntfControlleeImpl::OnTestMethod);
 
