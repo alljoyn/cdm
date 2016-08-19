@@ -19,7 +19,7 @@
 #define DEVICEINFO_H_
 
 #include <map>
-#include <qcc/SmartPointer.h>
+#include <memory>
 #include <alljoyn/Session.h>
 #include <alljoyn/hae/HaeAboutData.h>
 #include <alljoyn/AboutObjectDescription.h>
@@ -106,7 +106,7 @@ class DeviceInfo {
     HaeProxyObjectMap m_haeProxyObjectsMap;
 };
 
-typedef qcc::SmartPointer<DeviceInfo> DeviceInfoPtr;
+typedef std::shared_ptr<DeviceInfo> DeviceInfoPtr;
 typedef std::map<SessionId, DeviceInfoPtr> DeviceMap;
 
 }  // services
