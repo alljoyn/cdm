@@ -18,8 +18,8 @@
 #define FILTERSTATUSCOMMANDS_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/FilterStatusIntfController.h>
-#include <alljoyn/hae/interfaces/operation/FilterStatusIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/FilterStatusIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/FilterStatusIntfControllerListener.h>
 
 class FilterStatusListener : public FilterStatusIntfControllerListener {
   public:

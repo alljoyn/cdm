@@ -64,13 +64,13 @@ HvacFanModeCommands::~HvacFanModeCommands()
 void HvacFanModeCommands::Init()
 {
     if (!m_intfControllee) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(HVAC_FAN_MODE_INTERFACE, m_objectPath, m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(HVAC_FAN_MODE_INTERFACE, m_objectPath, m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfControllee = static_cast<HvacFanModeIntfControllee*>(haeInterface);
+        m_intfControllee = static_cast<HvacFanModeIntfControllee*>(cdmInterface);
 
         RegisterCommand(&HvacFanModeCommands::OnCmdGetMode, "ccmgm", "get mode");
         RegisterCommand(&HvacFanModeCommands::OnCmdSetMode, "ccmsm", "set mode (use 'ccmsm <mode>'");

@@ -18,8 +18,8 @@
 #define TIMERLISTENER_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/TimerIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/TimerIntfControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/TimerIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/TimerIntfControlleeListener.h>
 
 using namespace ajn;
 using namespace services;

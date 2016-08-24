@@ -15,8 +15,8 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/DeviceTypeDescription.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/DeviceTypeDescription.h>
 
 #include <utility>
 

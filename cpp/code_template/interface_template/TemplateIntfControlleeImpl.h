@@ -20,15 +20,15 @@
 #include <alljoyn/Status.h>
 #include <alljoyn/BusAttachment.h>
 #include <alljoyn/InterfaceDescription.h>
-#include <alljoyn/hae/interfaces/InterfaceControllee.h>
-#include <alljoyn/hae/interfaces/InterfaceControlleeListener.h>
-#include <alljoyn/hae/interfaces/{interface_category}/{interface_name}IntfControllee.h>
+#include <alljoyn/cdm/interfaces/InterfaceControllee.h>
+#include <alljoyn/cdm/interfaces/InterfaceControlleeListener.h>
+#include <alljoyn/cdm/interfaces/{interface_category}/{interface_name}IntfControllee.h>
 
 namespace ajn {
 namespace services {
 
 class {interface_name}IntfControlleeListener;
-class HaeBusObject;
+class CdmBusObject;
 
 /**
  * {interface_name} Interface Controllee implementation class
@@ -38,12 +38,12 @@ class {interface_name}IntfControlleeImpl : public InterfaceControllee, public {i
     /**
      * Create interface
      */
-    static HaeInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject);
 
     /**
      * Constructor of {interface_name}IntfControlleeImpl
      */
-    {interface_name}IntfControlleeImpl(BusAttachment& busAttachment, {interface_name}IntfControlleeListener& listener, HaeBusObject& haeBusObject);
+    {interface_name}IntfControlleeImpl(BusAttachment& busAttachment, {interface_name}IntfControlleeListener& listener, CdmBusObject& cdmBusObject);
 
     /**
      * Destructor of {interface_name}IntfControlleeImpl

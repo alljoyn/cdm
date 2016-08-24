@@ -14,10 +14,10 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include "HaeTest.h"
+#include "CdmTest.h"
 
-#include <alljoyn/hae/interfaces/operation/BatteryStatusIntfController.h>
-#include <alljoyn/hae/interfaces/operation/BatteryStatusIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/BatteryStatusIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/BatteryStatusIntfControllerListener.h>
 
 class BatteryStatusListener : public BatteryStatusIntfControllerListener
 {
@@ -59,14 +59,14 @@ public:
     }
 };
 
-TEST_F(HAETest, HAE_v1_BatteryStatus)
+TEST_F(CDMTest, CDM_v1_BatteryStatus)
 {
     WaitForControllee(BATTERY_STATUS_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
 
         BatteryStatusListener listener;
-        HaeInterface* interface = m_controller->CreateInterface(BATTERY_STATUS_INTERFACE, m_interfaces[i].busName,
+        CdmInterface* interface = m_controller->CreateInterface(BATTERY_STATUS_INTERFACE, m_interfaces[i].busName,
                                                                 qcc::String(m_interfaces[i].objectPath.c_str()), m_interfaces[i].sessionId, listener);
         BatteryStatusIntfController* controller = static_cast<BatteryStatusIntfController*>(interface);
         QStatus status = ER_FAIL;

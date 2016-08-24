@@ -44,13 +44,13 @@ RemoteControllabilityCommands::~RemoteControllabilityCommands()
 void RemoteControllabilityCommands::Init()
 {
     if (!m_intfControllee) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(REMOTE_CONTROLLABILITY_INTERFACE, m_objectPath, m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(REMOTE_CONTROLLABILITY_INTERFACE, m_objectPath, m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfControllee = static_cast<RemoteControllabilityIntfControllee*>(haeInterface);
+        m_intfControllee = static_cast<RemoteControllabilityIntfControllee*>(cdmInterface);
 
         RegisterCommand(&RemoteControllabilityCommands::OnCmdGetIsControllable, "gic", "get is controllable");
         RegisterCommand(&RemoteControllabilityCommands::OnCmdSetIsControllable, "sic", "set is controllable (use 'sic <0/1>'");

@@ -9,8 +9,8 @@
 
 #include "TestCycleControlListener.h"
 #include "TestTimerListener.h"
-#include <alljoyn/hae/interfaces/operation/CycleControlIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/TimerIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/CycleControlIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/TimerIntfControllee.h>
 
 using namespace std;
 using namespace qcc;
@@ -28,7 +28,7 @@ class TestControllee : public ControlleeSample
 
     clock_t m_initialTime;
   public:
-    TestControllee(BusAttachment* bus, HaeAboutData* aboutData);
+    TestControllee(BusAttachment* bus, CdmAboutData* aboutData);
     virtual ~TestControllee();
     void CreateInterfaces();
     void SetInitialProperty();

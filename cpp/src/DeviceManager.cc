@@ -17,9 +17,9 @@
 #include <qcc/Debug.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/BusAttachment.h>
-#include <alljoyn/hae/LogModule.h>
+#include <alljoyn/cdm/LogModule.h>
 #include "DeviceManager.h"
-#include <alljoyn/hae/HaeProxyBusObject.h>
+#include <alljoyn/cdm/CdmProxyBusObject.h>
 #include "AutoLock.h"
 
 using namespace ajn;
@@ -37,34 +37,34 @@ DeviceInfo::DeviceInfo(const char* busName)
 {
 }
 
-DeviceInfo::DeviceInfo(const char* busName, SessionId id, SessionPort port, const HaeAboutData& data, const AboutObjectDescription& description)
+DeviceInfo::DeviceInfo(const char* busName, SessionId id, SessionPort port, const CdmAboutData& data, const AboutObjectDescription& description)
 : m_busName(busName), m_sessionId(id), m_sessionPort(port), m_aboutData(data), m_aboutObjectDescription(description)
 {
 }
 
 DeviceInfo::~DeviceInfo()
 {
-    for (HaeProxyObjectMap::const_iterator citer = m_haeProxyObjectsMap.begin(); citer != m_haeProxyObjectsMap.end(); ++citer) {
-        HaeProxyBusObject* haeProxyObject = citer->second;
+    for (CdmProxyObjectMap::const_iterator citer = m_cdmProxyObjectsMap.begin(); citer != m_cdmProxyObjectsMap.end(); ++citer) {
+        CdmProxyBusObject* cdmProxyObject = citer->second;
 
-        if (haeProxyObject) {
-            delete haeProxyObject;
-            haeProxyObject = 0;
+        if (cdmProxyObject) {
+            delete cdmProxyObject;
+            cdmProxyObject = 0;
         }
     }
 }
 
-HaeProxyBusObject* DeviceInfo::GetHaeProxyBusObject(BusAttachment& bus, const qcc::String& objectPath)
+CdmProxyBusObject* DeviceInfo::GetCdmProxyBusObject(BusAttachment& bus, const qcc::String& objectPath)
 {
-    HaeProxyObjectMap::const_iterator citer = m_haeProxyObjectsMap.find(objectPath);
-    if (citer == m_haeProxyObjectsMap.end()) {
-        HaeProxyBusObject* haeProxyObject = new HaeProxyBusObject(bus, m_busName, objectPath, m_sessionId);
-        if (!haeProxyObject) {
-            QCC_LogError(ER_OUT_OF_MEMORY, ("%s: could not create HaeProxyBusObject class.", __func__));
+    CdmProxyObjectMap::const_iterator citer = m_cdmProxyObjectsMap.find(objectPath);
+    if (citer == m_cdmProxyObjectsMap.end()) {
+        CdmProxyBusObject* cdmProxyObject = new CdmProxyBusObject(bus, m_busName, objectPath, m_sessionId);
+        if (!cdmProxyObject) {
+            QCC_LogError(ER_OUT_OF_MEMORY, ("%s: could not create CdmProxyBusObject class.", __func__));
             return NULL;
         } else {
-            m_haeProxyObjectsMap.insert(std::pair<qcc::String, HaeProxyBusObject*>(objectPath, haeProxyObject));
-            return haeProxyObject;
+            m_cdmProxyObjectsMap.insert(std::pair<qcc::String, CdmProxyBusObject*>(objectPath, cdmProxyObject));
+            return cdmProxyObject;
         }
     } else {
         return citer->second;

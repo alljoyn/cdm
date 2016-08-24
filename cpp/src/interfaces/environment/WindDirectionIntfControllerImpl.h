@@ -19,14 +19,14 @@
 
 #include <alljoyn/Status.h>
 #include <alljoyn/BusAttachment.h>
-#include <alljoyn/hae/interfaces/InterfaceController.h>
-#include <alljoyn/hae/interfaces/environment/WindDirectionIntfController.h>
+#include <alljoyn/cdm/interfaces/InterfaceController.h>
+#include <alljoyn/cdm/interfaces/environment/WindDirectionIntfController.h>
 
 namespace ajn {
 namespace services {
 
 class WindDirectionIntfControllerListener;
-class HaeProxyBusObject;
+class CdmProxyBusObject;
 
 /**
  * WindDirection Interface Controller implementation class
@@ -36,12 +36,12 @@ class WindDirectionIntfControllerImpl : public InterfaceController, public WindD
     /**
      * Create interface
      */
-    static HaeInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, HaeProxyBusObject& haeProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
 
     /**
      * Constructor of WindDirectionIntfControllerImpl
      */
-    WindDirectionIntfControllerImpl(BusAttachment& busAttachment, WindDirectionIntfControllerListener& listener, HaeProxyBusObject& haeProxyObject);
+    WindDirectionIntfControllerImpl(BusAttachment& busAttachment, WindDirectionIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
 
     /**
      * Destructor of WindDirectionIntfControllerImpl

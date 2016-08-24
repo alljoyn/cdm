@@ -19,14 +19,14 @@
 
 #include <alljoyn/Status.h>
 #include <alljoyn/BusAttachment.h>
-#include <alljoyn/hae/interfaces/InterfaceController.h>
+#include <alljoyn/cdm/interfaces/InterfaceController.h>
 #include "VendorDefinedIntfController.h"
 
 namespace ajn {
 namespace services {
 
 class VendorDefinedIntfControllerListener;
-class HaeProxyBusObject;
+class CdmProxyBusObject;
 
 /**
  * VendorDefined Interface Controller implementation class
@@ -36,12 +36,12 @@ class VendorDefinedIntfControllerImpl : public InterfaceController, public Vendo
     /**
      * Create interface
      */
-    static HaeInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, HaeProxyBusObject& haeProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
 
     /**
      * Constructor of VendorDefinedIntfControllerImpl
      */
-    VendorDefinedIntfControllerImpl(BusAttachment& busAttachment, VendorDefinedIntfControllerListener& listener, HaeProxyBusObject& haeProxyObject);
+    VendorDefinedIntfControllerImpl(BusAttachment& busAttachment, VendorDefinedIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
 
     /**
      * Destructor of VendorDefinedIntfControllerImpl

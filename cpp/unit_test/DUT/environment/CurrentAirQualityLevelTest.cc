@@ -14,10 +14,10 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include "HaeTest.h"
+#include "CdmTest.h"
 
-#include <alljoyn/hae/interfaces/environment/CurrentAirQualityLevelIntfController.h>
-#include <alljoyn/hae/interfaces/environment/CurrentAirQualityLevelIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/environment/CurrentAirQualityLevelIntfController.h>
+#include <alljoyn/cdm/interfaces/environment/CurrentAirQualityLevelIntfControllerListener.h>
 
 class CurrentAirQualityLevelListener : public CurrentAirQualityLevelIntfControllerListener
 {
@@ -70,14 +70,14 @@ public:
     }
 };
 
-TEST_F(HAETest, HAE_v1_CurrentAirQualityLevel)
+TEST_F(CDMTest, CDM_v1_CurrentAirQualityLevel)
 {
     WaitForControllee(CURRENT_AIR_QUALITY_LEVEL_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
 
         CurrentAirQualityLevelListener listener;
-        HaeInterface* interface = m_controller->CreateInterface(CURRENT_AIR_QUALITY_LEVEL_INTERFACE, m_interfaces[i].busName,
+        CdmInterface* interface = m_controller->CreateInterface(CURRENT_AIR_QUALITY_LEVEL_INTERFACE, m_interfaces[i].busName,
                                                                 qcc::String(m_interfaces[i].objectPath.c_str()), m_interfaces[i].sessionId, listener);
         CurrentAirQualityLevelIntfController* controller = static_cast<CurrentAirQualityLevelIntfController*>(interface);
         QStatus status = ER_FAIL;

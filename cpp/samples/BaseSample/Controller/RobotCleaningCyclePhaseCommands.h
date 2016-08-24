@@ -18,8 +18,8 @@
 #define ROBOTCLEANINGCYCLEPHASECOMMANDS_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/RobotCleaningCyclePhaseIntfController.h>
-#include <alljoyn/hae/interfaces/operation/RobotCleaningCyclePhaseIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/RobotCleaningCyclePhaseIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/RobotCleaningCyclePhaseIntfControllerListener.h>
 
 class ControllerSample;
 

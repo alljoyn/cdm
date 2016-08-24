@@ -16,9 +16,9 @@
 
 #include <qcc/Util.h>
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/interfaces/environment/WindDirectionIntfControlleeListener.h>
-#include <alljoyn/hae/HaeBusObject.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/interfaces/environment/WindDirectionIntfControlleeListener.h>
+#include <alljoyn/cdm/CdmBusObject.h>
 #include "WindDirectionIntfControlleeImpl.h"
 
 using namespace qcc;
@@ -28,13 +28,13 @@ namespace ajn {
 namespace services {
 
 
-HaeInterface* WindDirectionIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject)
+CdmInterface* WindDirectionIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject)
 {
-    return new WindDirectionIntfControlleeImpl(busAttachment, static_cast<WindDirectionIntfControlleeListener&>(listener), haeBusObject);
+    return new WindDirectionIntfControlleeImpl(busAttachment, static_cast<WindDirectionIntfControlleeListener&>(listener), cdmBusObject);
 }
 
-WindDirectionIntfControlleeImpl::WindDirectionIntfControlleeImpl(BusAttachment& busAttachment, WindDirectionIntfControlleeListener& listener, HaeBusObject& haeBusObject) :
-    InterfaceControllee(haeBusObject),
+WindDirectionIntfControlleeImpl::WindDirectionIntfControlleeImpl(BusAttachment& busAttachment, WindDirectionIntfControlleeListener& listener, CdmBusObject& cdmBusObject) :
+    InterfaceControllee(cdmBusObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener),
     m_HorizontalDirection(0),
@@ -52,7 +52,7 @@ WindDirectionIntfControlleeImpl::~WindDirectionIntfControlleeImpl()
 
 QStatus WindDirectionIntfControlleeImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
 
     return status;
 }

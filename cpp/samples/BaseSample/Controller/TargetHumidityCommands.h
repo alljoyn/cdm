@@ -18,8 +18,8 @@
 #define TARGETHUMIDITYCOMMANDS_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/environment/TargetHumidityIntfController.h>
-#include <alljoyn/hae/interfaces/environment/TargetHumidityIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/environment/TargetHumidityIntfController.h>
+#include <alljoyn/cdm/interfaces/environment/TargetHumidityIntfControllerListener.h>
 
 class ControllerSample;
 

@@ -20,15 +20,15 @@
 #include <alljoyn/Status.h>
 #include <alljoyn/BusAttachment.h>
 #include <alljoyn/InterfaceDescription.h>
-#include <alljoyn/hae/interfaces/InterfaceControllee.h>
-#include <alljoyn/hae/interfaces/InterfaceControlleeListener.h>
-#include <alljoyn/hae/interfaces/operation/MoistureOutputLevelIntfControllee.h>
+#include <alljoyn/cdm/interfaces/InterfaceControllee.h>
+#include <alljoyn/cdm/interfaces/InterfaceControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/MoistureOutputLevelIntfControllee.h>
 
 namespace ajn {
 namespace services {
 
 class MoistureOutputLevelIntfControlleeListener;
-class HaeBusObject;
+class CdmBusObject;
 
 /**
  * MoistureOutputLevel interface controllee implementation class
@@ -38,12 +38,12 @@ class MoistureOutputLevelIntfControlleeImpl : public InterfaceControllee, public
     /**
      * Create interface
      */
-    static HaeInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject);
 
     /**
      * Constructor of MoistureOutputLevelIntfControlleeImpl
      */
-    MoistureOutputLevelIntfControlleeImpl(BusAttachment& busAttachment, MoistureOutputLevelIntfControlleeListener& listener, HaeBusObject& haeBusObject);
+    MoistureOutputLevelIntfControlleeImpl(BusAttachment& busAttachment, MoistureOutputLevelIntfControlleeListener& listener, CdmBusObject& cdmBusObject);
 
     /**
      * Destructor of MoistureOutputLevelIntfControlleeImpl

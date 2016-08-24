@@ -18,8 +18,8 @@
 #define RAPIDMODETIMEDLISTENER_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/RapidModeTimedIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/RapidModeTimedIntfControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/RapidModeTimedIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/RapidModeTimedIntfControlleeListener.h>
 
 using namespace ajn;
 using namespace services;

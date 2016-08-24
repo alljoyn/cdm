@@ -20,15 +20,15 @@
 #include <alljoyn/Status.h>
 #include <alljoyn/BusAttachment.h>
 #include <alljoyn/InterfaceDescription.h>
-#include <alljoyn/hae/interfaces/InterfaceControllee.h>
-#include <alljoyn/hae/interfaces/InterfaceControlleeListener.h>
-#include <alljoyn/hae/interfaces/operation/EnergyUsageIntfControllee.h>
+#include <alljoyn/cdm/interfaces/InterfaceControllee.h>
+#include <alljoyn/cdm/interfaces/InterfaceControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/EnergyUsageIntfControllee.h>
 
 namespace ajn {
 namespace services {
 
 class EnergyUsageIntfControlleeListener;
-class HaeBusObject;
+class CdmBusObject;
 
 /**
  * EnergyUsage Interface Controllee implementation class
@@ -38,12 +38,12 @@ class EnergyUsageIntfControlleeImpl : public InterfaceControllee, public EnergyU
     /**
      * Create interface
      */
-    static HaeInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject);
 
     /**
      * Constructor of EnergyUsageIntfControlleeImpl
      */
-    EnergyUsageIntfControlleeImpl(BusAttachment& busAttachment, EnergyUsageIntfControlleeListener& listener, HaeBusObject& haeBusObject);
+    EnergyUsageIntfControlleeImpl(BusAttachment& busAttachment, EnergyUsageIntfControlleeListener& listener, CdmBusObject& cdmBusObject);
 
     /**
      * Destructor of EnergyUsageIntfControlleeImpl

@@ -14,11 +14,11 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include "HaeTest.h"
+#include "CdmTest.h"
 #include <algorithm>
 
-#include <alljoyn/hae/interfaces/userinterfacesettings/TemperatureDisplayIntfController.h>
-#include <alljoyn/hae/interfaces/userinterfacesettings/TemperatureDisplayIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/userinterfacesettings/TemperatureDisplayIntfController.h>
+#include <alljoyn/cdm/interfaces/userinterfacesettings/TemperatureDisplayIntfControllerListener.h>
 
 class TemperatureDisplayListener : public TemperatureDisplayIntfControllerListener
 {
@@ -84,14 +84,14 @@ public:
     }
 };
 
-TEST_F(HAETest, HAE_v1_TemperatureDisplay)
+TEST_F(CDMTest, CDM_v1_TemperatureDisplay)
 {
     WaitForControllee(TEMPERATURE_DISPLAY_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
 
         TemperatureDisplayListener listener;
-        HaeInterface* interface = m_controller->CreateInterface(TEMPERATURE_DISPLAY_INTERFACE, m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()),
+        CdmInterface* interface = m_controller->CreateInterface(TEMPERATURE_DISPLAY_INTERFACE, m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()),
                                                                 m_interfaces[i].sessionId, listener);
         TemperatureDisplayIntfController* controller = static_cast<TemperatureDisplayIntfController*>(interface);
         QStatus status = ER_FAIL;

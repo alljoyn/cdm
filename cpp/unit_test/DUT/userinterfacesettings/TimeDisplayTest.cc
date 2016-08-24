@@ -14,11 +14,11 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include "HaeTest.h"
+#include "CdmTest.h"
 #include <algorithm>
 
-#include <alljoyn/hae/interfaces/userinterfacesettings/TimeDisplayIntfController.h>
-#include <alljoyn/hae/interfaces/userinterfacesettings/TimeDisplayIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/userinterfacesettings/TimeDisplayIntfController.h>
+#include <alljoyn/cdm/interfaces/userinterfacesettings/TimeDisplayIntfControllerListener.h>
 
 class TimeDisplayListener : public TimeDisplayIntfControllerListener
 {
@@ -84,14 +84,14 @@ public:
     }
 };
 
-TEST_F(HAETest, HAE_v1_TimeDisplay)
+TEST_F(CDMTest, CDM_v1_TimeDisplay)
 {
     WaitForControllee(TIME_DISPLAY_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
 
         TimeDisplayListener listener;
-        HaeInterface* interface = m_controller->CreateInterface(TIME_DISPLAY_INTERFACE, m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()),
+        CdmInterface* interface = m_controller->CreateInterface(TIME_DISPLAY_INTERFACE, m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()),
                                                                 m_interfaces[i].sessionId, listener);
         TimeDisplayIntfController* controller = static_cast<TimeDisplayIntfController*>(interface);
         QStatus status = ER_FAIL;

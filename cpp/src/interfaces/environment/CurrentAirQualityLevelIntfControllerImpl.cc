@@ -16,9 +16,9 @@
 
 #include <qcc/Util.h>
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/HaeProxyBusObject.h>
-#include <alljoyn/hae/interfaces/environment/CurrentAirQualityLevelIntfControllerListener.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/CdmProxyBusObject.h>
+#include <alljoyn/cdm/interfaces/environment/CurrentAirQualityLevelIntfControllerListener.h>
 
 #include "CurrentAirQualityLevelIntfControllerImpl.h"
 
@@ -28,13 +28,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* CurrentAirQualityLevelIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, HaeProxyBusObject& haeProxyObject)
+CdmInterface* CurrentAirQualityLevelIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject)
 {
-    return new CurrentAirQualityLevelIntfControllerImpl(busAttachment, dynamic_cast<CurrentAirQualityLevelIntfControllerListener&>(listener), haeProxyObject);
+    return new CurrentAirQualityLevelIntfControllerImpl(busAttachment, dynamic_cast<CurrentAirQualityLevelIntfControllerListener&>(listener), cdmProxyObject);
 }
 
-CurrentAirQualityLevelIntfControllerImpl::CurrentAirQualityLevelIntfControllerImpl(BusAttachment& busAttachment, CurrentAirQualityLevelIntfControllerListener& listener, HaeProxyBusObject& haeProxyObject) :
-    InterfaceController(haeProxyObject),
+CurrentAirQualityLevelIntfControllerImpl::CurrentAirQualityLevelIntfControllerImpl(BusAttachment& busAttachment, CurrentAirQualityLevelIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject) :
+    InterfaceController(cdmProxyObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener)
 {
@@ -46,7 +46,7 @@ CurrentAirQualityLevelIntfControllerImpl::~CurrentAirQualityLevelIntfControllerI
 
 QStatus CurrentAirQualityLevelIntfControllerImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
     if (ER_OK != status) {
         QCC_LogError(status, ("%s: Interface init failed.", __func__));
         return status;

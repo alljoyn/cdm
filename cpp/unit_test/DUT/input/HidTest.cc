@@ -14,10 +14,10 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include "HaeTest.h"
+#include "CdmTest.h"
 
-#include <alljoyn/hae/interfaces/input/HidIntfController.h>
-#include <alljoyn/hae/interfaces/input/HidIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/input/HidIntfController.h>
+#include <alljoyn/cdm/interfaces/input/HidIntfControllerListener.h>
 
 class HidListener : public HidIntfControllerListener
 {
@@ -44,13 +44,13 @@ public:
     }
 };
 
-TEST_F(HAETest, HAE_v1_Hid)
+TEST_F(CDMTest, CDM_v1_Hid)
 {
     WaitForControllee (HID_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
         HidListener listener;
-        HaeInterface* interface = m_controller->CreateInterface(HID_INTERFACE, m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()),
+        CdmInterface* interface = m_controller->CreateInterface(HID_INTERFACE, m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()),
                 m_interfaces[i].sessionId, listener);
         HidIntfController* controller = static_cast<HidIntfController*>(interface);
         QStatus status = ER_FAIL;

@@ -50,13 +50,13 @@ BatteryStatusCommands::~BatteryStatusCommands()
 void BatteryStatusCommands::Init()
 {
     if (!m_intfControllee) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(BATTERY_STATUS_INTERFACE, m_objectPath, m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(BATTERY_STATUS_INTERFACE, m_objectPath, m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfControllee = static_cast<BatteryStatusIntfControllee*>(haeInterface);
+        m_intfControllee = static_cast<BatteryStatusIntfControllee*>(cdmInterface);
 
         RegisterCommand(&BatteryStatusCommands::OnCmdGetCurrentValue, "bsgcv", "get current value");
         RegisterCommand(&BatteryStatusCommands::OnCmdSetCurrentValue, "bsscv", "set current value (use 'bsscv <value>'");

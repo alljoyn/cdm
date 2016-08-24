@@ -50,13 +50,13 @@ CurrentHumidityCommands::~CurrentHumidityCommands()
 void CurrentHumidityCommands::Init()
 {
     if (!m_intfControllee) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(CURRENT_HUMIDITY_INTERFACE, m_objectPath, m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(CURRENT_HUMIDITY_INTERFACE, m_objectPath, m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfControllee = static_cast<CurrentHumidityIntfControllee*>(haeInterface);
+        m_intfControllee = static_cast<CurrentHumidityIntfControllee*>(cdmInterface);
 
         RegisterCommand(&CurrentHumidityCommands::OnCmdGetCurrentValue, "gcv", "get current value");
         RegisterCommand(&CurrentHumidityCommands::OnCmdSetCurrentValue, "scv", "set current value (use 'scv <value>'");

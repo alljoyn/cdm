@@ -18,8 +18,8 @@
 #define BATTERYSTATUSCOMMANDS_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/BatteryStatusIntfController.h>
-#include <alljoyn/hae/interfaces/operation/BatteryStatusIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/BatteryStatusIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/BatteryStatusIntfControllerListener.h>
 
 class ControllerSample;
 

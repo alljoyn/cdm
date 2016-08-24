@@ -17,7 +17,7 @@
 #ifndef TESTTIMERLISTENER_H_
 #define TESTTIMERLISTENER_H_
 
-#include <alljoyn/hae/interfaces/operation/TimerIntfControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/TimerIntfControlleeListener.h>
 using namespace ajn;
 using namespace services;
 class TestTimerListener : public TimerIntfControlleeListener

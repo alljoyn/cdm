@@ -14,10 +14,10 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include "HaeTest.h"
+#include "CdmTest.h"
 
-#include <alljoyn/hae/interfaces/operation/ClosedStatusIntfController.h>
-#include <alljoyn/hae/interfaces/operation/ClosedStatusIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/ClosedStatusIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/ClosedStatusIntfControllerListener.h>
 
 class ClosedStatusListener : public ClosedStatusIntfControllerListener
 {
@@ -44,14 +44,14 @@ public:
     }
 };
 
-TEST_F(HAETest, HAE_v1_ClosedStatus)
+TEST_F(CDMTest, CDM_v1_ClosedStatus)
 {
     WaitForControllee(CLOSED_STATUS_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
 
         ClosedStatusListener listener;
-        HaeInterface* interface = m_controller->CreateInterface(CLOSED_STATUS_INTERFACE, m_interfaces[i].busName,
+        CdmInterface* interface = m_controller->CreateInterface(CLOSED_STATUS_INTERFACE, m_interfaces[i].busName,
                                                                 qcc::String(m_interfaces[i].objectPath.c_str()), m_interfaces[i].sessionId, listener);
         ClosedStatusIntfController* controller = static_cast<ClosedStatusIntfController*>(interface);
         QStatus status = ER_FAIL;

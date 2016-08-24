@@ -14,10 +14,10 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include "HaeTest.h"
+#include "CdmTest.h"
 
-#include <alljoyn/hae/interfaces/operation/AlertsIntfController.h>
-#include <alljoyn/hae/interfaces/operation/AlertsIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/AlertsIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/AlertsIntfControllerListener.h>
 using namespace std;
 class AlertsListener : public AlertsIntfControllerListener
 {
@@ -105,14 +105,14 @@ uint16_t findInvalidAlertCode(const AlertsInterface::Alerts& alerts)
     return (uint16_t) -1;
 }
 
-TEST_F(HAETest, HAE_v1_Alerts)
+TEST_F(CDMTest, CDM_v1_Alerts)
 {
     WaitForControllee(ALERTS_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
 
         AlertsListener listener;
-        HaeInterface* interface = m_controller->CreateInterface(ALERTS_INTERFACE, m_interfaces[i].busName,
+        CdmInterface* interface = m_controller->CreateInterface(ALERTS_INTERFACE, m_interfaces[i].busName,
                                                                 qcc::String(m_interfaces[i].objectPath.c_str()), m_interfaces[i].sessionId, listener);
         AlertsIntfController* controller = static_cast<AlertsIntfController*>(interface);
         QStatus status = ER_FAIL;
@@ -137,7 +137,7 @@ TEST_F(HAETest, HAE_v1_Alerts)
             EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
             listener.m_event.ResetEvent();
             EXPECT_NE(listener.m_status, ER_OK);
-            EXPECT_STREQ(listener.m_errorName.c_str(), HaeInterface::GetInterfaceErrorName(LANGUAGE_NOT_SUPPORTED).c_str());
+            EXPECT_STREQ(listener.m_errorName.c_str(), CdmInterface::GetInterfaceErrorName(LANGUAGE_NOT_SUPPORTED).c_str());
 
             TEST_LOG_2("Call AcknowledgeAlert method with \"OutOfAlertCodes\" value.");
             uint16_t invalidAlertCode = findInvalidAlertCode(listener.m_Alerts);

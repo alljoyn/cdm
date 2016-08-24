@@ -16,9 +16,9 @@
 
 #include <qcc/Util.h>
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/interfaces/operation/HvacFanModeIntfControllerListener.h>
-#include <alljoyn/hae/HaeProxyBusObject.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/interfaces/operation/HvacFanModeIntfControllerListener.h>
+#include <alljoyn/cdm/CdmProxyBusObject.h>
 #include "HvacFanModeIntfControllerImpl.h"
 
 using namespace qcc;
@@ -27,13 +27,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* HvacFanModeIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, HaeProxyBusObject& haeProxyObject)
+CdmInterface* HvacFanModeIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject)
 {
-    return new HvacFanModeIntfControllerImpl(busAttachment, static_cast<HvacFanModeIntfControllerListener&>(listener), haeProxyObject);
+    return new HvacFanModeIntfControllerImpl(busAttachment, static_cast<HvacFanModeIntfControllerListener&>(listener), cdmProxyObject);
 }
 
-HvacFanModeIntfControllerImpl::HvacFanModeIntfControllerImpl(BusAttachment& busAttachment, HvacFanModeIntfControllerListener& listener, HaeProxyBusObject& haeProxyObject) :
-    InterfaceController(haeProxyObject),
+HvacFanModeIntfControllerImpl::HvacFanModeIntfControllerImpl(BusAttachment& busAttachment, HvacFanModeIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject) :
+    InterfaceController(cdmProxyObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener)
 {
@@ -45,7 +45,7 @@ HvacFanModeIntfControllerImpl::~HvacFanModeIntfControllerImpl()
 
 QStatus HvacFanModeIntfControllerImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
     if (ER_OK != status) {
         QCC_LogError(status, ("%s: Interface init failed.", __func__));
         return status;

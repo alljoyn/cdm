@@ -16,9 +16,9 @@
 
 #include <qcc/Util.h>
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/interfaces/operation/MoistureOutputLevelIntfControlleeListener.h>
-#include <alljoyn/hae/HaeBusObject.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/interfaces/operation/MoistureOutputLevelIntfControlleeListener.h>
+#include <alljoyn/cdm/CdmBusObject.h>
 #include "MoistureOutputLevelIntfControlleeImpl.h"
 
 using namespace qcc;
@@ -28,13 +28,13 @@ namespace ajn {
 namespace services {
 
 
-HaeInterface* MoistureOutputLevelIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject)
+CdmInterface* MoistureOutputLevelIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject)
 {
-    return new MoistureOutputLevelIntfControlleeImpl(busAttachment, static_cast<MoistureOutputLevelIntfControlleeListener&>(listener), haeBusObject);
+    return new MoistureOutputLevelIntfControlleeImpl(busAttachment, static_cast<MoistureOutputLevelIntfControlleeListener&>(listener), cdmBusObject);
 }
 
-MoistureOutputLevelIntfControlleeImpl::MoistureOutputLevelIntfControlleeImpl(BusAttachment& busAttachment, MoistureOutputLevelIntfControlleeListener& listener, HaeBusObject& haeBusObject) :
-    InterfaceControllee(haeBusObject),
+MoistureOutputLevelIntfControlleeImpl::MoistureOutputLevelIntfControlleeImpl(BusAttachment& busAttachment, MoistureOutputLevelIntfControlleeListener& listener, CdmBusObject& cdmBusObject) :
+    InterfaceControllee(cdmBusObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener),
     m_moistureOutputLevel(0),
@@ -49,7 +49,7 @@ MoistureOutputLevelIntfControlleeImpl::~MoistureOutputLevelIntfControlleeImpl()
 
 QStatus MoistureOutputLevelIntfControlleeImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
 
     return status;
 }

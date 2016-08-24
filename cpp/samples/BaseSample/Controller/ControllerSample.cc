@@ -166,7 +166,7 @@ QStatus ControllerSample::Init()
 {
     QStatus status = ER_OK;
 
-    m_controller = new HaeController(*m_bus, this);
+    m_controller = new CdmController(*m_bus, this);
     if (!m_controller) {
         status = ER_OUT_OF_MEMORY;
         printf("Controller creation failed (%s)\n", QCC_StatusText(status));
@@ -239,13 +239,13 @@ void ControllerSample::Deinit()
 
 void ControllerSample::OnDeviceAdded(const char* busname,
         SessionPort port,
-        const HaeAboutData& data,
+        const CdmAboutData& data,
         const AboutObjectDescription& description)
 {
     cout << "Device Added (bus: " << busname <<",  port: "<< port << ")" << endl;
-    //printAboutData(const_cast<HaeAboutData&>(data), "en", 2);
+    //printAboutData(const_cast<CdmAboutData&>(data), "en", 2);
 
-    FoundDeviceInfo info(busname, port, const_cast<HaeAboutData&>(data), const_cast<AboutObjectDescription&>(description));
+    FoundDeviceInfo info(busname, port, const_cast<CdmAboutData&>(data), const_cast<AboutObjectDescription&>(description));
     m_deviceList[busname] = info;
 }
 
@@ -297,13 +297,13 @@ FoundDeviceInfo* ControllerSample::GetFoundDeviceInfo(int index)
     return 0;
 }
 
-HaeInterface* ControllerSample::CreateInterface(const HaeInterfaceType type, const std::string& busName, const qcc::String& objectPath, const SessionId& sessionId, InterfaceControllerListener& listener)
+CdmInterface* ControllerSample::CreateInterface(const CdmInterfaceType type, const std::string& busName, const qcc::String& objectPath, const SessionId& sessionId, InterfaceControllerListener& listener)
 {
     return m_controller->CreateInterface(type, busName, objectPath, sessionId, listener);
 }
 
 
-const HaeInterfaceType ControllerSample::RegisterVendorDefinedInterface(const qcc::String& interfaceName, CreateIntfControllerFptr createIntfController)
+const CdmInterfaceType ControllerSample::RegisterVendorDefinedInterface(const qcc::String& interfaceName, CreateIntfControllerFptr createIntfController)
 {
     return m_controller->RegisterVendorDefinedInterface(interfaceName, createIntfController);
 }

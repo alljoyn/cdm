@@ -14,10 +14,10 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include "HaeTest.h"
+#include "CdmTest.h"
 
-#include <alljoyn/hae/interfaces/operation/CurrentPowerIntfController.h>
-#include <alljoyn/hae/interfaces/operation/CurrentPowerIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/CurrentPowerIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/CurrentPowerIntfControllerListener.h>
 
 class CurrentPowerListener : public CurrentPowerIntfControllerListener
 {
@@ -71,14 +71,14 @@ public:
     }
 };
 
-TEST_F(HAETest, HAE_v1_CurrentPower)
+TEST_F(CDMTest, CDM_v1_CurrentPower)
 {
     WaitForControllee(CURRENT_POWER_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
 
         CurrentPowerListener listener;
-        HaeInterface* interface = m_controller->CreateInterface(CURRENT_POWER_INTERFACE, m_interfaces[i].busName,
+        CdmInterface* interface = m_controller->CreateInterface(CURRENT_POWER_INTERFACE, m_interfaces[i].busName,
                                                                 qcc::String(m_interfaces[i].objectPath.c_str()), m_interfaces[i].sessionId, listener);
         CurrentPowerIntfController* controller = static_cast<CurrentPowerIntfController*>(interface);
         QStatus status = ER_FAIL;

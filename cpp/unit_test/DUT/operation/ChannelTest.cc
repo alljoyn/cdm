@@ -14,11 +14,11 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include "HaeTest.h"
+#include "CdmTest.h"
 #include <algorithm>
 
-#include <alljoyn/hae/interfaces/operation/ChannelIntfController.h>
-#include <alljoyn/hae/interfaces/operation/ChannelIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/ChannelIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/ChannelIntfControllerListener.h>
 
 class ChannelListener : public ChannelIntfControllerListener
 {
@@ -89,14 +89,14 @@ public:
     }
 };
 
-TEST_F(HAETest, HAE_v1_Channel)
+TEST_F(CDMTest, CDM_v1_Channel)
 {
     WaitForControllee(CHANNEL_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
 
         ChannelListener listener;
-        HaeInterface* interface = m_controller->CreateInterface(CHANNEL_INTERFACE, m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()),
+        CdmInterface* interface = m_controller->CreateInterface(CHANNEL_INTERFACE, m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()),
                                                                 m_interfaces[i].sessionId, listener);
         ChannelIntfController* controller = static_cast<ChannelIntfController*>(interface);
         QStatus status = ER_FAIL;
@@ -206,7 +206,7 @@ TEST_F(HAETest, HAE_v1_Channel)
                 EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
                 listener.m_event.ResetEvent();
                 EXPECT_NE(listener.m_status, ER_OK);
-                EXPECT_STREQ(listener.m_errorName.c_str(), HaeInterface::GetInterfaceErrorName(INVALID_VALUE).c_str());
+                EXPECT_STREQ(listener.m_errorName.c_str(), CdmInterface::GetInterfaceErrorName(INVALID_VALUE).c_str());
             }
 
             TEST_LOG_2("Call the GetChannelList method with invalid numRecords param as following.");

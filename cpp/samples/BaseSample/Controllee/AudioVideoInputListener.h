@@ -18,8 +18,8 @@
 #define AUDIOVIDEOINPUTLISTENER_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/AudioVideoInputIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/AudioVideoInputIntfControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/AudioVideoInputIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/AudioVideoInputIntfControlleeListener.h>
 
 using namespace ajn;
 using namespace services;

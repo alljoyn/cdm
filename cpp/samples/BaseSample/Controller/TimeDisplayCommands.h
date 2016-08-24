@@ -18,8 +18,8 @@
 #define TIMEDISPLAYCOMMANDS_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/userinterfacesettings/TimeDisplayIntfController.h>
-#include <alljoyn/hae/interfaces/userinterfacesettings/TimeDisplayIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/userinterfacesettings/TimeDisplayIntfController.h>
+#include <alljoyn/cdm/interfaces/userinterfacesettings/TimeDisplayIntfControllerListener.h>
 
 class ControllerSample;
 

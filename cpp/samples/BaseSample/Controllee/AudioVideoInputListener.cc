@@ -56,13 +56,13 @@ AudioVideoInputCommands::~AudioVideoInputCommands()
 void AudioVideoInputCommands::Init()
 {
     if (!m_intfControllee) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(AUDIO_VIDEO_INPUT_INTERFACE, m_objectPath, m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(AUDIO_VIDEO_INPUT_INTERFACE, m_objectPath, m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfControllee = static_cast<AudioVideoInputIntfControllee*>(haeInterface);
+        m_intfControllee = static_cast<AudioVideoInputIntfControllee*>(cdmInterface);
 
         RegisterCommand(&AudioVideoInputCommands::OnCmdGetInputSourceId, "gisi", "get input source id");
         RegisterCommand(&AudioVideoInputCommands::OnCmdSetInputSourceId, "sisi", "set input source id (use 'sisi <id>'");

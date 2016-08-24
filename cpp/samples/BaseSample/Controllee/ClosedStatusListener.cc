@@ -46,13 +46,13 @@ ClosedStatusCommands::~ClosedStatusCommands()
 void ClosedStatusCommands::Init()
 {
     if (!m_intfControllee) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(CLOSED_STATUS_INTERFACE, m_objectPath, m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(CLOSED_STATUS_INTERFACE, m_objectPath, m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfControllee = static_cast<ClosedStatusIntfControllee*>(haeInterface);
+        m_intfControllee = static_cast<ClosedStatusIntfControllee*>(cdmInterface);
 
         RegisterCommand(&ClosedStatusCommands::OnCmdGetClosedStatus, "gic", "get is closed");
         RegisterCommand(&ClosedStatusCommands::OnCmdSetClosedStatus, "sic", "set is closed (use 'sic <0/1>'");

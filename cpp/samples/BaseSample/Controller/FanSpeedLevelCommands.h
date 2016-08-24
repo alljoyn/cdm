@@ -18,8 +18,8 @@
 #define FANSPEEDLEVELCOMMANDS_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/FanSpeedLevelIntfController.h>
-#include <alljoyn/hae/interfaces/operation/FanSpeedLevelIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/FanSpeedLevelIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/FanSpeedLevelIntfControllerListener.h>
 
 class ControllerSample;
 

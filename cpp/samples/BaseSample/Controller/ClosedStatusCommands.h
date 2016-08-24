@@ -18,8 +18,8 @@
 #define CLOSEDSTATUSCOMMANDS_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/ClosedStatusIntfController.h>
-#include <alljoyn/hae/interfaces/operation/ClosedStatusIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/ClosedStatusIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/ClosedStatusIntfControllerListener.h>
 
 class ControllerSample;
 

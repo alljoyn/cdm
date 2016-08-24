@@ -14,11 +14,11 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include "HaeTest.h"
+#include "CdmTest.h"
 #include <algorithm>
 
-#include <alljoyn/hae/interfaces/operation/TimerIntfController.h>
-#include <alljoyn/hae/interfaces/operation/TimerIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/TimerIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/TimerIntfControllerListener.h>
 
 class TimerListener : public TimerIntfControllerListener
 {
@@ -143,14 +143,14 @@ public:
 
 };
 
-TEST_F(HAETest, HAE_v1_Timer)
+TEST_F(CDMTest, CDM_v1_Timer)
 {
     WaitForControllee(TIMER_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
 
         TimerListener listener;
-        HaeInterface* interface = m_controller->CreateInterface(TIMER_INTERFACE, m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()),
+        CdmInterface* interface = m_controller->CreateInterface(TIMER_INTERFACE, m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()),
                                                                 m_interfaces[i].sessionId, listener);
         TimerIntfController* controller = static_cast<TimerIntfController*>(interface);
         QStatus status = ER_FAIL;
@@ -208,7 +208,7 @@ TEST_F(HAETest, HAE_v1_Timer)
             EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
             listener.m_event.ResetEvent();
             EXPECT_NE(listener.m_status, ER_OK);
-            EXPECT_STREQ(listener.m_errorName.c_str(), HaeInterface::GetInterfaceErrorName(INVALID_VALUE).c_str());
+            EXPECT_STREQ(listener.m_errorName.c_str(), CdmInterface::GetInterfaceErrorName(INVALID_VALUE).c_str());
 
             TEST_LOG_2("Call SetTargetTimerToStart method with 0x80000001.");
             status = controller->SetTargetTimeToStart(TimerInterface::TIMER_NOT_SUPPORTED);
@@ -216,7 +216,7 @@ TEST_F(HAETest, HAE_v1_Timer)
             EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
             listener.m_event.ResetEvent();
             EXPECT_NE(listener.m_status, ER_OK);
-            EXPECT_STREQ(listener.m_errorName.c_str(), HaeInterface::GetInterfaceErrorName(INVALID_VALUE).c_str());
+            EXPECT_STREQ(listener.m_errorName.c_str(), CdmInterface::GetInterfaceErrorName(INVALID_VALUE).c_str());
 
             TEST_LOG_2("Call SetTargetTimerToStop method with 0x80000000.");
             status = controller->SetTargetTimeToStop(TimerInterface::TIMER_FEATURE_NOT_APPLIED);
@@ -224,7 +224,7 @@ TEST_F(HAETest, HAE_v1_Timer)
             EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
             listener.m_event.ResetEvent();
             EXPECT_NE(listener.m_status, ER_OK);
-            EXPECT_STREQ(listener.m_errorName.c_str(), HaeInterface::GetInterfaceErrorName(INVALID_VALUE).c_str());
+            EXPECT_STREQ(listener.m_errorName.c_str(), CdmInterface::GetInterfaceErrorName(INVALID_VALUE).c_str());
 
             TEST_LOG_2("Call SetTargetTimerToStop method with 0x80000001.");
             status = controller->SetTargetTimeToStop(TimerInterface::TIMER_NOT_SUPPORTED);
@@ -232,7 +232,7 @@ TEST_F(HAETest, HAE_v1_Timer)
             EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
             listener.m_event.ResetEvent();
             EXPECT_NE(listener.m_status, ER_OK);
-            EXPECT_STREQ(listener.m_errorName.c_str(), HaeInterface::GetInterfaceErrorName(INVALID_VALUE).c_str());
+            EXPECT_STREQ(listener.m_errorName.c_str(), CdmInterface::GetInterfaceErrorName(INVALID_VALUE).c_str());
         }
 
         TEST_LOG_1("Call methods with valid params.");

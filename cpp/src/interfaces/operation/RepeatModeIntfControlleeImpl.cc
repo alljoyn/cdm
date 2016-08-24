@@ -16,9 +16,9 @@
 
 #include <qcc/Util.h>
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/HaeBusObject.h>
-#include <alljoyn/hae/interfaces/operation/RepeatModeIntfControlleeListener.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/CdmBusObject.h>
+#include <alljoyn/cdm/interfaces/operation/RepeatModeIntfControlleeListener.h>
 
 #include "RepeatModeIntfControlleeImpl.h"
 
@@ -28,13 +28,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* RepeatModeIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject)
+CdmInterface* RepeatModeIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject)
 {
-    return new RepeatModeIntfControlleeImpl(busAttachment, dynamic_cast<RepeatModeIntfControlleeListener&>(listener), haeBusObject);
+    return new RepeatModeIntfControlleeImpl(busAttachment, dynamic_cast<RepeatModeIntfControlleeListener&>(listener), cdmBusObject);
 }
 
-RepeatModeIntfControlleeImpl::RepeatModeIntfControlleeImpl(BusAttachment& busAttachment, RepeatModeIntfControlleeListener& listener, HaeBusObject& haeBusObject) :
-    InterfaceControllee(haeBusObject),
+RepeatModeIntfControlleeImpl::RepeatModeIntfControlleeImpl(BusAttachment& busAttachment, RepeatModeIntfControlleeListener& listener, CdmBusObject& cdmBusObject) :
+    InterfaceControllee(cdmBusObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener)
 {
@@ -46,7 +46,7 @@ RepeatModeIntfControlleeImpl::~RepeatModeIntfControlleeImpl()
 
 QStatus RepeatModeIntfControlleeImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
     /**
      * TODO: add method handler
      */

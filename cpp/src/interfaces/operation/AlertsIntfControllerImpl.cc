@@ -16,9 +16,9 @@
 
 #include <qcc/Util.h>
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/HaeProxyBusObject.h>
-#include <alljoyn/hae/interfaces/operation/AlertsIntfControllerListener.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/CdmProxyBusObject.h>
+#include <alljoyn/cdm/interfaces/operation/AlertsIntfControllerListener.h>
 
 #include "AlertsIntfControllerImpl.h"
 
@@ -28,13 +28,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* AlertsIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, HaeProxyBusObject& haeProxyObject)
+CdmInterface* AlertsIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject)
 {
-    return new AlertsIntfControllerImpl(busAttachment, dynamic_cast<AlertsIntfControllerListener&>(listener), haeProxyObject);
+    return new AlertsIntfControllerImpl(busAttachment, dynamic_cast<AlertsIntfControllerListener&>(listener), cdmProxyObject);
 }
 
-AlertsIntfControllerImpl::AlertsIntfControllerImpl(BusAttachment& busAttachment, AlertsIntfControllerListener& listener, HaeProxyBusObject& haeProxyObject) :
-    InterfaceController(haeProxyObject),
+AlertsIntfControllerImpl::AlertsIntfControllerImpl(BusAttachment& busAttachment, AlertsIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject) :
+    InterfaceController(cdmProxyObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener)
 {
@@ -46,7 +46,7 @@ AlertsIntfControllerImpl::~AlertsIntfControllerImpl()
 
 QStatus AlertsIntfControllerImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
     if (ER_OK != status) {
         QCC_LogError(status, ("%s: Interface init failed.", __func__));
         return status;

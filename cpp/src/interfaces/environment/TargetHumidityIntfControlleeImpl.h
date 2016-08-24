@@ -20,15 +20,15 @@
 #include <alljoyn/Status.h>
 #include <alljoyn/BusAttachment.h>
 #include <alljoyn/InterfaceDescription.h>
-#include <alljoyn/hae/interfaces/InterfaceControllee.h>
-#include <alljoyn/hae/interfaces/InterfaceControlleeListener.h>
-#include <alljoyn/hae/interfaces/environment/TargetHumidityIntfControllee.h>
+#include <alljoyn/cdm/interfaces/InterfaceControllee.h>
+#include <alljoyn/cdm/interfaces/InterfaceControlleeListener.h>
+#include <alljoyn/cdm/interfaces/environment/TargetHumidityIntfControllee.h>
 
 namespace ajn {
 namespace services {
 
 class TargetHumidityIntfControlleeListener;
-class HaeBusObject;
+class CdmBusObject;
 
 /**
  * TargetHumidity interface controllee implementation class
@@ -39,12 +39,12 @@ class TargetHumidityIntfControlleeImpl : public InterfaceControllee, public Targ
     /**
      * Create interface
      */
-    static HaeInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject);
 
     /**
      * Constructor of TargetHumidityIntfControlleeImpl
      */
-    TargetHumidityIntfControlleeImpl(BusAttachment& busAttachment, TargetHumidityIntfControlleeListener& listener, HaeBusObject& haeBusObject);
+    TargetHumidityIntfControlleeImpl(BusAttachment& busAttachment, TargetHumidityIntfControlleeListener& listener, CdmBusObject& cdmBusObject);
 
     /**
      * Destructor of TargetHumidityIntfControlleeImpl

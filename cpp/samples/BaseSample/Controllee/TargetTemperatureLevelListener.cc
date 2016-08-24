@@ -64,13 +64,13 @@ TargetTemperatureLevelCommands::~TargetTemperatureLevelCommands()
 void TargetTemperatureLevelCommands::Init()
 {
     if (!m_intfControllee) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(TARGET_TEMPERATURE_LEVEL_INTERFACE, m_objectPath, m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(TARGET_TEMPERATURE_LEVEL_INTERFACE, m_objectPath, m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfControllee = static_cast<TargetTemperatureLevelIntfControllee*>(haeInterface);
+        m_intfControllee = static_cast<TargetTemperatureLevelIntfControllee*>(cdmInterface);
 
         RegisterCommand(&TargetTemperatureLevelCommands::OnCmdGetTargetLevel, "gtl", "get target level");
         RegisterCommand(&TargetTemperatureLevelCommands::OnCmdSetTargetLevel, "stl", "set target level (use 'stv <value>'");

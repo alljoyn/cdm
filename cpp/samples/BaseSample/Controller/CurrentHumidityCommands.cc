@@ -15,7 +15,7 @@
  ******************************************************************************/
 
 #include <cstdlib>
-#include <alljoyn/hae/interfaces/HaeInterfaceTypes.h>
+#include <alljoyn/cdm/interfaces/CdmInterfaceTypes.h>
 #include "CurrentHumidityCommands.h"
 #include "ControllerSample.h"
 
@@ -70,13 +70,13 @@ CurrentHumidityCommands::~CurrentHumidityCommands()
 void CurrentHumidityCommands::Init()
 {
     if (!m_intfController) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(CURRENT_HUMIDITY_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(CURRENT_HUMIDITY_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfController = static_cast<CurrentHumidityIntfController*>(haeInterface);
+        m_intfController = static_cast<CurrentHumidityIntfController*>(cdmInterface);
     }
 
     RegisterCommand(&CurrentHumidityCommands::OnCmdGetCurrentValue, "gcv", "Get CurrentValue");

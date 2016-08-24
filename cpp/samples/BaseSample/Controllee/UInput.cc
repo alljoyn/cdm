@@ -113,7 +113,7 @@ void UInput::Init(uint16_t vendorId, uint16_t productId, uint16_t version, HidIn
     struct uinput_user_dev uidev;
     memset(&uidev, 0, sizeof(uidev));
     // name is the given name of the input device we will create
-    snprintf(uidev.name, UINPUT_MAX_NAME_SIZE, "uinput-hae-controllee");
+    snprintf(uidev.name, UINPUT_MAX_NAME_SIZE, "uinput-cdm-controllee");
     // id is a linux internal structure that describes the device bustype
     uidev.id.bustype = BUS_USB;
     uidev.id.vendor = vendorId;

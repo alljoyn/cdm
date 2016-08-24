@@ -14,10 +14,10 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include "HaeTest.h"
+#include "CdmTest.h"
 
-#include <alljoyn/hae/interfaces/operation/FilterStatusIntfController.h>
-#include <alljoyn/hae/interfaces/operation/FilterStatusIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/FilterStatusIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/FilterStatusIntfControllerListener.h>
 
 class FilterStatusListener : public FilterStatusIntfControllerListener
 {
@@ -111,14 +111,14 @@ public:
     }
 };
 
-TEST_F(HAETest, HAE_v1_FilterStatus)
+TEST_F(CDMTest, CDM_v1_FilterStatus)
 {
     WaitForControllee(FILTER_STATUS_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
 
         FilterStatusListener listener;
-        HaeInterface* interface = m_controller->CreateInterface(FILTER_STATUS_INTERFACE, m_interfaces[i].busName,
+        CdmInterface* interface = m_controller->CreateInterface(FILTER_STATUS_INTERFACE, m_interfaces[i].busName,
                                                                 qcc::String(m_interfaces[i].objectPath.c_str()), m_interfaces[i].sessionId, listener);
         FilterStatusIntfController* controller = static_cast<FilterStatusIntfController*>(interface);
         QStatus status = ER_FAIL;

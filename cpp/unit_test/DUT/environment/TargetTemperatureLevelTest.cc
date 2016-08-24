@@ -14,11 +14,11 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include "HaeTest.h"
+#include "CdmTest.h"
 #include <algorithm>
 
-#include <alljoyn/hae/interfaces/environment/TargetTemperatureLevelIntfController.h>
-#include <alljoyn/hae/interfaces/environment/TargetTemperatureLevelIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/environment/TargetTemperatureLevelIntfController.h>
+#include <alljoyn/cdm/interfaces/environment/TargetTemperatureLevelIntfControllerListener.h>
 
 class TargetTemperatureLevelListener : public TargetTemperatureLevelIntfControllerListener
 {
@@ -98,14 +98,14 @@ public:
     }
 };
 
-TEST_F(HAETest, HAE_v1_TargetTemperatureLevel)
+TEST_F(CDMTest, CDM_v1_TargetTemperatureLevel)
 {
     WaitForControllee(TARGET_TEMPERATURE_LEVEL_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
 
         TargetTemperatureLevelListener listener;
-        HaeInterface* interface = m_controller->CreateInterface(TARGET_TEMPERATURE_LEVEL_INTERFACE, m_interfaces[i].busName,
+        CdmInterface* interface = m_controller->CreateInterface(TARGET_TEMPERATURE_LEVEL_INTERFACE, m_interfaces[i].busName,
                                                                 qcc::String(m_interfaces[i].objectPath.c_str()), m_interfaces[i].sessionId, listener);
         TargetTemperatureLevelIntfController* controller = static_cast<TargetTemperatureLevelIntfController*>(interface);
         QStatus status = ER_FAIL;

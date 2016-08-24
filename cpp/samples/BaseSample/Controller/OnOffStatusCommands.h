@@ -18,8 +18,8 @@
 #define ONOFFSTATUSCOMMANDS_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/OnOffStatusIntfController.h>
-#include <alljoyn/hae/interfaces/operation/OnOffStatusIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/OnOffStatusIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/OnOffStatusIntfControllerListener.h>
 
 class ControllerSample;
 

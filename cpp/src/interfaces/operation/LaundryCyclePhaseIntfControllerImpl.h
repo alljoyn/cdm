@@ -19,14 +19,14 @@
 
 #include <alljoyn/Status.h>
 #include <alljoyn/BusAttachment.h>
-#include <alljoyn/hae/interfaces/InterfaceController.h>
-#include <alljoyn/hae/interfaces/operation/LaundryCyclePhaseIntfController.h>
+#include <alljoyn/cdm/interfaces/InterfaceController.h>
+#include <alljoyn/cdm/interfaces/operation/LaundryCyclePhaseIntfController.h>
 
 namespace ajn {
 namespace services {
 
 class LaundryCyclePhaseIntfControllerListener;
-class HaeProxyBusObject;
+class CdmProxyBusObject;
 
 /**
  * LaundryCyclePhase Interface Controller implementation class
@@ -36,12 +36,12 @@ class LaundryCyclePhaseIntfControllerImpl : public InterfaceController, public L
     /**
      * Create interface
      */
-    static HaeInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, HaeProxyBusObject& haeProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
 
     /**
      * Constructor of LaundryCyclePhaseIntfControllerImpl
      */
-    LaundryCyclePhaseIntfControllerImpl(BusAttachment& busAttachment, LaundryCyclePhaseIntfControllerListener& listener, HaeProxyBusObject& haeProxyObject);
+    LaundryCyclePhaseIntfControllerImpl(BusAttachment& busAttachment, LaundryCyclePhaseIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
 
     /**
      * Destructor of LaundryCyclePhaseIntfControllerImpl

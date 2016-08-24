@@ -64,13 +64,13 @@ TimeDisplayCommands::~TimeDisplayCommands()
 void TimeDisplayCommands::Init()
 {
     if (!m_intfControllee) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(TIME_DISPLAY_INTERFACE, m_objectPath, m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(TIME_DISPLAY_INTERFACE, m_objectPath, m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfControllee = static_cast<TimeDisplayIntfControllee*>(haeInterface);
+        m_intfControllee = static_cast<TimeDisplayIntfControllee*>(cdmInterface);
 
         RegisterCommand(&TimeDisplayCommands::OnCmdGetDisplayTimeFormat, "gdtf", "get display time format");
         RegisterCommand(&TimeDisplayCommands::OnCmdSetDisplayTimeFormat, "sdtf", "set display time format (use 'sdtf <0 - 12 h format / 1 -24 h format>')");

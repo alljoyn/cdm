@@ -20,15 +20,15 @@
 #include <alljoyn/Status.h>
 #include <alljoyn/BusAttachment.h>
 #include <alljoyn/InterfaceDescription.h>
-#include <alljoyn/hae/interfaces/InterfaceControllee.h>
-#include <alljoyn/hae/interfaces/InterfaceControlleeListener.h>
+#include <alljoyn/cdm/interfaces/InterfaceControllee.h>
+#include <alljoyn/cdm/interfaces/InterfaceControlleeListener.h>
 #include "VendorDefinedIntfControllee.h"
 
 namespace ajn {
 namespace services {
 
 class VendorDefinedIntfControlleeListener;
-class HaeBusObject;
+class CdmBusObject;
 
 /**
  * VendorDefined Interface Controllee implementation class
@@ -38,12 +38,12 @@ class VendorDefinedIntfControlleeImpl : public InterfaceControllee, public Vendo
     /**
      * Create interface
      */
-    static HaeInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject);
 
     /**
      * Constructor of VendorDefinedIntfControlleeImpl
      */
-    VendorDefinedIntfControlleeImpl(BusAttachment& busAttachment, VendorDefinedIntfControlleeListener& listener, HaeBusObject& haeBusObject);
+    VendorDefinedIntfControlleeImpl(BusAttachment& busAttachment, VendorDefinedIntfControlleeListener& listener, CdmBusObject& cdmBusObject);
 
     /**
      * Destructor of VendorDefinedIntfControlleeImpl

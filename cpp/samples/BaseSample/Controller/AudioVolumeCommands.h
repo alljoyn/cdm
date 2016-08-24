@@ -18,8 +18,8 @@
 #define AUDIOVOLUMECOMMANDS_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/AudioVolumeIntfController.h>
-#include <alljoyn/hae/interfaces/operation/AudioVolumeIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/AudioVolumeIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/AudioVolumeIntfControllerListener.h>
 
 class ControllerSample;
 

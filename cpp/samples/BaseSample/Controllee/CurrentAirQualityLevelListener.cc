@@ -57,13 +57,13 @@ CurrentAirQualityLevelCommands::~CurrentAirQualityLevelCommands()
 void CurrentAirQualityLevelCommands::Init()
 {
     if (!m_intfControllee) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(CURRENT_AIR_QUALITY_LEVEL_INTERFACE, m_objectPath, m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(CURRENT_AIR_QUALITY_LEVEL_INTERFACE, m_objectPath, m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfControllee = static_cast<CurrentAirQualityLevelIntfControllee*>(haeInterface);
+        m_intfControllee = static_cast<CurrentAirQualityLevelIntfControllee*>(cdmInterface);
 
         RegisterCommand(&CurrentAirQualityLevelCommands::OnCmdGetContaminantType, "gct", "get contaminant type");
         RegisterCommand(&CurrentAirQualityLevelCommands::OnCmdSetContaminantType, "sct", "set contaminant type");

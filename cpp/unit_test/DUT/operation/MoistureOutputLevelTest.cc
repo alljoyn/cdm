@@ -14,10 +14,10 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include "HaeTest.h"
+#include "CdmTest.h"
 
-#include <alljoyn/hae/interfaces/operation/MoistureOutputLevelIntfController.h>
-#include <alljoyn/hae/interfaces/operation/MoistureOutputLevelIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/MoistureOutputLevelIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/MoistureOutputLevelIntfControllerListener.h>
 
 class MoistureOutputLevelListener : public MoistureOutputLevelIntfControllerListener
 {
@@ -86,14 +86,14 @@ public:
     }
 };
 
-TEST_F(HAETest, HAE_v1_MoistureOutputLevel)
+TEST_F(CDMTest, CDM_v1_MoistureOutputLevel)
 {
     WaitForControllee(MOISTURE_OUTPUT_LEVEL_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
 
         MoistureOutputLevelListener listener;
-        HaeInterface* interface = m_controller->CreateInterface(MOISTURE_OUTPUT_LEVEL_INTERFACE, m_interfaces[i].busName,
+        CdmInterface* interface = m_controller->CreateInterface(MOISTURE_OUTPUT_LEVEL_INTERFACE, m_interfaces[i].busName,
                                                                 qcc::String(m_interfaces[i].objectPath.c_str()), m_interfaces[i].sessionId, listener);
         MoistureOutputLevelIntfController* controller = static_cast<MoistureOutputLevelIntfController*>(interface);
         QStatus status = ER_FAIL;

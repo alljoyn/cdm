@@ -14,10 +14,10 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include "HaeTest.h"
+#include "CdmTest.h"
 
-#include <alljoyn/hae/interfaces/environment/CurrentHumidityIntfController.h>
-#include <alljoyn/hae/interfaces/environment/CurrentHumidityIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/environment/CurrentHumidityIntfController.h>
+#include <alljoyn/cdm/interfaces/environment/CurrentHumidityIntfControllerListener.h>
 
 
 class CurrentHumidityListener : public CurrentHumidityIntfControllerListener
@@ -53,13 +53,13 @@ public:
     }
 };
 
-TEST_F(HAETest, HAE_v1_CurrentHumidity)
+TEST_F(CDMTest, CDM_v1_CurrentHumidity)
 {
     WaitForControllee(CURRENT_HUMIDITY_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
         CurrentHumidityListener listener;
-        HaeInterface* interface = m_controller->CreateInterface(CURRENT_HUMIDITY_INTERFACE, m_interfaces[i].busName,
+        CdmInterface* interface = m_controller->CreateInterface(CURRENT_HUMIDITY_INTERFACE, m_interfaces[i].busName,
                                                                 qcc::String(m_interfaces[i].objectPath.c_str()), m_interfaces[i].sessionId, listener);
         CurrentHumidityIntfController* controller = static_cast<CurrentHumidityIntfController*>(interface);
         QStatus status = ER_FAIL;

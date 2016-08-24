@@ -14,10 +14,10 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include "HaeTest.h"
+#include "CdmTest.h"
 
-#include <alljoyn/hae/interfaces/operation/ClimateControlModeIntfController.h>
-#include <alljoyn/hae/interfaces/operation/ClimateControlModeIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/ClimateControlModeIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/ClimateControlModeIntfControllerListener.h>
 
 class ClimateControlModeListener : public ClimateControlModeIntfControllerListener
 {
@@ -80,14 +80,14 @@ public:
     }
 };
 
-TEST_F(HAETest, HAE_v1_ClimateControlMode)
+TEST_F(CDMTest, CDM_v1_ClimateControlMode)
 {
     WaitForControllee(CLIMATE_CONTROL_MODE_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
 
         ClimateControlModeListener listener;
-        HaeInterface* interface = m_controller->CreateInterface(CLIMATE_CONTROL_MODE_INTERFACE, m_interfaces[i].busName,
+        CdmInterface* interface = m_controller->CreateInterface(CLIMATE_CONTROL_MODE_INTERFACE, m_interfaces[i].busName,
                                                                 qcc::String(m_interfaces[i].objectPath.c_str()), m_interfaces[i].sessionId, listener);
         ClimateControlModeIntfController* controller = static_cast<ClimateControlModeIntfController*>(interface);
         QStatus status = ER_FAIL;

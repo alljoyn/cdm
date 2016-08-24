@@ -26,12 +26,12 @@
         <DeviceTypeDescription>
             <TypeDescription>
                 <device_type>5</device_type>
-                <object_path>/Hae/AirConditioner</object_path>
+                <object_path>/Cdm/AirConditioner</object_path>
             </TypeDescription>
         </DeviceTypeDescription>
     </AboutData>
     <InterfaceList>
-        <Object path='/Hae/AirConditioner'>
+        <Object path='/Cdm/AirConditioner'>
             <Interface name='org.alljoyn.SmartSpaces.Environment.TargetTemperature'/>
             <Interface name='org.alljoyn.SmartSpaces.Environment.CurrentTemperature'/>
             <Interface name='org.alljoyn.SmartSpaces.Environment.WindDirection'/>

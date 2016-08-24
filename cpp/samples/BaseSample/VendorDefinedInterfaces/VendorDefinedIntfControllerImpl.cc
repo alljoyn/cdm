@@ -16,8 +16,8 @@
 
 #include <qcc/Util.h>
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/HaeProxyBusObject.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/CdmProxyBusObject.h>
 #include "VendorDefinedIntfControllerListener.h"
 #include "VendorDefinedIntfControllerImpl.h"
 
@@ -27,13 +27,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* VendorDefinedIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, HaeProxyBusObject& haeProxyObject)
+CdmInterface* VendorDefinedIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject)
 {
-    return new VendorDefinedIntfControllerImpl(busAttachment, dynamic_cast<VendorDefinedIntfControllerListener&>(listener), haeProxyObject);
+    return new VendorDefinedIntfControllerImpl(busAttachment, dynamic_cast<VendorDefinedIntfControllerListener&>(listener), cdmProxyObject);
 }
 
-VendorDefinedIntfControllerImpl::VendorDefinedIntfControllerImpl(BusAttachment& busAttachment, VendorDefinedIntfControllerListener& listener, HaeProxyBusObject& haeProxyObject) :
-    InterfaceController(haeProxyObject),
+VendorDefinedIntfControllerImpl::VendorDefinedIntfControllerImpl(BusAttachment& busAttachment, VendorDefinedIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject) :
+    InterfaceController(cdmProxyObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener)
 {
@@ -45,7 +45,7 @@ VendorDefinedIntfControllerImpl::~VendorDefinedIntfControllerImpl()
 
 QStatus VendorDefinedIntfControllerImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
     if (ER_OK != status) {
         QCC_LogError(status, ("%s: Interface init failed.", __func__));
         return status;

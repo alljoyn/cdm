@@ -20,15 +20,15 @@
 #include <alljoyn/Status.h>
 #include <alljoyn/BusAttachment.h>
 #include <alljoyn/InterfaceDescription.h>
-#include <alljoyn/hae/interfaces/InterfaceControllee.h>
-#include <alljoyn/hae/interfaces/InterfaceControlleeListener.h>
-#include <alljoyn/hae/interfaces/operation/FanSpeedLevelIntfControllee.h>
+#include <alljoyn/cdm/interfaces/InterfaceControllee.h>
+#include <alljoyn/cdm/interfaces/InterfaceControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/FanSpeedLevelIntfControllee.h>
 
 namespace ajn {
 namespace services {
 
 class FanSpeedLevelIntfControlleeListener;
-class HaeBusObject;
+class CdmBusObject;
 
 /**
  * FanSpeedLevel Interface Controllee implementation class
@@ -38,12 +38,12 @@ class FanSpeedLevelIntfControlleeImpl : public InterfaceControllee, public FanSp
     /**
      * Create interface
      */
-    static HaeInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject);
 
     /**
      * Constructor of FanSpeedLevelIntfControlleeImpl
      */
-    FanSpeedLevelIntfControlleeImpl(BusAttachment& busAttachment, FanSpeedLevelIntfControlleeListener& listener, HaeBusObject& haeBusObject);
+    FanSpeedLevelIntfControlleeImpl(BusAttachment& busAttachment, FanSpeedLevelIntfControlleeListener& listener, CdmBusObject& cdmBusObject);
 
     /**
      * Destructor of FanSpeedLevelIntfControlleeImpl

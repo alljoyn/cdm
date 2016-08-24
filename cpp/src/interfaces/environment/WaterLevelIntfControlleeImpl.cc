@@ -16,9 +16,9 @@
 
 #include <qcc/Util.h>
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/HaeBusObject.h>
-#include <alljoyn/hae/interfaces/environment/WaterLevelIntfControlleeListener.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/CdmBusObject.h>
+#include <alljoyn/cdm/interfaces/environment/WaterLevelIntfControlleeListener.h>
 
 #include "WaterLevelIntfControlleeImpl.h"
 
@@ -28,13 +28,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* WaterLevelIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject)
+CdmInterface* WaterLevelIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject)
 {
-    return new WaterLevelIntfControlleeImpl(busAttachment, dynamic_cast<WaterLevelIntfControlleeListener&>(listener), haeBusObject);
+    return new WaterLevelIntfControlleeImpl(busAttachment, dynamic_cast<WaterLevelIntfControlleeListener&>(listener), cdmBusObject);
 }
 
-WaterLevelIntfControlleeImpl::WaterLevelIntfControlleeImpl(BusAttachment& busAttachment, WaterLevelIntfControlleeListener& listener, HaeBusObject& haeBusObject) :
-    InterfaceControllee(haeBusObject),
+WaterLevelIntfControlleeImpl::WaterLevelIntfControlleeImpl(BusAttachment& busAttachment, WaterLevelIntfControlleeListener& listener, CdmBusObject& cdmBusObject) :
+    InterfaceControllee(cdmBusObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener),
     m_currentLevel(2),
@@ -49,7 +49,7 @@ WaterLevelIntfControlleeImpl::~WaterLevelIntfControlleeImpl()
 
 QStatus WaterLevelIntfControlleeImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
     return status;
 }
 

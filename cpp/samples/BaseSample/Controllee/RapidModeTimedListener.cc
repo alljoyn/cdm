@@ -56,13 +56,13 @@ RapidModeTimedCommands::~RapidModeTimedCommands()
 void RapidModeTimedCommands::Init()
 {
     if (!m_intfControllee) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(RAPID_MODE_TIMED_INTERFACE, m_objectPath, m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(RAPID_MODE_TIMED_INTERFACE, m_objectPath, m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfControllee = static_cast<RapidModeTimedIntfControllee*>(haeInterface);
+        m_intfControllee = static_cast<RapidModeTimedIntfControllee*>(cdmInterface);
 
         RegisterCommand(&RapidModeTimedCommands::OnCmdGetRapidModeMinutesRemaining, "grmmr", "get rapid mode minutes remaining");
         RegisterCommand(&RapidModeTimedCommands::OnCmdSetRapidModeMinutesRemaining, "srmmr", "set rapid mode minutes remaining (use 'srmmr <value>'");

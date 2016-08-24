@@ -19,14 +19,14 @@
 
 #include <alljoyn/Status.h>
 #include <alljoyn/BusAttachment.h>
-#include <alljoyn/hae/interfaces/InterfaceController.h>
-#include <alljoyn/hae/interfaces/operation/AudioVolumeIntfController.h>
+#include <alljoyn/cdm/interfaces/InterfaceController.h>
+#include <alljoyn/cdm/interfaces/operation/AudioVolumeIntfController.h>
 
 namespace ajn {
 namespace services {
 
 class AudioVolumeIntfControllerListener;
-class HaeProxyBusObject;
+class CdmProxyBusObject;
 
 /**
  * AudioVolume Interface Controller implementation class
@@ -36,12 +36,12 @@ class AudioVolumeIntfControllerImpl : public InterfaceController, public AudioVo
     /**
      * Create interface
      */
-    static HaeInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, HaeProxyBusObject& haeProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
 
     /**
      * Constructor of AudioVolumeIntfControlleeImpl
      */
-    AudioVolumeIntfControllerImpl(BusAttachment& busAttachment, AudioVolumeIntfControllerListener& listener, HaeProxyBusObject& haeProxyObject);
+    AudioVolumeIntfControllerImpl(BusAttachment& busAttachment, AudioVolumeIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
 
     /**
      * Destructor of AudioVolumeIntfControlleeImpl

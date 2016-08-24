@@ -16,11 +16,11 @@
 
 #include <qcc/Util.h>
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/interfaces/operation/ClosedStatusIntfControlleeListener.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/interfaces/operation/ClosedStatusIntfControlleeListener.h>
 
 #include "ClosedStatusIntfControlleeImpl.h"
-#include <alljoyn/hae/HaeBusObject.h>
+#include <alljoyn/cdm/CdmBusObject.h>
 
 using namespace qcc;
 using namespace std;
@@ -28,13 +28,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* ClosedStatusIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject)
+CdmInterface* ClosedStatusIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject)
 {
-    return new ClosedStatusIntfControlleeImpl(busAttachment, dynamic_cast<ClosedStatusIntfControlleeListener&>(listener), haeBusObject);
+    return new ClosedStatusIntfControlleeImpl(busAttachment, dynamic_cast<ClosedStatusIntfControlleeListener&>(listener), cdmBusObject);
 }
 
-ClosedStatusIntfControlleeImpl::ClosedStatusIntfControlleeImpl(BusAttachment& busAttachment, ClosedStatusIntfControlleeListener& listener, HaeBusObject& haeBusObject) :
-    InterfaceControllee(haeBusObject),
+ClosedStatusIntfControlleeImpl::ClosedStatusIntfControlleeImpl(BusAttachment& busAttachment, ClosedStatusIntfControlleeListener& listener, CdmBusObject& cdmBusObject) :
+    InterfaceControllee(cdmBusObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener),
     m_isClosed(true)
@@ -47,7 +47,7 @@ ClosedStatusIntfControlleeImpl::~ClosedStatusIntfControlleeImpl()
 
 QStatus ClosedStatusIntfControlleeImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
 
     return status;
 }

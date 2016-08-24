@@ -56,13 +56,13 @@ ClosedStatusCommands::~ClosedStatusCommands()
 void ClosedStatusCommands::Init()
 {
     if (!m_intfController) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(CLOSED_STATUS_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(CLOSED_STATUS_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfController = static_cast<ClosedStatusIntfController*>(haeInterface);
+        m_intfController = static_cast<ClosedStatusIntfController*>(cdmInterface);
     }
 
     RegisterCommand(&ClosedStatusCommands::OnCmdGetIsClosed, "gcs", "get isClosed");

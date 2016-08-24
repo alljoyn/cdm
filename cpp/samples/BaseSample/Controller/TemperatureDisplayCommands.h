@@ -18,8 +18,8 @@
 #define TEMPERATUREDISPLAYCOMMANDS_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/userinterfacesettings/TemperatureDisplayIntfController.h>
-#include <alljoyn/hae/interfaces/userinterfacesettings/TemperatureDisplayIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/userinterfacesettings/TemperatureDisplayIntfController.h>
+#include <alljoyn/cdm/interfaces/userinterfacesettings/TemperatureDisplayIntfControllerListener.h>
 
 class ControllerSample;
 

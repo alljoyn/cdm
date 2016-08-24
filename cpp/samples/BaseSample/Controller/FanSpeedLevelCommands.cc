@@ -15,7 +15,7 @@
  ******************************************************************************/
 
 #include <cstdlib>
-#include <alljoyn/hae/interfaces/HaeInterfaceTypes.h>
+#include <alljoyn/cdm/interfaces/CdmInterfaceTypes.h>
 #include "FanSpeedLevelCommands.h"
 #include "ControllerSample.h"
 
@@ -93,13 +93,13 @@ FanSpeedLevelCommands::~FanSpeedLevelCommands()
 void FanSpeedLevelCommands::Init()
 {
     if (!m_intfController) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(FAN_SPEED_LEVEL_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(FAN_SPEED_LEVEL_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfController = static_cast<FanSpeedLevelIntfController*>(haeInterface);
+        m_intfController = static_cast<FanSpeedLevelIntfController*>(cdmInterface);
     }
 
     RegisterCommand(&FanSpeedLevelCommands::OnCmdGetFanSpeedLevel, "getfsl", "Get FanSpeedLevel");

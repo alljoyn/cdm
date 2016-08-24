@@ -18,7 +18,7 @@
 #define INTERFACECOMMANDS_H_
 
 #include "ControllerCommands.h"
-#include <alljoyn/hae/DeviceInfo.h>
+#include <alljoyn/cdm/DeviceInfo.h>
 
 class ControllerSample;
 

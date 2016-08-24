@@ -57,13 +57,13 @@ RemoteControllabilityCommands::~RemoteControllabilityCommands()
 void RemoteControllabilityCommands::Init()
 {
     if (!m_intfController) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(REMOTE_CONTROLLABILITY_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(REMOTE_CONTROLLABILITY_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfController = static_cast<RemoteControllabilityIntfController*>(haeInterface);
+        m_intfController = static_cast<RemoteControllabilityIntfController*>(cdmInterface);
     }
 
     RegisterCommand(&RemoteControllabilityCommands::OnCmdGetIsControllable, "grc", "get isControllable");

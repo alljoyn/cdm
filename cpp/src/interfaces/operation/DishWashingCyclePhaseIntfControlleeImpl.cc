@@ -17,9 +17,9 @@
 #include <qcc/Util.h>
 #include <vector>
 #include <algorithm>
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/HaeBusObject.h>
-#include <alljoyn/hae/interfaces/operation/DishWashingCyclePhaseIntfControlleeListener.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/CdmBusObject.h>
+#include <alljoyn/cdm/interfaces/operation/DishWashingCyclePhaseIntfControlleeListener.h>
 
 #include "DishWashingCyclePhaseIntfControlleeImpl.h"
 
@@ -29,13 +29,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* DishWashingCyclePhaseIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject)
+CdmInterface* DishWashingCyclePhaseIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject)
 {
-    return new DishWashingCyclePhaseIntfControlleeImpl(busAttachment, dynamic_cast<DishWashingCyclePhaseIntfControlleeListener&>(listener), haeBusObject);
+    return new DishWashingCyclePhaseIntfControlleeImpl(busAttachment, dynamic_cast<DishWashingCyclePhaseIntfControlleeListener&>(listener), cdmBusObject);
 }
 
-DishWashingCyclePhaseIntfControlleeImpl::DishWashingCyclePhaseIntfControlleeImpl(BusAttachment& busAttachment, DishWashingCyclePhaseIntfControlleeListener& listener, HaeBusObject& haeBusObject) :
-    InterfaceControllee(haeBusObject),
+DishWashingCyclePhaseIntfControlleeImpl::DishWashingCyclePhaseIntfControlleeImpl(BusAttachment& busAttachment, DishWashingCyclePhaseIntfControlleeListener& listener, CdmBusObject& cdmBusObject) :
+    InterfaceControllee(cdmBusObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener),
     m_cyclePhase(DishWashingCyclePhase::DISH_WASHING_PHASE_UNAVAILABLE)
@@ -48,7 +48,7 @@ DishWashingCyclePhaseIntfControlleeImpl::~DishWashingCyclePhaseIntfControlleeImp
 
 QStatus DishWashingCyclePhaseIntfControlleeImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
 
     const InterfaceDescription::Member* member = m_interfaceDescription->GetMember(s_method_GetVendorPhasesDescription.c_str());
     MessageReceiver::MethodHandler methodHandler = static_cast<MessageReceiver::MethodHandler>(&DishWashingCyclePhaseIntfControlleeImpl::OnGetCyclePhasesDescription);
@@ -305,7 +305,7 @@ void DishWashingCyclePhaseIntfControlleeImpl::OnGetCyclePhasesDescription(const 
             }
             else
             {
-                m_busObject.ReplyMethodCall(msg, HaeInterface::GetInterfaceErrorName(errorCode).c_str(),HaeInterface::GetInterfaceErrorMessage(errorCode).c_str());
+                m_busObject.ReplyMethodCall(msg, CdmInterface::GetInterfaceErrorName(errorCode).c_str(),CdmInterface::GetInterfaceErrorMessage(errorCode).c_str());
             }
         }
     }

@@ -130,13 +130,13 @@ TimerCommands::~TimerCommands()
 void TimerCommands::Init()
 {
     if (!m_intfController) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(TIMER_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(TIMER_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfController = static_cast<TimerIntfController*>(haeInterface);
+        m_intfController = static_cast<TimerIntfController*>(cdmInterface);
     }
 
     RegisterCommand(&TimerCommands::OnCmdGetReferenceTimer, "grt", "get reference timer");

@@ -18,8 +18,8 @@
 #define FANSPEEDLEVELLISTENER_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/FanSpeedLevelIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/FanSpeedLevelIntfControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/FanSpeedLevelIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/FanSpeedLevelIntfControlleeListener.h>
 
 using namespace ajn;
 using namespace services;

@@ -20,15 +20,15 @@
 #include <alljoyn/Status.h>
 #include <alljoyn/BusAttachment.h>
 #include <alljoyn/InterfaceDescription.h>
-#include <alljoyn/hae/interfaces/InterfaceControllee.h>
-#include <alljoyn/hae/interfaces/InterfaceControlleeListener.h>
-#include <alljoyn/hae/interfaces/operation/ClimateControlModeIntfControllee.h>
+#include <alljoyn/cdm/interfaces/InterfaceControllee.h>
+#include <alljoyn/cdm/interfaces/InterfaceControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/ClimateControlModeIntfControllee.h>
 
 namespace ajn {
 namespace services {
 
 class ClimateControlModeIntfControlleeListener;
-class HaeBusObject;
+class CdmBusObject;
 
 /**
  * ClimateControlMode interface controllee implementation class
@@ -39,12 +39,12 @@ class ClimateControlModeIntfControlleeImpl : public InterfaceControllee, public 
     /**
      * Create interface
      */
-    static HaeInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject);
 
     /**
      * Constructor of ClimateControlModeIntfControlleeImpl
      */
-    ClimateControlModeIntfControlleeImpl(BusAttachment& busAttachment, ClimateControlModeIntfControlleeListener& listener, HaeBusObject& haeBusObject);
+    ClimateControlModeIntfControlleeImpl(BusAttachment& busAttachment, ClimateControlModeIntfControlleeListener& listener, CdmBusObject& cdmBusObject);
 
     /**
      * Destructor of ClimateControlModeIntfControlleeImpl

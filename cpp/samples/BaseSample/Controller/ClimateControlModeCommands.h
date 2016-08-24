@@ -18,8 +18,8 @@
 #define CLIMATECONTROLMODECOMMANDS_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/ClimateControlModeIntfController.h>
-#include <alljoyn/hae/interfaces/operation/ClimateControlModeIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/ClimateControlModeIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/ClimateControlModeIntfControllerListener.h>
 
 class ControllerSample;
 

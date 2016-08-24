@@ -32,7 +32,7 @@ class BasicCommands : public ControlleeCommands
     static void OnCmdSelectInterface(Commands* commands, std::string&);
 
   private:
-    static void PrintAboutData(ajn::services::HaeAboutData& aboutData);
+    static void PrintAboutData(ajn::services::CdmAboutData& aboutData);
     static void PrintAboutObjectDescription(ajn::AboutObjectDescription& aboutObjectDesc);
 };
 

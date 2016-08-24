@@ -18,8 +18,8 @@
 #define CYCLECONTROLCOMMANDS_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/CycleControlIntfController.h>
-#include <alljoyn/hae/interfaces/operation/CycleControlIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/CycleControlIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/CycleControlIntfControllerListener.h>
 
 class ControllerSample;
 

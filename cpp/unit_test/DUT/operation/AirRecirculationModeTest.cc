@@ -14,10 +14,10 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include "HaeTest.h"
+#include "CdmTest.h"
 
-#include <alljoyn/hae/interfaces/operation/AirRecirculationModeIntfController.h>
-#include <alljoyn/hae/interfaces/operation/AirRecirculationModeIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/AirRecirculationModeIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/AirRecirculationModeIntfControllerListener.h>
 
 class AirRecirculationModeListener : public AirRecirculationModeIntfControllerListener
 {
@@ -50,14 +50,14 @@ public:
     }
 };
 
-TEST_F(HAETest, HAE_v1_AirRecirculationMode)
+TEST_F(CDMTest, CDM_v1_AirRecirculationMode)
 {
     WaitForControllee(AIR_RECIRCULATION_MODE_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
 
         AirRecirculationModeListener listener;
-        HaeInterface* interface = m_controller->CreateInterface(AIR_RECIRCULATION_MODE_INTERFACE, m_interfaces[i].busName,
+        CdmInterface* interface = m_controller->CreateInterface(AIR_RECIRCULATION_MODE_INTERFACE, m_interfaces[i].busName,
                                                                 qcc::String(m_interfaces[i].objectPath.c_str()), m_interfaces[i].sessionId, listener);
         AirRecirculationModeIntfController* controller = static_cast<AirRecirculationModeIntfController*>(interface);
         QStatus status = ER_FAIL;

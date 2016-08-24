@@ -18,8 +18,8 @@
 #define CURRENTPOWERCOMMANDS_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/CurrentPowerIntfController.h>
-#include <alljoyn/hae/interfaces/operation/CurrentPowerIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/CurrentPowerIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/CurrentPowerIntfControllerListener.h>
 
 class ControllerSample;
 

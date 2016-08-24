@@ -18,8 +18,8 @@
 #define PLUGINUNITSLISTENER_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/PlugInUnitsIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/PlugInUnitsIntfControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/PlugInUnitsIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/PlugInUnitsIntfControlleeListener.h>
 
 using namespace ajn;
 using namespace services;

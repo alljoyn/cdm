@@ -18,8 +18,8 @@
 #define CLOSEDSTATUSLISTENER_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/ClosedStatusIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/ClosedStatusIntfControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/ClosedStatusIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/ClosedStatusIntfControlleeListener.h>
 
 using namespace ajn;
 using namespace services;

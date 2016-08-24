@@ -68,13 +68,13 @@ AudioVolumeCommands::~AudioVolumeCommands()
 void AudioVolumeCommands::Init()
 {
     if (!m_intfControllee) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(AUDIO_VOLUME_INTERFACE, m_objectPath, m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(AUDIO_VOLUME_INTERFACE, m_objectPath, m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfControllee = static_cast<AudioVolumeIntfControllee*>(haeInterface);
+        m_intfControllee = static_cast<AudioVolumeIntfControllee*>(cdmInterface);
 
         RegisterCommand(&AudioVolumeCommands::OnCmdGetVolume, "gv", "get volume");
         RegisterCommand(&AudioVolumeCommands::OnCmdSetVolume, "sv", "set volume (use 'sv <volume>'");

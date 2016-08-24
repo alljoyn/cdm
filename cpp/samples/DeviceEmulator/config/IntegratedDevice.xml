@@ -26,12 +26,12 @@
       <DeviceTypeDescription>
         <TypeDescription>
           <device_type>1</device_type>
-          <object_path>/Hae/Other</object_path>
+          <object_path>/Cdm/Other</object_path>
         </TypeDescription>
       </DeviceTypeDescription>
     </AboutData>
     <InterfaceList>
-      <Object path='/Hae/Other'>
+      <Object path='/Cdm/Other'>
         <Interface name='org.alljoyn.Input.Hid'/>
         <Interface name='org.alljoyn.SmartSpaces.Operation.AirRecirculationMode'/>
         <Interface name='org.alljoyn.SmartSpaces.Operation.AudioVideoInput'/>

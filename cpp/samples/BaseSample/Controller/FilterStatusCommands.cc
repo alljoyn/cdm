@@ -15,7 +15,7 @@
  ******************************************************************************/
 
 #include <cstdlib>
-#include <alljoyn/hae/interfaces/HaeInterfaceTypes.h>
+#include <alljoyn/cdm/interfaces/CdmInterfaceTypes.h>
 #include "FilterStatusCommands.h"
 #include "ControllerSample.h"
 
@@ -127,13 +127,13 @@ FilterStatusCommands::~FilterStatusCommands()
 void FilterStatusCommands::Init()
 {
     if (!m_intfController) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(FILTER_STATUS_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(FILTER_STATUS_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfController = static_cast<FilterStatusIntfController*>(haeInterface);
+        m_intfController = static_cast<FilterStatusIntfController*>(cdmInterface);
     }
 
     RegisterCommand(&FilterStatusCommands::OnCmdGetExpectedLifeInDays, "getelid", "Get ExpectedLifeInDays");

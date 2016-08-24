@@ -18,8 +18,8 @@
 #define REPEATMODECOMMANDS_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/RepeatModeIntfController.h>
-#include <alljoyn/hae/interfaces/operation/RepeatModeIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/RepeatModeIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/RepeatModeIntfControllerListener.h>
 
 class ControllerSample;
 

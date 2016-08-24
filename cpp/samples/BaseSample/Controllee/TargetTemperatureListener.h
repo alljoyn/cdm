@@ -18,8 +18,8 @@
 #define TARGETTEMPERATURELISTENER_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/environment/TargetTemperatureIntfControllee.h>
-#include <alljoyn/hae/interfaces/environment/TargetTemperatureIntfControlleeListener.h>
+#include <alljoyn/cdm/interfaces/environment/TargetTemperatureIntfControllee.h>
+#include <alljoyn/cdm/interfaces/environment/TargetTemperatureIntfControlleeListener.h>
 
 using namespace ajn;
 using namespace services;

@@ -69,13 +69,13 @@ ClimateControlModeCommands::~ClimateControlModeCommands()
 void ClimateControlModeCommands::Init()
 {
     if (!m_intfControllee) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(CLIMATE_CONTROL_MODE_INTERFACE, m_objectPath, m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(CLIMATE_CONTROL_MODE_INTERFACE, m_objectPath, m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfControllee = static_cast<ClimateControlModeIntfControllee*>(haeInterface);
+        m_intfControllee = static_cast<ClimateControlModeIntfControllee*>(cdmInterface);
 
         RegisterCommand(&ClimateControlModeCommands::OnCmdGetMode, "ccmgm", "get mode");
         RegisterCommand(&ClimateControlModeCommands::OnCmdSetMode, "ccmsm", "set mode (use 'ccmsm <mode>'");

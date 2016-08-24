@@ -14,11 +14,11 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include "HaeTest.h"
+#include "CdmTest.h"
 #include <algorithm>
 
-#include <alljoyn/hae/interfaces/operation/SoilLevelIntfController.h>
-#include <alljoyn/hae/interfaces/operation/SoilLevelIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/SoilLevelIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/SoilLevelIntfControllerListener.h>
 
 class SoilLevelListener : public SoilLevelIntfControllerListener
 {
@@ -99,14 +99,14 @@ public:
     }
 };
 
-TEST_F(HAETest, HAE_v1_SoilLevel)
+TEST_F(CDMTest, CDM_v1_SoilLevel)
 {
     WaitForControllee(SOIL_LEVEL_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
 
         SoilLevelListener listener;
-        HaeInterface* interface = m_controller->CreateInterface(SOIL_LEVEL_INTERFACE, m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()),
+        CdmInterface* interface = m_controller->CreateInterface(SOIL_LEVEL_INTERFACE, m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()),
                                                                 m_interfaces[i].sessionId, listener);
         SoilLevelIntfController* controller = static_cast<SoilLevelIntfController*>(interface);
         QStatus status = ER_FAIL;

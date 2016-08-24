@@ -16,9 +16,9 @@
 
 #include <qcc/Util.h>
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/HaeProxyBusObject.h>
-#include <alljoyn/hae/interfaces/operation/CurrentPowerIntfControllerListener.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/CdmProxyBusObject.h>
+#include <alljoyn/cdm/interfaces/operation/CurrentPowerIntfControllerListener.h>
 
 #include "CurrentPowerIntfControllerImpl.h"
 
@@ -28,13 +28,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* CurrentPowerIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, HaeProxyBusObject& haeProxyObject)
+CdmInterface* CurrentPowerIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject)
 {
-    return new CurrentPowerIntfControllerImpl(busAttachment, dynamic_cast<CurrentPowerIntfControllerListener&>(listener), haeProxyObject);
+    return new CurrentPowerIntfControllerImpl(busAttachment, dynamic_cast<CurrentPowerIntfControllerListener&>(listener), cdmProxyObject);
 }
 
-CurrentPowerIntfControllerImpl::CurrentPowerIntfControllerImpl(BusAttachment& busAttachment, CurrentPowerIntfControllerListener& listener, HaeProxyBusObject& haeProxyObject) :
-    InterfaceController(haeProxyObject),
+CurrentPowerIntfControllerImpl::CurrentPowerIntfControllerImpl(BusAttachment& busAttachment, CurrentPowerIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject) :
+    InterfaceController(cdmProxyObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener)
 {
@@ -46,7 +46,7 @@ CurrentPowerIntfControllerImpl::~CurrentPowerIntfControllerImpl()
 
 QStatus CurrentPowerIntfControllerImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
     if (ER_OK != status) {
         QCC_LogError(status, ("%s: Interface init failed.", __func__));
         return status;

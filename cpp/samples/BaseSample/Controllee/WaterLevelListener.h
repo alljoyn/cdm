@@ -18,8 +18,8 @@
 #define WATERLEVELLISTENER_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/environment/WaterLevelIntfControllee.h>
-#include <alljoyn/hae/interfaces/environment/WaterLevelIntfControlleeListener.h>
+#include <alljoyn/cdm/interfaces/environment/WaterLevelIntfControllee.h>
+#include <alljoyn/cdm/interfaces/environment/WaterLevelIntfControlleeListener.h>
 
 using namespace ajn;
 using namespace services;

@@ -19,14 +19,14 @@
 
 #include <alljoyn/Status.h>
 #include <alljoyn/BusAttachment.h>
-#include <alljoyn/hae/interfaces/InterfaceController.h>
-#include <alljoyn/hae/interfaces/operation/TimerIntfController.h>
+#include <alljoyn/cdm/interfaces/InterfaceController.h>
+#include <alljoyn/cdm/interfaces/operation/TimerIntfController.h>
 
 namespace ajn {
 namespace services {
 
 class TimerIntfControllerListener;
-class HaeProxyBusObject;
+class CdmProxyBusObject;
 
 /**
  * Timer Interface Controller implementation class
@@ -36,12 +36,12 @@ class TimerIntfControllerImpl : public InterfaceController, public TimerIntfCont
     /**
      * Create interface
      */
-    static HaeInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, HaeProxyBusObject& haeProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
 
     /**
      * Constructor of TimerIntfControllerImpl
      */
-    TimerIntfControllerImpl(BusAttachment& busAttachment, TimerIntfControllerListener& listener, HaeProxyBusObject& haeProxyObject);
+    TimerIntfControllerImpl(BusAttachment& busAttachment, TimerIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
 
     /**
      * Destructor of TimerIntfControllerImpl

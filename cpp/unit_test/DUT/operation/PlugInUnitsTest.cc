@@ -14,10 +14,10 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include "HaeTest.h"
+#include "CdmTest.h"
 
-#include <alljoyn/hae/interfaces/operation/PlugInUnitsIntfController.h>
-#include <alljoyn/hae/interfaces/operation/PlugInUnitsIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/PlugInUnitsIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/PlugInUnitsIntfControllerListener.h>
 
 class PlugInUnitsListener : public PlugInUnitsIntfControllerListener
 {
@@ -44,14 +44,14 @@ public:
     }
 };
 
-TEST_F(HAETest, HAE_v1_PlugInUnits)
+TEST_F(CDMTest, CDM_v1_PlugInUnits)
 {
     WaitForControllee(PLUG_IN_UNITS_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
 
         PlugInUnitsListener listener;
-        HaeInterface* interface = m_controller->CreateInterface(PLUG_IN_UNITS_INTERFACE, m_interfaces[i].busName,
+        CdmInterface* interface = m_controller->CreateInterface(PLUG_IN_UNITS_INTERFACE, m_interfaces[i].busName,
                                                                 qcc::String(m_interfaces[i].objectPath.c_str()), m_interfaces[i].sessionId, listener);
         PlugInUnitsIntfController* controller = static_cast<PlugInUnitsIntfController*>(interface);
         QStatus status = ER_FAIL;

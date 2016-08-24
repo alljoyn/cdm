@@ -16,9 +16,9 @@
 
 #include <qcc/Util.h>
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/HaeBusObject.h>
-#include <alljoyn/hae/interfaces/operation/BatteryStatusIntfControlleeListener.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/CdmBusObject.h>
+#include <alljoyn/cdm/interfaces/operation/BatteryStatusIntfControlleeListener.h>
 
 #include "BatteryStatusIntfControlleeImpl.h"
 
@@ -28,13 +28,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* BatteryStatusIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject)
+CdmInterface* BatteryStatusIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject)
 {
-    return new BatteryStatusIntfControlleeImpl(busAttachment, dynamic_cast<BatteryStatusIntfControlleeListener&>(listener), haeBusObject);
+    return new BatteryStatusIntfControlleeImpl(busAttachment, dynamic_cast<BatteryStatusIntfControlleeListener&>(listener), cdmBusObject);
 }
 
-BatteryStatusIntfControlleeImpl::BatteryStatusIntfControlleeImpl(BusAttachment& busAttachment, BatteryStatusIntfControlleeListener& listener, HaeBusObject& haeBusObject) :
-    InterfaceControllee(haeBusObject),
+BatteryStatusIntfControlleeImpl::BatteryStatusIntfControlleeImpl(BusAttachment& busAttachment, BatteryStatusIntfControlleeListener& listener, CdmBusObject& cdmBusObject) :
+    InterfaceControllee(cdmBusObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener),
     m_currentValue(MAX_BATTERY),
@@ -48,7 +48,7 @@ BatteryStatusIntfControlleeImpl::~BatteryStatusIntfControlleeImpl()
 
 QStatus BatteryStatusIntfControlleeImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
     /**
      * TODO: add method handler
      */

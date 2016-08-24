@@ -14,11 +14,11 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include "HaeTest.h"
+#include "CdmTest.h"
 #include <algorithm>
 
-#include <alljoyn/hae/interfaces/operation/HeatingZoneIntfController.h>
-#include <alljoyn/hae/interfaces/operation/HeatingZoneIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/HeatingZoneIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/HeatingZoneIntfControllerListener.h>
 
 class HeatingZoneListener : public HeatingZoneIntfControllerListener
 {
@@ -74,14 +74,14 @@ public:
     }
 };
 
-TEST_F(HAETest, HAE_v1_HeatingZone)
+TEST_F(CDMTest, CDM_v1_HeatingZone)
 {
     WaitForControllee(HEATING_ZONE_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
 
         HeatingZoneListener listener;
-        HaeInterface* interface = m_controller->CreateInterface(HEATING_ZONE_INTERFACE, m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()),
+        CdmInterface* interface = m_controller->CreateInterface(HEATING_ZONE_INTERFACE, m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()),
                                                                 m_interfaces[i].sessionId, listener);
         HeatingZoneIntfController* controller = static_cast<HeatingZoneIntfController*>(interface);
         QStatus status = ER_FAIL;

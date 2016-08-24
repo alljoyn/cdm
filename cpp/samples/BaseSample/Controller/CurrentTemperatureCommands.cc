@@ -15,7 +15,7 @@
  ******************************************************************************/
 
 #include <cstdlib>
-#include <alljoyn/hae/interfaces/HaeInterfaceTypes.h>
+#include <alljoyn/cdm/interfaces/CdmInterfaceTypes.h>
 #include "CurrentTemperatureCommands.h"
 #include "ControllerSample.h"
 
@@ -85,13 +85,13 @@ CurrentTemperatureCommands::~CurrentTemperatureCommands()
 void CurrentTemperatureCommands::Init()
 {
     if (!m_intfController) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(CURRENT_TEMPERATURE_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(CURRENT_TEMPERATURE_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfController = static_cast<CurrentTemperatureIntfController*>(haeInterface);
+        m_intfController = static_cast<CurrentTemperatureIntfController*>(cdmInterface);
     }
 
     RegisterCommand(&CurrentTemperatureCommands::OnCmdGetCurrentValue, "getcv", "Get CurrentValue");

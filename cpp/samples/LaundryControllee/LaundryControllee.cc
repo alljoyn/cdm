@@ -5,7 +5,7 @@
 #include <qcc/String.h>
 #include <alljoyn/Init.h>
 #include <alljoyn/version.h>
-#include <alljoyn/hae/DeviceTypeDescription.h>
+#include <alljoyn/cdm/DeviceTypeDescription.h>
 #include "ControlleeCommands.h"
 #include "ControlleeSample.h"
 #include "OnOffStatusListener.h"
@@ -16,14 +16,14 @@
 #include "DishWashingCyclePhaseListener.h"
 #include "LaundryCyclePhaseListener.h"
 #include "TimerListener.h"
-#include <alljoyn/hae/interfaces/operation/OnOffStatusIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/CycleControlIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/SoilLevelIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/SpinSpeedLevelIntfControllee.h>
-#include <alljoyn/hae/interfaces/environment/WaterLevelIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/DishWashingCyclePhaseIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/LaundryCyclePhaseIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/TimerIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/OnOffStatusIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/CycleControlIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/SoilLevelIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/SpinSpeedLevelIntfControllee.h>
+#include <alljoyn/cdm/interfaces/environment/WaterLevelIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/DishWashingCyclePhaseIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/LaundryCyclePhaseIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/TimerIntfControllee.h>
 
 using namespace std;
 using namespace qcc;
@@ -50,7 +50,7 @@ class LaundryControllee : public ControlleeSample
     TimerIntfControllee* m_timerIntfControllee;
 
   public:
-    LaundryControllee(BusAttachment* bus, HaeAboutData* aboutData);
+    LaundryControllee(BusAttachment* bus, CdmAboutData* aboutData);
     virtual ~LaundryControllee();
     void CreateInterfaces();
     void SetInitialProperty();
@@ -61,7 +61,7 @@ class LaundryControllee : public ControlleeSample
 
 };
 
-LaundryControllee::LaundryControllee(BusAttachment* bus, HaeAboutData* aboutData)
+LaundryControllee::LaundryControllee(BusAttachment* bus, CdmAboutData* aboutData)
   : ControlleeSample(bus, aboutData),m_onOffStatusIntfControllee(NULL), m_cycleControlIntfControllee(NULL),m_soilLevelIntfControllee(NULL),m_spinSpeedLevelIntfControllee(NULL),
     m_waterLevelIntfControllee(NULL), m_dishWashingCyclePhaseIntfControllee(NULL), m_laundryCyclePhaseIntfControllee(NULL), m_timerIntfControllee(NULL)
 
@@ -105,8 +105,8 @@ LaundryControllee::~LaundryControllee()
 }
 void LaundryControllee::InitSample()
 {
-    HaeControllee* haeControllee = GetControllee();
-    if (!haeControllee) {
+    CdmControllee* cdmControllee = GetControllee();
+    if (!cdmControllee) {
         return;
     }
     m_rootCommands->RegisterCommand(&LaundryControllee::OnCmdSetState, "ss", "set state");
@@ -134,34 +134,34 @@ void LaundryControllee::OnCmdSetCurWaterLvl(Commands* commands, std::string& cmd
 }
 void LaundryControllee::CreateInterfaces()
 {
-    HaeInterface* intf = NULL;
-    HaeControllee* haeControllee = GetControllee();
-    if (!haeControllee) {
+    CdmInterface* intf = NULL;
+    CdmControllee* cdmControllee = GetControllee();
+    if (!cdmControllee) {
         return;
     }
 
-    intf = haeControllee->CreateInterface(ON_OFF_STATUS_INTERFACE, "/Hae/Laundry", *m_onOffStatusListener);
+    intf = cdmControllee->CreateInterface(ON_OFF_STATUS_INTERFACE, "/Cdm/Laundry", *m_onOffStatusListener);
     m_onOffStatusIntfControllee = static_cast<OnOffStatusIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(CYCLE_CONTROL_INTERFACE, "/Hae/Laundry", *m_cycleControlListener);
+    intf = cdmControllee->CreateInterface(CYCLE_CONTROL_INTERFACE, "/Cdm/Laundry", *m_cycleControlListener);
     m_cycleControlIntfControllee = static_cast<CycleControlIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(SOIL_LEVEL_INTERFACE, "/Hae/Laundry", *m_soilLevelListener);
+    intf = cdmControllee->CreateInterface(SOIL_LEVEL_INTERFACE, "/Cdm/Laundry", *m_soilLevelListener);
     m_soilLevelIntfControllee = static_cast<SoilLevelIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(SPIN_SPEED_LEVEL_INTERFACE, "/Hae/Laundry", *m_spinSpeedLevelListener);
+    intf = cdmControllee->CreateInterface(SPIN_SPEED_LEVEL_INTERFACE, "/Cdm/Laundry", *m_spinSpeedLevelListener);
     m_spinSpeedLevelIntfControllee = static_cast<SpinSpeedLevelIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(WATER_LEVEL_INTERFACE, "/Hae/Laundry", *m_waterLevelListener);
+    intf = cdmControllee->CreateInterface(WATER_LEVEL_INTERFACE, "/Cdm/Laundry", *m_waterLevelListener);
     m_waterLevelIntfControllee = static_cast<WaterLevelIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(DISH_WASHING_CYCLE_PHASE_INTERFACE, "/Hae/Laundry", *m_dishWashingCyclePhaseListener);
+    intf = cdmControllee->CreateInterface(DISH_WASHING_CYCLE_PHASE_INTERFACE, "/Cdm/Laundry", *m_dishWashingCyclePhaseListener);
     m_dishWashingCyclePhaseIntfControllee = static_cast<DishWashingCyclePhaseIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(LAUNDRY_CYCLE_PHASE_INTERFACE, "/Hae/Laundry", *m_laundryCyclePhaseListener);
+    intf = cdmControllee->CreateInterface(LAUNDRY_CYCLE_PHASE_INTERFACE, "/Cdm/Laundry", *m_laundryCyclePhaseListener);
     m_laundryCyclePhaseIntfControllee = static_cast<LaundryCyclePhaseIntfControllee*>(intf);
 
-    intf = haeControllee->CreateInterface(TIMER_INTERFACE, "/Hae/Laundry", *m_timerListener);
+    intf = cdmControllee->CreateInterface(TIMER_INTERFACE, "/Cdm/Laundry", *m_timerListener);
     m_timerIntfControllee = static_cast<TimerIntfControllee*>(intf);
 }
 
@@ -229,7 +229,7 @@ void LaundryControllee::SetInitialProperty()
     m_laundryCyclePhaseIntfControllee->SetSupportedCyclePhases(aphases);
 }
 
-QStatus FillAboutData(HaeAboutData* aboutData)
+QStatus FillAboutData(CdmAboutData* aboutData)
 {
     String const& defaultLanguage = "en";
     String device_id = "deviceID";
@@ -277,14 +277,14 @@ QStatus FillAboutData(HaeAboutData* aboutData)
     aboutData->SetManufacturer("Nik", "en");
     aboutData->SetSupportUrl("http://www.alljoyn.org");
 
-    // HAE custom metadata fields
+    // CDM custom metadata fields
     aboutData->SetCountryOfProduction("SP", "en");
     aboutData->SetCorporateBrand("Laundry", "en");
     aboutData->SetProductBrand("Model 1", "en");
     aboutData->SetLocation("Basement", "en");
 
     DeviceTypeDescription description;
-    description.AddDeviceType(CLOTHES_WASHER, "/Hae/Laundry");
+    description.AddDeviceType(CLOTHES_WASHER, "/Cdm/Laundry");
     aboutData->SetDeviceTypeDescription(&description);
 
     if (!aboutData->IsValid()) {
@@ -312,7 +312,7 @@ int main()
 #endif
     printf("AllJoyn Library version: %s\n", ajn::GetVersion());
     printf("AllJoyn Library build info: %s\n", ajn::GetBuildInfo());
-    QCC_SetLogLevels("HAE_MODULE_LOG_NAME=15;");
+    QCC_SetLogLevels("CDM_MODULE_LOG_NAME=15;");
 
     BusAttachment* bus = new BusAttachment("TVControllee", true);
     if (!bus) {
@@ -320,7 +320,7 @@ int main()
         exit(1);
     }
 
-    HaeAboutData* aboutData = new HaeAboutData();
+    CdmAboutData* aboutData = new CdmAboutData();
     if (!aboutData) {
         printf("AboutData creation failed.\n");
         delete bus;

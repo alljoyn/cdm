@@ -102,13 +102,13 @@ TimerCommands::~TimerCommands()
 void TimerCommands::Init()
 {
     if (!m_intfControllee) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(TIMER_INTERFACE, m_objectPath, m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(TIMER_INTERFACE, m_objectPath, m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfControllee = static_cast<TimerIntfControllee*>(haeInterface);
+        m_intfControllee = static_cast<TimerIntfControllee*>(cdmInterface);
 
         RegisterCommand(&TimerCommands::OnCmdGetReferenceTimer, "grt", "get reference timer");
         RegisterCommand(&TimerCommands::OnCmdSetReferenceTimer, "srt", "set reference timer");

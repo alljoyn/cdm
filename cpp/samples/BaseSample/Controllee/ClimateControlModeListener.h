@@ -18,8 +18,8 @@
 #define CLIMATECONTROLMODELISTENER_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/ClimateControlModeIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/ClimateControlModeIntfControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/ClimateControlModeIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/ClimateControlModeIntfControlleeListener.h>
 
 using namespace ajn;
 using namespace services;

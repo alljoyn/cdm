@@ -14,10 +14,10 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include "HaeTest.h"
+#include "CdmTest.h"
 
-#include <alljoyn/hae/interfaces/operation/OvenCyclePhaseIntfController.h>
-#include <alljoyn/hae/interfaces/operation/OvenCyclePhaseIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/OvenCyclePhaseIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/OvenCyclePhaseIntfControllerListener.h>
 using namespace std;
 class OvenCyclePhaseListener : public OvenCyclePhaseIntfControllerListener
 {
@@ -76,14 +76,14 @@ public:
     }
 };
 
-TEST_F(HAETest, HAE_v1_OvenCyclePhase)
+TEST_F(CDMTest, CDM_v1_OvenCyclePhase)
 {
     WaitForControllee(OVEN_CYCLE_PHASE_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
 
         OvenCyclePhaseListener listener;
-        HaeInterface* interface = m_controller->CreateInterface(OVEN_CYCLE_PHASE_INTERFACE, m_interfaces[i].busName,
+        CdmInterface* interface = m_controller->CreateInterface(OVEN_CYCLE_PHASE_INTERFACE, m_interfaces[i].busName,
                                                                 qcc::String(m_interfaces[i].objectPath.c_str()), m_interfaces[i].sessionId, listener);
         OvenCyclePhaseIntfController* controller = static_cast<OvenCyclePhaseIntfController*>(interface);
         QStatus status = ER_FAIL;
@@ -114,7 +114,7 @@ TEST_F(HAETest, HAE_v1_OvenCyclePhase)
             EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
             listener.m_event.ResetEvent();
             EXPECT_NE(listener.m_status, ER_OK);
-            EXPECT_STREQ(listener.m_errorName.c_str(), HaeInterface::GetInterfaceErrorName(LANGUAGE_NOT_SUPPORTED).c_str());
+            EXPECT_STREQ(listener.m_errorName.c_str(), CdmInterface::GetInterfaceErrorName(LANGUAGE_NOT_SUPPORTED).c_str());
         }
 
         TEST_LOG_1("Call method with valid param.");

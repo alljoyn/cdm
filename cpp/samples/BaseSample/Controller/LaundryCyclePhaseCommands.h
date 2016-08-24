@@ -18,8 +18,8 @@
 #define LAUNDRYCYCLEPHASECOMMANDS_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/LaundryCyclePhaseIntfController.h>
-#include <alljoyn/hae/interfaces/operation/LaundryCyclePhaseIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/LaundryCyclePhaseIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/LaundryCyclePhaseIntfControllerListener.h>
 
 class ControllerSample;
 

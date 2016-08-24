@@ -18,8 +18,8 @@
 #define MOISTUREOUTPUTLEVELLISTENER_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/MoistureOutputLevelIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/MoistureOutputLevelIntfControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/MoistureOutputLevelIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/MoistureOutputLevelIntfControlleeListener.h>
 
 using namespace ajn;
 using namespace services;

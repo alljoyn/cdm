@@ -15,7 +15,7 @@
  ******************************************************************************/
 
 #include <cstdlib>
-#include <alljoyn/hae/interfaces/HaeInterfaceTypes.h>
+#include <alljoyn/cdm/interfaces/CdmInterfaceTypes.h>
 #include "CurrentAirQualityLevelCommands.h"
 #include "ControllerSample.h"
 
@@ -87,13 +87,13 @@ CurrentAirQualityLevelCommands::~CurrentAirQualityLevelCommands()
 void CurrentAirQualityLevelCommands::Init()
 {
     if (!m_intfController) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(CURRENT_AIR_QUALITY_LEVEL_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(CURRENT_AIR_QUALITY_LEVEL_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfController = static_cast<CurrentAirQualityLevelIntfController*>(haeInterface);
+        m_intfController = static_cast<CurrentAirQualityLevelIntfController*>(cdmInterface);
     }
 
     RegisterCommand(&CurrentAirQualityLevelCommands::OnCmdGetContaminantType, "gct", "Get ContaminantType");

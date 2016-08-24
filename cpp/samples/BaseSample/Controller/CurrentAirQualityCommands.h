@@ -18,8 +18,8 @@
 #define CURRENTAIRQUALITYCOMMANDS_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/environment/CurrentAirQualityIntfController.h>
-#include <alljoyn/hae/interfaces/environment/CurrentAirQualityIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/environment/CurrentAirQualityIntfController.h>
+#include <alljoyn/cdm/interfaces/environment/CurrentAirQualityIntfControllerListener.h>
 
 class ControllerSample;
 

@@ -96,13 +96,13 @@ HeatingZoneCommands::~HeatingZoneCommands()
 void HeatingZoneCommands::Init()
 {
     if (!m_intfController) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(HEATING_ZONE_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(HEATING_ZONE_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfController = static_cast<HeatingZoneIntfController*>(haeInterface);
+        m_intfController = static_cast<HeatingZoneIntfController*>(cdmInterface);
     }
 
     RegisterCommand(&HeatingZoneCommands::OnCmdGetNumberOfHeatingZones, "gnhz", "get number opf heating zones");

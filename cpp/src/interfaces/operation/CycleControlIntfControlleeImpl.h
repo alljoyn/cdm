@@ -20,15 +20,15 @@
 #include <alljoyn/Status.h>
 #include <alljoyn/BusAttachment.h>
 #include <alljoyn/InterfaceDescription.h>
-#include <alljoyn/hae/interfaces/InterfaceControllee.h>
-#include <alljoyn/hae/interfaces/InterfaceControlleeListener.h>
-#include <alljoyn/hae/interfaces/operation/CycleControlIntfControllee.h>
+#include <alljoyn/cdm/interfaces/InterfaceControllee.h>
+#include <alljoyn/cdm/interfaces/InterfaceControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/CycleControlIntfControllee.h>
 
 namespace ajn {
 namespace services {
 
 class CycleControlIntfControlleeListener;
-class HaeBusObject;
+class CdmBusObject;
 
 /**
  * CycleControl Interface Controllee implementation class
@@ -38,12 +38,12 @@ class CycleControlIntfControlleeImpl : public InterfaceControllee, public CycleC
     /**
      * Create interface
      */
-    static HaeInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject);
 
     /**
      * Constructor of CycleControlIntfControlleeImpl
      */
-    CycleControlIntfControlleeImpl(BusAttachment& busAttachment, CycleControlIntfControlleeListener& listener, HaeBusObject& haeBusObject);
+    CycleControlIntfControlleeImpl(BusAttachment& busAttachment, CycleControlIntfControlleeListener& listener, CdmBusObject& cdmBusObject);
 
     /**
      * Destructor of CycleControlIntfControlleeImpl

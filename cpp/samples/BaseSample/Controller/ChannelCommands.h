@@ -18,8 +18,8 @@
 #define CHANNELCOMMANDS_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/ChannelIntfController.h>
-#include <alljoyn/hae/interfaces/operation/ChannelIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/ChannelIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/ChannelIntfControllerListener.h>
 
 class ControllerSample;
 

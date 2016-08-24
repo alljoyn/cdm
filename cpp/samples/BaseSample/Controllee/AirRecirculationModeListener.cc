@@ -50,13 +50,13 @@ AirRecirculationModeCommands::~AirRecirculationModeCommands()
 void AirRecirculationModeCommands::Init()
 {
     if (!m_intfControllee) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(AIR_RECIRCULATION_MODE_INTERFACE, m_objectPath, m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(AIR_RECIRCULATION_MODE_INTERFACE, m_objectPath, m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfControllee = static_cast<AirRecirculationModeIntfControllee*>(haeInterface);
+        m_intfControllee = static_cast<AirRecirculationModeIntfControllee*>(cdmInterface);
 
         RegisterCommand(&AirRecirculationModeCommands::OnCmdGetIsRecirculating, "gir", "get is recirculating");
         RegisterCommand(&AirRecirculationModeCommands::OnCmdSetIsRecirculating, "sir", "set is recirculating (use 'sir <0/1>'");

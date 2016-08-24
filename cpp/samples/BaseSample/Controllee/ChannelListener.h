@@ -18,8 +18,8 @@
 #define CHANNELLISTENER_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/ChannelIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/ChannelIntfControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/ChannelIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/ChannelIntfControlleeListener.h>
 
 using namespace ajn;
 using namespace services;

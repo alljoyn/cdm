@@ -18,8 +18,8 @@
 #define DISHWASHINGCYCLEPHASELISTENER_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/DishWashingCyclePhaseIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/DishWashingCyclePhaseIntfControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/DishWashingCyclePhaseIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/DishWashingCyclePhaseIntfControlleeListener.h>
 
 using namespace ajn;
 using namespace services;

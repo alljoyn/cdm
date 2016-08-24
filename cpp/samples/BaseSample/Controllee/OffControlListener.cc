@@ -43,12 +43,12 @@ OffControlCommands::~OffControlCommands()
 void OffControlCommands::Init()
 {
     if (!m_intfControllee) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(OFF_CONTROL_INTERFACE, m_objectPath, m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(OFF_CONTROL_INTERFACE, m_objectPath, m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
-        m_intfControllee = static_cast<OffControlIntfControllee*>(haeInterface);
+        m_intfControllee = static_cast<OffControlIntfControllee*>(cdmInterface);
     } else {
         PrintCommands();
     }

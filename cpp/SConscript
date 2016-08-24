@@ -12,38 +12,38 @@
 #    ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 #    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-Import('hae_env')
+Import('cdm_env')
 
-if not hae_env.has_key('_ALLJOYNCORE_'):
-    hae_env.Append(LIBS = ['alljoyn'])
-    if hae_env['BR'] == 'on' :
-        brFile = hae_env.subst('$DISTDIR') + '/cpp/lib/BundledRouter.o'
-        hae_env['brobj'] = File(brFile)
-        hae_env['ajrlib'] = 'ajrouter'
-    if hae_env['OS'] == 'openwrt':
-        hae_env.AppendUnique(LIBS = [ 'stdc++', 'pthread' ])
+if not cdm_env.has_key('_ALLJOYNCORE_'):
+    cdm_env.Append(LIBS = ['alljoyn'])
+    if cdm_env['BR'] == 'on' :
+        brFile = cdm_env.subst('$DISTDIR') + '/cpp/lib/BundledRouter.o'
+        cdm_env['brobj'] = File(brFile)
+        cdm_env['ajrlib'] = 'ajrouter'
+    if cdm_env['OS'] == 'openwrt':
+        cdm_env.AppendUnique(LIBS = [ 'stdc++', 'pthread' ])
 
-# Make hae dist a sub-directory of the alljoyn dist.  This avoids any conflicts with alljoyn dist targets.
-hae_env['HAE_DISTDIR'] = hae_env['DISTDIR'] + '/hae'
+# Make cdm dist a sub-directory of the alljoyn dist.  This avoids any conflicts with alljoyn dist targets.
+cdm_env['CDM_DISTDIR'] = cdm_env['DISTDIR'] + '/cdm'
 
-hae_env.Install('$HAE_DISTDIR/inc/alljoyn/hae', hae_env.Glob('inc/alljoyn/hae/*.h'))
-hae_env.Install('$HAE_DISTDIR/inc/alljoyn/hae/interfaces', hae_env.Glob('inc/alljoyn/hae/interfaces/*.h'))
-hae_env.Install('$HAE_DISTDIR/inc/alljoyn/hae/interfaces/operation', hae_env.Glob('inc/alljoyn/hae/interfaces/operation/*.h'))
-hae_env.Install('$HAE_DISTDIR/inc/alljoyn/hae/interfaces/environment', hae_env.Glob('inc/alljoyn/hae/interfaces/environment/*.h'))
-hae_env.Install('$HAE_DISTDIR/inc/alljoyn/hae/interfaces/input', hae_env.Glob('inc/alljoyn/hae/interfaces/input/*.h'))
-hae_env.Install('$HAE_DISTDIR/inc/alljoyn/hae/interfaces/userinterfacesettings', hae_env.Glob('inc/alljoyn/hae/interfaces/userinterfacesettings/*.h'))
+cdm_env.Install('$CDM_DISTDIR/inc/alljoyn/cdm', cdm_env.Glob('inc/alljoyn/cdm/*.h'))
+cdm_env.Install('$CDM_DISTDIR/inc/alljoyn/cdm/interfaces', cdm_env.Glob('inc/alljoyn/cdm/interfaces/*.h'))
+cdm_env.Install('$CDM_DISTDIR/inc/alljoyn/cdm/interfaces/operation', cdm_env.Glob('inc/alljoyn/cdm/interfaces/operation/*.h'))
+cdm_env.Install('$CDM_DISTDIR/inc/alljoyn/cdm/interfaces/environment', cdm_env.Glob('inc/alljoyn/cdm/interfaces/environment/*.h'))
+cdm_env.Install('$CDM_DISTDIR/inc/alljoyn/cdm/interfaces/input', cdm_env.Glob('inc/alljoyn/cdm/interfaces/input/*.h'))
+cdm_env.Install('$CDM_DISTDIR/inc/alljoyn/cdm/interfaces/userinterfacesettings', cdm_env.Glob('inc/alljoyn/cdm/interfaces/userinterfacesettings/*.h'))
 
 # Libraries
-hae_env.Install('$HAE_DISTDIR/lib', hae_env.SConscript('src/SConscript', exports = ['hae_env']))
+cdm_env.Install('$CDM_DISTDIR/lib', cdm_env.SConscript('src/SConscript', exports = ['cdm_env']))
 
 # Sample programs
-if hae_env['BUILD_HAE_SAMPLES'] == 'on':
-    hae_env.Install('$HAE_DISTDIR/bin', hae_env.SConscript('samples/SConscript', exports = ['hae_env']))
+if cdm_env['BUILD_CDM_SAMPLES'] == 'on':
+    cdm_env.Install('$CDM_DISTDIR/bin', cdm_env.SConscript('samples/SConscript', exports = ['cdm_env']))
 
 #Build Unit Tests
-hae_env.Install('$HAE_DISTDIR/hae/bin', hae_env.SConscript('unit_test/DUT/SConscript', exports = ['hae_env']))
-hae_env.Install('$HAE_DISTDIR/hae/bin', hae_env.SConscript('unit_test/ServiceFramework/SConscript', exports = ['hae_env']))
+cdm_env.Install('$CDM_DISTDIR/cdm/bin', cdm_env.SConscript('unit_test/DUT/SConscript', exports = ['cdm_env']))
+cdm_env.Install('$CDM_DISTDIR/cdm/bin', cdm_env.SConscript('unit_test/ServiceFramework/SConscript', exports = ['cdm_env']))
 
 # Build docs
-installDocs = hae_env.SConscript('docs/SConscript', exports = ['hae_env'])
-hae_env.Depends(installDocs, hae_env.Glob('$HAE_DISTDIR/inc/alljoyn/hae/*.h'));
+installDocs = cdm_env.SConscript('docs/SConscript', exports = ['cdm_env'])
+cdm_env.Depends(installDocs, cdm_env.Glob('$CDM_DISTDIR/inc/alljoyn/cdm/*.h'));

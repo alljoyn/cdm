@@ -14,10 +14,10 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include "HaeTest.h"
+#include "CdmTest.h"
 
-#include <alljoyn/hae/interfaces/operation/OnOffStatusIntfController.h>
-#include <alljoyn/hae/interfaces/operation/OnOffStatusIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/OnOffStatusIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/OnOffStatusIntfControllerListener.h>
 
 class OnOffStatusListener : public OnOffStatusIntfControllerListener
 {
@@ -47,14 +47,14 @@ public:
     }
 };
 
-TEST_F(HAETest, HAE_v1_OnOffStatus)
+TEST_F(CDMTest, CDM_v1_OnOffStatus)
 {
     WaitForControllee (ON_OFF_STATUS_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
 
         OnOffStatusListener listener;
-        HaeInterface* interface = m_controller->CreateInterface(ON_OFF_STATUS_INTERFACE, m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()),
+        CdmInterface* interface = m_controller->CreateInterface(ON_OFF_STATUS_INTERFACE, m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()),
                                                                 m_interfaces[i].sessionId, listener);
         OnOffStatusIntfController* controller = static_cast<OnOffStatusIntfController*>(interface);
         QStatus status = ER_FAIL;

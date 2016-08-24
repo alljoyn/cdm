@@ -20,15 +20,15 @@
 #include <alljoyn/Status.h>
 #include <alljoyn/BusAttachment.h>
 #include <alljoyn/InterfaceDescription.h>
-#include <alljoyn/hae/interfaces/InterfaceControllee.h>
-#include <alljoyn/hae/interfaces/InterfaceControlleeListener.h>
-#include <alljoyn/hae/interfaces/operation/CurrentPowerIntfControllee.h>
+#include <alljoyn/cdm/interfaces/InterfaceControllee.h>
+#include <alljoyn/cdm/interfaces/InterfaceControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/CurrentPowerIntfControllee.h>
 
 namespace ajn {
 namespace services {
 
 class CurrentPowerIntfControlleeListener;
-class HaeBusObject;
+class CdmBusObject;
 
 /**
  * CurrentPower Interface Controllee implementation class
@@ -38,12 +38,12 @@ class CurrentPowerIntfControlleeImpl : public InterfaceControllee, public Curren
     /**
      * Create interface
      */
-    static HaeInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject);
 
     /**
      * Constructor of CurrentPowerIntfControlleeImpl
      */
-    CurrentPowerIntfControlleeImpl(BusAttachment& busAttachment, CurrentPowerIntfControlleeListener& listener, HaeBusObject& haeBusObject);
+    CurrentPowerIntfControlleeImpl(BusAttachment& busAttachment, CurrentPowerIntfControlleeListener& listener, CdmBusObject& cdmBusObject);
 
     /**
      * Destructor of CurrentPowerIntfControlleeImpl

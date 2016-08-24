@@ -89,13 +89,13 @@ LaundryCyclePhaseCommands::~LaundryCyclePhaseCommands()
 void LaundryCyclePhaseCommands::Init()
 {
     if (!m_intfController) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(LAUNDRY_CYCLE_PHASE_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(LAUNDRY_CYCLE_PHASE_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfController = static_cast<LaundryCyclePhaseIntfController*>(haeInterface);
+        m_intfController = static_cast<LaundryCyclePhaseIntfController*>(cdmInterface);
     }
 
     RegisterCommand(&LaundryCyclePhaseCommands::OnCmdGetCyclePhase, "gcp", "get cycle phase");

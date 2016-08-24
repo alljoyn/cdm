@@ -16,8 +16,8 @@
 
 #include <qcc/Util.h>
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/HaeBusObject.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/CdmBusObject.h>
 #include "{interface_name}IntfControlleeListener.h"
 #include "{interface_name}IntfControlleeImpl.h"
 
@@ -27,13 +27,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* {interface_name}IntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject)
+CdmInterface* {interface_name}IntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject)
 {
-    return new {interface_name}IntfControlleeImpl(busAttachment, dynamic_cast<{interface_name}IntfControlleeListener&>(listener), haeBusObject);
+    return new {interface_name}IntfControlleeImpl(busAttachment, dynamic_cast<{interface_name}IntfControlleeListener&>(listener), cdmBusObject);
 }
 
-{interface_name}IntfControlleeImpl::{interface_name}IntfControlleeImpl(BusAttachment& busAttachment, {interface_name}IntfControlleeListener& listener, HaeBusObject& haeBusObject) :
-    InterfaceControllee(haeBusObject),
+{interface_name}IntfControlleeImpl::{interface_name}IntfControlleeImpl(BusAttachment& busAttachment, {interface_name}IntfControlleeListener& listener, CdmBusObject& cdmBusObject) :
+    InterfaceControllee(cdmBusObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener)
 {
@@ -45,7 +45,7 @@ HaeInterface* {interface_name}IntfControlleeImpl::CreateInterface(BusAttachment&
 
 QStatus {interface_name}IntfControlleeImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
     /**
      * TODO: add method handler
      */

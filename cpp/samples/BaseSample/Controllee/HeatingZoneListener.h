@@ -17,8 +17,8 @@
 #ifndef HEATINGZONELISTENER_H_
 #define HEATINGZONELISTENER_H_
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/HeatingZoneIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/HeatingZoneIntfControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/HeatingZoneIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/HeatingZoneIntfControlleeListener.h>
 
 using namespace ajn;
 using namespace services;

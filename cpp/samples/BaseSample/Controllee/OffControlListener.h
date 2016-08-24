@@ -18,8 +18,8 @@
 #define OFFCONTROLLISTENER_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/OffControlIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/OffControlIntfControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/OffControlIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/OffControlIntfControlleeListener.h>
 
 using namespace ajn;
 using namespace services;

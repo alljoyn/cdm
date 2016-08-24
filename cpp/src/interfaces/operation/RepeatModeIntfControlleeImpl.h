@@ -20,15 +20,15 @@
 #include <alljoyn/Status.h>
 #include <alljoyn/BusAttachment.h>
 #include <alljoyn/InterfaceDescription.h>
-#include <alljoyn/hae/interfaces/InterfaceControllee.h>
-#include <alljoyn/hae/interfaces/InterfaceControlleeListener.h>
-#include <alljoyn/hae/interfaces/operation/RepeatModeIntfControllee.h>
+#include <alljoyn/cdm/interfaces/InterfaceControllee.h>
+#include <alljoyn/cdm/interfaces/InterfaceControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/RepeatModeIntfControllee.h>
 
 namespace ajn {
 namespace services {
 
 class RepeatModeIntfControlleeListener;
-class HaeBusObject;
+class CdmBusObject;
 
 /**
  * RepeatMode Interface Controllee implementation class
@@ -38,12 +38,12 @@ class RepeatModeIntfControlleeImpl : public InterfaceControllee, public RepeatMo
     /**
      * Create interface
      */
-    static HaeInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject);
 
     /**
      * Constructor of RepeatModeIntfControlleeImpl
      */
-    RepeatModeIntfControlleeImpl(BusAttachment& busAttachment, RepeatModeIntfControlleeListener& listener, HaeBusObject& haeBusObject);
+    RepeatModeIntfControlleeImpl(BusAttachment& busAttachment, RepeatModeIntfControlleeListener& listener, CdmBusObject& cdmBusObject);
 
     /**
      * Destructor of RepeatModeIntfControlleeImpl

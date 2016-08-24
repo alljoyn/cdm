@@ -18,8 +18,8 @@
 #define CURRENTPOWERLISTENER_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/CurrentPowerIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/CurrentPowerIntfControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/CurrentPowerIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/CurrentPowerIntfControlleeListener.h>
 
 using namespace ajn;
 using namespace services;

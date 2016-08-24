@@ -18,8 +18,8 @@
 #define WINDDIRECTIONLISTENER_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/environment/WindDirectionIntfControllee.h>
-#include <alljoyn/hae/interfaces/environment/WindDirectionIntfControlleeListener.h>
+#include <alljoyn/cdm/interfaces/environment/WindDirectionIntfControllee.h>
+#include <alljoyn/cdm/interfaces/environment/WindDirectionIntfControlleeListener.h>
 
 using namespace ajn;
 using namespace services;

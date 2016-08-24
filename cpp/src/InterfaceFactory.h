@@ -20,15 +20,15 @@
 #include <map>
 #include <qcc/String.h>
 
-#include <alljoyn/hae/interfaces/HaeInterface.h>
-#include <alljoyn/hae/interfaces/HaeInterfaceListener.h>
+#include <alljoyn/cdm/interfaces/CdmInterface.h>
+#include <alljoyn/cdm/interfaces/CdmInterfaceListener.h>
 
 namespace ajn {
 class BusAttachment;
 namespace services {
 
 /**
- * Hae Interface factory class.
+ * Cdm Interface factory class.
  */
 class InterfaceFactory {
   public:
@@ -55,46 +55,46 @@ class InterfaceFactory {
      * @param interface type
      * @return CreateIntfControlleeFptr
      */
-    CreateIntfControlleeFptr GetCreateIntfControlleeFptr(const HaeInterfaceType type);
+    CreateIntfControlleeFptr GetCreateIntfControlleeFptr(const CdmInterfaceType type);
 
     /**
      * Get CreateIntfControllerFptr
      * @param interface type
      * @return CreateIntfControllerFptr
      */
-    CreateIntfControllerFptr GetCreateIntfControllerFptr(const HaeInterfaceType type);
+    CreateIntfControllerFptr GetCreateIntfControllerFptr(const CdmInterfaceType type);
 
     /**
      * Create Interface for controllee
      * @param type
      * @param listener
-     * @param hae bus object
-     * @return HaeInterface
+     * @param cdm bus object
+     * @return CdmInterface
      */
-    HaeInterface* CreateIntfControllee(const HaeInterfaceType type, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject);
+    CdmInterface* CreateIntfControllee(const CdmInterfaceType type, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject);
 
     /**
      * Create Interface for controller
      * @param type
      * @param listener
-     * @param hae proxy object
-     * @return HaeInterface
+     * @param cdm proxy object
+     * @return CdmInterface
      */
-    HaeInterface* CreateIntfController(const HaeInterfaceType type, InterfaceControllerListener& listener, HaeProxyBusObject& haeProxyObject);
+    CdmInterface* CreateIntfController(const CdmInterfaceType type, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
 
     /**
      * Register vendor defined interface for controllee
      * @param interfaceName
      * @param CreateIntfControlleeFptr
      */
-    void RegisterVendorDefinedIntfControllee(const HaeInterfaceType type, CreateIntfControlleeFptr createIntfControllee);
+    void RegisterVendorDefinedIntfControllee(const CdmInterfaceType type, CreateIntfControlleeFptr createIntfControllee);
 
     /**
      * Register vendor defined interface for controller
      * @param interfaceName
      * @param CreateIntfControllerFptr
      */
-    void RegisterVendorDefinedIntfController(const HaeInterfaceType type, CreateIntfControllerFptr createIntfController);
+    void RegisterVendorDefinedIntfController(const CdmInterfaceType type, CreateIntfControllerFptr createIntfController);
 
   private:
     /**
@@ -121,8 +121,8 @@ class InterfaceFactory {
     static InterfaceFactory* s_instance;
 
     BusAttachment* m_busAttachment;
-    std::map<HaeInterfaceType, CreateIntfControllerFptr> m_controllerCreators;
-    std::map<HaeInterfaceType, CreateIntfControlleeFptr> m_controlleeCreators;
+    std::map<CdmInterfaceType, CreateIntfControllerFptr> m_controllerCreators;
+    std::map<CdmInterfaceType, CreateIntfControlleeFptr> m_controlleeCreators;
 };
 
 } //namespace services

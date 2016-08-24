@@ -64,13 +64,13 @@ WaterLevelCommands::~WaterLevelCommands()
 void WaterLevelCommands::Init()
 {
     if (!m_intfControllee) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(WATER_LEVEL_INTERFACE, m_objectPath, m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(WATER_LEVEL_INTERFACE, m_objectPath, m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfControllee = static_cast<WaterLevelIntfControllee*>(haeInterface);
+        m_intfControllee = static_cast<WaterLevelIntfControllee*>(cdmInterface);
 
         RegisterCommand(&WaterLevelCommands::OnCmdGetMaxLevel, "gml", "get max level");
         RegisterCommand(&WaterLevelCommands::OnCmdSetMaxLevel, "sml", "set max level (use 'sml <max level>')");

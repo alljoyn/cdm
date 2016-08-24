@@ -20,15 +20,15 @@
 #include <alljoyn/Status.h>
 #include <alljoyn/BusAttachment.h>
 #include <alljoyn/InterfaceDescription.h>
-#include <alljoyn/hae/interfaces/InterfaceControllee.h>
-#include <alljoyn/hae/interfaces/InterfaceControlleeListener.h>
-#include <alljoyn/hae/interfaces/environment/WindDirectionIntfControllee.h>
+#include <alljoyn/cdm/interfaces/InterfaceControllee.h>
+#include <alljoyn/cdm/interfaces/InterfaceControlleeListener.h>
+#include <alljoyn/cdm/interfaces/environment/WindDirectionIntfControllee.h>
 
 namespace ajn {
 namespace services {
 
 class WindDirectionIntfControlleeListener;
-class HaeBusObject;
+class CdmBusObject;
 
 /**
  * WindDirection interface controllee implementation class
@@ -38,12 +38,12 @@ class WindDirectionIntfControlleeImpl : public InterfaceControllee, public WindD
     /**
      * Create interface
      */
-    static HaeInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject);
 
     /**
      * Constructor of WindDirectionIntfControlleeImpl
      */
-    WindDirectionIntfControlleeImpl(BusAttachment& busAttachment, WindDirectionIntfControlleeListener& listener, HaeBusObject& haeBusObject);
+    WindDirectionIntfControlleeImpl(BusAttachment& busAttachment, WindDirectionIntfControlleeListener& listener, CdmBusObject& cdmBusObject);
 
     /**
      * Destructor of WindDirectionIntfControlleeImpl

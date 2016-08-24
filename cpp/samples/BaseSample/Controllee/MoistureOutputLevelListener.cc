@@ -68,13 +68,13 @@ MoistureOutputLevelCommands::~MoistureOutputLevelCommands()
 void MoistureOutputLevelCommands::Init()
 {
     if (!m_intfControllee) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(MOISTURE_OUTPUT_LEVEL_INTERFACE, m_objectPath, m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(MOISTURE_OUTPUT_LEVEL_INTERFACE, m_objectPath, m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfControllee = static_cast<MoistureOutputLevelIntfControllee*>(haeInterface);
+        m_intfControllee = static_cast<MoistureOutputLevelIntfControllee*>(cdmInterface);
 
         RegisterCommand(&MoistureOutputLevelCommands::OnCmdGetMoistureOutputLevel, "gmol", "get moisture output level");
         RegisterCommand(&MoistureOutputLevelCommands::OnCmdSetMoistureOutputLevel, "smol", "set moisture output level (use 'smol <value>'");

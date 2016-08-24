@@ -14,10 +14,10 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include "HaeTest.h"
+#include "CdmTest.h"
 
-#include <alljoyn/hae/interfaces/operation/AudioVolumeIntfController.h>
-#include <alljoyn/hae/interfaces/operation/AudioVolumeIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/AudioVolumeIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/AudioVolumeIntfControllerListener.h>
 
 class AudioVolumeListener : public AudioVolumeIntfControllerListener
 {
@@ -86,14 +86,14 @@ public:
     }
 };
 
-TEST_F(HAETest, HAE_v1_AudioVolume)
+TEST_F(CDMTest, CDM_v1_AudioVolume)
 {
     WaitForControllee(AUDIO_VOLUME_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
 
         AudioVolumeListener listener;
-        HaeInterface* interface = m_controller->CreateInterface(AUDIO_VOLUME_INTERFACE, m_interfaces[i].busName,
+        CdmInterface* interface = m_controller->CreateInterface(AUDIO_VOLUME_INTERFACE, m_interfaces[i].busName,
                                                                 qcc::String(m_interfaces[i].objectPath.c_str()), m_interfaces[i].sessionId, listener);
         AudioVolumeIntfController* controller = static_cast<AudioVolumeIntfController*>(interface);
         QStatus status = ER_FAIL;

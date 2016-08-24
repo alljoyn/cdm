@@ -16,9 +16,9 @@
 
 #include <qcc/Util.h>
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/interfaces/operation/ClimateControlModeIntfControlleeListener.h>
-#include <alljoyn/hae/HaeBusObject.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/interfaces/operation/ClimateControlModeIntfControlleeListener.h>
+#include <alljoyn/cdm/CdmBusObject.h>
 #include "ClimateControlModeIntfControlleeImpl.h"
 
 using namespace qcc;
@@ -27,13 +27,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* ClimateControlModeIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject)
+CdmInterface* ClimateControlModeIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject)
 {
-    return new ClimateControlModeIntfControlleeImpl(busAttachment, static_cast<ClimateControlModeIntfControlleeListener&>(listener), haeBusObject);
+    return new ClimateControlModeIntfControlleeImpl(busAttachment, static_cast<ClimateControlModeIntfControlleeListener&>(listener), cdmBusObject);
 }
 
-ClimateControlModeIntfControlleeImpl::ClimateControlModeIntfControlleeImpl(BusAttachment& busAttachment, ClimateControlModeIntfControlleeListener& listener, HaeBusObject& haeBusObject) :
-    InterfaceControllee(haeBusObject),
+ClimateControlModeIntfControlleeImpl::ClimateControlModeIntfControlleeImpl(BusAttachment& busAttachment, ClimateControlModeIntfControlleeListener& listener, CdmBusObject& cdmBusObject) :
+    InterfaceControllee(cdmBusObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener),
     m_Mode(0),
@@ -48,7 +48,7 @@ ClimateControlModeIntfControlleeImpl::~ClimateControlModeIntfControlleeImpl()
 
 QStatus ClimateControlModeIntfControlleeImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
 
     return status;
 }

@@ -18,8 +18,8 @@
 #define CURRENTAIRQUALITYLISTENER_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/environment/CurrentAirQualityIntfControllee.h>
-#include <alljoyn/hae/interfaces/environment/CurrentAirQualityIntfControlleeListener.h>
+#include <alljoyn/cdm/interfaces/environment/CurrentAirQualityIntfControllee.h>
+#include <alljoyn/cdm/interfaces/environment/CurrentAirQualityIntfControlleeListener.h>
 
 using namespace ajn;
 using namespace services;

@@ -72,13 +72,13 @@ RobotCleaningCyclePhaseCommands::~RobotCleaningCyclePhaseCommands()
 void RobotCleaningCyclePhaseCommands::Init()
 {
     if (!m_intfControllee) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(ROBOT_CLEANING_CYCLE_PHASE_INTERFACE, m_objectPath, m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(ROBOT_CLEANING_CYCLE_PHASE_INTERFACE, m_objectPath, m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfControllee = static_cast<RobotCleaningCyclePhaseIntfControllee*>(haeInterface);
+        m_intfControllee = static_cast<RobotCleaningCyclePhaseIntfControllee*>(cdmInterface);
 
         RegisterCommand(&RobotCleaningCyclePhaseCommands::OnCmdGetCyclePhase, "gcp", "get cycle phase");
         RegisterCommand(&RobotCleaningCyclePhaseCommands::OnCmdSetCyclePhase, "scp", "set cycle phase (use 'scp <phase>'");

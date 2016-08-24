@@ -18,8 +18,8 @@
 #define PLUGINUNITSCOMMANDS_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/PlugInUnitsIntfController.h>
-#include <alljoyn/hae/interfaces/operation/PlugInUnitsIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/PlugInUnitsIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/PlugInUnitsIntfControllerListener.h>
 
 class ControllerSample;
 

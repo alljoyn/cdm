@@ -15,7 +15,7 @@
  ******************************************************************************/
 
 #include <cstdlib>
-#include <alljoyn/hae/interfaces/HaeInterfaceTypes.h>
+#include <alljoyn/cdm/interfaces/CdmInterfaceTypes.h>
 #include "TargetTemperatureCommands.h"
 #include "ControllerSample.h"
 
@@ -109,13 +109,13 @@ TargetTemperatureCommands::~TargetTemperatureCommands()
 void TargetTemperatureCommands::Init()
 {
     if (!m_intfController) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(TARGET_TEMPERATURE_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(TARGET_TEMPERATURE_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfController = static_cast<TargetTemperatureIntfController*>(haeInterface);
+        m_intfController = static_cast<TargetTemperatureIntfController*>(cdmInterface);
     }
 
     RegisterCommand(&TargetTemperatureCommands::OnCmdGetTargetValue, "gettv", "Get TargetValue");

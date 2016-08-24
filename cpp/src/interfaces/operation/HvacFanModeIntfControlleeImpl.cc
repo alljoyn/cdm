@@ -16,9 +16,9 @@
 
 #include <qcc/Util.h>
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/interfaces/operation/HvacFanModeIntfControlleeListener.h>
-#include <alljoyn/hae/HaeBusObject.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/interfaces/operation/HvacFanModeIntfControlleeListener.h>
+#include <alljoyn/cdm/CdmBusObject.h>
 #include "HvacFanModeIntfControlleeImpl.h"
 
 using namespace qcc;
@@ -27,13 +27,13 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-HaeInterface* HvacFanModeIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject)
+CdmInterface* HvacFanModeIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject)
 {
-    return new HvacFanModeIntfControlleeImpl(busAttachment, static_cast<HvacFanModeIntfControlleeListener&>(listener), haeBusObject);
+    return new HvacFanModeIntfControlleeImpl(busAttachment, static_cast<HvacFanModeIntfControlleeListener&>(listener), cdmBusObject);
 }
 
-HvacFanModeIntfControlleeImpl::HvacFanModeIntfControlleeImpl(BusAttachment& busAttachment, HvacFanModeIntfControlleeListener& listener, HaeBusObject& haeBusObject) :
-    InterfaceControllee(haeBusObject),
+HvacFanModeIntfControlleeImpl::HvacFanModeIntfControlleeImpl(BusAttachment& busAttachment, HvacFanModeIntfControlleeListener& listener, CdmBusObject& cdmBusObject) :
+    InterfaceControllee(cdmBusObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener),
     m_Mode(0)
@@ -47,7 +47,7 @@ HvacFanModeIntfControlleeImpl::~HvacFanModeIntfControlleeImpl()
 
 QStatus HvacFanModeIntfControlleeImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
 
     return status;
 }

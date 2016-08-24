@@ -14,10 +14,10 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include "HaeTest.h"
+#include "CdmTest.h"
 
-#include <alljoyn/hae/interfaces/operation/ResourceSavingIntfController.h>
-#include <alljoyn/hae/interfaces/operation/ResourceSavingIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/ResourceSavingIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/ResourceSavingIntfControllerListener.h>
 
 class ResourceSavingListener : public ResourceSavingIntfControllerListener
 {
@@ -56,14 +56,14 @@ public:
     }
 };
 
-TEST_F(HAETest, HAE_v1_ResourceSaving)
+TEST_F(CDMTest, CDM_v1_ResourceSaving)
 {
     WaitForControllee(RESOURCE_SAVING_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
 
         ResourceSavingListener listener;
-        HaeInterface* interface = m_controller->CreateInterface(RESOURCE_SAVING_INTERFACE, m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()),
+        CdmInterface* interface = m_controller->CreateInterface(RESOURCE_SAVING_INTERFACE, m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()),
                                                                 m_interfaces[i].sessionId, listener);
         ResourceSavingIntfController* controller = static_cast<ResourceSavingIntfController*>(interface);
         QStatus status = ER_FAIL;

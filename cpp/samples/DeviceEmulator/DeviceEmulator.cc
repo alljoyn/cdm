@@ -17,7 +17,7 @@
 #include <alljoyn/Init.h>
 #include <alljoyn/version.h>
 #include <alljoyn/BusAttachment.h>
-#include <alljoyn/hae/DeviceTypeDescription.h>
+#include <alljoyn/cdm/DeviceTypeDescription.h>
 #include "DeviceEmulator.h"
 #include "../BaseSample/Controllee/CommandsFactory.h"
 #include "../BaseSample/Controllee/AirRecirculationModeListener.h"
@@ -162,7 +162,7 @@ void DeviceEmulator::Startup()
 #endif
     printf("AllJoyn Library version: %s\n", ajn::GetVersion());
     printf("AllJoyn Library build info: %s\n", ajn::GetBuildInfo());
-    QCC_SetLogLevels("HAE_MODULE_LOG_NAME=15;");
+    QCC_SetLogLevels("CDM_MODULE_LOG_NAME=15;");
 
     m_bus = new BusAttachment("DeviceEmulator", true);
     if (!m_bus) {

@@ -18,8 +18,8 @@
 #define ONCONTROLCOMMANDS_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/OnControlIntfController.h>
-#include <alljoyn/hae/interfaces/operation/OnControlIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/OnControlIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/OnControlIntfControllerListener.h>
 
 class ControllerSample;
 

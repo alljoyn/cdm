@@ -14,10 +14,10 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include "HaeTest.h"
+#include "CdmTest.h"
 
-#include <alljoyn/hae/interfaces/operation/AudioVideoInputIntfController.h>
-#include <alljoyn/hae/interfaces/operation/AudioVideoInputIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/AudioVideoInputIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/AudioVideoInputIntfControllerListener.h>
 
 class AudioVideoInputListener : public AudioVideoInputIntfControllerListener
 {
@@ -79,14 +79,14 @@ uint16_t findInvalidInputSourceId(const AudioVideoInputInterface::InputSources& 
     return (uint16_t) -1;
 }
 
-TEST_F(HAETest, HAE_v1_AudioVideoInput)
+TEST_F(CDMTest, CDM_v1_AudioVideoInput)
 {
     WaitForControllee(AUDIO_VIDEO_INPUT_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
 
         AudioVideoInputListener listener;
-        HaeInterface* interface = m_controller->CreateInterface(AUDIO_VIDEO_INPUT_INTERFACE, m_interfaces[i].busName,
+        CdmInterface* interface = m_controller->CreateInterface(AUDIO_VIDEO_INPUT_INTERFACE, m_interfaces[i].busName,
                                                                 qcc::String(m_interfaces[i].objectPath.c_str()), m_interfaces[i].sessionId, listener);
         AudioVideoInputIntfController* controller = static_cast<AudioVideoInputIntfController*>(interface);
         QStatus status = ER_FAIL;

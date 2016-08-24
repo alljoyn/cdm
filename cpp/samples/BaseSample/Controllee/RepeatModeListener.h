@@ -9,8 +9,8 @@
 #define REPEATMODELISTENER_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/RepeatModeIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/RepeatModeIntfControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/RepeatModeIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/RepeatModeIntfControlleeListener.h>
 
 namespace ajn {
 namespace services {

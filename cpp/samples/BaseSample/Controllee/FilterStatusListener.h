@@ -18,8 +18,8 @@
 #define FILTERSTATUSLISTENER_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/FilterStatusIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/FilterStatusIntfControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/FilterStatusIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/FilterStatusIntfControlleeListener.h>
 
 using namespace ajn;
 using namespace services;

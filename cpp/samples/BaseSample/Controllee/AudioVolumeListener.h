@@ -18,8 +18,8 @@
 #define AUDIOVOLUMELISTENER_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/AudioVolumeIntfControllee.h>
-#include <alljoyn/hae/interfaces/operation/AudioVolumeIntfControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/AudioVolumeIntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/AudioVolumeIntfControlleeListener.h>
 
 using namespace ajn;
 using namespace services;

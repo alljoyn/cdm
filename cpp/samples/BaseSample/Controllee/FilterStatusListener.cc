@@ -80,13 +80,13 @@ FilterStatusCommands::~FilterStatusCommands()
 void FilterStatusCommands::Init()
 {
     if (!m_intfControllee) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(FILTER_STATUS_INTERFACE, m_objectPath, m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(FILTER_STATUS_INTERFACE, m_objectPath, m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfControllee = static_cast<FilterStatusIntfControllee*>(haeInterface);
+        m_intfControllee = static_cast<FilterStatusIntfControllee*>(cdmInterface);
 
         RegisterCommand(&FilterStatusCommands::OnCmdGetExpectedLifeInDays, "gelid", "get expected life in days");
         RegisterCommand(&FilterStatusCommands::OnCmdSetExpectedLifeInDays, "selid", "set expected life in days (use 'selid <value>'");
@@ -110,7 +110,7 @@ void FilterStatusCommands::InitializeProperties()
         uint16_t expectedLifeInDays = 30;
         bool isCleanable = true;
         uint8_t orderPercentage = 0;
-        qcc::String manufacturer = "HAE";
+        qcc::String manufacturer = "CDM";
         uint8_t lifeRemaining = 100;
 
         m_intfControllee->SetExpectedLifeInDays(expectedLifeInDays);

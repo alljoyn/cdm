@@ -99,13 +99,13 @@ DishWashingCyclePhaseCommands::~DishWashingCyclePhaseCommands()
 void DishWashingCyclePhaseCommands::Init()
 {
     if (!m_intfControllee) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(DISH_WASHING_CYCLE_PHASE_INTERFACE, m_objectPath, m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(DISH_WASHING_CYCLE_PHASE_INTERFACE, m_objectPath, m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfControllee = static_cast<DishWashingCyclePhaseIntfControllee*>(haeInterface);
+        m_intfControllee = static_cast<DishWashingCyclePhaseIntfControllee*>(cdmInterface);
 
         RegisterCommand(&DishWashingCyclePhaseCommands::OnCmdGetCyclePhase, "gcp", "get cycle phase");
         RegisterCommand(&DishWashingCyclePhaseCommands::OnCmdSetCyclePhase, "scp", "set cycle phase (use 'sic <cycle phase>')");

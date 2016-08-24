@@ -18,8 +18,8 @@
 #define CURRENTTEMPERATURECOMMANDS_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/environment/CurrentTemperatureIntfController.h>
-#include <alljoyn/hae/interfaces/environment/CurrentTemperatureIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/environment/CurrentTemperatureIntfController.h>
+#include <alljoyn/cdm/interfaces/environment/CurrentTemperatureIntfControllerListener.h>
 
 class ControllerSample;
 

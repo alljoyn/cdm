@@ -20,15 +20,15 @@
 #include <alljoyn/Status.h>
 #include <alljoyn/BusAttachment.h>
 #include <alljoyn/InterfaceDescription.h>
-#include <alljoyn/hae/interfaces/InterfaceControllee.h>
-#include <alljoyn/hae/interfaces/InterfaceControlleeListener.h>
-#include <alljoyn/hae/interfaces/operation/ClosedStatusIntfControllee.h>
+#include <alljoyn/cdm/interfaces/InterfaceControllee.h>
+#include <alljoyn/cdm/interfaces/InterfaceControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/ClosedStatusIntfControllee.h>
 
 namespace ajn {
 namespace services {
 
 class ClosedStatusIntfControlleeListener;
-class HaeBusObject;
+class CdmBusObject;
 
 /**
  * ClosedStatus Interface Controllee implementation class
@@ -38,12 +38,12 @@ class ClosedStatusIntfControlleeImpl : public InterfaceControllee, public Closed
     /**
      * Create interface
      */
-    static HaeInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject);
 
     /**
      * Constructor of ClosedStatusIntfControlleeImpl
      */
-    ClosedStatusIntfControlleeImpl(BusAttachment& busAttachment, ClosedStatusIntfControlleeListener& listener, HaeBusObject& haeBusObject);
+    ClosedStatusIntfControlleeImpl(BusAttachment& busAttachment, ClosedStatusIntfControlleeListener& listener, CdmBusObject& cdmBusObject);
 
     /**
      * Destructor of ClosedStatusIntfControlleeImpl

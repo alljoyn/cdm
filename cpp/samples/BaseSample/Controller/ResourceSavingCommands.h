@@ -18,8 +18,8 @@
 #define RESOURCESAVINGCOMMANDS_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/ResourceSavingIntfController.h>
-#include <alljoyn/hae/interfaces/operation/ResourceSavingIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/ResourceSavingIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/ResourceSavingIntfControllerListener.h>
 
 class ControllerSample;
 

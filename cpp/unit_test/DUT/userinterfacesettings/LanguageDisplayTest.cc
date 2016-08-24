@@ -14,11 +14,11 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include "HaeTest.h"
+#include "CdmTest.h"
 #include <algorithm>
 
-#include <alljoyn/hae/interfaces/userinterfacesettings/LanguageDisplayIntfController.h>
-#include <alljoyn/hae/interfaces/userinterfacesettings/LanguageDisplayIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/userinterfacesettings/LanguageDisplayIntfController.h>
+#include <alljoyn/cdm/interfaces/userinterfacesettings/LanguageDisplayIntfControllerListener.h>
 
 class LanguageDisplayListener : public LanguageDisplayIntfControllerListener
 {
@@ -84,14 +84,14 @@ public:
     // }
 };
 
-TEST_F(HAETest, HAE_v1_LanguageDisplay)
+TEST_F(CDMTest, CDM_v1_LanguageDisplay)
 {
     WaitForControllee(LANGUAGE_DISPLAY_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
 
         LanguageDisplayListener listener;
-        HaeInterface* interface = m_controller->CreateInterface(LANGUAGE_DISPLAY_INTERFACE, m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()),
+        CdmInterface* interface = m_controller->CreateInterface(LANGUAGE_DISPLAY_INTERFACE, m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()),
                                                                 m_interfaces[i].sessionId, listener);
         LanguageDisplayIntfController* controller = static_cast<LanguageDisplayIntfController*>(interface);
         QStatus status = ER_FAIL;

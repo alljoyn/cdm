@@ -18,8 +18,8 @@
 #define LANGUAGEDISPLAYCOMMANDS_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/userinterfacesettings/LanguageDisplayIntfController.h>
-#include <alljoyn/hae/interfaces/userinterfacesettings/LanguageDisplayIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/userinterfacesettings/LanguageDisplayIntfController.h>
+#include <alljoyn/cdm/interfaces/userinterfacesettings/LanguageDisplayIntfControllerListener.h>
 
 class ControllerSample;
 

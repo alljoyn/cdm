@@ -18,8 +18,8 @@
 #define TIMEDISPLAYLISTENER_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/userinterfacesettings/TimeDisplayIntfControllee.h>
-#include <alljoyn/hae/interfaces/userinterfacesettings/TimeDisplayIntfControlleeListener.h>
+#include <alljoyn/cdm/interfaces/userinterfacesettings/TimeDisplayIntfControllee.h>
+#include <alljoyn/cdm/interfaces/userinterfacesettings/TimeDisplayIntfControlleeListener.h>
 
 using namespace ajn;
 using namespace services;

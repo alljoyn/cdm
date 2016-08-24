@@ -16,9 +16,9 @@
 
 #include <qcc/Util.h>
 
-#include <alljoyn/hae/LogModule.h>
-#include <alljoyn/hae/interfaces/environment/CurrentTemperatureIntfControlleeListener.h>
-#include <alljoyn/hae/HaeBusObject.h>
+#include <alljoyn/cdm/LogModule.h>
+#include <alljoyn/cdm/interfaces/environment/CurrentTemperatureIntfControlleeListener.h>
+#include <alljoyn/cdm/CdmBusObject.h>
 #include "CurrentTemperatureIntfControlleeImpl.h"
 
 using namespace qcc;
@@ -28,14 +28,14 @@ namespace ajn {
 namespace services {
 
 
-HaeInterface* CurrentTemperatureIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject)
+CdmInterface* CurrentTemperatureIntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject)
 {
-    return new CurrentTemperatureIntfControlleeImpl(busAttachment, static_cast<CurrentTemperatureIntfControlleeListener&>(listener), haeBusObject);
+    return new CurrentTemperatureIntfControlleeImpl(busAttachment, static_cast<CurrentTemperatureIntfControlleeListener&>(listener), cdmBusObject);
 }
 
 
-CurrentTemperatureIntfControlleeImpl::CurrentTemperatureIntfControlleeImpl(BusAttachment& busAttachment, CurrentTemperatureIntfControlleeListener& listener, HaeBusObject& haeBusObject) :
-    InterfaceControllee(haeBusObject),
+CurrentTemperatureIntfControlleeImpl::CurrentTemperatureIntfControlleeImpl(BusAttachment& busAttachment, CurrentTemperatureIntfControlleeListener& listener, CdmBusObject& cdmBusObject) :
+    InterfaceControllee(cdmBusObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener),
     m_CurrentValue(0.0),
@@ -50,7 +50,7 @@ CurrentTemperatureIntfControlleeImpl::~CurrentTemperatureIntfControlleeImpl()
 
 QStatus CurrentTemperatureIntfControlleeImpl::Init()
 {
-    QStatus status = HaeInterface::Init();
+    QStatus status = CdmInterface::Init();
 
     return status;
 }

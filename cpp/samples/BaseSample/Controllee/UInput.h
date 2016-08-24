@@ -21,7 +21,7 @@
 #include <linux/uinput.h>
 #include <inttypes.h>
 
-#include <alljoyn/hae/interfaces/input/HidInterface.h>
+#include <alljoyn/cdm/interfaces/input/HidInterface.h>
 
 using namespace ajn;
 using namespace services;

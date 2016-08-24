@@ -18,8 +18,8 @@
 #define DISHWASHINGCYCLEPHASECOMMANDS_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/operation/DishWashingCyclePhaseIntfController.h>
-#include <alljoyn/hae/interfaces/operation/DishWashingCyclePhaseIntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/DishWashingCyclePhaseIntfController.h>
+#include <alljoyn/cdm/interfaces/operation/DishWashingCyclePhaseIntfControllerListener.h>
 
 class ControllerSample;
 

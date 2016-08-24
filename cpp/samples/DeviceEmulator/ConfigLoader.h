@@ -18,16 +18,16 @@
 
 #include <string>
 #include <vector>
-#include <alljoyn/hae/interfaces/HaeInterfaceTypes.h>
+#include <alljoyn/cdm/interfaces/CdmInterfaceTypes.h>
 
 using namespace std;
 
 namespace ajn {
 namespace services {
 
-typedef vector<pair<HaeInterfaceType, string> > InterfaceList; // <interface type, object path>
+typedef vector<pair<CdmInterfaceType, string> > InterfaceList; // <interface type, object path>
 
-class HaeAboutData;
+class CdmAboutData;
 
 class ConfigLoader
 {
@@ -36,7 +36,7 @@ class ConfigLoader
 
   public:
     ConfigLoader(const string& path) : m_path(path) {}
-    bool Load(HaeAboutData& data, InterfaceList& list);
+    bool Load(CdmAboutData& data, InterfaceList& list);
 
     static const char* DEVICE_EMULATOR;
     static const char* ABOUT_DATA;

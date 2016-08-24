@@ -18,8 +18,8 @@
 #define HIDLISTENER_H_
 
 #include "InterfaceCommands.h"
-#include <alljoyn/hae/interfaces/input/HidIntfControllee.h>
-#include <alljoyn/hae/interfaces/input/HidIntfControlleeListener.h>
+#include <alljoyn/cdm/interfaces/input/HidIntfControllee.h>
+#include <alljoyn/cdm/interfaces/input/HidIntfControlleeListener.h>
 
 using namespace ajn;
 using namespace services;

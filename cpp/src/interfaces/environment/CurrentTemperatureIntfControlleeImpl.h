@@ -20,15 +20,15 @@
 #include <alljoyn/Status.h>
 #include <alljoyn/BusAttachment.h>
 #include <alljoyn/InterfaceDescription.h>
-#include <alljoyn/hae/interfaces/InterfaceControllee.h>
-#include <alljoyn/hae/interfaces/InterfaceControlleeListener.h>
-#include <alljoyn/hae/interfaces/environment/CurrentTemperatureIntfControllee.h>
+#include <alljoyn/cdm/interfaces/InterfaceControllee.h>
+#include <alljoyn/cdm/interfaces/InterfaceControlleeListener.h>
+#include <alljoyn/cdm/interfaces/environment/CurrentTemperatureIntfControllee.h>
 
 namespace ajn {
 namespace services {
 
 class CurrentTemperatureIntfControlleeListener;
-class HaeBusObject;
+class CdmBusObject;
 
 /**
  * CurrentTemperature interface controllee implementation class
@@ -38,12 +38,12 @@ class CurrentTemperatureIntfControlleeImpl : public InterfaceControllee, public 
     /**
      * Create interface
      */
-    static HaeInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, HaeBusObject& haeBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject);
 
     /**
      * Constructor of CurrentTemperatureIntfControlleeImpl
      */
-    CurrentTemperatureIntfControlleeImpl(BusAttachment& busAttachment, CurrentTemperatureIntfControlleeListener& listener, HaeBusObject& haeBusObject);
+    CurrentTemperatureIntfControlleeImpl(BusAttachment& busAttachment, CurrentTemperatureIntfControlleeListener& listener, CdmBusObject& cdmBusObject);
 
     /**
      * Destructor of CurrentTemperatureIntfControlleeImpl

@@ -76,12 +76,12 @@ HidCommands::~HidCommands()
 void HidCommands::Init()
 {
     if (!m_intfControllee) {
-        HaeInterface* haeInterface = m_sample->CreateInterface(HID_INTERFACE, m_objectPath, m_listener);
-        if (!haeInterface) {
+        CdmInterface* cdmInterface = m_sample->CreateInterface(HID_INTERFACE, m_objectPath, m_listener);
+        if (!cdmInterface) {
             cout << "Interface creation failed." << endl;
             return;
         }
-        m_intfControllee = static_cast<HidIntfControllee*>(haeInterface);
+        m_intfControllee = static_cast<HidIntfControllee*>(cdmInterface);
 
         RegisterCommand(&HidCommands::OnCmdGetSupportedEvents, "gse", "get supported events");
     } else {

@@ -22,8 +22,8 @@
 #include <alljoyn/SessionPortListener.h>
 #include <alljoyn/AboutObj.h>
 #include <alljoyn/AboutObjectDescription.h>
-#include <alljoyn/hae/HaeControllee.h>
-#include <alljoyn/hae/HaeAboutData.h>
+#include <alljoyn/cdm/CdmControllee.h>
+#include <alljoyn/cdm/CdmAboutData.h>
 #include "BaseSample.h"
 
 class Commands;
@@ -52,12 +52,12 @@ class AboutSessionListener : public SessionPortListener {
 class ControlleeSample : public BaseSample
 {
   public:
-    ControlleeSample(BusAttachment* bus, HaeAboutData* aboutData);
+    ControlleeSample(BusAttachment* bus, CdmAboutData* aboutData);
     virtual ~ControlleeSample();
 
-    HaeAboutData* GetAboutData() { return m_aboutData; }
-    HaeControllee* GetControllee() { return m_controllee; }
-    HaeInterface* CreateInterface(const HaeInterfaceType type, const qcc::String& objectPath, InterfaceControlleeListener& listener);
+    CdmAboutData* GetAboutData() { return m_aboutData; }
+    CdmControllee* GetControllee() { return m_controllee; }
+    CdmInterface* CreateInterface(const CdmInterfaceType type, const qcc::String& objectPath, InterfaceControlleeListener& listener);
 
   protected:
     virtual void InitSample();
@@ -65,7 +65,7 @@ class ControlleeSample : public BaseSample
     virtual void SetInitialProperty() = 0;
 
     BusAttachment* m_bus;
-    HaeAboutData* m_aboutData;
+    CdmAboutData* m_aboutData;
     AboutObj* m_aboutObj;
     AboutSessionListener* m_aboutSessionListener;
 
@@ -74,7 +74,7 @@ class ControlleeSample : public BaseSample
     QStatus AnnounceAboutObj();
     void UnannounceAboutObj();
 
-    HaeControllee* m_controllee;
+    CdmControllee* m_controllee;
     Commands* m_rootCommands;
 };
 
