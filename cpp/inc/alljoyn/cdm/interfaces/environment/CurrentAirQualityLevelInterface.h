@@ -58,7 +58,7 @@ class CurrentAirQualityLevelInterface : public CdmInterface {
     virtual const uint16_t GetInterfaceVersion() const { return s_interfaceVersion; }
 
     enum {
-        CONTAMINANT_TYPE_CH20 = 0,
+        CONTAMINANT_TYPE_CH2O = 0,
         CONTAMINANT_TYPE_CO2 = 1,
         CONTAMINANT_TYPE_CO = 2,
         CONTAMINANT_TYPE_PM2_5 = 3,

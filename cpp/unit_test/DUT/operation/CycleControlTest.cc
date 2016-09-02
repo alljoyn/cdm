@@ -92,11 +92,6 @@ public:
         }
         m_event.SetEvent();
     }
-    virtual void OnEndOfCycle( const qcc::String& objectPath )
-    {
-        cout << "EndOfCycle" << endl;
-        //m_eventSignal.SetEvent();
-    }
     void GenerateUsupportedCommandsList()
     {
         CycleControlInterface::CycleControlOperationalCommand command = CycleControlInterface::CycleControlOperationalCommand::OPERATIONAL_COMMAND_START;

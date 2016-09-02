@@ -59,14 +59,14 @@ QStatus OnOffStatusIntfControllerImpl::Init()
     return status;
 }
 
-QStatus OnOffStatusIntfControllerImpl::GetOnOff(void* context)
+QStatus OnOffStatusIntfControllerImpl::GetIsOn(void* context)
 {
     QStatus status = ER_OK;
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_OnOff.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&OnOffStatusIntfControllerImpl::GetOnOffPropertyCB, context);
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_IsOn.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&OnOffStatusIntfControllerImpl::GetIsOnPropertyCB, context);
     return status;
 }
 
-void OnOffStatusIntfControllerImpl::GetOnOffPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
+void OnOffStatusIntfControllerImpl::GetIsOnPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
     if (!obj) {
         return;
@@ -74,7 +74,7 @@ void OnOffStatusIntfControllerImpl::GetOnOffPropertyCB(QStatus status, ProxyBusO
 
     bool val;
     value.Get("b", &val);
-    m_interfaceListener.OnResponseGetOnOff(status, obj->GetPath(), val, context);
+    m_interfaceListener.OnResponseGetIsOn(status, obj->GetPath(), val, context);
 }
 
 void OnOffStatusIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
@@ -89,10 +89,10 @@ void OnOffStatusIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const
         entries[i].Get("{sv}", &propName, &propValue);
         String propNameStr(propName);
 
-        if (!s_prop_OnOff.compare(propNameStr)) {
+        if (!s_prop_IsOn.compare(propNameStr)) {
             if (propValue->typeId == ALLJOYN_BOOLEAN) {
                 bool value = propValue->v_bool;
-                m_interfaceListener.OnOnOffChanged(obj.GetPath(), value);
+                m_interfaceListener.OnIsOnChanged(obj.GetPath(), value);
             }
         }
     }

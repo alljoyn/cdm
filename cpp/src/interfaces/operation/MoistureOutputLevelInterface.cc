@@ -22,6 +22,7 @@ namespace services {
 
 const uint16_t MoistureOutputLevelInterface::s_interfaceVersion = 1;
 
+// Below none secure xml is only for test
 const qcc::String MoistureOutputLevelInterface::s_xml =
 "<node xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='http://www.allseenalliance.org/schemas/introspect.xsd'>"
 "    <interface name='org.alljoyn.SmartSpaces.Operation.MoistureOutputLevel'>"
@@ -48,7 +49,8 @@ const qcc::String MoistureOutputLevelInterface::s_xml =
 "            <annotation name='org.freedesktop.DBus.Property.EmitsChangedSignal' value='true'/>"
 "        </property>"
 "    </interface>"
-"</node>";
+"</node>"
+;
 
 const qcc::String MoistureOutputLevelInterface::s_prop_Version = "Version";
 const qcc::String MoistureOutputLevelInterface::s_prop_MoistureOutputLevel = "MoistureOutputLevel";

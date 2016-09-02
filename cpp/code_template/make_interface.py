@@ -43,7 +43,7 @@ interfaceTypeMap = {
     'HeatingZone' :            'HEATING_ZONE_INTERFACE',
     'HvacFanMode' :            'HVAC_FAN_MODE_INTERFACE',
     'LaundryCyclePhase' :      'LAUNDRY_CYCLE_PHASE_INTERFACE',
-    'MoistureOutput' :         'MOISTURE_OUTPUT_LEVEL_INTERFACE',
+    'MoistureOutputLevel' :    'MOISTURE_OUTPUT_LEVEL_INTERFACE',
     'OffControl' :             'OFF_CONTROL_INTERFACE',
     'OnControl' :              'ON_CONTROL_INTERFACE',
     'OnOffStatus' :            'ON_OFF_STATUS_INTERFACE',
@@ -177,7 +177,7 @@ def main():
         category='VendorDefined'
     else:
         template_folder='./interface_template/'
-        inc_folder = "../inc/alljoyn/hae/interfaces/" + args.category.lower() + "/"
+        inc_folder = "../inc/alljoyn/cdm/interfaces/" + args.category.lower() + "/"
         src_folder = '../src/interfaces/' + args.category.lower() + '/'
         category = args.category
 

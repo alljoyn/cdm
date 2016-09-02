@@ -87,7 +87,6 @@ class CycleControlInterface : public CdmInterface {
     static const qcc::String s_prop_SupportedOperationalCommands;
     static const qcc::String s_prop_SupportedOperationalStates;
     static const qcc::String s_method_ExecuteCommand;
-    static const qcc::String s_signal_EndOfCycle;
   private:
     static const qcc::String s_xml;
     static const uint16_t s_interfaceVersion;

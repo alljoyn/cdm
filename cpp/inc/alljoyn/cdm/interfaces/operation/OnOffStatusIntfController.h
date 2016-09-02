@@ -40,11 +40,11 @@ class OnOffStatusIntfController : public OnOffStatusInterface {
     virtual ~OnOffStatusIntfController() {}
 
     /**
-     * Get OnOff
+     * Get IsOn
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus GetOnOff(void* context = NULL) = 0;
+    virtual QStatus GetIsOn(void* context = NULL) = 0;
 
 };
 

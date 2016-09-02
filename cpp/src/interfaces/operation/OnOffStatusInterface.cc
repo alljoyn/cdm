@@ -32,7 +32,7 @@ const qcc::String OnOffStatusInterface::s_xml =
 "            <annotation name='org.alljoyn.Bus.DocString.En' value='The interface version.'/>"
 "            <annotation name='org.freedesktop.DBus.Property.EmitsChangedSignal' value='const'/>"
 "        </property>"
-"        <property name='OnOff' type='b' access='read'>"
+"        <property name='IsOn' type='b' access='read'>"
 "            <annotation name='org.alljoyn.Bus.DocString.En' value='Current on/off state of the appliance. If true, the device is on state.'/>"
 "            <annotation name='org.freedesktop.DBus.Property.EmitsChangedSignal' value='true'/>"
 "        </property>"
@@ -41,7 +41,7 @@ const qcc::String OnOffStatusInterface::s_xml =
 ;
 
 const qcc::String OnOffStatusInterface::s_prop_Version = "Version";
-const qcc::String OnOffStatusInterface::s_prop_OnOff = "OnOff";
+const qcc::String OnOffStatusInterface::s_prop_IsOn = "IsOn";
 
 
 } //namespace services

@@ -90,12 +90,6 @@ class CycleControlIntfControllerListener : public InterfaceControllerListener {
      */
     virtual void OnExecuteCommandRespose(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage) {}
 
-    /**
-     * Handler for EndOfCycle Signal
-     * @param[in] objectPath the object path
-     */
-    virtual void OnEndOfCycle( const qcc::String& objectPath ) {}
-
 };
 
 } //namespace services

@@ -43,7 +43,6 @@ class TestControllee : public ControlleeSample
     CycleControlIntfControllee::CycleControlOperationalState m_pausedState;
     int m_timeElapsed;
     int m_timeTillStart;
-    bool endOfCycleEmitted;
 
     void TimeChangedCallback(int sec);
     static void OnCmdSetRecipe(Commands* commands, std::string& cmd);

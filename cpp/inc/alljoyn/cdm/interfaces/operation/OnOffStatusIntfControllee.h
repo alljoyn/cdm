@@ -40,17 +40,17 @@ class OnOffStatusIntfControllee : public OnOffStatusInterface {
     virtual ~OnOffStatusIntfControllee() {}
 
     /**
-     * Get OnOff
-     * @return OnOff
+     * Get IsOn
+     * @return IsOn
      */
-    virtual const bool GetOnOff() const = 0;
+    virtual const bool GetIsOn() const = 0;
 
     /**
-     * Set OnOff
+     * Set IsOn
      * @param[in] value
      * @return ER_OK on success
      */
-    virtual QStatus SetOnOff(const bool value) = 0;
+    virtual QStatus SetIsOn(const bool value) = 0;
 
 };
 

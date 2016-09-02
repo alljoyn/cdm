@@ -53,7 +53,7 @@ class OnOffStatusIntfControllerImpl : public InterfaceController, public OnOffSt
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus GetOnOff(void* context);
+    virtual QStatus GetIsOn(void* context);
 
     /**
      * Initialize interface
@@ -80,7 +80,7 @@ class OnOffStatusIntfControllerImpl : public InterfaceController, public OnOffSt
     OnOffStatusIntfControllerImpl();
 
     void PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context);
-    void GetOnOffPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+    void GetIsOnPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
 
     BusAttachment& m_busAttachment;
     OnOffStatusIntfControllerListener& m_interfaceListener;

@@ -19,9 +19,9 @@
 
 using namespace std;
 
-QStatus OnOffStatusListener::OnGetOnOff(bool& value)
+QStatus OnOffStatusListener::OnGetIsOn(bool& value)
 {
-    cout << "OnOffStatusListener::OnGetOnOff() - OnOff : " << value << endl;
+    cout << "OnOffStatusListener::OnGetIsOn() - OnOff : " << value << endl;
     return ER_OK;
 }
 
@@ -53,15 +53,15 @@ void OnOffStatusCommands::Init()
 
         m_intfControllee = static_cast<OnOffStatusIntfControllee*>(cdmInterface);
 
-        RegisterCommand(&OnOffStatusCommands::OnCmdGetOnOffStatus, "gos", "get on/off status");
-        RegisterCommand(&OnOffStatusCommands::OnCmdSetOnOffStatus, "sos", "set on/off status(use 'sos <0/1>'");
+        RegisterCommand(&OnOffStatusCommands::OnCmdGetIsOnStatus, "gos", "get on/off status");
+        RegisterCommand(&OnOffStatusCommands::OnCmdSetIsOnStatus, "sos", "set on/off status(use 'sos <0/1>'");
 
     } else {
         PrintCommands();
     }
 }
 
-void OnOffStatusCommands::OnCmdGetOnOffStatus(Commands* commands, std::string& cmd)
+void OnOffStatusCommands::OnCmdGetIsOnStatus(Commands* commands, std::string& cmd)
 {
     OnOffStatusIntfControllee* intfControllee = static_cast<OnOffStatusCommands*>(commands)->GetInterface();
 
@@ -70,10 +70,10 @@ void OnOffStatusCommands::OnCmdGetOnOffStatus(Commands* commands, std::string& c
         return;
     }
 
-    cout << intfControllee->GetOnOff() << endl;
+    cout << intfControllee->GetIsOn() << endl;
 }
 
-void OnOffStatusCommands::OnCmdSetOnOffStatus(Commands* commands, std::string& cmd)
+void OnOffStatusCommands::OnCmdSetIsOnStatus(Commands* commands, std::string& cmd)
 {
     OnOffStatusIntfControllee* intfControllee = static_cast<OnOffStatusCommands*>(commands)->GetInterface();
 
@@ -84,7 +84,7 @@ void OnOffStatusCommands::OnCmdSetOnOffStatus(Commands* commands, std::string& c
 
     int status = strtol(cmd.c_str(), NULL, 10);
     if (status == 0 || status == 1) {
-        intfControllee->SetOnOff(status);
+        intfControllee->SetIsOn(status);
     } else {
         cout << "Input argument is wrong." << endl;
         return;

@@ -17,7 +17,7 @@
         <annotation name="org.alljoyn.Bus.Enum.AutoMode.Value.Off" value="0"/>
         <annotation name="org.alljoyn.Bus.Enum.AutoMode.Value.On" value="1"/>
         <annotation name="org.alljoyn.Bus.Enum.AutoMode.Value.NotSupported" value="255"/>
-        <property name="AutoMode" type="n" access="readwrite">
+        <property name="AutoMode" type="y" access="readwrite">
             <annotation name="org.alljoyn.Bus.DocString.En" value="Represent enabled/disabled state of the auto mode. The device decides the moisture output level for providing comfortable surroundings automatically."/>
             <annotation name="org.alljoyn.Bus.Type.Name" value="[AutoMode]"/>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>

@@ -51,8 +51,6 @@ class CycleControlCommands : public InterfaceCommands
     static void OnCmdGetSupportedOperationalCommands(Commands* commands, std::string& cmd);
     static void OnCmdGetSupportedOperationalStates(Commands* commands, std::string& cmd);
 
-    static void OnCmdEmitEndOfCycle(Commands* commands, std::string& cmd);
-
   private:
     CycleControlIntfControllee* m_intfControllee;
     CycleControlListener m_listener;

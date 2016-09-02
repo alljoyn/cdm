@@ -59,7 +59,7 @@ class OnOffStatusInterface : public CdmInterface {
 
   protected:
     static const qcc::String s_prop_Version;
-    static const qcc::String s_prop_OnOff;
+    static const qcc::String s_prop_IsOn;
 
   private:
     static const qcc::String s_xml;

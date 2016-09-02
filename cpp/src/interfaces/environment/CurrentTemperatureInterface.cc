@@ -38,7 +38,7 @@ const qcc::String CurrentTemperatureInterface::s_xml =
 "            <annotation name='org.alljoyn.Bus.Type.Units' value='degrees Celsius'/>"
 "        </property>"
 "        <property name='Precision' type='d' access='read'>"
-"            <annotation name='org.alljoyn.Bus.DocString.En' value='The precision of the CurrentValue property. i.e. the number of degrees Celsius the actual power consumption must change before CurrentValue is updated.'/>"
+"            <annotation name='org.alljoyn.Bus.DocString.En' value='The precision of the CurrentValue property.'/>"
 "            <annotation name='org.freedesktop.DBus.Property.EmitsChangedSignal' value='true'/>"
 "            <annotation name='org.alljoyn.Bus.Type.Units' value='degrees Celsius'/>"
 "        </property>"
@@ -48,7 +48,8 @@ const qcc::String CurrentTemperatureInterface::s_xml =
 "            <annotation name='org.alljoyn.Bus.Type.Units' value='milliseconds'/>"
 "        </property>"
 "    </interface>"
-"</node>";
+"</node>"
+;
 
 const qcc::String CurrentTemperatureInterface::s_prop_Version = "Version";
 const qcc::String CurrentTemperatureInterface::s_prop_CurrentValue = "CurrentValue";

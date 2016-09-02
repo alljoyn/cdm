@@ -58,29 +58,6 @@ QStatus CycleControlIntfControllerImpl::Init()
         QCC_LogError(status, ("%s: RegisterPropertiesChangedListener failed.", __func__));
     }
 
-    const InterfaceDescription* intf = GetInterfaceDescription();
-    if (intf) {
-        const InterfaceDescription::Member* endOfCycleEmitted = intf->GetMember(s_signal_EndOfCycle.c_str());
-        if (endOfCycleEmitted)
-        {
-            status = m_busAttachment.RegisterSignalHandler(this, static_cast<MessageReceiver::SignalHandler>(&CycleControlIntfControllerImpl::EndOfCycleEmitted), endOfCycleEmitted, NULL);
-            if (ER_OK != status)
-            {
-                QCC_LogError(status, ("%s: Register EndOfCycle failed.", __func__));
-            }
-            m_busAttachment.AddMatch("type='signal',member='EndOfCycle',interface='org.alljoyn.SmartSpaces.Operation.CycleControl',sessionless='t'");
-        }
-        else
-        {
-            status = ER_FAIL;
-            QCC_LogError(status, ("%s: EndOfCycle signal is not exist.", __func__));
-        }
-    }
-    else
-    {
-        status = ER_FAIL;
-        QCC_LogError(status, ("%s: The interface description is not exist.", __func__));
-    }
     return status;
 }
 
@@ -222,13 +199,6 @@ void CycleControlIntfControllerImpl::ExecuteCommandReplyHandler(Message& message
     }
     m_interfaceListener.OnExecuteCommandRespose(status, m_proxyObject.GetPath(), context,
                                                 errorName, errorMessage.c_str());
-}
-
-void CycleControlIntfControllerImpl::EndOfCycleEmitted(const InterfaceDescription::Member* member, const char* srcPath, Message& message)
-{
-    cout << "# CycleControlIntfControllerImpl::EndOfCycleEmitted" <<endl;
-    qcc::String path = String(srcPath);
-    m_interfaceListener.OnEndOfCycle(path);
 }
 
 } //namespace services

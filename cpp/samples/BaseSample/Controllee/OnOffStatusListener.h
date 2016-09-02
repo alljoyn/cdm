@@ -27,7 +27,7 @@ using namespace services;
 class OnOffStatusListener : public OnOffStatusIntfControlleeListener
 {
   public:
-    virtual QStatus OnGetOnOff(bool& value);
+    virtual QStatus OnGetIsOn(bool& value);
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -43,8 +43,8 @@ class OnOffStatusCommands : public InterfaceCommands
     virtual void Init();
 
     OnOffStatusIntfControllee* GetInterface() { return m_intfControllee; }
-    static void OnCmdGetOnOffStatus(Commands* commands, std::string& cmd);
-    static void OnCmdSetOnOffStatus(Commands* commands, std::string& cmd);
+    static void OnCmdGetIsOnStatus(Commands* commands, std::string& cmd);
+    static void OnCmdSetIsOnStatus(Commands* commands, std::string& cmd);
 
   private:
     OnOffStatusIntfControllee* m_intfControllee;

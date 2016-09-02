@@ -60,14 +60,14 @@ class OnOffStatusIntfControlleeImpl : public InterfaceControllee, public OnOffSt
       * Get OnOff
       * @return OnOff
       */
-     virtual const bool GetOnOff() const { return m_OnOff; }
+     virtual const bool GetIsOn() const { return m_OnOff; }
 
      /**
       * Set OnOff
       * @param[in] value
       * @return ER_OK on success
       */
-     virtual QStatus SetOnOff(const bool value);
+     virtual QStatus SetIsOn(const bool value);
 
     /**
      * a callback function for getting property.

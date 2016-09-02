@@ -6,9 +6,9 @@
             <annotation name="org.alljoyn.Bus.DocString.En" value="The interface version."/>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const"/>
         </property>
-        <annotation name="org.alljoyn.Bus.Enum.ContaminantType.Value.CH20" value="0"/>
+        <annotation name="org.alljoyn.Bus.Enum.ContaminantType.Value.CH2O" value="0"/>
         <annotation name="org.alljoyn.Bus.Enum.ContaminantType.Value.CO2" value="1"/>
-        <annotation name="org.alljoyn.Bus.Enum.ContaminantType.Value.C0" value="2"/>
+        <annotation name="org.alljoyn.Bus.Enum.ContaminantType.Value.CO" value="2"/>
         <annotation name="org.alljoyn.Bus.Enum.ContaminantType.Value.PM2_5" value="3"/>
         <annotation name="org.alljoyn.Bus.Enum.ContaminantType.Value.PM10" value="4"/>
         <annotation name="org.alljoyn.Bus.Enum.ContaminantType.Value.VOC" value="5"/>
@@ -30,12 +30,13 @@
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
         <property name="Precision" type="d" access="read">
-            <annotation name="org.alljoyn.Bus.DocString.En" value="The precision of the CurrentValue property. i.e. the number of ug/m3 or ppm the actual power consumption must change before CurrentValue is updated."/>
+            <annotation name="org.alljoyn.Bus.DocString.En" value="The precision of the CurrentValue property."/>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
         </property>
         <property name="UpdateMinTime" type="q" access="read">
             <annotation name="org.alljoyn.Bus.DocString.En" value="The minimum time between updates of the CurrentValue property in milliseconds."/>
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+            <annotation name="org.alljoyn.Bus.Type.Units" value="milliseconds"/>
         </property>
     </interface>
 </node>

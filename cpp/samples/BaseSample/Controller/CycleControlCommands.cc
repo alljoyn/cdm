@@ -100,11 +100,6 @@ void CycleControlListener::OnExecuteCommandRespose(QStatus status, const qcc::St
         cout << "# error message: " << errorMessage << endl;
     }
 }
-void CycleControlListener::OnEndOfCycle( const qcc::String& objectPath )
-{
-    cout << "# CycleControlListener::OnEndOfCycle()" << endl;
-    cout << "# path: " << objectPath << endl;
-}
 
 CycleControlCommands::CycleControlCommands(ControllerSample* sample, DeviceInfoPtr& info, const char* objectPath)
 : InterfaceCommands(sample, info, objectPath),

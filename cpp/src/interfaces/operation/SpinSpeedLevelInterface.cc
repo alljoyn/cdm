@@ -34,7 +34,7 @@ const qcc::String SpinSpeedLevelInterface::s_xml =
 "        </property>"
 "        <property name='MaxLevel' type='y' access='read'>"
 "            <annotation name='org.alljoyn.Bus.DocString.En' value='Maximum value allowed for the spin speed level setting.'/>"
-"            <annotation name='org.freedesktop.DBus.Property.EmitsChangedSignal' value='false'/>"
+"            <annotation name='org.freedesktop.DBus.Property.EmitsChangedSignal' value='const'/>"
 "        </property>"
 "        <property name='TargetLevel' type='y' access='readwrite'>"
 "            <annotation name='org.alljoyn.Bus.DocString.En' value='Target set-point value of spin speed level.'/>"

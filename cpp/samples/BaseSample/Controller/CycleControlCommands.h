@@ -43,8 +43,6 @@ class CycleControlListener : public CycleControlIntfControllerListener{
     virtual void SupportedOperationalCommandsProperyChanged(const qcc::String& objectPath, const CycleControlInterface::SupportedOperationalCommands& commands);
 
     virtual void OnExecuteCommandRespose(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage);
-
-    virtual void OnEndOfCycle( const qcc::String& objectPath );
 };
 
 class CycleControlCommands : public InterfaceCommands

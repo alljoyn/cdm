@@ -100,8 +100,6 @@ class CycleControlIntfControllerImpl : public InterfaceController, public CycleC
 
     void GetSupportedOperationalStatesPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
 
-    void EndOfCycleEmitted(const InterfaceDescription::Member* member, const char* srcPath, Message& message);
-
     void ExecuteCommandReplyHandler(Message& message, void* context);
 
     BusAttachment& m_busAttachment;

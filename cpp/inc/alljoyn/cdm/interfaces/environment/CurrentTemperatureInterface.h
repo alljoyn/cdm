@@ -17,11 +17,6 @@
 #ifndef CURRENTTEMPERATUREINTERFACE_H_
 #define CURRENTTEMPERATUREINTERFACE_H_
 
-
-#include <vector>
-#include <map>
-#include <utility>
-
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/CdmInterface.h>

@@ -79,7 +79,7 @@ void CurrentAirQualityLevelCommands::Init()
 void CurrentAirQualityLevelCommands::InitializeProperties()
 {
     if (m_intfControllee) {
-        uint8_t contaminatType = CurrentAirQualityLevelInterface::CONTAMINANT_TYPE_CH20;
+        uint8_t contaminatType = CurrentAirQualityLevelInterface::CONTAMINANT_TYPE_CH2O;
         uint8_t maxLevel = 30;
         uint8_t minLevel = 10;
         uint8_t currentLevel = 15;

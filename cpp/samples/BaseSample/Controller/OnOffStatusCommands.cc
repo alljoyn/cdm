@@ -27,19 +27,19 @@ OnOffStatusListener::~OnOffStatusListener()
 {
 }
 
-void OnOffStatusListener::OnOnOffChanged(const qcc::String& objectPath, const bool value)
+void OnOffStatusListener::OnIsOnChanged(const qcc::String& objectPath, const bool value)
 {
     cout << __func__ << endl;
     cout << "path: " << objectPath << endl;
-    cout << "OnOff: " << value << endl;
+    cout << "IsOn: " << value << endl;
 }
 
-void OnOffStatusListener::OnResponseGetOnOff(QStatus status, const qcc::String& objectPath, const bool value, void* context)
+void OnOffStatusListener::OnResponseGetIsOn(QStatus status, const qcc::String& objectPath, const bool value, void* context)
 {
     cout << __func__ << endl;
     cout << "status: " << QCC_StatusText(status) << endl;
     cout << "path: " << objectPath << endl;
-    cout << "OnOff: " << value << endl;
+    cout << "IsOn: " << value << endl;
 }
 
 OnOffStatusCommands::OnOffStatusCommands(ControllerSample* sample, DeviceInfoPtr& info, const char* objectPath)
@@ -64,7 +64,7 @@ void OnOffStatusCommands::Init()
         m_intfController = static_cast<OnOffStatusIntfController*>(cdmInterface);
     }
 
-    RegisterCommand(&OnOffStatusCommands::OnCmdOnOffStatus, "onoff", "Current OnOff Status");
+    RegisterCommand(&OnOffStatusCommands::OnCmdOnOffStatus, "onoff", "Current IsOn Status");
 
     PrintCommands();
 }
@@ -78,6 +78,6 @@ void OnOffStatusCommands::OnCmdOnOffStatus(Commands* commands, std::string& cmd)
         return;
     }
 
-    intfController->GetOnOff();
+    intfController->GetIsOn();
 }
 

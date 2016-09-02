@@ -17,9 +17,6 @@
 #ifndef CURRENTTEMPERATUREINTFCONTROLLERLISTENER_H_
 #define CURRENTTEMPERATUREINTFCONTROLLERLISTENER_H_
 
-#include <map>
-#include <utility>
-
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/InterfaceControllerListener.h>

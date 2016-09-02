@@ -34,9 +34,4 @@ public class CycleControlActivity extends InterfaceActivity {
         methods.addView(sendCommandView);
     }
 
-    @BusSignalHandler(iface = "org.alljoyn.smartspaces.operation.CycleControl", signal = "EndOfCycle")
-    public void endOfCycle() {
-        notifyEvent("EndOfCycle");
-    }
-
 }

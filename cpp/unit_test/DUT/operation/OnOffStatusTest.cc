@@ -30,7 +30,7 @@ public:
     qcc::String m_errorName;
     qcc::String m_errorMessage;
 
-    virtual void OnResponseGetOnOff(QStatus status, const qcc::String& objectPath, const bool value, void* context)
+    virtual void OnResponseGetIsOn(QStatus status, const qcc::String& objectPath, const bool value, void* context)
     {
         m_errorName = "";
         m_errorMessage = "";
@@ -40,7 +40,7 @@ public:
         m_event.SetEvent();
     }
 
-    virtual void OnOnOffChanged(const qcc::String& objectPath, const bool value)
+    virtual void OnIsOnChanged(const qcc::String& objectPath, const bool value)
     {
         m_onOffSignal = value;
         m_eventSignal.SetEvent();
@@ -61,8 +61,8 @@ TEST_F(CDMTest, CDM_v1_OnOffStatus)
 
         TEST_LOG_1("Get initial values for all properties.");
         {
-            TEST_LOG_2("Retrieve the OnOff property.");
-            status = controller->GetOnOff();
+            TEST_LOG_2("Retrieve the IsOn property.");
+            status = controller->GetIsOn();
             EXPECT_EQ(status, ER_OK);
             EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
             listener.m_event.ResetEvent();

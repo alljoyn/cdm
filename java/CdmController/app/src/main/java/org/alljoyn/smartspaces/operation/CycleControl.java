@@ -44,16 +44,12 @@ public interface CycleControl {
     @BusMethod(name="ExecuteOperationalCommand", signature="y")
     public void executeOperationalCommand(byte command);
 
-    @BusSignal(name="EndOfCycle")
-    public void endOfCycle();
-
     public enum OperationalState implements EnumBase<Byte> {
         Idle((byte)0x00),
         Working((byte)0x01),
         ReadyToStart((byte)0x02),
         DelayedStart((byte)0x03),
         Paused((byte)0x04),
-        EndOfCycle((byte)0x05);
 
         private byte value;
 

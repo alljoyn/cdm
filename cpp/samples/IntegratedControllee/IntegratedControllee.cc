@@ -518,7 +518,7 @@ void IntegratedControllee::SetInitialProperty()
 
     if (m_onOffStatusIntfControllee) {
         bool onoff = false;
-        m_onOffStatusIntfControllee->SetOnOff(onoff);
+        m_onOffStatusIntfControllee->SetIsOn(onoff);
     }
 
     if (m_repeatModeIntfControllee) {
@@ -699,7 +699,7 @@ void IntegratedControllee::SetInitialProperty()
         m_alertsIntfControllee->SetAlerts(alerts);
     }
     if (m_currentAirQualityIntfControllee) {
-        uint8_t contaminatType = CurrentAirQualityInterface::CONTAMINANT_TYPE_CH20;
+        uint8_t contaminatType = CurrentAirQualityInterface::CONTAMINANT_TYPE_CH2O;
         double maxValue = 30.0;
         double minValue = 10.0;
         double currentValue = 15.0;
@@ -715,7 +715,7 @@ void IntegratedControllee::SetInitialProperty()
     }
 
     if (m_currentAirQualityLevelIntfControllee) {
-        uint8_t contaminatType = CurrentAirQualityLevelInterface::CONTAMINANT_TYPE_CH20;
+        uint8_t contaminatType = CurrentAirQualityLevelInterface::CONTAMINANT_TYPE_CH2O;
         uint8_t maxLevel = 30;
         uint8_t currentLevel = 15;
 

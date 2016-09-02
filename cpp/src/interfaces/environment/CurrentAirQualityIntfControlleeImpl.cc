@@ -37,7 +37,7 @@ CurrentAirQualityIntfControlleeImpl::CurrentAirQualityIntfControlleeImpl(BusAtta
     InterfaceControllee(cdmBusObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener),
-    m_contaminantType(CurrentAirQualityInterface::CONTAMINANT_TYPE_CH20),
+    m_contaminantType(CurrentAirQualityInterface::CONTAMINANT_TYPE_CH2O),
     m_currentValue(0.0),
     m_maxValue(CurrentAirQualityInterface::DEFAULT_MAX_VALUE),
     m_minValue(CurrentAirQualityInterface::DEFAULT_MIN_VALUE),
@@ -211,7 +211,7 @@ void CurrentAirQualityIntfControlleeImpl::OnMethodHandler(const InterfaceDescrip
 
 QStatus CurrentAirQualityIntfControlleeImpl::SetContaminantType(const uint8_t type)
 {
-    if( type < (uint8_t)CONTAMINANT_TYPE_CH20 || 
+    if( type < (uint8_t)CONTAMINANT_TYPE_CH2O || 
         type > (uint8_t)CONTAMINANT_TYPE_VOC)
     {
         QCC_LogError(ER_FAIL, ("%s: ContaminantType is invalid Value. ", __func__));

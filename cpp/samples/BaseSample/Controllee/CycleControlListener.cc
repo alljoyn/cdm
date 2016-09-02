@@ -68,7 +68,6 @@ void CycleControlCommands::Init()
         RegisterCommand(&CycleControlCommands::OnCmdGetSupportedOperationalCommands, "gsos", "get supported operational commands");
         RegisterCommand(&CycleControlCommands::OnCmdGetSupportedOperationalStates, "gsoc", "get supported operational states");
 
-        RegisterCommand(&CycleControlCommands::OnCmdEmitEndOfCycle, "eeoc", "emit EndOfCycleSignal");
     } else {
         PrintCommands();
     }
@@ -164,15 +163,4 @@ void CycleControlCommands::OnCmdGetSupportedOperationalStates(Commands* commands
     for (size_t i = 0 ; i < supportedStates.size(); i ++)
     	cout << (int)supportedStates[i] << " ";
     cout << endl;
-}
-
-void CycleControlCommands::OnCmdEmitEndOfCycle(Commands* commands, std::string& cmd)
-{
-    CycleControlIntfControllee* intfControllee = static_cast<CycleControlCommands*>(commands)->GetInterface();
-
-    if (!intfControllee) {
-        cout << "Interface is not exist." << endl;
-        return;
-    }
-    intfControllee->EmitEndOfCycle();
 }

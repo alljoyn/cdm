@@ -51,7 +51,7 @@ QStatus OnOffStatusIntfControlleeImpl::Init()
     return status;
 }
 
-QStatus OnOffStatusIntfControlleeImpl::SetOnOff(const bool value)
+QStatus OnOffStatusIntfControlleeImpl::SetIsOn(const bool value)
 {
     QStatus status = ER_OK;
 
@@ -60,7 +60,7 @@ QStatus OnOffStatusIntfControlleeImpl::SetOnOff(const bool value)
         MsgArg val;
         val.typeId = ALLJOYN_BOOLEAN;
         val.v_bool = value;
-        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_OnOff.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_IsOn.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
     }
 
     return status;
@@ -75,23 +75,23 @@ QStatus OnOffStatusIntfControlleeImpl::OnGetProperty(const String& propName, Msg
         val.v_uint16 = GetInterfaceVersion();
     } else {
         if (s_retrievingActualPropertyValue) {
-            if (!(s_prop_OnOff.compare(propName))) {
+            if (!(s_prop_IsOn.compare(propName))) {
                 bool value;
-                status = m_interfaceListener.OnGetOnOff(value);
+                status = m_interfaceListener.OnGetIsOn(value);
                 if (status != ER_OK) {
-                    value = GetOnOff();
+                    value = GetIsOn();
                     QCC_LogError(status, ("%s: failed to get actual property value from application. use previous value.", __func__));
                     status = ER_OK;
                 } else {
-                    SetOnOff(value); // update the value in OnOffStatusIntfControllee.
+                    SetIsOn(value); // update the value in OnOffStatusIntfControllee.
                 }
 
                 val.typeId = ALLJOYN_BOOLEAN;
                 val.v_bool = value;
             }
         } else {
-            if (!(s_prop_OnOff.compare(propName))) {
-                const bool value = GetOnOff();
+            if (!(s_prop_IsOn.compare(propName))) {
+                const bool value = GetIsOn();
                 val.typeId = ALLJOYN_BOOLEAN;
                 val.v_bool = value;
             }
@@ -105,7 +105,7 @@ QStatus OnOffStatusIntfControlleeImpl::OnSetProperty(const String& propName, Msg
 {
     QStatus status = ER_OK;
 
-    if (!(s_prop_OnOff.compare(propName))) {
+    if (!(s_prop_IsOn.compare(propName))) {
 
         if (val.typeId != ALLJOYN_UINT16) {
             status = ER_BUS_NO_SUCH_PROPERTY;

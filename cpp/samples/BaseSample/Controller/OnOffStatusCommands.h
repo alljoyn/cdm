@@ -30,8 +30,8 @@ class OnOffStatusListener : public OnOffStatusIntfControllerListener {
   public:
     OnOffStatusListener();
     virtual ~OnOffStatusListener();
-    virtual void OnResponseGetOnOff(QStatus status, const qcc::String& objectPath, const bool value, void* context);
-    virtual void OnOnOffChanged(const qcc::String& objectPath, const bool value);
+    virtual void OnResponseGetIsOn(QStatus status, const qcc::String& objectPath, const bool value, void* context);
+    virtual void OnIsOnChanged(const qcc::String& objectPath, const bool value);
 };
 
 class OnOffStatusCommands : public InterfaceCommands

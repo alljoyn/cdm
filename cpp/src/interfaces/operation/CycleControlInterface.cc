@@ -46,7 +46,7 @@ const qcc::String CycleControlInterface::s_xml =
 "        <property name='SupportedOperationalStates' type='ay' access='read'>"
 "            <annotation name='org.alljoyn.Bus.DocString.En' value='Operational states which are supported by the appliance.'/>"
 "            <annotation name='org.alljoyn.Bus.Type.Name' value='a[OperationalState]'/>"
-"            <annotation name='org.freedesktop.DBus.Property.EmitsChangedSignal' value='false'/>"
+"            <annotation name='org.freedesktop.DBus.Property.EmitsChangedSignal' value='const'/>"
 "        </property>"
 "        <annotation name='org.alljoyn.Bus.Enum.OperationalCommands.Value.Start' value='0'/>"
 "        <annotation name='org.alljoyn.Bus.Enum.OperationalCommands.Value.Stop' value='1'/>"
@@ -55,7 +55,7 @@ const qcc::String CycleControlInterface::s_xml =
 "        <property name='SupportedOperationalCommands' type='ay' access='read'>"
 "            <annotation name='org.alljoyn.Bus.DocString.En' value='Operational commands which are supported by the appliance.'/>"
 "            <annotation name='org.alljoyn.Bus.Type.Name' value='a[OperationalCommands]'/>"
-"            <annotation name='org.freedesktop.DBus.Property.EmitsChangedSignal' value='false'/>"
+"            <annotation name='org.freedesktop.DBus.Property.EmitsChangedSignal' value='const'/>"
 "        </property>"
 "        <method name='ExecuteOperationalCommand'>"
 "            <annotation name='org.alljoyn.Bus.DocString.En' value='Execute an operational command.'/>"
@@ -76,7 +76,6 @@ const qcc::String CycleControlInterface::s_prop_OperationalState = "OperationalS
 const qcc::String CycleControlInterface::s_prop_SupportedOperationalCommands = "SupportedOperationalCommands";
 const qcc::String CycleControlInterface::s_prop_SupportedOperationalStates = "SupportedOperationalStates";
 const qcc::String CycleControlInterface::s_method_ExecuteCommand = "ExecuteOperationalCommand";
-const qcc::String CycleControlInterface::s_signal_EndOfCycle = "EndOfCycle";
 const qcc::String CycleControlInterface::OPERATIONAL_STATE_STRINGS[6] = {
         "Idle",
         "Working",

@@ -32,20 +32,20 @@ class OnOffStatusIntfControllerListener : public InterfaceControllerListener {
     virtual ~OnOffStatusIntfControllerListener() {}
 
     /**
-     * Callback handler for getting OnOff property
+     * Callback handler for getting IsOn property
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] OnOff value
+     * @param[in] IsOn value
      * @param[in] context the context that is passed from application
      */
-    virtual void OnResponseGetOnOff(QStatus status, const qcc::String& objectPath, const bool value, void* context) {}
+    virtual void OnResponseGetIsOn(QStatus status, const qcc::String& objectPath, const bool value, void* context) {}
 
     /**
-     * Handler for OnOff property changed
+     * Handler for IsOn property changed
      * @param[in] objectPath the object path
-     * @param[in] onoff value
+     * @param[in] IsOn value
      */
-    virtual void OnOnOffChanged(const qcc::String& objectPath, const bool value) {}
+    virtual void OnIsOnChanged(const qcc::String& objectPath, const bool value) {}
 
 };
 

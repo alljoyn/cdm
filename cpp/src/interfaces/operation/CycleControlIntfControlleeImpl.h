@@ -130,12 +130,6 @@ class CycleControlIntfControlleeImpl : public InterfaceControllee, public CycleC
     virtual QStatus SetSupportedStates(SupportedOperationalStates states);
 
     /**
-     * EndOfCycle emitter
-     * @return ER_OK on successful
-     */
-    virtual QStatus EmitEndOfCycle();
-
-    /**
      * Handler of ExecuteCommand method
      * @param member
      * @param msg reference of alljoyn Message

@@ -78,12 +78,6 @@ class CycleControlIntfControllee : public CycleControlInterface {
      */
     virtual QStatus SetSupportedStates(SupportedOperationalStates states) = 0;
 
-    /**
-     * Emitter of EndOfCycle signal
-     * @return ER_OK on success
-     */
-    virtual QStatus EmitEndOfCycle() = 0;
-
 };
 
 } //namespace services

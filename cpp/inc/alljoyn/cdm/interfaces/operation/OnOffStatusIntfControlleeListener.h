@@ -35,12 +35,12 @@ class OnOffStatusIntfControlleeListener : public InterfaceControlleeListener {
     virtual ~OnOffStatusIntfControlleeListener() {}
 
     /**
-     * Handler for getting OnOff
+     * Handler for getting IsOn
      * This function is only called, when InterfaceControllee::s_retrievingActualPropertyValue is true.
-     * @param[out] OnOff
+     * @param[out] IsOn
      * @return ER_OK on success
      */
-    virtual QStatus OnGetOnOff(bool& value) = 0;
+    virtual QStatus OnGetIsOn(bool& value) = 0;
 
 };
 

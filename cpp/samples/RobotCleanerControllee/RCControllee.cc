@@ -101,7 +101,7 @@ void RCControllee::SetInitialProperty()
 {
     if (m_onOffStatusIntfControllee) {
         bool onoff = false;
-        m_onOffStatusIntfControllee->SetOnOff(onoff);
+        m_onOffStatusIntfControllee->SetIsOn(onoff);
     }
 
     if (m_batteryStatusIntfControllee) {

@@ -10,7 +10,7 @@
 
 
 TestControllee::TestControllee(BusAttachment* bus, CdmAboutData* aboutData)
-  : ControlleeSample(bus, aboutData), m_cycleControlIntfControllee(NULL), m_timerIntfControllee(NULL), m_recipeIsSet(true),endOfCycleEmitted(false)
+  : ControlleeSample(bus, aboutData), m_cycleControlIntfControllee(NULL), m_timerIntfControllee(NULL), m_recipeIsSet(true)
 
 {
     m_initialTime = clock();
@@ -121,20 +121,10 @@ void TestControllee::TimeChangedCallback(int sec)
     }
     if(this->m_cycleControlIntfControllee->GetOperationalState() == CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_END_OF_CYCLE)
     {
-        if(!endOfCycleEmitted)
-        {
-            cout << "Emit EOC" << endl;
-            status = this->m_cycleControlIntfControllee->EmitEndOfCycle();
-            endOfCycleEmitted = true;
-        }
-        else
-        {
             cout << "setting initial state" << endl;
             IsRecipeSet() ?
             status = this->m_cycleControlIntfControllee->SetOperationalState(CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_READY_TO_START) : 
             status = this->m_cycleControlIntfControllee->SetOperationalState(CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_IDLE); 
-            endOfCycleEmitted = false;
-        }
     }
 
     if(status != ER_OK)

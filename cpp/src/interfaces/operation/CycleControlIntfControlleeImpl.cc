@@ -215,14 +215,6 @@ void CycleControlIntfControlleeImpl::OnExecuteCommand(const InterfaceDescription
         m_busObject.ReplyMethodCall(msg, ER_INVALID_DATA);
     }
 
-    if(newState == OPERATIONAL_STATE_END_OF_CYCLE)
-    {
-        status = EmitEndOfCycle();
-        if(status != ER_OK)
-        {
-            QCC_LogError(status, ("%s: failed to emit EndOfCycle signal.", __func__));
-        }
-    }
 }
 
 QStatus CycleControlIntfControlleeImpl::SetOperationalState(CycleControlOperationalState state)
@@ -333,13 +325,6 @@ QStatus CycleControlIntfControlleeImpl::SetSupportedStates(SupportedOperationalS
         delete[] vals;
     }
     return status;
-}
-
-QStatus CycleControlIntfControlleeImpl::EmitEndOfCycle()
-{
-    const InterfaceDescription::Member* member = GetInterfaceDescription()->GetMember(s_signal_EndOfCycle.c_str());
-    assert(member);
-    return m_busObject.Signal(NULL, 0, *member, NULL, 0, 0,ALLJOYN_FLAG_SESSIONLESS);
 }
 
 } //namespace services
