@@ -61,6 +61,45 @@ QStatus CycleControlIntfControllerImpl::Init()
     return status;
 }
 
+QStatus CycleControlIntfControllerImpl::GetOperationalState(void* context)
+{
+    QStatus status = ER_OK;
+
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_OperationalState.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&CycleControlIntfControllerImpl::GetOperationalStatePropertyCB, context);
+
+    return status;
+}
+
+QStatus CycleControlIntfControllerImpl::GetSupportedOperationalStates(void* context)
+{
+    QStatus status = ER_OK;
+
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_SupportedOperationalStates.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&CycleControlIntfControllerImpl::GetSupportedOperationalStatesPropertyCB, context);
+
+    cout << "Get SUpported operational states. Status = " << status<<endl;
+    return status;
+}
+
+QStatus CycleControlIntfControllerImpl::GetSupportedOperationalCommands(void* context)
+{
+    QStatus status = ER_OK;
+
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_SupportedOperationalCommands.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&CycleControlIntfControllerImpl::GetSupportedOperationalCommandsPropertyCB, context);
+
+    cout << "Get SUpported operational commands. Status = " << status<<endl;
+    return status;
+}
+
+QStatus CycleControlIntfControllerImpl::ExecuteOperationalCommand(const OperationalCommands command, void* context)
+{
+    MsgArg args[1];
+    args[0].Set("y", (uint8_t)command);
+
+    QStatus status = ER_OK;
+    status = m_proxyObject.MethodCallAsync(GetInterfaceName().c_str(), s_method_ExecuteOperationalCommand.c_str(), this, (MessageReceiver::ReplyHandler)&CycleControlIntfControllerImpl::ExecuteOperationalCommandReplyHandler, args, 1, context);
+    return status;
+}
+
 void CycleControlIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
 {
     MsgArg* entries;
@@ -76,7 +115,7 @@ void CycleControlIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, cons
         if (!s_prop_OperationalState.compare(propNameStr)) {
             if (propValue->typeId == ALLJOYN_BYTE) {
                 uint8_t state = propValue->v_byte;
-                m_interfaceListener.OperationalStatePropertyChanged(obj.GetPath(), (CycleControlOperationalState)state);
+                m_interfaceListener.OnOperationalStateChanged(obj.GetPath(), (OperationalState) state);
             }
         }
         else if(!s_prop_SupportedOperationalCommands.compare(propNameStr)) {
@@ -87,8 +126,8 @@ void CycleControlIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, cons
 
                 SupportedOperationalCommands commands;
                 for (size_t i = 0; i < numVals; ++i)
-                    commands.push_back((CycleControlOperationalCommand)vals[i]);
-                m_interfaceListener.SupportedOperationalCommandsProperyChanged(obj.GetPath(), commands);
+                    commands.push_back((OperationalCommands)vals[i]);
+                m_interfaceListener.OnSupportedOperationalCommandsChanged(obj.GetPath(), commands);
             }
         }
         else if (!s_prop_SupportedOperationalStates.compare(propNameStr)) {
@@ -99,50 +138,11 @@ void CycleControlIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, cons
 
                 SupportedOperationalStates states;
                 for (size_t i = 0; i < numVals; ++i)
-                    states.push_back((CycleControlOperationalState)vals[i]);
-                m_interfaceListener.SupportedOperationalStatesProperyChanged(obj.GetPath(), states);
+                    states.push_back((OperationalState)vals[i]);
+                m_interfaceListener.OnSupportedOperationalStatesChanged(obj.GetPath(), states);
             }
         }
     }
-}
-
-QStatus CycleControlIntfControllerImpl::GetOperationalState(void* context)
-{
-    QStatus status = ER_OK;
-
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_OperationalState.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&CycleControlIntfControllerImpl::GetOperationalStatePropertyCB, context);
-
-    return status;
-}
-
-QStatus CycleControlIntfControllerImpl::GetSupportedOperationalCommands(void* context)
-{
-    QStatus status = ER_OK;
-
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_SupportedOperationalCommands.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&CycleControlIntfControllerImpl::GetSupportedOperationalCommandsPropertyCB, context);
-
-    cout << "Get SUpported operational commands. Status = " << status<<endl;
-    return status;
-}
-
-QStatus CycleControlIntfControllerImpl::GetSupportedOperationalStates(void* context)
-{
-    QStatus status = ER_OK;
-
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_SupportedOperationalStates.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&CycleControlIntfControllerImpl::GetSupportedOperationalStatesPropertyCB, context);
-
-    cout << "Get SUpported operational states. Status = " << status<<endl;
-    return status;
-}
-
-QStatus CycleControlIntfControllerImpl::ExecuteCommand(const CycleControlOperationalCommand command, void* context)
-{
-    MsgArg args[1];
-    args[0].Set("y", (uint8_t)command);
-
-    QStatus status = ER_OK;
-    status = m_proxyObject.MethodCallAsync(GetInterfaceName().c_str(), s_method_ExecuteCommand.c_str(), this, (MessageReceiver::ReplyHandler)&CycleControlIntfControllerImpl::ExecuteCommandReplyHandler, args, 1, context);
-    return status;
 }
 
 void CycleControlIntfControllerImpl::GetOperationalStatePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
@@ -154,23 +154,7 @@ void CycleControlIntfControllerImpl::GetOperationalStatePropertyCB(QStatus statu
     uint8_t state;
     value.Get("y", &state);
 
-    m_interfaceListener.GetOperationalStatePropertyCallback(status, obj->GetPath(), (CycleControlOperationalState)state, context);
-}
-
-void CycleControlIntfControllerImpl::GetSupportedOperationalCommandsPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
-{
-    if (!obj) {
-        return;
-    }
-    uint8_t *vals;
-    size_t numVals;
-    value.Get("ay", &numVals, &vals);
-
-    SupportedOperationalCommands commands;
-    for (size_t i = 0; i < numVals; ++i)
-        commands.push_back((CycleControlOperationalCommand)vals[i]);
-
-    m_interfaceListener.GetSupportedCommandsPropertyCallbalck(status, obj->GetPath(), commands,context);
+    m_interfaceListener.OnResponseGetOperationalState(status, obj->GetPath(), (OperationalState) state, context);
 }
 
 void CycleControlIntfControllerImpl::GetSupportedOperationalStatesPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
@@ -184,12 +168,28 @@ void CycleControlIntfControllerImpl::GetSupportedOperationalStatesPropertyCB(QSt
 
     SupportedOperationalStates states;
     for (size_t i = 0; i < numVals; ++i) {
-        states.push_back((CycleControlOperationalState)vals[i]);
+        states.push_back((OperationalState)vals[i]);
     }
-    m_interfaceListener.GetSupportedStatesPropertyCallbalck(status, obj->GetPath(), states, context);
+    m_interfaceListener.OnResponseGetSupportedOperationalStates(status, obj->GetPath(), states, context);
 }
 
-void CycleControlIntfControllerImpl::ExecuteCommandReplyHandler(Message& message, void* context)
+void CycleControlIntfControllerImpl::GetSupportedOperationalCommandsPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
+{
+    if (!obj) {
+        return;
+    }
+    uint8_t *vals;
+    size_t numVals;
+    value.Get("ay", &numVals, &vals);
+
+    SupportedOperationalCommands commands;
+    for (size_t i = 0; i < numVals; ++i)
+        commands.push_back((OperationalCommands)vals[i]);
+
+    m_interfaceListener.OnResponseGetSupportedOperationalCommands(status, obj->GetPath(), commands, context);
+}
+
+void CycleControlIntfControllerImpl::ExecuteOperationalCommandReplyHandler(Message& message, void* context)
 {
     qcc::String errorMessage;
     const char* errorName = message->GetErrorName(&errorMessage);
@@ -197,8 +197,8 @@ void CycleControlIntfControllerImpl::ExecuteCommandReplyHandler(Message& message
     if (message->GetType() != MESSAGE_METHOD_RET) {
         status = ER_FAIL;
     }
-    m_interfaceListener.OnExecuteCommandRespose(status, m_proxyObject.GetPath(), context,
-                                                errorName, errorMessage.c_str());
+    m_interfaceListener.OnResponseExecuteOperationalCommand(status, m_proxyObject.GetPath(), context,
+                                                            errorName, errorMessage.c_str());
 }
 
 } //namespace services

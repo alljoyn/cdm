@@ -49,7 +49,7 @@ void WindDirectionListener::OnResponseSetHorizontalAutoMode(QStatus status, cons
     cout << "path: " << objectPath << endl;
 }
 
-void WindDirectionListener::OnResponseGetHorizontalAutoMode(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context)
+void WindDirectionListener::OnResponseGetHorizontalAutoMode(QStatus status, const qcc::String& objectPath, const AutoMode value, void* context)
 {
     cout << __func__ << endl;
     cout << "status: " << QCC_StatusText(status) << endl;
@@ -87,7 +87,7 @@ void WindDirectionListener::OnResponseSetVerticalAutoMode(QStatus status, const 
     cout << "path: " << objectPath << endl;
 }
 
-void WindDirectionListener::OnResponseGetVerticalAutoMode(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context)
+void WindDirectionListener::OnResponseGetVerticalAutoMode(QStatus status, const qcc::String& objectPath, const AutoMode value, void* context)
 {
     cout << __func__ << endl;
     cout << "status: " << QCC_StatusText(status) << endl;
@@ -202,7 +202,7 @@ void WindDirectionCommands::OnCmdSetHorizontalAutoMode(Commands* commands, std::
         cout << "Input argument is wrong." << endl;
         return;
     }
-    intfController->SetHorizontalAutoMode(value);
+    intfController->SetHorizontalAutoMode((WindDirectionInterface::AutoMode)value);
 }
 
 void WindDirectionCommands::OnCmdGetVerticalDirection(Commands* commands, std::string& cmd)
@@ -272,7 +272,7 @@ void WindDirectionCommands::OnCmdSetVerticalAutoMode(Commands* commands, std::st
         cout << "Input argument is wrong." << endl;
         return;
     }
-    intfController->SetVerticalAutoMode(value);
+    intfController->SetVerticalAutoMode((WindDirectionInterface::AutoMode)value);
 }
 
 void WindDirectionListener::OnHorizontalDirectionChanged(const qcc::String& objectPath, const uint16_t value)
@@ -287,7 +287,7 @@ void WindDirectionListener::OnHorizontalMaxChanged(const qcc::String& objectPath
     cout << "path: " << objectPath << endl;
     cout << "HorizontalMax: " << value << endl;
 }
-void WindDirectionListener::OnHorizontalAutoModeChanged(const qcc::String& objectPath, const uint8_t value)
+void WindDirectionListener::OnHorizontalAutoModeChanged(const qcc::String& objectPath, const AutoMode value)
 {
     cout << __func__ << endl;
     cout << "path: " << objectPath << endl;
@@ -305,7 +305,7 @@ void WindDirectionListener::OnVerticalMaxChanged(const qcc::String& objectPath, 
     cout << "path: " << objectPath << endl;
     cout << "VerticalMax: " << value << endl;
 }
-void WindDirectionListener::OnVerticalAutoModeChanged(const qcc::String& objectPath, const uint8_t value)
+void WindDirectionListener::OnVerticalAutoModeChanged(const qcc::String& objectPath, const AutoMode value)
 {
     cout << __func__ << endl;
     cout << "path: " << objectPath << endl;

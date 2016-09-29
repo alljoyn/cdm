@@ -29,13 +29,15 @@ namespace services {
  */
 class OnOffStatusInterface : public CdmInterface {
   public:
+
+
     /**
-     * Constructor of OnOffStatus
+     * Constructor of OnOffStatusInterface
      */
     OnOffStatusInterface() {}
 
     /**
-     * Destructor of OnOffStatus
+     * Destructor of OnOffStatusInterface
      */
     virtual ~OnOffStatusInterface() {}
 
@@ -46,14 +48,14 @@ class OnOffStatusInterface : public CdmInterface {
     const CdmInterfaceType GetInterfaceType() const { return ON_OFF_STATUS_INTERFACE; }
 
     /**
-     * Get Introspection Xml
-     * @return xml
+     * Get Introspection XML
+     * @return Introspection XML
      */
     virtual const qcc::String& GetIntrospectionXml() { return s_xml; }
 
     /**
      * Get Interface version
-     * @return interface version
+     * @return Interface version
      */
     virtual const uint16_t GetInterfaceVersion() const { return s_interfaceVersion; }
 
@@ -64,7 +66,6 @@ class OnOffStatusInterface : public CdmInterface {
   private:
     static const qcc::String s_xml;
     static const uint16_t s_interfaceVersion;
-
 };
 
 } //namespace services

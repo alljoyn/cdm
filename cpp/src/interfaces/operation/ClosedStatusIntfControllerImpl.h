@@ -36,12 +36,12 @@ class ClosedStatusIntfControllerImpl : public InterfaceController, public Closed
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Constructor of ClosedStatusIntfControllerImpl
      */
-    ClosedStatusIntfControllerImpl(BusAttachment& busAttachment, ClosedStatusIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    ClosedStatusIntfControllerImpl(BusAttachment& busAttachment, ClosedStatusIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Destructor of ClosedStatusIntfControllerImpl
@@ -60,16 +60,15 @@ class ClosedStatusIntfControllerImpl : public InterfaceController, public Closed
      */
     virtual BusAttachment& GetBusAttachment() const { return m_busAttachment; }
 
-   /**
-    * Get IsClosed
-    * @param[in] context
-    * @return status
-    */
-   virtual QStatus GetIsClosed(void* context);
+    /**
+     * Get IsClosed property
+     * (If true, object is closed.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
+     */
+    virtual QStatus GetIsClosed(void* context);
 
   private:
-    ClosedStatusIntfControllerImpl();
-
     void PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context);
     void GetIsClosedPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
 

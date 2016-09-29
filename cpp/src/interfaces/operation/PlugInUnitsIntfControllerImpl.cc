@@ -60,25 +60,12 @@ QStatus PlugInUnitsIntfControllerImpl::Init()
     return status;
 }
 
-void PlugInUnitsIntfControllerImpl::GetPlugInUnitsPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
+QStatus PlugInUnitsIntfControllerImpl::GetPlugInUnits(void* context)
 {
-    if(!obj) {
-        return;
-    }
-    MsgArg* unitEntries;
-    size_t numUnitEntries;
+    QStatus status = ER_OK;
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(),s_prop_PlugInUnits.c_str(),this,(ProxyBusObject::Listener::GetPropertyCB)&PlugInUnitsIntfControllerImpl::GetPlugInUnitsPropertyCB,context);
 
-    PlugInUnitsInterface::PlugInUnits units;
-    PlugInUnitsInterface::PlugInInfo info;
-    value.Get("a(oub)", &numUnitEntries, &unitEntries);
-    for (size_t i = 0; i < numUnitEntries; ++i)
-    {
-        char* objPath = NULL;
-        unitEntries[i].Get("(oub)", &objPath, &info.deviceId, &info.pluggedIn);
-        info.objectPath = objPath;
-        units.push_back(info);
-    }
-    m_interfaceListener.OnResponseGetPlugInUnits(status, obj->GetPath(), units, context);
+    return status;
 }
 
 void PlugInUnitsIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
@@ -112,17 +99,30 @@ void PlugInUnitsIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const
                 info.objectPath = objPath;
                 units.push_back(info);
             }
-            m_interfaceListener.OnPlugInUnitsPropertyChanged(obj.GetPath(), units);
+            m_interfaceListener.OnPlugInUnitsChanged(obj.GetPath(), units);
         }
     }
 }
 
-QStatus PlugInUnitsIntfControllerImpl::GetPlugInUnits(void* context)
+void PlugInUnitsIntfControllerImpl::GetPlugInUnitsPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
-    QStatus status = ER_OK;
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(),s_prop_PlugInUnits.c_str(),this,(ProxyBusObject::Listener::GetPropertyCB)&PlugInUnitsIntfControllerImpl::GetPlugInUnitsPropertyCB,context);
+    if(!obj) {
+        return;
+    }
+    MsgArg* unitEntries;
+    size_t numUnitEntries;
 
-    return status;
+    PlugInUnitsInterface::PlugInUnits units;
+    PlugInUnitsInterface::PlugInInfo info;
+    value.Get("a(oub)", &numUnitEntries, &unitEntries);
+    for (size_t i = 0; i < numUnitEntries; ++i)
+    {
+        char* objPath = NULL;
+        unitEntries[i].Get("(oub)", &objPath, &info.deviceId, &info.pluggedIn);
+        info.objectPath = objPath;
+        units.push_back(info);
+    }
+    m_interfaceListener.OnResponseGetPlugInUnits(status, obj->GetPath(), units, context);
 }
 
 } //namespace services

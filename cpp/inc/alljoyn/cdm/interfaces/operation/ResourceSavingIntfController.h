@@ -17,10 +17,6 @@
 #ifndef RESOURCESAVINGINTFCONTROLLER_H_
 #define RESOURCESAVINGINTFCONTROLLER_H_
 
-#include <vector>
-#include <map>
-#include <utility>
-
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/operation/ResourceSavingInterface.h>
@@ -44,19 +40,21 @@ class ResourceSavingIntfController : public ResourceSavingInterface {
     virtual ~ResourceSavingIntfController() {}
 
     /**
-     * Get resource saving mode
+     * Get ResourceSavingMode property
+     * (The current resource saving mode of the device; true if device in saving mode.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetResourceSavingMode(void* context = NULL) = 0;
 
     /**
-     * Set resource saving mode
-     * @param[in] mode resource saving mode
+     * Set ResourceSavingMode property
+     * (The current resource saving mode of the device; true if device in saving mode.)
+     * @param[in] value The resource saving mode to set
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus SetResourceSavingMode(const bool mode, void* context = NULL) = 0;
+    virtual QStatus SetResourceSavingMode(const bool value, void* context = NULL) = 0;
 };
 
 } //namespace services

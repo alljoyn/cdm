@@ -40,26 +40,29 @@ class LaundryCyclePhaseIntfController : public LaundryCyclePhaseInterface {
     virtual ~LaundryCyclePhaseIntfController() {}
 
     /**
-     * Get CyclePhase
+     * Get CyclePhase property
+     * (Current cycle phase. Range value [0x00-0x7F] is for standard phases; range value [0x80-0xFF] is for vendor-defined phases and so the meanings depend on manufacturer.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetCyclePhase(void* context = NULL) = 0;
 
     /**
-     * Get SupportedCyclePhases
+     * Get SupportedCyclePhases property
+     * (List of supported cycle phases.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetSupportedCyclePhases(void* context = NULL) = 0;
 
     /**
-     * Get CyclePhasesDescriptions
-     * @param[in] language language
+     * Call GetVendorPhasesDescription method
+     * (Get cycle phases description.)
+     * @param[in] languageTag Preferred language to be used in selecting the output strings.
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus GetCyclePhasesDescriptions(const qcc::String& language, void* context = NULL) = 0;
+    virtual QStatus GetVendorPhasesDescription(const qcc::String& languageTag, void* context = NULL) = 0;
 };
 
 } //namespace services

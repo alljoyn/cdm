@@ -40,28 +40,32 @@ class EnergyUsageIntfController : public EnergyUsageInterface {
     virtual ~EnergyUsageIntfController() {}
 
     /**
-     * Get cumulative energy
+     * Get CumulativeEnergy property
+     * (The cumulative energy consumption of the device)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetCumulativeEnergy(void* context = NULL) = 0;
 
     /**
-     * Get precision
+     * Get Precision property
+     * (The precision of the CumulativeEnergy property; i.e., the value the actual energy consumption must change before CumulativeEnergy is updated)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetPrecision(void* context = NULL) = 0;
 
     /**
-     * Get the minimum update time
+     * Get UpdateMinTime property
+     * (The minimum time between updates of the CumulativeEnergy property)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetUpdateMinTime(void* context = NULL) = 0;
 
     /**
-     * Reset cumulative energy
+     * Call ResetCumulativeEnergy method
+     * (Resets the value of CumulativeEnergy to 0.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */

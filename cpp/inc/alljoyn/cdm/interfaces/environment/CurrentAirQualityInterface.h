@@ -29,13 +29,23 @@ namespace services {
  */
 class CurrentAirQualityInterface : public CdmInterface {
   public:
+    enum ContaminantType {
+        CONTAMINANT_TYPE_CH2O = 0,
+        CONTAMINANT_TYPE_CO2 = 1,
+        CONTAMINANT_TYPE_CO = 2,
+        CONTAMINANT_TYPE_PM2_5 = 3,
+        CONTAMINANT_TYPE_PM10 = 4,
+        CONTAMINANT_TYPE_VOC = 5,
+    };
+
+
     /**
-     * Constructor of CurrentAirQuality
+     * Constructor of CurrentAirQualityInterface
      */
     CurrentAirQualityInterface() {}
 
     /**
-     * Destructor of CurrentAirQuality
+     * Destructor of CurrentAirQualityInterface
      */
     virtual ~CurrentAirQualityInterface() {}
 
@@ -46,25 +56,17 @@ class CurrentAirQualityInterface : public CdmInterface {
     const CdmInterfaceType GetInterfaceType() const { return CURRENT_AIR_QUALITY_INTERFACE; }
 
     /**
-     * Get Introspection Xml
-     * @return xml
+     * Get Introspection XML
+     * @return Introspection XML
      */
     virtual const qcc::String& GetIntrospectionXml() { return s_xml; }
 
     /**
      * Get Interface version
-     * @return interface version
+     * @return Interface version
      */
     virtual const uint16_t GetInterfaceVersion() const { return s_interfaceVersion; }
 
-    enum {
-        CONTAMINANT_TYPE_CH2O = 0,
-        CONTAMINANT_TYPE_CO2 = 1,
-        CONTAMINANT_TYPE_CO = 2,
-        CONTAMINANT_TYPE_PM2_5 = 3,
-        CONTAMINANT_TYPE_PM10 = 4,
-        CONTAMINANT_TYPE_VOC = 5
-    };
     enum {
         DEFAULT_MAX_VALUE = 0x7FF0000000000000,
         DEFAULT_MIN_VALUE = 0x0
@@ -74,8 +76,8 @@ class CurrentAirQualityInterface : public CdmInterface {
     static const qcc::String s_prop_Version;
     static const qcc::String s_prop_ContaminantType;
     static const qcc::String s_prop_CurrentValue;
-    static const qcc::String s_prop_MaxValue;
     static const qcc::String s_prop_MinValue;
+    static const qcc::String s_prop_MaxValue;
     static const qcc::String s_prop_Precision;
     static const qcc::String s_prop_UpdateMinTime;
 

@@ -60,27 +60,6 @@ QStatus RapidModeTimedIntfControllerImpl::Init()
     return status;
 }
 
-void RapidModeTimedIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
-{
-    MsgArg* entries;
-    size_t numEntries;
-
-    changed.Get("a{sv}", &numEntries, &entries);
-    for (size_t i = 0; i < numEntries; ++i) {
-        const char* propName;
-        MsgArg* propValue;
-        entries[i].Get("{sv}", &propName, &propValue);
-        String propNameStr(propName);
-
-        if (!s_prop_RapidModeMinutesRemaining.compare(propNameStr)) {
-            if (propValue->typeId == ALLJOYN_UINT16) {
-                uint16_t value = propValue->v_uint16;
-                m_interfaceListener.OnRapidModeMinutesRemainingChanged(obj.GetPath(), value);
-            }
-        }
-    }
-}
-
 QStatus RapidModeTimedIntfControllerImpl::GetRapidModeMinutesRemaining(void* context)
 {
     QStatus status = ER_OK;
@@ -108,6 +87,27 @@ QStatus RapidModeTimedIntfControllerImpl::GetMaxSetMinutes(void* context)
     status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_MaxSetMinutes.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&RapidModeTimedIntfControllerImpl::GetMaxSetMinutesPropertyCB, context);
 
     return status;
+}
+
+void RapidModeTimedIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
+{
+    MsgArg* entries;
+    size_t numEntries;
+
+    changed.Get("a{sv}", &numEntries, &entries);
+    for (size_t i = 0; i < numEntries; ++i) {
+        const char* propName;
+        MsgArg* propValue;
+        entries[i].Get("{sv}", &propName, &propValue);
+        String propNameStr(propName);
+
+        if (!s_prop_RapidModeMinutesRemaining.compare(propNameStr)) {
+            if (propValue->typeId == ALLJOYN_UINT16) {
+                uint16_t value = propValue->v_uint16;
+                m_interfaceListener.OnRapidModeMinutesRemainingChanged(obj.GetPath(), value);
+            }
+        }
+    }
 }
 
 void RapidModeTimedIntfControllerImpl::GetRapidModeMinutesRemainingPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)

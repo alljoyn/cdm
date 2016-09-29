@@ -60,38 +60,6 @@ QStatus TemperatureDisplayIntfControllerImpl::Init()
     return status;
 }
 
-void TemperatureDisplayIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
-{
-    MsgArg* entries;
-    size_t numEntries;
-
-    changed.Get("a{sv}", &numEntries, &entries);
-    for (size_t i = 0; i < numEntries; ++i) {
-        const char* propName;
-        MsgArg* propValue;
-        entries[i].Get("{sv}", &propName, &propValue);
-        String propNameStr(propName);
-
-        if (!s_prop_DisplayTemperatureUnit.compare(propNameStr)) {
-            if (propValue->typeId == ALLJOYN_BYTE) {
-                uint8_t temperatureUnit = propValue->v_byte;
-                m_interfaceListener.DisplayTemperatureUnitPropertyChanged(obj.GetPath(), temperatureUnit);
-            }
-        } else if(!s_prop_SupportedDisplayTemperatureUnits.compare(propNameStr)) {
-            uint8_t *vals;
-            size_t numVals;
-            std::vector<uint8_t> supportedTemperatureUnits;
-            propValue->Get("ay", &numVals, &vals);
-
-            cout << "Selectable Levels: " << endl;
-            for (size_t i = 0; i < numVals; ++i) {
-                supportedTemperatureUnits.push_back(vals[i]);
-            }
-            m_interfaceListener.SupportedDisplayTemperatureUnitsPropertyChanged(obj.GetPath(), supportedTemperatureUnits);
-        }
-    }
-}
-
 QStatus TemperatureDisplayIntfControllerImpl::GetDisplayTemperatureUnit(void* context)
 {
     QStatus status = ER_OK;
@@ -101,6 +69,7 @@ QStatus TemperatureDisplayIntfControllerImpl::GetDisplayTemperatureUnit(void* co
     return status;
 
 }
+
 QStatus TemperatureDisplayIntfControllerImpl::SetDisplayTemperatureUnit(const uint8_t temperatureUnit, void* context)
 {
     QStatus status = ER_OK;
@@ -120,6 +89,37 @@ QStatus TemperatureDisplayIntfControllerImpl::GetSupportedDisplayTemperatureUnit
 
     return status;
 }
+void TemperatureDisplayIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
+{
+    MsgArg* entries;
+    size_t numEntries;
+
+    changed.Get("a{sv}", &numEntries, &entries);
+    for (size_t i = 0; i < numEntries; ++i) {
+        const char* propName;
+        MsgArg* propValue;
+        entries[i].Get("{sv}", &propName, &propValue);
+        String propNameStr(propName);
+
+        if (!s_prop_DisplayTemperatureUnit.compare(propNameStr)) {
+            if (propValue->typeId == ALLJOYN_BYTE) {
+                uint8_t temperatureUnit = propValue->v_byte;
+                m_interfaceListener.OnDisplayTemperatureUnitChanged(obj.GetPath(), temperatureUnit);
+            }
+        } else if(!s_prop_SupportedDisplayTemperatureUnits.compare(propNameStr)) {
+            uint8_t *vals;
+            size_t numVals;
+            std::vector<uint8_t> supportedTemperatureUnits;
+            propValue->Get("ay", &numVals, &vals);
+
+            cout << "Selectable Levels: " << endl;
+            for (size_t i = 0; i < numVals; ++i) {
+                supportedTemperatureUnits.push_back(vals[i]);
+            }
+            m_interfaceListener.OnSupportedDisplayTemperatureUnitsChanged(obj.GetPath(), supportedTemperatureUnits);
+        }
+    }
+}
 
 void TemperatureDisplayIntfControllerImpl::GetDisplayTemperatureUnitPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
@@ -130,14 +130,14 @@ void TemperatureDisplayIntfControllerImpl::GetDisplayTemperatureUnitPropertyCB(Q
     uint8_t temperatureUnit;
     value.Get("y", &temperatureUnit);
 
-    m_interfaceListener.GetDisplayTemperatureUnitPropertyCallback(status,obj->GetPath(),temperatureUnit,context);
+    m_interfaceListener.OnResponseGetDisplayTemperatureUnit(status, obj->GetPath(), temperatureUnit, context);
 }
 void TemperatureDisplayIntfControllerImpl::SetDisplayTemperatureUnitPropertyCB(QStatus status, ProxyBusObject* obj, void* context)
 {
     if(!obj){
         return;
     }
-    m_interfaceListener.SetDisplayTemperatureUnitPropertyCallback(status,obj->GetPath(),context);
+    m_interfaceListener.OnResponseSetDisplayTemperatureUnit(status, obj->GetPath(), context);
 
 }
 void TemperatureDisplayIntfControllerImpl::GetSupportedDisplayTemperatureUnitsPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
@@ -156,7 +156,7 @@ void TemperatureDisplayIntfControllerImpl::GetSupportedDisplayTemperatureUnitsPr
         supportedTemperatureUnits.push_back(vals[i]);
     }
 
-    m_interfaceListener.GetSupportedDisplayTemperatureUnitsPropertyCallback(status,obj->GetPath(), supportedTemperatureUnits, context);
+    m_interfaceListener.OnResponseGetSupportedDisplayTemperatureUnits(status, obj->GetPath(), supportedTemperatureUnits, context);
 }
 
 } //namespace services

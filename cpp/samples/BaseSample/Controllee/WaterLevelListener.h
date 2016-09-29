@@ -31,7 +31,7 @@ class WaterLevelListener : public WaterLevelIntfControlleeListener
 
         virtual QStatus OnGetMaxLevel(uint8_t& maxLevel);
 
-        virtual QStatus OnGetSupplySource(WaterLevelInterface::WaterLevelSupplySource& supplySource);
+        virtual QStatus OnGetSupplySource(WaterLevelInterface::SupplySource& supplySource);
 };
 
 class WaterLevelCommands : public InterfaceCommands

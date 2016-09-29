@@ -26,7 +26,7 @@ TimeDisplayListener::~TimeDisplayListener()
 }
 
 
-void TimeDisplayListener::GetDisplayTimeFormatPropertyCallback(QStatus status, const qcc::String& objectPath, const uint8_t timeformat, void* context)
+void TimeDisplayListener::OnResponseGetDisplayTimeFormat(QStatus status, const qcc::String& objectPath, const uint8_t timeformat, void* context)
 {
     cout << __func__ << endl;
     cout << "# path: " << objectPath << endl;
@@ -34,14 +34,14 @@ void TimeDisplayListener::GetDisplayTimeFormatPropertyCallback(QStatus status, c
 
 }
 
-void TimeDisplayListener::SetDisplayTimeFormatPropertyCallback(QStatus status, const qcc::String& objectPath, void* context)
+void TimeDisplayListener::OnResponseSetDisplayTimeFormat(QStatus status, const qcc::String& objectPath, void* context)
 {
     cout << __func__ << endl;
     cout << "# path: " << objectPath << endl;
     cout << "# status: " << QCC_StatusText(status) << endl;
 }
 
-void TimeDisplayListener::GetSupportedDisplayTimeFormatsPropertyCallback(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& supportedTimeFormats, void* context)
+void TimeDisplayListener::OnResponseGetSupportedDisplayTimeFormats(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& supportedTimeFormats, void* context)
 {
     cout << "# "<< __func__ << endl;
     cout << "# objectPath: " << objectPath << endl;
@@ -51,7 +51,7 @@ void TimeDisplayListener::GetSupportedDisplayTimeFormatsPropertyCallback(QStatus
     }
 }
 
-void TimeDisplayListener::DisplayTimeFormatPropertyChanged(const qcc::String& objectPath, const uint8_t timeformat)
+void TimeDisplayListener::OnDisplayTimeFormatChanged(const qcc::String& objectPath, const uint8_t timeformat)
 {
     cout << __func__ << endl;
     cout << "# path: " << objectPath << endl;
@@ -59,7 +59,7 @@ void TimeDisplayListener::DisplayTimeFormatPropertyChanged(const qcc::String& ob
 
 }
 
-void TimeDisplayListener::SupportedDisplayTimeFormatsPropertyChanged(const qcc::String& objectPath, const std::vector<uint8_t>& supportedTimeFormats)
+void TimeDisplayListener::OnSupportedDisplayTimeFormatsChanged(const qcc::String& objectPath, const std::vector<uint8_t>& supportedTimeFormats)
 {
     cout << "# "<< __func__ << endl;
     cout << "# objectPath: " << objectPath << endl;

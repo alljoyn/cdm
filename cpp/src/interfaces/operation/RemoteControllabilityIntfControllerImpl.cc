@@ -61,6 +61,14 @@ QStatus RemoteControllabilityIntfControllerImpl::Init()
     return status;
 }
 
+QStatus RemoteControllabilityIntfControllerImpl::GetIsControllable(void* context)
+{
+    QStatus status = ER_OK;
+
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_IsControllable.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&RemoteControllabilityIntfControllerImpl::GetIsControllablePropertyCB, context);
+
+    return status;
+}
 void RemoteControllabilityIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
 {
     MsgArg* entries;
@@ -76,18 +84,10 @@ void RemoteControllabilityIntfControllerImpl::PropertiesChanged(ProxyBusObject& 
         if (!s_prop_IsControllable.compare(propNameStr)) {
             if (propValue->typeId == ALLJOYN_BOOLEAN) {
                 uint8_t volume = propValue->v_bool;
-                m_interfaceListener.IsControllalbePropertyChanged(obj.GetPath(), volume);
+                m_interfaceListener.OnIsControllableChanged(obj.GetPath(), volume);
             }
         }
     }
-}
-QStatus RemoteControllabilityIntfControllerImpl::GetIsControllable(void* context)
-{
-    QStatus status = ER_OK;
-
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_IsControllable.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&RemoteControllabilityIntfControllerImpl::GetIsControllablePropertyCB, context);
-
-    return status;
 }
 
 void RemoteControllabilityIntfControllerImpl::GetIsControllablePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
@@ -99,7 +99,7 @@ void RemoteControllabilityIntfControllerImpl::GetIsControllablePropertyCB(QStatu
     bool isControllable;
     value.Get("b", &isControllable);
 
-    m_interfaceListener.GetIsControllablePropertyCallback(status, obj->GetPath(), isControllable, context);
+    m_interfaceListener.OnResponseGetIsControllable(status, obj->GetPath(), isControllable, context);
 }
 
 } //namespace services

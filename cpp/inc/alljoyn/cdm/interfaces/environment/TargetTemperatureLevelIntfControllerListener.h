@@ -17,9 +17,6 @@
 #ifndef TARGETTEMPERATURELEVELINTFCONTROLLERLISTENER_H_
 #define TARGETTEMPERATURELEVELINTFCONTROLLERLISTENER_H_
 
-#include <map>
-#include <utility>
-
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/InterfaceControllerListener.h>
@@ -29,7 +26,7 @@ namespace ajn {
 namespace services {
 
 /**
- * TargetTemperatureLevel interface controller listener class
+ * TargetTemperatureLevel Interface Controller Listener class
  */
 class TargetTemperatureLevelIntfControllerListener : public InterfaceControllerListener {
   public:
@@ -40,7 +37,43 @@ class TargetTemperatureLevelIntfControllerListener : public InterfaceControllerL
     virtual ~TargetTemperatureLevelIntfControllerListener() {}
 
     /**
-     * Callback handler for setting TargetValue property
+     * Callback handler for GetMaxLevel completion
+     * @param[in] status ER_OK on success
+     * @param[in] objectPath the object path
+     * @param[in] value The value of MaxLevel
+     *                  (Maximum value allowed for target temperature level setting.)
+     * @param[in] context the context that is passed from application
+     */
+    virtual void OnResponseGetMaxLevel(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) {}
+
+    /**
+     * Handler for MaxLevel property changed
+     * @param[in] objectPath the object path
+     * @param[in] value The value of MaxLevel
+     *                  (Maximum value allowed for target temperature level setting.)
+     */
+    virtual void OnMaxLevelChanged(const qcc::String& objectPath, const uint8_t value) {}
+
+    /**
+     * Callback handler for GetTargetLevel completion
+     * @param[in] status ER_OK on success
+     * @param[in] objectPath the object path
+     * @param[in] value The value of TargetLevel
+     *                  (Target set-point value of temperature level.)
+     * @param[in] context the context that is passed from application
+     */
+    virtual void OnResponseGetTargetLevel(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) {}
+
+    /**
+     * Handler for TargetLevel property changed
+     * @param[in] objectPath the object path
+     * @param[in] value The value of TargetLevel
+     *                  (Target set-point value of temperature level.)
+     */
+    virtual void OnTargetLevelChanged(const qcc::String& objectPath, const uint8_t value) {}
+
+    /**
+     * Callback handler for SetTargetLevel completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
      * @param[in] context the context that is passed from application
@@ -48,52 +81,22 @@ class TargetTemperatureLevelIntfControllerListener : public InterfaceControllerL
     virtual void OnResponseSetTargetLevel(QStatus status, const qcc::String& objectPath, void* context) {}
 
     /**
-     * Callback handler for getting TargetLevel property
+     * Callback handler for GetSelectableTemperatureLevels completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] TargetValue
+     * @param[in] value The value of SelectableTemperatureLevels
+     *                  (List of the values of temperature level which can be selected.)
      * @param[in] context the context that is passed from application
      */
-    virtual void OnResponseGetTargetLevel(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) {}
-
-    /**
-     * Callback handler for getting MaxLevel property
-     * @param[in] status ER_OK on success
-     * @param[in] objectPath the object path
-     * @param[in] value the maximum value of target temperature level
-     * @param[in] context the context that is passed from application
-     */
-    virtual void OnResponseGetMaxLevel(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) {}
-
-    /**
-     * Callback handler for getting SelectableTemperatureLevels property
-     * @param[in] status ER_OK on success
-     * @param[in] objectPath the object path
-     * @param[in] value the selectable temperature levels
-     * @param[in] context the context that is passed from application
-     */
-    virtual void OnResponseGetSelectableTemperatureLevels(QStatus status, const qcc::String& objectPath, const TargetTemperatureLevelInterface::TemperatureLevels& value, void* context) {}
-
-    /**
-     * Handler for TargetLevel property changed
-     * @param[in] objectPath the object path
-     * @param[in] TargetValue
-     */
-    virtual void OnTargetLevelChanged(const qcc::String& objectPath, const uint8_t value) {}
-
-    /**
-     * Handler for MaxLevel property changed
-     * @param[in] objectPath the object path
-     * @param[in] value the maximum value of target temperature level
-     */
-    virtual void OnMaxLevelChanged(const qcc::String& objectPath, const uint8_t value) {}
+    virtual void OnResponseGetSelectableTemperatureLevels(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& value, void* context) {}
 
     /**
      * Handler for SelectableTemperatureLevels property changed
      * @param[in] objectPath the object path
-     * @param[in] value the step value of target temperature level
+     * @param[in] value The value of SelectableTemperatureLevels
+     *                  (List of the values of temperature level which can be selected.)
      */
-    virtual void OnSelectableTemperatureLevelsChanged(const qcc::String& objectPath, const TargetTemperatureLevelInterface::TemperatureLevels& value) {}
+    virtual void OnSelectableTemperatureLevelsChanged(const qcc::String& objectPath, const std::vector<uint8_t>& value) {}
 };
 
 } //namespace services

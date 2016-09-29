@@ -26,7 +26,7 @@ DishWashingCyclePhaseListener::~DishWashingCyclePhaseListener()
 }
 
 
-void DishWashingCyclePhaseListener::OnResponseGetCyclePhase(QStatus status, const qcc::String& objectPath, const uint8_t& cyclePhase, void* context)
+void DishWashingCyclePhaseListener::OnResponseGetCyclePhase(QStatus status, const qcc::String& objectPath, const uint8_t cyclePhase, void* context)
 {
     cout << __func__ << endl;
     cout << "# status: " << QCC_StatusText(status) << endl;
@@ -44,14 +44,14 @@ void DishWashingCyclePhaseListener::OnResponseGetSupportedCyclePhases(QStatus st
         cout << (int)listOfCyclePhases[i] << endl;
 }
 
-void DishWashingCyclePhaseListener::OnCyclePhasePropertyChanged(const qcc::String& objectPath, const uint8_t cyclePhase)
+void DishWashingCyclePhaseListener::OnCyclePhaseChanged(const qcc::String& objectPath, const uint8_t cyclePhase)
 {
     cout << __func__ << endl;
     cout << "# path: " << objectPath << endl;
     cout << "# cyclePhase: " << (int)cyclePhase << endl;
 }
 
-void DishWashingCyclePhaseListener::OnSupportedCyclePhasesPropertyChanged(const qcc::String& objectPath, const DishWashingCyclePhaseInterface::SupportedCyclePhases listOfCyclePhases)
+void DishWashingCyclePhaseListener::OnSupportedCyclePhasesChanged(const qcc::String& objectPath, const DishWashingCyclePhaseInterface::SupportedCyclePhases& listOfCyclePhases)
 {
     cout << __func__ << endl;
     cout << "# path: " << objectPath << endl;
@@ -60,7 +60,7 @@ void DishWashingCyclePhaseListener::OnSupportedCyclePhasesPropertyChanged(const 
         cout << (int)listOfCyclePhases[i] << endl;
 }
 
-void DishWashingCyclePhaseListener::OnResponseGetCyclePhasesDescriptions(QStatus status, const qcc::String& objectPath, const DishWashingCyclePhaseInterface::CyclePhaseDescriptions& listOfCycleDescriptions, void* context, const char* errorName, const char* errorMessage)
+void DishWashingCyclePhaseListener::OnResponseGetVendorPhasesDescription(QStatus status, const qcc::String& objectPath, const DishWashingCyclePhaseInterface::CyclePhaseDescriptions& listOfCycleDescriptions, void* context, const char* errorName, const char* errorMessage)
 {
     cout << __func__ << endl;
     cout << "# status: " << QCC_StatusText(status) << endl;
@@ -138,5 +138,5 @@ void DishWashingCyclePhaseCommands::OnCmdGetCyclePhasesDescriptions(Commands* co
     }
 
     cout << "Command string: " << cmd.c_str() << endl;
-    intfController->GetCyclePhasesDescriptions(cmd.c_str());
+    intfController->GetVendorPhasesDescription(cmd.c_str());
 }

@@ -20,12 +20,13 @@
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/InterfaceControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/ResourceSavingInterface.h>
 
 namespace ajn {
 namespace services {
 
 /**
- * ResourceSaving interface controller listener class
+ * ResourceSaving Interface Controller Listener class
  */
 class ResourceSavingIntfControllerListener : public InterfaceControllerListener {
   public:
@@ -36,28 +37,30 @@ class ResourceSavingIntfControllerListener : public InterfaceControllerListener 
     virtual ~ResourceSavingIntfControllerListener() {}
 
     /**
-     * Handler for OnResourceSavingMode property changed
+     * Callback handler for GetResourceSavingMode completion
+     * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] value resource saving mode
+     * @param[in] value The value of ResourceSavingMode
+     *                  (The current resource saving mode of the device; true if device in saving mode.)
+     * @param[in] context the context that is passed from application
+     */
+    virtual void OnResponseGetResourceSavingMode(QStatus status, const qcc::String& objectPath, const bool value, void* context) {}
+
+    /**
+     * Handler for ResourceSavingMode property changed
+     * @param[in] objectPath the object path
+     * @param[in] value The value of ResourceSavingMode
+     *                  (The current resource saving mode of the device; true if device in saving mode.)
      */
     virtual void OnResourceSavingModeChanged(const qcc::String& objectPath, const bool value) {}
 
     /**
-     * Callback handler for setting ResourceSavingMode property
+     * Callback handler for SetResourceSavingMode completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
      * @param[in] context the context that is passed from application
      */
     virtual void OnResponseSetResourceSavingMode(QStatus status, const qcc::String& objectPath, void* context) {}
-
-    /**
-     * Callback handler for getting ResourceSavingMode property
-     * @param[in] status ER_OK on success
-     * @param[in] objectPath the object path
-     * @param[in] value resource saving mode
-     * @param[in] context the context that is passed from application
-     */
-    virtual void OnResponseGetResourceSavingMode(QStatus status, const qcc::String& objectPath, const bool value, void* context) {}
 };
 
 } //namespace services

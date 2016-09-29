@@ -31,7 +31,7 @@ public:
 
     virtual QStatus OnGetAlerts(AlertsInterface::Alerts& alerts);
 
-    virtual QStatus OnGetAlertCodesDescription(const qcc::String& language, AlertsInterface::AlertCodesDescription& description, ErrorCode& error);
+    virtual QStatus OnGetAlertCodesDescription(const qcc::String& language, AlertsInterface::AlertCodesDescriptors& description, ErrorCode& error);
 
     virtual QStatus OnAcknowledgeAlert(const uint16_t alertCode, ErrorCode& error);
 

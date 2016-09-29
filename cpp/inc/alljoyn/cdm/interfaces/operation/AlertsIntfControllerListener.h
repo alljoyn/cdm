@@ -30,38 +30,46 @@ namespace services {
  */
 class AlertsIntfControllerListener : public InterfaceControllerListener {
   public:
+    using Severity = AlertsInterface::Severity;
+    using AlertRecord = AlertsInterface::AlertRecord;
+    using AlertCodesDescriptor = AlertsInterface::AlertCodesDescriptor;
+
+    /**
+     * Destructor of AlertsIntfControllerListener
+     */
     virtual ~AlertsIntfControllerListener() {}
 
     /**
-     * Callback handler for getting Alerts property
+     * Callback handler for GetAlerts completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] alerts the list of alerts
+     * @param[in] value The value of Alerts
+     *                  (List of current pending alerts.)
      * @param[in] context the context that is passed from application
      */
-    virtual void OnResponseGetAlerts(QStatus status, const qcc::String& objectPath, const AlertsInterface::Alerts& alerts, void* context) {}
+    virtual void OnResponseGetAlerts(QStatus status, const qcc::String& objectPath, const std::vector<AlertRecord>& value, void* context) {}
 
     /**
      * Handler for Alerts property changed
      * @param[in] objectPath the object path
-     * @param[in] alerts the list of alerts
+     * @param[in] value The value of Alerts
+     *                  (List of current pending alerts.)
      */
-    virtual void OnAlertsPropertyChanged(const qcc::String& objectPath, const AlertsInterface::Alerts& alerts) {}
+    virtual void OnAlertsChanged(const qcc::String& objectPath, const std::vector<AlertRecord>& value) {}
 
     /**
-     * Callback handler for GetAlertCodesDescription method
+     * Callback handler for GetAlertCodesDescription completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
+     * @param[in] description Alert codes description.
      * @param[in] context the context that is passed from application
      * @param[in] errorName the detail errorName is passed when the method call is failed
      * @param[in] errorMessage the errorMessage that describes the error
-     * @param[out]descriptions list of alert codes descriptions
      */
-    virtual void OnResponseGetAlertCodesDescription(QStatus status, const qcc::String& objectPath, const AlertsInterface::AlertCodesDescription& descriptions,
-                                                      void* context, const char* errorName, const char* errorMessage) {}
+    virtual void OnResponseGetAlertCodesDescription(QStatus status, const qcc::String& objectPath, const std::vector<AlertCodesDescriptor>& description, void* context, const char* errorName, const char* errorMessage) {}
 
     /**
-     * Callback handler for AcknowledgeAlert method
+     * Callback handler for AcknowledgeAlert completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
      * @param[in] context the context that is passed from application
@@ -71,7 +79,7 @@ class AlertsIntfControllerListener : public InterfaceControllerListener {
     virtual void OnResponseAcknowledgeAlert(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage) {}
 
     /**
-     * Callback handler for AcknowledgeAllAlerts method
+     * Callback handler for AcknowledgeAllAlerts completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
      * @param[in] context the context that is passed from application
@@ -79,10 +87,6 @@ class AlertsIntfControllerListener : public InterfaceControllerListener {
      * @param[in] errorMessage the errorMessage that describes the error
      */
     virtual void OnResponseAcknowledgeAllAlerts(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage) {}
-
-
-
-
 };
 
 } //namespace services

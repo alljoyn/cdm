@@ -60,38 +60,6 @@ QStatus TimeDisplayIntfControllerImpl::Init()
     return status;
 }
 
-void TimeDisplayIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
-{
-    MsgArg* entries;
-    size_t numEntries;
-
-    changed.Get("a{sv}", &numEntries, &entries);
-    for (size_t i = 0; i < numEntries; ++i) {
-        const char* propName;
-        MsgArg* propValue;
-        entries[i].Get("{sv}", &propName, &propValue);
-        String propNameStr(propName);
-
-        if (!s_prop_DisplayTimeFormat.compare(propNameStr)) {
-            if (propValue->typeId == ALLJOYN_BYTE) {
-                uint8_t timeFormat = propValue->v_byte;
-                m_interfaceListener.DisplayTimeFormatPropertyChanged(obj.GetPath(), timeFormat);
-            }
-        } else if(!s_prop_SupportedDisplayTimeFormats.compare(propNameStr)) {
-            uint8_t *vals;
-            size_t numVals;
-            std::vector<uint8_t> supportedTimeFormats;
-            propValue->Get("ay", &numVals, &vals);
-
-            cout << "Selectable Levels: " << endl;
-            for (size_t i = 0; i < numVals; ++i) {
-                supportedTimeFormats.push_back(vals[i]);
-            }
-            m_interfaceListener.SupportedDisplayTimeFormatsPropertyChanged(obj.GetPath(), supportedTimeFormats);
-        }
-    }
-}
-
 QStatus TimeDisplayIntfControllerImpl::GetDisplayTimeFormat(void* context)
 {
     QStatus status = ER_OK;
@@ -100,6 +68,7 @@ QStatus TimeDisplayIntfControllerImpl::GetDisplayTimeFormat(void* context)
 
     return status;
 }
+
 QStatus TimeDisplayIntfControllerImpl::SetDisplayTimeFormat(const uint8_t timeFormat, void* context)
 {
     QStatus status = ER_OK;
@@ -119,6 +88,37 @@ QStatus TimeDisplayIntfControllerImpl::GetSupportedDisplayTimeFormats(void* cont
 
     return status;
 }
+void TimeDisplayIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
+{
+    MsgArg* entries;
+    size_t numEntries;
+
+    changed.Get("a{sv}", &numEntries, &entries);
+    for (size_t i = 0; i < numEntries; ++i) {
+        const char* propName;
+        MsgArg* propValue;
+        entries[i].Get("{sv}", &propName, &propValue);
+        String propNameStr(propName);
+
+        if (!s_prop_DisplayTimeFormat.compare(propNameStr)) {
+            if (propValue->typeId == ALLJOYN_BYTE) {
+                uint8_t timeFormat = propValue->v_byte;
+                m_interfaceListener.OnDisplayTimeFormatChanged(obj.GetPath(), timeFormat);
+            }
+        } else if(!s_prop_SupportedDisplayTimeFormats.compare(propNameStr)) {
+            uint8_t *vals;
+            size_t numVals;
+            std::vector<uint8_t> supportedTimeFormats;
+            propValue->Get("ay", &numVals, &vals);
+
+            cout << "Selectable Levels: " << endl;
+            for (size_t i = 0; i < numVals; ++i) {
+                supportedTimeFormats.push_back(vals[i]);
+            }
+            m_interfaceListener.OnSupportedDisplayTimeFormatsChanged(obj.GetPath(), supportedTimeFormats);
+        }
+    }
+}
 
 void TimeDisplayIntfControllerImpl::GetDisplayTimeFormatPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
@@ -129,14 +129,14 @@ void TimeDisplayIntfControllerImpl::GetDisplayTimeFormatPropertyCB(QStatus statu
     uint8_t timeFormat;
     value.Get("y", &timeFormat);
 
-    m_interfaceListener.GetDisplayTimeFormatPropertyCallback(status,obj->GetPath(),timeFormat,context);
+    m_interfaceListener.OnResponseGetDisplayTimeFormat(status, obj->GetPath(), timeFormat, context);
 }
 void TimeDisplayIntfControllerImpl::SetDisplayTimeFormatPropertyCB(QStatus status, ProxyBusObject* obj, void* context)
 {
     if(!obj){
         return;
     }
-    m_interfaceListener.SetDisplayTimeFormatPropertyCallback(status,obj->GetPath(),context);
+    m_interfaceListener.OnResponseSetDisplayTimeFormat(status, obj->GetPath(), context);
 }
 void TimeDisplayIntfControllerImpl::GetSupportedDisplayTimeFormatsPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
@@ -155,7 +155,7 @@ void TimeDisplayIntfControllerImpl::GetSupportedDisplayTimeFormatsPropertyCB(QSt
         supportedTimeFormats.push_back(vals[i]);
     }
 
-    m_interfaceListener.GetSupportedDisplayTimeFormatsPropertyCallback(status,obj->GetPath(), supportedTimeFormats, context);
+    m_interfaceListener.OnResponseGetSupportedDisplayTimeFormats(status, obj->GetPath(), supportedTimeFormats, context);
 }
 
 } //namespace services

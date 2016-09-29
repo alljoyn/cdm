@@ -36,12 +36,12 @@ class OvenCyclePhaseIntfControllerImpl : public InterfaceController, public Oven
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Constructor of OvenCyclePhaseIntfControllerImpl
      */
-    OvenCyclePhaseIntfControllerImpl(BusAttachment& busAttachment, OvenCyclePhaseIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    OvenCyclePhaseIntfControllerImpl(BusAttachment& busAttachment, OvenCyclePhaseIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Destructor of OvenCyclePhaseIntfControllerImpl
@@ -61,34 +61,35 @@ class OvenCyclePhaseIntfControllerImpl : public InterfaceController, public Oven
     virtual BusAttachment& GetBusAttachment() const { return m_busAttachment; }
 
     /**
-     * Get current cycle phase
-     * @param[in] context
-     * @return status
+     * Get CyclePhase property
+     * (Current cycle phase. Range value [0x00-0x7F] is for standard phases; range value [0x80-0xFF] is for vendor-defined phases and so the meanings depend on manufacturer)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetCyclePhase(void* context);
 
     /**
-     * Get list of supported cycle phases
-     * @param[in] context
-     * @return status
+     * Get SupportedCyclePhases property
+     * (List of supported cycle phases.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
-    virtual QStatus GetSupportedCyclePhases(void* context );
+    virtual QStatus GetSupportedCyclePhases(void* context);
 
     /**
-     * Get vedor defined cycles descriptions
-     * @param[in] context
-     * @return status
+     * Call GetVendorPhasesDescription method
+     * (Get cycle phases description.)
+     * @param[in] languageTag preferred language to be used in selecting the output strings.
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
-    virtual QStatus GetCyclePhasesDescriptions(const qcc::String& language, void* context);
+    virtual QStatus GetVendorPhasesDescription(const qcc::String& languageTag, void* context);
 
   private:
-    OvenCyclePhaseIntfControllerImpl();
-
     void PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context);
-
     void GetCyclePhasePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
     void GetSupportedCyclePhasesPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
-    void GetCyclePhasesDescriptionReplyHandler(Message& message, void* context);
+    void GetVendorPhasesDescriptionReplyHandler(Message& message, void* context);
 
     BusAttachment& m_busAttachment;
     OvenCyclePhaseIntfControllerListener& m_interfaceListener;

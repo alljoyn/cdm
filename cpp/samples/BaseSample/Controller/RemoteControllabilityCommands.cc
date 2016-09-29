@@ -34,7 +34,7 @@ void RemoteControllabilityListener::IsControllablePropertyChanged(const qcc::Str
 }
 
 
-void RemoteControllabilityListener::GetIsControllablePropertyCallback(QStatus status, const qcc::String& objectPath, const bool isControllable, void* context)
+void RemoteControllabilityListener::OnResponseGetIsControllable(QStatus status, const qcc::String& objectPath, const bool isControllable, void* context)
 {
     cout << __func__ << endl;
     cout << "# status: " << QCC_StatusText(status) << endl;

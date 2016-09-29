@@ -36,12 +36,12 @@ class WindDirectionIntfControllerImpl : public InterfaceController, public WindD
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Constructor of WindDirectionIntfControllerImpl
      */
-    WindDirectionIntfControllerImpl(BusAttachment& busAttachment, WindDirectionIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    WindDirectionIntfControllerImpl(BusAttachment& busAttachment, WindDirectionIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Destructor of WindDirectionIntfControllerImpl
@@ -61,95 +61,101 @@ class WindDirectionIntfControllerImpl : public InterfaceController, public WindD
     virtual BusAttachment& GetBusAttachment() const { return m_busAttachment; }
 
     /**
-     * Get HorizontalDirection
-     * @param[in] context
-     * @return status
+     * Get HorizontalDirection property
+     * (Horizontal wind direction of a device.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetHorizontalDirection(void* context);
 
     /**
-     * Set HorizontalDirection
-     * @param[in] HorizontalDirection
-     * @param[in] context
-     * @return status
+     * Set HorizontalDirection property
+     * (Horizontal wind direction of a device.)
+     * @param[in] value The horizontal direction to set
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus SetHorizontalDirection(const uint16_t value, void* context);
 
     /**
-     * Get HorizontalMax
-     * @param[in] context
-     * @return status
+     * Get HorizontalMax property
+     * (Maximum value allowed for a target horizontal wind direction.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetHorizontalMax(void* context);
 
     /**
-     * Get HorizontalAutoMode
-     * @param[in] context
-     * @return status
+     * Get HorizontalAutoMode property
+     * (Represent enabled/disabled state of the horizontal auto mode. HorizontalAutoMode is for controlling horizontal wind direction automatically.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetHorizontalAutoMode(void* context);
 
     /**
-     * Set HorizontalAutoMode
-     * @param[in] HorizontalAutoMode
-     * @param[in] context
-     * @return status
+     * Set HorizontalAutoMode property
+     * (Represent enabled/disabled state of the horizontal auto mode. HorizontalAutoMode is for controlling horizontal wind direction automatically.)
+     * @param[in] value The horizontal auto mode to set
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
-    virtual QStatus SetHorizontalAutoMode(const uint8_t value, void* context);
+    virtual QStatus SetHorizontalAutoMode(const AutoMode value, void* context);
 
     /**
-     * Get VerticalDirection
-     * @param[in] context
-     * @return status
+     * Get VerticalDirection property
+     * (Vertical wind direction of a device.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetVerticalDirection(void* context);
 
     /**
-     * Set VerticalDirection
-     * @param[in] VerticalDirection
-     * @param[in] context
-     * @return status
+     * Set VerticalDirection property
+     * (Vertical wind direction of a device.)
+     * @param[in] value The vertical direction to set
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus SetVerticalDirection(const uint16_t value, void* context);
 
     /**
-     * Get VerticalMax
-     * @param[in] context
-     * @return status
+     * Get VerticalMax property
+     * (Maximum value allowed for a target vertical wind direction.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetVerticalMax(void* context);
 
     /**
-     * Get VerticalAutoMode
-     * @param[in] context
-     * @return status
+     * Get VerticalAutoMode property
+     * (Represent enabled/disabled state of the vertical auto mode. VerticalAutoMode is for controlling vertical wind direction automatically.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetVerticalAutoMode(void* context);
 
     /**
-     * Set VerticalAutoMode
-     * @param[in] VerticalAutoMode
-     * @param[in] context
-     * @return status
+     * Set VerticalAutoMode property
+     * (Represent enabled/disabled state of the vertical auto mode. VerticalAutoMode is for controlling vertical wind direction automatically.)
+     * @param[in] value The vertical auto mode to set
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
-    virtual QStatus SetVerticalAutoMode(const uint8_t value, void* context);
-
+    virtual QStatus SetVerticalAutoMode(const AutoMode value, void* context);
 
   private:
-    WindDirectionIntfControllerImpl();
-
     void PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context);
-    void SetHorizontalDirectionPropertyCB(QStatus status, ProxyBusObject* obj, void* context);
     void GetHorizontalDirectionPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+    void SetHorizontalDirectionPropertyCB(QStatus status, ProxyBusObject* obj, void* context);
     void GetHorizontalMaxPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
-    void SetHorizontalAutoModePropertyCB(QStatus status, ProxyBusObject* obj, void* context);
     void GetHorizontalAutoModePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
-
-    void SetVerticalDirectionPropertyCB(QStatus status, ProxyBusObject* obj, void* context);
+    void SetHorizontalAutoModePropertyCB(QStatus status, ProxyBusObject* obj, void* context);
     void GetVerticalDirectionPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+    void SetVerticalDirectionPropertyCB(QStatus status, ProxyBusObject* obj, void* context);
     void GetVerticalMaxPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
-    void SetVerticalAutoModePropertyCB(QStatus status, ProxyBusObject* obj, void* context);
     void GetVerticalAutoModePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+    void SetVerticalAutoModePropertyCB(QStatus status, ProxyBusObject* obj, void* context);
 
     BusAttachment& m_busAttachment;
     WindDirectionIntfControllerListener& m_interfaceListener;

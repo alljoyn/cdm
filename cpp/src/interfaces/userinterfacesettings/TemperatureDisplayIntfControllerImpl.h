@@ -36,12 +36,12 @@ class TemperatureDisplayIntfControllerImpl : public InterfaceController, public 
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Constructor of TemperatureDisplayIntfControllerImpl
      */
-    TemperatureDisplayIntfControllerImpl(BusAttachment& busAttachment, TemperatureDisplayIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    TemperatureDisplayIntfControllerImpl(BusAttachment& busAttachment, TemperatureDisplayIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Destructor of TemperatureDisplayIntfControllerImpl
@@ -61,32 +61,32 @@ class TemperatureDisplayIntfControllerImpl : public InterfaceController, public 
     virtual BusAttachment& GetBusAttachment() const { return m_busAttachment; }
 
     /**
-     * Get DisplayTemperatureUnit
+     * Get DisplayTemperatureUnit property
+     * (The unit being used to display temperature (0=C, 1=F, 2 =K))
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus GetDisplayTemperatureUnit(void* context = NULL);
+    virtual QStatus GetDisplayTemperatureUnit(void* context);
 
     /**
-     * Set DisplayTemperatureUnit
-     * @param[in] temperatureUnit temperature unit
+     * Set DisplayTemperatureUnit property
+     * (The unit being used to display temperature (0=C, 1=F, 2 =K))
+     * @param[in] value The display temperature unit to set
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus SetDisplayTemperatureUnit(const uint8_t temperatureUnit, void* context = NULL);
+    virtual QStatus SetDisplayTemperatureUnit(const uint8_t value, void* context);
 
     /**
-     * Get SupportedDisplayTemperatureUnits
+     * Get SupportedDisplayTemperatureUnits property
+     * (List of supported temperature units)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus GetSupportedDisplayTemperatureUnits(void* context = NULL);
+    virtual QStatus GetSupportedDisplayTemperatureUnits(void* context);
 
   private:
-    TemperatureDisplayIntfControllerImpl();
-
     void PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context);
-
     void GetDisplayTemperatureUnitPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
     void SetDisplayTemperatureUnitPropertyCB(QStatus status, ProxyBusObject* obj, void* context);
     void GetSupportedDisplayTemperatureUnitsPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);

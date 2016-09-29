@@ -91,13 +91,13 @@ void ClimateControlModeCommands::InitializeProperties()
 {
     if (m_intfControllee) {
         ClimateControlModeInterface::SupportedModes supportedModes;
-        supportedModes.push_back(ClimateControlModeInterface::CLIMATE_CONTROL_MODE_OFF);
-        supportedModes.push_back(ClimateControlModeInterface::CLIMATE_CONTROL_MODE_HEAT);
-        supportedModes.push_back(ClimateControlModeInterface::CLIMATE_CONTROL_MODE_COOL);
-        supportedModes.push_back(ClimateControlModeInterface::CLIMATE_CONTROL_MODE_DRY);
+        supportedModes.push_back(ClimateControlModeInterface::MODE_OFF);
+        supportedModes.push_back(ClimateControlModeInterface::MODE_HEAT);
+        supportedModes.push_back(ClimateControlModeInterface::MODE_COOL);
+        supportedModes.push_back(ClimateControlModeInterface::MODE_DRY);
         m_intfControllee->SetSupportedModes(supportedModes);
-        m_intfControllee->SetMode(ClimateControlModeInterface::CLIMATE_CONTROL_MODE_OFF);
-        m_intfControllee->SetOperationalState(ClimateControlModeInterface::CLIMATE_CONTROL_OPERATIONAL_STATE_IDLE);
+        m_intfControllee->SetMode(ClimateControlModeInterface::MODE_OFF);
+        m_intfControllee->SetOperationalState(ClimateControlModeInterface::OPERATIONAL_STATE_IDLE);
     }
 }
 

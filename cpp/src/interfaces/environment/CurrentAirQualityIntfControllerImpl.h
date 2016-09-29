@@ -36,12 +36,12 @@ class CurrentAirQualityIntfControllerImpl : public InterfaceController, public C
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Constructor of CurrentAirQualityIntfControllerImpl
      */
-    CurrentAirQualityIntfControllerImpl(BusAttachment& busAttachment, CurrentAirQualityIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    CurrentAirQualityIntfControllerImpl(BusAttachment& busAttachment, CurrentAirQualityIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Destructor of CurrentAirQualityIntfControllerImpl
@@ -61,55 +61,59 @@ class CurrentAirQualityIntfControllerImpl : public InterfaceController, public C
     virtual BusAttachment& GetBusAttachment() const { return m_busAttachment; }
 
     /**
-     * Get ContaminantType
-     * @param[in] context
-     * @return status
+     * Get ContaminantType property
+     * (The contaminant type.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
-    QStatus GetContaminantType(void* context);
+    virtual QStatus GetContaminantType(void* context);
 
     /**
-     * Get CurrentVale
-     * @param[in] context
-     * @return status
+     * Get CurrentValue property
+     * (The current value of air quality.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
-    QStatus GetCurrentValue(void* context);
+    virtual QStatus GetCurrentValue(void* context);
 
     /**
-     * Get MaxValue
-     * @param[in] context
-     * @return status
+     * Get MinValue property
+     * (The minimum value allowed for CurrentValue.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
-    QStatus GetMaxValue(void* context);
+    virtual QStatus GetMinValue(void* context);
 
     /**
-     * Get MinValue
-     * @param[in] context
-     * @return status
+     * Get MaxValue property
+     * (The maximum value allowed for CurrentValue.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
-    QStatus GetMinValue(void* context);
+    virtual QStatus GetMaxValue(void* context);
 
     /**
-     * Get current Precision
-     * @param[in] context
-     * @return status
+     * Get Precision property
+     * (The precision of the CurrentValue property.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetPrecision(void* context);
 
     /**
-     * Get current UpdateMinTime
-     * @param[in] context
-     * @return status
+     * Get UpdateMinTime property
+     * (The minimum time between updates of the CurrentValue property in milliseconds.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetUpdateMinTime(void* context);
 
   private:
-    CurrentAirQualityIntfControllerImpl();
-
     void PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context);
     void GetContaminantTypePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
     void GetCurrentValuePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
-    void GetMaxValuePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
     void GetMinValuePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+    void GetMaxValuePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
     void GetPrecisionPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
     void GetUpdateMinTimePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
 

@@ -35,19 +35,19 @@ class WindDirectionListener : public WindDirectionIntfControllerListener {
     virtual void OnResponseGetHorizontalDirection(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context);
     virtual void OnResponseGetHorizontalMax(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context);
     virtual void OnResponseSetHorizontalAutoMode(QStatus status, const qcc::String& objectPath, void* context);
-    virtual void OnResponseGetHorizontalAutoMode(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context);
+    virtual void OnResponseGetHorizontalAutoMode(QStatus status, const qcc::String& objectPath, const AutoMode value, void* context);
     virtual void OnResponseSetVerticalDirection(QStatus status, const qcc::String& objectPath, void* context);
     virtual void OnResponseGetVerticalDirection(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context);
     virtual void OnResponseGetVerticalMax(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context);
     virtual void OnResponseSetVerticalAutoMode(QStatus status, const qcc::String& objectPath, void* context);
-    virtual void OnResponseGetVerticalAutoMode(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context);
+    virtual void OnResponseGetVerticalAutoMode(QStatus status, const qcc::String& objectPath, const AutoMode value, void* context);
 
     virtual void OnHorizontalDirectionChanged(const qcc::String& objectPath, const uint16_t value);
     virtual void OnHorizontalMaxChanged(const qcc::String& objectPath, const uint16_t value);
-    virtual void OnHorizontalAutoModeChanged(const qcc::String& objectPath, const uint8_t value);
+    virtual void OnHorizontalAutoModeChanged(const qcc::String& objectPath, const AutoMode value);
     virtual void OnVerticalDirectionChanged(const qcc::String& objectPath, const uint16_t value);
     virtual void OnVerticalMaxChanged(const qcc::String& objectPath, const uint16_t value);
-    virtual void OnVerticalAutoModeChanged(const qcc::String& objectPath, const uint8_t value);
+    virtual void OnVerticalAutoModeChanged(const qcc::String& objectPath, const AutoMode value);
 
 };
 

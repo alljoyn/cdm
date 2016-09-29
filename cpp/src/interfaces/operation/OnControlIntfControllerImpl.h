@@ -36,12 +36,12 @@ class OnControlIntfControllerImpl : public InterfaceController, public OnControl
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Constructor of OnControlIntfControllerImpl
      */
-    OnControlIntfControllerImpl(BusAttachment& busAttachment, OnControlIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    OnControlIntfControllerImpl(BusAttachment& busAttachment, OnControlIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Destructor of OnControlIntfControllerImpl
@@ -61,15 +61,14 @@ class OnControlIntfControllerImpl : public InterfaceController, public OnControl
     virtual BusAttachment& GetBusAttachment() const { return m_busAttachment; }
 
     /**
-    * Switch On
-    * @param[in] context
-    * @return status
-    */
+     * Call SwitchOn method
+     * (Switch on the device.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
+     */
     virtual QStatus SwitchOn(void* context);
 
   private:
-    OnControlIntfControllerImpl();
-
     void PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context);
     void SwitchOnReplyHandler(Message& message, void* context);
 

@@ -74,7 +74,7 @@ QStatus TestTimerListener::OnSetTargetTimeToStart(int32_t time, ErrorCode& error
     }
     else
     {
-        status = controllee->CycleIntf()->SetOperationalState(CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_DELAYED_START);
+        status = controllee->CycleIntf()->SetOperationalState(CycleControlInterface::OperationalState::OPERATIONAL_STATE_DELAYED_START);
     }
     return status;
 }

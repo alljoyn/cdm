@@ -40,41 +40,46 @@ class AudioVolumeIntfController : public AudioVolumeInterface {
     virtual ~AudioVolumeIntfController() {}
 
     /**
-     * Set volume
-     * @param[in] volume volume
-     * @param[in] context the context that is passed to the callback handler
-     * @return ER_OK on success
-     */
-    virtual QStatus SetVolume(const uint8_t volume, void* context = NULL) = 0;
-
-    /**
-     * Set mute
-     * @param[in] mute mute
-     * @param[in] context the context that is passed to the callback handler
-     * @return ER_OK on success
-     */
-    virtual QStatus SetMute(const bool mute, void* context = NULL) = 0;
-
-    /**
-     * Get volume
+     * Get Volume property
+     * (Speaker volume index of the device.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetVolume(void* context = NULL) = 0;
 
     /**
-     * Get the maximum volume
+     * Set Volume property
+     * (Speaker volume index of the device.)
+     * @param[in] value The volume to set
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
+     */
+    virtual QStatus SetVolume(const uint8_t value, void* context = NULL) = 0;
+
+    /**
+     * Get MaxVolume property
+     * (Maximum value allowed for Volume.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetMaxVolume(void* context = NULL) = 0;
 
     /**
-     * Get mute
+     * Get Mute property
+     * (If true, state of volume is muted.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetMute(void* context = NULL) = 0;
+
+    /**
+     * Set Mute property
+     * (If true, state of volume is muted.)
+     * @param[in] value The mute to set
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
+     */
+    virtual QStatus SetMute(const bool value, void* context = NULL) = 0;
 };
 
 } //namespace services

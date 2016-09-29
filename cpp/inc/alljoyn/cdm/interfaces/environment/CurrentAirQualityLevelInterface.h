@@ -29,13 +29,26 @@ namespace services {
  */
 class CurrentAirQualityLevelInterface : public CdmInterface {
   public:
+    enum ContaminantType {
+        CONTAMINANT_TYPE_CH2O = 0,
+        CONTAMINANT_TYPE_CO2 = 1,
+        CONTAMINANT_TYPE_CO = 2,
+        CONTAMINANT_TYPE_PM2_5 = 3,
+        CONTAMINANT_TYPE_PM10 = 4,
+        CONTAMINANT_TYPE_VOC = 5,
+        CONTAMINANT_TYPE_SMOKE = 253,
+        CONTAMINANT_TYPE_ODOR = 254,
+        CONTAMINANT_TYPE_AIR_POLLUTION = 255,
+    };
+
+
     /**
-     * Constructor of CurrentAirQualityLevel
+     * Constructor of CurrentAirQualityLevelInterface
      */
     CurrentAirQualityLevelInterface() {}
 
     /**
-     * Destructor of CurrentAirQualityLevel
+     * Destructor of CurrentAirQualityLevelInterface
      */
     virtual ~CurrentAirQualityLevelInterface() {}
 
@@ -46,28 +59,16 @@ class CurrentAirQualityLevelInterface : public CdmInterface {
     const CdmInterfaceType GetInterfaceType() const { return CURRENT_AIR_QUALITY_LEVEL_INTERFACE; }
 
     /**
-     * Get Introspection Xml
-     * @return xml
+     * Get Introspection XML
+     * @return Introspection XML
      */
     virtual const qcc::String& GetIntrospectionXml() { return s_xml; }
 
     /**
      * Get Interface version
-     * @return interface version
+     * @return Interface version
      */
     virtual const uint16_t GetInterfaceVersion() const { return s_interfaceVersion; }
-
-    enum {
-        CONTAMINANT_TYPE_CH2O = 0,
-        CONTAMINANT_TYPE_CO2 = 1,
-        CONTAMINANT_TYPE_CO = 2,
-        CONTAMINANT_TYPE_PM2_5 = 3,
-        CONTAMINANT_TYPE_PM10 = 4,
-        CONTAMINANT_TYPE_VOC = 5,
-        CONTAMINANT_TYPE_SMOKE = 253,
-        CONTAMINANT_TYPE_ODOR = 254,
-        CONTAMINANT_TYPE_AIR_POLLUTION = 255
-    };
 
   protected:
     static const qcc::String s_prop_Version;

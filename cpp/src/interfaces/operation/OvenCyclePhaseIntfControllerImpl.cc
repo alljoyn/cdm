@@ -60,38 +60,6 @@ QStatus OvenCyclePhaseIntfControllerImpl::Init()
     return status;
 }
 
-void OvenCyclePhaseIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
-{
-    MsgArg* entries;
-    size_t numEntries;
-
-    changed.Get("a{sv}", &numEntries, &entries);
-    for (size_t i = 0; i < numEntries; ++i) {
-        const char* propName;
-        MsgArg* propValue;
-        entries[i].Get("{sv}", &propName, &propValue);
-        String propNameStr(propName);
-
-        if (!s_prop_CyclePhase.compare(propNameStr)) {
-            if (propValue->typeId == ALLJOYN_BYTE) {
-                OvenCyclePhaseInterface::OvenCyclePhase cyclePhase = (OvenCyclePhaseInterface::OvenCyclePhase)propValue->v_byte;
-                m_interfaceListener.OnCyclePhasePropertyChanged(obj.GetPath(), cyclePhase);
-            }
-        } else if (!s_prop_SupportedCyclePhases.compare(propNameStr)) {
-            if (propValue->typeId == ALLJOYN_BYTE_ARRAY) {
-                OvenCyclePhaseInterface::SupportedCyclePhases supportedCyclePhases;
-                uint8_t *vals;
-                size_t numVals;
-                propValue->Get("ay", &numVals, &vals);
-
-                for (size_t i = 0; i < numVals; ++i)
-                    supportedCyclePhases.push_back((OvenCyclePhaseInterface::OvenCyclePhase)vals[i]);
-                m_interfaceListener.OnSupportedCyclePhasesPropertyChanged(obj.GetPath(), supportedCyclePhases);
-            }
-        }
-    }
-}
-
 QStatus OvenCyclePhaseIntfControllerImpl::GetCyclePhase(void* context)
 {
     QStatus status = ER_OK;
@@ -111,7 +79,7 @@ QStatus OvenCyclePhaseIntfControllerImpl::GetSupportedCyclePhases(void* context 
     return status;
 }
 
-QStatus OvenCyclePhaseIntfControllerImpl::GetCyclePhasesDescriptions(const qcc::String& language, void* context)
+QStatus OvenCyclePhaseIntfControllerImpl::GetVendorPhasesDescription(const qcc::String& language, void* context)
 {
     QStatus status = ER_OK;
 
@@ -120,9 +88,41 @@ QStatus OvenCyclePhaseIntfControllerImpl::GetCyclePhasesDescriptions(const qcc::
     args[0].v_string.str = language.c_str();
     args[0].v_string.len = language.size();
 
-    status = m_proxyObject.MethodCallAsync(GetInterfaceName().c_str(), s_method_GetVendorPhasesDescription.c_str(), this, (MessageReceiver::ReplyHandler)&OvenCyclePhaseIntfControllerImpl::GetCyclePhasesDescriptionReplyHandler, args, 1, context);
+    status = m_proxyObject.MethodCallAsync(GetInterfaceName().c_str(), s_method_GetVendorPhasesDescription.c_str(), this, (MessageReceiver::ReplyHandler)&OvenCyclePhaseIntfControllerImpl::GetVendorPhasesDescriptionReplyHandler, args, 1, context);
 
     return status;
+}
+
+void OvenCyclePhaseIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
+{
+    MsgArg* entries;
+    size_t numEntries;
+
+    changed.Get("a{sv}", &numEntries, &entries);
+    for (size_t i = 0; i < numEntries; ++i) {
+        const char* propName;
+        MsgArg* propValue;
+        entries[i].Get("{sv}", &propName, &propValue);
+        String propNameStr(propName);
+
+        if (!s_prop_CyclePhase.compare(propNameStr)) {
+            if (propValue->typeId == ALLJOYN_BYTE) {
+                OvenCyclePhaseInterface::OvenCyclePhase cyclePhase = (OvenCyclePhaseInterface::OvenCyclePhase)propValue->v_byte;
+                m_interfaceListener.OnCyclePhaseChanged(obj.GetPath(), cyclePhase);
+            }
+        } else if (!s_prop_SupportedCyclePhases.compare(propNameStr)) {
+            if (propValue->typeId == ALLJOYN_BYTE_ARRAY) {
+                OvenCyclePhaseInterface::SupportedCyclePhases supportedCyclePhases;
+                uint8_t *vals;
+                size_t numVals;
+                propValue->Get("ay", &numVals, &vals);
+
+                for (size_t i = 0; i < numVals; ++i)
+                    supportedCyclePhases.push_back((OvenCyclePhaseInterface::OvenCyclePhase)vals[i]);
+                m_interfaceListener.OnSupportedCyclePhasesChanged(obj.GetPath(), supportedCyclePhases);
+            }
+        }
+    }
 }
 
 void OvenCyclePhaseIntfControllerImpl::GetCyclePhasePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
@@ -153,7 +153,7 @@ void OvenCyclePhaseIntfControllerImpl::GetSupportedCyclePhasesPropertyCB(QStatus
 
 }
 
-void OvenCyclePhaseIntfControllerImpl::GetCyclePhasesDescriptionReplyHandler(Message& message, void* context)
+void OvenCyclePhaseIntfControllerImpl::GetVendorPhasesDescriptionReplyHandler(Message& message, void* context)
 {
     OvenCyclePhaseInterface::CyclePhaseDescriptions descriptions;
     qcc::String errorMessage;
@@ -176,7 +176,7 @@ void OvenCyclePhaseIntfControllerImpl::GetCyclePhasesDescriptionReplyHandler(Mes
 
         MsgArg* entries;
         size_t numEntries;
-        OvenCyclePhaseInterface::OvenPhaseDescriptor desc;
+        OvenCyclePhaseInterface::CyclePhaseDescriptor desc;
 
         args[0].Get("a(yss)", &numEntries, &entries);
         for (size_t i = 0; i < numEntries; ++i)
@@ -190,7 +190,7 @@ void OvenCyclePhaseIntfControllerImpl::GetCyclePhasesDescriptionReplyHandler(Mes
             descriptions.push_back(desc);
         }
     }
-    m_interfaceListener.OnResponseGetCyclePhasesDescriptions(status, m_proxyObject.GetPath(), descriptions, context, errorName, errorMessage.c_str());
+    m_interfaceListener.OnResponseGetVendorPhasesDescription(status, m_proxyObject.GetPath(), descriptions, context, errorName, errorMessage.c_str());
 }
 
 } //namespace services

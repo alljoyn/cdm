@@ -17,10 +17,6 @@
 #ifndef TARGETTEMPERATURELEVELINTFCONTROLLER_H_
 #define TARGETTEMPERATURELEVELINTFCONTROLLER_H_
 
-#include <vector>
-#include <map>
-#include <utility>
-
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/environment/TargetTemperatureLevelInterface.h>
@@ -44,29 +40,33 @@ class TargetTemperatureLevelIntfController : public TargetTemperatureLevelInterf
     virtual ~TargetTemperatureLevelIntfController() {}
 
     /**
-     * Get current target temperature level
-     * @param[in] context the context that is passed to the callback handler
-     * @return ER_OK on success
-     */
-    virtual QStatus GetTargetLevel(void* context = NULL) = 0;
-
-    /**
-     * Set Target TemperatureLevel
-     * @param[in] TargetTemperatureLevel target temperature level
-     * @param[in] context the context that is passed to the callback handler
-     * @return ER_OK on success
-     */
-    virtual QStatus SetTargetLevel(const uint8_t TargetTemperatureLevel, void* context = NULL) = 0;
-
-    /**
-     * Get the maximum value of target temperature level
+     * Get MaxLevel property
+     * (Maximum value allowed for target temperature level setting.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetMaxLevel(void* context = NULL) = 0;
 
     /**
-     * Get the selectable temperature levels
+     * Get TargetLevel property
+     * (Target set-point value of temperature level.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
+     */
+    virtual QStatus GetTargetLevel(void* context = NULL) = 0;
+
+    /**
+     * Set TargetLevel property
+     * (Target set-point value of temperature level.)
+     * @param[in] value The target level to set
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
+     */
+    virtual QStatus SetTargetLevel(const uint8_t value, void* context = NULL) = 0;
+
+    /**
+     * Get SelectableTemperatureLevels property
+     * (List of the values of temperature level which can be selected.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */

@@ -60,28 +60,6 @@ QStatus RapidModeIntfControllerImpl::Init()
     return status;
 }
 
-void RapidModeIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
-{
-    MsgArg* entries;
-    size_t numEntries;
-
-    changed.Get("a{sv}", &numEntries, &entries);
-    for (size_t i = 0; i < numEntries; ++i)
-    {
-        const char* propName;
-        MsgArg* propValue;
-        entries[i].Get("{sv}", &propName, &propValue);
-        String propNameStr(propName);
-
-        if (!s_prop_RapidMode.compare(propNameStr)) {
-            if (propValue->typeId == ALLJOYN_BOOLEAN) {
-                bool rapidMode = propValue->v_bool;
-                m_interfaceListener.RapidModePropertyChanged(obj.GetPath(), rapidMode);
-            }
-        }
-    }
-}
-
 QStatus RapidModeIntfControllerImpl::GetRapidMode(void* context)
 {
     QStatus status = ER_OK;
@@ -102,15 +80,29 @@ QStatus RapidModeIntfControllerImpl::SetRapidMode(const bool rapidMode, void* co
     return status;
 }
 
-
-void RapidModeIntfControllerImpl::SetRapidModePropertyCB(QStatus status, ProxyBusObject* obj, void* context)
+void RapidModeIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
 {
-    if(!obj){
-        return;
-    }
+    MsgArg* entries;
+    size_t numEntries;
 
-    m_interfaceListener.OnSetRapidModePropertyCallback(status, obj->GetPath(), context);
+    changed.Get("a{sv}", &numEntries, &entries);
+    for (size_t i = 0; i < numEntries; ++i)
+    {
+        const char* propName;
+        MsgArg* propValue;
+        entries[i].Get("{sv}", &propName, &propValue);
+        String propNameStr(propName);
+
+        if (!s_prop_RapidMode.compare(propNameStr)) {
+            if (propValue->typeId == ALLJOYN_BOOLEAN) {
+                bool rapidMode = propValue->v_bool;
+                m_interfaceListener.OnRapidModeChanged(obj.GetPath(), rapidMode);
+            }
+        }
+    }
 }
+
+
 void RapidModeIntfControllerImpl::GetRapidModePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
     if(!obj) {
@@ -120,7 +112,15 @@ void RapidModeIntfControllerImpl::GetRapidModePropertyCB(QStatus status, ProxyBu
 
     value.Get("b", &rapidMode);
 
-    m_interfaceListener.OnGetRapidModePropertyCallback(status, obj->GetPath(), rapidMode, context);
+    m_interfaceListener.OnResponseGetRapidMode(status, obj->GetPath(), rapidMode, context);
+}
+void RapidModeIntfControllerImpl::SetRapidModePropertyCB(QStatus status, ProxyBusObject* obj, void* context)
+{
+    if(!obj){
+        return;
+    }
+
+    m_interfaceListener.OnResponseSetRapidMode(status, obj->GetPath(), context);
 }
 
 } //namespace services

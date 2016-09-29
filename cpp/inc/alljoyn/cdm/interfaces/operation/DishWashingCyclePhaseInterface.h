@@ -17,7 +17,6 @@
 #ifndef DISHWASHINGCYCLEPHASEINTERFACE_H_
 #define DISHWASHINGCYCLEPHASEINTERFACE_H_
 
-#include <vector>
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/CdmInterface.h>
@@ -31,11 +30,15 @@ namespace services {
 class DishWashingCyclePhaseInterface : public CdmInterface {
   public:
 
-    typedef struct {
+    struct CyclePhaseDescriptor {
         uint8_t phase;
         qcc::String name;
         qcc::String description;
-    }DishWashingPhaseDescriptor;
+
+        inline bool operator==(const CyclePhaseDescriptor& a) {
+            return a.phase==phase && a.name==name && a.description==description;
+        }
+    };
 
     typedef enum {
         DISH_WASHING_PHASE_UNAVAILABLE,
@@ -48,16 +51,16 @@ class DishWashingCyclePhaseInterface : public CdmInterface {
     typedef std::vector<DishWashingCyclePhase> StandardCyclePhases;
 
     typedef std::vector<uint8_t> SupportedCyclePhases;
-    typedef std::vector<DishWashingPhaseDescriptor> CyclePhaseDescriptions;
+    typedef std::vector<CyclePhaseDescriptor> CyclePhaseDescriptions;
 
     static const StandardCyclePhases m_standardCyclePhases;
     /**
-     * Constructor of DishWashingCyclePhase
+     * Constructor of DishWashingCyclePhaseInterface
      */
     DishWashingCyclePhaseInterface() {}
 
     /**
-     * Destructor of DishWashingCyclePhase
+     * Destructor of DishWashingCyclePhaseInterface
      */
     virtual ~DishWashingCyclePhaseInterface() {}
 
@@ -68,14 +71,14 @@ class DishWashingCyclePhaseInterface : public CdmInterface {
     const CdmInterfaceType GetInterfaceType() const { return DISH_WASHING_CYCLE_PHASE_INTERFACE; }
 
     /**
-     * Get Introspection Xml
-     * @return xml
+     * Get Introspection XML
+     * @return Introspection XML
      */
     virtual const qcc::String& GetIntrospectionXml() { return s_xml; }
 
     /**
      * Get Interface version
-     * @return interface version
+     * @return Interface version
      */
     virtual const uint16_t GetInterfaceVersion() const { return s_interfaceVersion; }
 
@@ -84,6 +87,7 @@ class DishWashingCyclePhaseInterface : public CdmInterface {
     static const qcc::String s_prop_CyclePhase;
     static const qcc::String s_prop_SupportedCyclePhases;
     static const qcc::String s_method_GetVendorPhasesDescription;
+
   private:
     static const qcc::String s_xml;
     static const uint16_t s_interfaceVersion;

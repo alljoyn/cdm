@@ -36,12 +36,12 @@ class EnergyUsageIntfControllerImpl : public InterfaceController, public EnergyU
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Constructor of EnergyUsageIntfControllerImpl
      */
-    EnergyUsageIntfControllerImpl(BusAttachment& busAttachment, EnergyUsageIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    EnergyUsageIntfControllerImpl(BusAttachment& busAttachment, EnergyUsageIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Destructor of EnergyUsageIntfControllerImpl
@@ -61,40 +61,42 @@ class EnergyUsageIntfControllerImpl : public InterfaceController, public EnergyU
     virtual BusAttachment& GetBusAttachment() const { return m_busAttachment; }
 
     /**
-     * Get cumulative energy
-     * @param[in] context
-     * @return status
+     * Get CumulativeEnergy property
+     * (The cumulative energy consumption of the device)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetCumulativeEnergy(void* context);
 
     /**
-     * Get precision
-     * @param[in] context
-     * @return status
+     * Get Precision property
+     * (The precision of the CumulativeEnergy property; i.e., the value the actual energy consumption must change before CumulativeEnergy is updated)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetPrecision(void* context);
 
     /**
-     * Get the minimum update time
-     * @param[in] context
-     * @return status
+     * Get UpdateMinTime property
+     * (The minimum time between updates of the CumulativeEnergy property)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetUpdateMinTime(void* context);
 
     /**
-     * Reset cumulative energy
-     * @param[in] context
-     * @return status
+     * Call ResetCumulativeEnergy method
+     * (Resets the value of CumulativeEnergy to 0.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus ResetCumulativeEnergy(void* context);
 
   private:
-    EnergyUsageIntfControllerImpl();
-
     void PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context);
-    void CumulativeEnergyPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
-    void PrecisionPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
-    void UpdateMinTimePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+    void GetCumulativeEnergyPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+    void GetPrecisionPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+    void GetUpdateMinTimePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
     void ResetCumulativeEnergyReplyHandler(Message& message, void* context);
 
     BusAttachment& m_busAttachment;

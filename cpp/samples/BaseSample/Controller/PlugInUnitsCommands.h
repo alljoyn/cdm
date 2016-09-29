@@ -32,7 +32,7 @@ class PlugInUnitsListener : public PlugInUnitsIntfControllerListener{
     virtual ~PlugInUnitsListener();
 
     virtual void OnResponseGetPlugInUnits(QStatus status, const qcc::String& objectPath, const PlugInUnitsInterface::PlugInUnits& units, void* context);
-    virtual void OnPlugInUnitsPropertyChanged(const qcc::String& objectPath, const PlugInUnitsInterface::PlugInUnits& units);
+    virtual void OnPlugInUnitsChanged(const qcc::String& objectPath, const PlugInUnitsInterface::PlugInUnits& units);
 };
 
 class PlugInUnitsCommands : public InterfaceCommands

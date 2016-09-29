@@ -40,20 +40,21 @@ class RepeatModeIntfController : public RepeatModeInterface {
     virtual ~RepeatModeIntfController() {}
 
     /**
-     * Set RepeatMode
-     * @param[in] repeatMode repeat mode
-     * @param[in] context the context that is passed to the callback handler
-     * @return ER_OK on success
-     */
-    virtual QStatus SetRepeatMode(const bool repeatMode, void* context = NULL) = 0;
-
-    /**
-     * Get RepeatMode
+     * Get RepeatMode property
+     * (True if the device works in repeat mode.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetRepeatMode(void* context = NULL) = 0;
 
+    /**
+     * Set RepeatMode property
+     * (True if the device works in repeat mode.)
+     * @param[in] value The repeat mode to set
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
+     */
+    virtual QStatus SetRepeatMode(const bool value, void* context = NULL) = 0;
 };
 
 } //namespace services

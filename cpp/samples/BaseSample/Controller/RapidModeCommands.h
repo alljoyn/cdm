@@ -30,9 +30,9 @@ class RapidModeListener : public RapidModeIntfControllerListener{
   public:
     RapidModeListener();
     virtual ~RapidModeListener();
-    virtual void RapidModePropertyChanged(const qcc::String& objectPath, const bool rapidMode);
-    virtual void OnGetRapidModePropertyCallback(QStatus status, const qcc::String& objectPath, const bool rapidMode, void* context);
-    virtual void OnSetRapidModePropertyCallback(QStatus status, const qcc::String& objectPath, void* context);
+    virtual void OnRapidModeChanged(const qcc::String& objectPath, const bool rapidMode);
+    virtual void OnResponseGetRapidMode(QStatus status, const qcc::String& objectPath, const bool rapidMode, void* context);
+    virtual void OnResponseSetRapidMode(QStatus status, const qcc::String& objectPath, void* context);
 
 };
 

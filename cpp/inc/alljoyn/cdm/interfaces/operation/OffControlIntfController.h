@@ -40,7 +40,8 @@ class OffControlIntfController : public OffControlInterface {
     virtual ~OffControlIntfController() {}
 
     /**
-     * SwitchOff
+     * Call SwitchOff method
+     * (Switch off the device.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */

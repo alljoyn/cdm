@@ -17,18 +17,16 @@
 #ifndef CURRENTHUMIDITYINTFCONTROLLERLISTENER_H_
 #define CURRENTHUMIDITYINTFCONTROLLERLISTENER_H_
 
-#include <map>
-#include <utility>
-
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/InterfaceControllerListener.h>
+#include <alljoyn/cdm/interfaces/environment/CurrentHumidityInterface.h>
 
 namespace ajn {
 namespace services {
 
 /**
- * CurrentHumidity interface controller listener class
+ * CurrentHumidity Interface Controller Listener class
  */
 class CurrentHumidityIntfControllerListener : public InterfaceControllerListener {
   public:
@@ -39,34 +37,38 @@ class CurrentHumidityIntfControllerListener : public InterfaceControllerListener
     virtual ~CurrentHumidityIntfControllerListener() {}
 
     /**
-     * Callback handler for getting CurrentValue property
+     * Callback handler for GetCurrentValue completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] value current humidity
+     * @param[in] value The value of CurrentValue
+     *                  (Current relative humidity value)
      * @param[in] context the context that is passed from application
      */
     virtual void OnResponseGetCurrentValue(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) {}
 
     /**
-     * Callback handler for getting MaxValue property
+     * Handler for CurrentValue property changed
+     * @param[in] objectPath the object path
+     * @param[in] value The value of CurrentValue
+     *                  (Current relative humidity value)
+     */
+    virtual void OnCurrentValueChanged(const qcc::String& objectPath, const uint8_t value) {}
+
+    /**
+     * Callback handler for GetMaxValue completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] value max humidity
+     * @param[in] value The value of MaxValue
+     *                  (Maximum value allowed for represented relative humidity)
      * @param[in] context the context that is passed from application
      */
     virtual void OnResponseGetMaxValue(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) {}
 
     /**
-     * Handler for CurrentValue property changed
-     * @param[in] objectPath the object path
-     * @param[in] value current humidity
-     */
-    virtual void OnCurrentValueChanged(const qcc::String& objectPath, const uint8_t value) {}
-
-    /**
      * Handler for MaxValue property changed
      * @param[in] objectPath the object path
-     * @param[in] value max humidity
+     * @param[in] value The value of MaxValue
+     *                  (Maximum value allowed for represented relative humidity)
      */
     virtual void OnMaxValueChanged(const qcc::String& objectPath, const uint8_t value) {}
 };

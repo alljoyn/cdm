@@ -60,6 +60,15 @@ QStatus AudioVolumeIntfControllerImpl::Init()
     return status;
 }
 
+QStatus AudioVolumeIntfControllerImpl::GetVolume(void* context)
+{
+    QStatus status = ER_OK;
+
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_Volume.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&AudioVolumeIntfControllerImpl::GetVolumePropertyCB, context);
+
+    return status;
+}
+
 QStatus AudioVolumeIntfControllerImpl::SetVolume(const uint8_t volume, void* context)
 {
     QStatus status = ER_OK;
@@ -67,26 +76,6 @@ QStatus AudioVolumeIntfControllerImpl::SetVolume(const uint8_t volume, void* con
     MsgArg arg;
     arg.Set("y", volume);
     status = m_proxyObject.SetPropertyAsync(GetInterfaceName().c_str(), s_prop_Volume.c_str(), arg, this, (ProxyBusObject::Listener::SetPropertyCB)&AudioVolumeIntfControllerImpl::SetVolumePropertyCB, context);
-
-    return status;
-}
-
-QStatus AudioVolumeIntfControllerImpl::SetMute(const bool mute, void* context)
-{
-    QStatus status = ER_OK;
-
-    MsgArg arg;
-    arg.Set("b", mute);
-    status = m_proxyObject.SetPropertyAsync(GetInterfaceName().c_str(), s_prop_Mute.c_str(), arg, this, (ProxyBusObject::Listener::SetPropertyCB)&AudioVolumeIntfControllerImpl::SetMutePropertyCB, context);
-
-    return status;
-}
-
-QStatus AudioVolumeIntfControllerImpl::GetVolume(void* context)
-{
-    QStatus status = ER_OK;
-
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_Volume.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&AudioVolumeIntfControllerImpl::GetVolumePropertyCB, context);
 
     return status;
 }
@@ -105,6 +94,17 @@ QStatus AudioVolumeIntfControllerImpl::GetMute(void* context)
     QStatus status = ER_OK;
 
     status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_Mute.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&AudioVolumeIntfControllerImpl::GetMutePropertyCB, context);
+
+    return status;
+}
+
+QStatus AudioVolumeIntfControllerImpl::SetMute(const bool mute, void* context)
+{
+    QStatus status = ER_OK;
+
+    MsgArg arg;
+    arg.Set("b", mute);
+    status = m_proxyObject.SetPropertyAsync(GetInterfaceName().c_str(), s_prop_Mute.c_str(), arg, this, (ProxyBusObject::Listener::SetPropertyCB)&AudioVolumeIntfControllerImpl::SetMutePropertyCB, context);
 
     return status;
 }
@@ -140,24 +140,6 @@ void AudioVolumeIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const
     }
 }
 
-void AudioVolumeIntfControllerImpl::SetVolumePropertyCB(QStatus status, ProxyBusObject* obj, void* context)
-{
-    if (!obj) {
-        return;
-    }
-
-    m_interfaceListener.OnResponseSetVolume(status, obj->GetPath(), context);
-}
-
-void AudioVolumeIntfControllerImpl::SetMutePropertyCB(QStatus status, ProxyBusObject* obj, void* context)
-{
-    if(!obj) {
-        return;
-    }
-
-    m_interfaceListener.OnResponseSetMute(status, obj->GetPath(), context);
-}
-
 void AudioVolumeIntfControllerImpl::GetVolumePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
     if (!obj) {
@@ -168,6 +150,15 @@ void AudioVolumeIntfControllerImpl::GetVolumePropertyCB(QStatus status, ProxyBus
     value.Get("y", &volume);
 
     m_interfaceListener.OnResponseGetVolume(status, obj->GetPath(), volume, context);
+}
+
+void AudioVolumeIntfControllerImpl::SetVolumePropertyCB(QStatus status, ProxyBusObject* obj, void* context)
+{
+    if (!obj) {
+        return;
+    }
+
+    m_interfaceListener.OnResponseSetVolume(status, obj->GetPath(), context);
 }
 
 void AudioVolumeIntfControllerImpl::GetMaxVolumePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
@@ -192,6 +183,15 @@ void AudioVolumeIntfControllerImpl::GetMutePropertyCB(QStatus status, ProxyBusOb
     value.Get("b", &mute);
 
     m_interfaceListener.OnResponseGetMute(status, obj->GetPath(), mute, context);
+}
+
+void AudioVolumeIntfControllerImpl::SetMutePropertyCB(QStatus status, ProxyBusObject* obj, void* context)
+{
+    if(!obj) {
+        return;
+    }
+
+    m_interfaceListener.OnResponseSetMute(status, obj->GetPath(), context);
 }
 
 } //namespace services

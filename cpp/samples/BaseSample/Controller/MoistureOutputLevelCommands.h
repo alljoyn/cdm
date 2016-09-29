@@ -33,12 +33,12 @@ class MoistureOutputLevelListener : public MoistureOutputLevelIntfControllerList
 
     virtual void OnMoistureOutputLevelChanged(const qcc::String& objectPath, const uint8_t value);
     virtual void OnMaxMoistureOutputLevelChanged(const qcc::String& objectPath, const uint8_t value);
-    virtual void OnAutoModeChanged(const qcc::String& objectPath, const uint8_t autoMode);
+    virtual void OnAutoModeChanged(const qcc::String& objectPath, const AutoMode autoMode);
 
     virtual void OnResponseGetMoistureOutputLevel(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context);
     virtual void OnResponseSetMoistureOutputLevel(QStatus status, const qcc::String& objectPath, void* context);
     virtual void OnResponseGetMaxMoistureOutputLevel(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context);
-    virtual void OnResponseGetAutoMode(QStatus status, const qcc::String& objectPath, const uint8_t autoMode, void* context);
+    virtual void OnResponseGetAutoMode(QStatus status, const qcc::String& objectPath, const AutoMode autoMode, void* context);
     virtual void OnResponseSetAutoMode(QStatus status, const qcc::String& objectPath, void* context);
 };
 

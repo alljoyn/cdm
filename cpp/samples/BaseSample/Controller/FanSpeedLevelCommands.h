@@ -35,9 +35,9 @@ class FanSpeedLevelListener : public FanSpeedLevelIntfControllerListener {
     virtual void OnResponseGetFanSpeedLevel(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context);
     virtual void OnResponseGetMaxFanSpeedLevel(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context);
     virtual void OnResponseSetAutoMode(QStatus status, const qcc::String& objectPath, void* context);
-    virtual void OnResponseGetAutoMode(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context);
+    virtual void OnResponseGetAutoMode(QStatus status, const qcc::String& objectPath, const AutoMode value, void* context);
     virtual void OnFanSpeedLevelChanged(const qcc::String& objectPath, const uint8_t value);
-    virtual void OnAutoModeChanged(const qcc::String& objectPath, const uint8_t value);
+    virtual void OnAutoModeChanged(const qcc::String& objectPath, const AutoMode value);
 };
 
 

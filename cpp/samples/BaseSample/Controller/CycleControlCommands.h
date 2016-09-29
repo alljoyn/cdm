@@ -30,19 +30,19 @@ class CycleControlListener : public CycleControlIntfControllerListener{
   public:
     CycleControlListener();
     virtual ~CycleControlListener();
-    virtual void GetOperationalStatePropertyCallback(QStatus status, const qcc::String& objectPath, const CycleControlInterface::CycleControlOperationalState& state, void* context);
+    virtual void OnResponseGetOperationalState(QStatus status, const qcc::String& objectPath, const CycleControlInterface::OperationalState state, void* context);
 
-    virtual void GetSupportedStatesPropertyCallbalck(QStatus status, const qcc::String& objectPath, const CycleControlInterface::SupportedOperationalStates& states, void* context);
+    virtual void OnResponseGetSupportedOperationalStates(QStatus status, const qcc::String& objectPath, const CycleControlInterface::SupportedOperationalStates& states, void* context);
 
-    virtual void GetSupportedCommandsPropertyCallbalck(QStatus status, const qcc::String& objectPath, const CycleControlInterface::SupportedOperationalCommands& commands, void* context);
+    virtual void OnResponseGetSupportedOperationalCommands(QStatus status, const qcc::String& objectPath, const CycleControlInterface::SupportedOperationalCommands& commands, void* context);
 
-    virtual void OperationalStatePropertyChanged(const qcc::String& objectPath, const CycleControlInterface::CycleControlOperationalState& state);
+    virtual void OnOperationalStateChanged(const qcc::String& objectPath, const CycleControlInterface::OperationalState state);
 
-    virtual void SupportedOperationalStatesProperyChanged(const qcc::String& objectPath, const CycleControlInterface::SupportedOperationalStates& states);
+    virtual void OnSupportedOperationalStatesChanged(const qcc::String& objectPath, const CycleControlInterface::SupportedOperationalStates& states);
 
-    virtual void SupportedOperationalCommandsProperyChanged(const qcc::String& objectPath, const CycleControlInterface::SupportedOperationalCommands& commands);
+    virtual void OnSupportedOperationalCommandsChanged(const qcc::String& objectPath, const CycleControlInterface::SupportedOperationalCommands& commands);
 
-    virtual void OnExecuteCommandRespose(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage);
+    virtual void OnResponseExecuteOperationalCommand(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage);
 };
 
 class CycleControlCommands : public InterfaceCommands

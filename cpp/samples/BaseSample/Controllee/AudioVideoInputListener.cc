@@ -77,12 +77,12 @@ void AudioVideoInputCommands::InitializeProperties()
     if (m_intfControllee) {
         AudioVideoInputInterface::InputSources supportedInputSources;
         AudioVideoInputInterface::InputSource source1, source2;
-        source1.sourceType = AudioVideoInputInterface::AUDIO_VIDEO_INPUT_SOURCE_TYPE_TUNER;
-        source1.signalPresence = 1;
+        source1.sourceType = AudioVideoInputInterface::SOURCE_TYPE_TUNER;
+        source1.signalPresence = AudioVideoInputInterface::SIGNAL_PRESENCE_SIGNAL_PRESENT;
         source1.portNumber = 1;
         source1.friendlyName = "TV";
-        source2.sourceType = AudioVideoInputInterface::AUDIO_VIDEO_INPUT_SOURCE_TYPE_HDMI;
-        source2.signalPresence = 0;
+        source2.sourceType = AudioVideoInputInterface::SOURCE_TYPE_HDMI;
+        source2.signalPresence = AudioVideoInputInterface::SIGNAL_PRESENCE_UNKNOWN;
         source2.portNumber = 1;
         source2.friendlyName = "HDMI_1";
         supportedInputSources[0x8000] = source1;

@@ -60,47 +60,6 @@ QStatus AlertsIntfControllerImpl::Init()
     return status;
 }
 
-void AlertsIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
-{
-    MsgArg* entries;
-    size_t numEntries;
-    AlertsInterface::Alerts alerts;
-
-    changed.Get("a{sv}", &numEntries, &entries);
-    for (size_t i = 0; i < numEntries; ++i) {
-        const char* propName;
-        MsgArg* propValue;
-        entries[i].Get("{sv}", &propName, &propValue);
-        String propNameStr(propName);
-
-        if (!s_prop_Alerts.compare(propNameStr)) {
-            if (!propValue[0].HasSignature("a(yqb)"))
-            {
-                return;
-            }
-
-            MsgArg* alertEntries;
-            size_t numAlertEntries;
-
-            AlertsInterface::AlertRecord alertRecord;
-            propValue[0].Get("a(yqb)", &numAlertEntries, &alertEntries);
-            for (size_t i = 0; i < numAlertEntries; ++i)
-            {
-                uint8_t severity;
-                uint16_t alertCode;
-                bool acknowledgeNeeded;
-
-                alertEntries[i].Get("(yqb)", &severity, &alertCode, &acknowledgeNeeded);
-                alertRecord.severity = (AlertSeverity)severity;
-                alertRecord.alertCode = alertCode;
-                alertRecord.needAcknowledgement = acknowledgeNeeded;
-                alerts.push_back(alertRecord);
-            }
-            m_interfaceListener.OnAlertsPropertyChanged(obj.GetPath(), alerts);
-        }
-    }
-}
-
 QStatus AlertsIntfControllerImpl::GetAlerts(void * context)
 {
     QStatus status = ER_OK;
@@ -146,6 +105,47 @@ QStatus AlertsIntfControllerImpl::AcknowledgeAllAlerts(void * context)
     return status;
 }
 
+void AlertsIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
+{
+    MsgArg* entries;
+    size_t numEntries;
+    AlertsInterface::Alerts alerts;
+
+    changed.Get("a{sv}", &numEntries, &entries);
+    for (size_t i = 0; i < numEntries; ++i) {
+        const char* propName;
+        MsgArg* propValue;
+        entries[i].Get("{sv}", &propName, &propValue);
+        String propNameStr(propName);
+
+        if (!s_prop_Alerts.compare(propNameStr)) {
+            if (!propValue[0].HasSignature("a(yqb)"))
+            {
+                return;
+            }
+
+            MsgArg* alertEntries;
+            size_t numAlertEntries;
+
+            AlertsInterface::AlertRecord alertRecord;
+            propValue[0].Get("a(yqb)", &numAlertEntries, &alertEntries);
+            for (size_t i = 0; i < numAlertEntries; ++i)
+            {
+                uint8_t severity;
+                uint16_t alertCode;
+                bool acknowledgeNeeded;
+
+                alertEntries[i].Get("(yqb)", &severity, &alertCode, &acknowledgeNeeded);
+                alertRecord.severity = (Severity)severity;
+                alertRecord.alertCode = alertCode;
+                alertRecord.needAcknowledgement = acknowledgeNeeded;
+                alerts.push_back(alertRecord);
+            }
+            m_interfaceListener.OnAlertsChanged(obj.GetPath(), alerts);
+        }
+    }
+}
+
 void AlertsIntfControllerImpl::GetAlertsPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
     if(!obj) {
@@ -165,7 +165,7 @@ void AlertsIntfControllerImpl::GetAlertsPropertyCB(QStatus status, ProxyBusObjec
         bool acknowledgeNeeded;
 
         entries[i].Get("(yqb)", &severity, &alertCode, &acknowledgeNeeded);
-        alertRecord.severity = (AlertSeverity)severity;
+        alertRecord.severity = (Severity)severity;
         alertRecord.alertCode = alertCode;
         alertRecord.needAcknowledgement = acknowledgeNeeded;
         alerts.push_back(alertRecord);
@@ -176,7 +176,7 @@ void AlertsIntfControllerImpl::GetAlertsPropertyCB(QStatus status, ProxyBusObjec
 void AlertsIntfControllerImpl::GetAlertCodesDescriptionReplyHandler(Message& message, void* context)
 {
     cout << "AlertsIntfControllerImpl::GetAlertCodesDescriptionReplyHandler" << endl;
-    AlertsInterface::AlertCodesDescription descriptions;
+    AlertsInterface::AlertCodesDescriptors descriptions;
     qcc::String errorMessage;
     const char* errorName = message->GetErrorName(&errorMessage);
     QStatus status = ER_OK;
@@ -197,7 +197,7 @@ void AlertsIntfControllerImpl::GetAlertCodesDescriptionReplyHandler(Message& mes
 
         MsgArg* entries;
         size_t numEntries;
-        AlertsInterface::AlertCodeDescriptor desc;
+        AlertsInterface::AlertCodesDescriptor desc;
 
         args[0].Get("a(qs)", &numEntries, &entries);
         for (size_t i = 0; i < numEntries; ++i)
@@ -205,7 +205,7 @@ void AlertsIntfControllerImpl::GetAlertCodesDescriptionReplyHandler(Message& mes
             const char* codeDesc;
             uint16_t alertCode;
             entries[i].Get("(qs)", &alertCode, &codeDesc);
-            desc.code = alertCode;
+            desc.alertCode = alertCode;
             desc.description = String(codeDesc);
             descriptions.push_back(desc);
         }

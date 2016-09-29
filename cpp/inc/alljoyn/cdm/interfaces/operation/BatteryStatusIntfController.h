@@ -40,19 +40,20 @@ class BatteryStatusIntfController : public BatteryStatusInterface {
     virtual ~BatteryStatusIntfController() {}
 
     /**
-     * Get current value of bettery status
+     * Get CurrentValue property
+     * (This interface provides capability to represent remaining battery status.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetCurrentValue(void* context = NULL) = 0;
 
     /**
-     * Get if battery is being charged
+     * Get IsCharging property
+     * (If true, status is charging.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetIsCharging(void* context = NULL) = 0;
-
 };
 
 } //namespace services

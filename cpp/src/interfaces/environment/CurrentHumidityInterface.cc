@@ -1,4 +1,3 @@
-
 /******************************************************************************
  * Copyright (c) 2013-2014, AllSeen Alliance. All rights reserved.
  *
@@ -42,7 +41,8 @@ const qcc::String CurrentHumidityInterface::s_xml =
 "            <annotation name='org.freedesktop.DBus.Property.EmitsChangedSignal' value='true'/>"
 "        </property>"
 "    </interface>"
-"</node>";
+"</node>"
+;
 
 const qcc::String CurrentHumidityInterface::s_prop_Version = "Version";
 const qcc::String CurrentHumidityInterface::s_prop_CurrentValue = "CurrentValue";

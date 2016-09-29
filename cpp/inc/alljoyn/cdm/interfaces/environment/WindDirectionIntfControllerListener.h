@@ -17,21 +17,20 @@
 #ifndef WINDDIRECTIONINTFCONTROLLERLISTENER_H_
 #define WINDDIRECTIONINTFCONTROLLERLISTENER_H_
 
-#include <map>
-#include <utility>
-
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/InterfaceControllerListener.h>
+#include <alljoyn/cdm/interfaces/environment/WindDirectionInterface.h>
 
 namespace ajn {
 namespace services {
 
 /**
- * WindDirection interface controller listener class
+ * WindDirection Interface Controller Listener class
  */
 class WindDirectionIntfControllerListener : public InterfaceControllerListener {
   public:
+    using AutoMode = WindDirectionInterface::AutoMode;
 
     /**
      * Destructor of WindDirectionIntfControllerListener
@@ -39,58 +38,25 @@ class WindDirectionIntfControllerListener : public InterfaceControllerListener {
     virtual ~WindDirectionIntfControllerListener() {}
 
     /**
-     * Handler for HorizontalDirection property changed
-     * @param[in] objectPath the object path
-     * @param[in] value horizontal direction
-     */
-    virtual void OnHorizontalDirectionChanged(const qcc::String& objectPath, const uint16_t value) {}
-
-    /**
-     * Handler for HorizontalMax property changed
-     * @param[in] objectPath the object path
-     * @param[in] value the maximum horizontal direction
-     */
-    virtual void OnHorizontalMaxChanged(const qcc::String& objectPath, const uint16_t value) {}
-
-    /**
-     * Handler for HorizontalAutoMode property changed
-     * @param[in] objectPath the object path
-     * @param[in] value horizontal auto mode
-     */
-    virtual void OnHorizontalAutoModeChanged(const qcc::String& objectPath, const uint8_t value) {}
-
-    /**
-     * Handler for VerticalDirection property changed
-     * @param[in] objectPath the object path
-     * @param[in] value vertical direction
-     */
-    virtual void OnVerticalDirectionChanged(const qcc::String& objectPath, const uint16_t value) {}
-
-    /**
-     * Handler for VerticalMax property changed
-     * @param[in] objectPath the object path
-     * @param[in] value the maximum vertical direction
-     */
-    virtual void OnVerticalMaxChanged(const qcc::String& objectPath, const uint16_t value) {}
-
-    /**
-     * Handler for VerticalAutoMode property changed
-     * @param[in] objectPath the object path
-     * @param[in] value vertical auto mode
-     */
-    virtual void OnVerticalAutoModeChanged(const qcc::String& objectPath, const uint8_t value) {}
-
-    /**
-     * Callback handler for getting HorizontalDirection property
+     * Callback handler for GetHorizontalDirection completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] value horizontal direction
+     * @param[in] value The value of HorizontalDirection
+     *                  (Horizontal wind direction of a device.)
      * @param[in] context the context that is passed from application
      */
     virtual void OnResponseGetHorizontalDirection(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context) {}
 
     /**
-     * Callback handler for setting HorizontalDirection property
+     * Handler for HorizontalDirection property changed
+     * @param[in] objectPath the object path
+     * @param[in] value The value of HorizontalDirection
+     *                  (Horizontal wind direction of a device.)
+     */
+    virtual void OnHorizontalDirectionChanged(const qcc::String& objectPath, const uint16_t value) {}
+
+    /**
+     * Callback handler for SetHorizontalDirection completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
      * @param[in] context the context that is passed from application
@@ -98,25 +64,43 @@ class WindDirectionIntfControllerListener : public InterfaceControllerListener {
     virtual void OnResponseSetHorizontalDirection(QStatus status, const qcc::String& objectPath, void* context) {}
 
     /**
-     * Callback handler for getting HorizontalMax property
+     * Callback handler for GetHorizontalMax completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] value the maximum horizontal direction
+     * @param[in] value The value of HorizontalMax
+     *                  (Maximum value allowed for a target horizontal wind direction.)
      * @param[in] context the context that is passed from application
      */
     virtual void OnResponseGetHorizontalMax(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context) {}
 
     /**
-     * Callback handler for getting HorizontalAutoMode property
-     * @param[in] status ER_OK on success
+     * Handler for HorizontalMax property changed
      * @param[in] objectPath the object path
-     * @param[in] value horizontal auto mode
-     * @param[in] context the context that is passed from application
+     * @param[in] value The value of HorizontalMax
+     *                  (Maximum value allowed for a target horizontal wind direction.)
      */
-    virtual void OnResponseGetHorizontalAutoMode(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) {}
+    virtual void OnHorizontalMaxChanged(const qcc::String& objectPath, const uint16_t value) {}
 
     /**
-     * Callback handler for setting HorizontalAutoMode property
+     * Callback handler for GetHorizontalAutoMode completion
+     * @param[in] status ER_OK on success
+     * @param[in] objectPath the object path
+     * @param[in] value The value of HorizontalAutoMode
+     *                  (Represent enabled/disabled state of the horizontal auto mode. HorizontalAutoMode is for controlling horizontal wind direction automatically.)
+     * @param[in] context the context that is passed from application
+     */
+    virtual void OnResponseGetHorizontalAutoMode(QStatus status, const qcc::String& objectPath, const AutoMode value, void* context) {}
+
+    /**
+     * Handler for HorizontalAutoMode property changed
+     * @param[in] objectPath the object path
+     * @param[in] value The value of HorizontalAutoMode
+     *                  (Represent enabled/disabled state of the horizontal auto mode. HorizontalAutoMode is for controlling horizontal wind direction automatically.)
+     */
+    virtual void OnHorizontalAutoModeChanged(const qcc::String& objectPath, const AutoMode value) {}
+
+    /**
+     * Callback handler for SetHorizontalAutoMode completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
      * @param[in] context the context that is passed from application
@@ -124,16 +108,25 @@ class WindDirectionIntfControllerListener : public InterfaceControllerListener {
     virtual void OnResponseSetHorizontalAutoMode(QStatus status, const qcc::String& objectPath, void* context) {}
 
     /**
-     * Callback handler for getting VerticalDirection property
+     * Callback handler for GetVerticalDirection completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] value vertical direction
+     * @param[in] value The value of VerticalDirection
+     *                  (Vertical wind direction of a device.)
      * @param[in] context the context that is passed from application
      */
     virtual void OnResponseGetVerticalDirection(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context) {}
 
     /**
-     * Callback handler for setting VerticalDirection property
+     * Handler for VerticalDirection property changed
+     * @param[in] objectPath the object path
+     * @param[in] value The value of VerticalDirection
+     *                  (Vertical wind direction of a device.)
+     */
+    virtual void OnVerticalDirectionChanged(const qcc::String& objectPath, const uint16_t value) {}
+
+    /**
+     * Callback handler for SetVerticalDirection completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
      * @param[in] context the context that is passed from application
@@ -141,25 +134,43 @@ class WindDirectionIntfControllerListener : public InterfaceControllerListener {
     virtual void OnResponseSetVerticalDirection(QStatus status, const qcc::String& objectPath, void* context) {}
 
     /**
-     * Callback handler for getting VerticalMax property
+     * Callback handler for GetVerticalMax completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] value the maximum vertical direction
+     * @param[in] value The value of VerticalMax
+     *                  (Maximum value allowed for a target vertical wind direction.)
      * @param[in] context the context that is passed from application
      */
     virtual void OnResponseGetVerticalMax(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context) {}
 
     /**
-     * Callback handler for getting VerticalAutoMode property
-     * @param[in] status ER_OK on success
+     * Handler for VerticalMax property changed
      * @param[in] objectPath the object path
-     * @param[in] value vertical auto mode
-     * @param[in] context the context that is passed from application
+     * @param[in] value The value of VerticalMax
+     *                  (Maximum value allowed for a target vertical wind direction.)
      */
-    virtual void OnResponseGetVerticalAutoMode(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) {}
+    virtual void OnVerticalMaxChanged(const qcc::String& objectPath, const uint16_t value) {}
 
     /**
-     * Callback handler for setting VerticalAutoMode property
+     * Callback handler for GetVerticalAutoMode completion
+     * @param[in] status ER_OK on success
+     * @param[in] objectPath the object path
+     * @param[in] value The value of VerticalAutoMode
+     *                  (Represent enabled/disabled state of the vertical auto mode. VerticalAutoMode is for controlling vertical wind direction automatically.)
+     * @param[in] context the context that is passed from application
+     */
+    virtual void OnResponseGetVerticalAutoMode(QStatus status, const qcc::String& objectPath, const AutoMode value, void* context) {}
+
+    /**
+     * Handler for VerticalAutoMode property changed
+     * @param[in] objectPath the object path
+     * @param[in] value The value of VerticalAutoMode
+     *                  (Represent enabled/disabled state of the vertical auto mode. VerticalAutoMode is for controlling vertical wind direction automatically.)
+     */
+    virtual void OnVerticalAutoModeChanged(const qcc::String& objectPath, const AutoMode value) {}
+
+    /**
+     * Callback handler for SetVerticalAutoMode completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
      * @param[in] context the context that is passed from application

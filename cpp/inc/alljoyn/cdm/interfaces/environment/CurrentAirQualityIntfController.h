@@ -40,42 +40,48 @@ class CurrentAirQualityIntfController : public CurrentAirQualityInterface {
     virtual ~CurrentAirQualityIntfController() {}
 
     /**
-     * Get ContaminantType
+     * Get ContaminantType property
+     * (The contaminant type.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetContaminantType(void* context = NULL) = 0;
 
     /**
-     * Get CurrentValue
+     * Get CurrentValue property
+     * (The current value of air quality.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetCurrentValue(void* context = NULL) = 0;
 
     /**
-     * Get the maximum value of air quality
-     * @param[in] context the context that is passed to the callback handler
-     * @return ER_OK on success
-     */
-    virtual QStatus GetMaxValue(void* context = NULL) = 0;
-
-    /**
-     * Get the minimum value of air quality
+     * Get MinValue property
+     * (The minimum value allowed for CurrentValue.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetMinValue(void* context = NULL) = 0;
 
     /**
-     * Get Precision
+     * Get MaxValue property
+     * (The maximum value allowed for CurrentValue.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
+     */
+    virtual QStatus GetMaxValue(void* context = NULL) = 0;
+
+    /**
+     * Get Precision property
+     * (The precision of the CurrentValue property.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetPrecision(void* context = NULL) = 0;
 
     /**
-     * Get UpdateMinTime
+     * Get UpdateMinTime property
+     * (The minimum time between updates of the CurrentValue property in milliseconds.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */

@@ -36,12 +36,12 @@ class HidIntfControllerImpl : public InterfaceController, public HidIntfControll
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Constructor of HidIntfControllerImpl
      */
-    HidIntfControllerImpl(BusAttachment& busAttachment, HidIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    HidIntfControllerImpl(BusAttachment& busAttachment, HidIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Destructor of HidIntfControllerImpl
@@ -61,24 +61,26 @@ class HidIntfControllerImpl : public InterfaceController, public HidIntfControll
     virtual BusAttachment& GetBusAttachment() const { return m_busAttachment; }
 
     /**
-     * Get supported events
-     * @param[in] context
-     * @return status
+     * Get SupportedEvents property
+     * (List of supported input events by a device)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetSupportedEvents(void* context);
 
     /**
-     * Inject events
-     * @param[in] input events
-     * @return status
+     * Call InjectEvents method
+     * (Inject the user input events for human interface devices)
+     * @param[in] inputEvents Injected input event
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
-    virtual QStatus InjectEvents(HidInterface::InputEvents& inputEvents);
+    virtual QStatus InjectEvents(const std::vector<InputEvent>& inputEvents, void* context);
 
   private:
-    HidIntfControllerImpl();
-
     void PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context);
     void GetSupportedEventsPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+    void InjectEventsReplyHandler(Message& message, void* context);
 
     BusAttachment& m_busAttachment;
     HidIntfControllerListener& m_interfaceListener;

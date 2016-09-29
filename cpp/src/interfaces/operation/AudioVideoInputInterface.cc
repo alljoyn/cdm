@@ -22,7 +22,6 @@ namespace services {
 
 const uint16_t AudioVideoInputInterface::s_interfaceVersion = 1;
 
-// Below none secure xml is only for test
 const qcc::String AudioVideoInputInterface::s_xml =
 "<node xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='http://www.allseenalliance.org/schemas/introspect.xsd'>"
 "    <interface name='org.alljoyn.SmartSpaces.Operation.AudioVideoInput'>"
@@ -59,7 +58,6 @@ const qcc::String AudioVideoInputInterface::s_xml =
 "        </property>"
 "        <property name='InputSourceId' type='q' access='readwrite'>"
 "            <annotation name='org.alljoyn.Bus.DocString.En' value='Activated input source id.'/>"
-"            <annotation name='org.alljoyn.Bus.Type.Name' value='[SourceType]'/>"
 "            <annotation name='org.freedesktop.DBus.Property.EmitsChangedSignal' value='true'/>"
 "        </property>"
 "        <property name='SupportedInputSources' type='a(qqyqs)' access='read'>"
@@ -74,7 +72,6 @@ const qcc::String AudioVideoInputInterface::s_xml =
 const qcc::String AudioVideoInputInterface::s_prop_Version = "Version";
 const qcc::String AudioVideoInputInterface::s_prop_InputSourceId = "InputSourceId";
 const qcc::String AudioVideoInputInterface::s_prop_SupportedInputSources = "SupportedInputSources";
-
 
 } //namespace services
 } //namespace ajn

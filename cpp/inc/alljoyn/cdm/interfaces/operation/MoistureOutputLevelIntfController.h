@@ -40,41 +40,46 @@ class MoistureOutputLevelIntfController : public MoistureOutputLevelInterface {
     virtual ~MoistureOutputLevelIntfController() {}
 
     /**
-     * Get moisture output level
+     * Get MoistureOutputLevel property
+     * (Current level of moisture output.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus GetMoistureOutputLevel (void* context = NULL) = 0;
+    virtual QStatus GetMoistureOutputLevel(void* context = NULL) = 0;
 
     /**
-     * Set moisture output level
-     * @param[in] value moisture output level
+     * Set MoistureOutputLevel property
+     * (Current level of moisture output.)
+     * @param[in] value The moisture output level to set
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus SetMoistureOutputLevel (const uint8_t value, void* context = NULL) = 0;
+    virtual QStatus SetMoistureOutputLevel(const uint8_t value, void* context = NULL) = 0;
 
     /**
-     * Get the maximum moisture output level
+     * Get MaxMoistureOutputLevel property
+     * (Maximum level of moisture output.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus GetMaxMoistureOutputLevel (void* context = NULL) = 0;
+    virtual QStatus GetMaxMoistureOutputLevel(void* context = NULL) = 0;
 
     /**
-     * Get auto mode
+     * Get AutoMode property
+     * (Represent enabled/disabled state of the auto mode. The device decides the moisture output level for providing comfortable surroundings automatically.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus GetAutoMode (void* context = NULL) = 0;
+    virtual QStatus GetAutoMode(void* context = NULL) = 0;
 
     /**
-     * Set auto mode
-     * @param[in] autoMOde auto mode
+     * Set AutoMode property
+     * (Represent enabled/disabled state of the auto mode. The device decides the moisture output level for providing comfortable surroundings automatically.)
+     * @param[in] value The auto mode to set
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus SetAutoMode (const uint8_t autoMode, void* context = NULL) = 0;
+    virtual QStatus SetAutoMode(const AutoMode value, void* context = NULL) = 0;
 };
 
 } //namespace services

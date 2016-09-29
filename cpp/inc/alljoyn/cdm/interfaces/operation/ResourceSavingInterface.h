@@ -17,11 +17,6 @@
 #ifndef RESOURCESAVINGINTERFACE_H_
 #define RESOURCESAVINGINTERFACE_H_
 
-
-#include <vector>
-#include <map>
-#include <utility>
-
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/CdmInterface.h>
@@ -34,6 +29,8 @@ namespace services {
  */
 class ResourceSavingInterface : public CdmInterface {
   public:
+
+
     /**
      * Constructor of ResourceSavingInterface
      */
@@ -46,13 +43,13 @@ class ResourceSavingInterface : public CdmInterface {
 
     /**
      * Get Interface Type
-     * @return Interface type
+     * @return interface type
      */
     const CdmInterfaceType GetInterfaceType() const { return RESOURCE_SAVING_INTERFACE; }
 
     /**
-     * Get Introspection Xml
-     * @return Introspection xml
+     * Get Introspection XML
+     * @return Introspection XML
      */
     virtual const qcc::String& GetIntrospectionXml() { return s_xml; }
 
@@ -73,6 +70,5 @@ class ResourceSavingInterface : public CdmInterface {
 
 } //namespace services
 } //namespace ajn
-
 
 #endif /* RESOURCESAVINGINTERFACE_H_ */

@@ -36,12 +36,12 @@ class CycleControlIntfControllerImpl : public InterfaceController, public CycleC
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Constructor of CycleControlIntfControllerImpl
      */
-    CycleControlIntfControllerImpl(BusAttachment& busAttachment, CycleControlIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    CycleControlIntfControllerImpl(BusAttachment& busAttachment, CycleControlIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Destructor of CycleControlIntfControllerImpl
@@ -61,46 +61,44 @@ class CycleControlIntfControllerImpl : public InterfaceController, public CycleC
     virtual BusAttachment& GetBusAttachment() const { return m_busAttachment; }
 
     /**
-     * Get operational state
-     * @param[in] context
-     * @return status
+     * Get OperationalState property
+     * (Current operational state of the appliance.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetOperationalState(void* context);
 
     /**
-     * Get supported operational commands
-     * @param[in] context
-     * @return status
-     */
-    virtual QStatus GetSupportedOperationalCommands(void* context);
-
-    /**
-     * Get supported operational states
-     * @param[in] context
-     * @return status
+     * Get SupportedOperationalStates property
+     * (Operational states which are supported by the appliance.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetSupportedOperationalStates(void* context);
 
     /**
-     * Execute command
-     * @param[in] command to execute
-     * @param[in] context
-     * @return status
+     * Get SupportedOperationalCommands property
+     * (Operational commands which are supported by the appliance.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
-    virtual QStatus ExecuteCommand(const CycleControlOperationalCommand command, void* context);
+    virtual QStatus GetSupportedOperationalCommands(void* context);
+
+    /**
+     * Call ExecuteOperationalCommand method
+     * (Execute an operational command.)
+     * @param[in] command Operational command to be executed.
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
+     */
+    virtual QStatus ExecuteOperationalCommand(const OperationalCommands command, void* context);
 
   private:
-    CycleControlIntfControllerImpl();
-
     void PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context);
-
     void GetOperationalStatePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
-
-    void GetSupportedOperationalCommandsPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
-
     void GetSupportedOperationalStatesPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
-
-    void ExecuteCommandReplyHandler(Message& message, void* context);
+    void GetSupportedOperationalCommandsPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+    void ExecuteOperationalCommandReplyHandler(Message& message, void* context);
 
     BusAttachment& m_busAttachment;
     CycleControlIntfControllerListener& m_interfaceListener;

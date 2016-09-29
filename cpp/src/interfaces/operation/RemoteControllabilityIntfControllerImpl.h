@@ -36,12 +36,12 @@ class RemoteControllabilityIntfControllerImpl : public InterfaceController, publ
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Constructor of RemoteControllabilityIntfControllerImpl
      */
-    RemoteControllabilityIntfControllerImpl(BusAttachment& busAttachment, RemoteControllabilityIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    RemoteControllabilityIntfControllerImpl(BusAttachment& busAttachment, RemoteControllabilityIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Destructor of RemoteControllabilityIntfControllerImpl
@@ -61,15 +61,14 @@ class RemoteControllabilityIntfControllerImpl : public InterfaceController, publ
     virtual BusAttachment& GetBusAttachment() const { return m_busAttachment; }
 
     /**
-     * Get isControllable
+     * Get IsControllable property
+     * (Status of remote controllability; true if remote controllability enabled.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetIsControllable(void* context);
 
-
   private:
-    RemoteControllabilityIntfControllerImpl();
     void PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context);
     void GetIsControllablePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
 

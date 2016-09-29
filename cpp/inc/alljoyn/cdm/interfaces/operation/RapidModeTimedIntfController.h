@@ -40,22 +40,25 @@ class RapidModeTimedIntfController : public RapidModeTimedInterface {
     virtual ~RapidModeTimedIntfController() {}
 
     /**
-     * Get time remaining in rapid mode
+     * Get RapidModeMinutesRemaining property
+     * (Time remaining in rapid mode. Zero indicates not in rapid mode.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetRapidModeMinutesRemaining(void* context = NULL) = 0;
 
     /**
-     * Set time remaining in rapid mode
-     * @param[in] value time remaining in rapid mode
+     * Set RapidModeMinutesRemaining property
+     * (Time remaining in rapid mode. Zero indicates not in rapid mode.)
+     * @param[in] value The rapid mode minutes remaining to set
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus SetRapidModeMinutesRemaining(const uint16_t value, void* context = NULL) = 0;
 
     /**
-     * Get the maximum rapid mode set time
+     * Get MaxSetMinutes property
+     * (Maximum rapid mode set time. It does not change to accomodate already in rapid mode.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */

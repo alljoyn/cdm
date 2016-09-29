@@ -20,6 +20,7 @@
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/InterfaceControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/RapidModeTimedInterface.h>
 
 namespace ajn {
 namespace services {
@@ -29,26 +30,32 @@ namespace services {
  */
 class RapidModeTimedIntfControllerListener : public InterfaceControllerListener {
   public:
+
+    /**
+     * Destructor of RapidModeTimedIntfControllerListener
+     */
     virtual ~RapidModeTimedIntfControllerListener() {}
 
     /**
-     * Handler for RapidModeMinutesRemaining property changed
-     * @param[in] objectPath the object path
-     * @param[in] value time remaining in rapid mode
-     */
-    virtual void OnRapidModeMinutesRemainingChanged(const qcc::String& objectPath, const uint16_t value) {}
-
-    /**
-     * Callback handler for getting RapidModeMinutesRemaining property
+     * Callback handler for GetRapidModeMinutesRemaining completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] value time remaining in rapid mode
+     * @param[in] value The value of RapidModeMinutesRemaining
+     *                  (Time remaining in rapid mode. Zero indicates not in rapid mode.)
      * @param[in] context the context that is passed from application
      */
     virtual void OnResponseGetRapidModeMinutesRemaining(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context) {}
 
     /**
-     * Callback handler for setting RapidModeMinutesRemaining property
+     * Handler for RapidModeMinutesRemaining property changed
+     * @param[in] objectPath the object path
+     * @param[in] value The value of RapidModeMinutesRemaining
+     *                  (Time remaining in rapid mode. Zero indicates not in rapid mode.)
+     */
+    virtual void OnRapidModeMinutesRemainingChanged(const qcc::String& objectPath, const uint16_t value) {}
+
+    /**
+     * Callback handler for SetRapidModeMinutesRemaining completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
      * @param[in] context the context that is passed from application
@@ -56,13 +63,22 @@ class RapidModeTimedIntfControllerListener : public InterfaceControllerListener 
     virtual void OnResponseSetRapidModeMinutesRemaining(QStatus status, const qcc::String& objectPath, void* context) {}
 
     /**
-     * Callback handler for getting MaxSetMinutes property
+     * Callback handler for GetMaxSetMinutes completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] value the maximum rapid mode set time
+     * @param[in] value The value of MaxSetMinutes
+     *                  (Maximum rapid mode set time. It does not change to accomodate already in rapid mode.)
      * @param[in] context the context that is passed from application
      */
     virtual void OnResponseGetMaxSetMinutes(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context) {}
+
+    /**
+     * Handler for MaxSetMinutes property changed
+     * @param[in] objectPath the object path
+     * @param[in] value The value of MaxSetMinutes
+     *                  (Maximum rapid mode set time. It does not change to accomodate already in rapid mode.)
+     */
+    virtual void OnMaxSetMinutesChanged(const qcc::String& objectPath, const uint16_t value) {}
 };
 
 } //namespace services

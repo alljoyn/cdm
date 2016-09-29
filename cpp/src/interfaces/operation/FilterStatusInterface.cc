@@ -37,12 +37,12 @@ const qcc::String FilterStatusInterface::s_xml =
 "            <annotation name='org.freedesktop.DBus.Property.EmitsChangedSignal' value='true'/>"
 "        </property>"
 "        <property name='IsCleanable' type='b' access='read'>"
-"            <annotation name='org.alljoyn.Bus.DocString.En' value='This is a static property of the filter. If the property is true a new filter does not need to be ordered, just clean.'/>"
+"            <annotation name='org.alljoyn.Bus.DocString.En' value='This is a static property of the filter.  If the property is true a new filter does not need to be ordered, just clean.'/>"
 "            <annotation name='org.freedesktop.DBus.Property.EmitsChangedSignal' value='true'/>"
 "        </property>"
 "        <property name='OrderPercentage' type='y' access='read'>"
 "            <annotation name='org.alljoyn.Bus.DocString.En' value='LifeRemaining it is recommended that a new filter be orderedIt can have a value of 0 because the remaining life is unpredictable, for example a psid switch. It can also have a value of 255 if OrderPercentage is N/A, for example a cleanable filter.'/>"
-"            <annotation name='org.freedesktop.DBus.Property.EmitsChangedSignal' value='true'/>"
+"        <annotation name='org.freedesktop.DBus.Property.EmitsChangedSignal' value='true'/>"
 "        </property>"
 "        <property name='Manufacturer' type='s' access='read'>"
 "            <annotation name='org.alljoyn.Bus.DocString.En' value='Identification of the filter manufacturer, which along with the part number act as a tuple to identify the filter within the Alljoyn device. Either one or both may be a null string.'/>"
@@ -61,7 +61,8 @@ const qcc::String FilterStatusInterface::s_xml =
 "            <annotation name='org.freedesktop.DBus.Property.EmitsChangedSignal' value='true'/>"
 "        </property>"
 "    </interface>"
-"</node>";
+"</node>"
+;
 
 const qcc::String FilterStatusInterface::s_prop_Version = "Version";
 const qcc::String FilterStatusInterface::s_prop_ExpectedLifeInDays = "ExpectedLifeInDays";

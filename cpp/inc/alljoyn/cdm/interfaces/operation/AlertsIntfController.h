@@ -41,36 +41,37 @@ class AlertsIntfController : public AlertsInterface {
 
     /**
      * Get Alerts property
+     * (List of current pending alerts.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus GetAlerts(void * context = NULL) = 0;
+    virtual QStatus GetAlerts(void* context = NULL) = 0;
 
     /**
-     * Get AlertCodesDescription
-     * @param[in] language language
+     * Call GetAlertCodesDescription method
+     * (Get alert codes description.)
+     * @param[in] languageTag Language to be used in the output strings.
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus GetAlertCodesDescription(const qcc::String& language, void* context = NULL) = 0;
+    virtual QStatus GetAlertCodesDescription(const qcc::String& languageTag, void* context = NULL) = 0;
 
     /**
-     * AcknowledgeAlert
-     * @param[in] alertCode alert code
+     * Call AcknowledgeAlert method
+     * (Reset the user acknowledgment request of a specific pending alert.)
+     * @param[in] alertCode Alert code of the alert to be acknowledged.
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus AcknowledgeAlert(const uint16_t alertCode, void * context = NULL) = 0;
+    virtual QStatus AcknowledgeAlert(const uint16_t alertCode, void* context = NULL) = 0;
 
     /**
-     * AcknowledgeAllAlerts
+     * Call AcknowledgeAllAlerts method
+     * (Reset the user acknowledgment request of any pending alert.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus AcknowledgeAllAlerts(void * context = NULL) = 0;
-
-
-
+    virtual QStatus AcknowledgeAllAlerts(void* context = NULL) = 0;
 };
 
 } //namespace services

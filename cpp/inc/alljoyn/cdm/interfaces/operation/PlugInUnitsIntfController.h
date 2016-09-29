@@ -40,7 +40,8 @@ class PlugInUnitsIntfController : public PlugInUnitsInterface {
     virtual ~PlugInUnitsIntfController() {}
 
     /**
-     * Get PlugInUnits
+     * Get PlugInUnits property
+     * (The lists of all the possible hot pluggable devices and the associated status.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */

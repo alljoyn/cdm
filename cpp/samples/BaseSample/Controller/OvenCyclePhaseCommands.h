@@ -30,15 +30,15 @@ class OvenCyclePhaseListener : public OvenCyclePhaseIntfControllerListener{
   public:
     OvenCyclePhaseListener();
     virtual ~OvenCyclePhaseListener();
-    virtual void OnResponseGetCyclePhase(QStatus status, const qcc::String& objectPath, const uint8_t& cyclePhase, void* context);
+    virtual void OnResponseGetCyclePhase(QStatus status, const qcc::String& objectPath, const uint8_t cyclePhase, void* context);
 
     virtual void OnResponseGetSupportedCyclePhases(QStatus status, const qcc::String& objectPath, const OvenCyclePhaseInterface::SupportedCyclePhases& listOfCyclePhases, void* context);
 
-    virtual void OnCyclePhasePropertyChanged(const qcc::String& objectPath, const uint8_t cyclePhase);
+    virtual void OnCyclePhaseChanged(const qcc::String& objectPath, const uint8_t cyclePhase);
 
-    virtual void OnSupportedCyclePhasesPropertyChanged(const qcc::String& objectPath, const OvenCyclePhaseInterface::SupportedCyclePhases& listOfCyclePhases);
+    virtual void OnSupportedCyclePhasesChanged(const qcc::String& objectPath, const OvenCyclePhaseInterface::SupportedCyclePhases& listOfCyclePhases);
 
-    virtual void OnResponseGetCyclePhasesDescriptions(QStatus status, const qcc::String& objectPath, const OvenCyclePhaseInterface::CyclePhaseDescriptions& listOfCycleDescriptions, void* context, const char* errorName, const char* errorMessage);
+    virtual void OnResponseGetVendorPhasesDescription(QStatus status, const qcc::String& objectPath, const OvenCyclePhaseInterface::CyclePhaseDescriptions& listOfCycleDescriptions, void* context, const char* errorName, const char* errorMessage);
 };
 
 class OvenCyclePhaseCommands : public InterfaceCommands

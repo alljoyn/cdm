@@ -17,11 +17,6 @@
 #ifndef TARGETHUMIDITYINTERFACE_H_
 #define TARGETHUMIDITYINTERFACE_H_
 
-
-#include <vector>
-#include <map>
-#include <utility>
-
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/CdmInterface.h>
@@ -40,6 +35,7 @@ class TargetHumidityInterface : public CdmInterface {
         MAX_HUMIDITY = 100
     };
 
+
     /**
      * Constructor of TargetHumidityInterface
      */
@@ -52,13 +48,13 @@ class TargetHumidityInterface : public CdmInterface {
 
     /**
      * Get Interface Type
-     * @return Interface type
+     * @return interface type
      */
     const CdmInterfaceType GetInterfaceType() const { return TARGET_HUMIDITY_INTERFACE; }
 
     /**
-     * Get Introspection Xml
-     * @return Introspection xml
+     * Get Introspection XML
+     * @return Introspection XML
      */
     virtual const qcc::String& GetIntrospectionXml() { return s_xml; }
 
@@ -83,6 +79,5 @@ class TargetHumidityInterface : public CdmInterface {
 
 } //namespace services
 } //namespace ajn
-
 
 #endif /* TARGETHUMIDITYINTERFACE_H_ */

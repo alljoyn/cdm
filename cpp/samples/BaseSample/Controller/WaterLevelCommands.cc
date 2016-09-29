@@ -24,43 +24,43 @@ WaterLevelListener::WaterLevelListener()
 WaterLevelListener::~WaterLevelListener()
 {
 }
-void WaterLevelListener::OnGetMaxLevelPropertyCallback(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context)
+void WaterLevelListener::OnResponseGetMaxLevel(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context)
 {
-    cout << "# WaterLevelListener::OnGetMaxLevelPropertyCallback()" << endl;
+    cout << "# WaterLevelListener::OnResponseGetMaxLevel()" << endl;
     cout << "# status: " << QCC_StatusText(status) << endl;
     cout << "# Object: " << objectPath << endl;
     cout << "# Max level: " << (int)value << endl;
 }
-void WaterLevelListener::OnGetSupplySourcePropertyCallback (QStatus status, const qcc::String& objectPath, const WaterLevelInterface::WaterLevelSupplySource value, void* context)
+void WaterLevelListener::OnResponseGetSupplySource(QStatus status, const qcc::String& objectPath, const WaterLevelInterface::SupplySource value, void* context)
 {
     cout << "# WaterLevelListener::OnGetSupplySourceLevelPropertyCallback()" << endl;
     cout << "# status: " << QCC_StatusText(status) << endl;
     cout << "# Object: " << objectPath << endl;
     cout << "# Supply Source: " << (int)value << endl;
 }
-void WaterLevelListener::OnGetCurrentLevelPropertyCallback (QStatus status, const qcc::String& objectPath, const uint8_t value, void* context)
+void WaterLevelListener::OnResponseGetCurrentLevel(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context)
 {
-    cout << "# WaterLevelListener::OnGetCurrentLevelPropertyCallback()" << endl;
+    cout << "# WaterLevelListener::OnResponseGetCurrentLevel()" << endl;
     cout << "# status: " << QCC_StatusText(status) << endl;
     cout << "# Object: " << objectPath << endl;
     cout << "# Current level: " << (int)value << endl;
 }
 
-void WaterLevelListener::MaxLevelProprtyChanged(const qcc::String& objectPath, const uint8_t value)
+void WaterLevelListener::OnMaxLevelChanged(const qcc::String& objectPath, const uint8_t value)
 {
-    cout << "# WaterLevelListener.MaxLevelProprtyChanged()" << endl;
+    cout << "# WaterLevelListener.OnMaxLevelChanged()" << endl;
     cout << "# Object: " << objectPath << endl;
     cout << "# MaxLevel: " << (int)value << endl;
 }
-void WaterLevelListener::CurrentLevelProprtyChanged(const qcc::String& objectPath, const uint8_t value)
+void WaterLevelListener::OnCurrentLevelChanged(const qcc::String& objectPath, const uint8_t value)
 {
-    cout << "# WaterLevelListener.CurrentLevelProprtyChanged()" << endl;
+    cout << "# WaterLevelListener.OnCurrentLevelChanged()" << endl;
     cout << "# Object: " << objectPath << endl;
     cout << "# CurrentLevel: " << (int)value << endl;
 }
-void WaterLevelListener::SupplySourceProprtyChanged(const qcc::String& objectPath, const WaterLevelInterface::WaterLevelSupplySource value)
+void WaterLevelListener::OnSupplySourceChanged(const qcc::String& objectPath, const WaterLevelInterface::SupplySource value)
 {
-    cout << "# WaterLevelListener.SupplySourceProprtyChanged()" << endl;
+    cout << "# WaterLevelListener.OnSupplySourceChanged()" << endl;
     cout << "# Object: " << objectPath << endl;
     cout << "# SupplySource: " << (int)value << endl;
 }

@@ -29,13 +29,15 @@ namespace services {
  */
 class LanguageDisplayInterface : public CdmInterface {
   public:
+
+
     /**
-     * Constructor of LanguageDisplay
+     * Constructor of LanguageDisplayInterface
      */
     LanguageDisplayInterface() {}
 
     /**
-     * Destructor of LanguageDisplay
+     * Destructor of LanguageDisplayInterface
      */
     virtual ~LanguageDisplayInterface() {}
 
@@ -46,14 +48,14 @@ class LanguageDisplayInterface : public CdmInterface {
     const CdmInterfaceType GetInterfaceType() const { return LANGUAGE_DISPLAY_INTERFACE; }
 
     /**
-     * Get Introspection Xml
-     * @return xml
+     * Get Introspection XML
+     * @return Introspection XML
      */
     virtual const qcc::String& GetIntrospectionXml() { return s_xml; }
 
     /**
      * Get Interface version
-     * @return interface version
+     * @return Interface version
      */
     virtual const uint16_t GetInterfaceVersion() const { return s_interfaceVersion; }
 

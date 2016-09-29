@@ -29,13 +29,15 @@ namespace services {
  */
 class OffControlInterface : public CdmInterface {
   public:
+
+
     /**
-     * Constructor of OffControl
+     * Constructor of OffControlInterface
      */
     OffControlInterface() {}
 
     /**
-     * Destructor of OffControl
+     * Destructor of OffControlInterface
      */
     virtual ~OffControlInterface() {}
 
@@ -46,14 +48,14 @@ class OffControlInterface : public CdmInterface {
     const CdmInterfaceType GetInterfaceType() const { return OFF_CONTROL_INTERFACE; }
 
     /**
-     * Get Introspection Xml
-     * @return xml
+     * Get Introspection XML
+     * @return Introspection XML
      */
     virtual const qcc::String& GetIntrospectionXml() { return s_xml; }
 
     /**
      * Get Interface version
-     * @return interface version
+     * @return Interface version
      */
     virtual const uint16_t GetInterfaceVersion() const { return s_interfaceVersion; }
 

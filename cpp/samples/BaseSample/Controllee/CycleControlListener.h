@@ -27,9 +27,9 @@ using namespace services;
 class CycleControlListener : public CycleControlIntfControlleeListener
 {
 public:
-    virtual QStatus OnGetOperationalState(CycleControlInterface::CycleControlOperationalState& state);
+    virtual QStatus OnGetOperationalState(CycleControlInterface::OperationalState& state);
 
-    virtual QStatus OnExecuteCommand(CycleControlInterface::CycleControlOperationalCommand command, CycleControlInterface::CycleControlOperationalState& newState, ErrorCode& error);
+    virtual QStatus OnExecuteCommand(CycleControlInterface::OperationalCommands command, CycleControlInterface::OperationalState& newState, ErrorCode& error);
 
 };
 

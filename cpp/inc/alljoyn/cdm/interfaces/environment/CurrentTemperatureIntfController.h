@@ -17,10 +17,6 @@
 #ifndef CURRENTTEMPERATUREINTFCONTROLLER_H_
 #define CURRENTTEMPERATUREINTFCONTROLLER_H_
 
-#include <vector>
-#include <map>
-#include <utility>
-
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/environment/CurrentTemperatureInterface.h>
@@ -44,21 +40,24 @@ class CurrentTemperatureIntfController : public CurrentTemperatureInterface {
     virtual ~CurrentTemperatureIntfController() {}
 
     /**
-     * Get CurrentValue
+     * Get CurrentValue property
+     * (Current temperature expressed in Celsius.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetCurrentValue(void* context = NULL) = 0;
 
     /**
-     * Get Precision
+     * Get Precision property
+     * (The precision of the CurrentValue property.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetPrecision(void* context = NULL) = 0;
 
     /**
-     * Get UpdateMinTime
+     * Get UpdateMinTime property
+     * (The minimum time between updates of the CurrentValue property in milliseconds.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */

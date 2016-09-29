@@ -31,20 +31,20 @@ QStatus AlertsListener::OnGetAlerts(AlertsInterface::Alerts& alerts)
     return status;
 }
 
-QStatus AlertsListener::OnGetAlertCodesDescription(const qcc::String& language, AlertsInterface::AlertCodesDescription& description, ErrorCode& error)
+QStatus AlertsListener::OnGetAlertCodesDescription(const qcc::String& language, AlertsInterface::AlertCodesDescriptors& description, ErrorCode& error)
 {
     cout << "AlertsListener::OnGetAlertCodesDescription" << endl;
     QStatus status = ER_OK;
     if(language == "en")
     {
-        AlertsInterface::AlertCodeDescriptor desc;
-        desc.code = 0x8000;
+        AlertsInterface::AlertCodesDescriptor desc;
+        desc.alertCode = 0x8000;
         desc.description = "alert code 0x8000";
         description.push_back(desc);
-        desc.code = 0x8001;
+        desc.alertCode = 0x8001;
         desc.description = "alert code 0x8001";
         description.push_back(desc);
-        desc.code = 0x8002;
+        desc.alertCode = 0x8002;
         desc.description = "alert code 0x8002";
         description.push_back(desc);
     }

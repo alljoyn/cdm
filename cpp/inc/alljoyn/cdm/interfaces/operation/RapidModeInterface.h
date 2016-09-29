@@ -29,13 +29,15 @@ namespace services {
  */
 class RapidModeInterface : public CdmInterface {
   public:
+
+
     /**
-     * Constructor of RapidMode
+     * Constructor of RapidModeInterface
      */
     RapidModeInterface() {}
 
     /**
-     * Destructor of RapidMode
+     * Destructor of RapidModeInterface
      */
     virtual ~RapidModeInterface() {}
 
@@ -46,14 +48,14 @@ class RapidModeInterface : public CdmInterface {
     const CdmInterfaceType GetInterfaceType() const { return RAPID_MODE_INTERFACE; }
 
     /**
-     * Get Introspection Xml
-     * @return xml
+     * Get Introspection XML
+     * @return Introspection XML
      */
     virtual const qcc::String& GetIntrospectionXml() { return s_xml; }
 
     /**
      * Get Interface version
-     * @return interface version
+     * @return Interface version
      */
     virtual const uint16_t GetInterfaceVersion() const { return s_interfaceVersion; }
 

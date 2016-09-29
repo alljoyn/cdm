@@ -20,6 +20,7 @@
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/InterfaceControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/RepeatModeInterface.h>
 
 namespace ajn {
 namespace services {
@@ -29,32 +30,37 @@ namespace services {
  */
 class RepeatModeIntfControllerListener : public InterfaceControllerListener {
   public:
+
+    /**
+     * Destructor of RepeatModeIntfControllerListener
+     */
     virtual ~RepeatModeIntfControllerListener() {}
 
     /**
-     * Callback handler for getting RepeatMode property
+     * Callback handler for GetRepeatMode completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] RepeatMode value
+     * @param[in] value The value of RepeatMode
+     *                  (True if the device works in repeat mode.)
      * @param[in] context the context that is passed from application
      */
     virtual void OnResponseGetRepeatMode(QStatus status, const qcc::String& objectPath, const bool value, void* context) {}
 
     /**
-     * Callback handler for getting RepeatMode property
+     * Handler for RepeatMode property changed
+     * @param[in] objectPath the object path
+     * @param[in] value The value of RepeatMode
+     *                  (True if the device works in repeat mode.)
+     */
+    virtual void OnRepeatModeChanged(const qcc::String& objectPath, const bool value) {}
+
+    /**
+     * Callback handler for SetRepeatMode completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
      * @param[in] context the context that is passed from application
      */
     virtual void OnResponseSetRepeatMode(QStatus status, const qcc::String& objectPath, void* context) {}
-
-    /**
-     * Handler for RepeatMode property changed
-     * @param[in] objectPath the object path
-     * @param[in] RepeatMode value
-     */
-    virtual void OnRepeatModeChanged(const qcc::String& objectPath, const bool value) {}
-
 };
 
 } //namespace services

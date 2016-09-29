@@ -59,6 +59,48 @@ QStatus FanSpeedLevelIntfControllerImpl::Init()
     return status;
 }
 
+QStatus FanSpeedLevelIntfControllerImpl::GetFanSpeedLevel(void* context)
+{
+    QStatus status = ER_OK;
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_FanSpeedLevel.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&FanSpeedLevelIntfControllerImpl::GetFanSpeedLevelPropertyCB, context);
+    return status;
+}
+
+
+QStatus FanSpeedLevelIntfControllerImpl::SetFanSpeedLevel(const uint8_t value, void* context)
+{
+    QStatus status = ER_OK;
+    MsgArg arg;
+    arg.Set("y", value);
+    status = m_proxyObject.SetPropertyAsync(GetInterfaceName().c_str(), s_prop_FanSpeedLevel.c_str(), arg, this, (ProxyBusObject::Listener::SetPropertyCB)&FanSpeedLevelIntfControllerImpl::SetFanSpeedLevelPropertyCB, context);
+    return status;
+}
+
+QStatus FanSpeedLevelIntfControllerImpl::GetMaxFanSpeedLevel(void* context)
+{
+    QStatus status = ER_OK;
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_MaxFanSpeedLevel.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&FanSpeedLevelIntfControllerImpl::GetMaxFanSpeedLevelPropertyCB, context);
+    return status;
+}
+
+QStatus FanSpeedLevelIntfControllerImpl::GetAutoMode(void* context)
+{
+    QStatus status = ER_OK;
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_AutoMode.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&FanSpeedLevelIntfControllerImpl::GetAutoModePropertyCB, context);
+    return status;
+}
+
+
+QStatus FanSpeedLevelIntfControllerImpl::SetAutoMode(const AutoMode value, void* context)
+{
+    QStatus status = ER_OK;
+    MsgArg arg;
+    arg.Set("y", value);
+    status = m_proxyObject.SetPropertyAsync(GetInterfaceName().c_str(), s_prop_AutoMode.c_str(), arg, this, (ProxyBusObject::Listener::SetPropertyCB)&FanSpeedLevelIntfControllerImpl::SetAutoModePropertyCB, context);
+    return status;
+}
+
+
 void FanSpeedLevelIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
 {
     MsgArg* entries;
@@ -79,62 +121,12 @@ void FanSpeedLevelIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, con
         } else if (!s_prop_AutoMode.compare(propNameStr)) {
             if (propValue->typeId == ALLJOYN_BYTE) {
                 uint8_t value = propValue->v_byte;
-                m_interfaceListener.OnAutoModeChanged(obj.GetPath(), value);
+                m_interfaceListener.OnAutoModeChanged(obj.GetPath(), (AutoMode)value);
             }
         }
     }
 }
 
-
-QStatus FanSpeedLevelIntfControllerImpl::GetFanSpeedLevel(void* context)
-{
-    QStatus status = ER_OK;
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_FanSpeedLevel.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&FanSpeedLevelIntfControllerImpl::GetFanSpeedLevelPropertyCB, context);
-    return status;
-}
-
-QStatus FanSpeedLevelIntfControllerImpl::SetFanSpeedLevel(const uint8_t value, void* context)
-{
-    QStatus status = ER_OK;
-    MsgArg arg;
-    arg.Set("y", value);
-    status = m_proxyObject.SetPropertyAsync(GetInterfaceName().c_str(), s_prop_FanSpeedLevel.c_str(), arg, this, (ProxyBusObject::Listener::SetPropertyCB)&FanSpeedLevelIntfControllerImpl::SetFanSpeedLevelPropertyCB, context);
-    return status;
-}
-
-QStatus FanSpeedLevelIntfControllerImpl::GetMaxFanSpeedLevel(void* context)
-{
-    QStatus status = ER_OK;
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_MaxFanSpeedLevel.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&FanSpeedLevelIntfControllerImpl::GetMaxFanSpeedLevelPropertyCB, context);
-    return status;
-}
-
-
-QStatus FanSpeedLevelIntfControllerImpl::GetAutoMode(void* context)
-{
-    QStatus status = ER_OK;
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_AutoMode.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&FanSpeedLevelIntfControllerImpl::GetAutoModePropertyCB, context);
-    return status;
-}
-
-
-QStatus FanSpeedLevelIntfControllerImpl::SetAutoMode(const uint8_t value, void* context)
-{
-    QStatus status = ER_OK;
-    MsgArg arg;
-    arg.Set("y", value);
-    status = m_proxyObject.SetPropertyAsync(GetInterfaceName().c_str(), s_prop_AutoMode.c_str(), arg, this, (ProxyBusObject::Listener::SetPropertyCB)&FanSpeedLevelIntfControllerImpl::SetAutoModePropertyCB, context);
-    return status;
-}
-
-
-void FanSpeedLevelIntfControllerImpl::SetFanSpeedLevelPropertyCB(QStatus status, ProxyBusObject* obj, void* context)
-{
-    if (!obj) {
-        return;
-    }
-    m_interfaceListener.OnResponseSetFanSpeedLevel(status, obj->GetPath(), context);
-}
 
 void FanSpeedLevelIntfControllerImpl::GetFanSpeedLevelPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
@@ -144,6 +136,14 @@ void FanSpeedLevelIntfControllerImpl::GetFanSpeedLevelPropertyCB(QStatus status,
     uint8_t val;
     value.Get("y", &val);
     m_interfaceListener.OnResponseGetFanSpeedLevel(status, obj->GetPath(), val, context);
+}
+
+void FanSpeedLevelIntfControllerImpl::SetFanSpeedLevelPropertyCB(QStatus status, ProxyBusObject* obj, void* context)
+{
+    if (!obj) {
+        return;
+    }
+    m_interfaceListener.OnResponseSetFanSpeedLevel(status, obj->GetPath(), context);
 }
 
 void FanSpeedLevelIntfControllerImpl::GetMaxFanSpeedLevelPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
@@ -156,14 +156,6 @@ void FanSpeedLevelIntfControllerImpl::GetMaxFanSpeedLevelPropertyCB(QStatus stat
     m_interfaceListener.OnResponseGetMaxFanSpeedLevel(status, obj->GetPath(), val, context);
 }
 
-void FanSpeedLevelIntfControllerImpl::SetAutoModePropertyCB(QStatus status, ProxyBusObject* obj, void* context)
-{
-    if (!obj) {
-        return;
-    }
-    m_interfaceListener.OnResponseSetAutoMode(status, obj->GetPath(), context);
-}
-
 void FanSpeedLevelIntfControllerImpl::GetAutoModePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
     if (!obj) {
@@ -171,7 +163,15 @@ void FanSpeedLevelIntfControllerImpl::GetAutoModePropertyCB(QStatus status, Prox
     }
     uint8_t val;
     value.Get("y", &val);
-    m_interfaceListener.OnResponseGetAutoMode(status, obj->GetPath(), val, context);
+    m_interfaceListener.OnResponseGetAutoMode(status, obj->GetPath(), (AutoMode)val, context);
+}
+
+void FanSpeedLevelIntfControllerImpl::SetAutoModePropertyCB(QStatus status, ProxyBusObject* obj, void* context)
+{
+    if (!obj) {
+        return;
+    }
+    m_interfaceListener.OnResponseSetAutoMode(status, obj->GetPath(), context);
 }
 
 } //namespace services

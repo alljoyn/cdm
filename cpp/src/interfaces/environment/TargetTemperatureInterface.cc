@@ -1,4 +1,3 @@
-
 /******************************************************************************
  * Copyright (c) 2013-2014, AllSeen Alliance. All rights reserved.
  *
@@ -53,7 +52,8 @@ const qcc::String TargetTemperatureInterface::s_xml =
 "            <annotation name='org.alljoyn.Bus.Type.Units' value='degrees Celsius'/>"
 "        </property>"
 "    </interface>"
-"</node>";
+"</node>"
+;
 
 const qcc::String TargetTemperatureInterface::s_prop_Version = "Version";
 const qcc::String TargetTemperatureInterface::s_prop_TargetValue = "TargetValue";

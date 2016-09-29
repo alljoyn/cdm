@@ -119,7 +119,7 @@ void LaundryControllee::OnCmdSetState(Commands* commands, std::string& cmd)
     int state = strtol(cmd.c_str(), NULL, 10);
 
     if (static_cast<LaundryControllee*>(sample)->m_cycleControlIntfControllee) {
-        static_cast<LaundryControllee*>(sample)->m_cycleControlIntfControllee->SetOperationalState((CycleControlInterface::CycleControlOperationalState)state);
+        static_cast<LaundryControllee*>(sample)->m_cycleControlIntfControllee->SetOperationalState((CycleControlInterface::OperationalState)state);
     }
 }
 void LaundryControllee::OnCmdSetCurWaterLvl(Commands* commands, std::string& cmd)
@@ -171,18 +171,18 @@ void LaundryControllee::SetInitialProperty()
 
     //CycleCControlInterface
     CycleControlInterface::SupportedOperationalCommands comm;
-    comm.push_back(CycleControlInterface::CycleControlOperationalCommand::OPERATIONAL_COMMAND_STOP);
-    comm.push_back(CycleControlInterface::CycleControlOperationalCommand::OPERATIONAL_COMMAND_PAUSE);
-    comm.push_back(CycleControlInterface::CycleControlOperationalCommand::OPERATIONAL_COMMAND_RESUME);
+    comm.push_back(CycleControlInterface::OperationalCommands::OPERATIONAL_COMMANDS_STOP);
+    comm.push_back(CycleControlInterface::OperationalCommands::OPERATIONAL_COMMANDS_PAUSE);
+    comm.push_back(CycleControlInterface::OperationalCommands::OPERATIONAL_COMMANDS_RESUME);
     m_cycleControlIntfControllee->SetSupportedCommands(comm);
 
     CycleControlInterface::SupportedOperationalStates states;
-    states.push_back(CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_IDLE);
-    states.push_back(CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_PAUSED);
-    states.push_back(CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_READY_TO_START);
-    states.push_back(CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_END_OF_CYCLE);
-    states.push_back(CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_DELAYED_START);
-    states.push_back(CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_WORKING);
+    states.push_back(CycleControlInterface::OperationalState::OPERATIONAL_STATE_IDLE);
+    states.push_back(CycleControlInterface::OperationalState::OPERATIONAL_STATE_PAUSED);
+    states.push_back(CycleControlInterface::OperationalState::OPERATIONAL_STATE_READY_TO_START);
+    states.push_back(CycleControlInterface::OperationalState::OPERATIONAL_STATE_END_OF_CYCLE);
+    states.push_back(CycleControlInterface::OperationalState::OPERATIONAL_STATE_DELAYED_START);
+    states.push_back(CycleControlInterface::OperationalState::OPERATIONAL_STATE_WORKING);
 
     m_cycleControlIntfControllee->SetSupportedStates(states);
 

@@ -1,4 +1,3 @@
-
 /******************************************************************************
  * Copyright (c) 2013-2014, AllSeen Alliance. All rights reserved.
  *
@@ -53,7 +52,8 @@ const qcc::String TargetHumidityInterface::s_xml =
 "            <annotation name='org.alljoyn.Bus.DocString.En' value='List of the selectable levels of target humidity. The list is only available when this interface is implemented for setting a qualitative level of target humidity. (When MinValue = MaxValue)'/>"
 "        </property>"
 "    </interface>"
-"</node>";
+"</node>"
+;
 
 const qcc::String TargetHumidityInterface::s_prop_Version = "Version";
 const qcc::String TargetHumidityInterface::s_prop_TargetValue = "TargetValue";

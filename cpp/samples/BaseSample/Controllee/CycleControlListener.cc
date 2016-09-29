@@ -20,18 +20,18 @@
 
 using namespace std;
 
-QStatus CycleControlListener::OnGetOperationalState(CycleControlInterface::CycleControlOperationalState& state)
+QStatus CycleControlListener::OnGetOperationalState(CycleControlInterface::OperationalState& state)
 {
     cout << "CycleControlListener::OnGetOperationalState()" << endl;
     return ER_OK;
 }
 
-QStatus CycleControlListener::OnExecuteCommand(CycleControlInterface::CycleControlOperationalCommand command, CycleControlInterface::CycleControlOperationalState& newState, ErrorCode& error)
+QStatus CycleControlListener::OnExecuteCommand(CycleControlInterface::OperationalCommands command, CycleControlInterface::OperationalState& newState, ErrorCode& error)
 {
     QStatus status = ER_OK;
     cout << "CycleControlListener::OnExecuteCommand. Command: " << (int)command << ". Command name: " << CycleControlInterface::OPERATIONAL_COMMAND_STRINGS[command] <<endl;
     error = NOT_ERROR;
-    newState = CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_END_OF_CYCLE;
+    newState = CycleControlInterface::OperationalState::OPERATIONAL_STATE_END_OF_CYCLE;
     return status;
 }
 
@@ -77,22 +77,22 @@ void CycleControlCommands::InitializeProperties()
 {
     if (m_intfControllee) {
 
-    	CycleControlInterface::CycleControlOperationalState state = CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_IDLE;
-		CycleControlInterface::SupportedOperationalStates states = {
-	        CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_IDLE,
-	        CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_WORKING,
-	        CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_READY_TO_START,
-	        CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_DELAYED_START,
-	        CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_PAUSED,
-	        CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_END_OF_CYCLE
-	    };
+        CycleControlInterface::OperationalState state = CycleControlInterface::OperationalState::OPERATIONAL_STATE_IDLE;
+        CycleControlInterface::SupportedOperationalStates states = {
+            CycleControlInterface::OperationalState::OPERATIONAL_STATE_IDLE,
+            CycleControlInterface::OperationalState::OPERATIONAL_STATE_WORKING,
+            CycleControlInterface::OperationalState::OPERATIONAL_STATE_READY_TO_START,
+            CycleControlInterface::OperationalState::OPERATIONAL_STATE_DELAYED_START,
+            CycleControlInterface::OperationalState::OPERATIONAL_STATE_PAUSED,
+            CycleControlInterface::OperationalState::OPERATIONAL_STATE_END_OF_CYCLE
+        };
 
-	    CycleControlInterface::SupportedOperationalCommands commands = {
-		    CycleControlInterface::CycleControlOperationalCommand::OPERATIONAL_COMMAND_START,
-	        CycleControlInterface::CycleControlOperationalCommand::OPERATIONAL_COMMAND_STOP,
-	        CycleControlInterface::CycleControlOperationalCommand::OPERATIONAL_COMMAND_PAUSE,
-	        CycleControlInterface::CycleControlOperationalCommand::OPERATIONAL_COMMAND_RESUME
-		};
+        CycleControlInterface::SupportedOperationalCommands commands = {
+            CycleControlInterface::OperationalCommands::OPERATIONAL_COMMANDS_START,
+            CycleControlInterface::OperationalCommands::OPERATIONAL_COMMANDS_STOP,
+            CycleControlInterface::OperationalCommands::OPERATIONAL_COMMANDS_PAUSE,
+            CycleControlInterface::OperationalCommands::OPERATIONAL_COMMANDS_RESUME
+        };
 
         m_intfControllee->SetSupportedStates(states);
         m_intfControllee->SetSupportedCommands(commands);
@@ -100,12 +100,8 @@ void CycleControlCommands::InitializeProperties()
     }
 }
 
-
-
-
 void CycleControlCommands::OnCmdGetOperationalState(Commands* commands, std::string& cmd)
 {
-
     CycleControlIntfControllee* intfControllee = static_cast<CycleControlCommands*>(commands)->GetInterface();
 
     if (!intfControllee) {
@@ -114,6 +110,7 @@ void CycleControlCommands::OnCmdGetOperationalState(Commands* commands, std::str
     }
     cout << (int)intfControllee->GetOperationalState() << endl;
 }
+
 void CycleControlCommands::OnCmdSetOperationalState(Commands* commands, std::string& cmd)
 {
     CycleControlIntfControllee* intfControllee = static_cast<CycleControlCommands*>(commands)->GetInterface();
@@ -125,13 +122,13 @@ void CycleControlCommands::OnCmdSetOperationalState(Commands* commands, std::str
 
     uint8_t operationalState = strtol(cmd.c_str(), NULL, 10);
 
-    if( operationalState < CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_IDLE ||
-    	operationalState > CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_END_OF_CYCLE)
+    if(operationalState < CycleControlInterface::OperationalState::OPERATIONAL_STATE_IDLE ||
+       operationalState > CycleControlInterface::OperationalState::OPERATIONAL_STATE_END_OF_CYCLE)
     {
         cout << "Input argument is wrong." << endl;
         return;
     }
-    intfControllee->SetOperationalState((CycleControlInterface::CycleControlOperationalState)operationalState);
+    intfControllee->SetOperationalState((CycleControlInterface::OperationalState)operationalState);
 }
 
 void CycleControlCommands::OnCmdGetSupportedOperationalCommands(Commands* commands, std::string& cmd)
@@ -146,7 +143,7 @@ void CycleControlCommands::OnCmdGetSupportedOperationalCommands(Commands* comman
     const CycleControlInterface::SupportedOperationalCommands& supportedCommands = intfControllee->GetSupportedCommands();
 
     for (size_t i = 0 ; i < supportedCommands.size(); i ++)
-    	cout << (int)supportedCommands[i] << " ";
+        cout << (int)supportedCommands[i] << " ";
     cout << endl;
 }
 void CycleControlCommands::OnCmdGetSupportedOperationalStates(Commands* commands, std::string& cmd)
@@ -161,6 +158,6 @@ void CycleControlCommands::OnCmdGetSupportedOperationalStates(Commands* commands
     const CycleControlInterface::SupportedOperationalStates& supportedStates = intfControllee->GetSupportedStates();
 
     for (size_t i = 0 ; i < supportedStates.size(); i ++)
-    	cout << (int)supportedStates[i] << " ";
+        cout << (int)supportedStates[i] << " ";
     cout << endl;
 }

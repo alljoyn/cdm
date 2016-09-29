@@ -36,12 +36,12 @@ class RapidModeIntfControllerImpl : public InterfaceController, public RapidMode
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Constructor of RapidModeIntfControllerImpl
      */
-    RapidModeIntfControllerImpl(BusAttachment& busAttachment, RapidModeIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    RapidModeIntfControllerImpl(BusAttachment& busAttachment, RapidModeIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Destructor of RapidModeIntfControllerImpl
@@ -61,27 +61,26 @@ class RapidModeIntfControllerImpl : public InterfaceController, public RapidMode
     virtual BusAttachment& GetBusAttachment() const { return m_busAttachment; }
 
     /**
-     * Get RapidMode
+     * Get RapidMode property
+     * (True if the device is currently operating in rapid mode.)
      * @param[in] context the context that is passed to the callback handler
-     * return ER_OK on successful
+     * @return ER_OK on success
      */
-    virtual QStatus GetRapidMode(void* context = NULL);
+    virtual QStatus GetRapidMode(void* context);
 
     /**
-     * Set RapidMode
-     * @param[in] rapidMode rapid mode
+     * Set RapidMode property
+     * (True if the device is currently operating in rapid mode.)
+     * @param[in] value The rapid mode to set
      * @param[in] context the context that is passed to the callback handler
-     * return ER_OK on successful
+     * @return ER_OK on success
      */
-    virtual QStatus SetRapidMode(const bool rapidMode, void* context = NULL);
+    virtual QStatus SetRapidMode(const bool value, void* context);
 
   private:
-    RapidModeIntfControllerImpl();
-
     void PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context);
-
-    void SetRapidModePropertyCB(QStatus status, ProxyBusObject* obj, void* context);
     void GetRapidModePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+    void SetRapidModePropertyCB(QStatus status, ProxyBusObject* obj, void* context);
 
     BusAttachment& m_busAttachment;
     RapidModeIntfControllerListener& m_interfaceListener;

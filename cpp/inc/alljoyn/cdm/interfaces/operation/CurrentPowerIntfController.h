@@ -40,21 +40,24 @@ class CurrentPowerIntfController : public CurrentPowerInterface {
     virtual ~CurrentPowerIntfController() {}
 
     /**
-     * Get CurrentPower
+     * Get CurrentPower property
+     * (The instantaneous power consumption of the device )
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetCurrentPower(void* context = NULL) = 0;
 
     /**
-     * Get Precision
+     * Get Precision property
+     * (The precision of the CurrentPower property; i.e., the value actual power consumption must change before CurrentPower is updated.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetPrecision(void* context = NULL) = 0;
 
     /**
-     * Get UpdateMinTime
+     * Get UpdateMinTime property
+     * (The minimum time between updates of the CurrentPower)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */

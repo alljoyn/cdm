@@ -69,11 +69,9 @@ QStatus ClimateControlModeIntfControllerImpl::GetMode(void* context)
     }
 
     return status;
-
 }
 
-
-QStatus ClimateControlModeIntfControllerImpl::SetMode(const uint16_t mode, void* context)
+QStatus ClimateControlModeIntfControllerImpl::SetMode(const Mode mode, void* context)
 {
     QStatus status = ER_OK;
     MsgArg arg;
@@ -114,11 +112,11 @@ void ClimateControlModeIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj
         if (!s_prop_Mode.compare(propNameStr)) {
             if (propValue->typeId == ALLJOYN_UINT16) {
                 uint16_t value = propValue->v_uint16;
-                m_interfaceListener.OnModeChanged(obj.GetPath(), value);
+                m_interfaceListener.OnModeChanged(obj.GetPath(), (Mode)value);
             }
         } else if (!s_prop_SupportedModes.compare(propNameStr)) {
             if (propValue->typeId == ALLJOYN_UINT16_ARRAY) {
-                SupportedModes supportedmodes;
+                std::vector<Mode> supportedmodes;
                 uint16_t *vals;
                 size_t numVals;
                 propValue->Get("aq", &numVals, &vals);
@@ -126,7 +124,7 @@ void ClimateControlModeIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj
                 for(size_t j = 0 ; j<numVals ; j++  )
                 {
                     cout << vals[j] << endl;
-                    supportedmodes.push_back(vals[j]);
+                    supportedmodes.push_back((Mode)vals[j]);
                 }
 
                 m_interfaceListener.OnSupportedModesChanged(obj.GetPath(), supportedmodes);
@@ -134,10 +132,21 @@ void ClimateControlModeIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj
         } else if (!s_prop_OperationalState.compare(propNameStr)) {
             if (propValue->typeId == ALLJOYN_UINT16) {
                 uint16_t value = propValue->v_uint16;
-                m_interfaceListener.OnOperationalStateChanged(obj.GetPath(), value);
+                m_interfaceListener.OnOperationalStateChanged(obj.GetPath(), (OperationalState)value);
             }
         }
     }
+}
+
+void ClimateControlModeIntfControllerImpl::GetModePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
+{
+    if (!obj) {
+        return;
+    }
+
+    uint16_t val;
+    value.Get("q", &val);
+    m_interfaceListener.OnResponseGetMode(status, obj->GetPath(), (Mode)val, context);
 }
 
 void ClimateControlModeIntfControllerImpl::SetModePropertyCB(QStatus status, ProxyBusObject* obj, void* context)
@@ -149,17 +158,6 @@ void ClimateControlModeIntfControllerImpl::SetModePropertyCB(QStatus status, Pro
     m_interfaceListener.OnResponseSetMode(status, obj->GetPath(), context);
 }
 
-void ClimateControlModeIntfControllerImpl::GetModePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
-{
-    if (!obj) {
-        return;
-    }
-
-    uint16_t val;
-    value.Get("q", &val);
-    m_interfaceListener.OnResponseGetMode(status, obj->GetPath(), val, context);
-}
-
 void ClimateControlModeIntfControllerImpl::GetSupportedModesPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
     if (!obj) {
@@ -167,7 +165,7 @@ void ClimateControlModeIntfControllerImpl::GetSupportedModesPropertyCB(QStatus s
         return;
     }
 
-    SupportedModes supportedmodes;
+    std::vector<Mode> supportedmodes;
 
     uint16_t *vals;
     size_t numVals;
@@ -177,7 +175,7 @@ void ClimateControlModeIntfControllerImpl::GetSupportedModesPropertyCB(QStatus s
     {
         for(size_t j = 0 ; j<numVals ; j++  )
         {
-            supportedmodes.push_back(vals[j]);
+            supportedmodes.push_back((Mode)vals[j]);
         }
     }
 
@@ -192,7 +190,7 @@ void ClimateControlModeIntfControllerImpl::GetOperationalStatePropertyCB(QStatus
 
     uint16_t val;
     value.Get("q", &val);
-    m_interfaceListener.OnResponseGetOperationalState(status, obj->GetPath(), val, context);
+    m_interfaceListener.OnResponseGetOperationalState(status, obj->GetPath(), (OperationalState)val, context);
 }
 
 } //namespace services

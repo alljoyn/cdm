@@ -40,7 +40,7 @@ void PlugInUnitsListener::OnResponseGetPlugInUnits(QStatus status, const qcc::St
     }
 }
 
-void PlugInUnitsListener::OnPlugInUnitsPropertyChanged(const qcc::String& objectPath, const PlugInUnitsInterface::PlugInUnits& units)
+void PlugInUnitsListener::OnPlugInUnitsChanged(const qcc::String& objectPath, const PlugInUnitsInterface::PlugInUnits& units)
 {
     cout << __func__ << endl;
     cout << "# path: " << objectPath << endl;

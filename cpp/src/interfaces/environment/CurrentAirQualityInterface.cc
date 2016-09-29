@@ -22,7 +22,6 @@ namespace services {
 
 const uint16_t CurrentAirQualityInterface::s_interfaceVersion = 1;
 
-// Below none secure xml is only for test
 const qcc::String CurrentAirQualityInterface::s_xml =
 "<node xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns='http://www.allseenalliance.org/schemas/introspect' xsi:schemaLocation='http://www.allseenalliance.org/schemas/introspect.xsd'>"
 "    <interface name='org.alljoyn.SmartSpaces.Environment.CurrentAirQuality'>"
@@ -71,8 +70,8 @@ const qcc::String CurrentAirQualityInterface::s_xml =
 const qcc::String CurrentAirQualityInterface::s_prop_Version = "Version";
 const qcc::String CurrentAirQualityInterface::s_prop_ContaminantType = "ContaminantType";
 const qcc::String CurrentAirQualityInterface::s_prop_CurrentValue = "CurrentValue";
-const qcc::String CurrentAirQualityInterface::s_prop_MaxValue = "MaxValue";
 const qcc::String CurrentAirQualityInterface::s_prop_MinValue = "MinValue";
+const qcc::String CurrentAirQualityInterface::s_prop_MaxValue = "MaxValue";
 const qcc::String CurrentAirQualityInterface::s_prop_Precision = "Precision";
 const qcc::String CurrentAirQualityInterface::s_prop_UpdateMinTime = "UpdateMinTime";
 

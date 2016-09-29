@@ -60,6 +60,38 @@ QStatus LaundryCyclePhaseIntfControllerImpl::Init()
     return status;
 }
 
+QStatus LaundryCyclePhaseIntfControllerImpl::GetCyclePhase(void* context)
+{
+    QStatus status = ER_OK;
+
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(),s_prop_CyclePhase.c_str(),this,(ProxyBusObject::Listener::GetPropertyCB)&LaundryCyclePhaseIntfControllerImpl::GetCyclePhasePropertyCB,context);
+
+    return status;
+
+}
+QStatus LaundryCyclePhaseIntfControllerImpl::GetSupportedCyclePhases(void* context )
+{
+    QStatus status = ER_OK;
+
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(),s_prop_SupportedCyclePhases.c_str(),this,(ProxyBusObject::Listener::GetPropertyCB)&LaundryCyclePhaseIntfControllerImpl::GetSupportedCyclePhasesPropertyCB,context);
+
+    return status;
+}
+
+QStatus LaundryCyclePhaseIntfControllerImpl::GetVendorPhasesDescription(const qcc::String& language, void* context)
+{
+    QStatus status = ER_OK;
+
+    MsgArg args[1];
+    args[0].typeId = ALLJOYN_STRING;
+    args[0].v_string.str = language.c_str();
+    args[0].v_string.len = language.size();
+
+    status = m_proxyObject.MethodCallAsync(GetInterfaceName().c_str(), s_method_GetVendorPhasesDescription.c_str(), this, (MessageReceiver::ReplyHandler)&LaundryCyclePhaseIntfControllerImpl::GetVendorPhasesDescriptionReplyHandler, args, 1, context);
+
+    return status;
+}
+
 void LaundryCyclePhaseIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
 {
     MsgArg* entries;
@@ -78,7 +110,7 @@ void LaundryCyclePhaseIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj,
             if (propValue->typeId == ALLJOYN_BYTE)
             {
                 LaundryCyclePhaseInterface::LaundryCyclePhase cyclePhase = (LaundryCyclePhaseInterface::LaundryCyclePhase)propValue->v_byte;
-                m_interfaceListener.OnCyclePhasePropertyChanged(obj.GetPath(), cyclePhase);
+                m_interfaceListener.OnCyclePhaseChanged(obj.GetPath(), cyclePhase);
             }
         }
         else if (!s_prop_SupportedCyclePhases.compare(propNameStr))
@@ -92,42 +124,10 @@ void LaundryCyclePhaseIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj,
 
                 for (size_t i = 0; i < numVals; ++i)
                     supportedCyclePhases.push_back((LaundryCyclePhaseInterface::LaundryCyclePhase)vals[i]);
-                m_interfaceListener.OnSupportedCyclePhasesPropertyChanged(obj.GetPath(), supportedCyclePhases);
+                m_interfaceListener.OnSupportedCyclePhasesChanged(obj.GetPath(), supportedCyclePhases);
             }
         }
     }
-}
-QStatus LaundryCyclePhaseIntfControllerImpl::GetCyclePhase(void* context)
-{
-    QStatus status = ER_OK;
-
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(),s_prop_CyclePhase.c_str(),this,(ProxyBusObject::Listener::GetPropertyCB)&LaundryCyclePhaseIntfControllerImpl::GetCyclePhasePropertyCB,context);
-
-    return status;
-
-}
-
-QStatus LaundryCyclePhaseIntfControllerImpl::GetSupportedCyclePhases(void* context )
-{
-    QStatus status = ER_OK;
-
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(),s_prop_SupportedCyclePhases.c_str(),this,(ProxyBusObject::Listener::GetPropertyCB)&LaundryCyclePhaseIntfControllerImpl::GetSupportedCyclePhasesPropertyCB,context);
-
-    return status;
-}
-
-QStatus LaundryCyclePhaseIntfControllerImpl::GetCyclePhasesDescriptions(const qcc::String& language, void* context)
-{
-    QStatus status = ER_OK;
-
-    MsgArg args[1];
-    args[0].typeId = ALLJOYN_STRING;
-    args[0].v_string.str = language.c_str();
-    args[0].v_string.len = language.size();
-
-    status = m_proxyObject.MethodCallAsync(GetInterfaceName().c_str(), s_method_GetVendorPhasesDescription.c_str(), this, (MessageReceiver::ReplyHandler)&LaundryCyclePhaseIntfControllerImpl::GetCyclePhasesDescriptionReplyHandler, args, 1, context);
-
-    return status;
 }
 
 void LaundryCyclePhaseIntfControllerImpl::GetCyclePhasePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
@@ -158,7 +158,7 @@ void LaundryCyclePhaseIntfControllerImpl::GetSupportedCyclePhasesPropertyCB(QSta
 
 }
 
-void LaundryCyclePhaseIntfControllerImpl::GetCyclePhasesDescriptionReplyHandler(Message& message, void* context)
+void LaundryCyclePhaseIntfControllerImpl::GetVendorPhasesDescriptionReplyHandler(Message& message, void* context)
 {
     LaundryCyclePhaseInterface::CyclePhaseDescriptions descriptions;
     qcc::String errorMessage;
@@ -181,7 +181,7 @@ void LaundryCyclePhaseIntfControllerImpl::GetCyclePhasesDescriptionReplyHandler(
 
         MsgArg* entries;
         size_t numEntries;
-        LaundryCyclePhaseInterface::LaundryPhaseDescriptor desc;
+        LaundryCyclePhaseInterface::CyclePhaseDescriptor desc;
 
         args[0].Get("a(yss)", &numEntries, &entries);
         for (size_t i = 0; i < numEntries; ++i)
@@ -195,7 +195,7 @@ void LaundryCyclePhaseIntfControllerImpl::GetCyclePhasesDescriptionReplyHandler(
             descriptions.push_back(desc);
         }
     }
-    m_interfaceListener.OnResponseGetCyclePhasesDescriptions(status, m_proxyObject.GetPath(), descriptions, context, errorName, errorMessage.c_str());
+    m_interfaceListener.OnResponseGetVendorPhasesDescription(status, m_proxyObject.GetPath(), descriptions, context, errorName, errorMessage.c_str());
 }
 
 } //namespace services

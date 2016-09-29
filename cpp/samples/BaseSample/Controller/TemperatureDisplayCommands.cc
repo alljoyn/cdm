@@ -25,19 +25,19 @@ TemperatureDisplayListener::~TemperatureDisplayListener()
 {
 }
 
-void TemperatureDisplayListener::GetDisplayTemperatureUnitPropertyCallback(QStatus status, const qcc::String& objectPath, const uint8_t temperatureUnit, void* context)
+void TemperatureDisplayListener::OnResponseGetDisplayTemperatureUnit(QStatus status, const qcc::String& objectPath, const uint8_t temperatureUnit, void* context)
 {
     cout << __func__ << endl;
     cout << "# path: " << objectPath << endl;
     cout << "# DisplayTemperatureUnit: " << (int)temperatureUnit << endl;
 }
-void TemperatureDisplayListener::SetDisplayTemperatureUnitPropertyCallback(QStatus status, const qcc::String& objectPath, void* context)
+void TemperatureDisplayListener::OnResponseSetDisplayTemperatureUnit(QStatus status, const qcc::String& objectPath, void* context)
 {
     cout << __func__ << endl;
     cout << "# path: " << objectPath << endl;
     cout << "# status: " << QCC_StatusText(status) << endl;
 }
-void TemperatureDisplayListener::GetSupportedDisplayTemperatureUnitsPropertyCallback(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& supportedDisplayTemperatureUnits, void* context)
+void TemperatureDisplayListener::OnResponseGetSupportedDisplayTemperatureUnits(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& supportedDisplayTemperatureUnits, void* context)
 {
     cout << "# "<< __func__ << endl;
     cout << "# objectPath: " << objectPath << endl;
@@ -46,14 +46,14 @@ void TemperatureDisplayListener::GetSupportedDisplayTemperatureUnitsPropertyCall
         cout << (int)supportedDisplayTemperatureUnits[i] << endl;
     }
 }
-void TemperatureDisplayListener::DisplayTemperatureUnitPropertyChanged(const qcc::String& objectPath, const uint8_t temperatureUnit)
+void TemperatureDisplayListener::OnDisplayTemperatureUnitChanged(const qcc::String& objectPath, const uint8_t temperatureUnit)
 {
     cout << __func__ << endl;
     cout << "# path: " << objectPath << endl;
     cout << "# DisplayTemperatureUnit: " << (int)temperatureUnit << endl;
 
 }
-void TemperatureDisplayListener::SupportedDisplayTemperatureUnitsPropertyChanged(const qcc::String& objectPath, const std::vector<uint8_t>& supportedDisplayTemperatureUnits)
+void TemperatureDisplayListener::OnSupportedDisplayTemperatureUnitsChanged(const qcc::String& objectPath, const std::vector<uint8_t>& supportedDisplayTemperatureUnits)
 {
     cout << "# "<< __func__ << endl;
     cout << "# objectPath: " << objectPath << endl;

@@ -17,7 +17,6 @@
 #ifndef HIDINTFCONTROLLER_H_
 #define HIDINTFCONTROLLER_H_
 
-#include <vector>
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/input/HidInterface.h>
@@ -41,18 +40,21 @@ class HidIntfController : public HidInterface {
     virtual ~HidIntfController() {}
 
     /**
-     * Get supported events
+     * Get SupportedEvents property
+     * (List of supported input events by a device)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetSupportedEvents(void* context = NULL) = 0;
 
     /**
-     * Inject events
-     * @param[in] inputEvents input events
+     * Call InjectEvents method
+     * (Inject the user input events for human interface devices)
+     * @param[in] inputEvents Injected input event
+     * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus InjectEvents(InputEvents& inputEvents) = 0;
+    virtual QStatus InjectEvents(const std::vector<InputEvent>& inputEvents, void* context = NULL) = 0;
 };
 
 } //namespace services

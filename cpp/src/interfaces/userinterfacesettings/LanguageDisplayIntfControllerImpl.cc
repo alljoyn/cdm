@@ -61,39 +61,6 @@ QStatus LanguageDisplayIntfControllerImpl::Init()
     return status;
 }
 
-void LanguageDisplayIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
-{
-    MsgArg* entries;
-    size_t numEntries;
-
-    changed.Get("a{sv}", &numEntries, &entries);
-    for (size_t i = 0; i < numEntries; ++i) {
-        const char* propName;
-        MsgArg* propValue;
-        entries[i].Get("{sv}", &propName, &propValue);
-        String propNameStr(propName);
-
-        if (!s_prop_DisplayLanguage.compare(propNameStr)) {
-            if (propValue->typeId == ALLJOYN_STRING) {
-                String displayLanguage(propValue->v_string.str);
-                m_interfaceListener.DisplayLanguagePropertyChanged(obj.GetPath(), displayLanguage);
-            }
-        } else if(!s_prop_SupportedDisplayLanguages.compare(propNameStr)) {
-            qcc::String *vals;
-            size_t numVals;
-            std::vector<qcc::String> supportedDisplayLanguages;
-            propValue->Get("as", &numVals, &vals);
-
-            cout << "supported languages: " << endl;
-            for (size_t i = 0; i < numVals; ++i) {
-                supportedDisplayLanguages.push_back(String(vals[i]));
-            }
-            m_interfaceListener.SupportedDisplayLanguagesPropertyChanged(obj.GetPath(), supportedDisplayLanguages);
-        }
-    }
-}
-
-
 QStatus LanguageDisplayIntfControllerImpl::GetDisplayLanguage(void* context)
 {
     QStatus status = ER_OK;
@@ -103,6 +70,8 @@ QStatus LanguageDisplayIntfControllerImpl::GetDisplayLanguage(void* context)
     return status;
 
 }
+
+
 QStatus LanguageDisplayIntfControllerImpl::SetDisplayLanguage(const qcc::String& displayLanguage, void* context)
 {
     QStatus status = ER_OK;
@@ -122,6 +91,37 @@ QStatus LanguageDisplayIntfControllerImpl::GetSupportedDisplayLanguages(void* co
 
     return status;
 }
+void LanguageDisplayIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
+{
+    MsgArg* entries;
+    size_t numEntries;
+
+    changed.Get("a{sv}", &numEntries, &entries);
+    for (size_t i = 0; i < numEntries; ++i) {
+        const char* propName;
+        MsgArg* propValue;
+        entries[i].Get("{sv}", &propName, &propValue);
+        String propNameStr(propName);
+
+        if (!s_prop_DisplayLanguage.compare(propNameStr)) {
+            if (propValue->typeId == ALLJOYN_STRING) {
+                String displayLanguage(propValue->v_string.str);
+                m_interfaceListener.OnDisplayLanguageChanged(obj.GetPath(), displayLanguage);
+            }
+        } else if(!s_prop_SupportedDisplayLanguages.compare(propNameStr)) {
+            qcc::String *vals;
+            size_t numVals;
+            std::vector<qcc::String> supportedDisplayLanguages;
+            propValue->Get("as", &numVals, &vals);
+
+            cout << "supported languages: " << endl;
+            for (size_t i = 0; i < numVals; ++i) {
+                supportedDisplayLanguages.push_back(String(vals[i]));
+            }
+            m_interfaceListener.OnSupportedDisplayLanguagesChanged(obj.GetPath(), supportedDisplayLanguages);
+        }
+    }
+}
 
 void LanguageDisplayIntfControllerImpl::GetDisplayLanguagePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
@@ -133,14 +133,14 @@ void LanguageDisplayIntfControllerImpl::GetDisplayLanguagePropertyCB(QStatus sta
     value.Get("s", &lang);
     qcc::String displayLanguage(lang);
 
-    m_interfaceListener.GetDisplayLanguagePropertyCallback(status,obj->GetPath(),displayLanguage,context);
+    m_interfaceListener.OnResponseGetDisplayLanguage(status, obj->GetPath(), displayLanguage, context);
 }
 void LanguageDisplayIntfControllerImpl::SetDisplayLanguagePropertyCB(QStatus status, ProxyBusObject* obj, void* context)
 {
     if(!obj){
         return;
     }
-    m_interfaceListener.SetDisplayLanguagePropertyCallback(status,obj->GetPath(),context);
+    m_interfaceListener.OnResponseSetDisplayLanguage(status, obj->GetPath(), context);
 
 }
 void LanguageDisplayIntfControllerImpl::GetSupportedDisplayLanguagesPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
@@ -161,7 +161,7 @@ void LanguageDisplayIntfControllerImpl::GetSupportedDisplayLanguagesPropertyCB(Q
         supportedDisplayLanguages.push_back(qcc::String(lang));
     }
 
-    m_interfaceListener.GetSupportedDisplayLanguagesPropertyCallback(status,obj->GetPath(), supportedDisplayLanguages, context);
+    m_interfaceListener.OnResponseGetSupportedDisplayLanguages(status, obj->GetPath(), supportedDisplayLanguages, context);
 }
 
 } //namespace services

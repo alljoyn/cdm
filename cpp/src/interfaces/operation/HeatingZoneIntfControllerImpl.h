@@ -36,12 +36,12 @@ class HeatingZoneIntfControllerImpl : public InterfaceController, public Heating
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Constructor of HeatingZoneIntfControllerImpl
      */
-    HeatingZoneIntfControllerImpl(BusAttachment& busAttachment, HeatingZoneIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    HeatingZoneIntfControllerImpl(BusAttachment& busAttachment, HeatingZoneIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Destructor of HeatingZoneIntfControllerImpl
@@ -61,35 +61,33 @@ class HeatingZoneIntfControllerImpl : public InterfaceController, public Heating
     virtual BusAttachment& GetBusAttachment() const { return m_busAttachment; }
 
     /**
-     * Get number of heating zones
-     * @param[in] context
-     * @return status
+     * Get NumberOfHeatingZones property
+     * (Number of heating zones.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetNumberOfHeatingZones(void* context);
 
     /**
-     * Get list of max heating levels
-     * @param[in] context
-     * @return status
+     * Get MaxHeatingLevels property
+     * (Max heating levels for each zone.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
-    virtual QStatus GetMaxHeatingLevels(void* context );
+    virtual QStatus GetMaxHeatingLevels(void* context);
 
     /**
-     * Get list of heating levels
-     * @param[in] context
-     * @return status
+     * Get HeatingLevels property
+     * (Current heating levels for each zone.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetHeatingLevels(void* context);
 
   private:
-    HeatingZoneIntfControllerImpl();
-
     void PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context);
-
     void GetNumberOfHeatingZonesPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
-
     void GetMaxHeatingLevelsPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
-
     void GetHeatingLevelsPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
 
     BusAttachment& m_busAttachment;

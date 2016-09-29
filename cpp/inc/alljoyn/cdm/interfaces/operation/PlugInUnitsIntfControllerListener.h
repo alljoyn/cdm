@@ -30,24 +30,31 @@ namespace services {
  */
 class PlugInUnitsIntfControllerListener : public InterfaceControllerListener {
   public:
+    using PlugInInfo = PlugInUnitsInterface::PlugInInfo;
+
+    /**
+     * Destructor of PlugInUnitsIntfControllerListener
+     */
     virtual ~PlugInUnitsIntfControllerListener() {}
 
     /**
-     * Callback handler for getting list of plug in units
+     * Callback handler for GetPlugInUnits completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] plugInUnits list of plug in unit
+     * @param[in] value The value of PlugInUnits
+     *                  (The lists of all the possible hot pluggable devices and the associated status.)
      * @param[in] context the context that is passed from application
      */
-    virtual void OnResponseGetPlugInUnits(QStatus status, const qcc::String& objectPath, const PlugInUnitsInterface::PlugInUnits& plugInUnits, void* context) {}
+    virtual void OnResponseGetPlugInUnits(QStatus status, const qcc::String& objectPath, const std::vector<PlugInInfo>& value, void* context) {}
 
     /**
      * Handler for PlugInUnits property changed
-     * @param[in] plugInUnits plug in units
+     * @param[in] objectPath the object path
+     * @param[in] value The value of PlugInUnits
+     *                  (The lists of all the possible hot pluggable devices and the associated status.)
      */
-    virtual void OnPlugInUnitsPropertyChanged(const qcc::String& objectPath, const PlugInUnitsInterface::PlugInUnits& plugInUints) {}
-
- };
+    virtual void OnPlugInUnitsChanged(const qcc::String& objectPath, const std::vector<PlugInInfo>& value) {}
+};
 
 } //namespace services
 } //namespace ajn

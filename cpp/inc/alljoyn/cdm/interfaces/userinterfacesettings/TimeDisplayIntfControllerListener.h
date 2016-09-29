@@ -20,7 +20,7 @@
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/InterfaceControllerListener.h>
-#include <vector>
+#include <alljoyn/cdm/interfaces/userinterfacesettings/TimeDisplayInterface.h>
 
 namespace ajn {
 namespace services {
@@ -30,49 +30,55 @@ namespace services {
  */
 class TimeDisplayIntfControllerListener : public InterfaceControllerListener {
   public:
+
+    /**
+     * Destructor of TimeDisplayIntfControllerListener
+     */
     virtual ~TimeDisplayIntfControllerListener() {}
 
     /**
-     * Callback handler for getting DisplayTimeFormat
+     * Callback handler for GetDisplayTimeFormat completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] timeformat time format
+     * @param[in] value The value of DisplayTimeFormat
+     *                  (The clock format which is currently used to display time (0=12-hour, 1=24-hour))
      * @param[in] context the context that is passed from application
      */
-    virtual void GetDisplayTimeFormatPropertyCallback(QStatus status, const qcc::String& objectPath, const uint8_t timeformat, void* context) {};
-
-    /**
-     * Callback handler for setting DisplayTimeFormat
-     * @param[in] status ER_OK on success
-     * @param[in] objectPath the object path
-     * @param[in] context the context that is passed from application
-     */
-    virtual void SetDisplayTimeFormatPropertyCallback(QStatus status, const qcc::String& objectPath, void* context) {};
-
-    /**
-     * Callback handler for getting SupportedDisplayTimeFormats
-     * @param[in] status ER_OK on success
-     * @param[in] objectPath the object path
-     * @param[in] supportedTimeFormats supportedTimeFormats
-     * @param[in] context the context that is passed from application
-     */
-    virtual void GetSupportedDisplayTimeFormatsPropertyCallback(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& supportedTimeFormats, void* context) {};
-
+    virtual void OnResponseGetDisplayTimeFormat(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) {}
 
     /**
      * Handler for DisplayTimeFormat property changed
      * @param[in] objectPath the object path
-     * @param[in] timeformat timeformat
+     * @param[in] value The value of DisplayTimeFormat
+     *                  (The clock format which is currently used to display time (0=12-hour, 1=24-hour))
      */
-    virtual void DisplayTimeFormatPropertyChanged(const qcc::String& objectPath, const uint8_t timeformat) {};
+    virtual void OnDisplayTimeFormatChanged(const qcc::String& objectPath, const uint8_t value) {}
+
+    /**
+     * Callback handler for SetDisplayTimeFormat completion
+     * @param[in] status ER_OK on success
+     * @param[in] objectPath the object path
+     * @param[in] context the context that is passed from application
+     */
+    virtual void OnResponseSetDisplayTimeFormat(QStatus status, const qcc::String& objectPath, void* context) {}
+
+    /**
+     * Callback handler for GetSupportedDisplayTimeFormats completion
+     * @param[in] status ER_OK on success
+     * @param[in] objectPath the object path
+     * @param[in] value The value of SupportedDisplayTimeFormats
+     *                  (List of supported clock formats)
+     * @param[in] context the context that is passed from application
+     */
+    virtual void OnResponseGetSupportedDisplayTimeFormats(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& value, void* context) {}
 
     /**
      * Handler for SupportedDisplayTimeFormats property changed
      * @param[in] objectPath the object path
-     * @param[in] supportedTimeFormats supportedTimeFormats
+     * @param[in] value The value of SupportedDisplayTimeFormats
+     *                  (List of supported clock formats)
      */
-    virtual void SupportedDisplayTimeFormatsPropertyChanged(const qcc::String& objectPath, const std::vector<uint8_t>& supportedTimeFormats) {};
-
+    virtual void OnSupportedDisplayTimeFormatsChanged(const qcc::String& objectPath, const std::vector<uint8_t>& value) {}
 };
 
 } //namespace services

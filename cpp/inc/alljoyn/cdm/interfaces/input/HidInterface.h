@@ -17,8 +17,6 @@
 #ifndef HIDINTERFACE_H_
 #define HIDINTERFACE_H_
 
-#include <vector>
-
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/CdmInterface.h>
@@ -31,26 +29,30 @@ namespace services {
  */
 class HidInterface : public CdmInterface {
   public:
-    /**
-     * InputEvent struct
-     */
-    typedef struct {
+
+    struct InputEvent {
         uint16_t type;
         uint16_t code;
         int32_t value;
-    } InputEvent;
+
+        inline bool operator==(const InputEvent& a) {
+            return a.type==type && a.code==code && a.value==value;
+        }
+    };
     typedef std::vector<InputEvent> InputEvents;
 
-    /**
-     * SupportedInputEvent struct
-     */
-    typedef struct {
+    struct SupportedInputEvent {
         uint16_t type;
         uint16_t code;
         int32_t min;
         int32_t max;
-    } SupportedInputEvent;
+
+        inline bool operator==(const SupportedInputEvent& a) {
+            return a.type==type && a.code==code && a.min==min && a.max==max;
+        }
+    };
     typedef std::vector<SupportedInputEvent> SupportedInputEvents;
+
 
     /**
      * Constructor of HidInterface
@@ -64,13 +66,13 @@ class HidInterface : public CdmInterface {
 
     /**
      * Get Interface Type
-     * @return Interface type
+     * @return interface type
      */
     const CdmInterfaceType GetInterfaceType() const { return HID_INTERFACE; }
 
     /**
-     * Get Introspection Xml
-     * @return Introspection xml
+     * Get Introspection XML
+     * @return Introspection XML
      */
     virtual const qcc::String& GetIntrospectionXml() { return s_xml; }
 

@@ -40,22 +40,25 @@ class AudioVideoInputIntfController : public AudioVideoInputInterface {
     virtual ~AudioVideoInputIntfController() {}
 
     /**
-     * Set input source id
-     * @param[in] inputSourceId input source id
-     * @param[in] context the context that is passed to the callback handler
-     * @return ER_OK on success
-     */
-    virtual QStatus SetInputSourceId(const uint16_t inputSourceId, void* context = NULL) = 0;
-
-    /**
-     * Get input source id
+     * Get InputSourceId property
+     * (Activated input source id.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetInputSourceId(void* context = NULL) = 0;
 
     /**
-     * Get supported input sources
+     * Set InputSourceId property
+     * (Activated input source id.)
+     * @param[in] value The input source id to set
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
+     */
+    virtual QStatus SetInputSourceId(const uint16_t value, void* context = NULL) = 0;
+
+    /**
+     * Get SupportedInputSources property
+     * (Array of supported input sources.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */

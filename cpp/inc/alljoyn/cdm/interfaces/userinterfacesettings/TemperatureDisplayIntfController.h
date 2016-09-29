@@ -40,22 +40,25 @@ class TemperatureDisplayIntfController : public TemperatureDisplayInterface {
     virtual ~TemperatureDisplayIntfController() {}
 
     /**
-     * Get DisplayTemperatureUnit
+     * Get DisplayTemperatureUnit property
+     * (The unit being used to display temperature (0=C, 1=F, 2 =K))
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetDisplayTemperatureUnit(void* context = NULL) = 0;
 
     /**
-     * Set DisplayTemperatureUnit
-     * @param[in] temperatureUnit temperature unit
+     * Set DisplayTemperatureUnit property
+     * (The unit being used to display temperature (0=C, 1=F, 2 =K))
+     * @param[in] value The display temperature unit to set
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus SetDisplayTemperatureUnit(const uint8_t temperatureUnit, void* context = NULL) = 0;
+    virtual QStatus SetDisplayTemperatureUnit(const uint8_t value, void* context = NULL) = 0;
 
     /**
-     * Get SupportedDisplayTemperatureUnits
+     * Get SupportedDisplayTemperatureUnits property
+     * (List of supported temperature units)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */

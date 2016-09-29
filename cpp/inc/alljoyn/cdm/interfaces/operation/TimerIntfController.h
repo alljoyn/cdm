@@ -40,63 +40,68 @@ class TimerIntfController : public TimerInterface {
     virtual ~TimerIntfController() {}
 
     /**
-     * Get ReferenceTimer
+     * Get ReferenceTimer property
+     * (Time counter to be used as reference.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetReferenceTimer(void* context = NULL) = 0;
 
     /**
-     * Get TargetTimeToStart
+     * Get TargetTimeToStart property
+     * (Time when the appliance is expected to start its operation.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetTargetTimeToStart(void* context = NULL) = 0;
 
     /**
-     * Get TargetTimeToStop
+     * Get TargetTimeToStop property
+     * (Time when the appliance is expected to stop its operation.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetTargetTimeToStop(void* context = NULL) = 0;
 
     /**
-     * Get EstimatedTimeToEnd
+     * Get EstimatedTimeToEnd property
+     * (Time to the end of appliance operation.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetEstimatedTimeToEnd(void* context = NULL) = 0;
 
     /**
-     * Get RunningTime
+     * Get RunningTime property
+     * (Time of current operation.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetRunningTime(void* context = NULL) = 0;
 
     /**
-     * Get TargetDuration
+     * Get TargetDuration property
+     * (Time representing the target duration of the operation as per user selection.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetTargetDuration(void* context = NULL) = 0;
 
     /**
-     * Set target time to start
-     * @param[in] time time to start
+     * Call SetTargetTimeToStart method
+     * @param[in] targetTimeToStart Time to be set.
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus SetTargetTimeToStart(int32_t time, void* context = NULL) = 0;
+    virtual QStatus SetTargetTimeToStart(const int32_t targetTimeToStart, void* context = NULL) = 0;
 
     /**
-     * Set target time to stop
-     * @param[in] time time to stop
+     * Call SetTargetTimeToStop method
+     * @param[in] targetTimeToStop Time to be set.
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus SetTargetTimeToStop(int32_t time, void* context = NULL) = 0;
-
+    virtual QStatus SetTargetTimeToStop(const int32_t targetTimeToStop, void* context = NULL) = 0;
 };
 
 } //namespace services

@@ -26,7 +26,7 @@ SoilLevelListener::~SoilLevelListener()
 }
 
 
-void SoilLevelListener::MaxLevelPropertyChanged(const qcc::String& objectPath, const uint8_t maxLevel)
+void SoilLevelListener::OnMaxLevelChanged(const qcc::String& objectPath, const uint8_t maxLevel)
 {
     cout << __func__ << endl;
     cout << "# path: " << objectPath << endl;
@@ -34,7 +34,7 @@ void SoilLevelListener::MaxLevelPropertyChanged(const qcc::String& objectPath, c
 }
 
 
-void SoilLevelListener::GetMaxLevelPropertyCallback(QStatus status, const qcc::String& objectPath, const uint8_t maxLevel, void* context)
+void SoilLevelListener::OnResponseGetMaxLevel(QStatus status, const qcc::String& objectPath, const uint8_t maxLevel, void* context)
 {
     cout << "# "<< __func__ << endl;
     cout << "# status: " << QCC_StatusText(status) << endl;
@@ -42,7 +42,7 @@ void SoilLevelListener::GetMaxLevelPropertyCallback(QStatus status, const qcc::S
     cout << "# maxLevel: " << (int)maxLevel << endl;
 }
 
-void SoilLevelListener::GetTargetLevelPropertyCallback(QStatus status, const qcc::String& objectPath, const uint8_t targetLevel, void* context)
+void SoilLevelListener::OnResponseGetTargetLevel(QStatus status, const qcc::String& objectPath, const uint8_t targetLevel, void* context)
 {
     cout << "# "<< __func__ << endl;
     cout << "# status: " << QCC_StatusText(status) << endl;
@@ -50,14 +50,14 @@ void SoilLevelListener::GetTargetLevelPropertyCallback(QStatus status, const qcc
     cout << "# targetLevel: " << (int)targetLevel << endl;
 }
 
-void SoilLevelListener::SetTargetLevelPropertyCallback(QStatus status, const qcc::String& objectPath, void* context)
+void SoilLevelListener::OnResponseSetTargetLevel(QStatus status, const qcc::String& objectPath, void* context)
 {
     cout << "# "<< __func__ << endl;
     cout << "# status: " << QCC_StatusText(status) << endl;
     cout << "# objectPath: " << objectPath << endl;
 }
 
-void SoilLevelListener::GetSelectableLevelsPropertyCallback(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& selectableLevels, void* context)
+void SoilLevelListener::OnResponseGetSelectableLevels(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& selectableLevels, void* context)
 {
     cout << "# "<< __func__ << endl;
     cout << "# status: " << QCC_StatusText(status) << endl;
@@ -68,14 +68,14 @@ void SoilLevelListener::GetSelectableLevelsPropertyCallback(QStatus status, cons
     }
 }
 
-void SoilLevelListener::TargetLevelPropertyChanged(const qcc::String& objectPath, const uint8_t targetLevel)
+void SoilLevelListener::OnTargetLevelChanged(const qcc::String& objectPath, const uint8_t targetLevel)
 {
     cout << "# "<< __func__ << endl;
     cout << "# objectPath: " << objectPath << endl;
     cout << "# targetLevel: " << (int)targetLevel << endl;
 }
 
-void SoilLevelListener::SelectableLevelsPropertyChanged(const qcc::String& objectPath, const std::vector<uint8_t>& selectableLevels)
+void SoilLevelListener::OnSelectableLevelsChanged(const qcc::String& objectPath, const std::vector<uint8_t>& selectableLevels)
 {
     cout << "# "<< __func__ << endl;
     cout << "# objectPath: " << objectPath << endl;

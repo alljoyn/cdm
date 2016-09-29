@@ -17,10 +17,6 @@
 #ifndef TARGETHUMIDITYINTFCONTROLLER_H_
 #define TARGETHUMIDITYINTFCONTROLLER_H_
 
-#include <vector>
-#include <map>
-#include <utility>
-
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/environment/TargetHumidityInterface.h>
@@ -44,43 +40,49 @@ class TargetHumidityIntfController : public TargetHumidityInterface {
     virtual ~TargetHumidityIntfController() {}
 
     /**
-     * Get current target humidity
+     * Get TargetValue property
+     * (Target set-point value of relative humidity.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetTargetValue(void* context = NULL) = 0;
 
     /**
-     * Set Target Humidity
-     * @param[in] TargetHumidity target humidity
+     * Set TargetValue property
+     * (Target set-point value of relative humidity.)
+     * @param[in] value The target value to set
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus SetTargetValue(const uint8_t TargetHumidity, void* context = NULL) = 0;
+    virtual QStatus SetTargetValue(const uint8_t value, void* context = NULL) = 0;
 
     /**
-     * Get the minimum value of target humidity
+     * Get MinValue property
+     * (Minimum value allowed for the TargetValue.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetMinValue(void* context = NULL) = 0;
 
     /**
-     * Get the maximum value of target humidity
+     * Get MaxValue property
+     * (Maximum value allowed for the TargetValue.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetMaxValue(void* context = NULL) = 0;
 
     /**
-     * Get the step value of target humidity
+     * Get StepValue property
+     * (Step value allowed for the TargetValue setting.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetStepValue(void* context = NULL) = 0;
 
     /**
-     * Get the selectable humidity levels
+     * Get SelectableHumidityLevels property
+     * (List of the selectable levels of target humidity. The list is only available when this interface is implemented for setting a qualitative level of target humidity. (When MinValue = MaxValue))
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */

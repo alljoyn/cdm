@@ -40,22 +40,25 @@ class LanguageDisplayIntfController : public LanguageDisplayInterface {
     virtual ~LanguageDisplayIntfController() {}
 
     /**
-     * Get DisplayLanguage
+     * Get DisplayLanguage property
+     * (The RFC 5646 tag of the current language being used by the device user interface)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetDisplayLanguage(void* context = NULL) = 0;
 
     /**
-     * Set DisplayLanguage
-     * @param[in] displayLanguage display language
+     * Set DisplayLanguage property
+     * (The RFC 5646 tag of the current language being used by the device user interface)
+     * @param[in] value The display language to set
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus SetDisplayLanguage(const qcc::String& displayLanguage, void* context = NULL) = 0;
+    virtual QStatus SetDisplayLanguage(const qcc::String& value, void* context = NULL) = 0;
 
     /**
-     * Get SupportedDisplayLanguages
+     * Get SupportedDisplayLanguages property
+     * (The list of supported languages using RFC 5646 tags)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */

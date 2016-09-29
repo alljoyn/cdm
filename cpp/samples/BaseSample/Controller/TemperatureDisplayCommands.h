@@ -31,15 +31,15 @@ class TemperatureDisplayListener : public TemperatureDisplayIntfControllerListen
     TemperatureDisplayListener();
     virtual ~TemperatureDisplayListener();
 
-    virtual void GetDisplayTemperatureUnitPropertyCallback(QStatus status, const qcc::String& objectPath, const uint8_t temperatureUnit, void* context);
+    virtual void OnResponseGetDisplayTemperatureUnit(QStatus status, const qcc::String& objectPath, const uint8_t temperatureUnit, void* context);
 
-    virtual void SetDisplayTemperatureUnitPropertyCallback(QStatus status, const qcc::String& objectPath, void* context);
+    virtual void OnResponseSetDisplayTemperatureUnit(QStatus status, const qcc::String& objectPath, void* context);
 
-    virtual void GetSupportedDisplayTemperatureUnitsPropertyCallback(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& SupportedDisplayTemperatureUnits, void* context);
+    virtual void OnResponseGetSupportedDisplayTemperatureUnits(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& SupportedDisplayTemperatureUnits, void* context);
 
-    virtual void DisplayTemperatureUnitPropertyChanged(const qcc::String& objectPath, const uint8_t temperatureUnit);
+    virtual void OnDisplayTemperatureUnitChanged(const qcc::String& objectPath, const uint8_t temperatureUnit);
 
-    virtual void SupportedDisplayTemperatureUnitsPropertyChanged(const qcc::String& objectPath, const std::vector<uint8_t>& SupportedDisplayTemperatureUnits);
+    virtual void OnSupportedDisplayTemperatureUnitsChanged(const qcc::String& objectPath, const std::vector<uint8_t>& SupportedDisplayTemperatureUnits);
 
 };
 

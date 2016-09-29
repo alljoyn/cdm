@@ -20,7 +20,6 @@
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/userinterfacesettings/TimeDisplayInterface.h>
-#include <vector>
 
 namespace ajn {
 namespace services {
@@ -41,27 +40,29 @@ class TimeDisplayIntfController : public TimeDisplayInterface {
     virtual ~TimeDisplayIntfController() {}
 
     /**
-     * Get DisplayTimeFormat
+     * Get DisplayTimeFormat property
+     * (The clock format which is currently used to display time (0=12-hour, 1=24-hour))
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetDisplayTimeFormat(void* context = NULL) = 0;
 
     /**
-     * Set DisplayTimeFormat
-     * @param[in] timeformat time format
+     * Set DisplayTimeFormat property
+     * (The clock format which is currently used to display time (0=12-hour, 1=24-hour))
+     * @param[in] value The display time format to set
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus SetDisplayTimeFormat(const uint8_t timeFormat, void* context = NULL) = 0;
+    virtual QStatus SetDisplayTimeFormat(const uint8_t value, void* context = NULL) = 0;
 
     /**
-     * Get SupportedDisplayTimeFormats
+     * Get SupportedDisplayTimeFormats property
+     * (List of supported clock formats)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetSupportedDisplayTimeFormats(void* context = NULL) = 0;
-
 };
 
 } //namespace services

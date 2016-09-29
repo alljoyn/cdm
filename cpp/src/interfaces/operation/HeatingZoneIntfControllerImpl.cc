@@ -60,51 +60,6 @@ QStatus HeatingZoneIntfControllerImpl::Init()
     return status;
 }
 
-void HeatingZoneIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
-{
-    MsgArg* entries;
-    size_t numEntries;
-
-    changed.Get("a{sv}", &numEntries, &entries);
-    for (size_t i = 0; i < numEntries; ++i) {
-        const char* propName;
-        MsgArg* propValue;
-        entries[i].Get("{sv}", &propName, &propValue);
-        String propNameStr(propName);
-
-        if (!s_prop_NumberOfHeatingZones.compare(propNameStr)) {
-            if (propValue->typeId == ALLJOYN_BYTE) {
-                uint8_t numOfZones = propValue->v_byte;
-                m_interfaceListener.NumberOfHeatingZonesPropertyChanged(obj.GetPath(), numOfZones);
-            }
-        }
-        else if(!s_prop_MaxHeatingLevels.compare(propNameStr)) {
-            if(propValue->typeId == ALLJOYN_BYTE_ARRAY) {
-                uint8_t *vals;
-                size_t numVals;
-                propValue->Get("ay", &numVals, &vals);
-
-                std::vector<uint8_t> maxHeatingLevels;
-                for (size_t i = 0; i < numVals; ++i)
-                    maxHeatingLevels.push_back(vals[i]);
-                m_interfaceListener.MaxHeatingLevelsPropertyChanged(obj.GetPath(), maxHeatingLevels);
-            }
-        }
-        else if (!s_prop_HeatingLevels.compare(propNameStr)) {
-            if(propValue->typeId == ALLJOYN_BYTE_ARRAY) {
-                uint8_t *vals;
-                size_t numVals;
-                propValue->Get("ay", &numVals, &vals);
-
-                std::vector<uint8_t> heatingLevels;
-                for (size_t i = 0; i < numVals; ++i)
-                    heatingLevels.push_back(vals[i]);
-                m_interfaceListener.HeatingLevelsPropertyChanged(obj.GetPath(), heatingLevels);
-            }
-        }
-    }
-}
-
 QStatus HeatingZoneIntfControllerImpl::GetNumberOfHeatingZones(void* context)
 {
     QStatus status = ER_OK;
@@ -132,6 +87,51 @@ QStatus HeatingZoneIntfControllerImpl::GetHeatingLevels(void* context)
     return status;
 }
 
+void HeatingZoneIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
+{
+    MsgArg* entries;
+    size_t numEntries;
+
+    changed.Get("a{sv}", &numEntries, &entries);
+    for (size_t i = 0; i < numEntries; ++i) {
+        const char* propName;
+        MsgArg* propValue;
+        entries[i].Get("{sv}", &propName, &propValue);
+        String propNameStr(propName);
+
+        if (!s_prop_NumberOfHeatingZones.compare(propNameStr)) {
+            if (propValue->typeId == ALLJOYN_BYTE) {
+                uint8_t numOfZones = propValue->v_byte;
+                m_interfaceListener.OnNumberOfHeatingZonesChanged(obj.GetPath(), numOfZones);
+            }
+        }
+        else if(!s_prop_MaxHeatingLevels.compare(propNameStr)) {
+            if(propValue->typeId == ALLJOYN_BYTE_ARRAY) {
+                uint8_t *vals;
+                size_t numVals;
+                propValue->Get("ay", &numVals, &vals);
+
+                std::vector<uint8_t> maxHeatingLevels;
+                for (size_t i = 0; i < numVals; ++i)
+                    maxHeatingLevels.push_back(vals[i]);
+                m_interfaceListener.OnMaxHeatingLevelsChanged(obj.GetPath(), maxHeatingLevels);
+            }
+        }
+        else if (!s_prop_HeatingLevels.compare(propNameStr)) {
+            if(propValue->typeId == ALLJOYN_BYTE_ARRAY) {
+                uint8_t *vals;
+                size_t numVals;
+                propValue->Get("ay", &numVals, &vals);
+
+                std::vector<uint8_t> heatingLevels;
+                for (size_t i = 0; i < numVals; ++i)
+                    heatingLevels.push_back(vals[i]);
+                m_interfaceListener.OnHeatingLevelsChanged(obj.GetPath(), heatingLevels);
+            }
+        }
+    }
+}
+
 void HeatingZoneIntfControllerImpl::GetNumberOfHeatingZonesPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
     if (!obj) {
@@ -142,7 +142,7 @@ void HeatingZoneIntfControllerImpl::GetNumberOfHeatingZonesPropertyCB(QStatus st
 
     value.Get("y",&numOfZones);
 
-    m_interfaceListener.OnGetNumberOfHeatingZonesPropertyCallback(status, obj->GetPath(), numOfZones, context);
+    m_interfaceListener.OnResponseGetNumberOfHeatingZones(status, obj->GetPath(), numOfZones, context);
 }
 
 void HeatingZoneIntfControllerImpl::GetMaxHeatingLevelsPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
@@ -158,7 +158,7 @@ void HeatingZoneIntfControllerImpl::GetMaxHeatingLevelsPropertyCB(QStatus status
     for (size_t i = 0; i < numVals; ++i) {
         maxHeatingLevels.push_back(vals[i]);
     }
-    m_interfaceListener.OnGetMaxHeatingLevelsPropertyCallback(status, obj->GetPath(), maxHeatingLevels, context);
+    m_interfaceListener.OnResponseGetMaxHeatingLevels(status, obj->GetPath(), maxHeatingLevels, context);
 
 }
 
@@ -175,7 +175,7 @@ void HeatingZoneIntfControllerImpl::GetHeatingLevelsPropertyCB(QStatus status, P
     for (size_t i = 0; i < numVals; ++i) {
         heatingLevels.push_back(vals[i]);
     }
-    m_interfaceListener.OnGetHeatingLevelsPropertyCallback(status, obj->GetPath(), heatingLevels, context);
+    m_interfaceListener.OnResponseGetHeatingLevels(status, obj->GetPath(), heatingLevels, context);
 }
 
 

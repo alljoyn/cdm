@@ -42,7 +42,7 @@ class CycleControlIntfControlleeListener : public InterfaceControlleeListener {
      * @param[out] currentState currentState
      * @return ER_OK on success
      */
-    virtual QStatus OnGetOperationalState(CycleControlInterface::CycleControlOperationalState& currentState) = 0;
+    virtual QStatus OnGetOperationalState(CycleControlInterface::OperationalState& currentState) = 0;
 
     /**
      * Handler for executing command
@@ -51,7 +51,7 @@ class CycleControlIntfControlleeListener : public InterfaceControlleeListener {
      * @param[out] error Internal error code occurred during command execution
      * @return ER_OK on success
      */
-    virtual QStatus OnExecuteCommand(CycleControlInterface::CycleControlOperationalCommand command, CycleControlInterface::CycleControlOperationalState& newState, ErrorCode& error) = 0;
+    virtual QStatus OnExecuteCommand(CycleControlInterface::OperationalCommands command, CycleControlInterface::OperationalState& newState, ErrorCode& error) = 0;
 };
 
 } //namespace services

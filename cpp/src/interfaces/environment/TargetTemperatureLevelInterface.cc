@@ -1,4 +1,3 @@
-
 /******************************************************************************
  * Copyright (c) 2013-2014, AllSeen Alliance. All rights reserved.
  *
@@ -46,12 +45,12 @@ const qcc::String TargetTemperatureLevelInterface::s_xml =
 "            <annotation name='org.freedesktop.DBus.Property.EmitsChangedSignal' value='true'/>"
 "        </property>"
 "    </interface>"
-"</node>";
-
+"</node>"
+;
 
 const qcc::String TargetTemperatureLevelInterface::s_prop_Version = "Version";
-const qcc::String TargetTemperatureLevelInterface::s_prop_TargetLevel = "TargetLevel";
 const qcc::String TargetTemperatureLevelInterface::s_prop_MaxLevel = "MaxLevel";
+const qcc::String TargetTemperatureLevelInterface::s_prop_TargetLevel = "TargetLevel";
 const qcc::String TargetTemperatureLevelInterface::s_prop_SelectableTemperatureLevels = "SelectableTemperatureLevels";
 
 } //namespace services

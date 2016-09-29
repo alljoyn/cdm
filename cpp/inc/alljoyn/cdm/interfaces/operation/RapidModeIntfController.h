@@ -40,19 +40,21 @@ class RapidModeIntfController : public RapidModeInterface {
     virtual ~RapidModeIntfController() {}
 
     /**
-     * Get rapid mode
+     * Get RapidMode property
+     * (True if the device is currently operating in rapid mode.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetRapidMode(void* context = NULL) = 0;
 
     /**
-     * Set rapid mode
-     * @param[in] rapidMide rapid mode
+     * Set RapidMode property
+     * (True if the device is currently operating in rapid mode.)
+     * @param[in] value The rapid mode to set
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus SetRapidMode(const bool rapidMode, void* context = NULL) = 0;
+    virtual QStatus SetRapidMode(const bool value, void* context = NULL) = 0;
 };
 
 } //namespace services

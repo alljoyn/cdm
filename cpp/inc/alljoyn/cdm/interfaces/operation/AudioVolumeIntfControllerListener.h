@@ -20,6 +20,7 @@
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/InterfaceControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/AudioVolumeInterface.h>
 
 namespace ajn {
 namespace services {
@@ -31,12 +32,30 @@ class AudioVolumeIntfControllerListener : public InterfaceControllerListener {
   public:
 
     /**
-     * Destructor of AudioVideoInputIntfControllerListener
+     * Destructor of AudioVolumeIntfControllerListener
      */
     virtual ~AudioVolumeIntfControllerListener() {}
 
     /**
-     * Callback handler for setting Volume property
+     * Callback handler for GetVolume completion
+     * @param[in] status ER_OK on success
+     * @param[in] objectPath the object path
+     * @param[in] value The value of Volume
+     *                  (Speaker volume index of the device.)
+     * @param[in] context the context that is passed from application
+     */
+    virtual void OnResponseGetVolume(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) {}
+
+    /**
+     * Handler for Volume property changed
+     * @param[in] objectPath the object path
+     * @param[in] value The value of Volume
+     *                  (Speaker volume index of the device.)
+     */
+    virtual void OnVolumeChanged(const qcc::String& objectPath, const uint8_t value) {}
+
+    /**
+     * Callback handler for SetVolume completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
      * @param[in] context the context that is passed from application
@@ -44,60 +63,48 @@ class AudioVolumeIntfControllerListener : public InterfaceControllerListener {
     virtual void OnResponseSetVolume(QStatus status, const qcc::String& objectPath, void* context) {}
 
     /**
-     * Callback handler for getting Volume property
+     * Callback handler for GetMaxVolume completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] volume volume
+     * @param[in] value The value of MaxVolume
+     *                  (Maximum value allowed for Volume.)
      * @param[in] context the context that is passed from application
      */
-    virtual void OnResponseGetVolume(QStatus status, const qcc::String& objectPath, const uint8_t volume, void* context) {}
+    virtual void OnResponseGetMaxVolume(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) {}
 
     /**
-     * Callback handler for getting MaxVolume property
+     * Handler for MaxVolume property changed
+     * @param[in] objectPath the object path
+     * @param[in] value The value of MaxVolume
+     *                  (Maximum value allowed for Volume.)
+     */
+    virtual void OnMaxVolumeChanged(const qcc::String& objectPath, const uint8_t value) {}
+
+    /**
+     * Callback handler for GetMute completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] maxVolume the maximum volume
+     * @param[in] value The value of Mute
+     *                  (If true, state of volume is muted.)
      * @param[in] context the context that is passed from application
      */
-    virtual void OnResponseGetMaxVolume(QStatus status, const qcc::String& objectPath, const uint8_t maxVolume, void* context) {}
+    virtual void OnResponseGetMute(QStatus status, const qcc::String& objectPath, const bool value, void* context) {}
 
     /**
-     * Callback handler for setting Mute property
+     * Handler for Mute property changed
+     * @param[in] objectPath the object path
+     * @param[in] value The value of Mute
+     *                  (If true, state of volume is muted.)
+     */
+    virtual void OnMuteChanged(const qcc::String& objectPath, const bool value) {}
+
+    /**
+     * Callback handler for SetMute completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
      * @param[in] context the context that is passed from application
      */
     virtual void OnResponseSetMute(QStatus status, const qcc::String& objectPath, void* context) {}
-
-    /**
-     * Callback handler for getting Mute property
-     * @param[in] status ER_OK on success
-     * @param[in] objectPath the object path
-     * @param[in] mute mute
-     * @param[in] context the context that is passed from application
-     */
-    virtual void OnResponseGetMute(QStatus status, const qcc::String& objectPath, const bool mute, void* context) {}
-
-    /**
-     * Handler for Volume property changed
-     * @param[in] objectPath the object path
-     * @param[in] volume volume
-     */
-    virtual void OnVolumeChanged(const qcc::String& objectPath, const uint8_t volume) {}
-
-    /**
-     * Handler for MaxVolume property changed
-     * @param[in] objectPath the object path
-     * @param[in] maxVolume the maximum volume
-     */
-    virtual void OnMaxVolumeChanged(const qcc::String& objectPath, const uint8_t maxVolume) {}
-
-    /**
-     * Handler for Mute property changed
-     * @param[in] objectPath the object path
-     * @param[in] mute mute
-     */
-    virtual void OnMuteChanged(const qcc::String& objectPath, const bool mute) {}
 };
 
 } //namespace services

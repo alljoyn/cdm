@@ -60,6 +60,42 @@ QStatus EnergyUsageIntfControllerImpl::Init()
     return status;
 }
 
+QStatus EnergyUsageIntfControllerImpl::GetCumulativeEnergy(void* context)
+{
+    QStatus status = ER_OK;
+
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_CumulativeEnergy.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&EnergyUsageIntfControllerImpl::GetCumulativeEnergyPropertyCB, context);
+
+    return status;
+}
+
+QStatus EnergyUsageIntfControllerImpl::GetPrecision(void* context)
+{
+    QStatus status = ER_OK;
+
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_Precision.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&EnergyUsageIntfControllerImpl::GetPrecisionPropertyCB, context);
+
+    return status;
+}
+
+QStatus EnergyUsageIntfControllerImpl::GetUpdateMinTime(void* context)
+{
+    QStatus status = ER_OK;
+
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_UpdateMinTime.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&EnergyUsageIntfControllerImpl::GetUpdateMinTimePropertyCB, context);
+
+    return status;
+}
+
+QStatus EnergyUsageIntfControllerImpl::ResetCumulativeEnergy(void* context)
+{
+    QStatus status = ER_OK;
+
+    status = m_proxyObject.MethodCallAsync(GetInterfaceName().c_str(), s_method_ResetCumulativeEnergy.c_str(), this, (MessageReceiver::ReplyHandler)&EnergyUsageIntfControllerImpl::ResetCumulativeEnergyReplyHandler, NULL, 0, context);
+
+    return status;
+}
+
 void EnergyUsageIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
 {
     MsgArg* entries;
@@ -91,43 +127,7 @@ void EnergyUsageIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const
     }
 }
 
-QStatus EnergyUsageIntfControllerImpl::GetCumulativeEnergy(void* context)
-{
-    QStatus status = ER_OK;
-
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_CumulativeEnergy.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&EnergyUsageIntfControllerImpl::CumulativeEnergyPropertyCB, context);
-
-    return status;
-}
-
-QStatus EnergyUsageIntfControllerImpl::GetPrecision(void* context)
-{
-    QStatus status = ER_OK;
-
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_Precision.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&EnergyUsageIntfControllerImpl::PrecisionPropertyCB, context);
-
-    return status;
-}
-
-QStatus EnergyUsageIntfControllerImpl::GetUpdateMinTime(void* context)
-{
-    QStatus status = ER_OK;
-
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_UpdateMinTime.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&EnergyUsageIntfControllerImpl::UpdateMinTimePropertyCB, context);
-
-    return status;
-}
-
-QStatus EnergyUsageIntfControllerImpl::ResetCumulativeEnergy(void* context)
-{
-    QStatus status = ER_OK;
-
-    status = m_proxyObject.MethodCallAsync(GetInterfaceName().c_str(), s_method_ResetCumulativeEnergy.c_str(), this, (MessageReceiver::ReplyHandler)&EnergyUsageIntfControllerImpl::ResetCumulativeEnergyReplyHandler, NULL, 0, context);
-
-    return status;
-}
-
-void EnergyUsageIntfControllerImpl::CumulativeEnergyPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
+void EnergyUsageIntfControllerImpl::GetCumulativeEnergyPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
     if (!obj) {
         return;
@@ -139,7 +139,7 @@ void EnergyUsageIntfControllerImpl::CumulativeEnergyPropertyCB(QStatus status, P
     m_interfaceListener.OnResponseGetCumulativeEnergy(status, obj->GetPath(), cumulativeEnergy, context);
 }
 
-void EnergyUsageIntfControllerImpl::PrecisionPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
+void EnergyUsageIntfControllerImpl::GetPrecisionPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
     if (!obj) {
         return;
@@ -151,7 +151,7 @@ void EnergyUsageIntfControllerImpl::PrecisionPropertyCB(QStatus status, ProxyBus
     m_interfaceListener.OnResponseGetPrecision(status, obj->GetPath(), precision, context);
 }
 
-void EnergyUsageIntfControllerImpl::UpdateMinTimePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
+void EnergyUsageIntfControllerImpl::GetUpdateMinTimePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
     if (!obj) {
         return;

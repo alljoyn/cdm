@@ -17,8 +17,6 @@
 #ifndef AUDIOVIDEOINPUTINTERFACE_H_
 #define AUDIOVIDEOINPUTINTERFACE_H_
 
-#include <map>
-
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/CdmInterface.h>
@@ -31,36 +29,63 @@ namespace services {
  */
 class AudioVideoInputInterface : public CdmInterface {
   public:
-    /**
-     * InputSource struct
-     */
-    typedef struct {
-        uint16_t sourceType;
-        uint8_t signalPresence;
+    enum SourceType {
+        SOURCE_TYPE_UNKNOWN = 0,
+        SOURCE_TYPE_TUNER = 1,
+        SOURCE_TYPE_COMPONENT = 2,
+        SOURCE_TYPE_COMPOSITE = 3,
+        SOURCE_TYPE_S_VIDEO = 4,
+        SOURCE_TYPE_RGB = 5,
+        SOURCE_TYPE_SDI = 6,
+        SOURCE_TYPE_DVI = 7,
+        SOURCE_TYPE_HDMI = 8,
+        SOURCE_TYPE_DISPLAY_PORT = 9,
+        SOURCE_TYPE_SCART = 10,
+        SOURCE_TYPE_EXTERNAL_STORAGE = 11,
+        SOURCE_TYPE_NETWORK = 12,
+        SOURCE_TYPE_ANALOG = 13,
+        SOURCE_TYPE_PHONO = 14,
+        SOURCE_TYPE_SPDIF_COAXIAL = 15,
+        SOURCE_TYPE_SPDIF_OPTICAL = 16,
+    };
+    enum SignalPresence {
+        SIGNAL_PRESENCE_UNKNOWN = 0,
+        SIGNAL_PRESENCE_SIGNAL_PRESENT = 1,
+        SIGNAL_PRESENCE_SIGNAL_ABSENT = 2,
+    };
+
+    struct InputSource {
+        uint16_t id;
+        SourceType sourceType;
+        SignalPresence signalPresence;
         uint16_t portNumber;
         qcc::String friendlyName;
-    } InputSource;
+
+        inline bool operator==(const InputSource& a) {
+            return a.id==id && a.sourceType==sourceType && a.signalPresence==signalPresence && a.portNumber==portNumber && a.friendlyName==friendlyName;
+        }
+    };
     typedef std::map<uint16_t, InputSource> InputSources;
 
     /**
-     * Constructor of AudioVideoInput
+     * Constructor of AudioVideoInputInterface
      */
     AudioVideoInputInterface() {}
 
     /**
-     * Destructor of AudioVideoInput
+     * Destructor of AudioVideoInputInterface
      */
     virtual ~AudioVideoInputInterface() {}
 
     /**
      * Get Interface Type
-     * @return Interface type
+     * @return interface type
      */
     const CdmInterfaceType GetInterfaceType() const { return AUDIO_VIDEO_INPUT_INTERFACE; }
 
     /**
-     * Get Introspection Xml
-     * @return Introspection xml
+     * Get Introspection XML
+     * @return Introspection XML
      */
     virtual const qcc::String& GetIntrospectionXml() { return s_xml; }
 
@@ -71,34 +96,8 @@ class AudioVideoInputInterface : public CdmInterface {
     virtual const uint16_t GetInterfaceVersion() const { return s_interfaceVersion; }
 
     enum {
-        AUDIO_VIDEO_INPUT_SOURCE_TYPE_UNKNOWN = 0,
-        AUDIO_VIDEO_INPUT_SOURCE_TYPE_TUNER,
-        AUDIO_VIDEO_INPUT_SOURCE_TYPE_COMPONENT,
-        AUDIO_VIDEO_INPUT_SOURCE_TYPE_COMPOSITE,
-        AUDIO_VIDEO_INPUT_SOURCE_TYPE_SVIDEO,
-        AUDIO_VIDEO_INPUT_SOURCE_TYPE_RGB,
-        AUDIO_VIDEO_INPUT_SOURCE_TYPE_SDI,
-        AUDIO_VIDEO_INPUT_SOURCE_TYPE_DVI,
-        AUDIO_VIDEO_INPUT_SOURCE_TYPE_HDMI,
-        AUDIO_VIDEO_INPUT_SOURCE_TYPE_DISPLAY_PORT,
-        AUDIO_VIDEO_INPUT_SOURCE_TYPE_SCART,
-        AUDIO_VIDEO_INPUT_SOURCE_TYPE_EXT_STORAGE,
-        AUDIO_VIDEO_INPUT_SOURCE_TYPE_NETWORK,
-        AUDIO_VIDEO_INPUT_SOURCE_TYPE_ANALOG_AUDIO,
-        AUDIO_VIDEO_INPUT_SOURCE_TYPE_PHONO,
-        AUDIO_VIDEO_INPUT_SOURCE_TYPE_SPDIF_COAXIAL,
-        AUDIO_VIDEO_INPUT_SOURCE_TYPE_SPDIF_OPTICAL
-    };
-
-    enum {
-        MIN_AUDIO_VIDEO_INPUT_SOURCE_TYPE = AUDIO_VIDEO_INPUT_SOURCE_TYPE_UNKNOWN,
-        MAX_AUDIO_VIDEO_INPUT_SOURCE_TYPE = AUDIO_VIDEO_INPUT_SOURCE_TYPE_SPDIF_OPTICAL
-    };
-
-    enum {
-        AUDIO_VIDEO_INPUT_SIGNAL_PRESENCE_UNKNOWN = 0,
-        AUDIO_VIDEO_INPUT_SIGNAL_PRESENCE_PRESENT,
-        AUDIO_VIDEO_INPUT_SIGNAL_PRESENCE_ABSENT
+        MIN_AUDIO_VIDEO_INPUT_SOURCE_TYPE = SOURCE_TYPE_UNKNOWN,
+        MAX_AUDIO_VIDEO_INPUT_SOURCE_TYPE = SOURCE_TYPE_SPDIF_OPTICAL
     };
 
   protected:

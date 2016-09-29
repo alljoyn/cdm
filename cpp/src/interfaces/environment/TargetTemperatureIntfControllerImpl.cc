@@ -59,42 +59,6 @@ QStatus TargetTemperatureIntfControllerImpl::Init()
     return status;
 }
 
-void TargetTemperatureIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
-{
-    MsgArg* entries;
-    size_t numEntries;
-
-    changed.Get("a{sv}", &numEntries, &entries);
-    for (size_t i = 0; i < numEntries; ++i) {
-        const char* propName;
-        MsgArg* propValue;
-        entries[i].Get("{sv}", &propName, &propValue);
-        String propNameStr(propName);
-
-        if (!s_prop_TargetValue.compare(propNameStr)) {
-            if (propValue->typeId == ALLJOYN_DOUBLE) {
-                double value = propValue->v_double;
-                m_interfaceListener.OnTargetValueChanged(obj.GetPath(), value);
-            }
-        } else if  (!s_prop_MinValue.compare(propNameStr)) {
-            if (propValue->typeId == ALLJOYN_DOUBLE) {
-                double value = propValue->v_double;
-                m_interfaceListener.OnMinValueChanged(obj.GetPath(), value);
-            }
-        } else if  (!s_prop_MaxValue.compare(propNameStr)) {
-            if (propValue->typeId == ALLJOYN_DOUBLE) {
-                double value = propValue->v_double;
-                m_interfaceListener.OnMaxValueChanged(obj.GetPath(), value);
-            }
-        } else if  (!s_prop_StepValue.compare(propNameStr)) {
-            if (propValue->typeId == ALLJOYN_DOUBLE) {
-                double value = propValue->v_double;
-                m_interfaceListener.OnStepValueChanged(obj.GetPath(), value);
-            }
-        }
-    }
-}
-
 QStatus TargetTemperatureIntfControllerImpl::GetTargetValue(void* context)
 {
     QStatus status = ER_OK;
@@ -132,12 +96,40 @@ QStatus TargetTemperatureIntfControllerImpl::GetStepValue(void* context)
     return status;
 }
 
-void TargetTemperatureIntfControllerImpl::SetTargetValuePropertyCB(QStatus status, ProxyBusObject* obj, void* context)
+void TargetTemperatureIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
 {
-    if (!obj) {
-        return;
+    MsgArg* entries;
+    size_t numEntries;
+
+    changed.Get("a{sv}", &numEntries, &entries);
+    for (size_t i = 0; i < numEntries; ++i) {
+        const char* propName;
+        MsgArg* propValue;
+        entries[i].Get("{sv}", &propName, &propValue);
+        String propNameStr(propName);
+
+        if (!s_prop_TargetValue.compare(propNameStr)) {
+            if (propValue->typeId == ALLJOYN_DOUBLE) {
+                double value = propValue->v_double;
+                m_interfaceListener.OnTargetValueChanged(obj.GetPath(), value);
+            }
+        } else if  (!s_prop_MinValue.compare(propNameStr)) {
+            if (propValue->typeId == ALLJOYN_DOUBLE) {
+                double value = propValue->v_double;
+                m_interfaceListener.OnMinValueChanged(obj.GetPath(), value);
+            }
+        } else if  (!s_prop_MaxValue.compare(propNameStr)) {
+            if (propValue->typeId == ALLJOYN_DOUBLE) {
+                double value = propValue->v_double;
+                m_interfaceListener.OnMaxValueChanged(obj.GetPath(), value);
+            }
+        } else if  (!s_prop_StepValue.compare(propNameStr)) {
+            if (propValue->typeId == ALLJOYN_DOUBLE) {
+                double value = propValue->v_double;
+                m_interfaceListener.OnStepValueChanged(obj.GetPath(), value);
+            }
+        }
     }
-    m_interfaceListener.OnResponseSetTargetValue(status, obj->GetPath(), context);
 }
 
 void TargetTemperatureIntfControllerImpl::GetTargetValuePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
@@ -148,6 +140,14 @@ void TargetTemperatureIntfControllerImpl::GetTargetValuePropertyCB(QStatus statu
     double val;
     value.Get("d", &val);
     m_interfaceListener.OnResponseGetTargetValue(status, obj->GetPath(), val, context);
+}
+
+void TargetTemperatureIntfControllerImpl::SetTargetValuePropertyCB(QStatus status, ProxyBusObject* obj, void* context)
+{
+    if (!obj) {
+        return;
+    }
+    m_interfaceListener.OnResponseSetTargetValue(status, obj->GetPath(), context);
 }
 
 void TargetTemperatureIntfControllerImpl::GetMinValuePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)

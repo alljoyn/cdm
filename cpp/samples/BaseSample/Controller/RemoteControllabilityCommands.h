@@ -31,7 +31,7 @@ class RemoteControllabilityListener : public RemoteControllabilityIntfController
     RemoteControllabilityListener();
     virtual ~RemoteControllabilityListener();
     virtual void IsControllablePropertyChanged(const qcc::String& objectPath, const bool isControllable);
-    virtual void GetIsControllablePropertyCallback(QStatus status, const qcc::String& objectPath, const bool isControllable, void* context);
+    virtual void OnResponseGetIsControllable(QStatus status, const qcc::String& objectPath, const bool isControllable, void* context);
 };
 
 class RemoteControllabilityCommands : public InterfaceCommands

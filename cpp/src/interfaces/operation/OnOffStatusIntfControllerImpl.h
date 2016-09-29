@@ -36,24 +36,17 @@ class OnOffStatusIntfControllerImpl : public InterfaceController, public OnOffSt
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Constructor of OnOffStatusIntfControllerImpl
      */
-    OnOffStatusIntfControllerImpl(BusAttachment& busAttachment, OnOffStatusIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    OnOffStatusIntfControllerImpl(BusAttachment& busAttachment, OnOffStatusIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Destructor of OnOffStatusIntfControllerImpl
      */
     virtual ~OnOffStatusIntfControllerImpl();
-
-    /**
-     * Get OnOff
-     * @param[in] context the context that is passed to the callback handler
-     * @return ER_OK on success
-     */
-    virtual QStatus GetIsOn(void* context);
 
     /**
      * Initialize interface
@@ -68,17 +61,14 @@ class OnOffStatusIntfControllerImpl : public InterfaceController, public OnOffSt
     virtual BusAttachment& GetBusAttachment() const { return m_busAttachment; }
 
     /**
-     * TODO: define set/get properties
-     * GetProperty function of read-only property must not be defined in the controller side.
+     * Get IsOn property
+     * (Current on/off state of the appliance. If true, the device is on state.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
-
-    /*
-     * TODO: define methods
-     */
+    virtual QStatus GetIsOn(void* context);
 
   private:
-    OnOffStatusIntfControllerImpl();
-
     void PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context);
     void GetIsOnPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
 

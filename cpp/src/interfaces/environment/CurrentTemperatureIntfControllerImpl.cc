@@ -59,6 +59,27 @@ QStatus CurrentTemperatureIntfControllerImpl::Init()
     return status;
 }
 
+QStatus CurrentTemperatureIntfControllerImpl::GetCurrentValue(void* context)
+{
+    QStatus status = ER_OK;
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_CurrentValue.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&CurrentTemperatureIntfControllerImpl::GetCurrentValuePropertyCB, context);
+    return status;
+}
+
+QStatus CurrentTemperatureIntfControllerImpl::GetPrecision(void* context)
+{
+    QStatus status = ER_OK;
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_Precision.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&CurrentTemperatureIntfControllerImpl::GetPrecisionPropertyCB, context);
+    return status;
+}
+
+QStatus CurrentTemperatureIntfControllerImpl::GetUpdateMinTime(void* context)
+{
+    QStatus status = ER_OK;
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_UpdateMinTime.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&CurrentTemperatureIntfControllerImpl::GetUpdateMinTimePropertyCB, context);
+    return status;
+}
+
 void CurrentTemperatureIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
 {
     MsgArg* entries;
@@ -118,27 +139,6 @@ void CurrentTemperatureIntfControllerImpl::GetUpdateMinTimePropertyCB(QStatus st
     uint16_t val;
     value.Get("q", &val);
     m_interfaceListener.OnResponseGetUpdateMinTime(status, obj->GetPath(), val, context);
-}
-
-QStatus CurrentTemperatureIntfControllerImpl::GetCurrentValue(void* context)
-{
-    QStatus status = ER_OK;
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_CurrentValue.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&CurrentTemperatureIntfControllerImpl::GetCurrentValuePropertyCB, context);
-    return status;
-}
-
-QStatus CurrentTemperatureIntfControllerImpl::GetPrecision(void* context)
-{
-    QStatus status = ER_OK;
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_Precision.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&CurrentTemperatureIntfControllerImpl::GetPrecisionPropertyCB, context);
-    return status;
-}
-
-QStatus CurrentTemperatureIntfControllerImpl::GetUpdateMinTime(void* context)
-{
-    QStatus status = ER_OK;
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_UpdateMinTime.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&CurrentTemperatureIntfControllerImpl::GetUpdateMinTimePropertyCB, context);
-    return status;
 }
 
 } //namespace services

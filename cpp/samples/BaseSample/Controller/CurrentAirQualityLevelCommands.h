@@ -31,10 +31,10 @@ class CurrentAirQualityLevelListener : public CurrentAirQualityLevelIntfControll
     CurrentAirQualityLevelListener();
     virtual ~CurrentAirQualityLevelListener();
 
-    virtual void OnResponseGetContaminantType(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context);
+    virtual void OnResponseGetContaminantType(QStatus status, const qcc::String& objectPath, const ContaminantType value, void* context);
     virtual void OnResponseGetCurrentLevel(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context);
     virtual void OnResponseGetMaxLevel(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context);
-    virtual void OnContaminantTypeChanged(const qcc::String& objectPath, const uint8_t value);
+    virtual void OnContaminantTypeChanged(const qcc::String& objectPath, const ContaminantType value);
     virtual void OnCurrentLevelChanged(const qcc::String& objectPath, const uint8_t value);
     virtual void OnMaxLevelChanged(const qcc::String& objectPath, const  uint8_t value);
 };

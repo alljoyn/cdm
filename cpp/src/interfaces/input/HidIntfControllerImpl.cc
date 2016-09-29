@@ -69,6 +69,23 @@ QStatus HidIntfControllerImpl::GetSupportedEvents(void* context)
     return status;
 }
 
+QStatus HidIntfControllerImpl::InjectEvents(const std::vector<InputEvent>& inputEvents, void* context)
+{
+    QStatus status = ER_OK;
+
+    MsgArg arg[1];
+    MsgArg* entries = new MsgArg[inputEvents.size()];
+    int i=0;
+    for (HidInterface::InputEvents::const_iterator citer = inputEvents.begin(); citer != inputEvents.end(); ++citer, i++) {
+        entries[i].Set("(qqi)", citer->type, citer->code, citer->value);
+    }
+    arg[0].Set("a(qqi)", i, entries);
+
+    status = m_proxyObject.MethodCall(GetInterfaceName().c_str(), s_method_InjectEvents.c_str(), arg, 1);
+    delete[] entries;
+    return status;
+}
+
 void HidIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
 {
     MsgArg* entries;
@@ -136,23 +153,6 @@ void HidIntfControllerImpl::GetSupportedEventsPropertyCB(QStatus status, ProxyBu
         supportedEvents.push_back(supportedEvent);
     }
     m_interfaceListener.OnResponseGetSupportedEvents(status, obj->GetPath(), supportedEvents, context);
-}
-
-QStatus HidIntfControllerImpl::InjectEvents(HidInterface::InputEvents& inputEvents)
-{
-    QStatus status = ER_OK;
-
-    MsgArg arg[1];
-    MsgArg* entries = new MsgArg[inputEvents.size()];
-    int i=0;
-    for (HidInterface::InputEvents::const_iterator citer = inputEvents.begin(); citer != inputEvents.end(); ++citer, i++) {
-        entries[i].Set("(qqi)", citer->type, citer->code, citer->value);
-    }
-    arg[0].Set("a(qqi)", i, entries);
-
-    status = m_proxyObject.MethodCall(GetInterfaceName().c_str(), s_method_InjectEvents.c_str(), arg, 1);
-    delete[] entries;
-    return status;
 }
 
 } //namespace services

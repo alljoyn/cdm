@@ -36,12 +36,12 @@ class ChannelIntfControllerImpl : public InterfaceController, public ChannelIntf
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Constructor of ChannelIntfControllerImpl
      */
-    ChannelIntfControllerImpl(BusAttachment& busAttachment, ChannelIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    ChannelIntfControllerImpl(BusAttachment& busAttachment, ChannelIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Destructor of ChannelIntfControllerImpl
@@ -61,42 +61,44 @@ class ChannelIntfControllerImpl : public InterfaceController, public ChannelIntf
     virtual BusAttachment& GetBusAttachment() const { return m_busAttachment; }
 
     /**
-     * Set channel id
-     * @param[in] channel id
-     * @param[in] context
-     * @return status
-     */
-    virtual QStatus SetChannelId(const qcc::String channelId, void* context);
-
-    /**
-     * Get channel id
-     * @param[in] context
-     * @return status
+     * Get ChannelId property
+     * (Current channel id.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetChannelId(void* context);
 
     /**
-     * Get total number of channels
-     * @param[in] context
-     * @return status
+     * Set ChannelId property
+     * (Current channel id.)
+     * @param[in] value The channel id to set
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
+     */
+    virtual QStatus SetChannelId(const qcc::String& value, void* context);
+
+    /**
+     * Get TotalNumberOfChannels property
+     * (Total number of scanned channels.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetTotalNumberOfChannels(void* context);
 
     /**
-     * Get channel list
-     * @param[in] starting record
-     * @param[in] number of records
-     * @param[in] context
-     * @return status
+     * Call GetChannelList method
+     * (Retrieve the list of channels.)
+     * @param[in] startingRecord List built from this record number.
+     * @param[in] numRecords List generated at most this many records.
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetChannelList(const uint16_t startingRecord, const uint16_t numRecords, void* context);
 
   private:
-    ChannelIntfControllerImpl();
-
     void PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context);
-    void SetChannelIdPropertyCB(QStatus status, ProxyBusObject* obj, void* context);
     void GetChannelIdPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+    void SetChannelIdPropertyCB(QStatus status, ProxyBusObject* obj, void* context);
     void GetTotalNumberOfChannelsPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
     void GetChannelListReplyHandler(Message& message, void* context);
     void ChannelListChanged(const InterfaceDescription::Member* member, const char* srcPath, Message& message);

@@ -59,7 +59,7 @@ class WaterLevelIntfControlleeListener : public InterfaceControlleeListener {
      * @param[out] supplySource supplySource
      * @return ER_OK on success
      */
-    virtual QStatus OnGetSupplySource(WaterLevelInterface::WaterLevelSupplySource& supplySource)  = 0;
+    virtual QStatus OnGetSupplySource(WaterLevelInterface::SupplySource& supplySource)  = 0;
 };
 
 } //namespace services

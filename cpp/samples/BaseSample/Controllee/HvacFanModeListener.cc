@@ -84,11 +84,11 @@ void HvacFanModeCommands::InitializeProperties()
 {
     if (m_intfControllee) {
         HvacFanModeInterface::SupportedModes supportedModes;
-        supportedModes.push_back(HvacFanModeInterface::HVAC_FAN_MODE_AUTO);
-        supportedModes.push_back(HvacFanModeInterface::HVAC_FAN_MODE_CIRCULATION);
-        supportedModes.push_back(HvacFanModeInterface::HVAC_FAN_MODE_CONTINUOUS);
+        supportedModes.push_back(HvacFanModeInterface::MODE_AUTO);
+        supportedModes.push_back(HvacFanModeInterface::MODE_CIRCULATION);
+        supportedModes.push_back(HvacFanModeInterface::MODE_CONTINUOUS);
         m_intfControllee->SetSupportedModes(supportedModes);
-        m_intfControllee->SetMode(HvacFanModeInterface::HVAC_FAN_MODE_AUTO);
+        m_intfControllee->SetMode(HvacFanModeInterface::MODE_AUTO);
     }
 }
 

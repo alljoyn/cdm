@@ -22,7 +22,6 @@ namespace services {
 
 const uint16_t RemoteControllabilityInterface::s_interfaceVersion = 1;
 
-// Below none secure xml is only for test
 const qcc::String RemoteControllabilityInterface::s_xml =
 "<node xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='http://www.allseenalliance.org/schemas/introspect.xsd'>"
 "    <interface name='org.alljoyn.SmartSpaces.Operation.RemoteControllability'>"

@@ -60,42 +60,6 @@ QStatus SpinSpeedLevelIntfControllerImpl::Init()
     return status;
 }
 
-void SpinSpeedLevelIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
-{
-    MsgArg* entries;
-    size_t numEntries;
-
-    changed.Get("a{sv}", &numEntries, &entries);
-    for (size_t i = 0; i < numEntries; ++i) {
-        const char* propName;
-        MsgArg* propValue;
-        entries[i].Get("{sv}", &propName, &propValue);
-        String propNameStr(propName);
-
-        if (!s_prop_MaxLevel.compare(propNameStr)) {
-            if (propValue->typeId == ALLJOYN_BYTE) {
-                uint8_t level = propValue->v_byte;
-                m_interfaceListener.MaxLevelPropertyChanged(obj.GetPath(), level);
-            }
-        } else if (!s_prop_TargetLevel.compare(propNameStr)){
-            if(propValue->typeId == ALLJOYN_BYTE) {
-                uint8_t level = propValue->v_byte;
-                m_interfaceListener.TargetLevelPropertyChanged(obj.GetPath(), level);
-            }
-        } else if(!s_prop_SelectableLevels.compare(propNameStr)) {
-            uint8_t *vals;
-            size_t numVals;
-            std::vector<uint8_t> levels;
-            propValue->Get("ay", &numVals, &vals);
-
-            cout << "Selectable Levels: " << endl;
-            for (size_t i = 0; i < numVals; ++i) {
-                levels.push_back(vals[i]);
-            }
-            m_interfaceListener.SelectableLevelsPropertyChanged(obj.GetPath(), levels);
-        }
-    }
-}
 QStatus SpinSpeedLevelIntfControllerImpl::GetMaxLevel(void* context)
 {
     QStatus status = ER_OK;
@@ -104,7 +68,6 @@ QStatus SpinSpeedLevelIntfControllerImpl::GetMaxLevel(void* context)
 
     return status;
 }
-
 QStatus SpinSpeedLevelIntfControllerImpl::GetTargetLevel(void* context)
 {
     QStatus status = ER_OK;
@@ -113,6 +76,7 @@ QStatus SpinSpeedLevelIntfControllerImpl::GetTargetLevel(void* context)
 
     return status;
 }
+
 QStatus SpinSpeedLevelIntfControllerImpl::SetTargetLevel(const uint8_t targetLevel, void* context)
 {
     QStatus status = ER_OK;
@@ -132,6 +96,42 @@ QStatus SpinSpeedLevelIntfControllerImpl::GetSelectableLevels(void* context)
 
     return status;
 }
+void SpinSpeedLevelIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
+{
+    MsgArg* entries;
+    size_t numEntries;
+
+    changed.Get("a{sv}", &numEntries, &entries);
+    for (size_t i = 0; i < numEntries; ++i) {
+        const char* propName;
+        MsgArg* propValue;
+        entries[i].Get("{sv}", &propName, &propValue);
+        String propNameStr(propName);
+
+        if (!s_prop_MaxLevel.compare(propNameStr)) {
+            if (propValue->typeId == ALLJOYN_BYTE) {
+                uint8_t level = propValue->v_byte;
+                m_interfaceListener.OnMaxLevelChanged(obj.GetPath(), level);
+            }
+        } else if (!s_prop_TargetLevel.compare(propNameStr)){
+            if(propValue->typeId == ALLJOYN_BYTE) {
+                uint8_t level = propValue->v_byte;
+                m_interfaceListener.OnTargetLevelChanged(obj.GetPath(), level);
+            }
+        } else if(!s_prop_SelectableLevels.compare(propNameStr)) {
+            uint8_t *vals;
+            size_t numVals;
+            std::vector<uint8_t> levels;
+            propValue->Get("ay", &numVals, &vals);
+
+            cout << "Selectable Levels: " << endl;
+            for (size_t i = 0; i < numVals; ++i) {
+                levels.push_back(vals[i]);
+            }
+            m_interfaceListener.OnSelectableLevelsChanged(obj.GetPath(), levels);
+        }
+    }
+}
 
 void SpinSpeedLevelIntfControllerImpl::GetMaxLevelPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
@@ -143,7 +143,7 @@ void SpinSpeedLevelIntfControllerImpl::GetMaxLevelPropertyCB(QStatus status, Pro
     cout << "# SoilLevelIntfControllerImpl::GetMaxLevelPropertyCB" << endl;
     value.Get("y", &maxLevel);
 
-    m_interfaceListener.GetMaxLevelPropertyCallback(status,obj->GetPath(),maxLevel,context);
+    m_interfaceListener.OnResponseGetMaxLevel(status, obj->GetPath(), maxLevel, context);
 }
 void SpinSpeedLevelIntfControllerImpl::GetTargetLevelPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
@@ -154,14 +154,14 @@ void SpinSpeedLevelIntfControllerImpl::GetTargetLevelPropertyCB(QStatus status, 
     uint8_t targetLevel;
     value.Get("y", &targetLevel);
 
-    m_interfaceListener.GetTargetLevelPropertyCallback(status,obj->GetPath(),targetLevel,context);
+    m_interfaceListener.OnResponseGetTargetLevel(status, obj->GetPath(), targetLevel, context);
 }
 void SpinSpeedLevelIntfControllerImpl::SetTargetLevelPropertyCB(QStatus status, ProxyBusObject* obj, void* context)
 {
     if(!obj){
         return;
     }
-    m_interfaceListener.SetTargetLevelPropertyCallback(status,obj->GetPath(),context);
+    m_interfaceListener.OnResponseSetTargetLevel(status, obj->GetPath(), context);
 }
 void SpinSpeedLevelIntfControllerImpl::GetSelectableLevelsPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
@@ -180,7 +180,7 @@ void SpinSpeedLevelIntfControllerImpl::GetSelectableLevelsPropertyCB(QStatus sta
         levels.push_back(vals[i]);
     }
 
-    m_interfaceListener.GetSelectableLevelsPropertyCallback(status,obj->GetPath(), levels, context);
+    m_interfaceListener.OnResponseGetSelectableLevels(status, obj->GetPath(), levels, context);
 }
 
 

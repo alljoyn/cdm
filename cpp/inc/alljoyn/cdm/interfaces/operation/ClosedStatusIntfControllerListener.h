@@ -20,6 +20,7 @@
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/InterfaceControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/ClosedStatusInterface.h>
 
 namespace ajn {
 namespace services {
@@ -29,23 +30,29 @@ namespace services {
  */
 class ClosedStatusIntfControllerListener : public InterfaceControllerListener {
   public:
-    virtual ~ClosedStatusIntfControllerListener() {}
+
     /**
-     * Callback handler for getting IsClosed property
+     * Destructor of ClosedStatusIntfControllerListener
+     */
+    virtual ~ClosedStatusIntfControllerListener() {}
+
+    /**
+     * Callback handler for GetIsClosed completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] isClosed isClosed
+     * @param[in] value The value of IsClosed
+     *                  (If true, object is closed.)
      * @param[in] context the context that is passed from application
      */
-    virtual void GetIsClosedPropertyCallback(QStatus status, const qcc::String& objectPath, const bool isClosed, void* context) {}
+    virtual void OnResponseGetIsClosed(QStatus status, const qcc::String& objectPath, const bool value, void* context) {}
 
     /**
      * Handler for IsClosed property changed
      * @param[in] objectPath the object path
-     * @param[in] isClosed isClosed
+     * @param[in] value The value of IsClosed
+     *                  (If true, object is closed.)
      */
-    virtual void IsClosedPropertyChanged(const qcc::String& objectPath, const bool isClosed) { }
-
+    virtual void OnIsClosedChanged(const qcc::String& objectPath, const bool value) {}
 };
 
 } //namespace services

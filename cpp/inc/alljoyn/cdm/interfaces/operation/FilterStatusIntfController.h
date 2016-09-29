@@ -40,49 +40,56 @@ class FilterStatusIntfController : public FilterStatusInterface {
     virtual ~FilterStatusIntfController() {}
 
     /**
-     * Get expected life in days
+     * Get ExpectedLifeInDays property
+     * (Days a new filter will last. Used to convert percentage into remaining days. If 0xFFFF there is no predicted life. If 0 the life is less than 1 day.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetExpectedLifeInDays(void* context = NULL) = 0;
 
     /**
-     * Get is cleanable
+     * Get IsCleanable property
+     * (This is a static property of the filter.  If the property is true a new filter does not need to be ordered, just clean.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetIsCleanable(void* context = NULL) = 0;
 
     /**
-     * Get order percentage
+     * Get OrderPercentage property
+     * (LifeRemaining it is recommended that a new filter be orderedIt can have a value of 0 because the remaining life is unpredictable, for example a psid switch. It can also have a value of 255 if OrderPercentage is N/A, for example a cleanable filter.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetOrderPercentage(void* context = NULL) = 0;
 
     /**
-     * Get manufacturer
+     * Get Manufacturer property
+     * (Identification of the filter manufacturer, which along with the part number act as a tuple to identify the filter within the Alljoyn device. Either one or both may be a null string.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetManufacturer(void* context = NULL) = 0;
 
     /**
-     * Get part number
+     * Get PartNumber property
+     * (Identification of the filter manufacturer, which along with the part number act as a tuple to identify the filter within the Alljoyn device. Either one or both may be a null string.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetPartNumber(void* context = NULL) = 0;
 
     /**
-     * Get url
+     * Get Url property
+     * (Url can be just a domain or a complete URL to the exact filter. It may provide additional information of a site for ordering. A null string is acceptable.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetUrl(void* context = NULL) = 0;
 
     /**
-     * Get life remaining
+     * Get LifeRemaining property
+     * (Lifespan Remaining in percentage (100 - 0). 0 indicates replace/clean. A simple device may just implement 100/0 or 100/OrderPercentage/0 instead of implementing the entire range of values.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */

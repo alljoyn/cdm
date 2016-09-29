@@ -29,6 +29,8 @@ namespace services {
  */
 class AudioVolumeInterface : public CdmInterface {
   public:
+
+
     /**
      * Constructor of AudioVolumeInterface
      */
@@ -41,13 +43,13 @@ class AudioVolumeInterface : public CdmInterface {
 
     /**
      * Get Interface Type
-     * @return Interface type
+     * @return interface type
      */
     const CdmInterfaceType GetInterfaceType() const { return AUDIO_VOLUME_INTERFACE; }
 
     /**
-     * Get Introspection Xml
-     * @return Introspection xml
+     * Get Introspection XML
+     * @return Introspection XML
      */
     virtual const qcc::String& GetIntrospectionXml() { return s_xml; }
 

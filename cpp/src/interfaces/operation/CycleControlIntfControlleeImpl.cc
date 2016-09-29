@@ -50,7 +50,7 @@ QStatus CycleControlIntfControlleeImpl::Init()
 {
     QStatus status = CdmInterface::Init();
 
-    const InterfaceDescription::Member* member = m_interfaceDescription->GetMember(s_method_ExecuteCommand.c_str());
+    const InterfaceDescription::Member* member = m_interfaceDescription->GetMember(s_method_ExecuteOperationalCommand.c_str());
     MessageReceiver::MethodHandler methodHandler = static_cast<MessageReceiver::MethodHandler>(&CycleControlIntfControlleeImpl::OnExecuteCommand);
 
     m_methodHandlers.push_back(make_pair(member, methodHandler));
@@ -102,7 +102,7 @@ QStatus CycleControlIntfControlleeImpl::OnGetProperty(const String& propName, Ms
         {
             if(!s_prop_OperationalState.compare(propName))
             {
-                CycleControlOperationalState state;
+                OperationalState state;
                 status = m_interfaceListener.OnGetOperationalState(state);
                 if (status != ER_OK)
                 {
@@ -126,7 +126,7 @@ QStatus CycleControlIntfControlleeImpl::OnGetProperty(const String& propName, Ms
         {
             if (!(s_prop_OperationalState.compare(propName)))
             {
-                const CycleControlOperationalState state = GetOperationalState();
+                const OperationalState state = GetOperationalState();
                 val.typeId = ALLJOYN_BYTE;
                 val.v_byte = (uint8_t)state;
             }
@@ -174,11 +174,11 @@ void CycleControlIntfControlleeImpl::OnExecuteCommand(const InterfaceDescription
     size_t numArgs = 0;
     msg->GetArgs(numArgs, args);
     ErrorCode  error = ErrorCode::NOT_ERROR;
-    CycleControlOperationalState newState = OPERATIONAL_STATE_IDLE;
+    OperationalState newState = OPERATIONAL_STATE_IDLE;
 
     if (numArgs == 1)
     {
-        CycleControlOperationalCommand command = (CycleControlOperationalCommand)args[0].v_byte;
+        OperationalCommands command = (OperationalCommands)args[0].v_byte;
 
         cout << "command: " << (int)command << "; command string: " << OPERATIONAL_COMMAND_STRINGS[command] << endl;
 
@@ -217,7 +217,7 @@ void CycleControlIntfControlleeImpl::OnExecuteCommand(const InterfaceDescription
 
 }
 
-QStatus CycleControlIntfControlleeImpl::SetOperationalState(CycleControlOperationalState state)
+QStatus CycleControlIntfControlleeImpl::SetOperationalState(OperationalState state)
 {
     SupportedOperationalStates::iterator it;
     it = std::find(m_supportedStates.begin(),m_supportedStates.end(),state);

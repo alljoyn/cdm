@@ -29,13 +29,15 @@ namespace services {
  */
 class HeatingZoneInterface : public CdmInterface {
   public:
+
+
     /**
-     * Constructor of HeatingZone
+     * Constructor of HeatingZoneInterface
      */
     HeatingZoneInterface() {}
 
     /**
-     * Destructor of HeatingZone
+     * Destructor of HeatingZoneInterface
      */
     virtual ~HeatingZoneInterface() {}
 
@@ -46,14 +48,14 @@ class HeatingZoneInterface : public CdmInterface {
     const CdmInterfaceType GetInterfaceType() const { return HEATING_ZONE_INTERFACE; }
 
     /**
-     * Get Introspection Xml
-     * @return xml
+     * Get Introspection XML
+     * @return Introspection XML
      */
     virtual const qcc::String& GetIntrospectionXml() { return s_xml; }
 
     /**
      * Get Interface version
-     * @return interface version
+     * @return Interface version
      */
     virtual const uint16_t GetInterfaceVersion() const { return s_interfaceVersion; }
 
@@ -62,7 +64,6 @@ class HeatingZoneInterface : public CdmInterface {
     static const qcc::String s_prop_NumberOfHeatingZones;
     static const qcc::String s_prop_MaxHeatingLevels;
     static const qcc::String s_prop_HeatingLevels;
-
 
   private:
     static const qcc::String s_xml;

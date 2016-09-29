@@ -40,12 +40,12 @@ class OnOffStatusIntfController : public OnOffStatusInterface {
     virtual ~OnOffStatusIntfController() {}
 
     /**
-     * Get IsOn
+     * Get IsOn property
+     * (Current on/off state of the appliance. If true, the device is on state.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetIsOn(void* context = NULL) = 0;
-
 };
 
 } //namespace services

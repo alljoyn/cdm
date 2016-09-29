@@ -24,76 +24,76 @@ TimerListener::TimerListener()
 TimerListener::~TimerListener()
 {
 }
-void TimerListener::OnResponseGetReferenceTimer(QStatus status, const qcc::String& objectPath, int32_t& time, void* context)
+void TimerListener::OnResponseGetReferenceTimer(QStatus status, const qcc::String& objectPath, const int32_t time, void* context)
 {
     cout << "# TimerListener::OnResponseGetReferenceTimer" << endl;
     cout << "# status: " << QCC_StatusText(status) << endl;
     cout << "# time: " << (int)time << endl;
 }
-void TimerListener::OnResponseGetTargetTimeToStart(QStatus status, const qcc::String& objectPath, int32_t& time, void* context)
+void TimerListener::OnResponseGetTargetTimeToStart(QStatus status, const qcc::String& objectPath, const int32_t time, void* context)
 {
     cout << "# TimerListener::OnResponseGetTargetTimeToStart" << endl;
     cout << "# status: " << QCC_StatusText(status) << endl;
     cout << "# time: " << (int)time << endl;
 }
-void TimerListener::OnResponseGetTargetTimeToStop(QStatus status, const qcc::String& objectPath, int32_t& time, void* context)
+void TimerListener::OnResponseGetTargetTimeToStop(QStatus status, const qcc::String& objectPath, const int32_t time, void* context)
 {
     cout << "# TimerListener::OnResponseGetTargetTimeToStop" << endl;
     cout << "# status: " << QCC_StatusText(status) << endl;
     cout << "# time: " << (int)time << endl;
 }
-void TimerListener::OnResponseGetEstimatedTimeToEnd(QStatus status, const qcc::String& objectPath, int32_t& time, void* context)
+void TimerListener::OnResponseGetEstimatedTimeToEnd(QStatus status, const qcc::String& objectPath, const int32_t time, void* context)
 {
     cout << "# TimerListener::OnResponseGetEstimatedTimeToEnd" << endl;
     cout << "# status: " << QCC_StatusText(status) << endl;
     cout << "# time: " << (int)time << endl;
 }
-void TimerListener::OnResponseGetRunningTime(QStatus status, const qcc::String& objectPath, int32_t& time, void* context)
+void TimerListener::OnResponseGetRunningTime(QStatus status, const qcc::String& objectPath, const int32_t time, void* context)
 {
     cout << "# TimerListener::OnResponseGetRunningTime" << endl;
     cout << "# status: " << QCC_StatusText(status) << endl;
     cout << "# time: " << (int)time << endl;
 }
-void TimerListener::OnResponseGetTargetDuration(QStatus status, const qcc::String& objectPath, int32_t& time, void* context)
+void TimerListener::OnResponseGetTargetDuration(QStatus status, const qcc::String& objectPath, const int32_t time, void* context)
 {
     cout << "# TimerListener::OnResponseGetTargetDuration" << endl;
     cout << "# status: " << QCC_StatusText(status) << endl;
     cout << "# time: " << (int)time << endl;
 }
-void TimerListener::OnReferenceTimerPropertyChanged(const qcc::String& objectPath, int32_t time)
+void TimerListener::OnReferenceTimerChanged(const qcc::String& objectPath, int32_t time)
 {
-    cout << "# TimerListener::OnReferenceTimerPropertyChanged" << endl;
+    cout << "# TimerListener::OnReferenceTimerChanged" << endl;
     cout << "# time: " << (int)time << endl;
 }
-void TimerListener::OnTargetTimeToStartPropertyChanged(const qcc::String& objectPath, int32_t time)
+void TimerListener::OnTargetTimeToStartChanged(const qcc::String& objectPath, int32_t time)
 {
-    cout << "# TimerListener::OnTargetTimeToStartPropertyChanged" << endl;
+    cout << "# TimerListener::OnTargetTimeToStartChanged" << endl;
     cout << "# time: " << (int)time << endl;
 }
-void TimerListener::OnTargetTimeToStopPropertyChanged(const qcc::String& objectPath, int32_t time)
+void TimerListener::OnTargetTimeToStopChanged(const qcc::String& objectPath, int32_t time)
 {
-    cout << "# TimerListener::OnTargetTimeToStopPropertyChanged" << endl;
+    cout << "# TimerListener::OnTargetTimeToStopChanged" << endl;
     cout << "# time: " << (int)time << endl;
 }
-void TimerListener::OnEstimatedTimeToEndPropertyChanged(const qcc::String& objectPath, int32_t time)
+void TimerListener::OnEstimatedTimeToEndChanged(const qcc::String& objectPath, int32_t time)
 {
-    cout << "# TimerListener::OnEstimatedTimeToEndPropertyChanged" << endl;
+    cout << "# TimerListener::OnEstimatedTimeToEndChanged" << endl;
     cout << "# time: " << (int)time << endl;
 }
-void TimerListener::OnRunningTimePropertyChanged(const qcc::String& objectPath, int32_t time)
+void TimerListener::OnRunningTimeChanged(const qcc::String& objectPath, int32_t time)
 {
-    cout << "TimerListener::OnRunningTimePropertyChanged" << endl;
+    cout << "TimerListener::OnRunningTimeChanged" << endl;
     cout << "time: " << (int)time << endl;
 }
-void TimerListener::OnTargetDurationPropertyChanged(const qcc::String& objectPath, int32_t time)
+void TimerListener::OnTargetDurationChanged(const qcc::String& objectPath, int32_t time)
 {
-    cout << "# TimerListener::OnTargetDurationPropertyChanged" << endl;
+    cout << "# TimerListener::OnTargetDurationChanged" << endl;
     cout << "# time: " << (int)time << endl;
 }
 
-void TimerListener::OnResponseSetTargetTimerToStart(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage)
+void TimerListener::OnResponseSetTargetTimeToStart(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage)
 {
-    cout << "# TimerListener::OnResponseSetTargetTimerToStart" << endl;
+    cout << "# TimerListener::OnResponseSetTargetTimeToStart" << endl;
     cout << "# Status: " << QCC_StatusText(status) << endl;
     if(status != ER_OK)
     {
@@ -101,9 +101,9 @@ void TimerListener::OnResponseSetTargetTimerToStart(QStatus status, const qcc::S
         cout << "# error mess: " << errorMessage << endl;
     }
 }
-void TimerListener::OnResponseSetTargetTimerToStop(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage)
+void TimerListener::OnResponseSetTargetTimeToStop(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage)
 {
-    cout << "# TimerListener::OnResponseSetTargetTimerToStop" << endl;
+    cout << "# TimerListener::OnResponseSetTargetTimeToStop" << endl;
     cout << "# Status: " << QCC_StatusText(status) << endl;
     if(status != ER_OK)
     {

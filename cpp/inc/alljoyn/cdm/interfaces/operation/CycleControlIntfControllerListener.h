@@ -30,66 +30,77 @@ namespace services {
  */
 class CycleControlIntfControllerListener : public InterfaceControllerListener {
   public:
+    using OperationalState = CycleControlInterface::OperationalState;
+    using OperationalCommands = CycleControlInterface::OperationalCommands;
+
+    /**
+     * Destructor of CycleControlIntfControllerListener
+     */
     virtual ~CycleControlIntfControllerListener() {}
 
     /**
-     * Callback handler for getting OperaionalState property
+     * Callback handler for GetOperationalState completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] currentState current state
+     * @param[in] value The value of OperationalState
+     *                  (Current operational state of the appliance.)
      * @param[in] context the context that is passed from application
      */
-    virtual void GetOperationalStatePropertyCallback(QStatus status, const qcc::String& objectPath, const CycleControlInterface::CycleControlOperationalState& currentState, void* context) {}
-
-    /**
-     * Callback handler for getting SupportedOperationalStates property
-     * @param[in] status ER_OK on success
-     * @param[in] objectPath the object path
-     * @param[in] states The list of states
-     * @param[in] context the context that is passed from application
-     */
-    virtual void GetSupportedStatesPropertyCallbalck(QStatus status, const qcc::String& objectPath, const CycleControlInterface::SupportedOperationalStates& states, void* context) {}
-
-    /**
-     * Callback handler for getting SupportedOpearionalCommands property
-     * @param[in] status ER_OK on success
-     * @param[in] objectPath the object path
-     * @param[in] commands The list of commands
-     * @param[in] context the context that is passed from application
-     */
-    virtual void GetSupportedCommandsPropertyCallbalck(QStatus status, const qcc::String& objectPath, const CycleControlInterface::SupportedOperationalCommands& commands, void* context) {}
+    virtual void OnResponseGetOperationalState(QStatus status, const qcc::String& objectPath, const OperationalState value, void* context) {}
 
     /**
      * Handler for OperationalState property changed
      * @param[in] objectPath the object path
-     * @param[in] currentState current state
+     * @param[in] value The value of OperationalState
+     *                  (Current operational state of the appliance.)
      */
-    virtual void OperationalStatePropertyChanged(const qcc::String& objectPath, const CycleControlInterface::CycleControlOperationalState& currentState) {}
+    virtual void OnOperationalStateChanged(const qcc::String& objectPath, const OperationalState value) {}
+
+    /**
+     * Callback handler for GetSupportedOperationalStates completion
+     * @param[in] status ER_OK on success
+     * @param[in] objectPath the object path
+     * @param[in] value The value of SupportedOperationalStates
+     *                  (Operational states which are supported by the appliance.)
+     * @param[in] context the context that is passed from application
+     */
+    virtual void OnResponseGetSupportedOperationalStates(QStatus status, const qcc::String& objectPath, const std::vector<OperationalState>& value, void* context) {}
 
     /**
      * Handler for SupportedOperationalStates property changed
      * @param[in] objectPath the object path
-     * @param[in] states The list of states
+     * @param[in] value The value of SupportedOperationalStates
+     *                  (Operational states which are supported by the appliance.)
      */
-    virtual void SupportedOperationalStatesProperyChanged(const qcc::String& objectPath, const CycleControlInterface::SupportedOperationalStates& states) {}
+    virtual void OnSupportedOperationalStatesChanged(const qcc::String& objectPath, const std::vector<OperationalState>& value) {}
+
+    /**
+     * Callback handler for GetSupportedOperationalCommands completion
+     * @param[in] status ER_OK on success
+     * @param[in] objectPath the object path
+     * @param[in] value The value of SupportedOperationalCommands
+     *                  (Operational commands which are supported by the appliance.)
+     * @param[in] context the context that is passed from application
+     */
+    virtual void OnResponseGetSupportedOperationalCommands(QStatus status, const qcc::String& objectPath, const std::vector<OperationalCommands>& value, void* context) {}
 
     /**
      * Handler for SupportedOperationalCommands property changed
      * @param[in] objectPath the object path
-     * @param[in] commands The list of commands
+     * @param[in] value The value of SupportedOperationalCommands
+     *                  (Operational commands which are supported by the appliance.)
      */
-    virtual void SupportedOperationalCommandsProperyChanged(const qcc::String& objectPath, const CycleControlInterface::SupportedOperationalCommands& commands) {}
+    virtual void OnSupportedOperationalCommandsChanged(const qcc::String& objectPath, const std::vector<OperationalCommands>& value) {}
 
     /**
-     * Callback handler for ExecuteCommand method
+     * Callback handler for ExecuteOperationalCommand completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
      * @param[in] context the context that is passed from application
      * @param[in] errorName the detail errorName is passed when the method call is failed
      * @param[in] errorMessage the errorMessage that describes the error
      */
-    virtual void OnExecuteCommandRespose(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage) {}
-
+    virtual void OnResponseExecuteOperationalCommand(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage) {}
 };
 
 } //namespace services

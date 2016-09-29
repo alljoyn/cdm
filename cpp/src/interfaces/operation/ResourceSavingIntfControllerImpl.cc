@@ -61,6 +61,13 @@ QStatus ResourceSavingIntfControllerImpl::Init()
 }
 
 
+QStatus ResourceSavingIntfControllerImpl::GetResourceSavingMode( void* context )
+{
+    QStatus status = ER_OK;
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_ResourceSavingMode.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&ResourceSavingIntfControllerImpl::GetResourceSavingModePropertyCB, context);
+    return status;
+}
+
 QStatus ResourceSavingIntfControllerImpl::SetResourceSavingMode(const bool mode, void* context )
 {
     QStatus status = ER_OK;
@@ -69,13 +76,6 @@ QStatus ResourceSavingIntfControllerImpl::SetResourceSavingMode(const bool mode,
     status = m_proxyObject.SetPropertyAsync(GetInterfaceName().c_str(), s_prop_ResourceSavingMode.c_str(), arg, this, (ProxyBusObject::Listener::SetPropertyCB)&ResourceSavingIntfControllerImpl::SetResourceSavingModePropertyCB, context);
     return status;
 
-}
-
-QStatus ResourceSavingIntfControllerImpl::GetResourceSavingMode( void* context )
-{
-    QStatus status = ER_OK;
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_ResourceSavingMode.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&ResourceSavingIntfControllerImpl::GetResourceSavingModePropertyCB, context);
-    return status;
 }
 
 void ResourceSavingIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
@@ -100,15 +100,6 @@ void ResourceSavingIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, co
     }
 }
 
-void ResourceSavingIntfControllerImpl::SetResourceSavingModePropertyCB(QStatus status, ProxyBusObject* obj, void* context)
-{
-    if (!obj) {
-        return;
-    }
-
-    m_interfaceListener.OnResponseSetResourceSavingMode(status, obj->GetPath(), context);
-}
-
 void ResourceSavingIntfControllerImpl::GetResourceSavingModePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
     if (!obj) {
@@ -119,6 +110,15 @@ void ResourceSavingIntfControllerImpl::GetResourceSavingModePropertyCB(QStatus s
     value.Get("b", &resourcesavingmode);
 
     m_interfaceListener.OnResponseGetResourceSavingMode(status, obj->GetPath(), resourcesavingmode, context);
+}
+
+void ResourceSavingIntfControllerImpl::SetResourceSavingModePropertyCB(QStatus status, ProxyBusObject* obj, void* context)
+{
+    if (!obj) {
+        return;
+    }
+
+    m_interfaceListener.OnResponseSetResourceSavingMode(status, obj->GetPath(), context);
 }
 
 } //namespace services

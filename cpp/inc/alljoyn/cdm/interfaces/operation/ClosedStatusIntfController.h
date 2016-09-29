@@ -40,7 +40,8 @@ class ClosedStatusIntfController : public ClosedStatusInterface {
     virtual ~ClosedStatusIntfController() {}
 
     /**
-     * Get isClosed
+     * Get IsClosed property
+     * (If true, object is closed.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */

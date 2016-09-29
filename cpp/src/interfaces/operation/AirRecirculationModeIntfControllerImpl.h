@@ -36,12 +36,12 @@ class AirRecirculationModeIntfControllerImpl : public InterfaceController, publi
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Constructor of AirRecirculationModeIntfControllerImpl
      */
-    AirRecirculationModeIntfControllerImpl(BusAttachment& busAttachment, AirRecirculationModeIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    AirRecirculationModeIntfControllerImpl(BusAttachment& busAttachment, AirRecirculationModeIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Destructor of AirRecirculationModeIntfControllerImpl
@@ -61,26 +61,26 @@ class AirRecirculationModeIntfControllerImpl : public InterfaceController, publi
     virtual BusAttachment& GetBusAttachment() const { return m_busAttachment; }
 
     /**
-     * Set if air is being recirculated
-     * @param[in] isRecirculating if air is being recirculated or not
-     * @param[in] context
-     * @return status
-     */
-    virtual QStatus SetIsRecirculating(const bool isRecirculating, void* context);
-
-    /**
-     * Get if air is being recirculated
-     * @param[in] context
-     * @return status
+     * Get IsRecirculating property
+     * (If true, air is being recirculated)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetIsRecirculating(void* context);
 
-  private:
-    AirRecirculationModeIntfControllerImpl();
+    /**
+     * Set IsRecirculating property
+     * (If true, air is being recirculated)
+     * @param[in] value The is recirculating to set
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
+     */
+    virtual QStatus SetIsRecirculating(const bool value, void* context);
 
+  private:
     void PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context);
-    void SetIsRecirculatingPropertyCB(QStatus status, ProxyBusObject* obj, void* context);
     void GetIsRecirculatingPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+    void SetIsRecirculatingPropertyCB(QStatus status, ProxyBusObject* obj, void* context);
 
     BusAttachment& m_busAttachment;
     AirRecirculationModeIntfControllerListener& m_interfaceListener;

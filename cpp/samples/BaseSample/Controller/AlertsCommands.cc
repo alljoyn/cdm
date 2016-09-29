@@ -35,7 +35,7 @@ void AlertsListener::OnResponseGetAlerts(QStatus status, const qcc::String& obje
     for(size_t i = 0; i < alerts.size(); i++)
         cout << "severity: " << (int)alerts[i].severity << " - alertCode: " << alerts[i].alertCode << " - needAcknowledgement: " << (alerts[i].needAcknowledgement ? "true" : "false") << endl;
 }
-void AlertsListener::OnAlertsPropertyChanged(const qcc::String& objectPath, const AlertsInterface::Alerts& alerts)
+void AlertsListener::OnAlertsChanged(const qcc::String& objectPath, const AlertsInterface::Alerts& alerts)
 {
     cout << __func__ << endl;
     cout << "# path: " << objectPath << endl;
@@ -43,7 +43,7 @@ void AlertsListener::OnAlertsPropertyChanged(const qcc::String& objectPath, cons
     for(size_t i = 0; i < alerts.size(); i++)
         cout << "severity: " << (int)alerts[i].severity << " - alertCode: " << alerts[i].alertCode << " - needAcknowledgement: " << (alerts[i].needAcknowledgement ? "true" : "false") << endl;
 }
-void AlertsListener::OnResponseGetAlertCodesDescription(QStatus status, const qcc::String& objectPath, const AlertsInterface::AlertCodesDescription& descriptions, void* context, const char* errorName, const char* errorMessage)
+void AlertsListener::OnResponseGetAlertCodesDescription(QStatus status, const qcc::String& objectPath, const AlertsInterface::AlertCodesDescriptors& descriptions, void* context, const char* errorName, const char* errorMessage)
 {
     cout << __func__ << endl;
     cout << "# status: " << QCC_StatusText(status) << endl;
@@ -55,7 +55,7 @@ void AlertsListener::OnResponseGetAlertCodesDescription(QStatus status, const qc
         cout << "error mess: " << errorMessage << endl;
     }
     for(size_t i = 0 ; i < descriptions.size(); i++)
-        cout << (int)descriptions[i].code << " - " << descriptions[i].description << endl;
+        cout << (int)descriptions[i].alertCode << " - " << descriptions[i].description << endl;
 }
 void AlertsListener::OnResponseAcknowledgeAlert(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage)
 {

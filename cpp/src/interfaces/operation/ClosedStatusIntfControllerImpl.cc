@@ -61,6 +61,15 @@ QStatus ClosedStatusIntfControllerImpl::Init()
     return status;
 }
 
+QStatus ClosedStatusIntfControllerImpl::GetIsClosed(void* context)
+{
+    QStatus status = ER_OK;
+
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_IsClosed.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&ClosedStatusIntfControllerImpl::GetIsClosedPropertyCB, context);
+
+    return status;
+}
+
 void ClosedStatusIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
 {
     MsgArg* entries;
@@ -76,19 +85,10 @@ void ClosedStatusIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, cons
         if (!s_prop_IsClosed.compare(propNameStr)) {
             if (propValue->typeId == ALLJOYN_BOOLEAN) {
                 uint8_t volume = propValue->v_bool;
-                m_interfaceListener.IsClosedPropertyChanged(obj.GetPath(), volume);
+                m_interfaceListener.OnIsClosedChanged(obj.GetPath(), volume);
             }
         }
     }
-}
-
-QStatus ClosedStatusIntfControllerImpl::GetIsClosed(void* context)
-{
-    QStatus status = ER_OK;
-
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_IsClosed.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&ClosedStatusIntfControllerImpl::GetIsClosedPropertyCB, context);
-
-    return status;
 }
 
 void ClosedStatusIntfControllerImpl::GetIsClosedPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
@@ -101,7 +101,7 @@ void ClosedStatusIntfControllerImpl::GetIsClosedPropertyCB(QStatus status, Proxy
     bool isClosed;
     value.Get("b", &isClosed);
 
-    m_interfaceListener.GetIsClosedPropertyCallback(status, obj->GetPath(), isClosed, context);
+    m_interfaceListener.OnResponseGetIsClosed(status, obj->GetPath(), isClosed, context);
 }
 
 

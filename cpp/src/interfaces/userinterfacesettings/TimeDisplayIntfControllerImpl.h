@@ -36,12 +36,12 @@ class TimeDisplayIntfControllerImpl : public InterfaceController, public TimeDis
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Constructor of TimeDisplayIntfControllerImpl
      */
-    TimeDisplayIntfControllerImpl(BusAttachment& busAttachment, TimeDisplayIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    TimeDisplayIntfControllerImpl(BusAttachment& busAttachment, TimeDisplayIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Destructor of TimeDisplayIntfControllerImpl
@@ -60,37 +60,33 @@ class TimeDisplayIntfControllerImpl : public InterfaceController, public TimeDis
      */
     virtual BusAttachment& GetBusAttachment() const { return m_busAttachment; }
 
-
     /**
-     * Get DisplayTimeFormat
+     * Get DisplayTimeFormat property
+     * (The clock format which is currently used to display time (0=12-hour, 1=24-hour))
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus GetDisplayTimeFormat(void* context = NULL);
+    virtual QStatus GetDisplayTimeFormat(void* context);
 
     /**
-     * Set DisplayTimeFormat
-     * @param[in] timeformat time format
+     * Set DisplayTimeFormat property
+     * (The clock format which is currently used to display time (0=12-hour, 1=24-hour))
+     * @param[in] value The display time format to set
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus SetDisplayTimeFormat(const uint8_t timeFormat, void* context = NULL);
+    virtual QStatus SetDisplayTimeFormat(const uint8_t value, void* context);
 
     /**
-     * Get SupportedDisplayTimeFormats
+     * Get SupportedDisplayTimeFormats property
+     * (List of supported clock formats)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus GetSupportedDisplayTimeFormats(void* context = NULL);
-
-
-
+    virtual QStatus GetSupportedDisplayTimeFormats(void* context);
 
   private:
-    TimeDisplayIntfControllerImpl();
-
     void PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context);
-
     void GetDisplayTimeFormatPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
     void SetDisplayTimeFormatPropertyCB(QStatus status, ProxyBusObject* obj, void* context);
     void GetSupportedDisplayTimeFormatsPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);

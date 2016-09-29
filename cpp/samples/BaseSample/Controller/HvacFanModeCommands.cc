@@ -34,7 +34,7 @@ void HvacFanModeListener::OnResponseSetMode(QStatus status, const qcc::String& o
     cout << "path: " << objectPath << endl;
 }
 
-void HvacFanModeListener::OnResponseGetMode(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context)
+void HvacFanModeListener::OnResponseGetMode(QStatus status, const qcc::String& objectPath, const Mode value, void* context)
 {
     cout << __func__ << endl;
     cout << "status: " << QCC_StatusText(status) << endl;
@@ -42,7 +42,7 @@ void HvacFanModeListener::OnResponseGetMode(QStatus status, const qcc::String& o
     cout << "Mode: " << value << endl;
 }
 
-void HvacFanModeListener::OnResponseGetSupportedModes(QStatus status, const qcc::String& objectPath, const SupportedModes& value, void* context)
+void HvacFanModeListener::OnResponseGetSupportedModes(QStatus status, const qcc::String& objectPath, const std::vector<Mode>& value, void* context)
 {
     cout << __func__ << endl;
     cout << "status: " << QCC_StatusText(status) << endl;
@@ -55,14 +55,14 @@ void HvacFanModeListener::OnResponseGetSupportedModes(QStatus status, const qcc:
     cout << endl;
 }
 
-void HvacFanModeListener::OnModeChanged(const qcc::String& objectPath, const uint16_t value)
+void HvacFanModeListener::OnModeChanged(const qcc::String& objectPath, const Mode value)
 {
     cout << __func__ << endl;
     cout << "path: " << objectPath << endl;
     cout << "Mode: " << value << endl;
 }
 
-void HvacFanModeListener::OnSupportedModesChanged(const qcc::String& objectPath, const SupportedModes& value)
+void HvacFanModeListener::OnSupportedModesChanged(const qcc::String& objectPath, const std::vector<Mode>& value)
 {
     cout << __func__ << endl;
     cout << "path: " << objectPath << endl;
@@ -130,7 +130,7 @@ void HvacFanModeCommands::OnCmdSetMode(Commands* commands, std::string& cmd)
         cout << "Input argument is wrong." << endl;
         return;
     }
-    intfController->SetMode(mode);
+    intfController->SetMode((HvacFanModeInterface::Mode)mode);
 }
 
 void HvacFanModeCommands::OnCmdGetSupportedModes(Commands* commands, std::string& cmd)

@@ -29,13 +29,15 @@ namespace services {
  */
 class ClosedStatusInterface : public CdmInterface {
   public:
+
+
     /**
-     * Constructor of ClosedStatus
+     * Constructor of ClosedStatusInterface
      */
     ClosedStatusInterface() {}
 
     /**
-     * Destructor of ClosedStatus
+     * Destructor of ClosedStatusInterface
      */
     virtual ~ClosedStatusInterface() {}
 
@@ -46,14 +48,14 @@ class ClosedStatusInterface : public CdmInterface {
     const CdmInterfaceType GetInterfaceType() const { return CLOSED_STATUS_INTERFACE; }
 
     /**
-     * Get Introspection Xml
-     * @return xml
+     * Get Introspection XML
+     * @return Introspection XML
      */
     virtual const qcc::String& GetIntrospectionXml() { return s_xml; }
 
     /**
      * Get Interface version
-     * @return interface version
+     * @return Interface version
      */
     virtual const uint16_t GetInterfaceVersion() const { return s_interfaceVersion; }
 

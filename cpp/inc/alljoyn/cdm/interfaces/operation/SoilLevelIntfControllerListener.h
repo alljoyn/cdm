@@ -19,8 +19,8 @@
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <vector>
 #include <alljoyn/cdm/interfaces/InterfaceControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/SoilLevelInterface.h>
 
 namespace ajn {
 namespace services {
@@ -30,64 +30,73 @@ namespace services {
  */
 class SoilLevelIntfControllerListener : public InterfaceControllerListener {
   public:
+
+    /**
+     * Destructor of SoilLevelIntfControllerListener
+     */
     virtual ~SoilLevelIntfControllerListener() {}
 
     /**
-     * Callback handler for getting MaxLevel
+     * Callback handler for GetMaxLevel completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] maxLevel maxLevel
+     * @param[in] value The value of MaxLevel
+     *                  (Maximum value allowed for target soil level setting.)
      * @param[in] context the context that is passed from application
      */
-    virtual void GetMaxLevelPropertyCallback(QStatus status, const qcc::String& objectPath, const uint8_t maxLevel, void* context) {};
-
-    /**
-     * Callback handler for getting TargetLevel
-     * @param[in] status ER_OK on success
-     * @param[in] objectPath the object path
-     * @param[in] targetLevel targetLevel
-     * @param[in] context the context that is passed from application
-     */
-    virtual void GetTargetLevelPropertyCallback(QStatus status, const qcc::String& objectPath, const uint8_t targetLevel, void* context) {};
-
-    /**
-     * Callback handler for setting TargetLevel
-     * @param[in] status ER_OK on success
-     * @param[in] objectPath the object path
-     * @param[in] targetLevel targetLevel
-     * @param[in] context the context that is passed from application
-     */
-    virtual void SetTargetLevelPropertyCallback(QStatus status, const qcc::String& objectPath, void* context) {};
-
-    /**
-     * Callback handler for getting SelectableLevels
-     * @param[in] status ER_OK on success
-     * @param[in] objectPath the object path
-     * @param[in] selectableLevels selectableLevels
-     * @param[in] context the context that is passed from application
-     */
-    virtual void GetSelectableLevelsPropertyCallback(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& selectableLevels, void* context) {};
+    virtual void OnResponseGetMaxLevel(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) {}
 
     /**
      * Handler for MaxLevel property changed
      * @param[in] objectPath the object path
-     * @param[in] maxLevel maxLevel
+     * @param[in] value The value of MaxLevel
+     *                  (Maximum value allowed for target soil level setting.)
      */
-    virtual void MaxLevelPropertyChanged(const qcc::String& objectPath, const uint8_t maxLevel) {};
+    virtual void OnMaxLevelChanged(const qcc::String& objectPath, const uint8_t value) {}
+
+    /**
+     * Callback handler for GetTargetLevel completion
+     * @param[in] status ER_OK on success
+     * @param[in] objectPath the object path
+     * @param[in] value The value of TargetLevel
+     *                  (Target set-point value of soil level.)
+     * @param[in] context the context that is passed from application
+     */
+    virtual void OnResponseGetTargetLevel(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) {}
 
     /**
      * Handler for TargetLevel property changed
      * @param[in] objectPath the object path
-     * @param[in] targetLevel targetLevel
+     * @param[in] value The value of TargetLevel
+     *                  (Target set-point value of soil level.)
      */
-    virtual void TargetLevelPropertyChanged(const qcc::String& objectPath, const uint8_t targetLevel) {};
+    virtual void OnTargetLevelChanged(const qcc::String& objectPath, const uint8_t value) {}
+
+    /**
+     * Callback handler for SetTargetLevel completion
+     * @param[in] status ER_OK on success
+     * @param[in] objectPath the object path
+     * @param[in] context the context that is passed from application
+     */
+    virtual void OnResponseSetTargetLevel(QStatus status, const qcc::String& objectPath, void* context) {}
+
+    /**
+     * Callback handler for GetSelectableLevels completion
+     * @param[in] status ER_OK on success
+     * @param[in] objectPath the object path
+     * @param[in] value The value of SelectableLevels
+     *                  (List of the values of soil level which can be selected.)
+     * @param[in] context the context that is passed from application
+     */
+    virtual void OnResponseGetSelectableLevels(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& value, void* context) {}
 
     /**
      * Handler for SelectableLevels property changed
      * @param[in] objectPath the object path
-     * @param[in] selectableLevels selectableLevels
+     * @param[in] value The value of SelectableLevels
+     *                  (List of the values of soil level which can be selected.)
      */
-    virtual void SelectableLevelsPropertyChanged(const qcc::String& objectPath, const std::vector<uint8_t>& selectableLevels) {};
+    virtual void OnSelectableLevelsChanged(const qcc::String& objectPath, const std::vector<uint8_t>& value) {}
 };
 
 } //namespace services

@@ -17,10 +17,10 @@
 #ifndef HEATINGZONEINTFCONTROLLERLISTENER_H_
 #define HEATINGZONEINTFCONTROLLERLISTENER_H_
 
-#include <vector>
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/InterfaceControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/HeatingZoneInterface.h>
 
 namespace ajn {
 namespace services {
@@ -30,55 +30,65 @@ namespace services {
  */
 class HeatingZoneIntfControllerListener : public InterfaceControllerListener {
   public:
+
+    /**
+     * Destructor of HeatingZoneIntfControllerListener
+     */
     virtual ~HeatingZoneIntfControllerListener() {}
 
     /**
-     * Callback handler for getting NumberOfHeatingZones property
+     * Callback handler for GetNumberOfHeatingZones completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] numberOfZones number of heating zones
+     * @param[in] value The value of NumberOfHeatingZones
+     *                  (Number of heating zones.)
      * @param[in] context the context that is passed from application
      */
-    virtual void OnGetNumberOfHeatingZonesPropertyCallback(QStatus status, const qcc::String& objectPath, const uint8_t numberOfZones, void* context) {}
+    virtual void OnResponseGetNumberOfHeatingZones(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) {}
 
     /**
-     * Callback handler for getting MaxHeatingLevels property
+     * Handler for NumberOfHeatingZones property changed
+     * @param[in] objectPath the object path
+     * @param[in] value The value of NumberOfHeatingZones
+     *                  (Number of heating zones.)
+     */
+    virtual void OnNumberOfHeatingZonesChanged(const qcc::String& objectPath, const uint8_t value) {}
+
+    /**
+     * Callback handler for GetMaxHeatingLevels completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] maxHeatingLevels The list of max heating levels
+     * @param[in] value The value of MaxHeatingLevels
+     *                  (Max heating levels for each zone.)
      * @param[in] context the context that is passed from application
      */
-    virtual void OnGetMaxHeatingLevelsPropertyCallback(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& maxHeatingLevels, void* context) {}
-
-    /**
-     * Callback handler for getting HeatingLevels property
-     * @param[in] status ER_OK on success
-     * @param[in] objectPath the object path
-     * @param[in] heatingLevels The list heating levels
-     * @param[in] context the context that is passed from application
-     */
-    virtual void OnGetHeatingLevelsPropertyCallback(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& heatingLevels, void* context) {}
-
-    /**
-     * Handler for NumberOfHeating property changed
-     * @param[in] objectPath the object path
-     * @param[in] numberOfHeatingZones number of heating zones
-     */
-    virtual void NumberOfHeatingZonesPropertyChanged(const qcc::String& objectPath, const uint8_t numberOfHeatingZones) {}
+    virtual void OnResponseGetMaxHeatingLevels(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& value, void* context) {}
 
     /**
      * Handler for MaxHeatingLevels property changed
      * @param[in] objectPath the object path
-     * @param[in] maxHeatingLevels max heating levels
+     * @param[in] value The value of MaxHeatingLevels
+     *                  (Max heating levels for each zone.)
      */
-    virtual void MaxHeatingLevelsPropertyChanged(const qcc::String& objectPath, const std::vector<uint8_t>& maxHeatingLevels) {}
+    virtual void OnMaxHeatingLevelsChanged(const qcc::String& objectPath, const std::vector<uint8_t>& value) {}
+
+    /**
+     * Callback handler for GetHeatingLevels completion
+     * @param[in] status ER_OK on success
+     * @param[in] objectPath the object path
+     * @param[in] value The value of HeatingLevels
+     *                  (Current heating levels for each zone.)
+     * @param[in] context the context that is passed from application
+     */
+    virtual void OnResponseGetHeatingLevels(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& value, void* context) {}
 
     /**
      * Handler for HeatingLevels property changed
      * @param[in] objectPath the object path
-     * @param[in] heatingLevels heating levels
+     * @param[in] value The value of HeatingLevels
+     *                  (Current heating levels for each zone.)
      */
-    virtual void HeatingLevelsPropertyChanged(const qcc::String& objectPath, const std::vector<uint8_t>& heatingLevels) {}
+    virtual void OnHeatingLevelsChanged(const qcc::String& objectPath, const std::vector<uint8_t>& value) {}
 };
 
 } //namespace services
