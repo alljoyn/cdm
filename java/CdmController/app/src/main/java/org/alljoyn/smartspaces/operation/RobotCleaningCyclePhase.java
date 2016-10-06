@@ -25,24 +25,6 @@ import org.alljoyn.bus.BusException;
 @BusInterface(name="org.alljoyn.SmartSpaces.Operation.RobotCleaningCyclePhase", descriptionLanguage="en")
 @Secure
 public interface RobotCleaningCyclePhase {
-/*
-    public class CyclePhaseDescriptor {
-        @Position(0)
-        @Signature("y")
-        public byte phase;
-        @Position(1)
-        @Signature("s")
-        public String name;
-        @Position(2)
-        @Signature("s")
-        public String description;
-
-        @Override
-        public String toString() {
-            return "[" + " phase=" + String.valueOf(phase) + " name=" + "\"" + name + "\"" + " description=" + "\"" + description + "\"" + " ]";
-        }
-    }
-*/
     @BusProperty(annotation=BusProperty.ANNOTATE_EMIT_CHANGED_SIGNAL, signature="q")
     public short getVersion();
 

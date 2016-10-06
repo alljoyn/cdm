@@ -53,7 +53,6 @@ public interface DishWashingCyclePhase {
             this.value = value;
         }
         @Override
-      //  public Byte toValue() { return null; }
         public Byte toValue() {
             return this.value;
         }

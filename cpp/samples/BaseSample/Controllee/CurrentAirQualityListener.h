@@ -67,4 +67,4 @@ class CurrentAirQualityCommands : public InterfaceCommands
 
 
 
-#endif /* CURRENTAIRQAULITYLISTENER_H_ */
+#endif /* CURRENTAIRQUALITYLISTENER_H_ */
