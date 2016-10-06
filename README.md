@@ -1,9 +1,9 @@
-HAE Service Framework
+CDM Service Framework
 =====================
 
-Welcome to the HAE Service Framework.
+Welcome to the CDM Service Framework.
 
-HAE Service Framework provides easy methods to implement HAE controllee and controller applications.
+CDM Service Framework provides easy methods to implement CDM controllee and controller applications.
 
 
 Folder Structure
@@ -53,10 +53,10 @@ cpp
     \---ServiceFramework
 </pre>
 
- * cpp/code_template : Generator of HAE interfaces skeleton codes
- * cpp/code_template/xml : Interospection XML files of HAE interfaces
- * cpp/inc/alljoyn/cdm : HAE common header files
- * cpp/inc/alljoyn/cdm/interfaces : HAE interface-related header files
+ * cpp/code_template : Generator of CDM interfaces skeleton codes
+ * cpp/code_template/xml : Interospection XML files of CDM interfaces
+ * cpp/inc/alljoyn/cdm : CDM common header files
+ * cpp/inc/alljoyn/cdm/interfaces : CDM interface-related header files
  * cpp/samples/BaseSample : Base sample for making other device sample
  * cpp/samples/ACControllee :
    - Example of cdm device composed of Base sample controllee
@@ -91,7 +91,7 @@ cpp
 
 Building
 --------
-You can build HAE Service Framework using 'scons'.
+You can build CDM Service Framework using 'scons'.
 Please refer to
 <a name="AllJoyn build instructions" href="https:///allseenalliance.org/developers/develop/building">AllJoyn Build Instruction </a>
 for more details on setting up your environment.
@@ -218,7 +218,7 @@ python make_interface.py -n InterfaceName -v -d
 
 Device Emulator
 ---------------
-Device emulator is an emulator for the HAE Service Framework based devices.
+Device emulator is an emulator for the CDM Service Framework based devices.
 You can launch the virtual device using the configuration XML file.
 
   * Run emulator
@@ -303,4 +303,3 @@ Building
    3. Uncheck the box next to Restart activity on code changes.
    4. Uncheck the box next to Enable Instant Run to ~~~
    5. Run > Clean and Rerun 'app'
-
