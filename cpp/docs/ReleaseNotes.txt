@@ -1,0 +1,70 @@
+AllSeen Common Device Models (CDM) Service Framework 16.04 Release Notes
+========================================================================
+
+Platform Support
+----------------
+1) Linux Ubuntu 14.04 LTS (64 bit)
+2) Android Lollipop 5.0 (ARM7)
+
+Features added in Version 16.04
+--------------------------------
+45 interfaces are included in this release.
+
+ * Environment
+     - CurrentAirQuality
+     - CurrentAirQualityLevel
+     - CurrentHumidity
+     - CurrentTemperature
+     - TargetHumidity
+     - TargetTemperature
+     - TargetTemperatureLevel
+     - WaterLevel
+     - WindDirection
+ * Operation
+     -  Hid
+     -  AirRecirculationMode
+     -  Alerts
+     -  AudioVideoInput
+     -  AudioVolume
+     -  BatteryStatus
+     -  Channel
+     -  ClimateControlMode
+     -  ClosedStatus
+     -  CurrentPower
+     -  CycleControl
+     -  DishWashingCyclePhase
+     -  EnergyUsage
+     -  FanSpeedLevel
+     -  FilterStatus
+     -  HeatingZone
+     -  HvacFanMode
+     -  LaundryCyclePhase
+     -  MoistureOutputLevel
+     -  OffControl
+     -  OnControl
+     -  OnOffStatus
+     -  OvenCyclePhase
+     -  PlugInUnits
+     -  RapidMode
+     -  RapidModeTimed
+     -  RemoteControllability
+     -  RepeatMode
+     -  ResourceSaving
+     -  RobotCleaningCyclePhase
+     -  SoilLevel
+     -  SpinSpeedLevel
+     -  Timer
+ * UserInterfaceSettings
+     - LanguageDisplay
+     - TemperatureDisplay
+     - TimeDisplay
+
+Integrated controllee and controller are supported for SCL.
+Integrated controller is supported for Android.
+
+Compatibility
+-------------
+
+Change history
+--------------
+16.04 - 1st release
