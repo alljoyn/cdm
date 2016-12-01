@@ -211,7 +211,9 @@ CdmInterface* CdmControlleeImpl::CreateInterface(const CdmInterfaceType type, co
     interface = cdmBusObject->CreateInterface(type, listener);
     if (!interface) {
         QCC_LogError(ER_FAIL, ("%s: could not register bus object to bus attachment.", __func__));
-        delete cdmBusObject;
+        delete m_cdmBusObjectsMap[objectPath];
+        m_cdmBusObjectsMap.erase(objectPath);
+        cdmBusObject = NULL;
         return NULL;
     }
 

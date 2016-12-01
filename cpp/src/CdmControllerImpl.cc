@@ -207,7 +207,8 @@ CdmInterface* CdmControllerImpl::CreateInterface(const CdmInterfaceType type, co
     interface = cdmProxyObject->CreateInterface(type, listener);
     if (!interface) {
         QCC_LogError(ER_FAIL, ("%s: could not create interface.", __func__));
-        delete cdmProxyObject;
+        info->RemoveCdmProxyBusObject(objectPath);
+        cdmProxyObject = NULL;
         return NULL;
     }
 

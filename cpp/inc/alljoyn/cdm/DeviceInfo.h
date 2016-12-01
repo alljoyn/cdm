@@ -97,6 +97,15 @@ class DeviceInfo {
      */
     const AboutObjectDescription& GetAboutObjectDescription() { return m_aboutObjectDescription; };
 
+    /**
+     * Remove CDM Proxy Bus Object from map
+     * @param[in] objectPath The object path
+     * @return
+     *     - #ER_OK if CDM Proxy bus object removed successfully
+     *     - #ER_FAIL if CDM Proxy bus object could not be found for key objectPath
+     */
+    QStatus RemoveCdmProxyBusObject(const qcc::String& objectPath);
+
   private:
     std::string m_busName;
     SessionId m_sessionId;

@@ -71,6 +71,23 @@ CdmProxyBusObject* DeviceInfo::GetCdmProxyBusObject(BusAttachment& bus, const qc
     }
 }
 
+QStatus DeviceInfo::RemoveCdmProxyBusObject(const qcc::String& objectPath)
+{
+    CdmProxyObjectMap::iterator itr = m_cdmProxyObjectsMap.find(objectPath);
+    if (itr == m_cdmProxyObjectsMap.end()) {
+        return ER_FAIL;
+    }
+
+    if (itr->second) {
+        delete itr->second;
+        itr->second = NULL;
+    }
+
+    m_cdmProxyObjectsMap.erase(objectPath);
+
+    return ER_OK;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////
 // DeviceManager
 
