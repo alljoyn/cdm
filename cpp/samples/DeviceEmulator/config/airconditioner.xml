@@ -1,28 +1,23 @@
-<DeviceEmulator>
+<DeviceEmulator name="AirConditioner">
     <AboutData>
         <AppId>000102030405060708090A0B0C0D0E0C</AppId>
         <DefaultLanguage>en</DefaultLanguage>
-        <DeviceName>My Device Name</DeviceName>
-        <DeviceName lang = 'es'>Nombre de mi dispositivo</DeviceName>
-        <DeviceId>baddeviceid</DeviceId>
-        <AppName>My Application Name</AppName>
-        <AppName lang = 'es'>Mi Nombre de la aplicación</AppName>
+        <DeviceName>CDM AirConditioner</DeviceName>
+        <DeviceId>D00001</DeviceId>
+        <AppName>AirConditioner App</AppName>
         <Manufacturer>Company</Manufacturer>
-        <Manufacturer lang = 'es'>Empresa</Manufacturer>
         <ModelNumber>Wxfy388i</ModelNumber>
-        <Description>A detailed description provided by the application.</Description>
-        <Description lang = 'es'>Una descripción detallada proporcionada por la aplicación.</Description>
+        <Description>My detailed application description.</Description>
         <DateOfManufacture>2014-01-08</DateOfManufacture>
         <SoftwareVersion>1.0.0</SoftwareVersion>
         <HardwareVersion>1.0.0</HardwareVersion>
-        <SupportUrl>www.example.com</SupportUrl>
+        <SupportUrl>www.supporturl.com</SupportUrl>
         <UserDefinedTag>Can only accept strings anything other than strings must be done using the AboutData Class SetField method</UserDefinedTag>
-        <UserDefinedTag lang='es'>Sólo se puede aceptar cadenas distintas de cadenas nada debe hacerse utilizando el método AboutData Clase SetField</UserDefinedTag>
-        <CountryOfProduction>Room1</CountryOfProduction>
-        <Location>Room1</Location>
-        <ProductBrand>Room1</ProductBrand>
-        <Location>upstairs bedroom</Location>
-        <Location lang='es'>habitación del segundo piso</Location>
+        <CountryOfProduction>Australia</CountryOfProduction>
+        <Location>Melbourne</Location>
+        <CorporateBrand>CDM AirCon Corporate</CorporateBrand>
+        <ProductBrand>CDM AirCon</ProductBrand>
+        <Location>Upstairs Bedroom</Location>
         <DeviceTypeDescription>
             <TypeDescription>
                 <device_type>5</device_type>
