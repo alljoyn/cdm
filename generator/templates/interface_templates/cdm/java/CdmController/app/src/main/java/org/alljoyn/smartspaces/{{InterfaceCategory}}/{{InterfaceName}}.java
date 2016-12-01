@@ -14,7 +14,7 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package org.alljoyn.smartspaces.{{InterfaceCategory}};
+package org.alljoyn.smartspaces.{{Interface.Category}};
 
 import org.alljoyn.bus.annotation.BusInterface;
 import org.alljoyn.bus.annotation.BusMethod;
@@ -26,59 +26,63 @@ import org.alljoyn.bus.annotation.Signature;
 import org.alljoyn.bus.annotation.Position;
 import org.alljoyn.smartspaces.EnumBase;
 
-@BusInterface(name="{{FullInterfaceName}}", descriptionLanguage="en")
+@BusInterface(name="{{Interface.FullName}}", descriptionLanguage="en")
 @Secure
-public interface {{InterfaceName}} {
-    {{#properties}}
-    @BusProperty({{#get_emits_changed_signal}}annotation=BusProperty.ANNOTATE_EMIT_CHANGED_SIGNAL, {{/get_emits_changed_signal}}signature="{{PropertyType.signature}}")
-    public {{#PropertyType.javatype_primitive}}{{PropertyType.javatype_primitive}}{{/PropertyType.javatype_primitive}}{{^PropertyType.javatype_primitive}}{{PropertyType.javatype}}{{/PropertyType.javatype_primitive}} get{{PropertyName}}();
+public interface {{Interface.Name}} {
+    {% for property in Interface.Properties %}
+    @BusProperty({% if property.EmitsChangedSignal %}annotation=BusProperty.ANNOTATE_EMIT_CHANGED_SIGNAL, {% endif %}signature="{{property.Type.signature}}")
+    public {{property.Type.javatype_any()}} get{{property.Name}}();
 
-    {{#PropertyWritable}}
-    @BusProperty({{#get_emits_changed_signal}}annotation=BusProperty.ANNOTATE_EMIT_CHANGED_SIGNAL, {{/get_emits_changed_signal}}signature="{{PropertyType.signature}}")
-    public void set{{PropertyName}}({{PropertyType.javatype_primitive}} {{PropertyName.camel_case}});
+    {% if property.Writable %}
+    @BusProperty({% if property.EmitsChangedSignal %}annotation=BusProperty.ANNOTATE_EMIT_CHANGED_SIGNAL, {% endif %}signature="{{property.Type.signature}}")
+    public void set{{property.Name}}({{property.Type.javatype_primitive()}} {{property.Name.camel_case()}});
 
-    {{/PropertyWritable}}
-    {{/properties}}
-    {{#methods}}
-    @BusMethod(name="{{MethodName}}"{{#input_signature}}, signature="{{input_signature}}"{{/input_signature}}{{#output_signature}}, replySignature = "{{output_signature}}"{{/output_signature}})
-    public {{#output_arg}}{{ArgType.javatype}}{{/output_arg}}{{^output_arg}}void{{/output_arg}} {{MethodName.camel_case}}({{#input_args}}{{ArgType.javatype_primitive}} {{ArgName}}{{^last}}, {{/last}}{{/input_args}});
+    {% endif %}
+    {% endfor %}
+    {% for method in Interface.Methods %}
+    @BusMethod(name="{{method.Name}}"
+    {%- if method.input_signature() %}, signature="{{method.input_signature()}}"{% endif -%}
+    {%- if method.output_signature() %}, replySignature = "{{method.output_signature()}}"{% endif -%}
+    )
+    public {% if method.output_arg() %}{{method.output_arg().Type.javatype()}}{% else %}void{% endif %} {{method.Name.camel_case()}}({% for arg in method.input_args() %}{{arg.Type.javatype_primitive()}} {{arg.Name}}{% if not loop.last %}, {% endif %}{% endfor %});
 
-    {{/methods}}
-    {{#signals}}
-    @BusSignal(name="{{SignalName}}")
-    public void {{SignalName.camel_case}}();
+    {% endfor %}
+    {% for signal in Interface.Signals %}
+    @BusSignal(name="{{signal.Name}}")
+    public void {{signal.Name.camel_case()}}();
 
-    {{/signals}}
-    {{#enums}}
-    public enum {{EnumName}} implements EnumBase<{{#enum_type}}{{enum_type.javatype_class}}{{/enum_type}}{{^enum_type}}Integer{{/enum_type}}> {
-        {{#values}}
-        {{EnumValueName}}(({{#enum_type}}{{enum_type.javatype_primitive}}{{/enum_type}}{{^enum_type}}int{{/enum_type}}){{EnumValue}}){{^Last}},{{/Last}}{{#Last}}{};{{/Last}}
-        {{/values}}
+    {% endfor %}
+    {% for enum in Interface.Enums %}
+    public enum {{enum.Name}} implements EnumBase<{{enum.enum_type().javatype_class()}}> {
+        {% for value in enum.Values %}
+        {{value.Name}}(({{enum.enum_type().javatype_primitive()}}){{value.Value}}) {%- if not loop.last %},{% else %}{};{% endif %}
 
-        private {{#enum_type}}{{enum_type.javatype_class}}{{/enum_type}}{{^enum_type}}Integer{{/enum_type}} value;
-        private {{EnumName}}({{#enum_type}}{{enum_type.javatype_primitive}}{{/enum_type}}{{^enum_type}}int{{/enum_type}} value) {
+        {% endfor %}
+
+        private {{enum.enum_type().javatype_class()}} value;
+        private {{enum.Name}}({{enum.enum_type().javatype_primitive()}} value) {
             this.value = value;
         }
 
-        public {{#enum_type}}{{enum_type.javatype_class}}{{/enum_type}}{{^enum_type}}Integer{{/enum_type}} toValue() {
+        public {{enum.enum_type().javatype_class()}} toValue() {
             return this.value;
         }
     }
 
-    {{/enums}}
-    {{#structs}}
-    public class {{StructName}} {
-        {{#fields}}
-        @Position({{FieldPosition}})
-        @Signature("{{FieldType.ajtype_primitive}}")
-        public {{FieldType.javatype_primitive}} {{FieldName}};
+    {% endfor %}
+    {% for struct in Interface.Structs %}
+    public class {{struct.Name}} {
+        {% for field in struct.Fields %}
+        @Position({{loop.index0}})
+        @Signature("{{field.Type.ajtype_primitive()}}")
+        public {{field.Type.javatype_primitive()}} {{field.Name}};
 
-        {{/fields}}
+        {% endfor %}
         @Override
         public String toString() {
-            return "[" + {{#fields}}" {{FieldName}}=" + "\"" + {{FieldName}} + "\"" + {{/fields}}" ]";
+            return "[" + {% for field in struct.Fields %}" {{field.Name}}=" + "\"" + {{field.Name}} + "\"" + {% endfor %}" ]";
         }
     }
 
-    {{/structs}}
+    {% endfor %}
 }

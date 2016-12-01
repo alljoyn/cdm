@@ -14,24 +14,24 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#ifndef {{InterfaceName.upper}}INTFCONTROLLERIMPL_H_
-#define {{InterfaceName.upper}}INTFCONTROLLERIMPL_H_
+#ifndef {{Interface.Name.upper()}}INTFCONTROLLERIMPL_H_
+#define {{Interface.Name.upper()}}INTFCONTROLLERIMPL_H_
 
 #include <alljoyn/Status.h>
 #include <alljoyn/BusAttachment.h>
 #include <alljoyn/cdm/interfaces/InterfaceController.h>
-#include <alljoyn/cdm/interfaces/operation/{{InterfaceName}}IntfController.h>
+#include <alljoyn/cdm/interfaces/operation/{{Interface.Name}}IntfController.h>
 
 namespace ajn {
 namespace services {
 
-class {{InterfaceName}}IntfControllerListener;
+class {{Interface.Name}}IntfControllerListener;
 class CdmProxyBusObject;
 
 /**
- * {{InterfaceName}} Interface Controller implementation class
+ * {{Interface.Name}} Interface Controller implementation class
  */
-class {{InterfaceName}}IntfControllerImpl : public InterfaceController, public {{InterfaceName}}IntfController {
+class {{Interface.Name}}IntfControllerImpl : public InterfaceController, public {{Interface.Name}}IntfController {
   public:
     /**
      * Create interface
@@ -39,14 +39,14 @@ class {{InterfaceName}}IntfControllerImpl : public InterfaceController, public {
     static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
 
     /**
-     * Constructor of {{InterfaceName}}IntfControllerImpl
+     * Constructor of {{Interface.Name}}IntfControllerImpl
      */
-    {{InterfaceName}}IntfControllerImpl(BusAttachment& busAttachment, {{InterfaceName}}IntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    {{Interface.Name}}IntfControllerImpl(BusAttachment& busAttachment, {{Interface.Name}}IntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
 
     /**
-     * Destructor of {{InterfaceName}}IntfControllerImpl
+     * Destructor of {{Interface.Name}}IntfControllerImpl
      */
-    virtual ~{{InterfaceName}}IntfControllerImpl();
+    virtual ~{{Interface.Name}}IntfControllerImpl();
 
     /**
      * Initialize interface
@@ -60,54 +60,54 @@ class {{InterfaceName}}IntfControllerImpl : public InterfaceController, public {
      */
     virtual BusAttachment& GetBusAttachment() const { return m_busAttachment; }
 
-    {{#user_properties}}
+    {% for property in Interface.UserProperties %}
     /**
-     * Get {{PropertyName}}
+     * Get {{property.Name}}
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus Get{{PropertyName}}(void* context = NULL);
-    {{#PropertyWritable}}
+    virtual QStatus Get{{property.Name}}(void* context = NULL);
+    {% if property.Writable %}
     /**
-     * Set {{PropertyName}}
-     * @param[in] value The {{PropertyName.add_spaces_lower}} to set
+     * Set {{property.Name}}
+     * @param[in] value The {{property.Name.add_spaces_lower()}} to set
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus Set{{PropertyName}}(const {{PropertyType.ctype}} value, void* context = NULL);
-    {{/PropertyWritable}}
-    {{/user_properties}}
+    virtual QStatus Set{{property.Name}}(const {{property.Type.ctype()}} value, void* context = NULL);
+    {% endif %}
+    {% endfor %}
 
-    {{#methods}}
-    {{!TODO: This should only take in args}}
+    {% for method in Interface.Methods %}
+    {# TODO: This should only take input args #}
     /**
-     * Call {{MethodName}} method
-     {{#args}}
-     * @param[in] {{ArgName.camel_case}} Method argument
-     {{/args}}
+     * Call {{method.Name}} method
+     {% for arg in method.Args %}
+     * @param[in] {{arg.Name.camel_case()}} Method argument
+     {% endfor %}
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus {{MethodName}}({{#args}}const {{ArgType.ctype_arg}} {{ArgName.camel_case}}, {{/args}}void* context = NULL);
-    {{/methods}}
+    virtual QStatus {{method.Name}}({% for arg in method.Args %}const {{arg.Type.ctype_arg()}} {{arg.Name.camel_case()}}, {% endfor %}void* context = NULL);
+    {% endfor %}
 
   private:
-    {{InterfaceName}}IntfControllerImpl();
+    {{Interface.Name}}IntfControllerImpl();
 
     void PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context);
 
-    {{#user_properties}}
-    void Get{{PropertyName}}PropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
-    {{#PropertyWritable}}
-    void Set{{PropertyName}}PropertyCB(QStatus status, ProxyBusObject* obj, void* context);
-    {{/PropertyWritable}}
-    {{/user_properties}}
+    {% for property in Interface.UserProperties %}
+    void Get{{property.Name}}PropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+    {% if property.Writable %}
+    void Set{{property.Name}}PropertyCB(QStatus status, ProxyBusObject* obj, void* context);
+    {% endif %}
+    {% endfor %}
 
     BusAttachment& m_busAttachment;
-    {{InterfaceName}}IntfControllerListener& m_interfaceListener;
+    {{Interface.Name}}IntfControllerListener& m_interfaceListener;
 };
 
 } //namespace services
 } //namespace ajn
 
-#endif /* {{InterfaceName.upper}}INTFCONTROLLERIMPL_H_ */
+#endif /* {{Interface.Name.upper()}}INTFCONTROLLERIMPL_H_ */

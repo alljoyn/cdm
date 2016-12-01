@@ -14,64 +14,64 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#ifndef {{InterfaceName.upper}}INTFCONTROLLER_H_
-#define {{InterfaceName.upper}}INTFCONTROLLER_H_
+#ifndef {{Interface.Name.upper()}}INTFCONTROLLER_H_
+#define {{Interface.Name.upper()}}INTFCONTROLLER_H_
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/cdm/interfaces/{{InterfaceCategory}}/{{InterfaceName}}Interface.h>
+#include <alljoyn/cdm/interfaces/{{Interface.Category}}/{{Interface.Name}}Interface.h>
 
 namespace ajn {
 namespace services {
 
 /**
- * {{InterfaceName}} Interface Controller class
+ * {{Interface.Name}} Interface Controller class
  */
-class {{InterfaceName}}IntfController : public {{InterfaceName}}Interface {
+class {{Interface.Name}}IntfController : public {{Interface.Name}}Interface {
   public:
     /**
-     * Constructor of {{InterfaceName}}IntfController
+     * Constructor of {{Interface.Name}}IntfController
      */
-    {{InterfaceName}}IntfController() {}
+    {{Interface.Name}}IntfController() {}
 
     /**
-     * Destructor of {{InterfaceName}}IntfController
+     * Destructor of {{Interface.Name}}IntfController
      */
-    virtual ~{{InterfaceName}}IntfController() {}
+    virtual ~{{Interface.Name}}IntfController() {}
 
-    {{#user_properties}}
+    {% for property in Interface.UserProperties %}
     /**
-     * Get {{PropertyName}}
+     * Get {{property.Name}}
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus Get{{PropertyName}}(void* context = NULL) = 0;
-    {{#PropertyWritable}}
+    virtual QStatus Get{{property.Name}}(void* context = NULL) = 0;
+    {% if property.Writable %}
     /**
-     * Set {{PropertyName}}
-     * @param[in] value The {{PropertyName.add_spaces_lower}} to set
+     * Set {{property.Name}}
+     * @param[in] value The {{property.Name.add_spaces_lower()}} to set
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus Set{{PropertyName}}(const {{PropertyType.ctype}} value, void* context = NULL) = 0;
-    {{/PropertyWritable}}
-    {{/user_properties}}
+    virtual QStatus Set{{property.Name}}(const {{property.Type.ctype()}} value, void* context = NULL) = 0;
+    {% endif %}
+    {% endfor %}
 
-    {{#methods}}
-    {{!TODO: This should only take in args}}
+    {% for method in Interface.Methods %}
+    {# TODO: This should only take input args #}
     /**
-     * Call {{MethodName}} method
-     {{#args}}
-     * @param[in] {{ArgName.camel_case}} Method argument
-     {{/args}}
+     * Call {{method.Name}} method
+     {% for arg in method.Args %}
+     * @param[in] {{arg.Name.camel_case()}} Method argument
+     {% endfor %}
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus {{MethodName}}({{#args}}const {{ArgType.ctype_arg}} {{ArgName.camel_case}}, {{/args}}void* context = NULL) = 0;
-    {{/methods}}
+    virtual QStatus {{method.Name}}({% for arg in method.Args %}const {{arg.Type.ctype_arg()}} {{arg.Name.camel_case()}}, {% endfor %}void* context = NULL) = 0;
+    {% endfor %}
 };
 
 } //namespace services
 } //namespace ajn
 
-#endif /* {{InterfaceName.upper}}INTFCONTROLLER_H_ */
+#endif /* {{Interface.Name.upper()}}INTFCONTROLLER_H_ */

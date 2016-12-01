@@ -8,59 +8,60 @@
 
 #include "ControlleeSample.h"
 
-{{#interfaces}}
-#include "{{InterfaceName}}Listener.h"
-{{/interfaces}}
+{% for interface in Device.all_interfaces() %}
+#include "{{interface.Name}}Listener.h"
+{% endfor %}
 
-{{#interfaces}}
-#include <alljoyn/cdm/interfaces/{{InterfaceCategory}}/{{InterfaceName}}IntfControllee.h>
-{{/interfaces}}
+{% for interface in Device.all_interfaces() %}
+#include <alljoyn/cdm/interfaces/{{interface.Category}}/{{interface.Name}}IntfControllee.h>
+{% endfor %}
 
 using namespace std;
 using namespace qcc;
 
-class {{DeviceName}}Controllee : public ControlleeSample
+class {{Device.Name}}Controllee : public ControlleeSample
 {
 private:
-    {{#interfaces}}
-    {{InterfaceName}}Listener* m_{{InterfaceName}}Listener;
-    {{/interfaces}}
+    {% for interface in Device.all_interfaces() %}
+    {{interface.Name}}Listener* m_{{interface.Name}}Listener;
+    {% endfor %}
 
-    {{#interfaces}}
-    {{InterfaceName}}IntfControllee* m_{{InterfaceName}}IntfControllee;
-    {{/interfaces}}
+    {% for interface in Device.all_interfaces() %}
+    {{interface.Name}}IntfControllee* m_{{interface.Name}}IntfControllee;
+    {% endfor %}
 
 public:
-    {{DeviceName}}Controllee(BusAttachment* bus, CdmAboutData* aboutData);
-    virtual ~{{DeviceName}}Controllee();
+    {{Device.Name}}Controllee(BusAttachment* bus, CdmAboutData* aboutData);
+    virtual ~{{Device.Name}}Controllee();
     void CreateInterfaces();
     void SetInitialProperty();
 };
 
-{{DeviceName}}Controllee::{{DeviceName}}Controllee(BusAttachment* bus, CdmAboutData* aboutData)
+{{Device.Name}}Controllee::{{Device.Name}}Controllee(BusAttachment* bus, CdmAboutData* aboutData)
         : ControlleeSample(bus, aboutData),
-          {{#interfaces}}
-          m_{{InterfaceName}}Listener(NULL),
-          {{/interfaces}}
-          {{#interfaces}}
-          m_{{InterfaceName}}IntfControllee(NULL){{^last}},{{/last}}
-          {{/interfaces}}
+          {% for interface in Device.all_interfaces() %}
+          m_{{interface.Name}}Listener(NULL),
+          {% endfor %}
+          {% for interface in Device.all_interfaces() %}
+          m_{{interface.Name}}IntfControllee(NULL){% if not loop.last %},{% endif %}
+
+          {% endfor %}
 {
-    {{#interfaces}}
-    m_{{InterfaceName}}Listener = new {{InterfaceName}}Listener;
-    {{/interfaces}}
+    {% for interface in Device.all_interfaces() %}
+    m_{{interface.Name}}Listener = new {{interface.Name}}Listener;
+    {% endfor %}
 }
 
-{{DeviceName}}Controllee::~{{DeviceName}}Controllee()
+{{Device.Name}}Controllee::~{{Device.Name}}Controllee()
 {
-    {{#interfaces}}
-    if (m_{{InterfaceName}}Listener) {
-        delete m_{{InterfaceName}}Listener;
+    {% for interface in Device.all_interfaces() %}
+    if (m_{{interface.Name}}Listener) {
+        delete m_{{interface.Name}}Listener;
     }
-    {{/interfaces}}
+    {% endfor %}
 }
 
-void {{DeviceName}}Controllee::CreateInterfaces()
+void {{Device.Name}}Controllee::CreateInterfaces()
 {
     CdmInterface* intf = NULL;
     CdmControllee* cdmControllee = GetControllee();
@@ -68,25 +69,25 @@ void {{DeviceName}}Controllee::CreateInterfaces()
         return;
     }
 
-    {{#interfaces}}
-    intf = cdmControllee->CreateInterface({{InterfaceName.upper_snake}}_INTERFACE, "/Cdm/{{DeviceName}}", *m_{{InterfaceName}}Listener);
-    m_{{InterfaceName}}IntfControllee = static_cast<{{InterfaceName}}IntfControllee*>(intf);
-    {{/interfaces}}
+    {% for interface in Device.all_interfaces() %}
+    intf = cdmControllee->CreateInterface({{interface.Name.upper_snake()}}_INTERFACE, "/Cdm/{{Device.Name}}", *m_{{interface.Name}}Listener);
+    m_{{interface.Name}}IntfControllee = static_cast<{{interface.Name}}IntfControllee*>(intf);
+    {% endfor %}
 }
 
-void {{DeviceName}}Controllee::SetInitialProperty()
+void {{Device.Name}}Controllee::SetInitialProperty()
 {
    // Set any defaults for interface properties here
 }
 
 QStatus FillAboutData(CdmAboutData* aboutData)
 {
-    String const& defaultLanguage = "{{about_data.DefaultLanguage}}";
-    String device_id = "{{about_data.DeviceId}}";
-    String app_id = "{{about_data.AppId}}";
-    String app_name = "{{about_data.AppName}}";
+    String const& defaultLanguage = "{{Device.AboutData.DefaultLanguage}}";
+    String device_id = "000102030405060708090A0B0C0D0E0C";
+    String app_id = "000102030405060708090A0B0C0D0E0C";
+    String app_name = "{{Device.AboutData.AppName}}";
     map<String, String> deviceNames;
-    deviceNames.insert(pair<String, String>(defaultLanguage, "{{about_data.DeviceName}}"));
+    deviceNames.insert(pair<String, String>(defaultLanguage, "{{Device.AboutData.DeviceName}}"));
 
     if (!app_id.empty()) {
         aboutData->SetAppId(app_id.c_str());
@@ -111,30 +112,30 @@ QStatus FillAboutData(CdmAboutData* aboutData)
         aboutData->SetAppName(app_name.c_str(), languages[0].c_str());
     }
 
-    aboutData->SetModelNumber("{{about_data.ModelNumber}}");
-    aboutData->SetDateOfManufacture("{{about_data.DateOfManufacture}}");
-    aboutData->SetSoftwareVersion("{{about_data.SoftwareVersion}}");
-    aboutData->SetHardwareVersion("{{about_data.HardwareVersion}}");
+    aboutData->SetModelNumber("{{Device.AboutData.ModelNumber}}");
+    aboutData->SetDateOfManufacture("{{Device.AboutData.DateOfManufacture}}");
+    aboutData->SetSoftwareVersion("{{Device.AboutData.SoftwareVersion}}");
+    aboutData->SetHardwareVersion("{{Device.AboutData.HardwareVersion}}");
 
     map<String, String>::const_iterator iter = deviceNames.find(languages[0]);
     if (iter != deviceNames.end()) {
         aboutData->SetDeviceName(iter->second.c_str(), languages[0].c_str());
     } else {
-        aboutData->SetDeviceName("{{about_data.DeviceName}}", defaultLanguage.c_str());
+        aboutData->SetDeviceName("{{Device.AboutData.DeviceName}}", defaultLanguage.c_str());
     }
 
-    aboutData->SetDescription("{{about_data.Description}}", defaultLanguage.c_str());
-    aboutData->SetManufacturer("{{about_data.Manufacturer}}", defaultLanguage.c_str());
-    aboutData->SetSupportUrl("{{about_data.SupportUrl}}");
+    aboutData->SetDescription("{{Device.AboutData.Description}}", defaultLanguage.c_str());
+    aboutData->SetManufacturer("{{Device.AboutData.Manufacturer}}", defaultLanguage.c_str());
+    aboutData->SetSupportUrl("{{Device.AboutData.SupportUrl}}");
 
     // CDM custom metadata fields
-    aboutData->SetCountryOfProduction("{{about_data.CountryOfProduction}}", defaultLanguage.c_str());
-    aboutData->SetCorporateBrand("{{about_data.CorporateBrand}}", defaultLanguage.c_str());
-    aboutData->SetProductBrand("{{about_data.ProductBrand}}", defaultLanguage.c_str());
-    aboutData->SetLocation("{{about_data.Location}}", defaultLanguage.c_str());
+    aboutData->SetCountryOfProduction("{{Device.AboutData.CountryOfProduction}}", defaultLanguage.c_str());
+    aboutData->SetCorporateBrand("{{Device.AboutData.CorporateBrand}}", defaultLanguage.c_str());
+    aboutData->SetProductBrand("{{Device.AboutData.ProductBrand}}", defaultLanguage.c_str());
+    aboutData->SetLocation("{{Device.AboutData.Location}}", defaultLanguage.c_str());
 
     DeviceTypeDescription description;
-    description.AddDeviceType(static_cast<DeviceType>({{about_data.DeviceTypeDescription.data.device_type}}), "{{about_data.DeviceTypeDescription.data.object_path}}");
+    description.AddDeviceType(static_cast<DeviceType>({{Device.AboutData.DeviceTypeDescription.data.device_type}}), "{{Device.AboutData.DeviceTypeDescription.data.object_path}}");
     aboutData->SetDeviceTypeDescription(&description);
 
     if (!aboutData->IsValid()) {
@@ -162,7 +163,7 @@ int main()
     printf("AllJoyn Library build info: %s\n", ajn::GetBuildInfo());
     QCC_SetLogLevels("CDM_MODULE_LOG_NAME=15;");
 
-    BusAttachment* bus = new BusAttachment("{{DeviceName}}Controllee", true);
+    BusAttachment* bus = new BusAttachment("{{Device.Name}}Controllee", true);
     if (!bus) {
         printf("BusAttachment creation failed.\n");
         exit(1);
@@ -194,7 +195,7 @@ int main()
         exit(1);
     }
 
-    {{DeviceName}}Controllee controllee(bus, aboutData);
+    {{Device.Name}}Controllee controllee(bus, aboutData);
 
     controllee.Startup();
 

@@ -14,8 +14,8 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#ifndef {{InterfaceName.upper}}INTFCONTROLLEELISTENER_H_
-#define {{InterfaceName.upper}}INTFCONTROLLEELISTENER_H_
+#ifndef {{Interface.Name.upper()}}INTFCONTROLLEELISTENER_H_
+#define {{Interface.Name.upper()}}INTFCONTROLLEELISTENER_H_
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
@@ -26,45 +26,45 @@ namespace ajn {
 namespace services {
 
 /**
- * {{InterfaceName}} Interface Controllee Listener class
+ * {{Interface.Name}} Interface Controllee Listener class
  */
-class {{InterfaceName}}IntfControlleeListener : public InterfaceControlleeListener {
+class {{Interface.Name}}IntfControlleeListener : public InterfaceControlleeListener {
   public:
     /**
-     * Destructor of {{InterfaceName}}IntfControlleeListener
+     * Destructor of {{Interface.Name}}IntfControlleeListener
      */
-    virtual ~{{InterfaceName}}IntfControlleeListener() {}
+    virtual ~{{Interface.Name}}IntfControlleeListener() {}
 
-    {{#user_properties}}
+    {% for property in Interface.UserProperties %}
     /**
-     * Handler for getting {{PropertyName}} property
+     * Handler for getting {{property.Name}} property
      * This function is only called, when InterfaceControllee::s_retrievingActualPropertyValue is true.
-     * @param[out] out_value current {{PropertyName.add_spaces_lower}}
+     * @param[out] out_value current {{property.Name.add_spaces_lower()}}
      * @return ER_OK on success
      */
-    virtual QStatus OnGet{{PropertyName}}({{PropertyType.ctype}}& out_value) = 0;
-    {{#PropertyWritable}}
+    virtual QStatus OnGet{{property.Name}}({{property.Type.ctype()}}& out_value) = 0;
+    {% if property.Writable %}
 
     /**
-     * Handler for setting {{PropertyName}} property
-     * @param[in] value The {{PropertyName.add_spaces_lower}} to set
+     * Handler for setting {{property.Name}} property
+     * @param[in] value The {{property.Name.add_spaces_lower()}} to set
      * @return ER_OK on success
      */
-    virtual QStatus OnSet{{PropertyName}}(const {{PropertyType.ctype}}& value) = 0;
-    {{/PropertyWritable}}
-    {{/user_properties}}
+    virtual QStatus OnSet{{property.Name}}(const {{property.Type.ctype()}}& value) = 0;
+    {% endif %}
+    {% endfor %}
 
-    {{#methods}}
+    {% for method in Interface.Methods %}
     /**
-     * Handler for method {{MethodName}}
+     * Handler for method {{method.Name}}
      * @param[out] error Internal error code occurred during command execution
      * @return ER_OK on success
      */
-    virtual QStatus On{{MethodName}}({{! TODO: support method arguments! }}ErrorCode& error) = 0;
-    {{/methods}}
+    virtual QStatus On{{method.Name}}({# TODO: support method arguments! #}ErrorCode& error) = 0;
+    {% endfor %}
 };
 
 } //namespace services
 } //namespace ajn
 
-#endif /* {{InterfaceName.upper}}INTFCONTROLLEELISTENER_H_ */
+#endif /* {{Interface.Name.upper()}}INTFCONTROLLEELISTENER_H_ */

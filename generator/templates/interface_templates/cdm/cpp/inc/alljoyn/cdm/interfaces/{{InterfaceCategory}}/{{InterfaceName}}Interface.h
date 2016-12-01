@@ -14,8 +14,8 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#ifndef {{InterfaceName.upper}}INTERFACE_H_
-#define {{InterfaceName.upper}}INTERFACE_H_
+#ifndef {{Interface.Name.upper()}}INTERFACE_H_
+#define {{Interface.Name.upper()}}INTERFACE_H_
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
@@ -25,41 +25,41 @@ namespace ajn {
 namespace services {
 
 /**
- * {{InterfaceName}} Interface class
+ * {{Interface.Name}} Interface class
  */
-class {{InterfaceName}}Interface : public CdmInterface {
+class {{Interface.Name}}Interface : public CdmInterface {
   public:
-    {{#enums}}
+    {% for enum in Interface.Enums %}
     enum {
-        {{#values}}
-        {{EnumName.upper_snake}}_{{EnumValueName.upper_snake}} = {{EnumValue}},
-        {{/values}}
+        {% for value in enum.Values %}
+        {{enum.Name.upper_snake()}}_{{value.Name.upper_snake()}} = {{value.Value}},
+        {% endfor %}
     };
-    {{/enums}}
+    {% endfor %}
 
-    {{#structs}}
+    {% for struct in Interface.Structs %}
     typedef struct {
-        {{#fields}}
-        {{FieldType.ctype}} {{FieldName}};
-        {{/fields}}
-    } {{StructName}};
-    {{/structs}}
+        {% for field in struct.Fields %}
+        {{field.Type.ctype()}} {{field.Name}};
+        {% endfor %}
+    } {{struct.Name}};
+    {% endfor %}
 
     /**
-     * Constructor of {{InterfaceName}}
+     * Constructor of {{Interface.Name}}
      */
-    {{InterfaceName}}Interface() {}
+    {{Interface.Name}}Interface() {}
 
     /**
-     * Destructor of {{InterfaceName}}
+     * Destructor of {{Interface.Name}}
      */
-    virtual ~{{InterfaceName}}Interface() {}
+    virtual ~{{Interface.Name}}Interface() {}
 
     /**
      * Get Interface Type
      * @return interface type
      */
-    const CdmInterfaceType GetInterfaceType() const { return {{InterfaceName.upper_snake}}_INTERFACE; }
+    const CdmInterfaceType GetInterfaceType() const { return {{Interface.Name.upper_snake()}}_INTERFACE; }
 
     /**
      * Get Introspection Xml
@@ -74,15 +74,15 @@ class {{InterfaceName}}Interface : public CdmInterface {
     virtual const uint16_t GetInterfaceVersion() const { return s_interfaceVersion; }
 
   protected:
-    {{#properties}}
-    static const qcc::String s_prop_{{PropertyName}};
-    {{/properties}}
-    {{#methods}}
-    static const qcc::String s_method_{{MethodName}};
-    {{/methods}}
-    {{#signals}}
-    static const qcc::String s_signal_{{SignalName}};
-    {{/signals}}
+    {% for property in Interface.Properties %}
+    static const qcc::String s_prop_{{property.Name}};
+    {% endfor %}
+    {% for method in Interface.Methods %}
+    static const qcc::String s_method_{{method.Name}};
+    {% endfor %}
+    {% for signal in Interface.Signals %}
+    static const qcc::String s_signal_{{signal.Name}};
+    {% endfor %}
 
   private:
     static const qcc::String s_xml;
@@ -92,4 +92,4 @@ class {{InterfaceName}}Interface : public CdmInterface {
 } //namespace services
 } //namespace ajn
 
-#endif /* {{InterfaceName.upper}}INTERFACE_H_ */
+#endif /* {{Interface.Name.upper()}}INTERFACE_H_ */

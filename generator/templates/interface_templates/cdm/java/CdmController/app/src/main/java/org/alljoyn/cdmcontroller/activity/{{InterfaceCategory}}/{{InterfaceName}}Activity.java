@@ -14,7 +14,7 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package org.alljoyn.cdmcontroller.activity.{{InterfaceCategory}};
+package org.alljoyn.cdmcontroller.activity.{{Interface.Category}};
 
 import android.view.View;
 
@@ -25,19 +25,19 @@ import org.alljoyn.cdmcontroller.view.property.ReadOnlyValuePropertyView;
 import org.alljoyn.cdmcontroller.view.property.ReadWriteValuePropertyView;
 import org.alljoyn.cdmcontroller.view.property.ReadWriteEnumPropertyView;
 import org.alljoyn.cdmcontroller.view.property.ReadWriteBoolPropertyView;
-import org.alljoyn.smartspaces.{{InterfaceCategory}}.{{InterfaceName}};
+import org.alljoyn.smartspaces.{{Interface.Category}}.{{Interface.Name}};
 
 // This generated activity presents the view to the best of its ability.
 // It is up to the developer to use different PropertyViews to provide better UX
 // and to specify the units of properties (absent on the interface descriptions).
-public class {{InterfaceName}}Activity extends InterfaceActivity {
+public class {{Interface.Name}}Activity extends InterfaceActivity {
     @Override
     protected void generatePropertyView(CustomView properties, CustomView methods) {
-        {{#user_properties}}
-        View {{PropertyName.camel_case}}View = new {{android_property_view_type}}({{android_property_view_signature}});
-        properties.addView({{PropertyName.camel_case}}View);
+        {% for property in Interface.UserProperties %}
+        View {{property.Name.camel_case()}}View = new {{property.android_property_view_type()}}({{property.android_property_view_signature()}});
+        properties.addView({{property.Name.camel_case()}}View);
 
-        {{/user_properties}}
+        {% endfor %}
     }
 }
 

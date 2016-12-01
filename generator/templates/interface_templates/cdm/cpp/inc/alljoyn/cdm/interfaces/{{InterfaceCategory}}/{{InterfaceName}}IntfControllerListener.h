@@ -14,8 +14,8 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#ifndef {{InterfaceName.upper}}INTFCONTROLLERLISTENER_H_
-#define {{InterfaceName.upper}}INTFCONTROLLERLISTENER_H_
+#ifndef {{Interface.Name.upper()}}INTFCONTROLLERLISTENER_H_
+#define {{Interface.Name.upper()}}INTFCONTROLLERLISTENER_H_
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
@@ -25,56 +25,56 @@ namespace ajn {
 namespace services {
 
 /**
- * {{InterfaceName}} Interface Controller Listener class
+ * {{Interface.Name}} Interface Controller Listener class
  */
-class {{InterfaceName}}IntfControllerListener : public InterfaceControllerListener {
+class {{Interface.Name}}IntfControllerListener : public InterfaceControllerListener {
   public:
     /**
      * Destructor of ChannelIntfControllerListener
      */
-    virtual ~{{InterfaceName}}IntfControllerListener() {}
+    virtual ~{{Interface.Name}}IntfControllerListener() {}
 
-    {{#user_properties}}
+    {% for property in Interface.UserProperties %}
 
     /**
-     * Handler for Get{{PropertyName}} completion
+     * Handler for Get{{property.Name}} completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] value The value of {{PropertyName}}
+     * @param[in] value The value of {{property.Name}}
      * @param[in] context the context that is passed from application
      */
-    virtual void OnResponseGet{{PropertyName}}(QStatus status, const qcc::String& objectPath, const {{PropertyType.ctype_arg}} value, void* context) {}
+    virtual void OnResponseGet{{property.Name}}(QStatus status, const qcc::String& objectPath, const {{property.Type.ctype_arg()}} value, void* context) {}
 
     /**
-     * Handler for {{PropertyName}} property changes
+     * Handler for {{property.Name}} property changes
      * @param[in] objectPath the object path
-     * @param[in] value The value of {{PropertyName}}
+     * @param[in] value The value of {{property.Name}}
      */
-    virtual void On{{PropertyName}}Changed(const qcc::String& objectPath, const {{PropertyType.ctype_arg}} value) {}
+    virtual void On{{property.Name}}Changed(const qcc::String& objectPath, const {{property.Type.ctype_arg()}} value) {}
 
-    {{#PropertyWritable}}
+    {% if property.Writable %}
     /**
-     * Handler for Set{{PropertyName}} completion
+     * Handler for Set{{property.Name}} completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
      * @param[in] context the context that is passed from application
      */
-    virtual void OnResponseSet{{PropertyName}}(QStatus status, const qcc::String& objectPath, void* context) {}
+    virtual void OnResponseSet{{property.Name}}(QStatus status, const qcc::String& objectPath, void* context) {}
 
-    {{/PropertyWritable}}
-    {{/user_properties}}
+    {% endif %}
+    {% endfor %}
 
-    {{#signals}}
+    {% for signal in Interface.Signals %}
     /**
-     * Handler for {{SignalName}} signal
+     * Handler for {{signal.Name}} signal
      * @param[in] objectPath the object path
      */
-    virtual void On{{SignalName}}(const qcc::String& objectPath) {}
+    virtual void On{{signal.Name}}(const qcc::String& objectPath) {}
 
-    {{/signals}}
+    {% endfor %}
 };
 
 } //namespace services
 } //namespace ajn
 
-#endif /* {{InterfaceName.upper}}INTFCONTROLLERLISTENER_H_ */
+#endif /* {{Interface.Name.upper()}}INTFCONTROLLERLISTENER_H_ */

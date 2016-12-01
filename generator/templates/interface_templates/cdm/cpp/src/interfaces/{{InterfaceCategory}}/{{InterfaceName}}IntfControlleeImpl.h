@@ -14,26 +14,26 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#ifndef {{InterfaceName.upper}}INTFCONTROLLEEIMPL_H_
-#define {{InterfaceName.upper}}INTFCONTROLLEEIMPL_H_
+#ifndef {{Interface.Name.upper()}}INTFCONTROLLEEIMPL_H_
+#define {{Interface.Name.upper()}}INTFCONTROLLEEIMPL_H_
 
 #include <alljoyn/Status.h>
 #include <alljoyn/BusAttachment.h>
 #include <alljoyn/InterfaceDescription.h>
 #include <alljoyn/cdm/interfaces/InterfaceControllee.h>
 #include <alljoyn/cdm/interfaces/InterfaceControlleeListener.h>
-#include <alljoyn/cdm/interfaces/operation/{{InterfaceName}}IntfControllee.h>
+#include <alljoyn/cdm/interfaces/operation/{{Interface.Name}}IntfControllee.h>
 
 namespace ajn {
 namespace services {
 
-class {{InterfaceName}}IntfControlleeListener;
+class {{Interface.Name}}IntfControlleeListener;
 class CdmBusObject;
 
 /**
- * {{InterfaceName}} Interface Controllee implementation class
+ * {{Interface.Name}} Interface Controllee implementation class
  */
-class {{InterfaceName}}IntfControlleeImpl : public InterfaceControllee, public {{InterfaceName}}IntfControllee {
+class {{Interface.Name}}IntfControlleeImpl : public InterfaceControllee, public {{Interface.Name}}IntfControllee {
   public:
     /**
      * Create interface
@@ -41,14 +41,14 @@ class {{InterfaceName}}IntfControlleeImpl : public InterfaceControllee, public {
     static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject);
 
     /**
-     * Constructor of {{InterfaceName}}IntfControlleeImpl
+     * Constructor of {{Interface.Name}}IntfControlleeImpl
      */
-    {{InterfaceName}}IntfControlleeImpl(BusAttachment& busAttachment, {{InterfaceName}}IntfControlleeListener& listener, CdmBusObject& cdmBusObject);
+    {{Interface.Name}}IntfControlleeImpl(BusAttachment& busAttachment, {{Interface.Name}}IntfControlleeListener& listener, CdmBusObject& cdmBusObject);
 
     /**
-     * Destructor of {{InterfaceName}}IntfControlleeImpl
+     * Destructor of {{Interface.Name}}IntfControlleeImpl
      */
-    virtual ~{{InterfaceName}}IntfControlleeImpl();
+    virtual ~{{Interface.Name}}IntfControlleeImpl();
 
     /**
      * Initialize interface
@@ -90,39 +90,39 @@ class {{InterfaceName}}IntfControlleeImpl : public InterfaceControllee, public {
      */
     virtual BusAttachment& GetBusAttachment() const { return m_busAttachment; }
 
-    {{#user_properties}}
+    {% for property in Interface.UserProperties %}
     /**
-     * Get {{PropertyName}}
-     * @return current {{PropertyName.add_spaces_lower}}
+     * Get {{property.Name}}
+     * @return current {{property.Name.add_spaces_lower()}}
      */
-    virtual const {{PropertyType.ctype}} Get{{PropertyName}}() const { return m_{{PropertyName.camel_case}}; }
+    virtual const {{property.Type.ctype()}} Get{{property.Name}}() const { return m_{{property.Name.camel_case()}}; }
 
     /**
-     * Set {{PropertyName}}
-     * @param[in] value The {{PropertyName.add_spaces_lower}} to set
+     * Set {{property.Name}}
+     * @param[in] value The {{property.Name.add_spaces_lower()}} to set
      * @return ER_OK on success
      */
-    virtual QStatus Set{{PropertyName}}(const {{PropertyType.ctype_arg}} value);
-    {{/user_properties}}
+    virtual QStatus Set{{property.Name}}(const {{property.Type.ctype_arg()}} value);
+    {% endfor %}
 
-    {{#signals}}
+    {% for signal in Interface.Signals %}
     /**
-     * Emit {{SignalName}} signal
+     * Emit {{signal.Name}} signal
      * @return ER_OK on success
      */
-    virtual QStatus Emit{{SignalName}}();
+    virtual QStatus Emit{{signal.Name}}();
 
-    {{/signals}}
+    {% endfor %}
 
   private:
-    {{InterfaceName}}IntfControlleeImpl();
+    {{Interface.Name}}IntfControlleeImpl();
 
     BusAttachment& m_busAttachment;
-    {{InterfaceName}}IntfControlleeListener& m_interfaceListener;
+    {{Interface.Name}}IntfControlleeListener& m_interfaceListener;
 
-    {{#user_properties}}
-    {{PropertyType.ctype}} m_{{PropertyName.camel_case}};
-    {{/user_properties}}
+    {% for property in Interface.UserProperties %}
+    {{property.Type.ctype()}} m_{{property.Name.camel_case()}};
+    {% endfor %}
 
     MethodHandlers m_methodHandlers;
 };
@@ -130,4 +130,4 @@ class {{InterfaceName}}IntfControlleeImpl : public InterfaceControllee, public {
 } //namespace services
 } //namespace ajn
 
-#endif /* {{InterfaceName.upper}}INTFCONTROLLEEIMPL_H_ */
+#endif /* {{Interface.Name.upper()}}INTFCONTROLLEEIMPL_H_ */

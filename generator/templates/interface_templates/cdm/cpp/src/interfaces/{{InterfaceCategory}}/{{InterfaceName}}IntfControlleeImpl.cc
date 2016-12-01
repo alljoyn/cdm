@@ -18,9 +18,9 @@
 
 #include <alljoyn/cdm/LogModule.h>
 #include <alljoyn/cdm/CdmBusObject.h>
-#include <alljoyn/cdm/interfaces/operation/{{InterfaceName}}IntfControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/{{Interface.Name}}IntfControlleeListener.h>
 
-#include "{{InterfaceName}}IntfControlleeImpl.h"
+#include "{{Interface.Name}}IntfControlleeImpl.h"
 
 using namespace qcc;
 using namespace std;
@@ -28,42 +28,42 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-CdmInterface* {{InterfaceName}}IntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject)
+CdmInterface* {{Interface.Name}}IntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject)
 {
-    return new {{InterfaceName}}IntfControlleeImpl(busAttachment, dynamic_cast<{{InterfaceName}}IntfControlleeListener&>(listener), cdmBusObject);
+    return new {{Interface.Name}}IntfControlleeImpl(busAttachment, dynamic_cast<{{Interface.Name}}IntfControlleeListener&>(listener), cdmBusObject);
 }
 
-{{InterfaceName}}IntfControlleeImpl::{{InterfaceName}}IntfControlleeImpl(BusAttachment& busAttachment, {{InterfaceName}}IntfControlleeListener& listener, CdmBusObject& cdmBusObject) :
+{{Interface.Name}}IntfControlleeImpl::{{Interface.Name}}IntfControlleeImpl(BusAttachment& busAttachment, {{Interface.Name}}IntfControlleeListener& listener, CdmBusObject& cdmBusObject) :
     InterfaceControllee(cdmBusObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener),
-    {{#user_properties}}
-    m_{{PropertyName.camel_case}}(),
-    {{/user_properties}}
+    {% for property in Interface.UserProperties %}
+    m_{{property.Name.camel_case()}}(),
+    {% endfor %}
     m_methodHandlers()
 {
 }
 
-{{InterfaceName}}IntfControlleeImpl::~{{InterfaceName}}IntfControlleeImpl()
+{{Interface.Name}}IntfControlleeImpl::~{{Interface.Name}}IntfControlleeImpl()
 {
 }
 
-QStatus {{InterfaceName}}IntfControlleeImpl::Init()
+QStatus {{Interface.Name}}IntfControlleeImpl::Init()
 {
     QStatus status = CdmInterface::Init();
 
-    {{#methods}}
+    {% for method in Interface.Methods %}
 
-    const InterfaceDescription::Member* {{MethodName}}Member = m_interfaceDescription->GetMember(s_method_{{MethodName}}.c_str());
-    MessageReceiver::MethodHandler {{MethodName}}Handler = static_cast<MessageReceiver::MethodHandler>(&{{InterfaceName}}IntfControlleeImpl::On{{MethodName}});
+    const InterfaceDescription::Member* {{method.Name}}Member = m_interfaceDescription->GetMember(s_method_{{method.Name}}.c_str());
+    MessageReceiver::MethodHandler {{method.Name}}Handler = static_cast<MessageReceiver::MethodHandler>(&{{Interface.Name}}IntfControlleeImpl::On{{method.Name}});
 
-    m_methodHandlers.push_back(make_pair({{MethodName}}Member, {{MethodName}}Handler));
-    {{/methods}}
+    m_methodHandlers.push_back(make_pair({{method.Name}}Member, {{method.Name}}Handler));
+    {% endfor %}
 
     return status;
 }
 
-QStatus {{InterfaceName}}IntfControlleeImpl::OnGetProperty(const String& propName, MsgArg& msgarg)
+QStatus {{Interface.Name}}IntfControlleeImpl::OnGetProperty(const String& propName, MsgArg& msgarg)
 {
     QStatus status = ER_OK;
 
@@ -72,30 +72,30 @@ QStatus {{InterfaceName}}IntfControlleeImpl::OnGetProperty(const String& propNam
         msgarg.v_uint16 = GetInterfaceVersion();
     } else {
         if (s_retrievingActualPropertyValue) {
-            {{#user_properties}}
-            if (!(s_prop_{{PropertyName}}.compare(propName))) {
-                {{PropertyType.ctype}} value;
-                status = m_interfaceListener.OnGet{{PropertyName}}(value);
+            {% for property in Interface.UserProperties %}
+            if (!(s_prop_{{property.Name}}.compare(propName))) {
+                {{property.Type.ctype()}} value;
+                status = m_interfaceListener.OnGet{{property.Name}}(value);
                 if (status != ER_OK) {
-                    value = Get{{PropertyName}}();
+                    value = Get{{property.Name}}();
                     QCC_LogError(status, ("%s: failed to get actual property value from application. use previous value.", __func__));
                     status = ER_OK;
                 } else {
-                    Set{{PropertyName}}(value); // update the value in {{InterfaceName}}IntfControllee.
+                    Set{{property.Name}}(value); // update the value in {{Interface.Name}}IntfControllee.
                 }
 
-                msgarg.typeId = {{PropertyType.ajtypeid}};
-                msgarg.{{PropertyType.ajvar}} = value;
-            } else{{/user_properties}} {
+                msgarg.typeId = {{property.Type.ajtypeid()}};
+                msgarg.{{property.Type.ajvar()}} = value;
+            } else {%- endfor %} {
                 status = ER_BUS_NO_SUCH_PROPERTY;
             }
         } else {
-            {{#user_properties}}
-            if (!(s_prop_{{PropertyName}}.compare(propName))) {
-                const {{PropertyType.ctype}} value = Get{{PropertyName}}();
-                msgarg.typeId = {{PropertyType.ajtypeid}};
-                msgarg.{{PropertyType.ajvar}} = value;
-            } else{{/user_properties}} {
+            {% for property in Interface.UserProperties %}
+            if (!(s_prop_{{property.Name}}.compare(propName))) {
+                const {{property.Type.ctype()}} value = Get{{property.Name}}();
+                msgarg.typeId = {{property.Type.ajtypeid()}};
+                msgarg.{{property.Type.ajvar()}} = value;
+            } else{% endfor %} {
                 status = ER_BUS_NO_SUCH_PROPERTY;
             }
        }
@@ -104,32 +104,32 @@ QStatus {{InterfaceName}}IntfControlleeImpl::OnGetProperty(const String& propNam
     return status;
 }
 
-QStatus {{InterfaceName}}IntfControlleeImpl::OnSetProperty(const String& propName, MsgArg& msgarg)
+QStatus {{Interface.Name}}IntfControlleeImpl::OnSetProperty(const String& propName, MsgArg& msgarg)
 {
     QStatus status = ER_OK;
 
-    {{#user_properties}}
-    if (!(s_prop_{{PropertyName}}.compare(propName))) {
-        if (msgarg.typeId != {{PropertyType.ajtypeid}}) {
+    {% for property in Interface.UserProperties %}
+    if (!(s_prop_{{property.Name}}.compare(propName))) {
+        if (msgarg.typeId != {{property.Type.ajtypeid()}}) {
             status = ER_BUS_NO_SUCH_PROPERTY;
             return status;
         }
-        {{PropertyType.ctype}} value = msgarg.{{PropertyType.ajvar}};
-        status = m_interfaceListener.OnSet{{PropertyName}}(value);
+        {{property.Type.ctype()}} value = msgarg.{{property.Type.ajvar()}};
+        status = m_interfaceListener.OnSet{{property.Name}}(value);
         if (status != ER_OK) {
             QCC_LogError(status, ("%s: failed to set property value", __func__));
             status = ER_BUS_PROPERTY_VALUE_NOT_SET;
         } else {
-            Set{{InterfaceName}}(value); // update the value in {{InterfaceName}}IntfControllee.
+            Set{{Interface.Name}}(value); // update the value in {{Interface.Name}}IntfControllee.
         }
-    } else{{/user_properties}} {
+    } else{% endfor %} {
         status = ER_BUS_NO_SUCH_PROPERTY;
     }
 
     return status;
 }
 
-void {{InterfaceName}}IntfControlleeImpl::OnMethodHandler(const InterfaceDescription::Member* member, Message& msg)
+void {{Interface.Name}}IntfControlleeImpl::OnMethodHandler(const InterfaceDescription::Member* member, Message& msg)
 {
     QStatus status = ER_OK;
     bool isFound = false;
@@ -150,38 +150,37 @@ void {{InterfaceName}}IntfControlleeImpl::OnMethodHandler(const InterfaceDescrip
     }
 }
 
-{{#user_properties}}
-QStatus {{InterfaceName}}IntfControlleeImpl::Set{{PropertyName}}(const {{PropertyType.ctype_arg}} value)
+{% for property in Interface.UserProperties %}
+QStatus {{Interface.Name}}IntfControlleeImpl::Set{{property.Name}}(const {{property.Type.ctype_arg()}} value)
 {
-    if (m_{{PropertyName.camel_case}} != value) {
-        {{#EmitsChangedSignal}}
+    if (m_{{property.Name.camel_case()}} != value) {
+        {% if property.EmitsChangedSignal %}
         MsgArg msgarg;
-        msgarg.typeId = {{PropertyType.ajtypeid}};
-        msgarg.{{PropertyType.ajvar}} = value;
-        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_{{PropertyName}}.c_str(), msgarg, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
-        {{/EmitsChangedSignal}}
-        m_{{PropertyName.camel_case}} = value;
+        msgarg.typeId = {{property.Type.ajtypeid()}};
+        msgarg.{{property.Type.ajvar()}} = value;
+        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_{{property.Name}}.c_str(), msgarg, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+        {% endif %}
+        m_{{property.Name.camel_case()}} = value;
     }
     return ER_OK;
 }
 
-{{/user_properties}}
+{% endfor %}
 
-{{#signals}}
-QStatus {{InterfaceName}}IntfControlleeImpl::Emit{{SignalName}}()
+{% for signal in Interface.Signals %}
+QStatus {{Interface.Name}}IntfControlleeImpl::Emit{{signal.Name}}()
 {
-    {{!TODO: Seems like this GetMember might want to be in the init function like for the method calls?}}
-    const InterfaceDescription::Member* member = GetInterfaceDescription()->GetMember(s_signal_{{SignalName}}.c_str());
+    {# TODO: Seems like this GetMember might want to be in the init function like for the method calls? #}
+    const InterfaceDescription::Member* member = GetInterfaceDescription()->GetMember(s_signal_{{signal.Name}}.c_str());
     assert(member);
-    {{#SignalSessionless}}
+    {% if signal.Sessionless %}
     return m_busObject.Signal(NULL, 0, *member, NULL, 0, 0, ALLJOYN_FLAG_SESSIONLESS);
-    {{/SignalSessionless}}
-    {{^SignalSessionless}}
+    {% else %}
     return m_busObject.Signal(NULL, SESSION_ID_ALL_HOSTED, *member, NULL, 0, 0);
-    {{/SignalSessionless}}
+    {% endif %}
 }
 
-{{/signals}}
+{% endfor %}
 
 } //namespace services
 } //namespace ajn

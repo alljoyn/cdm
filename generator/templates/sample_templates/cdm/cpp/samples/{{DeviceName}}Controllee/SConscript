@@ -25,6 +25,6 @@ srcs += env.Glob('../BaseSample/Controllee/*.cc')
 
 objs = env.Object(srcs)
 
-prog = env.Program('{{DeviceName}}Controllee', objs)
+prog = env.Program('{{Device.Name}}Controllee', objs)
 
 Return('prog')

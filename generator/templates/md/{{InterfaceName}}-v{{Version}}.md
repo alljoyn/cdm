@@ -1,4 +1,4 @@
-# {{FullInterfaceName}} version {{Version}}
+# {{Interface.FullName}} version {{Interface.Version}}
 
 ## Theory of Operation
 
@@ -8,35 +8,35 @@ TODO
 
 |                       |                                                                       |
 |-----------------------|-----------------------------------------------------------------------|
-| Version               | {{version}}                                                           |
+| Version               | {{Interface.Version                                        | pad(70)}}|
 | Annotation            | org.alljoyn.Bus.Secure = true                                         |
 
 
 ### Properties
 
-{{#properties}}
-#### {{PropertyName}}
+{% for property in Interface.Properties %}
+#### {{property.Name}}
 
 |                       |                                                                       |
 |-----------------------|-----------------------------------------------------------------------|
-| Type                  | {{PropertyType.ajtype}}                                               |
-| Access                | {{property_access}}                                                   |
-{{#annotations}}
-| Annotation            | {{*70                                                               }}|
-{{/annotations}}
+| Type                  | {{property.Type.ajtype()                                   | pad(70)}}|
+| Access                | {{property.Access                                          | pad(70)}}|
+{% for annotation in property.Annotations %}
+| Annotation            | {{annotation.Name                                          | pad(70)}}|
+{% endfor %}
 | Introduced in version | TODO n (only add this line for n > 1)                                 |
 
 TODO: Text describing the property
 
-{{/properties}}
-{{^properties}}
+{% endfor %}
+{% if not Interface.Properties %}
 No properties are exposed by this interface.
-{{/properties}}
+{% endif %}
 
 ### Methods
 
-{{#methods}}
-#### {{MethodName}}(in1) -> (out1)
+{% for method in Interface.Methods %}
+#### {{method.Name}}(in1) -> (out1)
 
 |                       |                                             |
 |-----------------------|---------------------------------------------|
@@ -58,15 +58,15 @@ Errors raised by this method:
 
  * org.alljoyn.example.Foo.Bar.Error.BazNotHome --- with some explanation if needed
  
-{{/methods}}
-{{^methods}}
+{% endfor %}
+{% if not Interface.Methods %}
 No methods are exposed by this interface.
-{{/methods}}
+{% endif %}
 
 ### Signals
 
-{{#signals}}
-{{/signals}}
-{{^signals}}
+{% for signal in Interface.Signals %}
+{% endfor %}
+{% if not Interface.Signals %}
 No signals are emitted by this interface.
-{{/signals}}
+{% endif %}

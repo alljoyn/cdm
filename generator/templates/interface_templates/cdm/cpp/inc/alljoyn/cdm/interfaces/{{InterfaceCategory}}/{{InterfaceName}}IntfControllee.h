@@ -14,53 +14,53 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#ifndef {{InterfaceName.upper}}INTFCONTROLLEE_H_
-#define {{InterfaceName.upper}}INTFCONTROLLEE_H_
+#ifndef {{Interface.Name.upper()}}INTFCONTROLLEE_H_
+#define {{Interface.Name.upper()}}INTFCONTROLLEE_H_
 
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
-#include <alljoyn/cdm/interfaces/{{InterfaceCategory}}/{{InterfaceName}}Interface.h>
+#include <alljoyn/cdm/interfaces/{{Interface.Category}}/{{Interface.Name}}Interface.h>
 
 namespace ajn {
 namespace services {
 
 /**
- * {{InterfaceName}} Interface Controllee class
+ * {{Interface.Name}} Interface Controllee class
  */
-class {{InterfaceName}}IntfControllee : public {{InterfaceName}}Interface {
+class {{Interface.Name}}IntfControllee : public {{Interface.Name}}Interface {
   public:
     /**
-     * Constructor of {{InterfaceName}}IntfControllee
+     * Constructor of {{Interface.Name}}IntfControllee
      */
-    {{InterfaceName}}IntfControllee() {}
+    {{Interface.Name}}IntfControllee() {}
 
     /**
-     * Destructor of {{InterfaceName}}IntfControllee
+     * Destructor of {{Interface.Name}}IntfControllee
      */
-    virtual ~{{InterfaceName}}IntfControllee() {}
+    virtual ~{{Interface.Name}}IntfControllee() {}
 
-    {{#user_properties}}
+    {% for property in Interface.UserProperties %}
 
     /**
-     * Get {{PropertyName}}
-     * @return current {{PropertyName.add_spaces_lower}}
+     * Get {{property.Name}}
+     * @return current {{property.Name.add_spaces_lower()}}
      */
-    virtual const {{PropertyType.ctype}} Get{{PropertyName}}() const = 0;
+    virtual const {{property.Type.ctype()}} Get{{property.Name}}() const = 0;
 
     /**
-     * Set {{PropertyName}}
-     * @param[in] value The {{PropertyName.add_spaces_lower}} to set
+     * Set {{property.Name}}
+     * @param[in] value The {{property.Name.add_spaces_lower()}} to set
      * @return ER_OK on success
      */
-    virtual QStatus Set{{PropertyName}}(const {{PropertyType.ctype_arg}} value) = 0;
-    {{/user_properties}}
+    virtual QStatus Set{{property.Name}}(const {{property.Type.ctype_arg()}} value) = 0;
+    {% endfor %}
 
-    {{#signals}}
-    virtual QStatus Emit{{SignalName}}() = 0;
-    {{/signals}}
+    {% for signal in Interface.Signals %}
+    virtual QStatus Emit{{signal.Name}}() = 0;
+    {% endfor %}
 };
 
 } //namespace services
 } //namespace ajn
 
-#endif /* {{InterfaceName.upper}}INTFCONTROLLEE_H_ */
+#endif /* {{Interface.Name.upper()}}INTFCONTROLLEE_H_ */

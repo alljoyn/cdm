@@ -35,9 +35,9 @@
 #include <ajtcl/services/ServicesHandlers.h>
 #include <ajtcl/services/Common/AllJoynLogo.h>
 #include <ajtcl/cdm/CdmControllee.h>
-{{#interfaces}}
-#include <ajtcl/cdm/interfaces/{{InterfaceCategory}}/{{InterfaceName}}.h>
-{{/interfaces}}
+{% for interface in Device.all_interfaces() %}
+#include <ajtcl/cdm/interfaces/{{interface.Category}}/{{interface.Name}}.h>
+{% endfor %}
 
 /*
  * Logger definition
@@ -69,7 +69,7 @@ AJ_EXPORT uint8_t dbgAJSVCAPP = ER_DEBUG_AJSVCAPP;
 static uint8_t isBusConnected = FALSE;
 #define AJ_ABOUT_SERVICE_PORT 900
 
-#define CDM_OBJECT_PATH_{{DeviceName.upper_snake}} "{{about_data.DeviceTypeDescription.data.object_path}}"
+#define CDM_OBJECT_PATH_{{Device.Name.upper_snake()}} "{{Device.AboutData.DeviceTypeDescription.data.object_path}}"
 
 /**
  * Application handlers
@@ -188,34 +188,34 @@ static AJ_Status AJApp_DisconnectHandler(AJ_BusAttachment* busAttachment, uint8_
     return status;
 }
 
-const char* deviceManufactureName = "{{about_data.Manufacturer}}";
-const char* deviceProductName = "GENERIC {{DeviceName.add_spaces_upper}} BOARD";
+const char* deviceManufactureName = "{{Device.AboutData.Manufacturer}}";
+const char* deviceProductName = "GENERIC {{DeviceName.add_spaces_upper()}} BOARD";
 
 /**
  * About supported PropertyStore provisioning
  */
 
-static const char* DEFAULT_LANGUAGES[] = { "{{about_data.DefaultLanguage}}" };
+static const char* DEFAULT_LANGUAGES[] = { "{{Device.AboutData.DefaultLanguage}}" };
 static const char* SUPPORTED_LANGUAGES[] = { DEFAULT_LANGUAGE, NULL };
 const char* const* propertyStoreDefaultLanguages = SUPPORTED_LANGUAGES;
 
 /**
  * property array of structure with defaults
  */
-static const char* DEVICE_NAMES[] = { "{{about_data.DeviceName}}" };
-static const char* APP_NAMES[] = { "{{about_data.AppName}}" };
-static const char* DESCRIPTIONS[] = { "{{about_data.Description}}" };
-static const char* MANUFACTURERS[] = { "{{about_data.Manufacturer}}" };
-static const char* DEVICE_MODELS[] = { "{{about_data.ModelNumber}}" };
-static const char* DATE_OF_MANUFACTURES[] = { "{{about_data.DateOfManufacture}}" };
-static const char* SOFTWARE_VERSIONS[] = { "{{about_data.SoftwareVersion}}" };
-static const char* HARDWARE_VERSIONS[] = { "{{about_data.HardwareVersion}}" };
-static const char* SUPPORT_URLS[] = { "{{about_data.SupportUrl}}" };
-static const char* COUNTRY_OF_PRODUCTION[] = { "{{about_data.CountryOfProduction}}" };
-static const char* CORPORATE_BRAND[] = { "{{about_data.CorporateBrand}}" };
-static const char* PRODUCT_BRAND[] = { "{{about_data.ProductBrand}}" };
-static const char* LOCATION[] = { "{{about_data.Location}}" };
-static const char* DEVICETYPEDESC[] = { "{{about_data.DeviceTypeDescription.data.object_path}}" };
+static const char* DEVICE_NAMES[] = { "{{Device.AboutData.DeviceName}}" };
+static const char* APP_NAMES[] = { "{{Device.AboutData.AppName}}" };
+static const char* DESCRIPTIONS[] = { "{{Device.AboutData.Description}}" };
+static const char* MANUFACTURERS[] = { "{{Device.AboutData.Manufacturer}}" };
+static const char* DEVICE_MODELS[] = { "{{Device.AboutData.ModelNumber}}" };
+static const char* DATE_OF_MANUFACTURES[] = { "{{Device.AboutData.DateOfManufacture}}" };
+static const char* SOFTWARE_VERSIONS[] = { "{{Device.AboutData.SoftwareVersion}}" };
+static const char* HARDWARE_VERSIONS[] = { "{{Device.AboutData.HardwareVersion}}" };
+static const char* SUPPORT_URLS[] = { "{{Device.AboutData.SupportUrl}}" };
+static const char* COUNTRY_OF_PRODUCTION[] = { "{{Device.AboutData.CountryOfProduction}}" };
+static const char* CORPORATE_BRAND[] = { "{{Device.AboutData.CorporateBrand}}" };
+static const char* PRODUCT_BRAND[] = { "{{Device.AboutData.ProductBrand}}" };
+static const char* LOCATION[] = { "{{Device.AboutData.Location}}" };
+static const char* DEVICETYPEDESC[] = { "{{Device.AboutData.DeviceTypeDescription.data.object_path}}" };
 
 const char** propertyStoreDefaultValues[AJSVC_PROPERTY_STORE_NUMBER_OF_KEYS+5] =
 {
@@ -247,7 +247,7 @@ const char** propertyStoreDefaultValues[AJSVC_PROPERTY_STORE_NUMBER_OF_KEYS+5] =
  * Array of DeviceTypeDescription (DeviceType, ObjectPath)
  */
 DeviceTypeDescription deviceTypeDescription[] = {
-    { {{about_data.DeviceTypeDescription.data.device_type}}, {{about_data.DeviceTypeDescription.data.object_path}} },
+    { {{Device.AboutData.DeviceTypeDescription.data.device_type}}, {{Device.AboutData.DeviceTypeDescription.data.object_path}} },
 };
 
 /**
@@ -405,9 +405,9 @@ int AJ_Main(void)
     uint8_t forcedDisconnnect = FALSE;
     uint8_t rebootRequired = FALSE;
     AJ_BusAttachment busAttachment;
-    {{#interfaces}}
-    {{InterfaceName}}Listener {{InterfaceName.camel_case}}Listener;
-    {{/interfaces}}
+    {% for interface in Device.all_interfaces() %}
+    {{interface.Name}}Listener {{interface.Name.camel_case()}}Listener;
+    {% endfor %}
 
     AJ_Initialize();
 
@@ -420,13 +420,13 @@ int AJ_Main(void)
 
     status = Cdm_Init();
 
-    {{#interfaces}}
-    //Cdm_CreateDefault{{InterfaceName}}Listener({{InterfaceName}}Listener *{{InterfaceName.camel_case}}Listener);
-    {{/interfaces}}
+    {% for interface in Device.all_interfaces() %}
+    //Cdm_CreateDefault{{interface.Name}}Listener({{interface.Name}}Listener *{{interface.Name.camel_case()}}Listener);
+    {% endfor %}
 
-    {{#interfaces}}
-    status = Cdm_CreateInterface({{InterfaceName.upper_snake}}_INTERFACE, CDM_OBJECT_PATH_{{DeviceName.upper_snake}}, &{{InterfaceName.camel_case}}Listener);
-    {{/interfaces}}
+    {% for interface in Device.all_interfaces() %}
+    status = Cdm_CreateInterface({{interface.Name.upper_snake()}}_INTERFACE, CDM_OBJECT_PATH_{{Device.Name.upper_snake()}}, &{{interface.Name.camel_case()}}Listener);
+    {% endfor %}
 
     status = Cdm_Start();
 

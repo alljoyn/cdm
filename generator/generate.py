@@ -18,9 +18,10 @@ import os
 import sys
 import glob
 try:
-    import pystache
-except ImportError:
-    print "Please run pip install pystache"
+    import jinja2
+except ImportError as e:
+    print e
+    print "Please run pip install jinja2"
     sys.exit(1)
 import xml_parser as xml
 import argparse
@@ -49,7 +50,9 @@ class Generator(object):
         parser = xml.make_parser()
         parser.setContentHandler(saxhandler)
 
-        renderer = pystache.Renderer(missing_tags='strict', escape=lambda u: u)
+        env = jinja2.Environment(loader=jinja2.FileSystemLoader(self.cmd_args.template_dir), undefined=jinja2.StrictUndefined, trim_blocks=True, lstrip_blocks=True, keep_trailing_newline=True)
+
+        env.filters["pad"] = lambda s, width: str.ljust(str(s), width)
 
         for xml_file in glob.iglob(self.cmd_args.xml_files):
             print xml_file
@@ -60,13 +63,18 @@ class Generator(object):
             render_root = self.get_render_context_root(saxhandler)
 
             for root, folders, files in os.walk(self.cmd_args.template_dir):
-                for mustache_file in filter(lambda fname: not fname.startswith('.'), files):
-                    mustache_path = os.path.join(root, mustache_file)
-                    mustache_data = open(mustache_path).read()
-                    print "  ", mustache_path
-                    mustache_result = renderer.render(mustache_data, render_root)
+                for template_file in filter(lambda fname: not fname.startswith('.'), files):
+                    template_path = os.path.join(root, template_file)
+                    relative_path = os.path.relpath(template_path, self.cmd_args.template_dir)
 
-                    result_path = renderer.render(os.path.relpath(mustache_path, self.cmd_args.template_dir), render_root)
+                    print "  " + relative_path
+                    template = env.get_template(relative_path)
+
+                    render_result = template.render(render_root)
+                    result_path = jinja2.Template(relative_path).render(render_root)
+
+                    print "    -> " + result_path
+
                     result_path = self.get_output_path(result_path)
 
                     try:
@@ -74,7 +82,7 @@ class Generator(object):
                     except:
                         pass
 
-                    open(result_path, "w").write(mustache_result)
+                    open(result_path, "w").write(render_result)
 
 
 class InterfaceCodeGenerator(Generator):
@@ -82,10 +90,16 @@ class InterfaceCodeGenerator(Generator):
         return xml.AJXMLParser()
 
     def get_render_context_root(self, saxhandler):
-        return saxhandler.root.list[0]
+        interface = saxhandler.root.list[0]
+        return {
+            "Interface": interface,
+            "InterfaceName": interface.Name,
+            "InterfaceCategory": interface.Category,
+            "Version": interface.Version,
+        }
 
     def process_xml_file(self, saxhandler, xml_file):
-        saxhandler.root.list[0].InterfaceXML = "\n".join(['"'+line.rstrip("\n").replace('"', "'")+'"' for line in open(xml_file)])
+        saxhandler.root.list[0].XML = "\n".join(['"'+line.rstrip("\n").replace('"', "'")+'"' for line in open(xml_file)])
         xml_version = xml_file.split("-v")[-1][:-4]
         saxhandler.root.list[0].Version = xml_version
 
@@ -95,10 +109,14 @@ class SampleAppGenerator(Generator):
         return xml.AJEmulatorXMLParser()
 
     def get_render_context_root(self, saxhandler):
-        return saxhandler.root
+        device = saxhandler.root
+        return {
+            "Device": device,
+            "DeviceName": device.Name,
+        }
 
 
-if __name__ == '__main__':
+def main():
     argument_parser = argparse.ArgumentParser()
     argument_parser.add_argument('template_dir', help='Path to directory with the templates to be used for code generation')
     argument_parser.add_argument('xml_files', help='Unix style pathname pattern expansion to xml files to be used for pystache rendering context')
@@ -110,3 +128,6 @@ if __name__ == '__main__':
     else:
         generator = InterfaceCodeGenerator(args)
     generator.generate()
+
+if __name__ == '__main__':
+    main()
