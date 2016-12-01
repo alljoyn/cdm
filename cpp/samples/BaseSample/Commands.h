@@ -40,6 +40,8 @@ class Commands {
 
       bool RegisterCommand(CommandFunc func, const std::string& name, const std::string& description);
       bool RegisterChildCommands(const std::string& key, Commands* commands);
+      bool UnregisterCommand(const std::string& name);
+      bool UnregisterChildCommands(const std::string& key);
       Commands* GetChild(const std::string& key);
       ChildCommandMap& GetChildren();
 

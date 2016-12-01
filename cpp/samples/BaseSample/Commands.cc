@@ -31,6 +31,18 @@ bool Commands::RegisterChildCommands(const std::string& key, Commands* commands)
     return true;
 }
 
+bool Commands::UnregisterCommand(const std::string& name)
+{
+    uint32_t numErased = m_Commands.erase(name);
+    return (numErased != 0);
+}
+
+bool Commands::UnregisterChildCommands(const std::string& key)
+{
+    uint32_t numErased = m_Children.erase(key);
+    return (numErased != 0);
+}
+
 void Commands::PrintCommandList()
 {
     CommandFuncMap::const_iterator itr = m_Commands.begin();

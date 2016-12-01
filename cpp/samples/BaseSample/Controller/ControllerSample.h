@@ -75,6 +75,7 @@ class ControllerSample : public BaseSample
     CdmController* GetController() { return m_controller; }
     FoundDeviceMap& GetDeviceMap() { return m_deviceList; }
     FoundDeviceInfo* GetFoundDeviceInfo(int index);
+    FoundDeviceInfo* GetDeviceInfoBySessionId(SessionId id);
 
     CdmInterface* CreateInterface(const CdmInterfaceType type, const std::string& busName, const qcc::String& objectPath,
                                   const SessionId& sessionId, InterfaceControllerListener& listener);

@@ -279,6 +279,17 @@ void ControllerSample::OnDeviceSessionLost(SessionId id)
 {
     cout << "Device session lost(session id: "<< id << ")" << endl;
 
+    FoundDeviceInfo* info = GetDeviceInfoBySessionId(id);
+    if (info) {
+        Commands* deviceCommands = m_rootCommands->GetChild(info->busName);
+        if (deviceCommands) {
+            delete deviceCommands;
+            deviceCommands = NULL;
+        }
+
+        m_rootCommands->UnregisterChildCommands(info->busName);
+    }
+
     while(GetCommandsQueueSize() > 1) {
         PopCommands();
     }
@@ -293,6 +304,16 @@ FoundDeviceInfo* ControllerSample::GetFoundDeviceInfo(int index)
     }
     if (itr != m_deviceList.end()) {
         return &(itr->second);
+    }
+    return 0;
+}
+
+FoundDeviceInfo* ControllerSample::GetDeviceInfoBySessionId(SessionId id)
+{
+    for (FoundDeviceMap::iterator it = m_deviceList.begin(); it != m_deviceList.end(); it++) {
+        if (it->second.sessionId == id) {
+            return &(it->second);
+        }
     }
     return 0;
 }
@@ -318,4 +339,8 @@ void ControllerSample::DropDeviceSession()
     if(status != ER_OK) {
         cout << "Failed to leave the session: " << status << endl;
     }
+
+    // Trigger this callback manually, as BusAttachment.LeaveSession() doesn't send a SessionLost
+    // signal to the device who initiated the call.
+    OnDeviceSessionLost(m_lastSession);
 }
