@@ -26,7 +26,6 @@ namespace ajn {
 namespace services {
 
 class OvenCyclePhaseIntfControllerListener;
-class CdmProxyBusObject;
 
 /**
  * OvenCyclePhase Interface Controller implementation class
@@ -36,12 +35,12 @@ class OvenCyclePhaseIntfControllerImpl : public InterfaceController, public Oven
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Constructor of OvenCyclePhaseIntfControllerImpl
      */
-    OvenCyclePhaseIntfControllerImpl(BusAttachment& busAttachment, OvenCyclePhaseIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    OvenCyclePhaseIntfControllerImpl(BusAttachment& busAttachment, OvenCyclePhaseIntfControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Destructor of OvenCyclePhaseIntfControllerImpl

@@ -26,7 +26,6 @@ namespace ajn {
 namespace services {
 
 class RobotCleaningCyclePhaseIntfControllerListener;
-class CdmProxyBusObject;
 
 /**
  * RobotCleaningCyclePhase Interface Controller implementation class
@@ -36,12 +35,12 @@ class RobotCleaningCyclePhaseIntfControllerImpl : public InterfaceController, pu
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Constructor of RobotCleaningCyclePhaseIntfControllerImpl
      */
-    RobotCleaningCyclePhaseIntfControllerImpl(BusAttachment& busAttachment, RobotCleaningCyclePhaseIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    RobotCleaningCyclePhaseIntfControllerImpl(BusAttachment& busAttachment, RobotCleaningCyclePhaseIntfControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Destructor of RobotCleaningCyclePhaseIntfControllerImpl

@@ -17,7 +17,6 @@
 #include <qcc/Util.h>
 
 #include <alljoyn/cdm/LogModule.h>
-#include <alljoyn/cdm/CdmProxyBusObject.h>
 #include <alljoyn/cdm/interfaces/operation/TimerIntfControllerListener.h>
 
 #include "TimerIntfControllerImpl.h"
@@ -53,12 +52,12 @@ QStatus TimerIntfControllerImpl::SetTargetTimeToStop(int32_t time, void* context
     return status;
 }
 
-CdmInterface* TimerIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject)
+CdmInterface* TimerIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& cdmProxyObject)
 {
     return new TimerIntfControllerImpl(busAttachment, dynamic_cast<TimerIntfControllerListener&>(listener), cdmProxyObject);
 }
 
-TimerIntfControllerImpl::TimerIntfControllerImpl(BusAttachment& busAttachment, TimerIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject) :
+TimerIntfControllerImpl::TimerIntfControllerImpl(BusAttachment& busAttachment, TimerIntfControllerListener& listener, ProxyBusObject& cdmProxyObject) :
     InterfaceController(cdmProxyObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener)
@@ -89,7 +88,7 @@ QStatus TimerIntfControllerImpl::GetReferenceTimer(void* context)
 {
     QStatus status = ER_OK;
 
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_ReferenceTimer.c_str(), this, (CdmProxyBusObject::Listener::GetPropertyCB)&TimerIntfControllerImpl::GetReferenceTimerPropertyCB, context);
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_ReferenceTimer.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&TimerIntfControllerImpl::GetReferenceTimerPropertyCB, context);
 
     return status;
 }
@@ -98,7 +97,7 @@ QStatus TimerIntfControllerImpl::GetTargetTimeToStart(void* context)
 {
     QStatus status = ER_OK;
 
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_TargetTimeToStart.c_str(), this, (CdmProxyBusObject::Listener::GetPropertyCB)&TimerIntfControllerImpl::GetTargetTimeToStartPropertyCB, context);
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_TargetTimeToStart.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&TimerIntfControllerImpl::GetTargetTimeToStartPropertyCB, context);
 
     return status;
 }
@@ -107,7 +106,7 @@ QStatus TimerIntfControllerImpl::GetTargetTimeToStop(void* context)
 {
     QStatus status = ER_OK;
 
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_TargetTimeToStop.c_str(), this, (CdmProxyBusObject::Listener::GetPropertyCB)&TimerIntfControllerImpl::GetTargetTimeToStopPropertyCB, context);
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_TargetTimeToStop.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&TimerIntfControllerImpl::GetTargetTimeToStopPropertyCB, context);
 
     return status;
 }
@@ -116,7 +115,7 @@ QStatus TimerIntfControllerImpl::GetEstimatedTimeToEnd(void* context)
 {
     QStatus status = ER_OK;
 
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_EstimatedTimeToEnd.c_str(), this, (CdmProxyBusObject::Listener::GetPropertyCB)&TimerIntfControllerImpl::GetEstimatedTimeToEndPropertyCB, context);
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_EstimatedTimeToEnd.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&TimerIntfControllerImpl::GetEstimatedTimeToEndPropertyCB, context);
 
     return status;
 }
@@ -125,7 +124,7 @@ QStatus TimerIntfControllerImpl::GetRunningTime(void* context )
 {
     QStatus status = ER_OK;
 
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_RunningTime.c_str(),this, (CdmProxyBusObject::Listener::GetPropertyCB)&TimerIntfControllerImpl::GetRunningTimePropertyCB,context);
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_RunningTime.c_str(),this, (ProxyBusObject::Listener::GetPropertyCB)&TimerIntfControllerImpl::GetRunningTimePropertyCB,context);
 
     return status;
 }
@@ -134,7 +133,7 @@ QStatus TimerIntfControllerImpl::GetTargetDuration(void* context )
 {
     QStatus status = ER_OK;
 
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_TargetDuration.c_str(),this, (CdmProxyBusObject::Listener::GetPropertyCB)&TimerIntfControllerImpl::GetTargetDurationPropertyCB,context);
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_TargetDuration.c_str(),this, (ProxyBusObject::Listener::GetPropertyCB)&TimerIntfControllerImpl::GetTargetDurationPropertyCB,context);
 
     return status;
 }

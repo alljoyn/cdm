@@ -20,7 +20,6 @@
 #include <alljoyn/cdm/interfaces/operation/AudioVolumeIntfControllerListener.h>
 
 #include "AudioVolumeIntfControllerImpl.h"
-#include <alljoyn/cdm/CdmProxyBusObject.h>
 
 using namespace qcc;
 using namespace std;
@@ -28,12 +27,12 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-CdmInterface* AudioVolumeIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject)
+CdmInterface* AudioVolumeIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& cdmProxyObject)
 {
     return new AudioVolumeIntfControllerImpl(busAttachment, static_cast<AudioVolumeIntfControllerListener&>(listener), cdmProxyObject);
 }
 
-AudioVolumeIntfControllerImpl::AudioVolumeIntfControllerImpl(BusAttachment& busAttachment, AudioVolumeIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject) :
+AudioVolumeIntfControllerImpl::AudioVolumeIntfControllerImpl(BusAttachment& busAttachment, AudioVolumeIntfControllerListener& listener, ProxyBusObject& cdmProxyObject) :
     InterfaceController(cdmProxyObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener)

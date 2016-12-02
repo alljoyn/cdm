@@ -26,7 +26,6 @@ namespace ajn {
 namespace services {
 
 class {interface_name}IntfControllerListener;
-class CdmProxyBusObject;
 
 /**
  * {interface_name} Interface Controller implementation class
@@ -36,12 +35,12 @@ class {interface_name}IntfControllerImpl : public InterfaceController, public {i
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& cdmProxyObject);
 
     /**
      * Constructor of {interface_name}IntfControllerImpl
      */
-    {interface_name}IntfControllerImpl(BusAttachment& busAttachment, {interface_name}IntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    {interface_name}IntfControllerImpl(BusAttachment& busAttachment, {interface_name}IntfControllerListener& listener, ProxyBusObject& cdmProxyObject);
 
     /**
      * Destructor of {interface_name}IntfControllerImpl

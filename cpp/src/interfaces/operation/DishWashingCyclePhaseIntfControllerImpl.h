@@ -26,7 +26,6 @@ namespace ajn {
 namespace services {
 
 class DishWashingCyclePhaseIntfControllerListener;
-class CdmProxyBusObject;
 
 /**
  * DishWashingCyclePhase Interface Controller implementation class
@@ -36,12 +35,12 @@ class DishWashingCyclePhaseIntfControllerImpl : public InterfaceController, publ
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Constructor of DishWashingCyclePhaseIntfControllerImpl
      */
-    DishWashingCyclePhaseIntfControllerImpl(BusAttachment& busAttachment, DishWashingCyclePhaseIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    DishWashingCyclePhaseIntfControllerImpl(BusAttachment& busAttachment, DishWashingCyclePhaseIntfControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Destructor of DishWashingCyclePhaseIntfControllerImpl

@@ -26,7 +26,6 @@ namespace ajn {
 namespace services {
 
 class SoilLevelIntfControllerListener;
-class CdmProxyBusObject;
 
 /**
  * SoilLevel Interface Controller implementation class
@@ -36,12 +35,12 @@ class SoilLevelIntfControllerImpl : public InterfaceController, public SoilLevel
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Constructor of SoilLevelIntfControllerImpl
      */
-    SoilLevelIntfControllerImpl(BusAttachment& busAttachment, SoilLevelIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    SoilLevelIntfControllerImpl(BusAttachment& busAttachment, SoilLevelIntfControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Destructor of SoilLevelIntfControllerImpl

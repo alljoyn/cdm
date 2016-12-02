@@ -26,7 +26,6 @@ namespace ajn {
 namespace services {
 
 class HeatingZoneIntfControllerListener;
-class CdmProxyBusObject;
 
 /**
  * HeatingZone Interface Controller implementation class
@@ -36,12 +35,12 @@ class HeatingZoneIntfControllerImpl : public InterfaceController, public Heating
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Constructor of HeatingZoneIntfControllerImpl
      */
-    HeatingZoneIntfControllerImpl(BusAttachment& busAttachment, HeatingZoneIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    HeatingZoneIntfControllerImpl(BusAttachment& busAttachment, HeatingZoneIntfControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Destructor of HeatingZoneIntfControllerImpl

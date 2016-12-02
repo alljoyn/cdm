@@ -17,7 +17,6 @@
 #include <qcc/Util.h>
 
 #include <alljoyn/cdm/LogModule.h>
-#include <alljoyn/cdm/CdmProxyBusObject.h>
 #include <alljoyn/cdm/interfaces/operation/AirRecirculationModeIntfControllerListener.h>
 
 #include "AirRecirculationModeIntfControllerImpl.h"
@@ -28,12 +27,12 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-CdmInterface* AirRecirculationModeIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject)
+CdmInterface* AirRecirculationModeIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& cdmProxyObject)
 {
     return new AirRecirculationModeIntfControllerImpl(busAttachment, dynamic_cast<AirRecirculationModeIntfControllerListener&>(listener), cdmProxyObject);
 }
 
-AirRecirculationModeIntfControllerImpl::AirRecirculationModeIntfControllerImpl(BusAttachment& busAttachment, AirRecirculationModeIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject) :
+AirRecirculationModeIntfControllerImpl::AirRecirculationModeIntfControllerImpl(BusAttachment& busAttachment, AirRecirculationModeIntfControllerListener& listener, ProxyBusObject& cdmProxyObject) :
     InterfaceController(cdmProxyObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener)

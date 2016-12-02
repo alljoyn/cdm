@@ -26,7 +26,6 @@ namespace ajn {
 namespace services {
 
 class VendorDefinedIntfControllerListener;
-class CdmProxyBusObject;
 
 /**
  * VendorDefined Interface Controller implementation class
@@ -36,12 +35,12 @@ class VendorDefinedIntfControllerImpl : public InterfaceController, public Vendo
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& cdmProxyObject);
 
     /**
      * Constructor of VendorDefinedIntfControllerImpl
      */
-    VendorDefinedIntfControllerImpl(BusAttachment& busAttachment, VendorDefinedIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    VendorDefinedIntfControllerImpl(BusAttachment& busAttachment, VendorDefinedIntfControllerListener& listener, ProxyBusObject& cdmProxyObject);
 
     /**
      * Destructor of VendorDefinedIntfControllerImpl

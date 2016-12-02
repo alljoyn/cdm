@@ -20,7 +20,6 @@
 #include <alljoyn/cdm/interfaces/operation/AudioVideoInputIntfControllerListener.h>
 
 #include "AudioVideoInputIntfControllerImpl.h"
-#include <alljoyn/cdm/CdmProxyBusObject.h>
 
 using namespace qcc;
 using namespace std;
@@ -28,12 +27,12 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-CdmInterface* AudioVideoInputIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject)
+CdmInterface* AudioVideoInputIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& cdmProxyObject)
 {
     return new AudioVideoInputIntfControllerImpl(busAttachment, static_cast<AudioVideoInputIntfControllerListener&>(listener), cdmProxyObject);
 }
 
-AudioVideoInputIntfControllerImpl::AudioVideoInputIntfControllerImpl(BusAttachment& busAttachment, AudioVideoInputIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject) :
+AudioVideoInputIntfControllerImpl::AudioVideoInputIntfControllerImpl(BusAttachment& busAttachment, AudioVideoInputIntfControllerListener& listener, ProxyBusObject& cdmProxyObject) :
     InterfaceController(cdmProxyObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener)

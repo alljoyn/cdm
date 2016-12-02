@@ -19,7 +19,6 @@
 #include <alljoyn/BusAttachment.h>
 #include <alljoyn/cdm/LogModule.h>
 #include <alljoyn/cdm/DeviceInfo.h>
-#include <alljoyn/cdm/CdmProxyBusObject.h>
 
 using namespace ajn;
 using namespace services;

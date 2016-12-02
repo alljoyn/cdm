@@ -26,7 +26,6 @@ namespace ajn {
 namespace services {
 
 class RepeatModeIntfControllerListener;
-class CdmProxyBusObject;
 
 /**
  * RepeatMode Interface Controller implementation class
@@ -36,12 +35,12 @@ class RepeatModeIntfControllerImpl : public InterfaceController, public RepeatMo
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Constructor of RepeatModeIntfControllerImpl
      */
-    RepeatModeIntfControllerImpl(BusAttachment& busAttachment, RepeatModeIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    RepeatModeIntfControllerImpl(BusAttachment& busAttachment, RepeatModeIntfControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Destructor of RepeatModeIntfControllerImpl

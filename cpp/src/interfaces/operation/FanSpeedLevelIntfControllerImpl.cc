@@ -18,7 +18,6 @@
 
 #include <alljoyn/cdm/LogModule.h>
 #include <alljoyn/cdm/interfaces/operation/FanSpeedLevelIntfControllerListener.h>
-#include <alljoyn/cdm/CdmProxyBusObject.h>
 #include "FanSpeedLevelIntfControllerImpl.h"
 
 using namespace qcc;
@@ -27,12 +26,12 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-CdmInterface* FanSpeedLevelIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject)
+CdmInterface* FanSpeedLevelIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& cdmProxyObject)
 {
     return new FanSpeedLevelIntfControllerImpl(busAttachment, dynamic_cast<FanSpeedLevelIntfControllerListener&>(listener), cdmProxyObject);
 }
 
-FanSpeedLevelIntfControllerImpl::FanSpeedLevelIntfControllerImpl(BusAttachment& busAttachment, FanSpeedLevelIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject) :
+FanSpeedLevelIntfControllerImpl::FanSpeedLevelIntfControllerImpl(BusAttachment& busAttachment, FanSpeedLevelIntfControllerListener& listener, ProxyBusObject& cdmProxyObject) :
     InterfaceController(cdmProxyObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener)

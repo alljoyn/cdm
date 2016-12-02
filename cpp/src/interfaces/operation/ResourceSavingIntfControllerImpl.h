@@ -26,7 +26,6 @@ namespace ajn {
 namespace services {
 
 class ResourceSavingIntfControllerListener;
-class CdmProxyBusObject;
 
 /**
  * ResourceSaving Interface Controller implementation class
@@ -36,12 +35,12 @@ class ResourceSavingIntfControllerImpl : public InterfaceController, public Reso
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Constructor of ResourceSavingIntfControllerImpl
      */
-    ResourceSavingIntfControllerImpl(BusAttachment& busAttachment, ResourceSavingIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    ResourceSavingIntfControllerImpl(BusAttachment& busAttachment, ResourceSavingIntfControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Destructor of ResourceSavingIntfControllerImpl

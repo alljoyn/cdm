@@ -26,7 +26,6 @@ namespace ajn {
 namespace services {
 
 class CurrentTemperatureIntfControllerListener;
-class CdmProxyBusObject;
 
 /**
  * CurrentTemperature Interface Controller implementation class
@@ -36,12 +35,12 @@ class CurrentTemperatureIntfControllerImpl : public InterfaceController, public 
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Constructor of CurrentTemperatureIntfControllerImpl
      */
-    CurrentTemperatureIntfControllerImpl(BusAttachment& busAttachment, CurrentTemperatureIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    CurrentTemperatureIntfControllerImpl(BusAttachment& busAttachment, CurrentTemperatureIntfControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Destructor of CurrentTemperatureIntfControllerImpl

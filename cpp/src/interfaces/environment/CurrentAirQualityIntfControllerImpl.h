@@ -26,7 +26,6 @@ namespace ajn {
 namespace services {
 
 class CurrentAirQualityIntfControllerListener;
-class CdmProxyBusObject;
 
 /**
  * CurrentAirQuality Interface Controller implementation class
@@ -36,12 +35,12 @@ class CurrentAirQualityIntfControllerImpl : public InterfaceController, public C
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Constructor of CurrentAirQualityIntfControllerImpl
      */
-    CurrentAirQualityIntfControllerImpl(BusAttachment& busAttachment, CurrentAirQualityIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    CurrentAirQualityIntfControllerImpl(BusAttachment& busAttachment, CurrentAirQualityIntfControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Destructor of CurrentAirQualityIntfControllerImpl

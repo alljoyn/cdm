@@ -17,7 +17,6 @@
 #include <qcc/Util.h>
 
 #include <alljoyn/cdm/LogModule.h>
-#include <alljoyn/cdm/CdmProxyBusObject.h>
 #include <alljoyn/cdm/interfaces/operation/ClosedStatusIntfControllerListener.h>
 
 #include "ClosedStatusIntfControllerImpl.h"
@@ -29,12 +28,12 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-CdmInterface* ClosedStatusIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject)
+CdmInterface* ClosedStatusIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& cdmProxyObject)
 {
     return new ClosedStatusIntfControllerImpl(busAttachment, dynamic_cast<ClosedStatusIntfControllerListener&>(listener), cdmProxyObject);
 }
 
-ClosedStatusIntfControllerImpl::ClosedStatusIntfControllerImpl(BusAttachment& busAttachment, ClosedStatusIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject) :
+ClosedStatusIntfControllerImpl::ClosedStatusIntfControllerImpl(BusAttachment& busAttachment, ClosedStatusIntfControllerListener& listener, ProxyBusObject& cdmProxyObject) :
     InterfaceController(cdmProxyObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener)

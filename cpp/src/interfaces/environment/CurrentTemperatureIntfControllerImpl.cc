@@ -18,7 +18,6 @@
 
 #include <alljoyn/cdm/LogModule.h>
 #include <alljoyn/cdm/interfaces/environment/CurrentTemperatureIntfControllerListener.h>
-#include <alljoyn/cdm/CdmProxyBusObject.h>
 #include "CurrentTemperatureIntfControllerImpl.h"
 
 using namespace qcc;
@@ -27,12 +26,12 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-CdmInterface* CurrentTemperatureIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject)
+CdmInterface* CurrentTemperatureIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& cdmProxyObject)
 {
     return new CurrentTemperatureIntfControllerImpl(busAttachment, dynamic_cast<CurrentTemperatureIntfControllerListener&>(listener), cdmProxyObject);
 }
 
-CurrentTemperatureIntfControllerImpl::CurrentTemperatureIntfControllerImpl(BusAttachment& busAttachment, CurrentTemperatureIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject) :
+CurrentTemperatureIntfControllerImpl::CurrentTemperatureIntfControllerImpl(BusAttachment& busAttachment, CurrentTemperatureIntfControllerListener& listener, ProxyBusObject& cdmProxyObject) :
     InterfaceController(cdmProxyObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener)

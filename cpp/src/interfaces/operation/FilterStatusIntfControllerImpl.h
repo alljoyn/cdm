@@ -26,7 +26,6 @@ namespace ajn {
 namespace services {
 
 class FilterStatusIntfControllerListener;
-class CdmProxyBusObject;
 
 /**
  * FilterStatus Interface Controller implementation class
@@ -36,12 +35,12 @@ class FilterStatusIntfControllerImpl : public InterfaceController, public Filter
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Constructor of FilterStatusIntfControllerImpl
      */
-    FilterStatusIntfControllerImpl(BusAttachment& busAttachment, FilterStatusIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    FilterStatusIntfControllerImpl(BusAttachment& busAttachment, FilterStatusIntfControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Destructor of FilterStatusIntfControllerImpl

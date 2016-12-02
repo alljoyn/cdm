@@ -30,10 +30,9 @@ class CdmInterface;
 class InterfaceControlleeListener;
 class InterfaceControllerListener;
 class CdmBusObject;
-class CdmProxyBusObject;
 
 typedef CdmInterface* (*CreateIntfControlleeFptr)(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject);
-typedef CdmInterface* (*CreateIntfControllerFptr)(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+typedef CdmInterface* (*CreateIntfControllerFptr)(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& cdmProxyObject);
 
 /**
  * Cdm Interface class.

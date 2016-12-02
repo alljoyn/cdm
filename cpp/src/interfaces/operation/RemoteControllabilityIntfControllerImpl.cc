@@ -17,7 +17,6 @@
 #include <qcc/Util.h>
 
 #include <alljoyn/cdm/LogModule.h>
-#include <alljoyn/cdm/CdmProxyBusObject.h>
 #include <alljoyn/cdm/interfaces/operation/RemoteControllabilityIntfControllerListener.h>
 
 #include "RemoteControllabilityIntfControllerImpl.h"
@@ -29,12 +28,12 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-CdmInterface* RemoteControllabilityIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject)
+CdmInterface* RemoteControllabilityIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& cdmProxyObject)
 {
     return new RemoteControllabilityIntfControllerImpl(busAttachment, dynamic_cast<RemoteControllabilityIntfControllerListener&>(listener), cdmProxyObject);
 }
 
-RemoteControllabilityIntfControllerImpl::RemoteControllabilityIntfControllerImpl(BusAttachment& busAttachment, RemoteControllabilityIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject) :
+RemoteControllabilityIntfControllerImpl::RemoteControllabilityIntfControllerImpl(BusAttachment& busAttachment, RemoteControllabilityIntfControllerListener& listener, ProxyBusObject& cdmProxyObject) :
     InterfaceController(cdmProxyObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener)

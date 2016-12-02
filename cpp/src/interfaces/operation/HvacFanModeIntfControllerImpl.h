@@ -26,7 +26,6 @@ namespace ajn {
 namespace services {
 
 class HvacFanModeIntfControllerListener;
-class CdmProxyBusObject;
 
 /**
  * HvacFanMode Interface Controller implementation class
@@ -36,12 +35,12 @@ class HvacFanModeIntfControllerImpl : public InterfaceController, public HvacFan
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Constructor of HvacFanModeIntfControllerImpl
      */
-    HvacFanModeIntfControllerImpl(BusAttachment& busAttachment, HvacFanModeIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    HvacFanModeIntfControllerImpl(BusAttachment& busAttachment, HvacFanModeIntfControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Destructor of HvacFanModeIntfControllerImpl

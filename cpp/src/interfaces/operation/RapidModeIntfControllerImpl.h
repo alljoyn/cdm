@@ -26,7 +26,6 @@ namespace ajn {
 namespace services {
 
 class RapidModeIntfControllerListener;
-class CdmProxyBusObject;
 
 /**
  * RapidMode Interface Controller implementation class
@@ -36,12 +35,12 @@ class RapidModeIntfControllerImpl : public InterfaceController, public RapidMode
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Constructor of RapidModeIntfControllerImpl
      */
-    RapidModeIntfControllerImpl(BusAttachment& busAttachment, RapidModeIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    RapidModeIntfControllerImpl(BusAttachment& busAttachment, RapidModeIntfControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Destructor of RapidModeIntfControllerImpl

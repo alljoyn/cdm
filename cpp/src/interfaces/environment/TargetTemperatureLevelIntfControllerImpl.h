@@ -26,7 +26,6 @@ namespace ajn {
 namespace services {
 
 class TargetTemperatureLevelIntfControllerListener;
-class CdmProxyBusObject;
 
 /**
  * TargetTemperatureLevel Interface Controller implementation class
@@ -36,12 +35,12 @@ class TargetTemperatureLevelIntfControllerImpl : public InterfaceController, pub
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Constructor of TargetTemperatureLevelIntfControllerImpl
      */
-    TargetTemperatureLevelIntfControllerImpl(BusAttachment& busAttachment, TargetTemperatureLevelIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    TargetTemperatureLevelIntfControllerImpl(BusAttachment& busAttachment, TargetTemperatureLevelIntfControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Destructor of TargetTemperatureLevelIntfControllerImpl

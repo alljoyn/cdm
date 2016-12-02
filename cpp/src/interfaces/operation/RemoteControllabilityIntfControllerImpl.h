@@ -26,7 +26,6 @@ namespace ajn {
 namespace services {
 
 class RemoteControllabilityIntfControllerListener;
-class CdmProxyBusObject;
 
 /**
  * RemoteControllability Interface Controller implementation class
@@ -36,12 +35,12 @@ class RemoteControllabilityIntfControllerImpl : public InterfaceController, publ
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Constructor of RemoteControllabilityIntfControllerImpl
      */
-    RemoteControllabilityIntfControllerImpl(BusAttachment& busAttachment, RemoteControllabilityIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    RemoteControllabilityIntfControllerImpl(BusAttachment& busAttachment, RemoteControllabilityIntfControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Destructor of RemoteControllabilityIntfControllerImpl

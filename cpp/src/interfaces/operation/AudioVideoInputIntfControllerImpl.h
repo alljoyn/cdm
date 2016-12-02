@@ -26,7 +26,6 @@ namespace ajn {
 namespace services {
 
 class AudioVideoInputIntfControllerListener;
-class CdmProxyBusObject;
 
 /**
  * AudioVideoInput Interface Controller implementation class
@@ -36,12 +35,12 @@ class AudioVideoInputIntfControllerImpl : public InterfaceController, public Aud
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Constructor of AudioVideoInputIntfControllerImpl
      */
-    AudioVideoInputIntfControllerImpl(BusAttachment& busAttachment, AudioVideoInputIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    AudioVideoInputIntfControllerImpl(BusAttachment& busAttachment, AudioVideoInputIntfControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Destructor of AudioVideoInputIntfControllerImpl

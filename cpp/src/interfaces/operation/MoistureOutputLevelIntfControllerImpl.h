@@ -26,7 +26,6 @@ namespace ajn {
 namespace services {
 
 class MoistureOutputLevelIntfControllerListener;
-class CdmProxyBusObject;
 
 /**
  * MoistureOutputLevel Interface Controller implementation class
@@ -36,12 +35,12 @@ class MoistureOutputLevelIntfControllerImpl : public InterfaceController, public
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Constructor of MoistureOutputLevelIntfControllerImpl
      */
-    MoistureOutputLevelIntfControllerImpl(BusAttachment& busAttachment, MoistureOutputLevelIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    MoistureOutputLevelIntfControllerImpl(BusAttachment& busAttachment, MoistureOutputLevelIntfControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Destructor of MoistureOutputLevelIntfControllerImpl

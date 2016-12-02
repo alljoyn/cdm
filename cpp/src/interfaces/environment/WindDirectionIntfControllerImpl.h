@@ -26,7 +26,6 @@ namespace ajn {
 namespace services {
 
 class WindDirectionIntfControllerListener;
-class CdmProxyBusObject;
 
 /**
  * WindDirection Interface Controller implementation class
@@ -36,12 +35,12 @@ class WindDirectionIntfControllerImpl : public InterfaceController, public WindD
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Constructor of WindDirectionIntfControllerImpl
      */
-    WindDirectionIntfControllerImpl(BusAttachment& busAttachment, WindDirectionIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    WindDirectionIntfControllerImpl(BusAttachment& busAttachment, WindDirectionIntfControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Destructor of WindDirectionIntfControllerImpl

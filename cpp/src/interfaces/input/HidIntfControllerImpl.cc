@@ -20,7 +20,6 @@
 #include <alljoyn/cdm/interfaces/input/HidIntfControllerListener.h>
 
 #include "HidIntfControllerImpl.h"
-#include <alljoyn/cdm/CdmProxyBusObject.h>
 
 using namespace qcc;
 using namespace std;
@@ -28,12 +27,12 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-CdmInterface* HidIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject)
+CdmInterface* HidIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& cdmProxyObject)
 {
     return new HidIntfControllerImpl(busAttachment, static_cast<HidIntfControllerListener&>(listener), cdmProxyObject);
 }
 
-HidIntfControllerImpl::HidIntfControllerImpl(BusAttachment& busAttachment, HidIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject) :
+HidIntfControllerImpl::HidIntfControllerImpl(BusAttachment& busAttachment, HidIntfControllerListener& listener, ProxyBusObject& cdmProxyObject) :
     InterfaceController(cdmProxyObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener)

@@ -23,7 +23,6 @@
 namespace ajn {
 namespace services {
 
-class CdmProxyBusObject;
 /**
  * InterfaceController class
  */
@@ -33,7 +32,7 @@ class InterfaceController : public MessageReceiver, public ProxyBusObject::Liste
     /**
      * Constructor of InterfaceController
      */
-    InterfaceController(CdmProxyBusObject& cdmProxyObject) : m_proxyObject(cdmProxyObject) {}
+    InterfaceController(ProxyBusObject& cdmProxyObject) : m_proxyObject(cdmProxyObject) {}
 
     /**
      * Destructor of InterfaceController
@@ -41,7 +40,7 @@ class InterfaceController : public MessageReceiver, public ProxyBusObject::Liste
     virtual ~InterfaceController() {}
 
   protected:
-    CdmProxyBusObject& m_proxyObject;
+    ProxyBusObject& m_proxyObject;
 };
 
 } //namespace services

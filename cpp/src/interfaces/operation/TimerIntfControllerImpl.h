@@ -26,7 +26,6 @@ namespace ajn {
 namespace services {
 
 class TimerIntfControllerListener;
-class CdmProxyBusObject;
 
 /**
  * Timer Interface Controller implementation class
@@ -36,12 +35,12 @@ class TimerIntfControllerImpl : public InterfaceController, public TimerIntfCont
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Constructor of TimerIntfControllerImpl
      */
-    TimerIntfControllerImpl(BusAttachment& busAttachment, TimerIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    TimerIntfControllerImpl(BusAttachment& busAttachment, TimerIntfControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Destructor of TimerIntfControllerImpl

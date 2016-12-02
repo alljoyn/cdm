@@ -26,7 +26,6 @@ namespace ajn {
 namespace services {
 
 class FanSpeedLevelIntfControllerListener;
-class CdmProxyBusObject;
 
 /**
  * FanSpeedLevel Interface Controller implementation class
@@ -36,12 +35,12 @@ class FanSpeedLevelIntfControllerImpl : public InterfaceController, public FanSp
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Constructor of FanSpeedLevelIntfControllerImpl
      */
-    FanSpeedLevelIntfControllerImpl(BusAttachment& busAttachment, FanSpeedLevelIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    FanSpeedLevelIntfControllerImpl(BusAttachment& busAttachment, FanSpeedLevelIntfControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Destructor of FanSpeedLevelIntfControllerImpl

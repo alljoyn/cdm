@@ -26,7 +26,6 @@ namespace ajn {
 namespace services {
 
 class OnOffStatusIntfControllerListener;
-class CdmProxyBusObject;
 
 /**
  * OnOffStatus Interface Controller implementation class
@@ -36,12 +35,12 @@ class OnOffStatusIntfControllerImpl : public InterfaceController, public OnOffSt
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Constructor of OnOffStatusIntfControllerImpl
      */
-    OnOffStatusIntfControllerImpl(BusAttachment& busAttachment, OnOffStatusIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    OnOffStatusIntfControllerImpl(BusAttachment& busAttachment, OnOffStatusIntfControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Destructor of OnOffStatusIntfControllerImpl

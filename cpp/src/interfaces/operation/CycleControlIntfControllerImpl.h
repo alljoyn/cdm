@@ -26,7 +26,6 @@ namespace ajn {
 namespace services {
 
 class CycleControlIntfControllerListener;
-class CdmProxyBusObject;
 
 /**
  * CycleControl Interface Controller implementation class
@@ -36,12 +35,12 @@ class CycleControlIntfControllerImpl : public InterfaceController, public CycleC
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Constructor of CycleControlIntfControllerImpl
      */
-    CycleControlIntfControllerImpl(BusAttachment& busAttachment, CycleControlIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    CycleControlIntfControllerImpl(BusAttachment& busAttachment, CycleControlIntfControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Destructor of CycleControlIntfControllerImpl

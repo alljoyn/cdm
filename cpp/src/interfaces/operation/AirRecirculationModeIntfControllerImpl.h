@@ -26,7 +26,6 @@ namespace ajn {
 namespace services {
 
 class AirRecirculationModeIntfControllerListener;
-class CdmProxyBusObject;
 
 /**
  * AirRecirculationMode Interface Controller implementation class
@@ -36,12 +35,12 @@ class AirRecirculationModeIntfControllerImpl : public InterfaceController, publi
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Constructor of AirRecirculationModeIntfControllerImpl
      */
-    AirRecirculationModeIntfControllerImpl(BusAttachment& busAttachment, AirRecirculationModeIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    AirRecirculationModeIntfControllerImpl(BusAttachment& busAttachment, AirRecirculationModeIntfControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Destructor of AirRecirculationModeIntfControllerImpl

@@ -26,7 +26,6 @@ namespace ajn {
 namespace services {
 
 class ChannelIntfControllerListener;
-class CdmProxyBusObject;
 
 /**
  * Channel Interface Controller implementation class
@@ -36,12 +35,12 @@ class ChannelIntfControllerImpl : public InterfaceController, public ChannelIntf
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Constructor of ChannelIntfControllerImpl
      */
-    ChannelIntfControllerImpl(BusAttachment& busAttachment, ChannelIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    ChannelIntfControllerImpl(BusAttachment& busAttachment, ChannelIntfControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Destructor of ChannelIntfControllerImpl

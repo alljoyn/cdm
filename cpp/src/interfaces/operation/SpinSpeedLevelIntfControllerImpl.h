@@ -26,7 +26,6 @@ namespace ajn {
 namespace services {
 
 class SpinSpeedLevelIntfControllerListener;
-class CdmProxyBusObject;
 
 /**
  * SpinSpeedLevel Interface Controller implementation class
@@ -36,12 +35,12 @@ class SpinSpeedLevelIntfControllerImpl : public InterfaceController, public Spin
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Constructor of SpinSpeedLevelIntfControllerImpl
      */
-    SpinSpeedLevelIntfControllerImpl(BusAttachment& busAttachment, SpinSpeedLevelIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    SpinSpeedLevelIntfControllerImpl(BusAttachment& busAttachment, SpinSpeedLevelIntfControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Destructor of SpinSpeedLevelIntfControllerImpl

@@ -30,7 +30,6 @@ class AboutObjectDescription;
 
 namespace services {
 
-class CdmProxyBusObject;
 class CdmControllerImpl;
 class CdmInterface;
 class InterfaceControllerListener;

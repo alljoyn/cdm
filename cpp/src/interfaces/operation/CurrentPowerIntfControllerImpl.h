@@ -26,7 +26,6 @@ namespace ajn {
 namespace services {
 
 class CurrentPowerIntfControllerListener;
-class CdmProxyBusObject;
 
 /**
  * CurrentPower Interface Controller implementation class
@@ -36,12 +35,12 @@ class CurrentPowerIntfControllerImpl : public InterfaceController, public Curren
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Constructor of CurrentPowerIntfControllerImpl
      */
-    CurrentPowerIntfControllerImpl(BusAttachment& busAttachment, CurrentPowerIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    CurrentPowerIntfControllerImpl(BusAttachment& busAttachment, CurrentPowerIntfControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Destructor of CurrentPowerIntfControllerImpl

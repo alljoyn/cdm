@@ -26,7 +26,6 @@ namespace ajn {
 namespace services {
 
 class LanguageDisplayIntfControllerListener;
-class CdmProxyBusObject;
 
 /**
  * LanguageDisplay Interface Controller implementation class
@@ -36,12 +35,12 @@ class LanguageDisplayIntfControllerImpl : public InterfaceController, public Lan
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Constructor of LanguageDisplayIntfControllerImpl
      */
-    LanguageDisplayIntfControllerImpl(BusAttachment& busAttachment, LanguageDisplayIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    LanguageDisplayIntfControllerImpl(BusAttachment& busAttachment, LanguageDisplayIntfControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Destructor of LanguageDisplayIntfControllerImpl

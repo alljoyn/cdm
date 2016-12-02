@@ -80,7 +80,7 @@ class InterfaceFactory {
      * @param cdm proxy object
      * @return CdmInterface
      */
-    CdmInterface* CreateIntfController(const CdmInterfaceType type, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    CdmInterface* CreateIntfController(const CdmInterfaceType type, InterfaceControllerListener& listener, ProxyBusObject& cdmProxyObject);
 
     /**
      * Register vendor defined interface for controllee

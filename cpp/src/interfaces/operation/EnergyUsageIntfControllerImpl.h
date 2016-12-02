@@ -26,7 +26,6 @@ namespace ajn {
 namespace services {
 
 class EnergyUsageIntfControllerListener;
-class CdmProxyBusObject;
 
 /**
  * EnergyUsage Interface Controller implementation class
@@ -36,12 +35,12 @@ class EnergyUsageIntfControllerImpl : public InterfaceController, public EnergyU
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Constructor of EnergyUsageIntfControllerImpl
      */
-    EnergyUsageIntfControllerImpl(BusAttachment& busAttachment, EnergyUsageIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    EnergyUsageIntfControllerImpl(BusAttachment& busAttachment, EnergyUsageIntfControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Destructor of EnergyUsageIntfControllerImpl

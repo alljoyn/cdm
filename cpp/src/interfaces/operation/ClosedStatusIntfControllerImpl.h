@@ -26,7 +26,6 @@ namespace ajn {
 namespace services {
 
 class ClosedStatusIntfControllerListener;
-class CdmProxyBusObject;
 
 /**
  * ClosedStatus Interface Controller implementation class
@@ -36,12 +35,12 @@ class ClosedStatusIntfControllerImpl : public InterfaceController, public Closed
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Constructor of ClosedStatusIntfControllerImpl
      */
-    ClosedStatusIntfControllerImpl(BusAttachment& busAttachment, ClosedStatusIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    ClosedStatusIntfControllerImpl(BusAttachment& busAttachment, ClosedStatusIntfControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Destructor of ClosedStatusIntfControllerImpl

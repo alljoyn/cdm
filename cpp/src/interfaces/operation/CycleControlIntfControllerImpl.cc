@@ -17,7 +17,6 @@
 #include <qcc/Util.h>
 
 #include <alljoyn/cdm/LogModule.h>
-#include <alljoyn/cdm/CdmProxyBusObject.h>
 #include <alljoyn/cdm/interfaces/operation/CycleControlIntfControllerListener.h>
 
 #include "CycleControlIntfControllerImpl.h"
@@ -29,12 +28,12 @@ using namespace std;
 namespace ajn {
 namespace services {
 
-CdmInterface* CycleControlIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject)
+CdmInterface* CycleControlIntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& cdmProxyObject)
 {
     return new CycleControlIntfControllerImpl(busAttachment, dynamic_cast<CycleControlIntfControllerListener&>(listener), cdmProxyObject);
 }
 
-CycleControlIntfControllerImpl::CycleControlIntfControllerImpl(BusAttachment& busAttachment, CycleControlIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject) :
+CycleControlIntfControllerImpl::CycleControlIntfControllerImpl(BusAttachment& busAttachment, CycleControlIntfControllerListener& listener, ProxyBusObject& cdmProxyObject) :
     InterfaceController(cdmProxyObject),
     m_busAttachment(busAttachment),
     m_interfaceListener(listener)

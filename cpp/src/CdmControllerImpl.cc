@@ -26,7 +26,6 @@
 #include "CdmControllerImpl.h"
 #include "CdmBusListener.h"
 #include "InterfaceFactory.h"
-#include <alljoyn/cdm/CdmProxyBusObject.h>
 
 using namespace ajn;
 using namespace services;
@@ -193,7 +192,7 @@ std::shared_ptr<CdmInterface> CdmControllerImpl::CreateInterface(const CdmInterf
     if (it != InterfaceTypesMap.end()) {
         const String interfaceName = it->second;
 
-        std::shared_ptr<CdmProxyBusObject> pbo = std::make_shared<CdmProxyBusObject>(m_bus, busName.c_str(), objectPath.c_str(), sessionId);
+        std::shared_ptr<ProxyBusObject> pbo = std::make_shared<ProxyBusObject>(m_bus, busName.c_str(), objectPath.c_str(), sessionId);
         interface = std::shared_ptr<CdmInterface>(InterfaceFactory::GetInstance()->CreateIntfController(type, listener, *pbo.get()), [pbo](CdmInterface* ptr) { delete ptr; });
         if (!interface) {
             QCC_LogError(ER_FAIL, ("%s: could not create interface.", __func__));

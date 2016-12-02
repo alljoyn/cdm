@@ -26,7 +26,6 @@ namespace ajn {
 namespace services {
 
 class WaterLevelIntfControllerListener;
-class CdmProxyBusObject;
 
 /**
  * WaterLevel Interface Controller implementation class
@@ -36,12 +35,12 @@ class WaterLevelIntfControllerImpl : public InterfaceController, public WaterLev
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Constructor of WaterLevelIntfControllerImpl
      */
-    WaterLevelIntfControllerImpl(BusAttachment& busAttachment, WaterLevelIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    WaterLevelIntfControllerImpl(BusAttachment& busAttachment, WaterLevelIntfControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Destructor of WaterLevelIntfControllerImpl

@@ -26,7 +26,6 @@ namespace ajn {
 namespace services {
 
 class BatteryStatusIntfControllerListener;
-class CdmProxyBusObject;
 
 /**
  * BatteryStatus Interface Controller implementation class
@@ -36,12 +35,12 @@ class BatteryStatusIntfControllerImpl : public InterfaceController, public Batte
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Constructor of BatteryStatusIntfControllerImpl
      */
-    BatteryStatusIntfControllerImpl(BusAttachment& busAttachment, BatteryStatusIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    BatteryStatusIntfControllerImpl(BusAttachment& busAttachment, BatteryStatusIntfControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Destructor of BatteryStatusIntfControllerImpl

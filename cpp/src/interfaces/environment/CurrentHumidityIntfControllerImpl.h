@@ -26,7 +26,6 @@ namespace ajn {
 namespace services {
 
 class CurrentHumidityIntfControllerListener;
-class CdmProxyBusObject;
 
 /**
  * CurrentHumidity Interface Controller implementation class
@@ -36,12 +35,12 @@ class CurrentHumidityIntfControllerImpl : public InterfaceController, public Cur
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Constructor of CurrentHumidityIntfControllerImpl
      */
-    CurrentHumidityIntfControllerImpl(BusAttachment& busAttachment, CurrentHumidityIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    CurrentHumidityIntfControllerImpl(BusAttachment& busAttachment, CurrentHumidityIntfControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Destructor of CurrentHumidityIntfControllerImpl

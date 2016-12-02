@@ -309,7 +309,7 @@ CdmInterface* InterfaceFactory::CreateIntfControllee(const CdmInterfaceType type
     return interface;
 }
 
-CdmInterface* InterfaceFactory::CreateIntfController(const CdmInterfaceType type, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject)
+CdmInterface* InterfaceFactory::CreateIntfController(const CdmInterfaceType type, InterfaceControllerListener& listener, ProxyBusObject& cdmProxyObject)
 {
     CdmInterface* interface = NULL;
     QStatus status = ER_OK;

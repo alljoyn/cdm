@@ -30,7 +30,6 @@ class BusAttachment;
 
 namespace services {
 
-class CdmProxyBusObject;
 
 /**
  * Device Info class

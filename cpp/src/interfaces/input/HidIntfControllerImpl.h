@@ -26,7 +26,6 @@ namespace ajn {
 namespace services {
 
 class HidIntfControllerListener;
-class CdmProxyBusObject;
 
 /**
  * Hid Interface Controller implementation class
@@ -36,12 +35,12 @@ class HidIntfControllerImpl : public InterfaceController, public HidIntfControll
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Constructor of HidIntfControllerImpl
      */
-    HidIntfControllerImpl(BusAttachment& busAttachment, HidIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
+    HidIntfControllerImpl(BusAttachment& busAttachment, HidIntfControllerListener& listener, ProxyBusObject& ProxyBusObject);
 
     /**
      * Destructor of HidIntfControllerImpl
