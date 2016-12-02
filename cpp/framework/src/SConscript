@@ -1,0 +1,48 @@
+# Copyright AllSeen Alliance. All rights reserved.
+#
+#    Permission to use, copy, modify, and/or distribute this software for any
+#    purpose with or without fee is hereby granted, provided that the above
+#    copyright notice and this permission notice appear in all copies.
+#
+#    THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+#    WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+#    MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+#    ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+#    WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+#    ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+#    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+Import('cdm_env')
+
+# Sources
+util_srcs = cdm_env.Glob('util/*.cc')
+common_srcs = cdm_env.Glob('common/*.cc')
+controllee_srcs = cdm_env.Glob('controllee/*.cc')
+controller_srcs = cdm_env.Glob('controller/*.cc')
+
+cdm_env.Append(CPPPATH = '.');
+
+srcs_data = ((util_srcs, 'util'),
+             (common_srcs, 'common'),
+             (controllee_srcs, 'controllee'),
+             (controller_srcs, 'controller'))
+
+platform_srcs_dir = '$OS/*.cc' if cdm_env['OS'] == 'android' else '$OS_GROUP/*.cc'
+
+libs = []
+for srcs, lib_name in srcs_data:
+    # Platform specific sources
+    srcs += cdm_env.Glob(platform_srcs_dir)
+
+    full_lib_name = 'alljoyn_cdm_' + lib_name
+
+    # Static library
+    objs = cdm_env.Object(srcs)
+    libs.append(cdm_env.StaticLibrary(full_lib_name, objs))
+
+    # Shared library
+    if cdm_env.get('LIBTYPE', 'static') != 'static':
+        shobjs = cdm_env.SharedObject(srcs)
+        libs.append(cdm_env.SharedLibrary(full_lib_name, shobjs))
+
+Return('libs')

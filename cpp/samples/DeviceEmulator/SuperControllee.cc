@@ -1,0 +1,420 @@
+/******************************************************************************
+ * Copyright AllSeen Alliance. All rights reserved.
+ *
+ *    Permission to use, copy, modify, and/or distribute this software for any
+ *    purpose with or without fee is hereby granted, provided that the above
+ *    copyright notice and this permission notice appear in all copies.
+ *
+ *    THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ *    WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ *    MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ *    ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ *    WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ *    ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ ******************************************************************************/
+
+#include <iostream>
+using namespace std;
+
+#include <alljoyn/cdm/controllee/CdmBusObject.h>
+
+#include <interfaces/controllee/operation/AirRecirculationModeIntfControllee.h>
+#include <interfaces/controllee/operation/AlertsIntfControllee.h>
+#include <interfaces/controllee/operation/AudioVideoInputIntfControllee.h>
+#include <interfaces/controllee/operation/AudioVolumeIntfControllee.h>
+#include <interfaces/controllee/operation/BatteryStatusIntfControllee.h>
+#include <interfaces/controllee/operation/BrightnessIntfControllee.h>
+#include <interfaces/controllee/operation/ChannelIntfControllee.h>
+#include <interfaces/controllee/operation/ClimateControlModeIntfControllee.h>
+#include <interfaces/controllee/operation/ClosedStatusIntfControllee.h>
+#include <interfaces/controllee/operation/ColorIntfControllee.h>
+#include <interfaces/controllee/operation/ColorTemperatureIntfControllee.h>
+#include <interfaces/controllee/operation/CurrentPowerIntfControllee.h>
+#include <interfaces/controllee/operation/CycleControlIntfControllee.h>
+#include <interfaces/controllee/operation/DishWashingCyclePhaseIntfControllee.h>
+#include <interfaces/controllee/operation/EnergyUsageIntfControllee.h>
+#include <interfaces/controllee/operation/FanSpeedLevelIntfControllee.h>
+#include <interfaces/controllee/operation/FilterStatusIntfControllee.h>
+#include <interfaces/controllee/operation/HeatingZoneIntfControllee.h>
+#include <interfaces/controllee/operation/HvacFanModeIntfControllee.h>
+#include <interfaces/controllee/operation/LaundryCyclePhaseIntfControllee.h>
+#include <interfaces/controllee/operation/LockControlIntfControllee.h>
+#include <interfaces/controllee/operation/LockedStatusIntfControllee.h>
+#include <interfaces/controllee/operation/MoistureOutputLevelIntfControllee.h>
+#include <interfaces/controllee/operation/OffControlIntfControllee.h>
+#include <interfaces/controllee/operation/OnControlIntfControllee.h>
+#include <interfaces/controllee/operation/OnOffStatusIntfControllee.h>
+#include <interfaces/controllee/operation/OvenCyclePhaseIntfControllee.h>
+#include <interfaces/controllee/operation/PlugInUnitsIntfControllee.h>
+#include <interfaces/controllee/operation/RapidModeIntfControllee.h>
+#include <interfaces/controllee/operation/RapidModeTimedIntfControllee.h>
+#include <interfaces/controllee/operation/RemoteControllabilityIntfControllee.h>
+#include <interfaces/controllee/operation/RepeatModeIntfControllee.h>
+#include <interfaces/controllee/operation/ResourceSavingIntfControllee.h>
+#include <interfaces/controllee/operation/RobotCleaningCyclePhaseIntfControllee.h>
+#include <interfaces/controllee/operation/SoilLevelIntfControllee.h>
+#include <interfaces/controllee/operation/SpinSpeedLevelIntfControllee.h>
+#include <interfaces/controllee/operation/TimerIntfControllee.h>
+#include <interfaces/controllee/operation/TriggerSensorIntfControllee.h>
+#include <interfaces/controllee/operation/UnlockControlIntfControllee.h>
+
+#include "Models/operation/AirRecirculationModeModel.h"
+#include "Models/operation/AlertsModel.h"
+#include "Models/operation/AudioVideoInputModel.h"
+#include "Models/operation/AudioVolumeModel.h"
+#include "Models/operation/BatteryStatusModel.h"
+#include "Models/operation/BrightnessModel.h"
+#include "Models/operation/ChannelModel.h"
+#include "Models/operation/ClimateControlModeModel.h"
+#include "Models/operation/ClosedStatusModel.h"
+#include "Models/operation/ColorModel.h"
+#include "Models/operation/ColorTemperatureModel.h"
+#include "Models/operation/CurrentPowerModel.h"
+#include "Models/operation/CycleControlModel.h"
+#include "Models/operation/DishWashingCyclePhaseModel.h"
+#include "Models/operation/EnergyUsageModel.h"
+#include "Models/operation/FanSpeedLevelModel.h"
+#include "Models/operation/FilterStatusModel.h"
+#include "Models/operation/HeatingZoneModel.h"
+#include "Models/operation/HvacFanModeModel.h"
+#include "Models/operation/LaundryCyclePhaseModel.h"
+#include "Models/operation/LockControlModel.h"
+#include "Models/operation/LockedStatusModel.h"
+#include "Models/operation/MoistureOutputLevelModel.h"
+#include "Models/operation/OffControlModel.h"
+#include "Models/operation/OnControlModel.h"
+#include "Models/operation/OnOffStatusModel.h"
+#include "Models/operation/OvenCyclePhaseModel.h"
+#include "Models/operation/PlugInUnitsModel.h"
+#include "Models/operation/RapidModeModel.h"
+#include "Models/operation/RapidModeTimedModel.h"
+#include "Models/operation/RemoteControllabilityModel.h"
+#include "Models/operation/RepeatModeModel.h"
+#include "Models/operation/ResourceSavingModel.h"
+#include "Models/operation/RobotCleaningCyclePhaseModel.h"
+#include "Models/operation/SoilLevelModel.h"
+#include "Models/operation/SpinSpeedLevelModel.h"
+#include "Models/operation/TimerModel.h"
+#include "Models/operation/TriggerSensorModel.h"
+#include "Models/operation/UnlockControlModel.h"
+
+#include "SuperControllee.h"
+#include "../Utils/HAL.h"
+
+namespace ajn {
+namespace services {
+namespace emulator {
+//======================================================================
+
+const std::string BusPath = "/cdm/super";
+
+SuperControllee::SuperControllee(
+        BusAttachment& bus,
+        const Config& config,
+        const std::string& certPath
+        )
+  : m_announcer(bus),
+    m_security(bus),
+    m_controllee(bus),
+    m_config(config)
+{
+    m_security.LoadFiles(certPath);
+    m_announcer.SetAboutData(config.GetAboutData());
+}
+
+
+
+QStatus SuperControllee::Start()
+{
+    return SetupDevice();
+}
+
+
+
+QStatus SuperControllee::CreateInterfaces()
+{
+    QStatus status = ER_OK;
+    const Config::ObjectVec& objects = m_config.GetObjects();
+
+    for (const auto& obj : m_config.GetObjects())
+    {
+        for (const auto& iface : obj.interfaces)
+        {
+            auto& name = iface.name;
+
+            if (name == "org.alljoyn.SmartSpaces.Operation.AirRecirculationMode")
+            {
+                status = mkInterface<AirRecirculationModeIntfControllee, AirRecirculationModeModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Operation.Alerts")
+            {
+                status = mkInterface<AlertsIntfControllee, AlertsModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Operation.AudioVideoInput")
+            {
+                status = mkInterface<AudioVideoInputIntfControllee, AudioVideoInputModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Operation.AudioVolume")
+            {
+                status = mkInterface<AudioVolumeIntfControllee, AudioVolumeModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Operation.BatteryStatus")
+            {
+                status = mkInterface<BatteryStatusIntfControllee, BatteryStatusModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Operation.Brightness")
+            {
+                status = mkInterface<BrightnessIntfControllee, BrightnessModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Operation.Channel")
+            {
+                status = mkInterface<ChannelIntfControllee, ChannelModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Operation.ClimateControlMode")
+            {
+                status = mkInterface<ClimateControlModeIntfControllee, ClimateControlModeModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Operation.ClosedStatus")
+            {
+                status = mkInterface<ClosedStatusIntfControllee, ClosedStatusModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Operation.Color")
+            {
+                status = mkInterface<ColorIntfControllee, ColorModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Operation.ColorTemperature")
+            {
+                status = mkInterface<ColorTemperatureIntfControllee, ColorTemperatureModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Operation.CurrentPower")
+            {
+                status = mkInterface<CurrentPowerIntfControllee, CurrentPowerModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Operation.CycleControl")
+            {
+                status = mkInterface<CycleControlIntfControllee, CycleControlModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Operation.DishWashingCyclePhase")
+            {
+                status = mkInterface<DishWashingCyclePhaseIntfControllee, DishWashingCyclePhaseModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Operation.EnergyUsage")
+            {
+                status = mkInterface<EnergyUsageIntfControllee, EnergyUsageModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Operation.FanSpeedLevel")
+            {
+                status = mkInterface<FanSpeedLevelIntfControllee, FanSpeedLevelModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Operation.FilterStatus")
+            {
+                status = mkInterface<FilterStatusIntfControllee, FilterStatusModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Operation.HeatingZone")
+            {
+                status = mkInterface<HeatingZoneIntfControllee, HeatingZoneModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Operation.HvacFanMode")
+            {
+                status = mkInterface<HvacFanModeIntfControllee, HvacFanModeModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Operation.LaundryCyclePhase")
+            {
+                status = mkInterface<LaundryCyclePhaseIntfControllee, LaundryCyclePhaseModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Operation.LockControl")
+            {
+                status = mkInterface<LockControlIntfControllee, LockControlModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Operation.LockedStatus")
+            {
+                status = mkInterface<LockedStatusIntfControllee, LockedStatusModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Operation.MoistureOutputLevel")
+            {
+                status = mkInterface<MoistureOutputLevelIntfControllee, MoistureOutputLevelModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Operation.OffControl")
+            {
+                status = mkInterface<OffControlIntfControllee, OffControlModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Operation.OnControl")
+            {
+                status = mkInterface<OnControlIntfControllee, OnControlModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Operation.OnOffStatus")
+            {
+                status = mkInterface<OnOffStatusIntfControllee, OnOffStatusModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Operation.OvenCyclePhase")
+            {
+                status = mkInterface<OvenCyclePhaseIntfControllee, OvenCyclePhaseModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Operation.PlugInUnits")
+            {
+                status = mkInterface<PlugInUnitsIntfControllee, PlugInUnitsModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Operation.RapidMode")
+            {
+                status = mkInterface<RapidModeIntfControllee, RapidModeModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Operation.RapidModeTimed")
+            {
+                status = mkInterface<RapidModeTimedIntfControllee, RapidModeTimedModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Operation.RemoteControllability")
+            {
+                status = mkInterface<RemoteControllabilityIntfControllee, RemoteControllabilityModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Operation.RepeatMode")
+            {
+                status = mkInterface<RepeatModeIntfControllee, RepeatModeModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Operation.ResourceSaving")
+            {
+                status = mkInterface<ResourceSavingIntfControllee, ResourceSavingModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Operation.RobotCleaningCyclePhase")
+            {
+                status = mkInterface<RobotCleaningCyclePhaseIntfControllee, RobotCleaningCyclePhaseModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Operation.SoilLevel")
+            {
+                status = mkInterface<SoilLevelIntfControllee, SoilLevelModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Operation.SpinSpeedLevel")
+            {
+                status = mkInterface<SpinSpeedLevelIntfControllee, SpinSpeedLevelModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Operation.Timer")
+            {
+                status = mkInterface<TimerIntfControllee, TimerModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Operation.TriggerSensor")
+            {
+                status = mkInterface<TriggerSensorIntfControllee, TriggerSensorModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Operation.UnlockControl")
+            {
+                status = mkInterface<UnlockControlIntfControllee, UnlockControlModel>(obj.path);
+            }
+            else
+            {
+                cerr << "Unrecognised interface name " << name << "\n";
+                status = ER_FAIL;
+            }
+
+            if (status != ER_OK)
+            {
+                return status;
+            }
+        }
+    }
+
+    return status;
+}
+
+
+
+QStatus SuperControllee::PreloadHAL()
+{
+    auto& objects = m_config.GetObjects();
+
+    for (auto& obj : objects)
+    {
+        for (auto& iface : obj.interfaces)
+        {
+            for (auto& prop : iface.properties)
+            {
+                if (!prop.initialState.empty())
+                {
+                    HAL::X::instance().WritePropertyXml(obj.path, iface.name, prop.name, prop.initialState);
+                }
+            }
+        }
+    }
+
+    return ER_OK;
+}
+
+
+
+QStatus SuperControllee::SetupDevice()
+{
+    QStatus status = PreloadHAL();
+    if (status != ER_OK)
+    {
+        return status;
+    }
+
+    status = CreateInterfaces();
+    if (status != ER_OK)
+    {
+        return status;
+    }
+
+    status = m_security.Enable();
+    if (status != ER_OK)
+    {
+        return status;
+    }
+
+    status = m_controllee.Start();
+    if (status != ER_OK)
+    {
+        return status;
+    }
+
+    return m_announcer.Announce();
+}
+
+
+
+QStatus SuperControllee::Stop()
+{
+    m_announcer.Unannounce();
+
+    return m_controllee.Stop();
+}
+
+//======================================================================
+}}}

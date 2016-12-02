@@ -31,12 +31,6 @@ if 'c' not in env['bindings']:
         list.remove('$DISTDIR/c/lib')
         env['LIBPATH'] = list
 
-#allow dynamic casts in CDM"
-flags = env['CXXFLAGS']
-if '-fno-rtti' in flags:
-    flags.remove('-fno-rtti')
-    env['CXXFLAGS'] = flags
-
 if not env.has_key('_ALLJOYN_ABOUT_') and os.path.exists('../../core/alljoyn/services/about/SConscript'):
     env.SConscript('../../core/alljoyn/services/about/SConscript')
 
@@ -55,10 +49,15 @@ else:
 
 cdm_env = env.Clone()
 cdm_env.Append(LIBPATH = '$DISTDIR/cdm/lib')
-cdm_env.Append(CPPPATH = '$DISTDIR/cdm/inc')
+cdm_env.Append(CPPPATH = '$DISTDIR/cdm/framework/inc')
+cdm_env.Append(CPPPATH = '$DISTDIR/cdm/interfaces/inc')
+
 #do not allow variable length arrays on the heap
 if platform.system() != WINDOWS:
     cdm_env.Append(CPPFLAGS = '-Werror=vla');
+
+# Allow dynamic casts and exceptions in CDM
+cdm_env.Append(CXXFLAGS = ['-frtti', '-fexceptions'])
 
 for b in cdm_env['bindings']:
     if os.path.exists('%s/SConscript' % b):

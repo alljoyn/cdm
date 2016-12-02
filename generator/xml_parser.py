@@ -187,6 +187,90 @@ class AJType(object):
     def ajtype(self):
         return _padded_tag_replacement(self.AJTypeVarMap.get(self.signature, "unknown"), "Type")
 
+    def ajtypeIsSimpleVector(self):
+        # REVISIT not currently used
+        return len(self.signature) == 2 and self.signature[0] == "a" and self.signature[1] in self.CTypeMap
+
+    def ajtypeIsVectorOfStruct(self, interface):
+        # the annotated type is e.g. a[PlugInInfo] but the name must not be an enum
+        if self.annotated_type:
+            m = re.match("a\[(\w+)\]$", self.annotated_type)
+            if m != None:
+                name = m.group(1)
+                return not self.ajtypeIsEnum(name, interface)
+        return False
+
+    def ajtypeVectorOfStructName(self, interface):
+        # Get the T out of a[T] in the annotated type
+        if self.annotated_type:
+            m = re.match("a\[(\w+)\]$", self.annotated_type)
+            if m != None:
+                name = m.group(1)
+                if not self.ajtypeIsEnum(name, interface):
+                    return name
+        return None
+
+    def ajtypeVectorOfStructSig(self):
+        # Get the (oub) out of a(oub)
+        m = re.match("a(\(\w+\))$", self.signature)
+        if m != None:
+            return m.group(1)
+
+    def ajtypeIsEnum(self, name, interface):
+        # See if the name in [Name] is an enum in this interface
+        for enum in interface.Enums:
+            if enum.Name == name:
+                return True
+        return False
+
+    def ajtypeIsString(self):
+        return self.signature == 's' or self.signature == 'o'
+
+    def ajtypeVectorOfStructFieldGets(self, interface):
+        # Given the interface, find the struct and return the field getters. We expect
+        # that they are in the correct order in the XML for serialisation.
+        # The fields must be scalar types except for strings. For strings we append a .c_str().
+        names = []
+
+        struc = self.ajtypeVectorOfStructName(interface)
+        # print "struct name", struc
+        if struc:
+            for s in interface.Structs:
+                if s.Name == struc:
+                    for field in s.Fields:
+                        type = field[0]
+                        name = field[1]
+                        if type.ajtypeIsString():
+                            name += ".c_str()"
+                        names.append(name);
+        if not names:
+            names.append("TODO")
+        # print "names", names
+        return names
+
+    def ajtypeVectorOfStructFieldSets(self, interface):
+        # Like ajtypeVectorOfStructFieldGets, find the struct and return info for setters.
+        # We return an array of pairs of (name, ctype). The ctype for a string must be a char*
+        names = []
+        struc = self.ajtypeVectorOfStructName(interface)
+        # print "struct name", struc
+        if struc:
+            for s in interface.Structs:
+                if s.Name == struc:
+                    for field in s.Fields:
+                        type = field[0]
+                        name = field[1]
+                        ctype = type.ctype();
+                        if type.ajtypeIsString():
+                            ctype = "char*";
+                        pair = (name, type)
+                        names.append(pair);
+        if not names:
+            pair = ("TODO", "TODO")
+            names.append(pair)
+        # print "names", names
+        return names
+
     def ajtype_primitive(self):
         sig = self.signature
 
@@ -205,7 +289,8 @@ class AJType(object):
         return sig
 
     def ajvar(self):
-        return "v_" + self.AJTypeVarMap.get(self.signature, "/* TODO:%{} */".format(self.signature))
+        base_var = "v_" + self.AJTypeVarMap.get(self.signature, "/* TODO:%{} */".format(self.signature))
+        return base_var + ".str" if self.ajtypeIsString() else base_var
 
     def ctype(self, arg=False):
         template = None
@@ -218,6 +303,8 @@ class AJType(object):
 
         if ajtype.startswith('[') and ajtype.endswith(']'):
             ctype = ajtype[1:-1]
+            if self.parent_interface and self.ajtypeIsEnum(ctype, self.parent_interface):
+                ctype = "%sInterface::%s" % (self.parent_interface.Name, ctype)
         else:
             ctype = self.CTypeMap.get(ajtype, "/* TODO:%{} */".format(ajtype))
 
@@ -334,12 +421,20 @@ class InterfaceEnum(object):
 class InterfaceStruct(object):
     StructField = namedtuple("StructField", "Type Name")
 
-    def __init__(self, name):
+    def __init__(self, name, interface):
         self.Name = name
         self.Fields = []
+        self.parent_interface = interface
 
     def add_field(self, name, ajtype, interface):
         self.Fields.append(InterfaceStruct.StructField(AJType(ajtype, interface), name))
+
+    def resolve_signature(self):
+        # Join the signatures of the fields and wrap them in ()
+        sig = ""
+        for f in self.Fields:
+            sig += self.parent_interface.resolve_signature(f[0].signature)
+        return "(" + sig + ")"
 
 
 class Interface(object):
@@ -347,6 +442,7 @@ class Interface(object):
         self.Name = Symbol(name.split(".")[-1])
         self.Category = Symbol(name.split(".")[-2].lower())
         self.FullName = name
+        self.ClassName = name.replace(".", "_")
         self.Secure = None
         self.Version = None
         self.Annotations = []
@@ -356,12 +452,16 @@ class Interface(object):
         self.Methods = []
         self.Signals = []
         self.doc = {}
+        self.PropertiesLUT = {}
 
     @property
     def UserProperties(self):
         return filter(lambda x: str(x.Name) != "Version", self.Properties)
 
     @property
+    def PropLUT(self):
+        return self.PropertiesLUT
+
     def UIProperties(self):
         return filter(lambda x: str(x.Name) != "Version" and not x.is_selector(), self.Properties)
 
@@ -378,7 +478,7 @@ class Interface(object):
                 struct = s
                 break
         if struct is None:
-            struct = InterfaceStruct(struct_name)
+            struct = InterfaceStruct(struct_name, self)
             self.Structs.append(struct)
         struct.add_field(field, field_type, self)
 
@@ -417,12 +517,13 @@ class Interface(object):
                 handled = True
 
         if not handled:
-            print "Unknown annotation:", name
+            print "Unknown interface annotation:", name
 
     def add_child(self, child):
         if isinstance(child, Property):
             child.parent_interface = self
             self.Properties.append(child)
+            self.PropertiesLUT[child.Name.string] = child
         elif isinstance(child, Method):
             self.Methods.append(child)
         elif isinstance(child, Signal):
@@ -432,6 +533,18 @@ class Interface(object):
             self.add_annotation(child.Name, child.Value)
         else:
             print "Unexpected: ", child
+
+    def resolve_signature(self, sig):
+        # Resolve to a signature mapping our names to their signatures
+        if sig.startswith('[') and sig.endswith(']'):
+            name = sig[1:-1]
+            for enum in self.Enums:
+                if enum.Name == name and enum.enum_type():
+                    return str(enum.enum_type())
+            for struc in self.Structs:
+                if struc.Name == name:
+                    return struc.resolve_signature()
+        return sig
 
     def has_writable_property(self):
         for property in self.UserProperties:
@@ -531,7 +644,7 @@ class Property(object):
  
             re.compile(r'org\.alljoyn\.Bus\.Type\.Max'): 
                 lambda m: self.set_max(value), 
- 
+
             re.compile(r'org\.alljoyn\.Bus\.Type\.Units'):
                 lambda m: self.set_units(value), 
 
@@ -553,7 +666,7 @@ class Property(object):
                 handled = True
 
         if not handled:
-            print "Unknown annotation:", name
+            print "Unknown property annotation:", name
 
     def add_child(self, child):
         if isinstance(child, Annotation):
@@ -711,8 +824,12 @@ class MethodArg(object):
         regexs = {
             re.compile(r'org\.alljoyn\.Bus\.Type\.Name'):
                 lambda m: self.Type.set_annotated_type(value),
+
             re.compile(r'org\.alljoyn\.Bus\.DocString\.(\w*)'):
                 lambda m: self.set_doc_string(m.group(1), value),
+ 
+            re.compile(r'org\.alljoyn\.Bus\.Type\.Units'): 
+                lambda m: False
         }
 
         handled = False
@@ -723,7 +840,7 @@ class MethodArg(object):
                 handled = True
 
         if not handled:
-            print "Unknown annotation:", name
+            print "Unknown method arg annotation:", name
 
 
 class Signal:

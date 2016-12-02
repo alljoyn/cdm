@@ -1,0 +1,39 @@
+<DeviceEmulator name="Lamp-Color">
+    <AboutData>
+        <AppId><!-- Runtime Generated --></AppId>
+        <DefaultLanguage>en</DefaultLanguage>
+        <DeviceName>Virtual Lamp (Color)</DeviceName>
+        <DeviceId><!-- Runtime Generated --></DeviceId>
+        <AppName>AllJoyn CDM Controllee</AppName>
+        <Manufacturer>AllJoyn Sample</Manufacturer>
+        <ModelNumber>lamp-color</ModelNumber>
+        <Description>Simulated AllJoyn Device</Description>
+        <DateOfManufacture>2016-10-01</DateOfManufacture>
+        <SoftwareVersion>1.0.0</SoftwareVersion>
+        <HardwareVersion>1.0.0</HardwareVersion>
+        <SupportUrl>https://allseenalliance.org/</SupportUrl>
+        <CountryOfProduction>Nowhere</CountryOfProduction>
+        <Location>Sample Location</Location>
+        <ProductBrand>AllJoyn Sample</ProductBrand>
+        <DeviceTypeDescription>
+            <TypeDescription>
+                <device_type>23</device_type><!-- TODO: Ensure enum value is correct -->
+                <object_path>/CDM/Lamp</object_path>
+            </TypeDescription>
+        </DeviceTypeDescription>
+    </AboutData>
+    <InterfaceList>
+        <Object path='/CDM/Lamp'>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.OnControl'/>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.OffControl'/>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.OnOffStatus'>
+                <Property name='IsOn'>
+                    <scalar type='bool' value='false'/>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.Color'/>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.Brightness'/>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.ColorTemperature'/>
+        </Object>
+    </InterfaceList>
+</DeviceEmulator>

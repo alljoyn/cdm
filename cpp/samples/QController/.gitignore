@@ -1,0 +1,7 @@
+moc_*
+CMakeCache.txt
+CMakeFiles/
+Makefile
+QController
+QController_automoc.cpp
+cmake_install.cmake

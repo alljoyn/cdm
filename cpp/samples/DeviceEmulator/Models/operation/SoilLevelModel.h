@@ -1,0 +1,65 @@
+/******************************************************************************
+ * Copyright AllSeen Alliance. All rights reserved.
+ *
+ *    Permission to use, copy, modify, and/or distribute this software for any
+ *    purpose with or without fee is hereby granted, provided that the above
+ *    copyright notice and this permission notice appear in all copies.
+ *
+ *    THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ *    WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ *    MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ *    ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ *    WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ *    ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ ******************************************************************************/
+
+#ifndef SOILLEVELMODEL_H_
+#define SOILLEVELMODEL_H_
+
+#include <interfaces/controllee/operation/SoilLevelIntfControlleeModel.h>
+
+namespace ajn {
+namespace services {
+namespace emulator {
+
+
+class SoilLevelModel : public virtual SoilLevelIntfControlleeModel {
+  public:
+    SoilLevelModel(const std::string& busPath);
+
+    /**
+     * Get MaxLevel
+     * @return current max level
+     */
+    QStatus GetMaxLevel(uint8_t& out) const override;
+
+    /**
+     * Get TargetLevel
+     * @return current target level
+     */
+    QStatus GetTargetLevel(uint8_t& out) const override;
+
+     /**
+     * Set TargetLevel
+     * @param[in] value The target level to set
+     * @return ER_OK on success
+     */
+    QStatus SetTargetLevel(const uint8_t value) override;
+
+    /**
+     * Get SelectableLevels
+     * @return current selectable levels
+     */
+    QStatus GetSelectableLevels(std::vector<uint8_t>& out) const override;
+
+
+  private:
+    std::string m_busPath;
+};
+
+} // namespace emulator
+} // namespace services
+} // namespace ajn
+
+#endif /* SOILLEVELMODEL_H_ */

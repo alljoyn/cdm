@@ -1,0 +1,85 @@
+/******************************************************************************
+ * Copyright AllSeen Alliance. All rights reserved.
+ *
+ *    Permission to use, copy, modify, and/or distribute this software for any
+ *    purpose with or without fee is hereby granted, provided that the above
+ *    copyright notice and this permission notice appear in all copies.
+ *
+ *    THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ *    WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ *    MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ *    ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ *    WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ *    ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ ******************************************************************************/
+
+#ifndef {{Interface.Name.upper()}}INTFCONTROLLEELISTENER_H_
+#define {{Interface.Name.upper()}}INTFCONTROLLEELISTENER_H_
+
+#include <qcc/String.h>
+#include <alljoyn/Status.h>
+{% if Interface.Methods %}
+#include <alljoyn/cdm/common/CdmTypes.h>
+{% endif %}
+#include <alljoyn/cdm/common/CdmInterfaceErrors.h>
+#include <alljoyn/cdm/controllee/InterfaceControlleeModel.h>
+
+#include <alljoyn/cdm/controllee/CdmControlleeInterface.h>
+#include <interfaces/common/{{Interface.Category}}/{{Interface.Name}}Interface.h>
+
+namespace ajn {
+namespace services {
+
+/**
+ * {{Interface.Name}} Model Interface class for the Controllee
+ */
+class {{Interface.Name}}IntfControlleeModel : public virtual InterfaceControlleeModel {
+  public:
+    {% for enum in Interface.Enums %}
+    using {{enum.Name}} = {{Interface.Name}}Interface::{{enum.Name}};
+    {% endfor %}
+    {% for struct in Interface.Structs %}
+    using {{struct.Name}} = {{Interface.Name}}Interface::{{struct.Name}};
+    {% endfor %}
+
+    /**
+     * Destructor of {{Interface.Name}}IntfControlleeModel
+     */
+    virtual ~{{Interface.Name}}IntfControlleeModel() {}
+
+    {% for property in Interface.UserProperties %}
+    /**
+     * Get {{property.Name}}
+     * @return current {{property.Name.add_spaces_lower()}}
+     */
+    virtual QStatus Get{{property.Name}}({{property.Type.ctype()}}& out) const = 0;
+    {% if property.Writable %}
+
+     /**
+     * Set {{property.Name}}
+     * @param[in] value The {{property.Name.add_spaces_lower()}} to set
+     * @return ER_OK on success
+     */
+    virtual QStatus Set{{property.Name}}(const {{property.Type.ctype_arg()}} value) = 0;
+    {% endif %}
+    {% endfor %}
+
+    {% for method in Interface.Methods %}
+    /**
+     * Handler for method {{method.Name}}
+     * @param[out] error Internal error code occurred during command execution
+     * @return ER_OK on success
+     */
+{% set comma = joiner(", ") %}
+    virtual QStatus {{method.Name}}(
+{%- for arg in method.Args if arg.Direction == "in" %}{{comma()}}{{arg.Type.ctype()}} arg_{{arg.Name}}{% endfor %}
+{%- for arg in method.Args if arg.Direction == "out" %}{{comma()}}{{arg.Type.ctype()}}& arg_{{arg.Name}}{% endfor %}{{comma()-}}
+ErrorCode& error, CdmSideEffects& sideEffects) = 0;
+    {% endfor %}
+};
+
+} //namespace services
+} //namespace ajn
+
+#endif /* {{Interface.Name.upper()}}INTFCONTROLLEELISTENER_H_ */

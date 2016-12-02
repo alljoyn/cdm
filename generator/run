@@ -1,0 +1,52 @@
+#!/bin/bash
+
+if=/Users/anthonyshipman/Documents/AllJoyn/services/cdm/generator/templates/interface_templates/cdm/cpp/
+
+
+for x in \
+/Users/anthonyshipman/Documents/AllJoyn/alljoyn_interfaces/interfaces/org.alljoyn.SmartSpaces.Operation/AirRecirculationMode-v1.xml \
+/Users/anthonyshipman/Documents/AllJoyn/alljoyn_interfaces/interfaces/org.alljoyn.SmartSpaces.Operation/Alerts-v1.xml \
+/Users/anthonyshipman/Documents/AllJoyn/alljoyn_interfaces/interfaces/org.alljoyn.SmartSpaces.Operation/AudioVideoInput-v1.xml \
+/Users/anthonyshipman/Documents/AllJoyn/alljoyn_interfaces/interfaces/org.alljoyn.SmartSpaces.Operation/AudioVolume-v1.xml \
+/Users/anthonyshipman/Documents/AllJoyn/alljoyn_interfaces/interfaces/org.alljoyn.SmartSpaces.Operation/BatteryStatus-v1.xml \
+/Users/anthonyshipman/Documents/AllJoyn/alljoyn_interfaces/interfaces/org.alljoyn.SmartSpaces.Operation/Brightness-v1.xml \
+/Users/anthonyshipman/Documents/AllJoyn/alljoyn_interfaces/interfaces/org.alljoyn.SmartSpaces.Operation/Channel-v1.xml \
+/Users/anthonyshipman/Documents/AllJoyn/alljoyn_interfaces/interfaces/org.alljoyn.SmartSpaces.Operation/ClimateControlMode-v1.xml \
+/Users/anthonyshipman/Documents/AllJoyn/alljoyn_interfaces/interfaces/org.alljoyn.SmartSpaces.Operation/ClosedStatus-v1.xml \
+/Users/anthonyshipman/Documents/AllJoyn/alljoyn_interfaces/interfaces/org.alljoyn.SmartSpaces.Operation/Color-v1.xml \
+/Users/anthonyshipman/Documents/AllJoyn/alljoyn_interfaces/interfaces/org.alljoyn.SmartSpaces.Operation/ColorTemperature-v1.xml \
+/Users/anthonyshipman/Documents/AllJoyn/alljoyn_interfaces/interfaces/org.alljoyn.SmartSpaces.Operation/CurrentPower-v1.xml \
+/Users/anthonyshipman/Documents/AllJoyn/alljoyn_interfaces/interfaces/org.alljoyn.SmartSpaces.Operation/CycleControl-v1.xml \
+/Users/anthonyshipman/Documents/AllJoyn/alljoyn_interfaces/interfaces/org.alljoyn.SmartSpaces.Operation/DishWashingCyclePhase-v1.xml \
+/Users/anthonyshipman/Documents/AllJoyn/alljoyn_interfaces/interfaces/org.alljoyn.SmartSpaces.Operation/EnergyUsage-v1.xml \
+/Users/anthonyshipman/Documents/AllJoyn/alljoyn_interfaces/interfaces/org.alljoyn.SmartSpaces.Operation/FanSpeedLevel-v1.xml \
+/Users/anthonyshipman/Documents/AllJoyn/alljoyn_interfaces/interfaces/org.alljoyn.SmartSpaces.Operation/FilterStatus-v1.xml \
+/Users/anthonyshipman/Documents/AllJoyn/alljoyn_interfaces/interfaces/org.alljoyn.SmartSpaces.Operation/HeatingZone-v1.xml \
+/Users/anthonyshipman/Documents/AllJoyn/alljoyn_interfaces/interfaces/org.alljoyn.SmartSpaces.Operation/HvacFanMode-v1.xml \
+/Users/anthonyshipman/Documents/AllJoyn/alljoyn_interfaces/interfaces/org.alljoyn.SmartSpaces.Operation/LaundryCyclePhase-v1.xml \
+/Users/anthonyshipman/Documents/AllJoyn/alljoyn_interfaces/interfaces/org.alljoyn.SmartSpaces.Operation/LockControl-v1.xml \
+/Users/anthonyshipman/Documents/AllJoyn/alljoyn_interfaces/interfaces/org.alljoyn.SmartSpaces.Operation/LockedStatus-v1.xml \
+/Users/anthonyshipman/Documents/AllJoyn/alljoyn_interfaces/interfaces/org.alljoyn.SmartSpaces.Operation/MoistureOutputLevel-v1.xml \
+/Users/anthonyshipman/Documents/AllJoyn/alljoyn_interfaces/interfaces/org.alljoyn.SmartSpaces.Operation/OffControl-v1.xml \
+/Users/anthonyshipman/Documents/AllJoyn/alljoyn_interfaces/interfaces/org.alljoyn.SmartSpaces.Operation/OnControl-v1.xml \
+/Users/anthonyshipman/Documents/AllJoyn/alljoyn_interfaces/interfaces/org.alljoyn.SmartSpaces.Operation/OnOffStatus-v1.xml \
+/Users/anthonyshipman/Documents/AllJoyn/alljoyn_interfaces/interfaces/org.alljoyn.SmartSpaces.Operation/OvenCyclePhase-v1.xml \
+/Users/anthonyshipman/Documents/AllJoyn/alljoyn_interfaces/interfaces/org.alljoyn.SmartSpaces.Operation/PlugInUnits-v1.xml \
+/Users/anthonyshipman/Documents/AllJoyn/alljoyn_interfaces/interfaces/org.alljoyn.SmartSpaces.Operation/RapidMode-v1.xml \
+/Users/anthonyshipman/Documents/AllJoyn/alljoyn_interfaces/interfaces/org.alljoyn.SmartSpaces.Operation/RapidModeTimed-v1.xml \
+/Users/anthonyshipman/Documents/AllJoyn/alljoyn_interfaces/interfaces/org.alljoyn.SmartSpaces.Operation/RemoteControllability-v1.xml \
+/Users/anthonyshipman/Documents/AllJoyn/alljoyn_interfaces/interfaces/org.alljoyn.SmartSpaces.Operation/RepeatMode-v1.xml \
+/Users/anthonyshipman/Documents/AllJoyn/alljoyn_interfaces/interfaces/org.alljoyn.SmartSpaces.Operation/ResourceSaving-v1.xml \
+/Users/anthonyshipman/Documents/AllJoyn/alljoyn_interfaces/interfaces/org.alljoyn.SmartSpaces.Operation/RobotCleaningCyclePhase-v1.xml \
+/Users/anthonyshipman/Documents/AllJoyn/alljoyn_interfaces/interfaces/org.alljoyn.SmartSpaces.Operation/SoilLevel-v1.xml \
+/Users/anthonyshipman/Documents/AllJoyn/alljoyn_interfaces/interfaces/org.alljoyn.SmartSpaces.Operation/SpinSpeedLevel-v1.xml \
+/Users/anthonyshipman/Documents/AllJoyn/alljoyn_interfaces/interfaces/org.alljoyn.SmartSpaces.Operation/Timer-v1.xml \
+/Users/anthonyshipman/Documents/AllJoyn/alljoyn_interfaces/interfaces/org.alljoyn.SmartSpaces.Operation/TriggerSensor-v1.xml \
+/Users/anthonyshipman/Documents/AllJoyn/alljoyn_interfaces/interfaces/org.alljoyn.SmartSpaces.Operation/UnlockControl-v1.xml
+do
+    for comp in common controllee samples
+    do
+        ./generate.py --patches templates/patches/cpp --components=$comp $if $x
+    done
+done
+

@@ -26,6 +26,30 @@ except ImportError as e:
 import xml_parser as xml
 import argparse
 
+# Ugly global for the current template relative path
+CurrentRelativePath = ""
+
+class PatchLoader(jinja2.BaseLoader):
+
+    def __init__(self, patchespath):
+        self.patchespath = patchespath
+
+    def get_source(self, environment, template):
+        # "patch/foo" maps to somewhere in the patches tree according to the template relative path
+        if template.startswith("patch/") and self.patchespath:
+            base = template[6:]
+            path = os.path.join(self.patchespath, CurrentRelativePath, base)
+            # print "looking for patch:", path
+            if not os.path.exists(path):
+                # print "patch not found:", path
+                raise jinja2.TemplateNotFound(template)
+            mtime = os.path.getmtime(path)
+            with file(path) as f:
+                source = f.read().decode('utf-8')
+            return source, path, lambda: mtime == os.path.getmtime(path)
+        raise jinja2.TemplateNotFound(template)
+
+
 
 class Generator(object):
     def __init__(self, args):
@@ -39,7 +63,8 @@ class Generator(object):
         self._component_checks_metadata = (
                 (('all', 'controller'), ('controller',)),
                 (('all', 'controllee'), ('controllee',)),
-                (('all', 'common'), ('common',))
+                (('all', 'common'), ('common',)),
+                (('all', 'samples'), ('samples',))
             )
 
     def get_parser(self):
@@ -55,6 +80,7 @@ class Generator(object):
         pass
 
     def generate(self):
+        global CurrentRelativePath
 
         def file_checker(fname):
             not_hidden = not fname.startswith('.')
@@ -86,7 +112,12 @@ class Generator(object):
         parser = xml.make_parser()
         parser.setContentHandler(saxhandler)
 
-        env = jinja2.Environment(loader=jinja2.FileSystemLoader(self.cmd_args.template_dir), undefined=jinja2.StrictUndefined, trim_blocks=True, lstrip_blocks=True, keep_trailing_newline=True)
+        myLoader = jinja2.ChoiceLoader([
+            PatchLoader(self.cmd_args.patches),
+            jinja2.FileSystemLoader(self.cmd_args.template_dir)
+            ])
+
+        env = jinja2.Environment(loader=myLoader, undefined=jinja2.StrictUndefined, trim_blocks=True, lstrip_blocks=True, keep_trailing_newline=True)
 
         env.filters["pad"] = lambda s, width: str.ljust(str(s), width)
 
@@ -106,18 +137,24 @@ class Generator(object):
                     print "  " + relative_path
                     template = env.get_template(relative_path)
 
-                    render_result = template.render(render_root)
                     result_path = jinja2.Template(relative_path).render(render_root)
-
-                    print "    -> " + result_path
+                    CurrentRelativePath = os.path.dirname(result_path)
+                    render_result = template.render(render_root)
 
                     result_path = self.get_output_path(result_path)
+                    result_dir  = os.path.dirname(result_path)
+                    print "    -> " + result_path
 
                     try:
-                        os.makedirs(os.path.dirname(result_path))
+                        if not os.path.exists(result_dir):
+                            os.makedirs(result_dir)
+                    except OSError:
+                        print "ERROR creating path:", result_dir
+
+                    try:
                         open(result_path, "w").write(render_result)
                     except OSError:
-                        print "ERROR creating path:", os.path.dirname(result_path)
+                        print "ERROR writing file:", result_path
 
 
 class InterfaceCodeGenerator(Generator):
@@ -155,10 +192,11 @@ def main():
     argument_parser = argparse.ArgumentParser()
     argument_parser.add_argument('template_dir', help='Path to directory with the templates to be used for code generation')
     argument_parser.add_argument('xml_files', help='Unix style pathname pattern expansion to xml files to be used for pystache rendering context')
-    argument_parser.add_argument('output_dir', nargs='?', default="./output/", help='Path to directory where the generated files will be output to')
+    argument_parser.add_argument('output_dir', nargs='?', default="output/", help='Path to directory where the generated files will be output to')
     argument_parser.add_argument('--bindings', nargs='*', default=["all"], help="The bindings to generate")
     argument_parser.add_argument('--components', nargs='*', default=["all"], help="The components to generate (controller, controllee or all")
     argument_parser.add_argument('--sample', action='store_true', required=False, help='Generate sample programs using the device emulator xml file')
+    argument_parser.add_argument('--patches', required=False, help='Path to the root for patch templates')
     
     args = argument_parser.parse_args()
 
