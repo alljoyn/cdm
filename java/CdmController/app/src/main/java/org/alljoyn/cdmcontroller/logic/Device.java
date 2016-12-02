@@ -45,7 +45,7 @@ public interface Device {
         REFRIGERATOR(2, R.drawable.icon_refrigerator),
         FREEZER(3, R.drawable.icon_freezer),
         ICE_MAKER(4),
-        AIR_CONDIRIONER(5, R.drawable.icon_air_conditioner),
+        AIR_CONDITIONER(5, R.drawable.icon_air_conditioner),
         THERMOSTAT(6),
         HUMIDIFIER(7),
         DEHUMIDIFIER(8),
