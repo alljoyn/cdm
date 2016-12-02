@@ -112,7 +112,7 @@ void PlugInUnitsIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const
                 info.objectPath = objPath;
                 units.push_back(info);
             }
-            m_interfaceListener.OnPlugInUnitsPropertyChanged(obj.GetPath(), units);
+            m_interfaceListener.OnPlugInUnitsChanged(obj.GetPath(), units);
         }
     }
 }

@@ -30,8 +30,8 @@ class ClosedStatusListener : public ClosedStatusIntfControllerListener{
   public:
     ClosedStatusListener();
     virtual ~ClosedStatusListener();
-    virtual void IsClosedPropertyChanged(const qcc::String& objectPath, const bool isClosed);
-    virtual void GetIsClosedPropertyCallback(QStatus status, const qcc::String& objectPath, const bool isClosed, void* context);
+    virtual void OnIsClosedChanged(const qcc::String& objectPath, const bool isClosed);
+    virtual void OnResponseGetIsClosed(QStatus status, const qcc::String& objectPath, const bool isClosed, void* context);
 };
 
 class ClosedStatusCommands : public InterfaceCommands

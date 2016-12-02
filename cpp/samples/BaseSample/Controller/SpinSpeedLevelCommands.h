@@ -30,19 +30,19 @@ class SpinSpeedLevelListener : public SpinSpeedLevelIntfControllerListener{
   public:
     SpinSpeedLevelListener();
     virtual ~SpinSpeedLevelListener();
-    virtual void GetMaxLevelPropertyCallback(QStatus status, const qcc::String& objectPath, const uint8_t maxLevel, void* context);
+    virtual void OnResponseGetMaxLevel(QStatus status, const qcc::String& objectPath, const uint8_t maxLevel, void* context);
 
-    virtual void GetTargetLevelPropertyCallback(QStatus status, const qcc::String& objectPath, const uint8_t targetLevel, void* context);
+    virtual void OnResponseGetTargetLevel(QStatus status, const qcc::String& objectPath, const uint8_t targetLevel, void* context);
 
-    virtual void SetTargetLevelPropertyCallback(QStatus status, const qcc::String& objectPath, void* context);
+    virtual void OnResponseSetTargetLevel(QStatus status, const qcc::String& objectPath, void* context);
 
-    virtual void GetSelectableLevelsPropertyCallback(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& selectableLevels, void* context);
+    virtual void OnResponseGetSelectableLevels(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& selectableLevels, void* context);
 
-    virtual void MaxLevelPropertyChanged(const qcc::String& objectPath, const uint8_t maxLevel);
+    virtual void OnMaxLevelChanged(const qcc::String& objectPath, const uint8_t maxLevel);
 
-    virtual void TargetLevelPropertyChanged(const qcc::String& objectPath, const uint8_t targetLevel);
+    virtual void OnTargetLevelChanged(const qcc::String& objectPath, const uint8_t targetLevel);
 
-    virtual void SelectableLevelsPropertyChanged(const qcc::String& objectPath, const std::vector<uint8_t>& selectableLevels);
+    virtual void OnSelectableLevelsChanged(const qcc::String& objectPath, const std::vector<uint8_t>& selectableLevels);
 
 };
 

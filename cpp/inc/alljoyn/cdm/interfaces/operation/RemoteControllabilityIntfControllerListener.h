@@ -38,14 +38,14 @@ class RemoteControllabilityIntfControllerListener : public InterfaceControllerLi
      * @param[in] isControllable isControllable
      * @param[in] context the context that is passed from application
      */
-    virtual void GetIsControllablePropertyCallback(QStatus status, const qcc::String& objectPath, const bool isControllable, void* context) {}
+    virtual void OnResponseGetIsControllable(QStatus status, const qcc::String& objectPath, const bool isControllable, void* context) {}
 
     /**
      * Handler for IsControllable property changed
      * @param[in] objectPath the object path
      * @param[in] isControllable isControllable
      */
-    virtual void IsControllalbePropertyChanged(const qcc::String& objectPath, const bool isControllable) {}
+    virtual void OnIsControllableChanged(const qcc::String& objectPath, const bool isControllable) {}
 
 };
 

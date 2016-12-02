@@ -38,15 +38,15 @@ class TimerListener : public TimerIntfControllerListener{
     virtual void OnResponseGetRunningTime(QStatus status, const qcc::String& objectPath, int32_t& time, void* context);
     virtual void OnResponseGetTargetDuration(QStatus status, const qcc::String& objectPath, int32_t& time, void* context);
 
-    virtual void OnReferenceTimerPropertyChanged(const qcc::String& objectPath, int32_t time);
-    virtual void OnTargetTimeToStartPropertyChanged(const qcc::String& objectPath, int32_t time);
-    virtual void OnTargetTimeToStopPropertyChanged(const qcc::String& objectPath, int32_t time);
-    virtual void OnEstimatedTimeToEndPropertyChanged(const qcc::String& objectPath, int32_t time);
-    virtual void OnRunningTimePropertyChanged(const qcc::String& objectPath, int32_t time);
-    virtual void OnTargetDurationPropertyChanged(const qcc::String& objectPath, int32_t time);
+    virtual void OnReferenceTimerChanged(const qcc::String& objectPath, int32_t time);
+    virtual void OnTargetTimeToStartChanged(const qcc::String& objectPath, int32_t time);
+    virtual void OnTargetTimeToStopChanged(const qcc::String& objectPath, int32_t time);
+    virtual void OnEstimatedTimeToEndChanged(const qcc::String& objectPath, int32_t time);
+    virtual void OnRunningTimeChanged(const qcc::String& objectPath, int32_t time);
+    virtual void OnTargetDurationChanged(const qcc::String& objectPath, int32_t time);
 
-    virtual void OnResponseSetTargetTimerToStart(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage);
-    virtual void OnResponseSetTargetTimerToStop(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage);
+    virtual void OnResponseSetTargetTimeToStart(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage);
+    virtual void OnResponseSetTargetTimeToStop(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage);
 };
 
 class TimerCommands : public InterfaceCommands

@@ -75,7 +75,7 @@ void DishWashingCyclePhaseIntfControllerImpl::PropertiesChanged(ProxyBusObject& 
         if (!s_prop_CyclePhase.compare(propNameStr)) {
             if (propValue->typeId == ALLJOYN_BYTE) {
                 DishWashingCyclePhaseInterface::DishWashingCyclePhase cyclePhase = (DishWashingCyclePhaseInterface::DishWashingCyclePhase)propValue->v_byte;
-                m_interfaceListener.OnCyclePhasePropertyChanged(obj.GetPath(), cyclePhase);
+                m_interfaceListener.OnCyclePhaseChanged(obj.GetPath(), cyclePhase);
             }
         } else if (!s_prop_SupportedCyclePhases.compare(propNameStr)) {
             if (propValue->typeId == ALLJOYN_BYTE_ARRAY) {
@@ -86,7 +86,7 @@ void DishWashingCyclePhaseIntfControllerImpl::PropertiesChanged(ProxyBusObject& 
 
                 for (size_t i = 0; i < numVals; ++i)
                     supportedCyclePhases.push_back((DishWashingCyclePhaseInterface::DishWashingCyclePhase)vals[i]);
-                m_interfaceListener.OnSupportedCyclePhasesPropertyChanged(obj.GetPath(), supportedCyclePhases);
+                m_interfaceListener.OnSupportedCyclePhasesChanged(obj.GetPath(), supportedCyclePhases);
             }
         }
     }
@@ -111,7 +111,7 @@ QStatus DishWashingCyclePhaseIntfControllerImpl::GetSupportedCyclePhases(void* c
     return status;
 }
 
-QStatus DishWashingCyclePhaseIntfControllerImpl::GetCyclePhasesDescriptions(const qcc::String& language, void* context)
+QStatus DishWashingCyclePhaseIntfControllerImpl::GetVendorPhasesDescription(const qcc::String& language, void* context)
 {
     QStatus status = ER_OK;
 
@@ -190,7 +190,7 @@ void DishWashingCyclePhaseIntfControllerImpl::GetCyclePhasesDescriptionReplyHand
             descriptions.push_back(desc);
         }
     }
-    m_interfaceListener.OnResponseGetCyclePhasesDescriptions(status, m_proxyObject.GetPath(), descriptions, context, errorName, errorMessage.c_str());
+    m_interfaceListener.OnResponseGetVendorPhasesDescription(status, m_proxyObject.GetPath(), descriptions, context, errorName, errorMessage.c_str());
 }
 
 } //namespace services

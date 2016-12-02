@@ -76,7 +76,7 @@ void LanguageDisplayIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, c
         if (!s_prop_DisplayLanguage.compare(propNameStr)) {
             if (propValue->typeId == ALLJOYN_STRING) {
                 String displayLanguage(propValue->v_string.str);
-                m_interfaceListener.DisplayLanguagePropertyChanged(obj.GetPath(), displayLanguage);
+                m_interfaceListener.OnDisplayLanguageChanged(obj.GetPath(), displayLanguage);
             }
         } else if(!s_prop_SupportedDisplayLanguages.compare(propNameStr)) {
             qcc::String *vals;
@@ -88,7 +88,7 @@ void LanguageDisplayIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, c
             for (size_t i = 0; i < numVals; ++i) {
                 supportedDisplayLanguages.push_back(String(vals[i]));
             }
-            m_interfaceListener.SupportedDisplayLanguagesPropertyChanged(obj.GetPath(), supportedDisplayLanguages);
+            m_interfaceListener.OnSupportedDisplayLanguagesChanged(obj.GetPath(), supportedDisplayLanguages);
         }
     }
 }
@@ -133,14 +133,14 @@ void LanguageDisplayIntfControllerImpl::GetDisplayLanguagePropertyCB(QStatus sta
     value.Get("s", &lang);
     qcc::String displayLanguage(lang);
 
-    m_interfaceListener.GetDisplayLanguagePropertyCallback(status,obj->GetPath(),displayLanguage,context);
+    m_interfaceListener.OnResponseGetDisplayLanguage(status, obj->GetPath(), displayLanguage, context);
 }
 void LanguageDisplayIntfControllerImpl::SetDisplayLanguagePropertyCB(QStatus status, ProxyBusObject* obj, void* context)
 {
     if(!obj){
         return;
     }
-    m_interfaceListener.SetDisplayLanguagePropertyCallback(status,obj->GetPath(),context);
+    m_interfaceListener.OnResponseSetDisplayLanguage(status, obj->GetPath(), context);
 
 }
 void LanguageDisplayIntfControllerImpl::GetSupportedDisplayLanguagesPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
@@ -161,7 +161,7 @@ void LanguageDisplayIntfControllerImpl::GetSupportedDisplayLanguagesPropertyCB(Q
         supportedDisplayLanguages.push_back(qcc::String(lang));
     }
 
-    m_interfaceListener.GetSupportedDisplayLanguagesPropertyCallback(status,obj->GetPath(), supportedDisplayLanguages, context);
+    m_interfaceListener.OnResponseGetSupportedDisplayLanguages(status, obj->GetPath(), supportedDisplayLanguages, context);
 }
 
 } //namespace services

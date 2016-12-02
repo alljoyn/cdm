@@ -37,14 +37,14 @@ class ClosedStatusIntfControllerListener : public InterfaceControllerListener {
      * @param[in] isClosed isClosed
      * @param[in] context the context that is passed from application
      */
-    virtual void GetIsClosedPropertyCallback(QStatus status, const qcc::String& objectPath, const bool isClosed, void* context) {}
+    virtual void OnResponseGetIsClosed(QStatus status, const qcc::String& objectPath, const bool isClosed, void* context) {}
 
     /**
      * Handler for IsClosed property changed
      * @param[in] objectPath the object path
      * @param[in] isClosed isClosed
      */
-    virtual void IsClosedPropertyChanged(const qcc::String& objectPath, const bool isClosed) { }
+    virtual void OnIsClosedChanged(const qcc::String& objectPath, const bool isClosed) { }
 
 };
 

@@ -79,7 +79,7 @@ class OvenCyclePhaseIntfControllerImpl : public InterfaceController, public Oven
      * @param[in] context
      * @return status
      */
-    virtual QStatus GetCyclePhasesDescriptions(const qcc::String& language, void* context);
+    virtual QStatus GetVendorPhasesDescription(const qcc::String& language, void* context);
 
   private:
     OvenCyclePhaseIntfControllerImpl();

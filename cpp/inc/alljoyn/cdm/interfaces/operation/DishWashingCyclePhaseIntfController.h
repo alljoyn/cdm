@@ -59,7 +59,7 @@ class DishWashingCyclePhaseIntfController : public DishWashingCyclePhaseInterfac
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus GetCyclePhasesDescriptions(const qcc::String& language, void* context = NULL) = 0;
+    virtual QStatus GetVendorPhasesDescription(const qcc::String& language, void* context = NULL) = 0;
 };
 
 } //namespace services

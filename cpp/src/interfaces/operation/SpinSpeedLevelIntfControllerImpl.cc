@@ -75,12 +75,12 @@ void SpinSpeedLevelIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, co
         if (!s_prop_MaxLevel.compare(propNameStr)) {
             if (propValue->typeId == ALLJOYN_BYTE) {
                 uint8_t level = propValue->v_byte;
-                m_interfaceListener.MaxLevelPropertyChanged(obj.GetPath(), level);
+                m_interfaceListener.OnMaxLevelChanged(obj.GetPath(), level);
             }
         } else if (!s_prop_TargetLevel.compare(propNameStr)){
             if(propValue->typeId == ALLJOYN_BYTE) {
                 uint8_t level = propValue->v_byte;
-                m_interfaceListener.TargetLevelPropertyChanged(obj.GetPath(), level);
+                m_interfaceListener.OnTargetLevelChanged(obj.GetPath(), level);
             }
         } else if(!s_prop_SelectableLevels.compare(propNameStr)) {
             uint8_t *vals;
@@ -92,7 +92,7 @@ void SpinSpeedLevelIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, co
             for (size_t i = 0; i < numVals; ++i) {
                 levels.push_back(vals[i]);
             }
-            m_interfaceListener.SelectableLevelsPropertyChanged(obj.GetPath(), levels);
+            m_interfaceListener.OnSelectableLevelsChanged(obj.GetPath(), levels);
         }
     }
 }
@@ -143,7 +143,7 @@ void SpinSpeedLevelIntfControllerImpl::GetMaxLevelPropertyCB(QStatus status, Pro
     cout << "# SoilLevelIntfControllerImpl::GetMaxLevelPropertyCB" << endl;
     value.Get("y", &maxLevel);
 
-    m_interfaceListener.GetMaxLevelPropertyCallback(status,obj->GetPath(),maxLevel,context);
+    m_interfaceListener.OnResponseGetMaxLevel(status, obj->GetPath(), maxLevel, context);
 }
 void SpinSpeedLevelIntfControllerImpl::GetTargetLevelPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
@@ -154,14 +154,14 @@ void SpinSpeedLevelIntfControllerImpl::GetTargetLevelPropertyCB(QStatus status, 
     uint8_t targetLevel;
     value.Get("y", &targetLevel);
 
-    m_interfaceListener.GetTargetLevelPropertyCallback(status,obj->GetPath(),targetLevel,context);
+    m_interfaceListener.OnResponseGetTargetLevel(status, obj->GetPath(), targetLevel, context);
 }
 void SpinSpeedLevelIntfControllerImpl::SetTargetLevelPropertyCB(QStatus status, ProxyBusObject* obj, void* context)
 {
     if(!obj){
         return;
     }
-    m_interfaceListener.SetTargetLevelPropertyCallback(status,obj->GetPath(),context);
+    m_interfaceListener.OnResponseSetTargetLevel(status, obj->GetPath(), context);
 }
 void SpinSpeedLevelIntfControllerImpl::GetSelectableLevelsPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
@@ -180,7 +180,7 @@ void SpinSpeedLevelIntfControllerImpl::GetSelectableLevelsPropertyCB(QStatus sta
         levels.push_back(vals[i]);
     }
 
-    m_interfaceListener.GetSelectableLevelsPropertyCallback(status,obj->GetPath(), levels, context);
+    m_interfaceListener.OnResponseGetSelectableLevels(status, obj->GetPath(), levels, context);
 }
 
 

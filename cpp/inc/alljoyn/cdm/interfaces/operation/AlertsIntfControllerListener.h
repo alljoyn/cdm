@@ -46,7 +46,7 @@ class AlertsIntfControllerListener : public InterfaceControllerListener {
      * @param[in] objectPath the object path
      * @param[in] alerts the list of alerts
      */
-    virtual void OnAlertsPropertyChanged(const qcc::String& objectPath, const AlertsInterface::Alerts& alerts) {}
+    virtual void OnAlertsChanged(const qcc::String& objectPath, const AlertsInterface::Alerts& alerts) {}
 
     /**
      * Callback handler for GetAlertCodesDescription method

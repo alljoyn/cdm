@@ -75,7 +75,7 @@ void OvenCyclePhaseIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, co
         if (!s_prop_CyclePhase.compare(propNameStr)) {
             if (propValue->typeId == ALLJOYN_BYTE) {
                 OvenCyclePhaseInterface::OvenCyclePhase cyclePhase = (OvenCyclePhaseInterface::OvenCyclePhase)propValue->v_byte;
-                m_interfaceListener.OnCyclePhasePropertyChanged(obj.GetPath(), cyclePhase);
+                m_interfaceListener.OnCyclePhaseChanged(obj.GetPath(), cyclePhase);
             }
         } else if (!s_prop_SupportedCyclePhases.compare(propNameStr)) {
             if (propValue->typeId == ALLJOYN_BYTE_ARRAY) {
@@ -86,7 +86,7 @@ void OvenCyclePhaseIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, co
 
                 for (size_t i = 0; i < numVals; ++i)
                     supportedCyclePhases.push_back((OvenCyclePhaseInterface::OvenCyclePhase)vals[i]);
-                m_interfaceListener.OnSupportedCyclePhasesPropertyChanged(obj.GetPath(), supportedCyclePhases);
+                m_interfaceListener.OnSupportedCyclePhasesChanged(obj.GetPath(), supportedCyclePhases);
             }
         }
     }
@@ -111,7 +111,7 @@ QStatus OvenCyclePhaseIntfControllerImpl::GetSupportedCyclePhases(void* context 
     return status;
 }
 
-QStatus OvenCyclePhaseIntfControllerImpl::GetCyclePhasesDescriptions(const qcc::String& language, void* context)
+QStatus OvenCyclePhaseIntfControllerImpl::GetVendorPhasesDescription(const qcc::String& language, void* context)
 {
     QStatus status = ER_OK;
 
@@ -190,7 +190,7 @@ void OvenCyclePhaseIntfControllerImpl::GetCyclePhasesDescriptionReplyHandler(Mes
             descriptions.push_back(desc);
         }
     }
-    m_interfaceListener.OnResponseGetCyclePhasesDescriptions(status, m_proxyObject.GetPath(), descriptions, context, errorName, errorMessage.c_str());
+    m_interfaceListener.OnResponseGetVendorPhasesDescription(status, m_proxyObject.GetPath(), descriptions, context, errorName, errorMessage.c_str());
 }
 
 } //namespace services

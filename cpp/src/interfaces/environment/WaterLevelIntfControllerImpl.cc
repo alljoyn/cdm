@@ -77,7 +77,7 @@ void WaterLevelIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const 
             if (propValue->typeId == ALLJOYN_BYTE)
             {
                 uint8_t volume = propValue->v_byte;
-                m_interfaceListener.CurrentLevelProprtyChanged(obj.GetPath(), volume);
+                m_interfaceListener.OnCurrentLevelChanged(obj.GetPath(), volume);
             }
         }
         else if (!s_prop_MaxLevel.compare(propNameStr))
@@ -85,7 +85,7 @@ void WaterLevelIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const 
             if (propValue->typeId == ALLJOYN_BYTE)
             {
                 uint8_t volume = propValue->v_byte;
-                m_interfaceListener.MaxLevelProprtyChanged(obj.GetPath(), volume);
+                m_interfaceListener.OnMaxLevelChanged(obj.GetPath(), volume);
             }
         }
         else if (!s_prop_SupplySource.compare(propNameStr))
@@ -93,7 +93,7 @@ void WaterLevelIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const 
             if (propValue->typeId == ALLJOYN_BYTE)
             {
                 uint8_t volume = propValue->v_byte;
-                m_interfaceListener.SupplySourceProprtyChanged(obj.GetPath(), (SupplySource)volume);
+                m_interfaceListener.OnSupplySourceChanged(obj.GetPath(), (SupplySource) volume);
             }
         }
     }
@@ -132,7 +132,7 @@ void WaterLevelIntfControllerImpl::OnGetMaxLevelPropertyCB(QStatus status, Proxy
     }
     uint8_t maxLevel;
     value.Get("y", & maxLevel);
-    m_interfaceListener.OnGetMaxLevelPropertyCallback(status, obj->GetPath(),maxLevel, context);
+    m_interfaceListener.OnResponseGetMaxLevel(status, obj->GetPath(), maxLevel, context);
 }
 void WaterLevelIntfControllerImpl::OnGetCurrentLevelPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
@@ -141,7 +141,7 @@ void WaterLevelIntfControllerImpl::OnGetCurrentLevelPropertyCB(QStatus status, P
     }
     uint8_t currLevel;
     value.Get("y", & currLevel);
-    m_interfaceListener.OnGetCurrentLevelPropertyCallback(status, obj->GetPath(),currLevel, context);
+    m_interfaceListener.OnResponseGetCurrentLevel(status, obj->GetPath(), currLevel, context);
 }
 void WaterLevelIntfControllerImpl::OnGetSupplySourcePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
@@ -150,7 +150,7 @@ void WaterLevelIntfControllerImpl::OnGetSupplySourcePropertyCB(QStatus status, P
     }
     uint8_t suppSrc;
     value.Get("y", & suppSrc);
-    m_interfaceListener.OnGetSupplySourcePropertyCallback(status, obj->GetPath(),(SupplySource)suppSrc, context);
+    m_interfaceListener.OnResponseGetSupplySource(status, obj->GetPath(), (SupplySource) suppSrc, context);
 }
 
 } //namespace services

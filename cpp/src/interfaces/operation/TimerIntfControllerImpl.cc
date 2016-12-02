@@ -78,7 +78,7 @@ void TimerIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char*
             if (propValue->typeId == ALLJOYN_INT32)
             {
                 int32_t level = propValue->v_int32;
-                m_interfaceListener.OnReferenceTimerPropertyChanged(obj.GetPath(), level);
+                m_interfaceListener.OnReferenceTimerChanged(obj.GetPath(), level);
             }
         }
         else if (!s_prop_TargetTimeToStart.compare(propNameStr))
@@ -86,7 +86,7 @@ void TimerIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char*
             if (propValue->typeId == ALLJOYN_INT32)
             {
                 int32_t level = propValue->v_int32;
-                m_interfaceListener.OnTargetTimeToStartPropertyChanged(obj.GetPath(), level);
+                m_interfaceListener.OnTargetTimeToStartChanged(obj.GetPath(), level);
             }
         }
         else if (!s_prop_TargetTimeToStop.compare(propNameStr))
@@ -94,7 +94,7 @@ void TimerIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char*
             if (propValue->typeId == ALLJOYN_INT32)
             {
                 int32_t level = propValue->v_int32;
-                m_interfaceListener.OnTargetTimeToStopPropertyChanged(obj.GetPath(), level);
+                m_interfaceListener.OnTargetTimeToStopChanged(obj.GetPath(), level);
             }
         }
         else if (!s_prop_RunningTime.compare(propNameStr))
@@ -102,7 +102,7 @@ void TimerIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char*
             if (propValue->typeId == ALLJOYN_INT32)
             {
                 int32_t level = propValue->v_int32;
-                m_interfaceListener.OnRunningTimePropertyChanged(obj.GetPath(), level);
+                m_interfaceListener.OnRunningTimeChanged(obj.GetPath(), level);
             }
         }
         else if (!s_prop_EstimatedTimeToEnd.compare(propNameStr))
@@ -110,7 +110,7 @@ void TimerIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char*
             if (propValue->typeId == ALLJOYN_INT32)
             {
                 int32_t level = propValue->v_int32;
-                m_interfaceListener.OnEstimatedTimeToEndPropertyChanged(obj.GetPath(), level);
+                m_interfaceListener.OnEstimatedTimeToEndChanged(obj.GetPath(), level);
             }
         }
         else if (!s_prop_TargetDuration.compare(propNameStr))
@@ -118,7 +118,7 @@ void TimerIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char*
             if (propValue->typeId == ALLJOYN_INT32)
             {
                 int32_t level = propValue->v_int32;
-                m_interfaceListener.OnTargetDurationPropertyChanged(obj.GetPath(), level);
+                m_interfaceListener.OnTargetDurationChanged(obj.GetPath(), level);
             }
         }
     }
@@ -274,7 +274,7 @@ void TimerIntfControllerImpl::SetTargetTimeToStartReplyHandler(Message& message,
     {
         status = ER_FAIL;
     }
-    m_interfaceListener.OnResponseSetTargetTimerToStart(status, m_proxyObject.GetPath(), context, errorName, errorMessage.c_str());
+    m_interfaceListener.OnResponseSetTargetTimeToStart(status, m_proxyObject.GetPath(), context, errorName, errorMessage.c_str());
 }
 void TimerIntfControllerImpl::SetTargetTimeToStopReplyHandler(Message& message, void* context)
 {
@@ -285,7 +285,7 @@ void TimerIntfControllerImpl::SetTargetTimeToStopReplyHandler(Message& message, 
     {
         status = ER_FAIL;
     }
-    m_interfaceListener.OnResponseSetTargetTimerToStop(status, m_proxyObject.GetPath(), context, errorName, errorMessage.c_str());
+    m_interfaceListener.OnResponseSetTargetTimeToStop(status, m_proxyObject.GetPath(), context, errorName, errorMessage.c_str());
 }
 
 } //namespace services

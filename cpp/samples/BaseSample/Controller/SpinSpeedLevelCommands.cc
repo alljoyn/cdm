@@ -26,7 +26,7 @@ SpinSpeedLevelListener::~SpinSpeedLevelListener()
 }
 
 
-void SpinSpeedLevelListener::MaxLevelPropertyChanged(const qcc::String& objectPath, const uint8_t maxLevel)
+void SpinSpeedLevelListener::OnMaxLevelChanged(const qcc::String& objectPath, const uint8_t maxLevel)
 {
     cout << __func__ << endl;
     cout << "path: " << objectPath << endl;
@@ -34,7 +34,7 @@ void SpinSpeedLevelListener::MaxLevelPropertyChanged(const qcc::String& objectPa
 }
 
 
-void SpinSpeedLevelListener::GetMaxLevelPropertyCallback(QStatus status, const qcc::String& objectPath, const uint8_t maxLevel, void* context)
+void SpinSpeedLevelListener::OnResponseGetMaxLevel(QStatus status, const qcc::String& objectPath, const uint8_t maxLevel, void* context)
 {
     cout << "# "<< __func__ << endl;
     cout << "# status: " << QCC_StatusText(status) << endl;
@@ -42,7 +42,7 @@ void SpinSpeedLevelListener::GetMaxLevelPropertyCallback(QStatus status, const q
     cout << "maxLevel: " << (int)maxLevel << endl;
 }
 
-void SpinSpeedLevelListener::GetTargetLevelPropertyCallback(QStatus status, const qcc::String& objectPath, const uint8_t targetLevel, void* context)
+void SpinSpeedLevelListener::OnResponseGetTargetLevel(QStatus status, const qcc::String& objectPath, const uint8_t targetLevel, void* context)
 {
     cout << "# "<< __func__ << endl;
     cout << "# status: " << QCC_StatusText(status) << endl;
@@ -50,14 +50,14 @@ void SpinSpeedLevelListener::GetTargetLevelPropertyCallback(QStatus status, cons
     cout << "targetLevel: " << (int)targetLevel << endl;
 }
 
-void SpinSpeedLevelListener::SetTargetLevelPropertyCallback(QStatus status, const qcc::String& objectPath, void* context)
+void SpinSpeedLevelListener::OnResponseSetTargetLevel(QStatus status, const qcc::String& objectPath, void* context)
 {
     cout << "# "<< __func__ << endl;
     cout << "# status: " << QCC_StatusText(status) << endl;
     cout << "objectPath: " << objectPath << endl;
 }
 
-void SpinSpeedLevelListener::GetSelectableLevelsPropertyCallback(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& selectableLevels, void* context)
+void SpinSpeedLevelListener::OnResponseGetSelectableLevels(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& selectableLevels, void* context)
 {
     cout << "# "<< __func__ << endl;
     cout << "# status: " << QCC_StatusText(status) << endl;
@@ -68,14 +68,14 @@ void SpinSpeedLevelListener::GetSelectableLevelsPropertyCallback(QStatus status,
     }
 }
 
-void SpinSpeedLevelListener::TargetLevelPropertyChanged(const qcc::String& objectPath, const uint8_t targetLevel)
+void SpinSpeedLevelListener::OnTargetLevelChanged(const qcc::String& objectPath, const uint8_t targetLevel)
 {
     cout << "# "<< __func__ << endl;
     cout << "objectPath: " << objectPath << endl;
     cout << "targetLevel: " << (int)targetLevel << endl;
 }
 
-void SpinSpeedLevelListener::SelectableLevelsPropertyChanged(const qcc::String& objectPath, const std::vector<uint8_t>& selectableLevels)
+void SpinSpeedLevelListener::OnSelectableLevelsChanged(const qcc::String& objectPath, const std::vector<uint8_t>& selectableLevels)
 {
     cout << "# "<< __func__ << endl;
     cout << "objectPath: " << objectPath << endl;

@@ -76,7 +76,7 @@ void RapidModeIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const c
         if (!s_prop_RapidMode.compare(propNameStr)) {
             if (propValue->typeId == ALLJOYN_BOOLEAN) {
                 bool rapidMode = propValue->v_bool;
-                m_interfaceListener.RapidModePropertyChanged(obj.GetPath(), rapidMode);
+                m_interfaceListener.OnRapidModeChanged(obj.GetPath(), rapidMode);
             }
         }
     }
@@ -109,7 +109,7 @@ void RapidModeIntfControllerImpl::SetRapidModePropertyCB(QStatus status, ProxyBu
         return;
     }
 
-    m_interfaceListener.OnSetRapidModePropertyCallback(status, obj->GetPath(), context);
+    m_interfaceListener.OnResponseSetRapidMode(status, obj->GetPath(), context);
 }
 void RapidModeIntfControllerImpl::GetRapidModePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
@@ -120,7 +120,7 @@ void RapidModeIntfControllerImpl::GetRapidModePropertyCB(QStatus status, ProxyBu
 
     value.Get("b", &rapidMode);
 
-    m_interfaceListener.OnGetRapidModePropertyCallback(status, obj->GetPath(), rapidMode, context);
+    m_interfaceListener.OnResponseGetRapidMode(status, obj->GetPath(), rapidMode, context);
 }
 
 } //namespace services

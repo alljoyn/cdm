@@ -66,7 +66,7 @@ class CycleControlIntfController : public CycleControlInterface {
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus ExecuteCommand(const OperationalCommands command, void* context = NULL) = 0;
+    virtual QStatus ExecuteOperationalCommand(const OperationalCommands command, void* context = NULL) = 0;
 
 };
 

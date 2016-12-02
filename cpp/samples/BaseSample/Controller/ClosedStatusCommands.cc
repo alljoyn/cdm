@@ -26,7 +26,7 @@ ClosedStatusListener::~ClosedStatusListener()
 }
 
 
-void ClosedStatusListener::IsClosedPropertyChanged(const qcc::String& objectPath, const bool isClosed)
+void ClosedStatusListener::OnIsClosedChanged(const qcc::String& objectPath, const bool isClosed)
 {
     cout << __func__ << endl;
     cout << "path: " << objectPath << endl;
@@ -34,7 +34,7 @@ void ClosedStatusListener::IsClosedPropertyChanged(const qcc::String& objectPath
 }
 
 
-void ClosedStatusListener::GetIsClosedPropertyCallback(QStatus status, const qcc::String& objectPath, const bool isClosed, void* context)
+void ClosedStatusListener::OnResponseGetIsClosed(QStatus status, const qcc::String& objectPath, const bool isClosed, void* context)
 {
     cout << __func__ << endl;
     cout << "status: " << QCC_StatusText(status) << endl;

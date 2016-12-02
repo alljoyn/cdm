@@ -75,7 +75,7 @@ void TemperatureDisplayIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj
         if (!s_prop_DisplayTemperatureUnit.compare(propNameStr)) {
             if (propValue->typeId == ALLJOYN_BYTE) {
                 uint8_t temperatureUnit = propValue->v_byte;
-                m_interfaceListener.DisplayTemperatureUnitPropertyChanged(obj.GetPath(), temperatureUnit);
+                m_interfaceListener.OnDisplayTemperatureUnitChanged(obj.GetPath(), temperatureUnit);
             }
         } else if(!s_prop_SupportedDisplayTemperatureUnits.compare(propNameStr)) {
             uint8_t *vals;
@@ -87,7 +87,7 @@ void TemperatureDisplayIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj
             for (size_t i = 0; i < numVals; ++i) {
                 supportedTemperatureUnits.push_back(vals[i]);
             }
-            m_interfaceListener.SupportedDisplayTemperatureUnitsPropertyChanged(obj.GetPath(), supportedTemperatureUnits);
+            m_interfaceListener.OnSupportedDisplayTemperatureUnitsChanged(obj.GetPath(), supportedTemperatureUnits);
         }
     }
 }
@@ -130,14 +130,14 @@ void TemperatureDisplayIntfControllerImpl::GetDisplayTemperatureUnitPropertyCB(Q
     uint8_t temperatureUnit;
     value.Get("y", &temperatureUnit);
 
-    m_interfaceListener.GetDisplayTemperatureUnitPropertyCallback(status,obj->GetPath(),temperatureUnit,context);
+    m_interfaceListener.OnResponseGetDisplayTemperatureUnit(status, obj->GetPath(), temperatureUnit, context);
 }
 void TemperatureDisplayIntfControllerImpl::SetDisplayTemperatureUnitPropertyCB(QStatus status, ProxyBusObject* obj, void* context)
 {
     if(!obj){
         return;
     }
-    m_interfaceListener.SetDisplayTemperatureUnitPropertyCallback(status,obj->GetPath(),context);
+    m_interfaceListener.OnResponseSetDisplayTemperatureUnit(status, obj->GetPath(), context);
 
 }
 void TemperatureDisplayIntfControllerImpl::GetSupportedDisplayTemperatureUnitsPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
@@ -156,7 +156,7 @@ void TemperatureDisplayIntfControllerImpl::GetSupportedDisplayTemperatureUnitsPr
         supportedTemperatureUnits.push_back(vals[i]);
     }
 
-    m_interfaceListener.GetSupportedDisplayTemperatureUnitsPropertyCallback(status,obj->GetPath(), supportedTemperatureUnits, context);
+    m_interfaceListener.OnResponseGetSupportedDisplayTemperatureUnits(status, obj->GetPath(), supportedTemperatureUnits, context);
 }
 
 } //namespace services

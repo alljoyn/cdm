@@ -26,7 +26,7 @@ RapidModeListener::~RapidModeListener()
 }
 
 
-void RapidModeListener::RapidModePropertyChanged(const qcc::String& objectPath, const bool rapidMode)
+void RapidModeListener::OnRapidModeChanged(const qcc::String& objectPath, const bool rapidMode)
 {
     cout << __func__ << endl;
     cout << "# path: " << objectPath << endl;
@@ -34,7 +34,7 @@ void RapidModeListener::RapidModePropertyChanged(const qcc::String& objectPath, 
 }
 
 
-void RapidModeListener::OnGetRapidModePropertyCallback(QStatus status, const qcc::String& objectPath, const bool rapidMode, void* context)
+void RapidModeListener::OnResponseGetRapidMode(QStatus status, const qcc::String& objectPath, const bool rapidMode, void* context)
 {
     cout << __func__ << endl;
     cout << "# status: " << QCC_StatusText(status) << endl;
@@ -42,7 +42,7 @@ void RapidModeListener::OnGetRapidModePropertyCallback(QStatus status, const qcc
     cout << "# rapidMode: " << rapidMode << endl;
 }
 
-void RapidModeListener::OnSetRapidModePropertyCallback(QStatus status, const qcc::String& objectPath, void* context)
+void RapidModeListener::OnResponseSetRapidMode(QStatus status, const qcc::String& objectPath, void* context)
 {
     cout << __func__ << endl;
     cout << "# status: " << QCC_StatusText(status) << endl;

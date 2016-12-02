@@ -39,7 +39,7 @@ class WaterLevelIntfControllerListener : public InterfaceControllerListener {
      * @param[in] maxLevel maxLevel
      * @param[in] context the context that is passed from application
      */
-    virtual void OnGetMaxLevelPropertyCallback(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) {}
+    virtual void OnResponseGetMaxLevel(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) {}
     /**
      * Callback handler for getting SupplySource property
      * @param[in] status ER_OK on success
@@ -47,7 +47,7 @@ class WaterLevelIntfControllerListener : public InterfaceControllerListener {
      * @param[in] supplySource supplySource
      * @param[in] context the context that is passed from application
      */
-    virtual void OnGetSupplySourcePropertyCallback (QStatus status, const qcc::String& objectPath, const WaterLevelInterface::SupplySource value, void* context) {}
+    virtual void OnResponseGetSupplySource(QStatus status, const qcc::String& objectPath, const WaterLevelInterface::SupplySource value, void* context) {}
     /**
      * Callback handler for getting CurrentLevel property
      * @param[in] status ER_OK on success
@@ -55,26 +55,26 @@ class WaterLevelIntfControllerListener : public InterfaceControllerListener {
      * @param[in] currentLevel currentLevel
      * @param[in] context the context that is passed from application
      */
-    virtual void OnGetCurrentLevelPropertyCallback (QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) {}
+    virtual void OnResponseGetCurrentLevel(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) {}
 
     /**
      * Handler for MaxLevel property changed
      * @param[in] objectPath the object path
      * @param[in] value MaxLevel
      */
-    virtual void MaxLevelProprtyChanged(const qcc::String& objectPath, const uint8_t value){}
+    virtual void OnMaxLevelChanged(const qcc::String& objectPath, const uint8_t value){}
     /**
      * Handler for CurrentLevel property changed
      * @param[in] objectPath the object path
      * @param[in] value CurrentLevel
      */
-    virtual void CurrentLevelProprtyChanged(const qcc::String& objectPath, const uint8_t value){}
+    virtual void OnCurrentLevelChanged(const qcc::String& objectPath, const uint8_t value){}
     /**
      * Handler for SupplySource property changed
      * @param[in] objectPath the object path
      * @param[in] value SupplySource
      */
-    virtual void SupplySourceProprtyChanged(const qcc::String& objectPath, const WaterLevelInterface::SupplySource value){}
+    virtual void OnSupplySourceChanged(const qcc::String& objectPath, const WaterLevelInterface::SupplySource value){}
 };
 
 } //namespace services

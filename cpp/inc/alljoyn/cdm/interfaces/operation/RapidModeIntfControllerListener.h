@@ -36,7 +36,7 @@ class RapidModeIntfControllerListener : public InterfaceControllerListener {
      * @param[in] objectPath the object path
      * @param[in] rapidMode rapid mode
      */
-    virtual void RapidModePropertyChanged(const qcc::String& objectPath, const bool rapidMode) {}
+    virtual void OnRapidModeChanged(const qcc::String& objectPath, const bool rapidMode) {}
 
     /**
      * Callback handler for setting RapidMode property
@@ -44,7 +44,7 @@ class RapidModeIntfControllerListener : public InterfaceControllerListener {
      * @param[in] objectPath the object path
      * @param[in] context the context that is passed from application
      */
-    virtual void OnSetRapidModePropertyCallback(QStatus status, const qcc::String& objectPath, void* context) {}
+    virtual void OnResponseSetRapidMode(QStatus status, const qcc::String& objectPath, void* context) {}
 
     /**
      * Callback handler for getting RapidMode property
@@ -53,7 +53,7 @@ class RapidModeIntfControllerListener : public InterfaceControllerListener {
      * @param[in] rapidMode rapid mode
      * @param[in] context the context that is passed from application
      */
-    virtual void OnGetRapidModePropertyCallback(QStatus status, const qcc::String& objectPath, const bool rapidMode, void* context) {}
+    virtual void OnResponseGetRapidMode(QStatus status, const qcc::String& objectPath, const bool rapidMode, void* context) {}
 };
 
 } //namespace services

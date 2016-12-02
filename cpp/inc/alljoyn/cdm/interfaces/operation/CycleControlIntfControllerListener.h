@@ -39,7 +39,7 @@ class CycleControlIntfControllerListener : public InterfaceControllerListener {
      * @param[in] currentState current state
      * @param[in] context the context that is passed from application
      */
-    virtual void GetOperationalStatePropertyCallback(QStatus status, const qcc::String& objectPath, const CycleControlInterface::OperationalState& currentState, void* context) {}
+    virtual void OnResponseGetOperationalState(QStatus status, const qcc::String& objectPath, const CycleControlInterface::OperationalState& currentState, void* context) {}
 
     /**
      * Callback handler for getting SupportedOperationalStates property
@@ -48,7 +48,7 @@ class CycleControlIntfControllerListener : public InterfaceControllerListener {
      * @param[in] states The list of states
      * @param[in] context the context that is passed from application
      */
-    virtual void GetSupportedStatesPropertyCallbalck(QStatus status, const qcc::String& objectPath, const CycleControlInterface::SupportedOperationalStates& states, void* context) {}
+    virtual void OnResponseGetSupportedOperationalStates(QStatus status, const qcc::String& objectPath, const CycleControlInterface::SupportedOperationalStates& states, void* context) {}
 
     /**
      * Callback handler for getting SupportedOpearionalCommands property
@@ -57,28 +57,28 @@ class CycleControlIntfControllerListener : public InterfaceControllerListener {
      * @param[in] commands The list of commands
      * @param[in] context the context that is passed from application
      */
-    virtual void GetSupportedCommandsPropertyCallbalck(QStatus status, const qcc::String& objectPath, const CycleControlInterface::SupportedOperationalCommands& commands, void* context) {}
+    virtual void OnResponseGetSupportedOperationalCommands(QStatus status, const qcc::String& objectPath, const CycleControlInterface::SupportedOperationalCommands& commands, void* context) {}
 
     /**
      * Handler for OperationalState property changed
      * @param[in] objectPath the object path
      * @param[in] currentState current state
      */
-    virtual void OperationalStatePropertyChanged(const qcc::String& objectPath, const CycleControlInterface::OperationalState& currentState) {}
+    virtual void OnOperationalStateChanged(const qcc::String& objectPath, const CycleControlInterface::OperationalState& currentState) {}
 
     /**
      * Handler for SupportedOperationalStates property changed
      * @param[in] objectPath the object path
      * @param[in] states The list of states
      */
-    virtual void SupportedOperationalStatesProperyChanged(const qcc::String& objectPath, const CycleControlInterface::SupportedOperationalStates& states) {}
+    virtual void OnSupportedOperationalStatesChanged(const qcc::String& objectPath, const CycleControlInterface::SupportedOperationalStates& states) {}
 
     /**
      * Handler for SupportedOperationalCommands property changed
      * @param[in] objectPath the object path
      * @param[in] commands The list of commands
      */
-    virtual void SupportedOperationalCommandsProperyChanged(const qcc::String& objectPath, const CycleControlInterface::SupportedOperationalCommands& commands) {}
+    virtual void OnSupportedOperationalCommandsChanged(const qcc::String& objectPath, const CycleControlInterface::SupportedOperationalCommands& commands) {}
 
     /**
      * Callback handler for ExecuteCommand method
@@ -88,7 +88,7 @@ class CycleControlIntfControllerListener : public InterfaceControllerListener {
      * @param[in] errorName the detail errorName is passed when the method call is failed
      * @param[in] errorMessage the errorMessage that describes the error
      */
-    virtual void OnExecuteCommandRespose(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage) {}
+    virtual void OnResponseExecuteOperationalCommand(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage) {}
 
 };
 

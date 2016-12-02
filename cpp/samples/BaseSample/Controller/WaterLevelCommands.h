@@ -30,13 +30,13 @@ class WaterLevelListener : public WaterLevelIntfControllerListener{
   public:
     WaterLevelListener();
     virtual ~WaterLevelListener();
-    virtual void OnGetMaxLevelPropertyCallback(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context);
-    virtual void OnGetSupplySourcePropertyCallback (QStatus status, const qcc::String& objectPath, const WaterLevelInterface::SupplySource value, void* context);
-    virtual void OnGetCurrentLevelPropertyCallback (QStatus status, const qcc::String& objectPath, const uint8_t value, void* context);
+    virtual void OnResponseGetMaxLevel(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context);
+    virtual void OnResponseGetSupplySource(QStatus status, const qcc::String& objectPath, const WaterLevelInterface::SupplySource value, void* context);
+    virtual void OnResponseGetCurrentLevel(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context);
 
-    virtual void MaxLevelProprtyChanged(const qcc::String& objectPath, const uint8_t value);
-    virtual void CurrentLevelProprtyChanged(const qcc::String& objectPath, const uint8_t value);
-    virtual void SupplySourceProprtyChanged(const qcc::String& objectPath, const WaterLevelInterface::SupplySource value);
+    virtual void OnMaxLevelChanged(const qcc::String& objectPath, const uint8_t value);
+    virtual void OnCurrentLevelChanged(const qcc::String& objectPath, const uint8_t value);
+    virtual void OnSupplySourceChanged(const qcc::String& objectPath, const WaterLevelInterface::SupplySource value);
 };
 
 class WaterLevelCommands : public InterfaceCommands

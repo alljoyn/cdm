@@ -96,7 +96,7 @@ void AlertsIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char
                 alertRecord.needAcknowledgement = acknowledgeNeeded;
                 alerts.push_back(alertRecord);
             }
-            m_interfaceListener.OnAlertsPropertyChanged(obj.GetPath(), alerts);
+            m_interfaceListener.OnAlertsChanged(obj.GetPath(), alerts);
         }
     }
 }

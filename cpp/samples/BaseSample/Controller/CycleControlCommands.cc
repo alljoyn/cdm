@@ -26,7 +26,7 @@ CycleControlListener::~CycleControlListener()
 }
 
 
-void CycleControlListener::OperationalStatePropertyChanged(const qcc::String& objectPath, const CycleControlInterface::OperationalState& state)
+void CycleControlListener::OnOperationalStateChanged(const qcc::String& objectPath, const CycleControlInterface::OperationalState& state)
 {
     cout << __func__ << endl;
     cout << "# path: " << objectPath << endl;
@@ -34,7 +34,7 @@ void CycleControlListener::OperationalStatePropertyChanged(const qcc::String& ob
 }
 
 
-void CycleControlListener::GetOperationalStatePropertyCallback(QStatus status, const qcc::String& objectPath, const CycleControlInterface::OperationalState& state, void* context)
+void CycleControlListener::OnResponseGetOperationalState(QStatus status, const qcc::String& objectPath, const CycleControlInterface::OperationalState& state, void* context)
 {
     cout << __func__ << endl;
     cout << "# status: " << QCC_StatusText(status) << endl;
@@ -43,7 +43,7 @@ void CycleControlListener::GetOperationalStatePropertyCallback(QStatus status, c
 }
 
 
-void CycleControlListener::GetSupportedStatesPropertyCallbalck(QStatus status, const qcc::String& objectPath, const CycleControlInterface::SupportedOperationalStates& states, void* context)
+void CycleControlListener::OnResponseGetSupportedOperationalStates(QStatus status, const qcc::String& objectPath, const CycleControlInterface::SupportedOperationalStates& states, void* context)
 {
     cout << __func__ << endl;
     cout << "# status: " << QCC_StatusText(status) << endl;
@@ -55,7 +55,7 @@ void CycleControlListener::GetSupportedStatesPropertyCallbalck(QStatus status, c
     }
 }
 
-void CycleControlListener::GetSupportedCommandsPropertyCallbalck(QStatus status, const qcc::String& objectPath, const CycleControlInterface::SupportedOperationalCommands& commands, void* context)
+void CycleControlListener::OnResponseGetSupportedOperationalCommands(QStatus status, const qcc::String& objectPath, const CycleControlInterface::SupportedOperationalCommands& commands, void* context)
 {
     cout << __func__ << endl;
     cout << "# status: " << QCC_StatusText(status) << endl;
@@ -67,7 +67,7 @@ void CycleControlListener::GetSupportedCommandsPropertyCallbalck(QStatus status,
     }
 }
 
-void CycleControlListener::SupportedOperationalStatesProperyChanged(const qcc::String& objectPath, const CycleControlInterface::SupportedOperationalStates& states)
+void CycleControlListener::OnSupportedOperationalStatesChanged(const qcc::String& objectPath, const CycleControlInterface::SupportedOperationalStates& states)
 {
     cout << __func__ << endl;
     cout << "# path: " << objectPath << endl;
@@ -78,7 +78,7 @@ void CycleControlListener::SupportedOperationalStatesProperyChanged(const qcc::S
     }
 }
 
-void CycleControlListener::SupportedOperationalCommandsProperyChanged(const qcc::String& objectPath, const CycleControlInterface::SupportedOperationalCommands& commands)
+void CycleControlListener::OnSupportedOperationalCommandsChanged(const qcc::String& objectPath, const CycleControlInterface::SupportedOperationalCommands& commands)
 {
     cout << __func__ << endl;
     cout << "# path: " << objectPath << endl;
@@ -89,9 +89,9 @@ void CycleControlListener::SupportedOperationalCommandsProperyChanged(const qcc:
     }
 
 }
-void CycleControlListener::OnExecuteCommandRespose(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage)
+void CycleControlListener::OnResponseExecuteOperationalCommand(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage)
 {
-    cout << "# CycleControlListener::OnExecuteCommandRespose()" << endl;
+    cout << "# CycleControlListener::OnResponseExecuteOperationalCommand()" << endl;
     cout << "# status: " << QCC_StatusText(status) << endl;
     cout << "# path: " << objectPath << endl;
     if(status != ER_OK)
@@ -180,7 +180,7 @@ void CycleControlCommands::OnCmdExecuteCommand(Commands * commands, std::string&
     cout << "Command string: " << cmd.c_str() << endl;
     int command = strtol(cmd.c_str(), NULL, 10);
     if ( command >=0 && command <=3 ) {
-        intfController->ExecuteCommand((CycleControlInterface::OperationalCommands)command);
+        intfController->ExecuteOperationalCommand((CycleControlInterface::OperationalCommands) command);
     } else {
         cout << "Input argument is wrong." << endl;
         return;

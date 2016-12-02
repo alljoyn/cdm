@@ -38,7 +38,7 @@ class LanguageDisplayIntfControllerListener : public InterfaceControllerListener
      * @param[in] displayLanguage display language
      * @param[in] context the context that is passed from application
      */
-    virtual void GetDisplayLanguagePropertyCallback(QStatus status, const qcc::String& objectPath, const qcc::String displayLanguage, void* context) {};
+    virtual void OnResponseGetDisplayLanguage(QStatus status, const qcc::String& objectPath, const qcc::String displayLanguage, void* context) {};
 
     /**
      * Callback handler for setting DisplayLanguage
@@ -46,7 +46,7 @@ class LanguageDisplayIntfControllerListener : public InterfaceControllerListener
      * @param[in] objectPath the object path
      * @param[in] context the context that is passed from application
      */
-    virtual void SetDisplayLanguagePropertyCallback(QStatus status, const qcc::String& objectPath, void* context) {};
+    virtual void OnResponseSetDisplayLanguage(QStatus status, const qcc::String& objectPath, void* context) {};
 
     /**
      * Callback handler for getting SupportedDisplayLanguages
@@ -55,21 +55,21 @@ class LanguageDisplayIntfControllerListener : public InterfaceControllerListener
      * @param[in] SupportedDisplayLanguages list of supported display languages
      * @param[in] context the context that is passed from application
      */
-    virtual void GetSupportedDisplayLanguagesPropertyCallback(QStatus status, const qcc::String& objectPath, const std::vector<qcc::String>& supportedDisplayLanguages, void* context) {};
+    virtual void OnResponseGetSupportedDisplayLanguages(QStatus status, const qcc::String& objectPath, const std::vector<qcc::String>& supportedDisplayLanguages, void* context) {};
 
     /**
      * Handler for DisplayLanguage property changed
      * @param[in] objectPath the object path
      * @param[in] displayLanguage display language
      */
-    virtual void DisplayLanguagePropertyChanged(const qcc::String& objectPath, const qcc::String& displayLanguage) {};
+    virtual void OnDisplayLanguageChanged(const qcc::String& objectPath, const qcc::String& displayLanguage) {};
 
     /**
      * Handler for SupportedDisplayLanguages property changed
      * @param[in] objectPath the object path
      * @param[in] SupportedDisplayLanguages list of supported display languages
      */
-    virtual void SupportedDisplayLanguagesPropertyChanged(const qcc::String& objectPath, const std::vector<qcc::String>& supportedDisplayLanguages) {};
+    virtual void OnSupportedDisplayLanguagesChanged(const qcc::String& objectPath, const std::vector<qcc::String>& supportedDisplayLanguages) {};
 };
 
 } //namespace services

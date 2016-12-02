@@ -75,7 +75,7 @@ void TimeDisplayIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const
         if (!s_prop_DisplayTimeFormat.compare(propNameStr)) {
             if (propValue->typeId == ALLJOYN_BYTE) {
                 uint8_t timeFormat = propValue->v_byte;
-                m_interfaceListener.DisplayTimeFormatPropertyChanged(obj.GetPath(), timeFormat);
+                m_interfaceListener.OnDisplayTimeFormatChanged(obj.GetPath(), timeFormat);
             }
         } else if(!s_prop_SupportedDisplayTimeFormats.compare(propNameStr)) {
             uint8_t *vals;
@@ -87,7 +87,7 @@ void TimeDisplayIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const
             for (size_t i = 0; i < numVals; ++i) {
                 supportedTimeFormats.push_back(vals[i]);
             }
-            m_interfaceListener.SupportedDisplayTimeFormatsPropertyChanged(obj.GetPath(), supportedTimeFormats);
+            m_interfaceListener.OnSupportedDisplayTimeFormatsChanged(obj.GetPath(), supportedTimeFormats);
         }
     }
 }
@@ -129,14 +129,14 @@ void TimeDisplayIntfControllerImpl::GetDisplayTimeFormatPropertyCB(QStatus statu
     uint8_t timeFormat;
     value.Get("y", &timeFormat);
 
-    m_interfaceListener.GetDisplayTimeFormatPropertyCallback(status,obj->GetPath(),timeFormat,context);
+    m_interfaceListener.OnResponseGetDisplayTimeFormat(status, obj->GetPath(), timeFormat, context);
 }
 void TimeDisplayIntfControllerImpl::SetDisplayTimeFormatPropertyCB(QStatus status, ProxyBusObject* obj, void* context)
 {
     if(!obj){
         return;
     }
-    m_interfaceListener.SetDisplayTimeFormatPropertyCallback(status,obj->GetPath(),context);
+    m_interfaceListener.OnResponseSetDisplayTimeFormat(status, obj->GetPath(), context);
 }
 void TimeDisplayIntfControllerImpl::GetSupportedDisplayTimeFormatsPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
@@ -155,7 +155,7 @@ void TimeDisplayIntfControllerImpl::GetSupportedDisplayTimeFormatsPropertyCB(QSt
         supportedTimeFormats.push_back(vals[i]);
     }
 
-    m_interfaceListener.GetSupportedDisplayTimeFormatsPropertyCallback(status,obj->GetPath(), supportedTimeFormats, context);
+    m_interfaceListener.OnResponseGetSupportedDisplayTimeFormats(status, obj->GetPath(), supportedTimeFormats, context);
 }
 
 } //namespace services

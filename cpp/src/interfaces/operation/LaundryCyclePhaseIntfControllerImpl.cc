@@ -78,7 +78,7 @@ void LaundryCyclePhaseIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj,
             if (propValue->typeId == ALLJOYN_BYTE)
             {
                 LaundryCyclePhaseInterface::LaundryCyclePhase cyclePhase = (LaundryCyclePhaseInterface::LaundryCyclePhase)propValue->v_byte;
-                m_interfaceListener.OnCyclePhasePropertyChanged(obj.GetPath(), cyclePhase);
+                m_interfaceListener.OnCyclePhaseChanged(obj.GetPath(), cyclePhase);
             }
         }
         else if (!s_prop_SupportedCyclePhases.compare(propNameStr))
@@ -92,7 +92,7 @@ void LaundryCyclePhaseIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj,
 
                 for (size_t i = 0; i < numVals; ++i)
                     supportedCyclePhases.push_back((LaundryCyclePhaseInterface::LaundryCyclePhase)vals[i]);
-                m_interfaceListener.OnSupportedCyclePhasesPropertyChanged(obj.GetPath(), supportedCyclePhases);
+                m_interfaceListener.OnSupportedCyclePhasesChanged(obj.GetPath(), supportedCyclePhases);
             }
         }
     }
@@ -116,7 +116,7 @@ QStatus LaundryCyclePhaseIntfControllerImpl::GetSupportedCyclePhases(void* conte
     return status;
 }
 
-QStatus LaundryCyclePhaseIntfControllerImpl::GetCyclePhasesDescriptions(const qcc::String& language, void* context)
+QStatus LaundryCyclePhaseIntfControllerImpl::GetVendorPhasesDescription(const qcc::String& language, void* context)
 {
     QStatus status = ER_OK;
 
@@ -195,7 +195,7 @@ void LaundryCyclePhaseIntfControllerImpl::GetCyclePhasesDescriptionReplyHandler(
             descriptions.push_back(desc);
         }
     }
-    m_interfaceListener.OnResponseGetCyclePhasesDescriptions(status, m_proxyObject.GetPath(), descriptions, context, errorName, errorMessage.c_str());
+    m_interfaceListener.OnResponseGetVendorPhasesDescription(status, m_proxyObject.GetPath(), descriptions, context, errorName, errorMessage.c_str());
 }
 
 } //namespace services

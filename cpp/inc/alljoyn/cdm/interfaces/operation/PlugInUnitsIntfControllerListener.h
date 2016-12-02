@@ -45,7 +45,7 @@ class PlugInUnitsIntfControllerListener : public InterfaceControllerListener {
      * Handler for PlugInUnits property changed
      * @param[in] plugInUnits plug in units
      */
-    virtual void OnPlugInUnitsPropertyChanged(const qcc::String& objectPath, const PlugInUnitsInterface::PlugInUnits& plugInUints) {}
+    virtual void OnPlugInUnitsChanged(const qcc::String& objectPath, const PlugInUnitsInterface::PlugInUnits& plugInUints) {}
 
  };
 

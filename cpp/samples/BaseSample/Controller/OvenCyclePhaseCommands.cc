@@ -44,14 +44,14 @@ void OvenCyclePhaseListener::OnResponseGetSupportedCyclePhases(QStatus status, c
         cout << (int)listOfCyclePhases[i] << endl;
 }
 
-void OvenCyclePhaseListener::OnCyclePhasePropertyChanged(const qcc::String& objectPath, const uint8_t cyclePhase)
+void OvenCyclePhaseListener::OnCyclePhaseChanged(const qcc::String& objectPath, const uint8_t cyclePhase)
 {
     cout << __func__ << endl;
     cout << "# path: " << objectPath << endl;
     cout << "# cyclePhase: " << (int)cyclePhase << endl;
 }
 
-void OvenCyclePhaseListener::OnSupportedCyclePhasesPropertyChanged(const qcc::String& objectPath, const OvenCyclePhaseInterface::SupportedCyclePhases& listOfCyclePhases)
+void OvenCyclePhaseListener::OnSupportedCyclePhasesChanged(const qcc::String& objectPath, const OvenCyclePhaseInterface::SupportedCyclePhases& listOfCyclePhases)
 {
     cout << __func__ << endl;
     cout << "# path: " << objectPath << endl;
@@ -60,7 +60,7 @@ void OvenCyclePhaseListener::OnSupportedCyclePhasesPropertyChanged(const qcc::St
         cout << (int)listOfCyclePhases[i] << endl;
 }
 
-void OvenCyclePhaseListener::OnResponseGetCyclePhasesDescriptions(QStatus status, const qcc::String& objectPath, const OvenCyclePhaseInterface::CyclePhaseDescriptions& listOfCycleDescriptions, void* context, const char* errorName, const char* errorMessage)
+void OvenCyclePhaseListener::OnResponseGetVendorPhasesDescription(QStatus status, const qcc::String& objectPath, const OvenCyclePhaseInterface::CyclePhaseDescriptions& listOfCycleDescriptions, void* context, const char* errorName, const char* errorMessage)
 {
     cout << __func__ << endl;
     cout << "# path: " << objectPath << endl;
@@ -137,5 +137,5 @@ void OvenCyclePhaseCommands::OnCmdGetCyclePhasesDescriptions(Commands* commands,
     }
 
     cout << "Command string: " << cmd.c_str() << endl;
-    intfController->GetCyclePhasesDescriptions(cmd.c_str());
+    intfController->GetVendorPhasesDescription(cmd.c_str());
 }

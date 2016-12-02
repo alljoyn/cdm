@@ -32,7 +32,7 @@ class AlertsListener : public AlertsIntfControllerListener{
     virtual ~AlertsListener();
 
     virtual void OnResponseGetAlerts(QStatus status, const qcc::String& objectPath, const AlertsInterface::Alerts& alerts, void* context);
-    virtual void OnAlertsPropertyChanged(const qcc::String& objectPath, const AlertsInterface::Alerts& alerts);
+    virtual void OnAlertsChanged(const qcc::String& objectPath, const AlertsInterface::Alerts& alerts);
     virtual void OnResponseGetAlertCodesDescription(QStatus status, const qcc::String& objectPath, const AlertsInterface::AlertCodesDescriptors& descriptions,void* context, const char* errorName, const char* errorMessage);
     virtual void OnResponseAcknowledgeAlert(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage);
     virtual void OnResponseAcknowledgeAllAlerts(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage);

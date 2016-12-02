@@ -38,7 +38,7 @@ class TemperatureDisplayIntfControllerListener : public InterfaceControllerListe
      * @param[in] temperatureUnit temperature unit
      * @param[in] context the context that is passed from application
      */
-    virtual void GetDisplayTemperatureUnitPropertyCallback(QStatus status, const qcc::String& objectPath, const uint8_t temperatureUnit, void* context) {};
+    virtual void OnResponseGetDisplayTemperatureUnit(QStatus status, const qcc::String& objectPath, const uint8_t temperatureUnit, void* context) {};
 
     /**
      * Callback handler for setting DisplayTemperatureUnit
@@ -46,7 +46,7 @@ class TemperatureDisplayIntfControllerListener : public InterfaceControllerListe
      * @param[in] objectPath the object path
      * @param[in] context the context that is passed from application
      */
-    virtual void SetDisplayTemperatureUnitPropertyCallback(QStatus status, const qcc::String& objectPath, void* context) {};
+    virtual void OnResponseSetDisplayTemperatureUnit(QStatus status, const qcc::String& objectPath, void* context) {};
 
     /**
      * Callback handler for getting SupportedDisplayTemperatureUnits
@@ -55,21 +55,21 @@ class TemperatureDisplayIntfControllerListener : public InterfaceControllerListe
      * @param[in] SupportedDisplayTemperatureUnits list of supported display temperature units
      * @param[in] context the context that is passed from application
      */
-    virtual void GetSupportedDisplayTemperatureUnitsPropertyCallback(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& SupportedDisplayTemperatureUnits, void* context) {};
+    virtual void OnResponseGetSupportedDisplayTemperatureUnits(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& SupportedDisplayTemperatureUnits, void* context) {};
 
     /**
      * Handler for DisplayTemperatureUnit property changed
      * @param[in] objectPath the object path
      * @param[in] temperatureUnit temperature unit
      */
-    virtual void DisplayTemperatureUnitPropertyChanged(const qcc::String& objectPath, const uint8_t temperatureUnit) {};
+    virtual void OnDisplayTemperatureUnitChanged(const qcc::String& objectPath, const uint8_t temperatureUnit) {};
 
     /**
      * Handler for SupportedDisplayTemperatureUnits property changed
      * @param[in] objectPath the object path
      * @param[in] SupportedDisplayTemperatureUnits list of supported display temperature units
      */
-    virtual void SupportedDisplayTemperatureUnitsPropertyChanged(const qcc::String& objectPath, const std::vector<uint8_t>& SupportedDisplayTemperatureUnits) {};
+    virtual void OnSupportedDisplayTemperatureUnitsChanged(const qcc::String& objectPath, const std::vector<uint8_t>& SupportedDisplayTemperatureUnits) {};
 };
 
 } //namespace services

@@ -39,7 +39,7 @@ class SoilLevelIntfControllerListener : public InterfaceControllerListener {
      * @param[in] maxLevel maxLevel
      * @param[in] context the context that is passed from application
      */
-    virtual void GetMaxLevelPropertyCallback(QStatus status, const qcc::String& objectPath, const uint8_t maxLevel, void* context) {};
+    virtual void OnResponseGetMaxLevel(QStatus status, const qcc::String& objectPath, const uint8_t maxLevel, void* context) {};
 
     /**
      * Callback handler for getting TargetLevel
@@ -48,7 +48,7 @@ class SoilLevelIntfControllerListener : public InterfaceControllerListener {
      * @param[in] targetLevel targetLevel
      * @param[in] context the context that is passed from application
      */
-    virtual void GetTargetLevelPropertyCallback(QStatus status, const qcc::String& objectPath, const uint8_t targetLevel, void* context) {};
+    virtual void OnResponseGetTargetLevel(QStatus status, const qcc::String& objectPath, const uint8_t targetLevel, void* context) {};
 
     /**
      * Callback handler for setting TargetLevel
@@ -57,7 +57,7 @@ class SoilLevelIntfControllerListener : public InterfaceControllerListener {
      * @param[in] targetLevel targetLevel
      * @param[in] context the context that is passed from application
      */
-    virtual void SetTargetLevelPropertyCallback(QStatus status, const qcc::String& objectPath, void* context) {};
+    virtual void OnResponseSetTargetLevel(QStatus status, const qcc::String& objectPath, void* context) {};
 
     /**
      * Callback handler for getting SelectableLevels
@@ -66,28 +66,28 @@ class SoilLevelIntfControllerListener : public InterfaceControllerListener {
      * @param[in] selectableLevels selectableLevels
      * @param[in] context the context that is passed from application
      */
-    virtual void GetSelectableLevelsPropertyCallback(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& selectableLevels, void* context) {};
+    virtual void OnResponseGetSelectableLevels(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& selectableLevels, void* context) {};
 
     /**
      * Handler for MaxLevel property changed
      * @param[in] objectPath the object path
      * @param[in] maxLevel maxLevel
      */
-    virtual void MaxLevelPropertyChanged(const qcc::String& objectPath, const uint8_t maxLevel) {};
+    virtual void OnMaxLevelChanged(const qcc::String& objectPath, const uint8_t maxLevel) {};
 
     /**
      * Handler for TargetLevel property changed
      * @param[in] objectPath the object path
      * @param[in] targetLevel targetLevel
      */
-    virtual void TargetLevelPropertyChanged(const qcc::String& objectPath, const uint8_t targetLevel) {};
+    virtual void OnTargetLevelChanged(const qcc::String& objectPath, const uint8_t targetLevel) {};
 
     /**
      * Handler for SelectableLevels property changed
      * @param[in] objectPath the object path
      * @param[in] selectableLevels selectableLevels
      */
-    virtual void SelectableLevelsPropertyChanged(const qcc::String& objectPath, const std::vector<uint8_t>& selectableLevels) {};
+    virtual void OnSelectableLevelsChanged(const qcc::String& objectPath, const std::vector<uint8_t>& selectableLevels) {};
 };
 
 } //namespace services

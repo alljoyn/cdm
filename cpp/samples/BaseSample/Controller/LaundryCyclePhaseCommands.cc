@@ -44,14 +44,14 @@ void LaundryCyclePhaseListener::OnResponseGetSupportedCyclePhases(QStatus status
         cout << (int)listOfCyclePhases[i] << endl;
 }
 
-void LaundryCyclePhaseListener::OnCyclePhasePropertyChanged(const qcc::String& objectPath, const uint8_t cyclePhase)
+void LaundryCyclePhaseListener::OnCyclePhaseChanged(const qcc::String& objectPath, const uint8_t cyclePhase)
 {
     cout << __func__ << endl;
     cout << "# path: " << objectPath << endl;
     cout << "# cyclePhase: " << (int)cyclePhase << endl;
 }
 
-void LaundryCyclePhaseListener::OnSupportedCyclePhasesPropertyChanged(const qcc::String& objectPath, const LaundryCyclePhaseInterface::SupportedCyclePhases& listOfCyclePhases)
+void LaundryCyclePhaseListener::OnSupportedCyclePhasesChanged(const qcc::String& objectPath, const LaundryCyclePhaseInterface::SupportedCyclePhases& listOfCyclePhases)
 {
     cout << __func__ << endl;
     cout << "# path: " << objectPath << endl;
@@ -60,7 +60,7 @@ void LaundryCyclePhaseListener::OnSupportedCyclePhasesPropertyChanged(const qcc:
         cout << (int)listOfCyclePhases[i] << endl;
 }
 
-void LaundryCyclePhaseListener::OnResponseGetCyclePhasesDescriptions(QStatus status, const qcc::String& objectPath, const LaundryCyclePhaseInterface::CyclePhaseDescriptions& listOfCycleDescriptions, void* context, const char* errorName, const char* errorMessage)
+void LaundryCyclePhaseListener::OnResponseGetVendorPhasesDescription(QStatus status, const qcc::String& objectPath, const LaundryCyclePhaseInterface::CyclePhaseDescriptions& listOfCycleDescriptions, void* context, const char* errorName, const char* errorMessage)
 {
     cout << __func__ << endl;
     cout << "# path: " << objectPath << endl;
@@ -137,5 +137,5 @@ void LaundryCyclePhaseCommands::OnCmdGetCyclePhasesDescriptions(Commands* comman
     }
 
     cout << "Command string: " << cmd.c_str() << endl;
-    intfController->GetCyclePhasesDescriptions(cmd.c_str());
+    intfController->GetVendorPhasesDescription(cmd.c_str());
 }

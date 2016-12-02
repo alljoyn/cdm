@@ -76,7 +76,7 @@ void RemoteControllabilityIntfControllerImpl::PropertiesChanged(ProxyBusObject& 
         if (!s_prop_IsControllable.compare(propNameStr)) {
             if (propValue->typeId == ALLJOYN_BOOLEAN) {
                 uint8_t volume = propValue->v_bool;
-                m_interfaceListener.IsControllalbePropertyChanged(obj.GetPath(), volume);
+                m_interfaceListener.OnIsControllableChanged(obj.GetPath(), volume);
             }
         }
     }
@@ -99,7 +99,7 @@ void RemoteControllabilityIntfControllerImpl::GetIsControllablePropertyCB(QStatu
     bool isControllable;
     value.Get("b", &isControllable);
 
-    m_interfaceListener.GetIsControllablePropertyCallback(status, obj->GetPath(), isControllable, context);
+    m_interfaceListener.OnResponseGetIsControllable(status, obj->GetPath(), isControllable, context);
 }
 
 } //namespace services

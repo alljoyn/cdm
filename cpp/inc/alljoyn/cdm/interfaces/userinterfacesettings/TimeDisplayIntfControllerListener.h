@@ -39,7 +39,7 @@ class TimeDisplayIntfControllerListener : public InterfaceControllerListener {
      * @param[in] timeformat time format
      * @param[in] context the context that is passed from application
      */
-    virtual void GetDisplayTimeFormatPropertyCallback(QStatus status, const qcc::String& objectPath, const uint8_t timeformat, void* context) {};
+    virtual void OnResponseGetDisplayTimeFormat(QStatus status, const qcc::String& objectPath, const uint8_t timeformat, void* context) {};
 
     /**
      * Callback handler for setting DisplayTimeFormat
@@ -47,7 +47,7 @@ class TimeDisplayIntfControllerListener : public InterfaceControllerListener {
      * @param[in] objectPath the object path
      * @param[in] context the context that is passed from application
      */
-    virtual void SetDisplayTimeFormatPropertyCallback(QStatus status, const qcc::String& objectPath, void* context) {};
+    virtual void OnResponseSetDisplayTimeFormat(QStatus status, const qcc::String& objectPath, void* context) {};
 
     /**
      * Callback handler for getting SupportedDisplayTimeFormats
@@ -56,7 +56,7 @@ class TimeDisplayIntfControllerListener : public InterfaceControllerListener {
      * @param[in] supportedTimeFormats supportedTimeFormats
      * @param[in] context the context that is passed from application
      */
-    virtual void GetSupportedDisplayTimeFormatsPropertyCallback(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& supportedTimeFormats, void* context) {};
+    virtual void OnResponseGetSupportedDisplayTimeFormats(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& supportedTimeFormats, void* context) {};
 
 
     /**
@@ -64,14 +64,14 @@ class TimeDisplayIntfControllerListener : public InterfaceControllerListener {
      * @param[in] objectPath the object path
      * @param[in] timeformat timeformat
      */
-    virtual void DisplayTimeFormatPropertyChanged(const qcc::String& objectPath, const uint8_t timeformat) {};
+    virtual void OnDisplayTimeFormatChanged(const qcc::String& objectPath, const uint8_t timeformat) {};
 
     /**
      * Handler for SupportedDisplayTimeFormats property changed
      * @param[in] objectPath the object path
      * @param[in] supportedTimeFormats supportedTimeFormats
      */
-    virtual void SupportedDisplayTimeFormatsPropertyChanged(const qcc::String& objectPath, const std::vector<uint8_t>& supportedTimeFormats) {};
+    virtual void OnSupportedDisplayTimeFormatsChanged(const qcc::String& objectPath, const std::vector<uint8_t>& supportedTimeFormats) {};
 
 };
 

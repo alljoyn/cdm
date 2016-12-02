@@ -35,7 +35,7 @@ void AlertsListener::OnResponseGetAlerts(QStatus status, const qcc::String& obje
     for(size_t i = 0; i < alerts.size(); i++)
         cout << "severity: " << (int)alerts[i].severity << " - alertCode: " << alerts[i].alertCode << " - needAcknowledgement: " << (alerts[i].needAcknowledgement ? "true" : "false") << endl;
 }
-void AlertsListener::OnAlertsPropertyChanged(const qcc::String& objectPath, const AlertsInterface::Alerts& alerts)
+void AlertsListener::OnAlertsChanged(const qcc::String& objectPath, const AlertsInterface::Alerts& alerts)
 {
     cout << __func__ << endl;
     cout << "# path: " << objectPath << endl;

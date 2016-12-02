@@ -79,7 +79,7 @@ class LaundryCyclePhaseIntfControllerImpl : public InterfaceController, public L
      * @param[in] context
      * @return status
      */
-    virtual QStatus GetCyclePhasesDescriptions(const qcc::String& language, void* context);
+    virtual QStatus GetVendorPhasesDescription(const qcc::String& language, void* context);
 
   private:
     LaundryCyclePhaseIntfControllerImpl();

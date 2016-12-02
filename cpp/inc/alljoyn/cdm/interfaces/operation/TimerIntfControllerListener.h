@@ -86,37 +86,37 @@ class TimerIntfControllerListener : public InterfaceControllerListener
      * @param[in] objectPath the object path
      * @param[in] time reference timer value
      */
-    virtual void OnReferenceTimerPropertyChanged(const qcc::String& objectPath, int32_t time) {}
+    virtual void OnReferenceTimerChanged(const qcc::String& objectPath, int32_t time) {}
     /**
      * Handler for TargetTimeToStart property changed
      * @param[in] objectPath the object path
      * @param[in] time target time to start
      */
-    virtual void OnTargetTimeToStartPropertyChanged(const qcc::String& objectPath, int32_t time) {}
+    virtual void OnTargetTimeToStartChanged(const qcc::String& objectPath, int32_t time) {}
     /**
      * Handler for TargetTimeToStop property changed
      * @param[in] objectPath the object path
      * @param[in] time target time to stop
      */
-    virtual void OnTargetTimeToStopPropertyChanged(const qcc::String& objectPath, int32_t time) {}
+    virtual void OnTargetTimeToStopChanged(const qcc::String& objectPath, int32_t time) {}
     /**
      * Handler for EstimatedTimeToEnd property changed
      * @param[in] objectPath the object path
      * @param[in] time estimated time to end
      */
-    virtual void OnEstimatedTimeToEndPropertyChanged(const qcc::String& objectPath, int32_t time) {}
+    virtual void OnEstimatedTimeToEndChanged(const qcc::String& objectPath, int32_t time) {}
     /**
      * Handler for RunningTime property changed
      * @param[in] objectPath the object path
      * @param[in] time running time
      */
-    virtual void OnRunningTimePropertyChanged(const qcc::String& objectPath, int32_t time) {}
+    virtual void OnRunningTimeChanged(const qcc::String& objectPath, int32_t time) {}
     /**
      * Handler for TargetDuration property changed
      * @param[in] objectPath the object path
      * @param[in] time target duration
      */
-    virtual void OnTargetDurationPropertyChanged(const qcc::String& objectPath, int32_t time) {}
+    virtual void OnTargetDurationChanged(const qcc::String& objectPath, int32_t time) {}
 
     /**
      * Callback handler for SetTargetTimerToStart method
@@ -126,7 +126,7 @@ class TimerIntfControllerListener : public InterfaceControllerListener
      * @param[in] errorName the detail errorName is passed when the method call is failed
      * @param[in] errorMessage the errorMessage that describes the error
      */
-    virtual void OnResponseSetTargetTimerToStart(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage) {};
+    virtual void OnResponseSetTargetTimeToStart(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage) {};
     /**
      * Callback handler for SetTargetTimerToStop method
      * @param[in] status ER_OK on success
@@ -135,7 +135,7 @@ class TimerIntfControllerListener : public InterfaceControllerListener
      * @param[in] errorName the detail errorName is passed when the method call is failed
      * @param[in] errorMessage the errorMessage that describes the error
      */
-    virtual void OnResponseSetTargetTimerToStop(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage) {};
+    virtual void OnResponseSetTargetTimeToStop(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage) {};
 };
 
 } //namespace services

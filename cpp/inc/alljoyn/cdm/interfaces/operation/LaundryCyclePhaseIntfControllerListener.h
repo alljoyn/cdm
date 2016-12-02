@@ -55,14 +55,14 @@ class LaundryCyclePhaseIntfControllerListener : public InterfaceControllerListen
      * @param[in] objectPath the object path
      * @param[in] cyclePhase current cycle phase
      */
-    virtual void OnCyclePhasePropertyChanged(const qcc::String& objectPath, const uint8_t cyclePhase) {}
+    virtual void OnCyclePhaseChanged(const qcc::String& objectPath, const uint8_t cyclePhase) {}
 
     /**
      * Handler for SupportedCyclePhases property changed
      * @param[in] objectPath the object path
      * @param[in] listOfCyclePhases list of cycle phases
      */
-    virtual void OnSupportedCyclePhasesPropertyChanged(const qcc::String& objectPath, const LaundryCyclePhaseInterface::SupportedCyclePhases& listOfCyclePhases) {}
+    virtual void OnSupportedCyclePhasesChanged(const qcc::String& objectPath, const LaundryCyclePhaseInterface::SupportedCyclePhases& listOfCyclePhases) {}
 
     /**
      * Callback handler for GetCyclePhasesDescriptions method
@@ -73,7 +73,7 @@ class LaundryCyclePhaseIntfControllerListener : public InterfaceControllerListen
      * @param[in] errorMessage the errorMessage that describes the error
      * @param[out]listOfCycleDescriptions list of cycle phases descriptions
      */
-    virtual void OnResponseGetCyclePhasesDescriptions(QStatus status, const qcc::String& objectPath, const LaundryCyclePhaseInterface::CyclePhaseDescriptions& listOfCycleDescriptions,
+    virtual void OnResponseGetVendorPhasesDescription(QStatus status, const qcc::String& objectPath, const LaundryCyclePhaseInterface::CyclePhaseDescriptions& listOfCycleDescriptions,
                                                       void* context, const char* errorName, const char* errorMessage) {}
 };
 

@@ -76,7 +76,7 @@ void ClosedStatusIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, cons
         if (!s_prop_IsClosed.compare(propNameStr)) {
             if (propValue->typeId == ALLJOYN_BOOLEAN) {
                 uint8_t volume = propValue->v_bool;
-                m_interfaceListener.IsClosedPropertyChanged(obj.GetPath(), volume);
+                m_interfaceListener.OnIsClosedChanged(obj.GetPath(), volume);
             }
         }
     }
@@ -101,7 +101,7 @@ void ClosedStatusIntfControllerImpl::GetIsClosedPropertyCB(QStatus status, Proxy
     bool isClosed;
     value.Get("b", &isClosed);
 
-    m_interfaceListener.GetIsClosedPropertyCallback(status, obj->GetPath(), isClosed, context);
+    m_interfaceListener.OnResponseGetIsClosed(status, obj->GetPath(), isClosed, context);
 }
 
 
