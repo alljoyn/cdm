@@ -35,6 +35,20 @@
 			passBuildSettingsInEnvironment = 1;
 			productName = hae_darwin;
 		};
+		B01F98471D73E0380069460A /* hae_darwin_ios */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "$(SCONSFLAGS) -u OS=darwin CPU=x86_64 DOCS=html BR=on BINDINGS=\"cpp\" WS=off VARIANT=$(CONFIGURATION) --$(ACTION)";
+			buildConfigurationList = B01F98481D73E0380069460A /* Build configuration list for PBXLegacyTarget "hae_darwin_ios" */;
+			buildPhases = (
+			);
+			buildToolPath = scons;
+			buildWorkingDirectory = ../.;
+			dependencies = (
+			);
+			name = hae_darwin_ios;
+			passBuildSettingsInEnvironment = 1;
+			productName = hae_darwin;
+		};
 /* End PBXLegacyTarget section */
 
 /* Begin PBXProject section */
@@ -61,6 +75,7 @@
 			projectRoot = "";
 			targets = (
 				A98A55E31C6DB34100ACAE7B /* hae_darwin */,
+				B01F98471D73E0380069460A /* hae_darwin_ios */,
 			);
 		};
 /* End PBXProject section */
@@ -142,6 +157,35 @@
 			};
 			name = Release;
 		};
+		B01F98491D73E0380069460A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DEBUGGING_SYMBOLS = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				VARIANT = debug;
+			};
+			name = Debug;
+		};
+		B01F984A1D73E0380069460A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				VARIANT = release;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -159,6 +203,15 @@
 			buildConfigurations = (
 				A98A55E71C6DB34100ACAE7B /* Debug */,
 				A98A55E81C6DB34100ACAE7B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B01F98481D73E0380069460A /* Build configuration list for PBXLegacyTarget "hae_darwin_ios" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B01F98491D73E0380069460A /* Debug */,
+				B01F984A1D73E0380069460A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

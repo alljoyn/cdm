@@ -162,6 +162,20 @@ class AJType(object):
         'o': 'String',
     }
 
+    ObjCFormatStrMap = {
+        's': 's',
+        'b': '@',
+        'y': 'u',
+        'n': 'hd',
+        'q': 'hu',
+        'i': 'd',
+        'u': 'u',
+        'x': 'lld',
+        't': 'llu',
+        'd': 'f',
+        'o': '@',  # Object Path
+    }
+
     def __init__(self, signature, parent_interface=None):
         self.annotated_type = None
         self.signature = signature
@@ -264,8 +278,23 @@ class AJType(object):
     def javatype_class(self):
         return self.JavaTypeClassMap.get(self.signature, "/* TODO:%{} */".format(self.signature))
 
+    def objc_format_str(self):
+        return self.ObjCFormatStrMap.get(self.signature, "/* TODO:%{} */".format(self.signature))
+
     def set_annotated_type(self, value):
         self.annotated_type = value
+
+    def is_array(self):
+        ajtype = self.annotated_type if self.annotated_type else self.signature
+        return ajtype.startswith("a")
+
+    def is_bool(self):
+        ajtype = self.annotated_type if self.annotated_type else self.signature
+        return ajtype == 'b'
+
+    def is_string(self):
+        ajtype = self.annotated_type if self.annotated_type else self.signature
+        return ajtype == 's'
 
     def __str__(self):
         return self.signature
@@ -331,6 +360,10 @@ class Interface(object):
     @property
     def UserProperties(self):
         return filter(lambda x: str(x.Name) != "Version", self.Properties)
+
+    @property
+    def UIProperties(self):
+        return filter(lambda x: str(x.Name) != "Version" and not x.is_selector(), self.Properties)
 
     def set_secure(self, value):
         self.Secure = bool(value)
@@ -400,6 +433,34 @@ class Interface(object):
         else:
             print "Unexpected: ", child
 
+    def has_writable_property(self):
+        for property in self.UserProperties:
+            if property.Writable and not property.Selector:
+                return True
+        return False
+
+    def has_property_with_selector(self):
+        for property in self.UserProperties:
+            if property.Selector:
+                return True
+        return False
+
+    def get_property_with_name(self, name):
+        for property in self.UserProperties:
+            if property.Name == name:
+                return property
+        return None
+
+
+class Selector(object):
+    def __init__(self, name, property):
+        self.Name = Symbol(name)
+        self.RelatedProperty = property
+
+    @property
+    def Property(self):
+        return self.RelatedProperty.parent_interface.get_property_with_name(self.Name)
+
 
 class Property(object):
     def __init__(self, name, type, access):
@@ -417,6 +478,7 @@ class Property(object):
         self.MinFromProperty = None
         self.Units = None
         self.parent_interface = None
+        self.Selector = None
 
     def emit_changed(self):
         return _padded_tag_replacement(self.EmitsChangedSignal)
@@ -470,8 +532,11 @@ class Property(object):
             re.compile(r'org\.alljoyn\.Bus\.Type\.Max'): 
                 lambda m: self.set_max(value), 
  
-            re.compile(r'org\.alljoyn\.Bus\.Type\.Units'): 
-                lambda m: self.set_units(value),
+            re.compile(r'org\.alljoyn\.Bus\.Type\.Units'):
+                lambda m: self.set_units(value), 
+
+            re.compile(r'org\.twobulls\.Property\.Selector'):
+                lambda m: self.add_selector(value),
 
             re.compile(r'org\.twobulls\.Property\.MaxValueFromProperty'):
                 lambda m: self.set_max_from_property(value),
@@ -495,8 +560,14 @@ class Property(object):
             self.Annotations.append(child)
             self.add_annotation(child.Name, child.Value)
 
+    def add_selector(self, value):
+        self.Selector = Selector(value, self)
+
     def is_bool(self):
         return self.Type.signature == 'b'
+
+    def is_string(self):
+        return self.Type.signature == 's'
 
     def is_enum(self):
         annotation_values = [annotation.Value for annotation in self.Annotations]
@@ -504,6 +575,13 @@ class Property(object):
             for value in annotation_values:
                 if str(enum.Name) in value:
                     return True
+        return False
+
+    def is_selector(self):
+        properties_with_selectors = [property.Selector for property in self.parent_interface.UserProperties if property.Selector]
+        for property in properties_with_selectors:
+            if property.Name == self.Name:
+                return True
         return False
 
     def enum_name(self):

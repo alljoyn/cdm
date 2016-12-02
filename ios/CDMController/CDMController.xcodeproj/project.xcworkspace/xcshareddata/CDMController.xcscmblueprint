@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "7EB9F55F99A49D6ED26D1209C7B9713E08AC4D23",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "7CBB55656BB066B1695DE29073AF0F9637BDC9D4" : 0,
+    "7EB9F55F99A49D6ED26D1209C7B9713E08AC4D23" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "94F089EF-920D-4F2E-896C-F5D05B6CEF0A",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "7CBB55656BB066B1695DE29073AF0F9637BDC9D4" : "..\/core\/alljoyn",
+    "7EB9F55F99A49D6ED26D1209C7B9713E08AC4D23" : "hae\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "CDMController",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "ios\/CDMController\/CDMController.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "bitbucket.org:twobulls\/alljoyn-core.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "7CBB55656BB066B1695DE29073AF0F9637BDC9D4"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "bitbucket.org:twobulls\/alljoyn-hae.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "7EB9F55F99A49D6ED26D1209C7B9713E08AC4D23"
+    }
+  ]
+}

@@ -66,6 +66,13 @@ std::map<CdmInterfaceType, qcc::String> InterfaceTypesMap = {
     {LANGUAGE_DISPLAY_INTERFACE, "org.alljoyn.SmartSpaces.UserInterfaceSettings.LanguageDisplay"},
     {TEMPERATURE_DISPLAY_INTERFACE, "org.alljoyn.SmartSpaces.UserInterfaceSettings.TemperatureDisplay"},
     {TIME_DISPLAY_INTERFACE, "org.alljoyn.SmartSpaces.UserInterfaceSettings.TimeDisplay"},
+    {BRIGHTNESS_INTERFACE, "org.alljoyn.SmartSpaces.Operation.Brightness"},
+    {COLOR_INTERFACE, "org.alljoyn.SmartSpaces.Operation.Color"},
+    {COLOR_TEMPERATURE_INTERFACE, "org.alljoyn.SmartSpaces.Operation.ColorTemperature"},
+    {LOCK_CONTROL_INTERFACE, "org.alljoyn.SmartSpaces.Operation.LockControl"},
+    {LOCKED_STATUS_INTERFACE, "org.alljoyn.SmartSpaces.Operation.LockedStatus"},
+    {TRIGGER_SENSOR_INTERFACE, "org.alljoyn.SmartSpaces.Operation.TriggerSensor"},
+    {UNLOCK_CONTROL_INTERFACE, "org.alljoyn.SmartSpaces.Operation.UnlockControl"}
 };
 
 std::map<ErrorCode, qcc::String> CdmInterface::InterfaceErrorNameMap = {

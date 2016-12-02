@@ -1,0 +1,1252 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		ACB2C6B9160B7CF200D7E3A6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACB2C6B8160B7CF200D7E3A6 /* UIKit.framework */; };
+		ACB2C6BB160B7CF200D7E3A6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACB2C6BA160B7CF200D7E3A6 /* Foundation.framework */; };
+		ACB2C6BD160B7CF200D7E3A6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACB2C6BC160B7CF200D7E3A6 /* CoreGraphics.framework */; };
+		ACB2C752160B8FDC00D7E3A6 /* libstdc++.6.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = ACB2C751160B8FDC00D7E3A6 /* libstdc++.6.dylib */; };
+		ACB2C754160B8FE800D7E3A6 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACB2C753160B8FE800D7E3A6 /* SystemConfiguration.framework */; };
+		B01A02511D790F6B0057098C /* cdm_controller in Resources */ = {isa = PBXBuildFile; fileRef = B01A024F1D790F6B0057098C /* cdm_controller */; };
+		B01A02A01D7926710057098C /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01A02621D7926700057098C /* AppDelegate.mm */; };
+		B01A02A11D7926710057098C /* CDMController-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B01A02631D7926700057098C /* CDMController-Info.plist */; };
+		B01A02A21D7926710057098C /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B01A02651D7926700057098C /* Default-568h@2x.png */; };
+		B01A02A31D7926710057098C /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = B01A02661D7926700057098C /* Default.png */; };
+		B01A02A41D7926710057098C /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B01A02671D7926700057098C /* Default@2x.png */; };
+		B01A02A51D7926710057098C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B01A02681D7926700057098C /* InfoPlist.strings */; };
+		B01A02A61D7926710057098C /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B01A026A1D7926700057098C /* MainStoryboard_iPad.storyboard */; };
+		B01A02A71D7926710057098C /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B01A026C1D7926700057098C /* MainStoryboard_iPhone.storyboard */; };
+		B01A02A81D7926710057098C /* CDMDeviceListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01A02701D7926700057098C /* CDMDeviceListener.mm */; };
+		B01A02A91D7926710057098C /* Device.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01A02721D7926700057098C /* Device.mm */; };
+		B01A02AA1D7926710057098C /* DeviceManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01A02741D7926700057098C /* DeviceManager.mm */; };
+		B01A02AB1D7926710057098C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B01A02761D7926700057098C /* main.m */; };
+		B01A02AC1D7926710057098C /* CDMUtil.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01A02791D7926700057098C /* CDMUtil.mm */; };
+		B01A02AD1D7926710057098C /* DeviceViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01A027C1D7926700057098C /* DeviceViewController.mm */; };
+		B01A02B01D7926710057098C /* InterfaceListViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01A02841D7926710057098C /* InterfaceListViewController.mm */; };
+		B01A02B11D7926710057098C /* InterfaceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B01A02861D7926710057098C /* InterfaceViewController.m */; };
+		B01A02B21D7926710057098C /* DeviceTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B01A028A1D7926710057098C /* DeviceTableViewCell.m */; };
+		B01A02B31D7926710057098C /* InterfaceTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B01A028C1D7926710057098C /* InterfaceTableViewCell.m */; };
+		B01A02B41D7926710057098C /* MethodViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B01A028F1D7926710057098C /* MethodViewCell.m */; };
+		B01A02B51D7926710057098C /* ReadOnlyValuePropertyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B01A02921D7926710057098C /* ReadOnlyValuePropertyCell.m */; };
+		B01A02B61D7926710057098C /* ReadWriteValuePropertyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B01A02941D7926710057098C /* ReadWriteValuePropertyCell.m */; };
+		B01A02B71D7926710057098C /* alljoyn_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = B01A02961D7926710057098C /* alljoyn_logo.png */; };
+		B01A02B81D7926710057098C /* icon_air_conditioner.png in Resources */ = {isa = PBXBuildFile; fileRef = B01A02971D7926710057098C /* icon_air_conditioner.png */; };
+		B01A02B91D7926710057098C /* icon_cooktop.png in Resources */ = {isa = PBXBuildFile; fileRef = B01A02981D7926710057098C /* icon_cooktop.png */; };
+		B01A02BA1D7926710057098C /* icon_dish_washer.png in Resources */ = {isa = PBXBuildFile; fileRef = B01A02991D7926710057098C /* icon_dish_washer.png */; };
+		B01A02BB1D7926710057098C /* icon_electric_fan.png in Resources */ = {isa = PBXBuildFile; fileRef = B01A029A1D7926710057098C /* icon_electric_fan.png */; };
+		B01A02BC1D7926710057098C /* icon_freezer.png in Resources */ = {isa = PBXBuildFile; fileRef = B01A029B1D7926710057098C /* icon_freezer.png */; };
+		B01A02BD1D7926710057098C /* icon_oven.png in Resources */ = {isa = PBXBuildFile; fileRef = B01A029C1D7926710057098C /* icon_oven.png */; };
+		B01A02BE1D7926710057098C /* icon_refrigerator.png in Resources */ = {isa = PBXBuildFile; fileRef = B01A029D1D7926710057098C /* icon_refrigerator.png */; };
+		B01A02BF1D7926710057098C /* icon_set_top_box.png in Resources */ = {isa = PBXBuildFile; fileRef = B01A029E1D7926710057098C /* icon_set_top_box.png */; };
+		B01A02C01D7926710057098C /* icon_tv.png in Resources */ = {isa = PBXBuildFile; fileRef = B01A029F1D7926710057098C /* icon_tv.png */; };
+		B01C8E011DB98A8600E9BB5D /* SelectableValuePropertyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B01C8E001DB98A8600E9BB5D /* SelectableValuePropertyCell.m */; };
+		B01D81AE1D7FC6420053CDE5 /* AirRecirculationModeListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D81A71D7FC6420053CDE5 /* AirRecirculationModeListener.mm */; };
+		B01D81AF1D7FC6420053CDE5 /* AirRecirculationModeViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D81A91D7FC6420053CDE5 /* AirRecirculationModeViewController.mm */; };
+		B01D81B01D7FC6420053CDE5 /* AlertsListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D81AB1D7FC6420053CDE5 /* AlertsListener.mm */; };
+		B01D81B11D7FC6420053CDE5 /* AlertsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D81AD1D7FC6420053CDE5 /* AlertsViewController.mm */; };
+		B01D81BC1D7FCE750053CDE5 /* AudioVideoInputListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D81B91D7FCE750053CDE5 /* AudioVideoInputListener.mm */; };
+		B01D81BD1D7FCE750053CDE5 /* AudioVideoInputViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D81BB1D7FCE750053CDE5 /* AudioVideoInputViewController.mm */; };
+		B01D81C81D7FCF5D0053CDE5 /* AudioVolumeListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D81C51D7FCF5D0053CDE5 /* AudioVolumeListener.mm */; };
+		B01D81C91D7FCF5D0053CDE5 /* AudioVolumeViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D81C71D7FCF5D0053CDE5 /* AudioVolumeViewController.mm */; };
+		B01D81DD1D7FD0850053CDE5 /* LanguageDisplayListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D81D21D7FD0850053CDE5 /* LanguageDisplayListener.mm */; };
+		B01D81DE1D7FD0850053CDE5 /* LanguageDisplayViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D81D41D7FD0850053CDE5 /* LanguageDisplayViewController.mm */; };
+		B01D81DF1D7FD0850053CDE5 /* TemperatureDisplayListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D81D61D7FD0850053CDE5 /* TemperatureDisplayListener.mm */; };
+		B01D81E01D7FD0850053CDE5 /* TemperatureDisplayViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D81D81D7FD0850053CDE5 /* TemperatureDisplayViewController.mm */; };
+		B01D81E11D7FD0850053CDE5 /* TimeDisplayListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D81DA1D7FD0850053CDE5 /* TimeDisplayListener.mm */; };
+		B01D81E21D7FD0850053CDE5 /* TimeDisplayViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D81DC1D7FD0850053CDE5 /* TimeDisplayViewController.mm */; };
+		B01D81E71D7FD2710053CDE5 /* BatteryStatusListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D81E41D7FD2710053CDE5 /* BatteryStatusListener.mm */; };
+		B01D81E81D7FD2710053CDE5 /* BatteryStatusViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D81E61D7FD2710053CDE5 /* BatteryStatusViewController.mm */; };
+		B01D81F31D7FE6830053CDE5 /* ChannelListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D81F01D7FE6830053CDE5 /* ChannelListener.mm */; };
+		B01D81F41D7FE6830053CDE5 /* ChannelViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D81F21D7FE6830053CDE5 /* ChannelViewController.mm */; };
+		B01D81FF1D7FE7F30053CDE5 /* ClimateControlModeListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D81FC1D7FE7F30053CDE5 /* ClimateControlModeListener.mm */; };
+		B01D82001D7FE7F30053CDE5 /* ClimateControlModeViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D81FE1D7FE7F30053CDE5 /* ClimateControlModeViewController.mm */; };
+		B01D820B1D7FE8C50053CDE5 /* ClosedStatusListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D82081D7FE8C50053CDE5 /* ClosedStatusListener.mm */; };
+		B01D820C1D7FE8C50053CDE5 /* ClosedStatusViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D820A1D7FE8C50053CDE5 /* ClosedStatusViewController.mm */; };
+		B01D82171D7FE99A0053CDE5 /* CurrentPowerListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D82141D7FE99A0053CDE5 /* CurrentPowerListener.mm */; };
+		B01D82181D7FE99A0053CDE5 /* CurrentPowerViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D82161D7FE99A0053CDE5 /* CurrentPowerViewController.mm */; };
+		B01D821D1D7FE9D00053CDE5 /* DishWashingCyclePhaseListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D821A1D7FE9D00053CDE5 /* DishWashingCyclePhaseListener.mm */; };
+		B01D821E1D7FE9D00053CDE5 /* DishWashingCyclePhaseViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D821C1D7FE9D00053CDE5 /* DishWashingCyclePhaseViewController.mm */; };
+		B01D82231D7FEE030053CDE5 /* EnergyUsageListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D82201D7FEE030053CDE5 /* EnergyUsageListener.mm */; };
+		B01D82241D7FEE030053CDE5 /* EnergyUsageViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D82221D7FEE030053CDE5 /* EnergyUsageViewController.mm */; };
+		B01D82291D7FEEE40053CDE5 /* FanSpeedLevelListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D82261D7FEEE40053CDE5 /* FanSpeedLevelListener.mm */; };
+		B01D822A1D7FEEE40053CDE5 /* FanSpeedLevelViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D82281D7FEEE40053CDE5 /* FanSpeedLevelViewController.mm */; };
+		B01D822F1D7FEF970053CDE5 /* FilterStatusListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D822C1D7FEF970053CDE5 /* FilterStatusListener.mm */; };
+		B01D82301D7FEF970053CDE5 /* FilterStatusViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D822E1D7FEF970053CDE5 /* FilterStatusViewController.mm */; };
+		B01D82351D7FF0730053CDE5 /* HeatingZoneListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D82321D7FF0730053CDE5 /* HeatingZoneListener.mm */; };
+		B01D82361D7FF0730053CDE5 /* HeatingZoneViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D82341D7FF0730053CDE5 /* HeatingZoneViewController.mm */; };
+		B01D823B1D7FF11F0053CDE5 /* HvacFanModeListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D82381D7FF11F0053CDE5 /* HvacFanModeListener.mm */; };
+		B01D823C1D7FF11F0053CDE5 /* HvacFanModeViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D823A1D7FF11F0053CDE5 /* HvacFanModeViewController.mm */; };
+		B01D82411D7FF2520053CDE5 /* LaundryCyclePhaseListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D823E1D7FF2520053CDE5 /* LaundryCyclePhaseListener.mm */; };
+		B01D82421D7FF2520053CDE5 /* LaundryCyclePhaseViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D82401D7FF2520053CDE5 /* LaundryCyclePhaseViewController.mm */; };
+		B01D82471D7FF4240053CDE5 /* MoistureOutputLevelListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D82441D7FF4240053CDE5 /* MoistureOutputLevelListener.mm */; };
+		B01D82481D7FF4240053CDE5 /* MoistureOutputLevelViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D82461D7FF4240053CDE5 /* MoistureOutputLevelViewController.mm */; };
+		B01D82551D7FF5150053CDE5 /* OffControlListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D824A1D7FF5150053CDE5 /* OffControlListener.mm */; };
+		B01D82561D7FF5150053CDE5 /* OffControlViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D824C1D7FF5150053CDE5 /* OffControlViewController.mm */; };
+		B01D82571D7FF5150053CDE5 /* OnControlListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D824E1D7FF5150053CDE5 /* OnControlListener.mm */; };
+		B01D82581D7FF5150053CDE5 /* OnControlViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D82501D7FF5150053CDE5 /* OnControlViewController.mm */; };
+		B01D82591D7FF5150053CDE5 /* OnOffStatusListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D82521D7FF5150053CDE5 /* OnOffStatusListener.mm */; };
+		B01D825A1D7FF5150053CDE5 /* OnOffStatusViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D82541D7FF5150053CDE5 /* OnOffStatusViewController.mm */; };
+		B01D825F1D7FF5F50053CDE5 /* OvenCyclePhaseListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D825C1D7FF5F50053CDE5 /* OvenCyclePhaseListener.mm */; };
+		B01D82601D7FF5F50053CDE5 /* OvenCyclePhaseViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D825E1D7FF5F50053CDE5 /* OvenCyclePhaseViewController.mm */; };
+		B01D82651D7FF66E0053CDE5 /* PlugInUnitsListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D82621D7FF66E0053CDE5 /* PlugInUnitsListener.mm */; };
+		B01D82661D7FF66E0053CDE5 /* PlugInUnitsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01D82641D7FF66E0053CDE5 /* PlugInUnitsViewController.mm */; };
+		B01EBF1F1D7E3A02002F442D /* CurrentAirQualityLevelListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01EBEFC1D7E3A02002F442D /* CurrentAirQualityLevelListener.mm */; };
+		B01EBF201D7E3A02002F442D /* CurrentAirQualityLevelViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01EBEFE1D7E3A02002F442D /* CurrentAirQualityLevelViewController.mm */; };
+		B01EBF211D7E3A02002F442D /* CurrentAirQualityListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01EBF001D7E3A02002F442D /* CurrentAirQualityListener.mm */; };
+		B01EBF221D7E3A02002F442D /* CurrentAirQualityViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01EBF021D7E3A02002F442D /* CurrentAirQualityViewController.mm */; };
+		B01EBF231D7E3A02002F442D /* CurrentHumidityListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01EBF041D7E3A02002F442D /* CurrentHumidityListener.mm */; };
+		B01EBF241D7E3A02002F442D /* CurrentHumidityViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01EBF061D7E3A02002F442D /* CurrentHumidityViewController.mm */; };
+		B01EBF251D7E3A02002F442D /* CurrentTemperatureListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01EBF081D7E3A02002F442D /* CurrentTemperatureListener.mm */; };
+		B01EBF261D7E3A02002F442D /* CurrentTemperatureViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01EBF0A1D7E3A02002F442D /* CurrentTemperatureViewController.mm */; };
+		B01EBF271D7E3A02002F442D /* TargetHumidityListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01EBF0C1D7E3A02002F442D /* TargetHumidityListener.mm */; };
+		B01EBF281D7E3A02002F442D /* TargetHumidityViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01EBF0E1D7E3A02002F442D /* TargetHumidityViewController.mm */; };
+		B01EBF291D7E3A02002F442D /* TargetTemperatureLevelListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01EBF101D7E3A02002F442D /* TargetTemperatureLevelListener.mm */; };
+		B01EBF2A1D7E3A02002F442D /* TargetTemperatureLevelViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01EBF121D7E3A02002F442D /* TargetTemperatureLevelViewController.mm */; };
+		B01EBF2B1D7E3A02002F442D /* TargetTemperatureListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01EBF141D7E3A02002F442D /* TargetTemperatureListener.mm */; };
+		B01EBF2C1D7E3A02002F442D /* TargetTemperatureViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01EBF161D7E3A02002F442D /* TargetTemperatureViewController.mm */; };
+		B01EBF2D1D7E3A02002F442D /* WaterLevelListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01EBF181D7E3A02002F442D /* WaterLevelListener.mm */; };
+		B01EBF2E1D7E3A02002F442D /* WaterLevelViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01EBF1A1D7E3A02002F442D /* WaterLevelViewController.mm */; };
+		B01EBF2F1D7E3A02002F442D /* WindDirectionListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01EBF1C1D7E3A02002F442D /* WindDirectionListener.mm */; };
+		B01EBF301D7E3A02002F442D /* WindDirectionViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01EBF1E1D7E3A02002F442D /* WindDirectionViewController.mm */; };
+		B01EBF351D7E4016002F442D /* CycleControlListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01EBF321D7E4016002F442D /* CycleControlListener.mm */; };
+		B01EBF361D7E4016002F442D /* CycleControlViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01EBF341D7E4016002F442D /* CycleControlViewController.mm */; };
+		B01EF5851D80DAD900C423B8 /* RapidModeListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01EF57E1D80DAD900C423B8 /* RapidModeListener.mm */; };
+		B01EF5861D80DAD900C423B8 /* RapidModeTimedListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01EF5801D80DAD900C423B8 /* RapidModeTimedListener.mm */; };
+		B01EF5871D80DAD900C423B8 /* RapidModeTimedViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01EF5821D80DAD900C423B8 /* RapidModeTimedViewController.mm */; };
+		B01EF5881D80DAD900C423B8 /* RapidModeViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01EF5841D80DAD900C423B8 /* RapidModeViewController.mm */; };
+		B01EF5A51D80DC1500C423B8 /* RemoteControllabilityListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01EF58A1D80DC1500C423B8 /* RemoteControllabilityListener.mm */; };
+		B01EF5A61D80DC1500C423B8 /* RemoteControllabilityViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01EF58C1D80DC1500C423B8 /* RemoteControllabilityViewController.mm */; };
+		B01EF5A71D80DC1500C423B8 /* RepeatModeListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01EF58E1D80DC1500C423B8 /* RepeatModeListener.mm */; };
+		B01EF5A81D80DC1500C423B8 /* RepeatModeViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01EF5901D80DC1500C423B8 /* RepeatModeViewController.mm */; };
+		B01EF5A91D80DC1500C423B8 /* ResourceSavingListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01EF5921D80DC1500C423B8 /* ResourceSavingListener.mm */; };
+		B01EF5AA1D80DC1500C423B8 /* ResourceSavingViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01EF5941D80DC1500C423B8 /* ResourceSavingViewController.mm */; };
+		B01EF5AB1D80DC1500C423B8 /* RobotCleaningCyclePhaseListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01EF5961D80DC1500C423B8 /* RobotCleaningCyclePhaseListener.mm */; };
+		B01EF5AC1D80DC1500C423B8 /* RobotCleaningCyclePhaseViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01EF5981D80DC1500C423B8 /* RobotCleaningCyclePhaseViewController.mm */; };
+		B01EF5AD1D80DC1500C423B8 /* SoilLevelListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01EF59A1D80DC1500C423B8 /* SoilLevelListener.mm */; };
+		B01EF5AE1D80DC1500C423B8 /* SoilLevelViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01EF59C1D80DC1500C423B8 /* SoilLevelViewController.mm */; };
+		B01EF5AF1D80DC1500C423B8 /* SpinSpeedLevelListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01EF59E1D80DC1500C423B8 /* SpinSpeedLevelListener.mm */; };
+		B01EF5B01D80DC1500C423B8 /* SpinSpeedLevelViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01EF5A01D80DC1500C423B8 /* SpinSpeedLevelViewController.mm */; };
+		B01EF5B11D80DC1500C423B8 /* TimerListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01EF5A21D80DC1500C423B8 /* TimerListener.mm */; };
+		B01EF5B21D80DC1500C423B8 /* TimerViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01EF5A41D80DC1500C423B8 /* TimerViewController.mm */; };
+		B01F34141DB71B4A00AE4FAC /* MethodViewOutputCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B01F34131DB71B4A00AE4FAC /* MethodViewOutputCell.m */; };
+		B02DF5CF1DADDF0A0089CA30 /* BrightnessListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B02DF5B41DADDF0A0089CA30 /* BrightnessListener.mm */; };
+		B02DF5D01DADDF0A0089CA30 /* BrightnessViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B02DF5B61DADDF0A0089CA30 /* BrightnessViewController.mm */; };
+		B02DF5D11DADDF0A0089CA30 /* ColorListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B02DF5B81DADDF0A0089CA30 /* ColorListener.mm */; };
+		B02DF5D21DADDF0A0089CA30 /* ColorTemperatureListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B02DF5BA1DADDF0A0089CA30 /* ColorTemperatureListener.mm */; };
+		B02DF5D31DADDF0A0089CA30 /* ColorTemperatureViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B02DF5BC1DADDF0A0089CA30 /* ColorTemperatureViewController.mm */; };
+		B02DF5D41DADDF0A0089CA30 /* ColorViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B02DF5BE1DADDF0A0089CA30 /* ColorViewController.mm */; };
+		B02DF5D51DADDF0A0089CA30 /* LockControlListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B02DF5C01DADDF0A0089CA30 /* LockControlListener.mm */; };
+		B02DF5D61DADDF0A0089CA30 /* LockControlViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B02DF5C21DADDF0A0089CA30 /* LockControlViewController.mm */; };
+		B02DF5D71DADDF0A0089CA30 /* LockedStatusListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B02DF5C41DADDF0A0089CA30 /* LockedStatusListener.mm */; };
+		B02DF5D81DADDF0A0089CA30 /* LockedStatusViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B02DF5C61DADDF0A0089CA30 /* LockedStatusViewController.mm */; };
+		B02DF5D91DADDF0A0089CA30 /* TriggerSensorListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B02DF5C81DADDF0A0089CA30 /* TriggerSensorListener.mm */; };
+		B02DF5DA1DADDF0A0089CA30 /* TriggerSensorViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B02DF5CA1DADDF0A0089CA30 /* TriggerSensorViewController.mm */; };
+		B02DF5DB1DADDF0A0089CA30 /* UnlockControlListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B02DF5CC1DADDF0A0089CA30 /* UnlockControlListener.mm */; };
+		B02DF5DC1DADDF0A0089CA30 /* UnlockControlViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B02DF5CE1DADDF0A0089CA30 /* UnlockControlViewController.mm */; };
+		B07DF3EC1D7D432E00AC9D58 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B07DF3EB1D7D432E00AC9D58 /* QuartzCore.framework */; };
+		B0E8FCF41DAF0C920061C741 /* SampleCertificateChainEngine.cc in Sources */ = {isa = PBXBuildFile; fileRef = B0E8FCF21DAF0C920061C741 /* SampleCertificateChainEngine.cc */; };
+		B0E8FCF81DAF10AB0061C741 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = B0E8FCF71DAF10AB0061C741 /* README.md */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		ACB2C6B4160B7CF200D7E3A6 /* CDMController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CDMController.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		ACB2C6B8160B7CF200D7E3A6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		ACB2C6BA160B7CF200D7E3A6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		ACB2C6BC160B7CF200D7E3A6 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		ACB2C74F160B8FAB00D7E3A6 /* libstdc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "usr/lib/libstdc++.dylib"; sourceTree = SDKROOT; };
+		ACB2C751160B8FDC00D7E3A6 /* libstdc++.6.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.6.dylib"; path = "usr/lib/libstdc++.6.dylib"; sourceTree = SDKROOT; };
+		ACB2C753160B8FE800D7E3A6 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		B01A024F1D790F6B0057098C /* cdm_controller */ = {isa = PBXFileReference; lastKnownFileType = folder; name = cdm_controller; path = /Users/jaydeni/Projects/alljoyn/services/cdm/ios/CDMController/cdm_controller; sourceTree = "<absolute>"; };
+		B01A02611D7926700057098C /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		B01A02621D7926700057098C /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
+		B01A02631D7926700057098C /* CDMController-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "CDMController-Info.plist"; sourceTree = "<group>"; };
+		B01A02641D7926700057098C /* CDMController-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CDMController-Prefix.pch"; sourceTree = "<group>"; };
+		B01A02651D7926700057098C /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		B01A02661D7926700057098C /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		B01A02671D7926700057098C /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		B01A02691D7926700057098C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		B01A026B1D7926700057098C /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
+		B01A026D1D7926700057098C /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
+		B01A026F1D7926700057098C /* CDMDeviceListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDMDeviceListener.h; sourceTree = "<group>"; };
+		B01A02701D7926700057098C /* CDMDeviceListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CDMDeviceListener.mm; sourceTree = "<group>"; };
+		B01A02711D7926700057098C /* Device.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Device.h; sourceTree = "<group>"; };
+		B01A02721D7926700057098C /* Device.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Device.mm; sourceTree = "<group>"; };
+		B01A02731D7926700057098C /* DeviceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceManager.h; sourceTree = "<group>"; };
+		B01A02741D7926700057098C /* DeviceManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DeviceManager.mm; sourceTree = "<group>"; };
+		B01A02751D7926700057098C /* ECDHEKeyXListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ECDHEKeyXListener.h; sourceTree = "<group>"; };
+		B01A02761D7926700057098C /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		B01A02781D7926700057098C /* CDMUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDMUtil.h; sourceTree = "<group>"; };
+		B01A02791D7926700057098C /* CDMUtil.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CDMUtil.mm; sourceTree = "<group>"; };
+		B01A027B1D7926700057098C /* DeviceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceViewController.h; sourceTree = "<group>"; };
+		B01A027C1D7926700057098C /* DeviceViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DeviceViewController.mm; sourceTree = "<group>"; };
+		B01A02831D7926710057098C /* InterfaceListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InterfaceListViewController.h; sourceTree = "<group>"; };
+		B01A02841D7926710057098C /* InterfaceListViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = InterfaceListViewController.mm; sourceTree = "<group>"; };
+		B01A02851D7926710057098C /* InterfaceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InterfaceViewController.h; sourceTree = "<group>"; };
+		B01A02861D7926710057098C /* InterfaceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InterfaceViewController.m; sourceTree = "<group>"; };
+		B01A02891D7926710057098C /* DeviceTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceTableViewCell.h; sourceTree = "<group>"; };
+		B01A028A1D7926710057098C /* DeviceTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceTableViewCell.m; sourceTree = "<group>"; };
+		B01A028B1D7926710057098C /* InterfaceTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InterfaceTableViewCell.h; sourceTree = "<group>"; };
+		B01A028C1D7926710057098C /* InterfaceTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InterfaceTableViewCell.m; sourceTree = "<group>"; };
+		B01A028E1D7926710057098C /* MethodViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MethodViewCell.h; sourceTree = "<group>"; };
+		B01A028F1D7926710057098C /* MethodViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MethodViewCell.m; sourceTree = "<group>"; };
+		B01A02911D7926710057098C /* ReadOnlyValuePropertyCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReadOnlyValuePropertyCell.h; sourceTree = "<group>"; };
+		B01A02921D7926710057098C /* ReadOnlyValuePropertyCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReadOnlyValuePropertyCell.m; sourceTree = "<group>"; };
+		B01A02931D7926710057098C /* ReadWriteValuePropertyCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReadWriteValuePropertyCell.h; sourceTree = "<group>"; };
+		B01A02941D7926710057098C /* ReadWriteValuePropertyCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReadWriteValuePropertyCell.m; sourceTree = "<group>"; };
+		B01A02961D7926710057098C /* alljoyn_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = alljoyn_logo.png; sourceTree = "<group>"; };
+		B01A02971D7926710057098C /* icon_air_conditioner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_air_conditioner.png; sourceTree = "<group>"; };
+		B01A02981D7926710057098C /* icon_cooktop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_cooktop.png; sourceTree = "<group>"; };
+		B01A02991D7926710057098C /* icon_dish_washer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_dish_washer.png; sourceTree = "<group>"; };
+		B01A029A1D7926710057098C /* icon_electric_fan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_electric_fan.png; sourceTree = "<group>"; };
+		B01A029B1D7926710057098C /* icon_freezer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_freezer.png; sourceTree = "<group>"; };
+		B01A029C1D7926710057098C /* icon_oven.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_oven.png; sourceTree = "<group>"; };
+		B01A029D1D7926710057098C /* icon_refrigerator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_refrigerator.png; sourceTree = "<group>"; };
+		B01A029E1D7926710057098C /* icon_set_top_box.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_set_top_box.png; sourceTree = "<group>"; };
+		B01A029F1D7926710057098C /* icon_tv.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_tv.png; sourceTree = "<group>"; };
+		B01C8DFF1DB98A8600E9BB5D /* SelectableValuePropertyCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectableValuePropertyCell.h; sourceTree = "<group>"; };
+		B01C8E001DB98A8600E9BB5D /* SelectableValuePropertyCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectableValuePropertyCell.m; sourceTree = "<group>"; };
+		B01D81A61D7FC6420053CDE5 /* AirRecirculationModeListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AirRecirculationModeListener.h; sourceTree = "<group>"; };
+		B01D81A71D7FC6420053CDE5 /* AirRecirculationModeListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AirRecirculationModeListener.mm; sourceTree = "<group>"; };
+		B01D81A81D7FC6420053CDE5 /* AirRecirculationModeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AirRecirculationModeViewController.h; sourceTree = "<group>"; };
+		B01D81A91D7FC6420053CDE5 /* AirRecirculationModeViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AirRecirculationModeViewController.mm; sourceTree = "<group>"; };
+		B01D81AA1D7FC6420053CDE5 /* AlertsListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertsListener.h; sourceTree = "<group>"; };
+		B01D81AB1D7FC6420053CDE5 /* AlertsListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AlertsListener.mm; sourceTree = "<group>"; };
+		B01D81AC1D7FC6420053CDE5 /* AlertsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertsViewController.h; sourceTree = "<group>"; };
+		B01D81AD1D7FC6420053CDE5 /* AlertsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AlertsViewController.mm; sourceTree = "<group>"; };
+		B01D81B81D7FCE750053CDE5 /* AudioVideoInputListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioVideoInputListener.h; sourceTree = "<group>"; };
+		B01D81B91D7FCE750053CDE5 /* AudioVideoInputListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AudioVideoInputListener.mm; sourceTree = "<group>"; };
+		B01D81BA1D7FCE750053CDE5 /* AudioVideoInputViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioVideoInputViewController.h; sourceTree = "<group>"; };
+		B01D81BB1D7FCE750053CDE5 /* AudioVideoInputViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AudioVideoInputViewController.mm; sourceTree = "<group>"; };
+		B01D81C41D7FCF5D0053CDE5 /* AudioVolumeListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioVolumeListener.h; sourceTree = "<group>"; };
+		B01D81C51D7FCF5D0053CDE5 /* AudioVolumeListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AudioVolumeListener.mm; sourceTree = "<group>"; };
+		B01D81C61D7FCF5D0053CDE5 /* AudioVolumeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioVolumeViewController.h; sourceTree = "<group>"; };
+		B01D81C71D7FCF5D0053CDE5 /* AudioVolumeViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AudioVolumeViewController.mm; sourceTree = "<group>"; };
+		B01D81D11D7FD0850053CDE5 /* LanguageDisplayListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LanguageDisplayListener.h; sourceTree = "<group>"; };
+		B01D81D21D7FD0850053CDE5 /* LanguageDisplayListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LanguageDisplayListener.mm; sourceTree = "<group>"; };
+		B01D81D31D7FD0850053CDE5 /* LanguageDisplayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LanguageDisplayViewController.h; sourceTree = "<group>"; };
+		B01D81D41D7FD0850053CDE5 /* LanguageDisplayViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LanguageDisplayViewController.mm; sourceTree = "<group>"; };
+		B01D81D51D7FD0850053CDE5 /* TemperatureDisplayListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TemperatureDisplayListener.h; sourceTree = "<group>"; };
+		B01D81D61D7FD0850053CDE5 /* TemperatureDisplayListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TemperatureDisplayListener.mm; sourceTree = "<group>"; };
+		B01D81D71D7FD0850053CDE5 /* TemperatureDisplayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TemperatureDisplayViewController.h; sourceTree = "<group>"; };
+		B01D81D81D7FD0850053CDE5 /* TemperatureDisplayViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TemperatureDisplayViewController.mm; sourceTree = "<group>"; };
+		B01D81D91D7FD0850053CDE5 /* TimeDisplayListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeDisplayListener.h; sourceTree = "<group>"; };
+		B01D81DA1D7FD0850053CDE5 /* TimeDisplayListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TimeDisplayListener.mm; sourceTree = "<group>"; };
+		B01D81DB1D7FD0850053CDE5 /* TimeDisplayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeDisplayViewController.h; sourceTree = "<group>"; };
+		B01D81DC1D7FD0850053CDE5 /* TimeDisplayViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TimeDisplayViewController.mm; sourceTree = "<group>"; };
+		B01D81E31D7FD2710053CDE5 /* BatteryStatusListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BatteryStatusListener.h; sourceTree = "<group>"; };
+		B01D81E41D7FD2710053CDE5 /* BatteryStatusListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BatteryStatusListener.mm; sourceTree = "<group>"; };
+		B01D81E51D7FD2710053CDE5 /* BatteryStatusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BatteryStatusViewController.h; sourceTree = "<group>"; };
+		B01D81E61D7FD2710053CDE5 /* BatteryStatusViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BatteryStatusViewController.mm; sourceTree = "<group>"; };
+		B01D81EF1D7FE6830053CDE5 /* ChannelListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChannelListener.h; sourceTree = "<group>"; };
+		B01D81F01D7FE6830053CDE5 /* ChannelListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ChannelListener.mm; sourceTree = "<group>"; };
+		B01D81F11D7FE6830053CDE5 /* ChannelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChannelViewController.h; sourceTree = "<group>"; };
+		B01D81F21D7FE6830053CDE5 /* ChannelViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ChannelViewController.mm; sourceTree = "<group>"; };
+		B01D81FB1D7FE7F30053CDE5 /* ClimateControlModeListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClimateControlModeListener.h; sourceTree = "<group>"; };
+		B01D81FC1D7FE7F30053CDE5 /* ClimateControlModeListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ClimateControlModeListener.mm; sourceTree = "<group>"; };
+		B01D81FD1D7FE7F30053CDE5 /* ClimateControlModeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClimateControlModeViewController.h; sourceTree = "<group>"; };
+		B01D81FE1D7FE7F30053CDE5 /* ClimateControlModeViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ClimateControlModeViewController.mm; sourceTree = "<group>"; };
+		B01D82071D7FE8C50053CDE5 /* ClosedStatusListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClosedStatusListener.h; sourceTree = "<group>"; };
+		B01D82081D7FE8C50053CDE5 /* ClosedStatusListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ClosedStatusListener.mm; sourceTree = "<group>"; };
+		B01D82091D7FE8C50053CDE5 /* ClosedStatusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClosedStatusViewController.h; sourceTree = "<group>"; };
+		B01D820A1D7FE8C50053CDE5 /* ClosedStatusViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ClosedStatusViewController.mm; sourceTree = "<group>"; };
+		B01D82131D7FE99A0053CDE5 /* CurrentPowerListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrentPowerListener.h; sourceTree = "<group>"; };
+		B01D82141D7FE99A0053CDE5 /* CurrentPowerListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CurrentPowerListener.mm; sourceTree = "<group>"; };
+		B01D82151D7FE99A0053CDE5 /* CurrentPowerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrentPowerViewController.h; sourceTree = "<group>"; };
+		B01D82161D7FE99A0053CDE5 /* CurrentPowerViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CurrentPowerViewController.mm; sourceTree = "<group>"; };
+		B01D82191D7FE9D00053CDE5 /* DishWashingCyclePhaseListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DishWashingCyclePhaseListener.h; sourceTree = "<group>"; };
+		B01D821A1D7FE9D00053CDE5 /* DishWashingCyclePhaseListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DishWashingCyclePhaseListener.mm; sourceTree = "<group>"; };
+		B01D821B1D7FE9D00053CDE5 /* DishWashingCyclePhaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DishWashingCyclePhaseViewController.h; sourceTree = "<group>"; };
+		B01D821C1D7FE9D00053CDE5 /* DishWashingCyclePhaseViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DishWashingCyclePhaseViewController.mm; sourceTree = "<group>"; };
+		B01D821F1D7FEE030053CDE5 /* EnergyUsageListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnergyUsageListener.h; sourceTree = "<group>"; };
+		B01D82201D7FEE030053CDE5 /* EnergyUsageListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EnergyUsageListener.mm; sourceTree = "<group>"; };
+		B01D82211D7FEE030053CDE5 /* EnergyUsageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnergyUsageViewController.h; sourceTree = "<group>"; };
+		B01D82221D7FEE030053CDE5 /* EnergyUsageViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EnergyUsageViewController.mm; sourceTree = "<group>"; };
+		B01D82251D7FEEE40053CDE5 /* FanSpeedLevelListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FanSpeedLevelListener.h; sourceTree = "<group>"; };
+		B01D82261D7FEEE40053CDE5 /* FanSpeedLevelListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FanSpeedLevelListener.mm; sourceTree = "<group>"; };
+		B01D82271D7FEEE40053CDE5 /* FanSpeedLevelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FanSpeedLevelViewController.h; sourceTree = "<group>"; };
+		B01D82281D7FEEE40053CDE5 /* FanSpeedLevelViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FanSpeedLevelViewController.mm; sourceTree = "<group>"; };
+		B01D822B1D7FEF970053CDE5 /* FilterStatusListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterStatusListener.h; sourceTree = "<group>"; };
+		B01D822C1D7FEF970053CDE5 /* FilterStatusListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FilterStatusListener.mm; sourceTree = "<group>"; };
+		B01D822D1D7FEF970053CDE5 /* FilterStatusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterStatusViewController.h; sourceTree = "<group>"; };
+		B01D822E1D7FEF970053CDE5 /* FilterStatusViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FilterStatusViewController.mm; sourceTree = "<group>"; };
+		B01D82311D7FF0730053CDE5 /* HeatingZoneListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeatingZoneListener.h; sourceTree = "<group>"; };
+		B01D82321D7FF0730053CDE5 /* HeatingZoneListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HeatingZoneListener.mm; sourceTree = "<group>"; };
+		B01D82331D7FF0730053CDE5 /* HeatingZoneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeatingZoneViewController.h; sourceTree = "<group>"; };
+		B01D82341D7FF0730053CDE5 /* HeatingZoneViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HeatingZoneViewController.mm; sourceTree = "<group>"; };
+		B01D82371D7FF11F0053CDE5 /* HvacFanModeListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HvacFanModeListener.h; sourceTree = "<group>"; };
+		B01D82381D7FF11F0053CDE5 /* HvacFanModeListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HvacFanModeListener.mm; sourceTree = "<group>"; };
+		B01D82391D7FF11F0053CDE5 /* HvacFanModeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HvacFanModeViewController.h; sourceTree = "<group>"; };
+		B01D823A1D7FF11F0053CDE5 /* HvacFanModeViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HvacFanModeViewController.mm; sourceTree = "<group>"; };
+		B01D823D1D7FF2520053CDE5 /* LaundryCyclePhaseListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LaundryCyclePhaseListener.h; sourceTree = "<group>"; };
+		B01D823E1D7FF2520053CDE5 /* LaundryCyclePhaseListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LaundryCyclePhaseListener.mm; sourceTree = "<group>"; };
+		B01D823F1D7FF2520053CDE5 /* LaundryCyclePhaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LaundryCyclePhaseViewController.h; sourceTree = "<group>"; };
+		B01D82401D7FF2520053CDE5 /* LaundryCyclePhaseViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LaundryCyclePhaseViewController.mm; sourceTree = "<group>"; };
+		B01D82431D7FF4240053CDE5 /* MoistureOutputLevelListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoistureOutputLevelListener.h; sourceTree = "<group>"; };
+		B01D82441D7FF4240053CDE5 /* MoistureOutputLevelListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MoistureOutputLevelListener.mm; sourceTree = "<group>"; };
+		B01D82451D7FF4240053CDE5 /* MoistureOutputLevelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoistureOutputLevelViewController.h; sourceTree = "<group>"; };
+		B01D82461D7FF4240053CDE5 /* MoistureOutputLevelViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MoistureOutputLevelViewController.mm; sourceTree = "<group>"; };
+		B01D82491D7FF5150053CDE5 /* OffControlListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OffControlListener.h; sourceTree = "<group>"; };
+		B01D824A1D7FF5150053CDE5 /* OffControlListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OffControlListener.mm; sourceTree = "<group>"; };
+		B01D824B1D7FF5150053CDE5 /* OffControlViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OffControlViewController.h; sourceTree = "<group>"; };
+		B01D824C1D7FF5150053CDE5 /* OffControlViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OffControlViewController.mm; sourceTree = "<group>"; };
+		B01D824D1D7FF5150053CDE5 /* OnControlListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnControlListener.h; sourceTree = "<group>"; };
+		B01D824E1D7FF5150053CDE5 /* OnControlListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OnControlListener.mm; sourceTree = "<group>"; };
+		B01D824F1D7FF5150053CDE5 /* OnControlViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnControlViewController.h; sourceTree = "<group>"; };
+		B01D82501D7FF5150053CDE5 /* OnControlViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OnControlViewController.mm; sourceTree = "<group>"; };
+		B01D82511D7FF5150053CDE5 /* OnOffStatusListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnOffStatusListener.h; sourceTree = "<group>"; };
+		B01D82521D7FF5150053CDE5 /* OnOffStatusListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OnOffStatusListener.mm; sourceTree = "<group>"; };
+		B01D82531D7FF5150053CDE5 /* OnOffStatusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnOffStatusViewController.h; sourceTree = "<group>"; };
+		B01D82541D7FF5150053CDE5 /* OnOffStatusViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OnOffStatusViewController.mm; sourceTree = "<group>"; };
+		B01D825B1D7FF5F50053CDE5 /* OvenCyclePhaseListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OvenCyclePhaseListener.h; sourceTree = "<group>"; };
+		B01D825C1D7FF5F50053CDE5 /* OvenCyclePhaseListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OvenCyclePhaseListener.mm; sourceTree = "<group>"; };
+		B01D825D1D7FF5F50053CDE5 /* OvenCyclePhaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OvenCyclePhaseViewController.h; sourceTree = "<group>"; };
+		B01D825E1D7FF5F50053CDE5 /* OvenCyclePhaseViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OvenCyclePhaseViewController.mm; sourceTree = "<group>"; };
+		B01D82611D7FF66E0053CDE5 /* PlugInUnitsListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlugInUnitsListener.h; sourceTree = "<group>"; };
+		B01D82621D7FF66E0053CDE5 /* PlugInUnitsListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PlugInUnitsListener.mm; sourceTree = "<group>"; };
+		B01D82631D7FF66E0053CDE5 /* PlugInUnitsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlugInUnitsViewController.h; sourceTree = "<group>"; };
+		B01D82641D7FF66E0053CDE5 /* PlugInUnitsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PlugInUnitsViewController.mm; sourceTree = "<group>"; };
+		B01EBEFB1D7E3A02002F442D /* CurrentAirQualityLevelListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrentAirQualityLevelListener.h; sourceTree = "<group>"; };
+		B01EBEFC1D7E3A02002F442D /* CurrentAirQualityLevelListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CurrentAirQualityLevelListener.mm; sourceTree = "<group>"; };
+		B01EBEFD1D7E3A02002F442D /* CurrentAirQualityLevelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrentAirQualityLevelViewController.h; sourceTree = "<group>"; };
+		B01EBEFE1D7E3A02002F442D /* CurrentAirQualityLevelViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CurrentAirQualityLevelViewController.mm; sourceTree = "<group>"; };
+		B01EBEFF1D7E3A02002F442D /* CurrentAirQualityListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrentAirQualityListener.h; sourceTree = "<group>"; };
+		B01EBF001D7E3A02002F442D /* CurrentAirQualityListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CurrentAirQualityListener.mm; sourceTree = "<group>"; };
+		B01EBF011D7E3A02002F442D /* CurrentAirQualityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrentAirQualityViewController.h; sourceTree = "<group>"; };
+		B01EBF021D7E3A02002F442D /* CurrentAirQualityViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CurrentAirQualityViewController.mm; sourceTree = "<group>"; };
+		B01EBF031D7E3A02002F442D /* CurrentHumidityListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrentHumidityListener.h; sourceTree = "<group>"; };
+		B01EBF041D7E3A02002F442D /* CurrentHumidityListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CurrentHumidityListener.mm; sourceTree = "<group>"; };
+		B01EBF051D7E3A02002F442D /* CurrentHumidityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrentHumidityViewController.h; sourceTree = "<group>"; };
+		B01EBF061D7E3A02002F442D /* CurrentHumidityViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CurrentHumidityViewController.mm; sourceTree = "<group>"; };
+		B01EBF071D7E3A02002F442D /* CurrentTemperatureListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrentTemperatureListener.h; sourceTree = "<group>"; };
+		B01EBF081D7E3A02002F442D /* CurrentTemperatureListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CurrentTemperatureListener.mm; sourceTree = "<group>"; };
+		B01EBF091D7E3A02002F442D /* CurrentTemperatureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrentTemperatureViewController.h; sourceTree = "<group>"; };
+		B01EBF0A1D7E3A02002F442D /* CurrentTemperatureViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CurrentTemperatureViewController.mm; sourceTree = "<group>"; };
+		B01EBF0B1D7E3A02002F442D /* TargetHumidityListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TargetHumidityListener.h; sourceTree = "<group>"; };
+		B01EBF0C1D7E3A02002F442D /* TargetHumidityListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TargetHumidityListener.mm; sourceTree = "<group>"; };
+		B01EBF0D1D7E3A02002F442D /* TargetHumidityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TargetHumidityViewController.h; sourceTree = "<group>"; };
+		B01EBF0E1D7E3A02002F442D /* TargetHumidityViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TargetHumidityViewController.mm; sourceTree = "<group>"; };
+		B01EBF0F1D7E3A02002F442D /* TargetTemperatureLevelListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TargetTemperatureLevelListener.h; sourceTree = "<group>"; };
+		B01EBF101D7E3A02002F442D /* TargetTemperatureLevelListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TargetTemperatureLevelListener.mm; sourceTree = "<group>"; };
+		B01EBF111D7E3A02002F442D /* TargetTemperatureLevelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TargetTemperatureLevelViewController.h; sourceTree = "<group>"; };
+		B01EBF121D7E3A02002F442D /* TargetTemperatureLevelViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TargetTemperatureLevelViewController.mm; sourceTree = "<group>"; };
+		B01EBF131D7E3A02002F442D /* TargetTemperatureListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TargetTemperatureListener.h; sourceTree = "<group>"; };
+		B01EBF141D7E3A02002F442D /* TargetTemperatureListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TargetTemperatureListener.mm; sourceTree = "<group>"; };
+		B01EBF151D7E3A02002F442D /* TargetTemperatureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TargetTemperatureViewController.h; sourceTree = "<group>"; };
+		B01EBF161D7E3A02002F442D /* TargetTemperatureViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TargetTemperatureViewController.mm; sourceTree = "<group>"; };
+		B01EBF171D7E3A02002F442D /* WaterLevelListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaterLevelListener.h; sourceTree = "<group>"; };
+		B01EBF181D7E3A02002F442D /* WaterLevelListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WaterLevelListener.mm; sourceTree = "<group>"; };
+		B01EBF191D7E3A02002F442D /* WaterLevelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaterLevelViewController.h; sourceTree = "<group>"; };
+		B01EBF1A1D7E3A02002F442D /* WaterLevelViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WaterLevelViewController.mm; sourceTree = "<group>"; };
+		B01EBF1B1D7E3A02002F442D /* WindDirectionListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindDirectionListener.h; sourceTree = "<group>"; };
+		B01EBF1C1D7E3A02002F442D /* WindDirectionListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WindDirectionListener.mm; sourceTree = "<group>"; };
+		B01EBF1D1D7E3A02002F442D /* WindDirectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindDirectionViewController.h; sourceTree = "<group>"; };
+		B01EBF1E1D7E3A02002F442D /* WindDirectionViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WindDirectionViewController.mm; sourceTree = "<group>"; };
+		B01EBF311D7E4016002F442D /* CycleControlListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CycleControlListener.h; sourceTree = "<group>"; };
+		B01EBF321D7E4016002F442D /* CycleControlListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CycleControlListener.mm; sourceTree = "<group>"; };
+		B01EBF331D7E4016002F442D /* CycleControlViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CycleControlViewController.h; sourceTree = "<group>"; };
+		B01EBF341D7E4016002F442D /* CycleControlViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CycleControlViewController.mm; sourceTree = "<group>"; };
+		B01EF57D1D80DAD900C423B8 /* RapidModeListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RapidModeListener.h; sourceTree = "<group>"; };
+		B01EF57E1D80DAD900C423B8 /* RapidModeListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RapidModeListener.mm; sourceTree = "<group>"; };
+		B01EF57F1D80DAD900C423B8 /* RapidModeTimedListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RapidModeTimedListener.h; sourceTree = "<group>"; };
+		B01EF5801D80DAD900C423B8 /* RapidModeTimedListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RapidModeTimedListener.mm; sourceTree = "<group>"; };
+		B01EF5811D80DAD900C423B8 /* RapidModeTimedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RapidModeTimedViewController.h; sourceTree = "<group>"; };
+		B01EF5821D80DAD900C423B8 /* RapidModeTimedViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RapidModeTimedViewController.mm; sourceTree = "<group>"; };
+		B01EF5831D80DAD900C423B8 /* RapidModeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RapidModeViewController.h; sourceTree = "<group>"; };
+		B01EF5841D80DAD900C423B8 /* RapidModeViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RapidModeViewController.mm; sourceTree = "<group>"; };
+		B01EF5891D80DC1500C423B8 /* RemoteControllabilityListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteControllabilityListener.h; sourceTree = "<group>"; };
+		B01EF58A1D80DC1500C423B8 /* RemoteControllabilityListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RemoteControllabilityListener.mm; sourceTree = "<group>"; };
+		B01EF58B1D80DC1500C423B8 /* RemoteControllabilityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteControllabilityViewController.h; sourceTree = "<group>"; };
+		B01EF58C1D80DC1500C423B8 /* RemoteControllabilityViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RemoteControllabilityViewController.mm; sourceTree = "<group>"; };
+		B01EF58D1D80DC1500C423B8 /* RepeatModeListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RepeatModeListener.h; sourceTree = "<group>"; };
+		B01EF58E1D80DC1500C423B8 /* RepeatModeListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RepeatModeListener.mm; sourceTree = "<group>"; };
+		B01EF58F1D80DC1500C423B8 /* RepeatModeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RepeatModeViewController.h; sourceTree = "<group>"; };
+		B01EF5901D80DC1500C423B8 /* RepeatModeViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RepeatModeViewController.mm; sourceTree = "<group>"; };
+		B01EF5911D80DC1500C423B8 /* ResourceSavingListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceSavingListener.h; sourceTree = "<group>"; };
+		B01EF5921D80DC1500C423B8 /* ResourceSavingListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ResourceSavingListener.mm; sourceTree = "<group>"; };
+		B01EF5931D80DC1500C423B8 /* ResourceSavingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceSavingViewController.h; sourceTree = "<group>"; };
+		B01EF5941D80DC1500C423B8 /* ResourceSavingViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ResourceSavingViewController.mm; sourceTree = "<group>"; };
+		B01EF5951D80DC1500C423B8 /* RobotCleaningCyclePhaseListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RobotCleaningCyclePhaseListener.h; sourceTree = "<group>"; };
+		B01EF5961D80DC1500C423B8 /* RobotCleaningCyclePhaseListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RobotCleaningCyclePhaseListener.mm; sourceTree = "<group>"; };
+		B01EF5971D80DC1500C423B8 /* RobotCleaningCyclePhaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RobotCleaningCyclePhaseViewController.h; sourceTree = "<group>"; };
+		B01EF5981D80DC1500C423B8 /* RobotCleaningCyclePhaseViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RobotCleaningCyclePhaseViewController.mm; sourceTree = "<group>"; };
+		B01EF5991D80DC1500C423B8 /* SoilLevelListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoilLevelListener.h; sourceTree = "<group>"; };
+		B01EF59A1D80DC1500C423B8 /* SoilLevelListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SoilLevelListener.mm; sourceTree = "<group>"; };
+		B01EF59B1D80DC1500C423B8 /* SoilLevelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoilLevelViewController.h; sourceTree = "<group>"; };
+		B01EF59C1D80DC1500C423B8 /* SoilLevelViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SoilLevelViewController.mm; sourceTree = "<group>"; };
+		B01EF59D1D80DC1500C423B8 /* SpinSpeedLevelListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpinSpeedLevelListener.h; sourceTree = "<group>"; };
+		B01EF59E1D80DC1500C423B8 /* SpinSpeedLevelListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SpinSpeedLevelListener.mm; sourceTree = "<group>"; };
+		B01EF59F1D80DC1500C423B8 /* SpinSpeedLevelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpinSpeedLevelViewController.h; sourceTree = "<group>"; };
+		B01EF5A01D80DC1500C423B8 /* SpinSpeedLevelViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SpinSpeedLevelViewController.mm; sourceTree = "<group>"; };
+		B01EF5A11D80DC1500C423B8 /* TimerListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerListener.h; sourceTree = "<group>"; };
+		B01EF5A21D80DC1500C423B8 /* TimerListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TimerListener.mm; sourceTree = "<group>"; };
+		B01EF5A31D80DC1500C423B8 /* TimerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerViewController.h; sourceTree = "<group>"; };
+		B01EF5A41D80DC1500C423B8 /* TimerViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TimerViewController.mm; sourceTree = "<group>"; };
+		B01F34121DB71B4A00AE4FAC /* MethodViewOutputCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MethodViewOutputCell.h; sourceTree = "<group>"; };
+		B01F34131DB71B4A00AE4FAC /* MethodViewOutputCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MethodViewOutputCell.m; sourceTree = "<group>"; };
+		B02DF5B31DADDF0A0089CA30 /* BrightnessListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrightnessListener.h; sourceTree = "<group>"; };
+		B02DF5B41DADDF0A0089CA30 /* BrightnessListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BrightnessListener.mm; sourceTree = "<group>"; };
+		B02DF5B51DADDF0A0089CA30 /* BrightnessViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrightnessViewController.h; sourceTree = "<group>"; };
+		B02DF5B61DADDF0A0089CA30 /* BrightnessViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BrightnessViewController.mm; sourceTree = "<group>"; };
+		B02DF5B71DADDF0A0089CA30 /* ColorListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorListener.h; sourceTree = "<group>"; };
+		B02DF5B81DADDF0A0089CA30 /* ColorListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ColorListener.mm; sourceTree = "<group>"; };
+		B02DF5B91DADDF0A0089CA30 /* ColorTemperatureListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorTemperatureListener.h; sourceTree = "<group>"; };
+		B02DF5BA1DADDF0A0089CA30 /* ColorTemperatureListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ColorTemperatureListener.mm; sourceTree = "<group>"; };
+		B02DF5BB1DADDF0A0089CA30 /* ColorTemperatureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorTemperatureViewController.h; sourceTree = "<group>"; };
+		B02DF5BC1DADDF0A0089CA30 /* ColorTemperatureViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ColorTemperatureViewController.mm; sourceTree = "<group>"; };
+		B02DF5BD1DADDF0A0089CA30 /* ColorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorViewController.h; sourceTree = "<group>"; };
+		B02DF5BE1DADDF0A0089CA30 /* ColorViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ColorViewController.mm; sourceTree = "<group>"; };
+		B02DF5BF1DADDF0A0089CA30 /* LockControlListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockControlListener.h; sourceTree = "<group>"; };
+		B02DF5C01DADDF0A0089CA30 /* LockControlListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LockControlListener.mm; sourceTree = "<group>"; };
+		B02DF5C11DADDF0A0089CA30 /* LockControlViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockControlViewController.h; sourceTree = "<group>"; };
+		B02DF5C21DADDF0A0089CA30 /* LockControlViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LockControlViewController.mm; sourceTree = "<group>"; };
+		B02DF5C31DADDF0A0089CA30 /* LockedStatusListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockedStatusListener.h; sourceTree = "<group>"; };
+		B02DF5C41DADDF0A0089CA30 /* LockedStatusListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LockedStatusListener.mm; sourceTree = "<group>"; };
+		B02DF5C51DADDF0A0089CA30 /* LockedStatusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockedStatusViewController.h; sourceTree = "<group>"; };
+		B02DF5C61DADDF0A0089CA30 /* LockedStatusViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LockedStatusViewController.mm; sourceTree = "<group>"; };
+		B02DF5C71DADDF0A0089CA30 /* TriggerSensorListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TriggerSensorListener.h; sourceTree = "<group>"; };
+		B02DF5C81DADDF0A0089CA30 /* TriggerSensorListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TriggerSensorListener.mm; sourceTree = "<group>"; };
+		B02DF5C91DADDF0A0089CA30 /* TriggerSensorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TriggerSensorViewController.h; sourceTree = "<group>"; };
+		B02DF5CA1DADDF0A0089CA30 /* TriggerSensorViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TriggerSensorViewController.mm; sourceTree = "<group>"; };
+		B02DF5CB1DADDF0A0089CA30 /* UnlockControlListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnlockControlListener.h; sourceTree = "<group>"; };
+		B02DF5CC1DADDF0A0089CA30 /* UnlockControlListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UnlockControlListener.mm; sourceTree = "<group>"; };
+		B02DF5CD1DADDF0A0089CA30 /* UnlockControlViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnlockControlViewController.h; sourceTree = "<group>"; };
+		B02DF5CE1DADDF0A0089CA30 /* UnlockControlViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UnlockControlViewController.mm; sourceTree = "<group>"; };
+		B07DF3EB1D7D432E00AC9D58 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		B0E8FCF21DAF0C920061C741 /* SampleCertificateChainEngine.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SampleCertificateChainEngine.cc; path = ../../../../cpp/samples/BaseSample/SampleCertificateChainEngine.cc; sourceTree = "<group>"; };
+		B0E8FCF31DAF0C920061C741 /* SampleCertificateChainEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SampleCertificateChainEngine.h; path = ../../../../cpp/samples/BaseSample/SampleCertificateChainEngine.h; sourceTree = "<group>"; };
+		B0E8FCF71DAF10AB0061C741 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		ACB2C6B1160B7CF100D7E3A6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B07DF3EC1D7D432E00AC9D58 /* QuartzCore.framework in Frameworks */,
+				ACB2C754160B8FE800D7E3A6 /* SystemConfiguration.framework in Frameworks */,
+				ACB2C752160B8FDC00D7E3A6 /* libstdc++.6.dylib in Frameworks */,
+				ACB2C6B9160B7CF200D7E3A6 /* UIKit.framework in Frameworks */,
+				ACB2C6BB160B7CF200D7E3A6 /* Foundation.framework in Frameworks */,
+				ACB2C6BD160B7CF200D7E3A6 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		ACB2C6A9160B7CF100D7E3A6 = {
+			isa = PBXGroup;
+			children = (
+				B0E8FCF71DAF10AB0061C741 /* README.md */,
+				B01A02601D7926700057098C /* cdm_controller */,
+				B01A02951D7926710057098C /* images */,
+				ACB2C6B7160B7CF200D7E3A6 /* Frameworks */,
+				ACB2C6B5160B7CF200D7E3A6 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		ACB2C6B5160B7CF200D7E3A6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				ACB2C6B4160B7CF200D7E3A6 /* CDMController.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		ACB2C6B7160B7CF200D7E3A6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B07DF3EB1D7D432E00AC9D58 /* QuartzCore.framework */,
+				ACB2C751160B8FDC00D7E3A6 /* libstdc++.6.dylib */,
+				ACB2C74F160B8FAB00D7E3A6 /* libstdc++.dylib */,
+				ACB2C753160B8FE800D7E3A6 /* SystemConfiguration.framework */,
+				ACB2C6B8160B7CF200D7E3A6 /* UIKit.framework */,
+				ACB2C6BA160B7CF200D7E3A6 /* Foundation.framework */,
+				ACB2C6BC160B7CF200D7E3A6 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B01A02601D7926700057098C /* cdm_controller */ = {
+			isa = PBXGroup;
+			children = (
+				B01A02611D7926700057098C /* AppDelegate.h */,
+				B01A02621D7926700057098C /* AppDelegate.mm */,
+				B01A02631D7926700057098C /* CDMController-Info.plist */,
+				B01A02641D7926700057098C /* CDMController-Prefix.pch */,
+				B01A02651D7926700057098C /* Default-568h@2x.png */,
+				B01A02661D7926700057098C /* Default.png */,
+				B01A02671D7926700057098C /* Default@2x.png */,
+				B01A02681D7926700057098C /* InfoPlist.strings */,
+				B01A026A1D7926700057098C /* MainStoryboard_iPad.storyboard */,
+				B01A026C1D7926700057098C /* MainStoryboard_iPhone.storyboard */,
+				B01A026E1D7926700057098C /* logic */,
+				B01A02761D7926700057098C /* main.m */,
+				B01A02771D7926700057098C /* util */,
+				B01A027A1D7926700057098C /* view_controllers */,
+			);
+			path = cdm_controller;
+			sourceTree = "<group>";
+		};
+		B01A026E1D7926700057098C /* logic */ = {
+			isa = PBXGroup;
+			children = (
+				B0E8FCF21DAF0C920061C741 /* SampleCertificateChainEngine.cc */,
+				B0E8FCF31DAF0C920061C741 /* SampleCertificateChainEngine.h */,
+				B01A026F1D7926700057098C /* CDMDeviceListener.h */,
+				B01A02701D7926700057098C /* CDMDeviceListener.mm */,
+				B01A02711D7926700057098C /* Device.h */,
+				B01A02721D7926700057098C /* Device.mm */,
+				B01A02731D7926700057098C /* DeviceManager.h */,
+				B01A02741D7926700057098C /* DeviceManager.mm */,
+				B01A02751D7926700057098C /* ECDHEKeyXListener.h */,
+			);
+			path = logic;
+			sourceTree = "<group>";
+		};
+		B01A02771D7926700057098C /* util */ = {
+			isa = PBXGroup;
+			children = (
+				B01A02781D7926700057098C /* CDMUtil.h */,
+				B01A02791D7926700057098C /* CDMUtil.mm */,
+			);
+			path = util;
+			sourceTree = "<group>";
+		};
+		B01A027A1D7926700057098C /* view_controllers */ = {
+			isa = PBXGroup;
+			children = (
+				B01D81D01D7FD0850053CDE5 /* userinterfacesettings */,
+				B01A027B1D7926700057098C /* DeviceViewController.h */,
+				B01A027C1D7926700057098C /* DeviceViewController.mm */,
+				B01A027D1D7926700057098C /* environment */,
+				B01A02831D7926710057098C /* InterfaceListViewController.h */,
+				B01A02841D7926710057098C /* InterfaceListViewController.mm */,
+				B01A02851D7926710057098C /* InterfaceViewController.h */,
+				B01A02861D7926710057098C /* InterfaceViewController.m */,
+				B01A02871D7926710057098C /* operation */,
+				B01A02881D7926710057098C /* table_view_cells */,
+			);
+			path = view_controllers;
+			sourceTree = "<group>";
+		};
+		B01A027D1D7926700057098C /* environment */ = {
+			isa = PBXGroup;
+			children = (
+				B01EBEFB1D7E3A02002F442D /* CurrentAirQualityLevelListener.h */,
+				B01EBEFC1D7E3A02002F442D /* CurrentAirQualityLevelListener.mm */,
+				B01EBEFD1D7E3A02002F442D /* CurrentAirQualityLevelViewController.h */,
+				B01EBEFE1D7E3A02002F442D /* CurrentAirQualityLevelViewController.mm */,
+				B01EBEFF1D7E3A02002F442D /* CurrentAirQualityListener.h */,
+				B01EBF001D7E3A02002F442D /* CurrentAirQualityListener.mm */,
+				B01EBF011D7E3A02002F442D /* CurrentAirQualityViewController.h */,
+				B01EBF021D7E3A02002F442D /* CurrentAirQualityViewController.mm */,
+				B01EBF031D7E3A02002F442D /* CurrentHumidityListener.h */,
+				B01EBF041D7E3A02002F442D /* CurrentHumidityListener.mm */,
+				B01EBF051D7E3A02002F442D /* CurrentHumidityViewController.h */,
+				B01EBF061D7E3A02002F442D /* CurrentHumidityViewController.mm */,
+				B01EBF071D7E3A02002F442D /* CurrentTemperatureListener.h */,
+				B01EBF081D7E3A02002F442D /* CurrentTemperatureListener.mm */,
+				B01EBF091D7E3A02002F442D /* CurrentTemperatureViewController.h */,
+				B01EBF0A1D7E3A02002F442D /* CurrentTemperatureViewController.mm */,
+				B01EBF0B1D7E3A02002F442D /* TargetHumidityListener.h */,
+				B01EBF0C1D7E3A02002F442D /* TargetHumidityListener.mm */,
+				B01EBF0D1D7E3A02002F442D /* TargetHumidityViewController.h */,
+				B01EBF0E1D7E3A02002F442D /* TargetHumidityViewController.mm */,
+				B01EBF0F1D7E3A02002F442D /* TargetTemperatureLevelListener.h */,
+				B01EBF101D7E3A02002F442D /* TargetTemperatureLevelListener.mm */,
+				B01EBF111D7E3A02002F442D /* TargetTemperatureLevelViewController.h */,
+				B01EBF121D7E3A02002F442D /* TargetTemperatureLevelViewController.mm */,
+				B01EBF131D7E3A02002F442D /* TargetTemperatureListener.h */,
+				B01EBF141D7E3A02002F442D /* TargetTemperatureListener.mm */,
+				B01EBF151D7E3A02002F442D /* TargetTemperatureViewController.h */,
+				B01EBF161D7E3A02002F442D /* TargetTemperatureViewController.mm */,
+				B01EBF171D7E3A02002F442D /* WaterLevelListener.h */,
+				B01EBF181D7E3A02002F442D /* WaterLevelListener.mm */,
+				B01EBF191D7E3A02002F442D /* WaterLevelViewController.h */,
+				B01EBF1A1D7E3A02002F442D /* WaterLevelViewController.mm */,
+				B01EBF1B1D7E3A02002F442D /* WindDirectionListener.h */,
+				B01EBF1C1D7E3A02002F442D /* WindDirectionListener.mm */,
+				B01EBF1D1D7E3A02002F442D /* WindDirectionViewController.h */,
+				B01EBF1E1D7E3A02002F442D /* WindDirectionViewController.mm */,
+			);
+			path = environment;
+			sourceTree = "<group>";
+		};
+		B01A02871D7926710057098C /* operation */ = {
+			isa = PBXGroup;
+			children = (
+				B02DF5B31DADDF0A0089CA30 /* BrightnessListener.h */,
+				B02DF5B41DADDF0A0089CA30 /* BrightnessListener.mm */,
+				B02DF5B51DADDF0A0089CA30 /* BrightnessViewController.h */,
+				B02DF5B61DADDF0A0089CA30 /* BrightnessViewController.mm */,
+				B02DF5B71DADDF0A0089CA30 /* ColorListener.h */,
+				B02DF5B81DADDF0A0089CA30 /* ColorListener.mm */,
+				B02DF5B91DADDF0A0089CA30 /* ColorTemperatureListener.h */,
+				B02DF5BA1DADDF0A0089CA30 /* ColorTemperatureListener.mm */,
+				B02DF5BB1DADDF0A0089CA30 /* ColorTemperatureViewController.h */,
+				B02DF5BC1DADDF0A0089CA30 /* ColorTemperatureViewController.mm */,
+				B02DF5BD1DADDF0A0089CA30 /* ColorViewController.h */,
+				B02DF5BE1DADDF0A0089CA30 /* ColorViewController.mm */,
+				B02DF5BF1DADDF0A0089CA30 /* LockControlListener.h */,
+				B02DF5C01DADDF0A0089CA30 /* LockControlListener.mm */,
+				B02DF5C11DADDF0A0089CA30 /* LockControlViewController.h */,
+				B02DF5C21DADDF0A0089CA30 /* LockControlViewController.mm */,
+				B02DF5C31DADDF0A0089CA30 /* LockedStatusListener.h */,
+				B02DF5C41DADDF0A0089CA30 /* LockedStatusListener.mm */,
+				B02DF5C51DADDF0A0089CA30 /* LockedStatusViewController.h */,
+				B02DF5C61DADDF0A0089CA30 /* LockedStatusViewController.mm */,
+				B02DF5C71DADDF0A0089CA30 /* TriggerSensorListener.h */,
+				B02DF5C81DADDF0A0089CA30 /* TriggerSensorListener.mm */,
+				B02DF5C91DADDF0A0089CA30 /* TriggerSensorViewController.h */,
+				B02DF5CA1DADDF0A0089CA30 /* TriggerSensorViewController.mm */,
+				B02DF5CB1DADDF0A0089CA30 /* UnlockControlListener.h */,
+				B02DF5CC1DADDF0A0089CA30 /* UnlockControlListener.mm */,
+				B02DF5CD1DADDF0A0089CA30 /* UnlockControlViewController.h */,
+				B02DF5CE1DADDF0A0089CA30 /* UnlockControlViewController.mm */,
+				B01EF5891D80DC1500C423B8 /* RemoteControllabilityListener.h */,
+				B01EF58A1D80DC1500C423B8 /* RemoteControllabilityListener.mm */,
+				B01EF58B1D80DC1500C423B8 /* RemoteControllabilityViewController.h */,
+				B01EF58C1D80DC1500C423B8 /* RemoteControllabilityViewController.mm */,
+				B01EF58D1D80DC1500C423B8 /* RepeatModeListener.h */,
+				B01EF58E1D80DC1500C423B8 /* RepeatModeListener.mm */,
+				B01EF58F1D80DC1500C423B8 /* RepeatModeViewController.h */,
+				B01EF5901D80DC1500C423B8 /* RepeatModeViewController.mm */,
+				B01EF5911D80DC1500C423B8 /* ResourceSavingListener.h */,
+				B01EF5921D80DC1500C423B8 /* ResourceSavingListener.mm */,
+				B01EF5931D80DC1500C423B8 /* ResourceSavingViewController.h */,
+				B01EF5941D80DC1500C423B8 /* ResourceSavingViewController.mm */,
+				B01EF5951D80DC1500C423B8 /* RobotCleaningCyclePhaseListener.h */,
+				B01EF5961D80DC1500C423B8 /* RobotCleaningCyclePhaseListener.mm */,
+				B01EF5971D80DC1500C423B8 /* RobotCleaningCyclePhaseViewController.h */,
+				B01EF5981D80DC1500C423B8 /* RobotCleaningCyclePhaseViewController.mm */,
+				B01EF5991D80DC1500C423B8 /* SoilLevelListener.h */,
+				B01EF59A1D80DC1500C423B8 /* SoilLevelListener.mm */,
+				B01EF59B1D80DC1500C423B8 /* SoilLevelViewController.h */,
+				B01EF59C1D80DC1500C423B8 /* SoilLevelViewController.mm */,
+				B01EF59D1D80DC1500C423B8 /* SpinSpeedLevelListener.h */,
+				B01EF59E1D80DC1500C423B8 /* SpinSpeedLevelListener.mm */,
+				B01EF59F1D80DC1500C423B8 /* SpinSpeedLevelViewController.h */,
+				B01EF5A01D80DC1500C423B8 /* SpinSpeedLevelViewController.mm */,
+				B01EF5A11D80DC1500C423B8 /* TimerListener.h */,
+				B01EF5A21D80DC1500C423B8 /* TimerListener.mm */,
+				B01EF5A31D80DC1500C423B8 /* TimerViewController.h */,
+				B01EF5A41D80DC1500C423B8 /* TimerViewController.mm */,
+				B01EF57D1D80DAD900C423B8 /* RapidModeListener.h */,
+				B01EF57E1D80DAD900C423B8 /* RapidModeListener.mm */,
+				B01EF57F1D80DAD900C423B8 /* RapidModeTimedListener.h */,
+				B01EF5801D80DAD900C423B8 /* RapidModeTimedListener.mm */,
+				B01EF5811D80DAD900C423B8 /* RapidModeTimedViewController.h */,
+				B01EF5821D80DAD900C423B8 /* RapidModeTimedViewController.mm */,
+				B01EF5831D80DAD900C423B8 /* RapidModeViewController.h */,
+				B01EF5841D80DAD900C423B8 /* RapidModeViewController.mm */,
+				B01D82611D7FF66E0053CDE5 /* PlugInUnitsListener.h */,
+				B01D82621D7FF66E0053CDE5 /* PlugInUnitsListener.mm */,
+				B01D82631D7FF66E0053CDE5 /* PlugInUnitsViewController.h */,
+				B01D82641D7FF66E0053CDE5 /* PlugInUnitsViewController.mm */,
+				B01D825B1D7FF5F50053CDE5 /* OvenCyclePhaseListener.h */,
+				B01D825C1D7FF5F50053CDE5 /* OvenCyclePhaseListener.mm */,
+				B01D825D1D7FF5F50053CDE5 /* OvenCyclePhaseViewController.h */,
+				B01D825E1D7FF5F50053CDE5 /* OvenCyclePhaseViewController.mm */,
+				B01D82491D7FF5150053CDE5 /* OffControlListener.h */,
+				B01D824A1D7FF5150053CDE5 /* OffControlListener.mm */,
+				B01D824B1D7FF5150053CDE5 /* OffControlViewController.h */,
+				B01D824C1D7FF5150053CDE5 /* OffControlViewController.mm */,
+				B01D824D1D7FF5150053CDE5 /* OnControlListener.h */,
+				B01D824E1D7FF5150053CDE5 /* OnControlListener.mm */,
+				B01D824F1D7FF5150053CDE5 /* OnControlViewController.h */,
+				B01D82501D7FF5150053CDE5 /* OnControlViewController.mm */,
+				B01D82511D7FF5150053CDE5 /* OnOffStatusListener.h */,
+				B01D82521D7FF5150053CDE5 /* OnOffStatusListener.mm */,
+				B01D82531D7FF5150053CDE5 /* OnOffStatusViewController.h */,
+				B01D82541D7FF5150053CDE5 /* OnOffStatusViewController.mm */,
+				B01D82431D7FF4240053CDE5 /* MoistureOutputLevelListener.h */,
+				B01D82441D7FF4240053CDE5 /* MoistureOutputLevelListener.mm */,
+				B01D82451D7FF4240053CDE5 /* MoistureOutputLevelViewController.h */,
+				B01D82461D7FF4240053CDE5 /* MoistureOutputLevelViewController.mm */,
+				B01D823D1D7FF2520053CDE5 /* LaundryCyclePhaseListener.h */,
+				B01D823E1D7FF2520053CDE5 /* LaundryCyclePhaseListener.mm */,
+				B01D823F1D7FF2520053CDE5 /* LaundryCyclePhaseViewController.h */,
+				B01D82401D7FF2520053CDE5 /* LaundryCyclePhaseViewController.mm */,
+				B01D82371D7FF11F0053CDE5 /* HvacFanModeListener.h */,
+				B01D82381D7FF11F0053CDE5 /* HvacFanModeListener.mm */,
+				B01D82391D7FF11F0053CDE5 /* HvacFanModeViewController.h */,
+				B01D823A1D7FF11F0053CDE5 /* HvacFanModeViewController.mm */,
+				B01D82311D7FF0730053CDE5 /* HeatingZoneListener.h */,
+				B01D82321D7FF0730053CDE5 /* HeatingZoneListener.mm */,
+				B01D82331D7FF0730053CDE5 /* HeatingZoneViewController.h */,
+				B01D82341D7FF0730053CDE5 /* HeatingZoneViewController.mm */,
+				B01D822B1D7FEF970053CDE5 /* FilterStatusListener.h */,
+				B01D822C1D7FEF970053CDE5 /* FilterStatusListener.mm */,
+				B01D822D1D7FEF970053CDE5 /* FilterStatusViewController.h */,
+				B01D822E1D7FEF970053CDE5 /* FilterStatusViewController.mm */,
+				B01D82251D7FEEE40053CDE5 /* FanSpeedLevelListener.h */,
+				B01D82261D7FEEE40053CDE5 /* FanSpeedLevelListener.mm */,
+				B01D82271D7FEEE40053CDE5 /* FanSpeedLevelViewController.h */,
+				B01D82281D7FEEE40053CDE5 /* FanSpeedLevelViewController.mm */,
+				B01D821F1D7FEE030053CDE5 /* EnergyUsageListener.h */,
+				B01D82201D7FEE030053CDE5 /* EnergyUsageListener.mm */,
+				B01D82211D7FEE030053CDE5 /* EnergyUsageViewController.h */,
+				B01D82221D7FEE030053CDE5 /* EnergyUsageViewController.mm */,
+				B01D82191D7FE9D00053CDE5 /* DishWashingCyclePhaseListener.h */,
+				B01D821A1D7FE9D00053CDE5 /* DishWashingCyclePhaseListener.mm */,
+				B01D821B1D7FE9D00053CDE5 /* DishWashingCyclePhaseViewController.h */,
+				B01D821C1D7FE9D00053CDE5 /* DishWashingCyclePhaseViewController.mm */,
+				B01D82131D7FE99A0053CDE5 /* CurrentPowerListener.h */,
+				B01D82141D7FE99A0053CDE5 /* CurrentPowerListener.mm */,
+				B01D82151D7FE99A0053CDE5 /* CurrentPowerViewController.h */,
+				B01D82161D7FE99A0053CDE5 /* CurrentPowerViewController.mm */,
+				B01D82071D7FE8C50053CDE5 /* ClosedStatusListener.h */,
+				B01D82081D7FE8C50053CDE5 /* ClosedStatusListener.mm */,
+				B01D82091D7FE8C50053CDE5 /* ClosedStatusViewController.h */,
+				B01D820A1D7FE8C50053CDE5 /* ClosedStatusViewController.mm */,
+				B01D81FB1D7FE7F30053CDE5 /* ClimateControlModeListener.h */,
+				B01D81FC1D7FE7F30053CDE5 /* ClimateControlModeListener.mm */,
+				B01D81FD1D7FE7F30053CDE5 /* ClimateControlModeViewController.h */,
+				B01D81FE1D7FE7F30053CDE5 /* ClimateControlModeViewController.mm */,
+				B01D81EF1D7FE6830053CDE5 /* ChannelListener.h */,
+				B01D81F01D7FE6830053CDE5 /* ChannelListener.mm */,
+				B01D81F11D7FE6830053CDE5 /* ChannelViewController.h */,
+				B01D81F21D7FE6830053CDE5 /* ChannelViewController.mm */,
+				B01D81E31D7FD2710053CDE5 /* BatteryStatusListener.h */,
+				B01D81E41D7FD2710053CDE5 /* BatteryStatusListener.mm */,
+				B01D81E51D7FD2710053CDE5 /* BatteryStatusViewController.h */,
+				B01D81E61D7FD2710053CDE5 /* BatteryStatusViewController.mm */,
+				B01D81C41D7FCF5D0053CDE5 /* AudioVolumeListener.h */,
+				B01D81C51D7FCF5D0053CDE5 /* AudioVolumeListener.mm */,
+				B01D81C61D7FCF5D0053CDE5 /* AudioVolumeViewController.h */,
+				B01D81C71D7FCF5D0053CDE5 /* AudioVolumeViewController.mm */,
+				B01D81B81D7FCE750053CDE5 /* AudioVideoInputListener.h */,
+				B01D81B91D7FCE750053CDE5 /* AudioVideoInputListener.mm */,
+				B01D81BA1D7FCE750053CDE5 /* AudioVideoInputViewController.h */,
+				B01D81BB1D7FCE750053CDE5 /* AudioVideoInputViewController.mm */,
+				B01D81A61D7FC6420053CDE5 /* AirRecirculationModeListener.h */,
+				B01D81A71D7FC6420053CDE5 /* AirRecirculationModeListener.mm */,
+				B01D81A81D7FC6420053CDE5 /* AirRecirculationModeViewController.h */,
+				B01D81A91D7FC6420053CDE5 /* AirRecirculationModeViewController.mm */,
+				B01D81AA1D7FC6420053CDE5 /* AlertsListener.h */,
+				B01D81AB1D7FC6420053CDE5 /* AlertsListener.mm */,
+				B01D81AC1D7FC6420053CDE5 /* AlertsViewController.h */,
+				B01D81AD1D7FC6420053CDE5 /* AlertsViewController.mm */,
+				B01EBF311D7E4016002F442D /* CycleControlListener.h */,
+				B01EBF321D7E4016002F442D /* CycleControlListener.mm */,
+				B01EBF331D7E4016002F442D /* CycleControlViewController.h */,
+				B01EBF341D7E4016002F442D /* CycleControlViewController.mm */,
+			);
+			path = operation;
+			sourceTree = "<group>";
+		};
+		B01A02881D7926710057098C /* table_view_cells */ = {
+			isa = PBXGroup;
+			children = (
+				B01A02891D7926710057098C /* DeviceTableViewCell.h */,
+				B01A028A1D7926710057098C /* DeviceTableViewCell.m */,
+				B01A028B1D7926710057098C /* InterfaceTableViewCell.h */,
+				B01A028C1D7926710057098C /* InterfaceTableViewCell.m */,
+				B01A028D1D7926710057098C /* method */,
+				B01A02901D7926710057098C /* property */,
+			);
+			path = table_view_cells;
+			sourceTree = "<group>";
+		};
+		B01A028D1D7926710057098C /* method */ = {
+			isa = PBXGroup;
+			children = (
+				B01A028E1D7926710057098C /* MethodViewCell.h */,
+				B01A028F1D7926710057098C /* MethodViewCell.m */,
+				B01F34121DB71B4A00AE4FAC /* MethodViewOutputCell.h */,
+				B01F34131DB71B4A00AE4FAC /* MethodViewOutputCell.m */,
+			);
+			path = method;
+			sourceTree = "<group>";
+		};
+		B01A02901D7926710057098C /* property */ = {
+			isa = PBXGroup;
+			children = (
+				B01A02911D7926710057098C /* ReadOnlyValuePropertyCell.h */,
+				B01A02921D7926710057098C /* ReadOnlyValuePropertyCell.m */,
+				B01A02931D7926710057098C /* ReadWriteValuePropertyCell.h */,
+				B01A02941D7926710057098C /* ReadWriteValuePropertyCell.m */,
+				B01C8DFF1DB98A8600E9BB5D /* SelectableValuePropertyCell.h */,
+				B01C8E001DB98A8600E9BB5D /* SelectableValuePropertyCell.m */,
+			);
+			path = property;
+			sourceTree = "<group>";
+		};
+		B01A02951D7926710057098C /* images */ = {
+			isa = PBXGroup;
+			children = (
+				B01A02961D7926710057098C /* alljoyn_logo.png */,
+				B01A02971D7926710057098C /* icon_air_conditioner.png */,
+				B01A02981D7926710057098C /* icon_cooktop.png */,
+				B01A02991D7926710057098C /* icon_dish_washer.png */,
+				B01A029A1D7926710057098C /* icon_electric_fan.png */,
+				B01A029B1D7926710057098C /* icon_freezer.png */,
+				B01A029C1D7926710057098C /* icon_oven.png */,
+				B01A029D1D7926710057098C /* icon_refrigerator.png */,
+				B01A029E1D7926710057098C /* icon_set_top_box.png */,
+				B01A029F1D7926710057098C /* icon_tv.png */,
+			);
+			path = images;
+			sourceTree = "<group>";
+		};
+		B01D81D01D7FD0850053CDE5 /* userinterfacesettings */ = {
+			isa = PBXGroup;
+			children = (
+				B01D81D11D7FD0850053CDE5 /* LanguageDisplayListener.h */,
+				B01D81D21D7FD0850053CDE5 /* LanguageDisplayListener.mm */,
+				B01D81D31D7FD0850053CDE5 /* LanguageDisplayViewController.h */,
+				B01D81D41D7FD0850053CDE5 /* LanguageDisplayViewController.mm */,
+				B01D81D51D7FD0850053CDE5 /* TemperatureDisplayListener.h */,
+				B01D81D61D7FD0850053CDE5 /* TemperatureDisplayListener.mm */,
+				B01D81D71D7FD0850053CDE5 /* TemperatureDisplayViewController.h */,
+				B01D81D81D7FD0850053CDE5 /* TemperatureDisplayViewController.mm */,
+				B01D81D91D7FD0850053CDE5 /* TimeDisplayListener.h */,
+				B01D81DA1D7FD0850053CDE5 /* TimeDisplayListener.mm */,
+				B01D81DB1D7FD0850053CDE5 /* TimeDisplayViewController.h */,
+				B01D81DC1D7FD0850053CDE5 /* TimeDisplayViewController.mm */,
+			);
+			path = userinterfacesettings;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		ACB2C6B3160B7CF100D7E3A6 /* CDMController */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ACB2C6DB160B7CF200D7E3A6 /* Build configuration list for PBXNativeTarget "CDMController" */;
+			buildPhases = (
+				ACB2C6B0160B7CF100D7E3A6 /* Sources */,
+				ACB2C6B1160B7CF100D7E3A6 /* Frameworks */,
+				ACB2C6B2160B7CF100D7E3A6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CDMController;
+			productName = BasicClient;
+			productReference = ACB2C6B4160B7CF200D7E3A6 /* CDMController.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		ACB2C6AB160B7CF100D7E3A6 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = "AllSeen Alliance.";
+			};
+			buildConfigurationList = ACB2C6AE160B7CF100D7E3A6 /* Build configuration list for PBXProject "CDMController" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = ACB2C6A9160B7CF100D7E3A6;
+			productRefGroup = ACB2C6B5160B7CF200D7E3A6 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				ACB2C6B3160B7CF100D7E3A6 /* CDMController */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		ACB2C6B2160B7CF100D7E3A6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B01A02B91D7926710057098C /* icon_cooktop.png in Resources */,
+				B01A02A71D7926710057098C /* MainStoryboard_iPhone.storyboard in Resources */,
+				B01A02BE1D7926710057098C /* icon_refrigerator.png in Resources */,
+				B01A02BD1D7926710057098C /* icon_oven.png in Resources */,
+				B01A02C01D7926710057098C /* icon_tv.png in Resources */,
+				B01A02BF1D7926710057098C /* icon_set_top_box.png in Resources */,
+				B01A02B71D7926710057098C /* alljoyn_logo.png in Resources */,
+				B01A02511D790F6B0057098C /* cdm_controller in Resources */,
+				B01A02A51D7926710057098C /* InfoPlist.strings in Resources */,
+				B01A02A31D7926710057098C /* Default.png in Resources */,
+				B01A02BB1D7926710057098C /* icon_electric_fan.png in Resources */,
+				B01A02BA1D7926710057098C /* icon_dish_washer.png in Resources */,
+				B01A02A21D7926710057098C /* Default-568h@2x.png in Resources */,
+				B01A02B81D7926710057098C /* icon_air_conditioner.png in Resources */,
+				B01A02A61D7926710057098C /* MainStoryboard_iPad.storyboard in Resources */,
+				B01A02A41D7926710057098C /* Default@2x.png in Resources */,
+				B01A02BC1D7926710057098C /* icon_freezer.png in Resources */,
+				B01A02A11D7926710057098C /* CDMController-Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		ACB2C6B0160B7CF100D7E3A6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B01EF5A71D80DC1500C423B8 /* RepeatModeListener.mm in Sources */,
+				B01A02B41D7926710057098C /* MethodViewCell.m in Sources */,
+				B01EBF271D7E3A02002F442D /* TargetHumidityListener.mm in Sources */,
+				B01EF5AC1D80DC1500C423B8 /* RobotCleaningCyclePhaseViewController.mm in Sources */,
+				B01EBF261D7E3A02002F442D /* CurrentTemperatureViewController.mm in Sources */,
+				B01EF5AD1D80DC1500C423B8 /* SoilLevelListener.mm in Sources */,
+				B01A02B51D7926710057098C /* ReadOnlyValuePropertyCell.m in Sources */,
+				B01D81DF1D7FD0850053CDE5 /* TemperatureDisplayListener.mm in Sources */,
+				B01EBF2A1D7E3A02002F442D /* TargetTemperatureLevelViewController.mm in Sources */,
+				B01EF5B01D80DC1500C423B8 /* SpinSpeedLevelViewController.mm in Sources */,
+				B01EBF2B1D7E3A02002F442D /* TargetTemperatureListener.mm in Sources */,
+				B01D820C1D7FE8C50053CDE5 /* ClosedStatusViewController.mm in Sources */,
+				B01EF5B11D80DC1500C423B8 /* TimerListener.mm in Sources */,
+				B01D81BC1D7FCE750053CDE5 /* AudioVideoInputListener.mm in Sources */,
+				B02DF5DB1DADDF0A0089CA30 /* UnlockControlListener.mm in Sources */,
+				B01D81DD1D7FD0850053CDE5 /* LanguageDisplayListener.mm in Sources */,
+				B01D82601D7FF5F50053CDE5 /* OvenCyclePhaseViewController.mm in Sources */,
+				B01D82001D7FE7F30053CDE5 /* ClimateControlModeViewController.mm in Sources */,
+				B01D81E11D7FD0850053CDE5 /* TimeDisplayListener.mm in Sources */,
+				B01D82351D7FF0730053CDE5 /* HeatingZoneListener.mm in Sources */,
+				B01EF5A51D80DC1500C423B8 /* RemoteControllabilityListener.mm in Sources */,
+				B01D81AF1D7FC6420053CDE5 /* AirRecirculationModeViewController.mm in Sources */,
+				B01EBF291D7E3A02002F442D /* TargetTemperatureLevelListener.mm in Sources */,
+				B01D81E21D7FD0850053CDE5 /* TimeDisplayViewController.mm in Sources */,
+				B0E8FCF81DAF10AB0061C741 /* README.md in Sources */,
+				B01D82481D7FF4240053CDE5 /* MoistureOutputLevelViewController.mm in Sources */,
+				B01D82561D7FF5150053CDE5 /* OffControlViewController.mm in Sources */,
+				B01D81AE1D7FC6420053CDE5 /* AirRecirculationModeListener.mm in Sources */,
+				B01D825A1D7FF5150053CDE5 /* OnOffStatusViewController.mm in Sources */,
+				B01A02A01D7926710057098C /* AppDelegate.mm in Sources */,
+				B02DF5D11DADDF0A0089CA30 /* ColorListener.mm in Sources */,
+				B01D82181D7FE99A0053CDE5 /* CurrentPowerViewController.mm in Sources */,
+				B02DF5DA1DADDF0A0089CA30 /* TriggerSensorViewController.mm in Sources */,
+				B01D81C91D7FCF5D0053CDE5 /* AudioVolumeViewController.mm in Sources */,
+				B01EF5AF1D80DC1500C423B8 /* SpinSpeedLevelListener.mm in Sources */,
+				B01EBF2E1D7E3A02002F442D /* WaterLevelViewController.mm in Sources */,
+				B01EBF211D7E3A02002F442D /* CurrentAirQualityListener.mm in Sources */,
+				B01EF5A81D80DC1500C423B8 /* RepeatModeViewController.mm in Sources */,
+				B01A02B61D7926710057098C /* ReadWriteValuePropertyCell.m in Sources */,
+				B01D81B01D7FC6420053CDE5 /* AlertsListener.mm in Sources */,
+				B01A02AA1D7926710057098C /* DeviceManager.mm in Sources */,
+				B01D82361D7FF0730053CDE5 /* HeatingZoneViewController.mm in Sources */,
+				B01D82421D7FF2520053CDE5 /* LaundryCyclePhaseViewController.mm in Sources */,
+				B01A02AB1D7926710057098C /* main.m in Sources */,
+				B01D81B11D7FC6420053CDE5 /* AlertsViewController.mm in Sources */,
+				B02DF5D21DADDF0A0089CA30 /* ColorTemperatureListener.mm in Sources */,
+				B01C8E011DB98A8600E9BB5D /* SelectableValuePropertyCell.m in Sources */,
+				B01EF5B21D80DC1500C423B8 /* TimerViewController.mm in Sources */,
+				B02DF5D81DADDF0A0089CA30 /* LockedStatusViewController.mm in Sources */,
+				B01D82471D7FF4240053CDE5 /* MoistureOutputLevelListener.mm in Sources */,
+				B02DF5D51DADDF0A0089CA30 /* LockControlListener.mm in Sources */,
+				B01D82551D7FF5150053CDE5 /* OffControlListener.mm in Sources */,
+				B01EF5861D80DAD900C423B8 /* RapidModeTimedListener.mm in Sources */,
+				B01D82241D7FEE030053CDE5 /* EnergyUsageViewController.mm in Sources */,
+				B01EBF2D1D7E3A02002F442D /* WaterLevelListener.mm in Sources */,
+				B01D82651D7FF66E0053CDE5 /* PlugInUnitsListener.mm in Sources */,
+				B01A02A91D7926710057098C /* Device.mm in Sources */,
+				B01EBF351D7E4016002F442D /* CycleControlListener.mm in Sources */,
+				B01D82571D7FF5150053CDE5 /* OnControlListener.mm in Sources */,
+				B01D823B1D7FF11F0053CDE5 /* HvacFanModeListener.mm in Sources */,
+				B02DF5D41DADDF0A0089CA30 /* ColorViewController.mm in Sources */,
+				B01D81FF1D7FE7F30053CDE5 /* ClimateControlModeListener.mm in Sources */,
+				B01D82661D7FF66E0053CDE5 /* PlugInUnitsViewController.mm in Sources */,
+				B01D821D1D7FE9D00053CDE5 /* DishWashingCyclePhaseListener.mm in Sources */,
+				B02DF5D61DADDF0A0089CA30 /* LockControlViewController.mm in Sources */,
+				B01D821E1D7FE9D00053CDE5 /* DishWashingCyclePhaseViewController.mm in Sources */,
+				B01D81E81D7FD2710053CDE5 /* BatteryStatusViewController.mm in Sources */,
+				B01EBF231D7E3A02002F442D /* CurrentHumidityListener.mm in Sources */,
+				B01EF5AA1D80DC1500C423B8 /* ResourceSavingViewController.mm in Sources */,
+				B01EBF1F1D7E3A02002F442D /* CurrentAirQualityLevelListener.mm in Sources */,
+				B01A02AD1D7926710057098C /* DeviceViewController.mm in Sources */,
+				B01D822A1D7FEEE40053CDE5 /* FanSpeedLevelViewController.mm in Sources */,
+				B01D82411D7FF2520053CDE5 /* LaundryCyclePhaseListener.mm in Sources */,
+				B01EF5AB1D80DC1500C423B8 /* RobotCleaningCyclePhaseListener.mm in Sources */,
+				B01F34141DB71B4A00AE4FAC /* MethodViewOutputCell.m in Sources */,
+				B01EF5871D80DAD900C423B8 /* RapidModeTimedViewController.mm in Sources */,
+				B01A02B21D7926710057098C /* DeviceTableViewCell.m in Sources */,
+				B01EBF2F1D7E3A02002F442D /* WindDirectionListener.mm in Sources */,
+				B01A02B01D7926710057098C /* InterfaceListViewController.mm in Sources */,
+				B01EBF281D7E3A02002F442D /* TargetHumidityViewController.mm in Sources */,
+				B01D823C1D7FF11F0053CDE5 /* HvacFanModeViewController.mm in Sources */,
+				B01EF5851D80DAD900C423B8 /* RapidModeListener.mm in Sources */,
+				B02DF5D31DADDF0A0089CA30 /* ColorTemperatureViewController.mm in Sources */,
+				B01EBF251D7E3A02002F442D /* CurrentTemperatureListener.mm in Sources */,
+				B01D81E01D7FD0850053CDE5 /* TemperatureDisplayViewController.mm in Sources */,
+				B01EF5AE1D80DC1500C423B8 /* SoilLevelViewController.mm in Sources */,
+				B01D820B1D7FE8C50053CDE5 /* ClosedStatusListener.mm in Sources */,
+				B01D81F31D7FE6830053CDE5 /* ChannelListener.mm in Sources */,
+				B01D81BD1D7FCE750053CDE5 /* AudioVideoInputViewController.mm in Sources */,
+				B01D81F41D7FE6830053CDE5 /* ChannelViewController.mm in Sources */,
+				B02DF5D01DADDF0A0089CA30 /* BrightnessViewController.mm in Sources */,
+				B01A02AC1D7926710057098C /* CDMUtil.mm in Sources */,
+				B01EBF221D7E3A02002F442D /* CurrentAirQualityViewController.mm in Sources */,
+				B02DF5DC1DADDF0A0089CA30 /* UnlockControlViewController.mm in Sources */,
+				B01EBF241D7E3A02002F442D /* CurrentHumidityViewController.mm in Sources */,
+				B01D825F1D7FF5F50053CDE5 /* OvenCyclePhaseListener.mm in Sources */,
+				B01D82231D7FEE030053CDE5 /* EnergyUsageListener.mm in Sources */,
+				B01A02A81D7926710057098C /* CDMDeviceListener.mm in Sources */,
+				B01EBF361D7E4016002F442D /* CycleControlViewController.mm in Sources */,
+				B01A02B11D7926710057098C /* InterfaceViewController.m in Sources */,
+				B01D82301D7FEF970053CDE5 /* FilterStatusViewController.mm in Sources */,
+				B01EBF2C1D7E3A02002F442D /* TargetTemperatureViewController.mm in Sources */,
+				B01EF5881D80DAD900C423B8 /* RapidModeViewController.mm in Sources */,
+				B01D82291D7FEEE40053CDE5 /* FanSpeedLevelListener.mm in Sources */,
+				B02DF5D71DADDF0A0089CA30 /* LockedStatusListener.mm in Sources */,
+				B02DF5CF1DADDF0A0089CA30 /* BrightnessListener.mm in Sources */,
+				B01D82171D7FE99A0053CDE5 /* CurrentPowerListener.mm in Sources */,
+				B01EBF301D7E3A02002F442D /* WindDirectionViewController.mm in Sources */,
+				B01D81C81D7FCF5D0053CDE5 /* AudioVolumeListener.mm in Sources */,
+				B01D81E71D7FD2710053CDE5 /* BatteryStatusListener.mm in Sources */,
+				B01D82581D7FF5150053CDE5 /* OnControlViewController.mm in Sources */,
+				B02DF5D91DADDF0A0089CA30 /* TriggerSensorListener.mm in Sources */,
+				B01EF5A91D80DC1500C423B8 /* ResourceSavingListener.mm in Sources */,
+				B01D82591D7FF5150053CDE5 /* OnOffStatusListener.mm in Sources */,
+				B01D822F1D7FEF970053CDE5 /* FilterStatusListener.mm in Sources */,
+				B01D81DE1D7FD0850053CDE5 /* LanguageDisplayViewController.mm in Sources */,
+				B01EBF201D7E3A02002F442D /* CurrentAirQualityLevelViewController.mm in Sources */,
+				B01EF5A61D80DC1500C423B8 /* RemoteControllabilityViewController.mm in Sources */,
+				B01A02B31D7926710057098C /* InterfaceTableViewCell.m in Sources */,
+				B0E8FCF41DAF0C920061C741 /* SampleCertificateChainEngine.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		B01A02681D7926700057098C /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B01A02691D7926700057098C /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		B01A026A1D7926700057098C /* MainStoryboard_iPad.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B01A026B1D7926700057098C /* en */,
+			);
+			name = MainStoryboard_iPad.storyboard;
+			sourceTree = "<group>";
+		};
+		B01A026C1D7926700057098C /* MainStoryboard_iPhone.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B01A026D1D7926700057098C /* en */,
+			);
+			name = MainStoryboard_iPhone.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		ACB2C6D9160B7CF200D7E3A6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		ACB2C6DA160B7CF200D7E3A6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		ACB2C6DC160B7CF200D7E3A6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				ENABLE_BITCODE = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "cdm_controller/CDMController-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"\"$(SRCROOT)/../../../../core/alljoyn/build/darwin/$(CURRENT_ARCH)/$(PLATFORM_NAME)/debug/dist/cpp/inc\"",
+					"\"$(SRCROOT)/../../../../core/alljoyn/build/darwin/$(CURRENT_ARCH)/$(PLATFORM_NAME)/debug/dist/cpp/inc/alljoyn\"",
+					"\"$(SRCROOT)/../../../../core/alljoyn/build/darwin/arm64/$(PLATFORM_NAME)/debug/dist/cpp/inc\"",
+					"\"$(SRCROOT)/../../../../core/alljoyn/build/darwin/armv7/$(PLATFORM_NAME)/debug/dist/cpp/inc\"",
+					"\"$(SRCROOT)/../../../../core/alljoyn/build/darwin/x86_64/$(PLATFORM_NAME)/debug/dist/cpp/inc\"",
+					"\"$(SRCROOT)/../../../../core/alljoyn/build/darwin/x86/$(PLATFORM_NAME)/debug/dist/cpp/inc\"",
+					"\"$(SRCROOT)/../../../../core/alljoyn/common/inc\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/x86_64/$(PLATFORM_NAME)/debug/dist/cdm/inc/alljoyn/cdm\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/x86_64/$(PLATFORM_NAME)/debug/dist/cdm/inc\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/x86_64/$(PLATFORM_NAME)/debug/dist/cdm/inc/alljoyn\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/x86/$(PLATFORM_NAME)/debug/dist/cdm/inc/alljoyn/cdm\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/x86/$(PLATFORM_NAME)/debug/dist/cdm/inc\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/x86/$(PLATFORM_NAME)/debug/dist/cdm/inc/alljoyn\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/arm64/$(PLATFORM_NAME)/debug/dist/cdm/inc/alljoyn/cdm\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/arm64/$(PLATFORM_NAME)/debug/dist/cdm/inc\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/arm64/$(PLATFORM_NAME)/debug/dist/cdm/inc/alljoyn\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/armv7/$(PLATFORM_NAME)/debug/dist/cdm/inc/alljoyn/cdm\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/armv7/$(PLATFORM_NAME)/debug/dist/cdm/inc\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/armv7/$(PLATFORM_NAME)/debug/dist/cdm/inc/alljoyn\"",
+					"\"$(SRCROOT)/../../../../core/alljoyn/alljoyn_objc/AllJoynFramework/AllJoynFramework\"",
+				);
+				INFOPLIST_FILE = "$(SRCROOT)/cdm_controller/CDMController-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/x86_64/$(PLATFORM_NAME)/debug/dist/cpp/lib\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/x86_64/$(PLATFORM_NAME)/debug/dist/cdm/lib\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/arm64/$(PLATFORM_NAME)/debug/dist/cpp/lib\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/arm64/$(PLATFORM_NAME)/debug/dist/cdm/lib\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/armv7/$(PLATFORM_NAME)/debug/dist/cpp/lib\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/armv7/$(PLATFORM_NAME)/debug/dist/cdm/lib\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/x86/$(PLATFORM_NAME)/debug/dist/cpp/lib\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/x86/$(PLATFORM_NAME)/debug/dist/cdm/lib\"",
+					"\"$(SRCROOT)/../../../../core/alljoyn/build/darwin/arm/$(PLATFORM_NAME)/debug/dist/about/lib\"",
+				);
+				OTHER_CFLAGS = (
+					"-DQCC_OS_GROUP_POSIX",
+					"-DQCC_OS_DARWIN",
+				);
+				OTHER_LDFLAGS = (
+					"-lalljoyn",
+					"-lajrouter",
+					"-lalljoyn_cdm",
+					"-lAllJoynFramework_iOS",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "org.alljoyn.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = CDMController;
+				VALID_ARCHS = "arm64 armv7";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		ACB2C6DD160B7CF200D7E3A6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				ENABLE_BITCODE = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "cdm_controller/CDMController-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"\"$(SRCROOT)/../../../../core/alljoyn/build/darwin/$(CURRENT_ARCH)/$(PLATFORM_NAME)/release/dist/cpp/inc\"",
+					"\"$(SRCROOT)/../../../../core/alljoyn/build/darwin/$(CURRENT_ARCH)/$(PLATFORM_NAME)/release/dist/cpp/inc/alljoyn\"",
+					"\"$(SRCROOT)/../../../../core/alljoyn/build/darwin/arm64/$(PLATFORM_NAME)/release/dist/cpp/inc\"",
+					"\"$(SRCROOT)/../../../../core/alljoyn/build/darwin/armv7/$(PLATFORM_NAME)/release/dist/cpp/inc\"",
+					"\"$(SRCROOT)/../../../../core/alljoyn/build/darwin/x86_64/$(PLATFORM_NAME)/release/dist/cpp/inc\"",
+					"\"$(SRCROOT)/../../../../core/alljoyn/build/darwin/x86/$(PLATFORM_NAME)/release/dist/cpp/inc\"",
+					"\"$(SRCROOT)/../../../../core/alljoyn/common/inc\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/x86_64/$(PLATFORM_NAME)/release/dist/cdm/inc/alljoyn/cdm\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/x86_64/$(PLATFORM_NAME)/release/dist/cdm/inc\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/x86_64/$(PLATFORM_NAME)/release/dist/cdm/inc/alljoyn\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/x86/$(PLATFORM_NAME)/release/dist/cdm/inc/alljoyn/cdm\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/x86/$(PLATFORM_NAME)/release/dist/cdm/inc\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/x86/$(PLATFORM_NAME)/release/dist/cdm/inc/alljoyn\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/arm64/$(PLATFORM_NAME)/release/dist/cdm/inc/alljoyn/cdm\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/arm64/$(PLATFORM_NAME)/release/dist/cdm/inc\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/arm64/$(PLATFORM_NAME)/release/dist/cdm/inc/alljoyn\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/armv7/$(PLATFORM_NAME)/release/dist/cdm/inc/alljoyn/cdm\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/armv7/$(PLATFORM_NAME)/release/dist/cdm/inc\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/armv7/$(PLATFORM_NAME)/release/dist/cdm/inc/alljoyn\"",
+					"\"$(SRCROOT)/../../../../core/alljoyn/alljoyn_objc/AllJoynFramework/AllJoynFramework\"",
+				);
+				INFOPLIST_FILE = "$(SRCROOT)/cdm_controller/CDMController-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/x86_64/$(PLATFORM_NAME)/release/dist/cpp/lib\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/x86_64/$(PLATFORM_NAME)/release/dist/cdm/lib\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/arm64/$(PLATFORM_NAME)/release/dist/cpp/lib\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/arm64/$(PLATFORM_NAME)/release/dist/cdm/lib\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/armv7/$(PLATFORM_NAME)/release/dist/cpp/lib\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/armv7/$(PLATFORM_NAME)/release/dist/cdm/lib\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/x86/$(PLATFORM_NAME)/release/dist/cpp/lib\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/x86/$(PLATFORM_NAME)/release/dist/cdm/lib\"",
+					"\"$(SRCROOT)/../../../../core/alljoyn/build/darwin/arm/$(PLATFORM_NAME)/release/dist/about/lib\"",
+				);
+				OTHER_CFLAGS = (
+					"-DNS_BLOCK_ASSERTIONS=1",
+					"-DQCC_OS_GROUP_POSIX",
+					"-DQCC_OS_DARWIN",
+				);
+				OTHER_LDFLAGS = (
+					"-lalljoyn",
+					"-lajrouter",
+					"-lalljoyn_cdm",
+					"-lAllJoynFramework_iOS",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "org.alljoyn.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = CDMController;
+				VALID_ARCHS = "arm64 armv7";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		ACB2C6AE160B7CF100D7E3A6 /* Build configuration list for PBXProject "CDMController" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ACB2C6D9160B7CF200D7E3A6 /* Debug */,
+				ACB2C6DA160B7CF200D7E3A6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		ACB2C6DB160B7CF200D7E3A6 /* Build configuration list for PBXNativeTarget "CDMController" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ACB2C6DC160B7CF200D7E3A6 /* Debug */,
+				ACB2C6DD160B7CF200D7E3A6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = ACB2C6AB160B7CF100D7E3A6 /* Project object */;
+}
