@@ -31,6 +31,17 @@ class Generator(object):
     def __init__(self, args):
         self.cmd_args = args
 
+        self._binding_checks_metadata = (
+                (('all', 'cpp'), ('.cc', '.cpp', '.h')),
+                (('all', 'java'), ('.java',))
+            )
+
+        self._component_checks_metadata = (
+                (('all', 'controller'), ('controller',)),
+                (('all', 'controllee'), ('controllee',)),
+                (('all', 'common'), ('common',))
+            )
+
     def get_parser(self):
         pass
 
@@ -44,6 +55,31 @@ class Generator(object):
         pass
 
     def generate(self):
+
+        def file_checker(fname):
+            not_hidden = not fname.startswith('.')
+
+            def do_check(valid_matches, chosen):
+                return any([match in chosen for match in valid_matches])
+
+            def file_is_check(searches):
+                return any([search in fname for search in searches])
+
+            def build_check_pair(elem, search, chosen):
+                return do_check(elem, chosen), file_is_check(search)
+
+            def build_checks(category, metadata):
+                return [(build_check_pair(elems, search_tokens, category)) for elems, search_tokens in metadata]
+
+            def validate_checks(checks_list):
+                return any([(do_this and file_is_this) for do_this, file_is_this in checks_list])
+
+            binding_checks = build_checks(self.cmd_args.bindings, self._binding_checks_metadata)
+            component_checks = build_checks(self.cmd_args.components, self._component_checks_metadata)
+            is_valid = not_hidden and validate_checks(binding_checks) and validate_checks(component_checks)
+
+            return is_valid
+
         print 'Running %s' % type(self).__name__
 
         saxhandler = self.get_parser()
@@ -62,9 +98,9 @@ class Generator(object):
 
             render_root = self.get_render_context_root(saxhandler)
 
-            for root, folders, files in os.walk(self.cmd_args.template_dir):
-                for template_file in filter(lambda fname: not fname.startswith('.'), files):
-                    template_path = os.path.join(root, template_file)
+            for root, _, files in os.walk(self.cmd_args.template_dir):
+                template_paths = [os.path.join(root, fname) for fname in files]
+                for template_path in filter(file_checker, template_paths):
                     relative_path = os.path.relpath(template_path, self.cmd_args.template_dir)
 
                     print "  " + relative_path
@@ -79,10 +115,9 @@ class Generator(object):
 
                     try:
                         os.makedirs(os.path.dirname(result_path))
-                    except:
-                        pass
-
-                    open(result_path, "w").write(render_result)
+                        open(result_path, "w").write(render_result)
+                    except OSError:
+                        print "ERROR creating path:", os.path.dirname(result_path)
 
 
 class InterfaceCodeGenerator(Generator):
@@ -121,12 +156,13 @@ def main():
     argument_parser.add_argument('template_dir', help='Path to directory with the templates to be used for code generation')
     argument_parser.add_argument('xml_files', help='Unix style pathname pattern expansion to xml files to be used for pystache rendering context')
     argument_parser.add_argument('output_dir', nargs='?', default="./output/", help='Path to directory where the generated files will be output to')
+    argument_parser.add_argument('--bindings', nargs='*', default=["all"], help="The bindings to generate")
+    argument_parser.add_argument('--components', nargs='*', default=["all"], help="The components to generate (controller, controllee or all")
     argument_parser.add_argument('--sample', action='store_true', required=False, help='Generate sample programs using the device emulator xml file')
+    
     args = argument_parser.parse_args()
-    if args.sample:
-        generator = SampleAppGenerator(args)
-    else:
-        generator = InterfaceCodeGenerator(args)
+
+    generator = SampleAppGenerator(args) if args.sample else InterfaceCodeGenerator(args)
     generator.generate()
 
 if __name__ == '__main__':
