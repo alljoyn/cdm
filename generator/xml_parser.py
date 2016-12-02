@@ -413,6 +413,8 @@ class Property(object):
         self.Annotations = []
         self.Min = None
         self.Max = None
+        self.MaxFromProperty = None
+        self.MinFromProperty = None
         self.Units = None
         self.parent_interface = None
 
@@ -441,7 +443,13 @@ class Property(object):
  
     def set_max(self, value): 
         self.Max = value
- 
+
+    def set_max_from_property(self, value):
+        self.MaxFromProperty = value
+
+    def set_min_from_property(self, value):
+        self.MinFromProperty = value
+
     def set_units(self, units): 
         self.Units = units
 
@@ -463,7 +471,13 @@ class Property(object):
                 lambda m: self.set_max(value), 
  
             re.compile(r'org\.alljoyn\.Bus\.Type\.Units'): 
-                lambda m: self.set_units(value), 
+                lambda m: self.set_units(value),
+
+            re.compile(r'org\.twobulls\.Property\.MaxValueFromProperty'):
+                lambda m: self.set_max_from_property(value),
+
+            re.compile(r'org\.twobulls\.Property\.MinValueFromProperty'):
+                lambda m: self.set_min_from_property(value),
         }
 
         handled = False
