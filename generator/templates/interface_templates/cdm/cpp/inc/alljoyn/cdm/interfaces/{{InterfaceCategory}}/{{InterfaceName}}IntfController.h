@@ -38,36 +38,46 @@ class {{Interface.Name}}IntfController : public {{Interface.Name}}Interface {
      * Destructor of {{Interface.Name}}IntfController
      */
     virtual ~{{Interface.Name}}IntfController() {}
-
     {% for property in Interface.UserProperties %}
+
     /**
-     * Get {{property.Name}}
-     * @param[in] context the context that is passed to the callback handler
+     * Get {{property.Name}} property
+     {% if "en" in property.doc %}
+     * ({{property.doc["en"]}})
+     {% endif %}     * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus Get{{property.Name}}(void* context = NULL) = 0;
     {% if property.Writable %}
+
     /**
-     * Set {{property.Name}}
+     * Set {{property.Name}} property
+     {% if "en" in property.doc %}
+     * ({{property.doc["en"]}})
+     {% endif %}
      * @param[in] value The {{property.Name.add_spaces_lower()}} to set
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus Set{{property.Name}}(const {{property.Type.ctype()}} value, void* context = NULL) = 0;
+    virtual QStatus Set{{property.Name}}(const {{property.Type.ctype_arg()}} value, void* context = NULL) = 0;
     {% endif %}
     {% endfor %}
-
     {% for method in Interface.Methods %}
     {# TODO: This should only take input args #}
+
     /**
      * Call {{method.Name}} method
-     {% for arg in method.Args %}
-     * @param[in] {{arg.Name.camel_case()}} Method argument
+     {% if "en" in method.doc %}
+     * ({{method.doc["en"]}})
+     {% endif %}
+     {% for arg in method.input_args() %}
+     * @param[in] {{arg.Name.camel_case()}} {%if "en" in arg.doc%}{{arg.doc["en"]}}{%else%}Method argument{%endif%}
+
      {% endfor %}
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus {{method.Name}}({% for arg in method.Args %}const {{arg.Type.ctype_arg()}} {{arg.Name.camel_case()}}, {% endfor %}void* context = NULL) = 0;
+    virtual QStatus {{method.Name}}({% for arg in method.input_args() %}const {{arg.Type.ctype_arg()}} {{arg.Name.camel_case()}}, {% endfor %}void* context = NULL) = 0;
     {% endfor %}
 };
 

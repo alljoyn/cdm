@@ -31,7 +31,7 @@ class LanguageDisplayListener : public LanguageDisplayIntfControllerListener {
     LanguageDisplayListener();
     virtual ~LanguageDisplayListener();
 
-    virtual void OnResponseGetDisplayLanguage(QStatus status, const qcc::String& objectPath, const qcc::String displayLanguage, void* context);
+    virtual void OnResponseGetDisplayLanguage(QStatus status, const qcc::String& objectPath, const qcc::String& displayLanguage, void* context);
 
     virtual void OnResponseSetDisplayLanguage(QStatus status, const qcc::String& objectPath, void* context);
 

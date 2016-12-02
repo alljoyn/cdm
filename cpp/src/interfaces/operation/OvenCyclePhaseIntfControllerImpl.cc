@@ -120,7 +120,7 @@ QStatus OvenCyclePhaseIntfControllerImpl::GetVendorPhasesDescription(const qcc::
     args[0].v_string.str = language.c_str();
     args[0].v_string.len = language.size();
 
-    status = m_proxyObject.MethodCallAsync(GetInterfaceName().c_str(), s_method_GetVendorPhasesDescription.c_str(), this, (MessageReceiver::ReplyHandler)&OvenCyclePhaseIntfControllerImpl::GetCyclePhasesDescriptionReplyHandler, args, 1, context);
+    status = m_proxyObject.MethodCallAsync(GetInterfaceName().c_str(), s_method_GetVendorPhasesDescription.c_str(), this, (MessageReceiver::ReplyHandler)&OvenCyclePhaseIntfControllerImpl::GetVendorPhasesDescriptionReplyHandler, args, 1, context);
 
     return status;
 }
@@ -153,7 +153,7 @@ void OvenCyclePhaseIntfControllerImpl::GetSupportedCyclePhasesPropertyCB(QStatus
 
 }
 
-void OvenCyclePhaseIntfControllerImpl::GetCyclePhasesDescriptionReplyHandler(Message& message, void* context)
+void OvenCyclePhaseIntfControllerImpl::GetVendorPhasesDescriptionReplyHandler(Message& message, void* context)
 {
     OvenCyclePhaseInterface::CyclePhaseDescriptions descriptions;
     qcc::String errorMessage;

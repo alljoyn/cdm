@@ -36,12 +36,12 @@ class RepeatModeIntfControllerImpl : public InterfaceController, public RepeatMo
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Constructor of RepeatModeIntfControllerImpl
      */
-    RepeatModeIntfControllerImpl(BusAttachment& busAttachment, RepeatModeIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    RepeatModeIntfControllerImpl(BusAttachment& busAttachment, RepeatModeIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Destructor of RepeatModeIntfControllerImpl
@@ -61,27 +61,26 @@ class RepeatModeIntfControllerImpl : public InterfaceController, public RepeatMo
     virtual BusAttachment& GetBusAttachment() const { return m_busAttachment; }
 
     /**
-     * Get RepeatMode
-     * @param[in] context
-     * @return status
+     * Get RepeatMode property
+     * (True if the device works in repeat mode.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
-    virtual QStatus GetRepeatMode(void* context = NULL);
+    virtual QStatus GetRepeatMode(void* context);
 
     /**
-     * Set RepeatMode
-     * @param[in] RepeatMode
-     * @param[in] context
-     * @return status
+     * Set RepeatMode property
+     * (True if the device works in repeat mode.)
+     * @param[in] value The repeat mode to set
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus SetRepeatMode(const bool value, void* context);
 
   private:
-    RepeatModeIntfControllerImpl();
-
     void PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context);
-
-    void SetRepeatModePropertyCB(QStatus status, ProxyBusObject* obj, void* context);
     void GetRepeatModePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+    void SetRepeatModePropertyCB(QStatus status, ProxyBusObject* obj, void* context);
 
     BusAttachment& m_busAttachment;
     RepeatModeIntfControllerListener& m_interfaceListener;

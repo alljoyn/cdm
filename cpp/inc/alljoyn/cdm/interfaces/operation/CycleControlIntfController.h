@@ -40,34 +40,37 @@ class CycleControlIntfController : public CycleControlInterface {
     virtual ~CycleControlIntfController() {}
 
     /**
-     * Get OperationalState
+     * Get OperationalState property
+     * (Current operational state of the appliance.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetOperationalState(void* context = NULL) = 0;
 
     /**
-     * Get SupportedOperationalCommands
-     * @param[in] context the context that is passed to the callback handler
-     * @return ER_OK on success
-     */
-    virtual QStatus GetSupportedOperationalCommands(void* context = NULL) = 0;
-
-    /**
-     * Get SupportedOperationalStates
+     * Get SupportedOperationalStates property
+     * (Operational states which are supported by the appliance.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetSupportedOperationalStates(void* context = NULL) = 0;
 
     /**
-     * Execute command
-     * @param[in] command command to execude
+     * Get SupportedOperationalCommands property
+     * (Operational commands which are supported by the appliance.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
+     */
+    virtual QStatus GetSupportedOperationalCommands(void* context = NULL) = 0;
+
+    /**
+     * Call ExecuteOperationalCommand method
+     * (Execute an operational command.)
+     * @param[in] command Operational command to be executed.
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus ExecuteOperationalCommand(const OperationalCommands command, void* context = NULL) = 0;
-
 };
 
 } //namespace services

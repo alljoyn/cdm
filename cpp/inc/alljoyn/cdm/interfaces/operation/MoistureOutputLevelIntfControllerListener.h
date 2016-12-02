@@ -20,15 +20,17 @@
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/InterfaceControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/MoistureOutputLevelInterface.h>
 
 namespace ajn {
 namespace services {
 
 /**
- * MoistureOutputLevel interface controller listener class
+ * MoistureOutputLevel Interface Controller Listener class
  */
 class MoistureOutputLevelIntfControllerListener : public InterfaceControllerListener {
   public:
+    using AutoMode = MoistureOutputLevelInterface::AutoMode;
 
     /**
      * Destructor of MoistureOutputLevelIntfControllerListener
@@ -36,37 +38,25 @@ class MoistureOutputLevelIntfControllerListener : public InterfaceControllerList
     virtual ~MoistureOutputLevelIntfControllerListener() {}
 
     /**
-     * Handler for MoistureOutputLevel property changed
-     * @param[in] objectPath the object path
-     * @param[in] value moisture output level
-     */
-    virtual void OnMoistureOutputLevelChanged(const qcc::String& objectPath, const uint8_t value) {}
-
-    /**
-     * Handler for MaxMoistureOutputLevel property changed
-     * @param[in] objectPath the object path
-     * @param[in] value the maximum moisture output level
-     */
-    virtual void OnMaxMoistureOutputLevelChanged(const qcc::String& objectPath, const uint8_t value) {}
-
-    /**
-     * Handler for AutoMode property changed
-     * @param[in] objectPath the object path
-     * @param[in] autoMode auto mode
-     */
-    virtual void OnAutoModeChanged(const qcc::String& objectPath, const uint8_t autoMode) {}
-
-    /**
-     * Callback handler for getting MoistureOutputLevel property
+     * Callback handler for GetMoistureOutputLevel completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] value moisture output level
+     * @param[in] value The value of MoistureOutputLevel
+     *                  (Current level of moisture output.)
      * @param[in] context the context that is passed from application
      */
     virtual void OnResponseGetMoistureOutputLevel(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) {}
 
     /**
-     * Callback handler for setting MoistureOutputLevel property
+     * Handler for MoistureOutputLevel property changed
+     * @param[in] objectPath the object path
+     * @param[in] value The value of MoistureOutputLevel
+     *                  (Current level of moisture output.)
+     */
+    virtual void OnMoistureOutputLevelChanged(const qcc::String& objectPath, const uint8_t value) {}
+
+    /**
+     * Callback handler for SetMoistureOutputLevel completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
      * @param[in] context the context that is passed from application
@@ -74,25 +64,43 @@ class MoistureOutputLevelIntfControllerListener : public InterfaceControllerList
     virtual void OnResponseSetMoistureOutputLevel(QStatus status, const qcc::String& objectPath, void* context) {}
 
     /**
-     * Callback handler for getting MaxMoistureOutputLevel property
+     * Callback handler for GetMaxMoistureOutputLevel completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] value the maximum moisture output level
+     * @param[in] value The value of MaxMoistureOutputLevel
+     *                  (Maximum level of moisture output.)
      * @param[in] context the context that is passed from application
      */
     virtual void OnResponseGetMaxMoistureOutputLevel(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) {}
 
     /**
-     * Callback handler for getting AutoMode property
-     * @param[in] status ER_OK on success
+     * Handler for MaxMoistureOutputLevel property changed
      * @param[in] objectPath the object path
-     * @param[in] autoMode auto mode
-     * @param[in] context the context that is passed from application
+     * @param[in] value The value of MaxMoistureOutputLevel
+     *                  (Maximum level of moisture output.)
      */
-    virtual void OnResponseGetAutoMode(QStatus status, const qcc::String& objectPath, const uint8_t autoMode, void* context) {}
+    virtual void OnMaxMoistureOutputLevelChanged(const qcc::String& objectPath, const uint8_t value) {}
 
     /**
-     * Callback handler for setting AutoMode property
+     * Callback handler for GetAutoMode completion
+     * @param[in] status ER_OK on success
+     * @param[in] objectPath the object path
+     * @param[in] value The value of AutoMode
+     *                  (Represent enabled/disabled state of the auto mode. The device decides the moisture output level for providing comfortable surroundings automatically.)
+     * @param[in] context the context that is passed from application
+     */
+    virtual void OnResponseGetAutoMode(QStatus status, const qcc::String& objectPath, const AutoMode value, void* context) {}
+
+    /**
+     * Handler for AutoMode property changed
+     * @param[in] objectPath the object path
+     * @param[in] value The value of AutoMode
+     *                  (Represent enabled/disabled state of the auto mode. The device decides the moisture output level for providing comfortable surroundings automatically.)
+     */
+    virtual void OnAutoModeChanged(const qcc::String& objectPath, const AutoMode value) {}
+
+    /**
+     * Callback handler for SetAutoMode completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
      * @param[in] context the context that is passed from application

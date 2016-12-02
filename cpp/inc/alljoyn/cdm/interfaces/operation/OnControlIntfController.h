@@ -40,7 +40,8 @@ class OnControlIntfController : public OnControlInterface {
     virtual ~OnControlIntfController() {}
 
     /**
-     * SwitchOn
+     * Call SwitchOn method
+     * (Switch on the device.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */

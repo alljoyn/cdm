@@ -27,7 +27,7 @@ CurrentAirQualityLevelListener::~CurrentAirQualityLevelListener()
 {
 }
 
-void CurrentAirQualityLevelListener::OnResponseGetContaminantType(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context)
+void CurrentAirQualityLevelListener::OnResponseGetContaminantType(QStatus status, const qcc::String& objectPath, const ContaminantType value, void* context)
 {
     cout << __func__ << endl;
     cout << "status: " << QCC_StatusText(status) << endl;
@@ -51,7 +51,7 @@ void CurrentAirQualityLevelListener::OnResponseGetMaxLevel(QStatus status, const
     cout << "MaxLevel: " << (int)value << endl;
 }
 
-void CurrentAirQualityLevelListener::OnContaminantTypeChanged(const qcc::String& objectPath, const uint8_t value)
+void CurrentAirQualityLevelListener::OnContaminantTypeChanged(const qcc::String& objectPath, const ContaminantType value)
 {
     cout << __func__ << endl;
     cout << "path: " << objectPath << endl;

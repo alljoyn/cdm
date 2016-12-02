@@ -20,6 +20,7 @@
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/InterfaceControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/EnergyUsageInterface.h>
 
 namespace ajn {
 namespace services {
@@ -29,66 +30,75 @@ namespace services {
  */
 class EnergyUsageIntfControllerListener : public InterfaceControllerListener {
   public:
+
+    /**
+     * Destructor of EnergyUsageIntfControllerListener
+     */
     virtual ~EnergyUsageIntfControllerListener() {}
 
     /**
-     * Callback handler for getting CumulativeEnergy property
+     * Callback handler for GetCumulativeEnergy completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] cumulativeEnergy cumulative energy
+     * @param[in] value The value of CumulativeEnergy
+     *                  (The cumulative energy consumption of the device)
      * @param[in] context the context that is passed from application
      */
-    virtual void OnResponseGetCumulativeEnergy(QStatus status, const qcc::String& objectPath, const double cumulativeEnergy, void* context) {}
+    virtual void OnResponseGetCumulativeEnergy(QStatus status, const qcc::String& objectPath, const double value, void* context) {}
 
     /**
-     * Callback handler for getting Precision property
+     * Handler for CumulativeEnergy property changed
+     * @param[in] objectPath the object path
+     * @param[in] value The value of CumulativeEnergy
+     *                  (The cumulative energy consumption of the device)
+     */
+    virtual void OnCumulativeEnergyChanged(const qcc::String& objectPath, const double value) {}
+
+    /**
+     * Callback handler for GetPrecision completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] precision precision
+     * @param[in] value The value of Precision
+     *                  (The precision of the CumulativeEnergy property; i.e., the value the actual energy consumption must change before CumulativeEnergy is updated)
      * @param[in] context the context that is passed from application
      */
-    virtual void OnResponseGetPrecision(QStatus status, const qcc::String& objectPath, const double precision, void* context) {}
+    virtual void OnResponseGetPrecision(QStatus status, const qcc::String& objectPath, const double value, void* context) {}
 
     /**
-     * Callback handler for getting UpdateMinTime property
+     * Handler for Precision property changed
+     * @param[in] objectPath the object path
+     * @param[in] value The value of Precision
+     *                  (The precision of the CumulativeEnergy property; i.e., the value the actual energy consumption must change before CumulativeEnergy is updated)
+     */
+    virtual void OnPrecisionChanged(const qcc::String& objectPath, const double value) {}
+
+    /**
+     * Callback handler for GetUpdateMinTime completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] updateMinTime the minimum update time
+     * @param[in] value The value of UpdateMinTime
+     *                  (The minimum time between updates of the CumulativeEnergy property)
      * @param[in] context the context that is passed from application
      */
-    virtual void OnResponseGetUpdateMinTime(QStatus status, const qcc::String& objectPath, const uint16_t updateMinTime, void* context) {}
+    virtual void OnResponseGetUpdateMinTime(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context) {}
 
     /**
-     * Callback handler for ResetCumulativeEnergy method
+     * Handler for UpdateMinTime property changed
+     * @param[in] objectPath the object path
+     * @param[in] value The value of UpdateMinTime
+     *                  (The minimum time between updates of the CumulativeEnergy property)
+     */
+    virtual void OnUpdateMinTimeChanged(const qcc::String& objectPath, const uint16_t value) {}
+
+    /**
+     * Callback handler for ResetCumulativeEnergy completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
      * @param[in] context the context that is passed from application
      * @param[in] errorName the detail errorName is passed when the method call is failed
      * @param[in] errorMessage the errorMessage that describes the error
      */
-    virtual void OnResponseResetCumulativeEnergy(QStatus status, const qcc::String& objectPath,
-                                                 void* context, const char* errorName, const char* errorMessage) {}
-
-    /**
-     * Handler for CumulativeEnergy property changed
-     * @param[in] objectPath the object path
-     * @param[in] cumulativeEnergy cumulative energy
-     */
-    virtual void OnCumulativeEnergyChanged(const qcc::String& objectPath, const double cumulativeEnergy) {}
-
-    /**
-     * Handler for Precision property changed
-     * @param[in] objectPath the object path
-     * @param[in] precision precision
-     */
-    virtual void OnPrecisionChanged(const qcc::String& objectPath, const double precision) {}
-
-    /**
-     * Handler for UpdateMinTime property changed
-     * @param[in] objectPath the object path
-     * @param[in] updateMinTime the minimum update time
-     */
-    virtual void OnUpdateMinTimeChanged(const qcc::String& objectPath, const uint16_t updateMinTime) {}
+    virtual void OnResponseResetCumulativeEnergy(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage) {}
 };
 
 } //namespace services

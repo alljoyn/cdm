@@ -36,12 +36,12 @@ class CurrentTemperatureIntfControllerImpl : public InterfaceController, public 
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Constructor of CurrentTemperatureIntfControllerImpl
      */
-    CurrentTemperatureIntfControllerImpl(BusAttachment& busAttachment, CurrentTemperatureIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    CurrentTemperatureIntfControllerImpl(BusAttachment& busAttachment, CurrentTemperatureIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Destructor of CurrentTemperatureIntfControllerImpl
@@ -61,29 +61,30 @@ class CurrentTemperatureIntfControllerImpl : public InterfaceController, public 
     virtual BusAttachment& GetBusAttachment() const { return m_busAttachment; }
 
     /**
-     * Get CurrentTemperature
-     * @param[in] context
-     * @return status
+     * Get CurrentValue property
+     * (Current temperature expressed in Celsius.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
-    QStatus GetCurrentValue(void* context);
+    virtual QStatus GetCurrentValue(void* context);
 
     /**
-     * Get current Precision
-     * @param[in] context
-     * @return status
+     * Get Precision property
+     * (The precision of the CurrentValue property.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetPrecision(void* context);
 
     /**
-     * Get current UpdateMinTime
-     * @param[in] context
-     * @return status
+     * Get UpdateMinTime property
+     * (The minimum time between updates of the CurrentValue property in milliseconds.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetUpdateMinTime(void* context);
 
   private:
-    CurrentTemperatureIntfControllerImpl();
-
     void PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context);
     void GetCurrentValuePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
     void GetPrecisionPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);

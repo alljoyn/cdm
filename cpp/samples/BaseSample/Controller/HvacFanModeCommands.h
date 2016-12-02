@@ -32,10 +32,10 @@ class HvacFanModeListener : public HvacFanModeIntfControllerListener {
     virtual ~HvacFanModeListener();
 
     virtual void OnResponseSetMode(QStatus status, const qcc::String& objectPath, void* context);
-    virtual void OnResponseGetMode(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context);
-    virtual void OnResponseGetSupportedModes(QStatus status, const qcc::String& objectPath, const SupportedModes& value, void* context);
-    virtual void OnModeChanged(const qcc::String& objectPath, const uint16_t value);
-    virtual void OnSupportedModesChanged(const qcc::String& objectPath, const SupportedModes& value);
+    virtual void OnResponseGetMode(QStatus status, const qcc::String& objectPath, const Mode value, void* context);
+    virtual void OnResponseGetSupportedModes(QStatus status, const qcc::String& objectPath, const std::vector<Mode>& value, void* context);
+    virtual void OnModeChanged(const qcc::String& objectPath, const Mode value);
+    virtual void OnSupportedModesChanged(const qcc::String& objectPath, const std::vector<Mode>& value);
 };
 
 

@@ -40,31 +40,35 @@ class ChannelIntfController : public ChannelInterface {
     virtual ~ChannelIntfController() {}
 
     /**
-     * Set channel id
-     * @param[in] channelId channel id
-     * @param[in] context the context that is passed to the callback handler
-     * @return ER_OK on success
-     */
-    virtual QStatus SetChannelId(const qcc::String channelId, void* context = NULL) = 0;
-
-    /**
-     * Get channel id
+     * Get ChannelId property
+     * (Current channel id.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetChannelId(void* context = NULL) = 0;
 
     /**
-     * Get total number of channels
+     * Set ChannelId property
+     * (Current channel id.)
+     * @param[in] value The channel id to set
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
+     */
+    virtual QStatus SetChannelId(const qcc::String& value, void* context = NULL) = 0;
+
+    /**
+     * Get TotalNumberOfChannels property
+     * (Total number of scanned channels.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetTotalNumberOfChannels(void* context = NULL) = 0;
 
     /**
-     * Get channel list
-     * @param[in] startingRecord starting record
-     * @param[in] numRecords the number of records
+     * Call GetChannelList method
+     * (Retrieve the list of channels.)
+     * @param[in] startingRecord List built from this record number.
+     * @param[in] numRecords List generated at most this many records.
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */

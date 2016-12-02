@@ -36,12 +36,12 @@ class SpinSpeedLevelIntfControllerImpl : public InterfaceController, public Spin
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Constructor of SpinSpeedLevelIntfControllerImpl
      */
-    SpinSpeedLevelIntfControllerImpl(BusAttachment& busAttachment, SpinSpeedLevelIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    SpinSpeedLevelIntfControllerImpl(BusAttachment& busAttachment, SpinSpeedLevelIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Destructor of SpinSpeedLevelIntfControllerImpl
@@ -61,39 +61,40 @@ class SpinSpeedLevelIntfControllerImpl : public InterfaceController, public Spin
     virtual BusAttachment& GetBusAttachment() const { return m_busAttachment; }
 
     /**
-     * Get MaxLevel
+     * Get MaxLevel property
+     * (Maximum value allowed for the spin speed level setting.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus GetMaxLevel(void* context = NULL);
+    virtual QStatus GetMaxLevel(void* context);
 
     /**
-     * Get TargetLevel
+     * Get TargetLevel property
+     * (Target set-point value of spin speed level.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus GetTargetLevel(void* context = NULL);
+    virtual QStatus GetTargetLevel(void* context);
 
     /**
-     * Set TargetLevel
-     * @param[in] targetLevel targetLevel
+     * Set TargetLevel property
+     * (Target set-point value of spin speed level.)
+     * @param[in] value The target level to set
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus SetTargetLevel(const uint8_t targetLevel, void* context = NULL);
+    virtual QStatus SetTargetLevel(const uint8_t value, void* context);
 
     /**
-     * Get SelectableLevels
+     * Get SelectableLevels property
+     * (List of the values of spin speed level which can be selected.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus GetSelectableLevels(void* context = NULL);
+    virtual QStatus GetSelectableLevels(void* context);
 
   private:
-    SpinSpeedLevelIntfControllerImpl();
-
     void PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context);
-
     void GetMaxLevelPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
     void GetTargetLevelPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
     void SetTargetLevelPropertyCB(QStatus status, ProxyBusObject* obj, void* context);

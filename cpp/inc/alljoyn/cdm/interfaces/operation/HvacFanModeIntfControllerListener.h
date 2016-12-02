@@ -17,22 +17,20 @@
 #ifndef HVACFANMODEINTFCONTROLLERLISTENER_H_
 #define HVACFANMODEINTFCONTROLLERLISTENER_H_
 
-#include <map>
-#include <utility>
-
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/InterfaceControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/HvacFanModeInterface.h>
 
 namespace ajn {
 namespace services {
 
 /**
- * HvacFanMode interface controller listener class
+ * HvacFanMode Interface Controller Listener class
  */
 class HvacFanModeIntfControllerListener : public InterfaceControllerListener {
   public:
-    typedef std::vector<uint16_t> SupportedModes;
+    using Mode = HvacFanModeInterface::Mode;
 
     /**
      * Destructor of HvacFanModeIntfControllerListener
@@ -40,7 +38,25 @@ class HvacFanModeIntfControllerListener : public InterfaceControllerListener {
     virtual ~HvacFanModeIntfControllerListener() {}
 
     /**
-     * Callback handler for setting Mode property
+     * Callback handler for GetMode completion
+     * @param[in] status ER_OK on success
+     * @param[in] objectPath the object path
+     * @param[in] value The value of Mode
+     *                  (Current mode of device.)
+     * @param[in] context the context that is passed from application
+     */
+    virtual void OnResponseGetMode(QStatus status, const qcc::String& objectPath, const Mode value, void* context) {}
+
+    /**
+     * Handler for Mode property changed
+     * @param[in] objectPath the object path
+     * @param[in] value The value of Mode
+     *                  (Current mode of device.)
+     */
+    virtual void OnModeChanged(const qcc::String& objectPath, const Mode value) {}
+
+    /**
+     * Callback handler for SetMode completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
      * @param[in] context the context that is passed from application
@@ -48,36 +64,22 @@ class HvacFanModeIntfControllerListener : public InterfaceControllerListener {
     virtual void OnResponseSetMode(QStatus status, const qcc::String& objectPath, void* context) {}
 
     /**
-     * Callback handler for getting Mode property
+     * Callback handler for GetSupportedModes completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] value mode
+     * @param[in] value The value of SupportedModes
+     *                  (Array of supported modes.)
      * @param[in] context the context that is passed from application
      */
-    virtual void OnResponseGetMode(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context) {}
-
-    /**
-     * Callback handler for getting SupportedModes property
-     * @param[in] status ER_OK on success
-     * @param[in] objectPath the object path
-     * @param[in] value supported mdoes
-     * @param[in] context the context that is passed from application
-     */
-    virtual void OnResponseGetSupportedModes(QStatus status, const qcc::String& objectPath, const SupportedModes& value, void* context) {}
-
-    /**
-     * Handler for Mode property changed
-     * @param[in] objectPath the object path
-     * @param[in] value mode
-     */
-    virtual void OnModeChanged(const qcc::String& objectPath, const uint16_t value) {}
+    virtual void OnResponseGetSupportedModes(QStatus status, const qcc::String& objectPath, const std::vector<Mode>& value, void* context) {}
 
     /**
      * Handler for SupportedModes property changed
      * @param[in] objectPath the object path
-     * @param[in] value supported modes
+     * @param[in] value The value of SupportedModes
+     *                  (Array of supported modes.)
      */
-    virtual void OnSupportedModesChanged(const qcc::String& objectPath, const SupportedModes& value) {}
+    virtual void OnSupportedModesChanged(const qcc::String& objectPath, const std::vector<Mode>& value) {}
 };
 
 } //namespace services

@@ -40,21 +40,24 @@ class WaterLevelIntfController : public WaterLevelInterface {
     virtual ~WaterLevelIntfController() {}
 
     /**
-     * Get currentLevel
-     * @param[in] context the context that is passed to the callback handler
-     * @return ER_OK on success
-     */
-    virtual QStatus GetCurrentLevel(void* context = NULL) = 0;
-
-    /**
-     * Get supplySource
+     * Get SupplySource property
+     * (The supply source of water.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetSupplySource(void* context = NULL) = 0;
 
     /**
-     * Get maxLevel
+     * Get CurrentLevel property
+     * (The current level of water in the tank.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
+     */
+    virtual QStatus GetCurrentLevel(void* context = NULL) = 0;
+
+    /**
+     * Get MaxLevel property
+     * (Maximum level allowed for water level.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */

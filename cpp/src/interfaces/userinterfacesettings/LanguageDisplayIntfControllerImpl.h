@@ -36,12 +36,12 @@ class LanguageDisplayIntfControllerImpl : public InterfaceController, public Lan
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Constructor of LanguageDisplayIntfControllerImpl
      */
-    LanguageDisplayIntfControllerImpl(BusAttachment& busAttachment, LanguageDisplayIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    LanguageDisplayIntfControllerImpl(BusAttachment& busAttachment, LanguageDisplayIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Destructor of LanguageDisplayIntfControllerImpl
@@ -61,32 +61,32 @@ class LanguageDisplayIntfControllerImpl : public InterfaceController, public Lan
     virtual BusAttachment& GetBusAttachment() const { return m_busAttachment; }
 
     /**
-     * Get DisplayLanguage
+     * Get DisplayLanguage property
+     * (The RFC 5646 tag of the current language being used by the device user interface)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus GetDisplayLanguage(void* context = NULL);
+    virtual QStatus GetDisplayLanguage(void* context);
 
     /**
-     * Set DisplayLanguage
-     * @param[in] displayLanguage display language
+     * Set DisplayLanguage property
+     * (The RFC 5646 tag of the current language being used by the device user interface)
+     * @param[in] value The display language to set
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus SetDisplayLanguage(const qcc::String& displayLanguage, void* context = NULL);
+    virtual QStatus SetDisplayLanguage(const qcc::String& value, void* context);
 
     /**
-     * Get SupportedDisplayLanguages
+     * Get SupportedDisplayLanguages property
+     * (The list of supported languages using RFC 5646 tags)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus GetSupportedDisplayLanguages(void* context = NULL);
+    virtual QStatus GetSupportedDisplayLanguages(void* context);
 
   private:
-    LanguageDisplayIntfControllerImpl();
-
     void PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context);
-
     void GetDisplayLanguagePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
     void SetDisplayLanguagePropertyCB(QStatus status, ProxyBusObject* obj, void* context);
     void GetSupportedDisplayLanguagesPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);

@@ -125,7 +125,7 @@ QStatus LaundryCyclePhaseIntfControllerImpl::GetVendorPhasesDescription(const qc
     args[0].v_string.str = language.c_str();
     args[0].v_string.len = language.size();
 
-    status = m_proxyObject.MethodCallAsync(GetInterfaceName().c_str(), s_method_GetVendorPhasesDescription.c_str(), this, (MessageReceiver::ReplyHandler)&LaundryCyclePhaseIntfControllerImpl::GetCyclePhasesDescriptionReplyHandler, args, 1, context);
+    status = m_proxyObject.MethodCallAsync(GetInterfaceName().c_str(), s_method_GetVendorPhasesDescription.c_str(), this, (MessageReceiver::ReplyHandler)&LaundryCyclePhaseIntfControllerImpl::GetVendorPhasesDescriptionReplyHandler, args, 1, context);
 
     return status;
 }
@@ -158,7 +158,7 @@ void LaundryCyclePhaseIntfControllerImpl::GetSupportedCyclePhasesPropertyCB(QSta
 
 }
 
-void LaundryCyclePhaseIntfControllerImpl::GetCyclePhasesDescriptionReplyHandler(Message& message, void* context)
+void LaundryCyclePhaseIntfControllerImpl::GetVendorPhasesDescriptionReplyHandler(Message& message, void* context)
 {
     LaundryCyclePhaseInterface::CyclePhaseDescriptions descriptions;
     qcc::String errorMessage;

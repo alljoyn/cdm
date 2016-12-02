@@ -138,7 +138,7 @@ void HidIntfControllerImpl::GetSupportedEventsPropertyCB(QStatus status, ProxyBu
     m_interfaceListener.OnResponseGetSupportedEvents(status, obj->GetPath(), supportedEvents, context);
 }
 
-QStatus HidIntfControllerImpl::InjectEvents(HidInterface::InputEvents& inputEvents)
+QStatus HidIntfControllerImpl::InjectEvents(const std::vector<InputEvent>& inputEvents, void* context)
 {
     QStatus status = ER_OK;
 

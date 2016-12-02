@@ -36,12 +36,12 @@ class CurrentPowerIntfControllerImpl : public InterfaceController, public Curren
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Constructor of CurrentPowerIntfControllerImpl
      */
-    CurrentPowerIntfControllerImpl(BusAttachment& busAttachment, CurrentPowerIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    CurrentPowerIntfControllerImpl(BusAttachment& busAttachment, CurrentPowerIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Destructor of CurrentPowerIntfControllerImpl
@@ -61,31 +61,31 @@ class CurrentPowerIntfControllerImpl : public InterfaceController, public Curren
     virtual BusAttachment& GetBusAttachment() const { return m_busAttachment; }
 
     /**
-     * Get current CurrentPower
-     * @param[in] context
-     * @return status
+     * Get CurrentPower property
+     * (The instantaneous power consumption of the device )
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetCurrentPower(void* context);
 
     /**
-     * Get current Precision
-     * @param[in] context
-     * @return status
+     * Get Precision property
+     * (The precision of the CurrentPower property; i.e., the value actual power consumption must change before CurrentPower is updated.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetPrecision(void* context);
 
     /**
-     * Get current UpdateMinTime
-     * @param[in] context
-     * @return status
+     * Get UpdateMinTime property
+     * (The minimum time between updates of the CurrentPower)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetUpdateMinTime(void* context);
 
   private:
-    CurrentPowerIntfControllerImpl();
-
     void PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context);
-
     void GetCurrentPowerPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
     void GetPrecisionPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
     void GetUpdateMinTimePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);

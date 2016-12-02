@@ -36,12 +36,12 @@ class AudioVideoInputIntfControllerImpl : public InterfaceController, public Aud
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Constructor of AudioVideoInputIntfControllerImpl
      */
-    AudioVideoInputIntfControllerImpl(BusAttachment& busAttachment, AudioVideoInputIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    AudioVideoInputIntfControllerImpl(BusAttachment& busAttachment, AudioVideoInputIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Destructor of AudioVideoInputIntfControllerImpl
@@ -61,33 +61,34 @@ class AudioVideoInputIntfControllerImpl : public InterfaceController, public Aud
     virtual BusAttachment& GetBusAttachment() const { return m_busAttachment; }
 
     /**
-     * Set input source id
-     * @param[in] input source id
-     * @param[in] context
-     * @return status
+     * Get InputSourceId property
+     * (Activated input source id.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
-    virtual QStatus SetInputSourceId(const uint16_t inputSourceId, void* context);
+    virtual QStatus GetInputSourceId(void* context);
 
     /**
-     * Get input source id
-     * @param[in] context
-     * @return status
+     * Set InputSourceId property
+     * (Activated input source id.)
+     * @param[in] value The input source id to set
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
-    QStatus GetInputSourceId(void* context);
+    virtual QStatus SetInputSourceId(const uint16_t value, void* context);
 
     /**
-     * Get supported input sources
-     * @param[in] context
-     * @return status
+     * Get SupportedInputSources property
+     * (Array of supported input sources.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
-    QStatus GetSupportedInputSources(void* context);
+    virtual QStatus GetSupportedInputSources(void* context);
 
   private:
-    AudioVideoInputIntfControllerImpl();
-
     void PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context);
-    void SetInputSourceIdPropertyCB(QStatus status, ProxyBusObject* obj, void* context);
     void GetInputSourceIdPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+    void SetInputSourceIdPropertyCB(QStatus status, ProxyBusObject* obj, void* context);
     void GetSupportedInputSourcesPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
 
     BusAttachment& m_busAttachment;

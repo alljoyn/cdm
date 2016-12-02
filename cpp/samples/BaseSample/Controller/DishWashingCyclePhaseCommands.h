@@ -30,13 +30,13 @@ class DishWashingCyclePhaseListener : public DishWashingCyclePhaseIntfController
   public:
     DishWashingCyclePhaseListener();
     virtual ~DishWashingCyclePhaseListener();
-    virtual void OnResponseGetCyclePhase(QStatus status, const qcc::String& objectPath, const uint8_t& cyclePhase, void* context);
+    virtual void OnResponseGetCyclePhase(QStatus status, const qcc::String& objectPath, const uint8_t cyclePhase, void* context);
 
     virtual void OnResponseGetSupportedCyclePhases(QStatus status, const qcc::String& objectPath, const DishWashingCyclePhaseInterface::SupportedCyclePhases& listOfCyclePhases, void* context);
 
     virtual void OnCyclePhaseChanged(const qcc::String& objectPath, const uint8_t cyclePhase);
 
-    virtual void OnSupportedCyclePhasesChanged(const qcc::String& objectPath, const DishWashingCyclePhaseInterface::SupportedCyclePhases listOfCyclePhases);
+    virtual void OnSupportedCyclePhasesChanged(const qcc::String& objectPath, const DishWashingCyclePhaseInterface::SupportedCyclePhases& listOfCyclePhases);
 
     virtual void OnResponseGetVendorPhasesDescription(QStatus status, const qcc::String& objectPath, const DishWashingCyclePhaseInterface::CyclePhaseDescriptions& listOfCycleDescriptions, void* context, const char* errorName, const char* errorMessage);
 };

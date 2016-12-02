@@ -75,7 +75,7 @@ void CurrentAirQualityIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj,
         if (!s_prop_ContaminantType.compare(propNameStr)) {
             if (propValue->typeId == ALLJOYN_BYTE) {
                 uint8_t value = propValue->v_byte;
-                m_interfaceListener.OnContaminantTypeChanged(obj.GetPath(), value);
+                m_interfaceListener.OnContaminantTypeChanged(obj.GetPath(), (ContaminantType)value);
             }
         }
         else if (!s_prop_CurrentValue.compare(propNameStr)) {
@@ -116,7 +116,7 @@ void CurrentAirQualityIntfControllerImpl::GetContaminantTypePropertyCB(QStatus s
     }
     uint8_t val;
     value.Get("y", &val);
-    m_interfaceListener.OnResponseGetContaminantType(status, obj->GetPath(), val, context);
+    m_interfaceListener.OnResponseGetContaminantType(status, obj->GetPath(), (ContaminantType)val, context);
 }
 
 void CurrentAirQualityIntfControllerImpl::GetCurrentValuePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)

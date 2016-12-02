@@ -20,6 +20,7 @@
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/InterfaceControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/RemoteControllabilityInterface.h>
 
 namespace ajn {
 namespace services {
@@ -29,24 +30,29 @@ namespace services {
  */
 class RemoteControllabilityIntfControllerListener : public InterfaceControllerListener {
   public:
+
+    /**
+     * Destructor of RemoteControllabilityIntfControllerListener
+     */
     virtual ~RemoteControllabilityIntfControllerListener() {}
 
     /**
-     * Callback handler for getting IsControllableproperty
+     * Callback handler for GetIsControllable completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] isControllable isControllable
+     * @param[in] value The value of IsControllable
+     *                  (Status of remote controllability; true if remote controllability enabled.)
      * @param[in] context the context that is passed from application
      */
-    virtual void OnResponseGetIsControllable(QStatus status, const qcc::String& objectPath, const bool isControllable, void* context) {}
+    virtual void OnResponseGetIsControllable(QStatus status, const qcc::String& objectPath, const bool value, void* context) {}
 
     /**
      * Handler for IsControllable property changed
      * @param[in] objectPath the object path
-     * @param[in] isControllable isControllable
+     * @param[in] value The value of IsControllable
+     *                  (Status of remote controllability; true if remote controllability enabled.)
      */
-    virtual void OnIsControllableChanged(const qcc::String& objectPath, const bool isControllable) {}
-
+    virtual void OnIsControllableChanged(const qcc::String& objectPath, const bool value) {}
 };
 
 } //namespace services

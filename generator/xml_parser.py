@@ -528,13 +528,42 @@ class Method(object):
     def __init__(self, name):
         self.Name = Symbol(name)
         self.Args = []
- 
-    def add_arg(self, arg): 
+        self.Annotations = []
+        self.doc = {}
+
+    @property
+    def CodeDoc(self):
+        return self.doc.get("en", None)
+
+    def add_arg(self, arg):
         self.Args.append(arg)
- 
+
+    def set_doc_string(self, language, value):
+        self.doc[language.lower()] = value
+
+    def add_annotation(self, name, value):
+        regexs = {
+            re.compile(r'org\.alljoyn\.Bus\.DocString\.(\w*)'):
+                lambda m: self.set_doc_string(m.group(1), value),
+        }
+
+        handled = False
+        for regex, handler in regexs.items():
+            match = regex.match(name)
+            if match:
+                handler(match)
+                handled = True
+
+        if not handled:
+            print "Unknown annotation:", name
+
+
     def add_child(self, child): 
         if isinstance(child, MethodArg): 
             self.add_arg(child)
+        elif isinstance(child, Annotation):
+            self.Annotations.append(child)
+            self.add_annotation(child.Name, child.Value)
 
     def input_args(self):
         return [arg for arg in self.Args if arg.Direction == 'in']
@@ -561,16 +590,22 @@ class MethodArg(object):
         self.Type = AJType(type)
         self.Direction = direction
         self.Annotations = []
+        self.doc = {}
 
     def add_child(self, child):
         if isinstance(child, Annotation):
             self.Annotations.append(child)
             self.add_annotation(child.Name, child.Value)
 
+    def set_doc_string(self, language, value):
+        self.doc[language.lower()] = value
+
     def add_annotation(self, name, value):
         regexs = {
             re.compile(r'org\.alljoyn\.Bus\.Type\.Name'):
                 lambda m: self.Type.set_annotated_type(value),
+            re.compile(r'org\.alljoyn\.Bus\.DocString\.(\w*)'):
+                lambda m: self.set_doc_string(m.group(1), value),
         }
 
         handled = False

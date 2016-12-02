@@ -39,7 +39,7 @@ void MoistureOutputLevelListener::OnMaxMoistureOutputLevelChanged(const qcc::Str
     cout << "path: " << objectPath << endl;
     cout << "MaxMoistureOutputLevel: " << (int)value << endl;
 }
-void MoistureOutputLevelListener::OnAutoModeChanged(const qcc::String& objectPath, const uint8_t autoMode)
+void MoistureOutputLevelListener::OnAutoModeChanged(const qcc::String& objectPath, const AutoMode autoMode)
 {
     cout << __func__ << endl;
     cout << "path: " << objectPath << endl;
@@ -76,7 +76,7 @@ void MoistureOutputLevelListener::OnResponseSetAutoMode(QStatus status, const qc
     cout << "path: " << objectPath << endl;
 }
 
-void MoistureOutputLevelListener::OnResponseGetAutoMode(QStatus status, const qcc::String& objectPath, const uint8_t autoMode, void* context)
+void MoistureOutputLevelListener::OnResponseGetAutoMode(QStatus status, const qcc::String& objectPath, const AutoMode autoMode, void* context)
 {
     cout << __func__ << endl;
     cout << "status: " << QCC_StatusText(status) << endl;
@@ -184,5 +184,5 @@ void MoistureOutputLevelCommands::OnCmdSetAutoMode(Commands* commands, std::stri
         cout << "Input argument is wrong." << endl;
         return;
     }
-    intfController->SetAutoMode(value);
+    intfController->SetAutoMode((MoistureOutputLevelInterface::AutoMode)value);
 }

@@ -36,12 +36,12 @@ class RapidModeTimedIntfControllerImpl : public InterfaceController, public Rapi
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Constructor of RapidModeTimedIntfControllerImpl
      */
-    RapidModeTimedIntfControllerImpl(BusAttachment& busAttachment, RapidModeTimedIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    RapidModeTimedIntfControllerImpl(BusAttachment& busAttachment, RapidModeTimedIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Destructor of RapidModeTimedIntfControllerImpl
@@ -61,30 +61,31 @@ class RapidModeTimedIntfControllerImpl : public InterfaceController, public Rapi
     virtual BusAttachment& GetBusAttachment() const { return m_busAttachment; }
 
     /**
-      * Get rapid mode minutes remaining
-      * @param[in] context
-      * @return status
+     * Get RapidModeMinutesRemaining property
+     * (Time remaining in rapid mode. Zero indicates not in rapid mode.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetRapidModeMinutesRemaining(void* context);
 
     /**
-     * Set rapid mode minutes remaining
-     * @param[in] rapid mode minutes remaining
-     * @param[in] context
-     * @return status
+     * Set RapidModeMinutesRemaining property
+     * (Time remaining in rapid mode. Zero indicates not in rapid mode.)
+     * @param[in] value The rapid mode minutes remaining to set
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus SetRapidModeMinutesRemaining(const uint16_t value, void* context);
 
     /**
-      * Get max set minutes
-      * @param[in] context
-      * @return status
+     * Get MaxSetMinutes property
+     * (Maximum rapid mode set time. It does not change to accomodate already in rapid mode.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetMaxSetMinutes(void* context);
 
   private:
-    RapidModeTimedIntfControllerImpl();
-
     void PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context);
     void GetRapidModeMinutesRemainingPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
     void SetRapidModeMinutesRemainingPropertyCB(QStatus status, ProxyBusObject* obj, void* context);

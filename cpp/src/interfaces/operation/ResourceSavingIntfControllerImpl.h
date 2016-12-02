@@ -19,9 +19,7 @@
 
 #include <alljoyn/Status.h>
 #include <alljoyn/BusAttachment.h>
-#include <alljoyn/InterfaceDescription.h>
 #include <alljoyn/cdm/interfaces/InterfaceController.h>
-#include <alljoyn/cdm/interfaces/InterfaceControllerListener.h>
 #include <alljoyn/cdm/interfaces/operation/ResourceSavingIntfController.h>
 
 namespace ajn {
@@ -31,23 +29,22 @@ class ResourceSavingIntfControllerListener;
 class CdmProxyBusObject;
 
 /**
- * ResourceSaving interface controller implementation class
+ * ResourceSaving Interface Controller implementation class
  */
 class ResourceSavingIntfControllerImpl : public InterfaceController, public ResourceSavingIntfController {
   public:
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
-
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Constructor of ResourceSavingIntfControllerImpl
      */
-    ResourceSavingIntfControllerImpl(BusAttachment& busAttachment, ResourceSavingIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    ResourceSavingIntfControllerImpl(BusAttachment& busAttachment, ResourceSavingIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
-     * Destructor of ResourceSavingIntfControlleeImpl
+     * Destructor of ResourceSavingIntfControllerImpl
      */
     virtual ~ResourceSavingIntfControllerImpl();
 
@@ -64,24 +61,26 @@ class ResourceSavingIntfControllerImpl : public InterfaceController, public Reso
     virtual BusAttachment& GetBusAttachment() const { return m_busAttachment; }
 
     /**
-     * Set ResouceSaving Mode
-     * @param[in] mode
-     * @return status
+     * Get ResourceSavingMode property
+     * (The current resource saving mode of the device; true if device in saving mode.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
-    virtual QStatus SetResourceSavingMode(const bool mode, void* context );
+    virtual QStatus GetResourceSavingMode(void* context);
 
     /**
-     * Get ResourceSaving mode
-     * @return ResourceSavingMode
+     * Set ResourceSavingMode property
+     * (The current resource saving mode of the device; true if device in saving mode.)
+     * @param[in] value The resource saving mode to set
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
-    virtual QStatus GetResourceSavingMode( void* context );
+    virtual QStatus SetResourceSavingMode(const bool value, void* context);
 
   private:
-    ResourceSavingIntfControllerImpl();
-
     void PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context);
-    void SetResourceSavingModePropertyCB(QStatus status, ProxyBusObject* obj, void* context);
     void GetResourceSavingModePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+    void SetResourceSavingModePropertyCB(QStatus status, ProxyBusObject* obj, void* context);
 
     BusAttachment& m_busAttachment;
     ResourceSavingIntfControllerListener& m_interfaceListener;

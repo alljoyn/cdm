@@ -141,7 +141,7 @@ QStatus CycleControlIntfControllerImpl::ExecuteOperationalCommand(const Operatio
     args[0].Set("y", (uint8_t)command);
 
     QStatus status = ER_OK;
-    status = m_proxyObject.MethodCallAsync(GetInterfaceName().c_str(), s_method_ExecuteOperationalCommand.c_str(), this, (MessageReceiver::ReplyHandler)&CycleControlIntfControllerImpl::ExecuteCommandReplyHandler, args, 1, context);
+    status = m_proxyObject.MethodCallAsync(GetInterfaceName().c_str(), s_method_ExecuteOperationalCommand.c_str(), this, (MessageReceiver::ReplyHandler)&CycleControlIntfControllerImpl::ExecuteOperationalCommandReplyHandler, args, 1, context);
     return status;
 }
 
@@ -189,7 +189,7 @@ void CycleControlIntfControllerImpl::GetSupportedOperationalStatesPropertyCB(QSt
     m_interfaceListener.OnResponseGetSupportedOperationalStates(status, obj->GetPath(), states, context);
 }
 
-void CycleControlIntfControllerImpl::ExecuteCommandReplyHandler(Message& message, void* context)
+void CycleControlIntfControllerImpl::ExecuteOperationalCommandReplyHandler(Message& message, void* context)
 {
     qcc::String errorMessage;
     const char* errorName = message->GetErrorName(&errorMessage);

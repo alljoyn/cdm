@@ -84,7 +84,7 @@ void MoistureOutputLevelIntfControllerImpl::PropertiesChanged(ProxyBusObject& ob
         } else if (!s_prop_AutoMode.compare(propNameStr)) {
             if (propValue->typeId == ALLJOYN_BYTE) {
                 uint8_t value = propValue->v_byte;
-                m_interfaceListener.OnAutoModeChanged(obj.GetPath(), value);
+                m_interfaceListener.OnAutoModeChanged(obj.GetPath(), (AutoMode)value);
             }
         }
     }
@@ -120,7 +120,7 @@ QStatus MoistureOutputLevelIntfControllerImpl::GetAutoMode(void* context)
     return status;
 }
 
-QStatus MoistureOutputLevelIntfControllerImpl::SetAutoMode(const uint8_t value, void* context)
+QStatus MoistureOutputLevelIntfControllerImpl::SetAutoMode(const AutoMode value, void* context)
 {
     QStatus status = ER_OK;
     MsgArg arg;
@@ -172,7 +172,7 @@ void MoistureOutputLevelIntfControllerImpl::GetAutoModePropertyCB(QStatus status
     }
     uint8_t val;
     value.Get("y", &val);
-    m_interfaceListener.OnResponseGetAutoMode(status, obj->GetPath(), val, context);
+    m_interfaceListener.OnResponseGetAutoMode(status, obj->GetPath(), (AutoMode)val, context);
 }
 
 } //namespace services

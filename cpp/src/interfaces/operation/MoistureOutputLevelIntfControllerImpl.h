@@ -36,12 +36,12 @@ class MoistureOutputLevelIntfControllerImpl : public InterfaceController, public
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Constructor of MoistureOutputLevelIntfControllerImpl
      */
-    MoistureOutputLevelIntfControllerImpl(BusAttachment& busAttachment, MoistureOutputLevelIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    MoistureOutputLevelIntfControllerImpl(BusAttachment& busAttachment, MoistureOutputLevelIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Destructor of MoistureOutputLevelIntfControllerImpl
@@ -61,51 +61,54 @@ class MoistureOutputLevelIntfControllerImpl : public InterfaceController, public
     virtual BusAttachment& GetBusAttachment() const { return m_busAttachment; }
 
     /**
-     * Get MoistureOutputLevel
-     * @param[in] context
-     * @return status
+     * Get MoistureOutputLevel property
+     * (Current level of moisture output.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetMoistureOutputLevel(void* context);
 
     /**
-     * Set MoistureOutputLevel
-     * @param[in] HorizontalDirection
-     * @param[in] context
-     * @return status
+     * Set MoistureOutputLevel property
+     * (Current level of moisture output.)
+     * @param[in] value The moisture output level to set
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus SetMoistureOutputLevel(const uint8_t value, void* context);
 
     /**
-     * Get MaxMoistureOutputLevel
-     * @param[in] context
-     * @return status
+     * Get MaxMoistureOutputLevel property
+     * (Maximum level of moisture output.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetMaxMoistureOutputLevel(void* context);
 
     /**
-     * Get AutoMode
-     * @param[in] context
-     * @return status
+     * Get AutoMode property
+     * (Represent enabled/disabled state of the auto mode. The device decides the moisture output level for providing comfortable surroundings automatically.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetAutoMode(void* context);
 
     /**
-     * Set AutoMode
-     * @param[in] AutoMode
-     * @param[in] context
-     * @return status
+     * Set AutoMode property
+     * (Represent enabled/disabled state of the auto mode. The device decides the moisture output level for providing comfortable surroundings automatically.)
+     * @param[in] value The auto mode to set
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
-    virtual QStatus SetAutoMode(const uint8_t value, void* context);
+    virtual QStatus SetAutoMode(const AutoMode value, void* context);
 
   private:
-    MoistureOutputLevelIntfControllerImpl();
-
     void PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context);
-    void SetMoistureOutputLevelPropertyCB(QStatus status, ProxyBusObject* obj, void* context);
     void GetMoistureOutputLevelPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+    void SetMoistureOutputLevelPropertyCB(QStatus status, ProxyBusObject* obj, void* context);
     void GetMaxMoistureOutputLevelPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
-    void SetAutoModePropertyCB(QStatus status, ProxyBusObject* obj, void* context);
     void GetAutoModePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+    void SetAutoModePropertyCB(QStatus status, ProxyBusObject* obj, void* context);
 
     BusAttachment& m_busAttachment;
     MoistureOutputLevelIntfControllerListener& m_interfaceListener;

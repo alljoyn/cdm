@@ -79,7 +79,7 @@ void FanSpeedLevelIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, con
         } else if (!s_prop_AutoMode.compare(propNameStr)) {
             if (propValue->typeId == ALLJOYN_BYTE) {
                 uint8_t value = propValue->v_byte;
-                m_interfaceListener.OnAutoModeChanged(obj.GetPath(), value);
+                m_interfaceListener.OnAutoModeChanged(obj.GetPath(), (AutoMode)value);
             }
         }
     }
@@ -118,7 +118,7 @@ QStatus FanSpeedLevelIntfControllerImpl::GetAutoMode(void* context)
 }
 
 
-QStatus FanSpeedLevelIntfControllerImpl::SetAutoMode(const uint8_t value, void* context)
+QStatus FanSpeedLevelIntfControllerImpl::SetAutoMode(const AutoMode value, void* context)
 {
     QStatus status = ER_OK;
     MsgArg arg;
@@ -171,7 +171,7 @@ void FanSpeedLevelIntfControllerImpl::GetAutoModePropertyCB(QStatus status, Prox
     }
     uint8_t val;
     value.Get("y", &val);
-    m_interfaceListener.OnResponseGetAutoMode(status, obj->GetPath(), val, context);
+    m_interfaceListener.OnResponseGetAutoMode(status, obj->GetPath(), (AutoMode)val, context);
 }
 
 } //namespace services

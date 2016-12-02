@@ -20,6 +20,7 @@
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/InterfaceControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/OnOffStatusInterface.h>
 
 namespace ajn {
 namespace services {
@@ -29,13 +30,18 @@ namespace services {
  */
 class OnOffStatusIntfControllerListener : public InterfaceControllerListener {
   public:
+
+    /**
+     * Destructor of OnOffStatusIntfControllerListener
+     */
     virtual ~OnOffStatusIntfControllerListener() {}
 
     /**
-     * Callback handler for getting IsOn property
+     * Callback handler for GetIsOn completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] IsOn value
+     * @param[in] value The value of IsOn
+     *                  (Current on/off state of the appliance. If true, the device is on state.)
      * @param[in] context the context that is passed from application
      */
     virtual void OnResponseGetIsOn(QStatus status, const qcc::String& objectPath, const bool value, void* context) {}
@@ -43,10 +49,10 @@ class OnOffStatusIntfControllerListener : public InterfaceControllerListener {
     /**
      * Handler for IsOn property changed
      * @param[in] objectPath the object path
-     * @param[in] IsOn value
+     * @param[in] value The value of IsOn
+     *                  (Current on/off state of the appliance. If true, the device is on state.)
      */
     virtual void OnIsOnChanged(const qcc::String& objectPath, const bool value) {}
-
 };
 
 } //namespace services

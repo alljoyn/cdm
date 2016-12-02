@@ -36,12 +36,12 @@ class TargetTemperatureIntfControllerImpl : public InterfaceController, public T
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Constructor of TargetTemperatureIntfControllerImpl
      */
-    TargetTemperatureIntfControllerImpl(BusAttachment& busAttachment, TargetTemperatureIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    TargetTemperatureIntfControllerImpl(BusAttachment& busAttachment, TargetTemperatureIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Destructor of TargetTemperatureIntfControllerImpl
@@ -61,47 +61,50 @@ class TargetTemperatureIntfControllerImpl : public InterfaceController, public T
     virtual BusAttachment& GetBusAttachment() const { return m_busAttachment; }
 
     /**
-     * Get current TargetValue
-     * @param[in] context
-     * @return status
+     * Get TargetValue property
+     * (Target temperature expressed in Celsius.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetTargetValue(void* context);
 
     /**
-     * Set TargetValue
-     * @param[in] TargetValue
-     * @param[in] context
-     * @return status
+     * Set TargetValue property
+     * (Target temperature expressed in Celsius.)
+     * @param[in] value The target value to set
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus SetTargetValue(const double value, void* context);
 
     /**
-     * Get MinValue
-     * @param[in] context
-     * @return status
+     * Get MinValue property
+     * (Minimum value of target temperature.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetMinValue(void* context);
 
     /**
-     * Get MaxValue
-     * @param[in] context
-     * @return status
+     * Get MaxValue property
+     * (Maximum value of target temperature.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetMaxValue(void* context);
 
     /**
-     * Get StepValue
-     * @param[in] context
-     * @return status
+     * Get StepValue property
+     * (Step value allowed for the TargetTemperature setting.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetStepValue(void* context);
 
   private:
-    TargetTemperatureIntfControllerImpl();
-
     void PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context);
-    void SetTargetValuePropertyCB(QStatus status, ProxyBusObject* obj, void* context);
     void GetTargetValuePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+    void SetTargetValuePropertyCB(QStatus status, ProxyBusObject* obj, void* context);
     void GetMinValuePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
     void GetMaxValuePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
     void GetStepValuePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);

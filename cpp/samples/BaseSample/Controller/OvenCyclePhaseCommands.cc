@@ -26,7 +26,7 @@ OvenCyclePhaseListener::~OvenCyclePhaseListener()
 }
 
 
-void OvenCyclePhaseListener::OnResponseGetCyclePhase(QStatus status, const qcc::String& objectPath, const uint8_t& cyclePhase, void* context)
+void OvenCyclePhaseListener::OnResponseGetCyclePhase(QStatus status, const qcc::String& objectPath, const uint8_t cyclePhase, void* context)
 {
     cout << __func__ << endl;
     cout << "# status: " << QCC_StatusText(status) << endl;

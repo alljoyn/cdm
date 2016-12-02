@@ -36,12 +36,12 @@ class WaterLevelIntfControllerImpl : public InterfaceController, public WaterLev
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Constructor of WaterLevelIntfControllerImpl
      */
-    WaterLevelIntfControllerImpl(BusAttachment& busAttachment, WaterLevelIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    WaterLevelIntfControllerImpl(BusAttachment& busAttachment, WaterLevelIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Destructor of WaterLevelIntfControllerImpl
@@ -61,35 +61,34 @@ class WaterLevelIntfControllerImpl : public InterfaceController, public WaterLev
     virtual BusAttachment& GetBusAttachment() const { return m_busAttachment; }
 
     /**
-     * Get current water level
-     * @param[in] context
-     * @return status
+     * Get SupplySource property
+     * (The supply source of water.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
-    virtual QStatus GetCurrentLevel(void* context = NULL);
+    virtual QStatus GetSupplySource(void* context);
 
     /**
-     * Get supply source
-     * @param[in] context
-     * @return status
+     * Get CurrentLevel property
+     * (The current level of water in the tank.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
-    virtual QStatus GetSupplySource(void* context = NULL);
+    virtual QStatus GetCurrentLevel(void* context);
 
     /**
-     * Get max level
-     * @param[in] context
-     * @return status
+     * Get MaxLevel property
+     * (Maximum level allowed for water level.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
-    virtual QStatus GetMaxLevel(void* context = NULL);
+    virtual QStatus GetMaxLevel(void* context);
 
   private:
-    WaterLevelIntfControllerImpl();
-
     void PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context);
-
-    void OnGetMaxLevelPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
-    void OnGetCurrentLevelPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
-    void OnGetSupplySourcePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
-
+    void GetSupplySourcePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+    void GetCurrentLevelPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+    void GetMaxLevelPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
 
     BusAttachment& m_busAttachment;
     WaterLevelIntfControllerListener& m_interfaceListener;

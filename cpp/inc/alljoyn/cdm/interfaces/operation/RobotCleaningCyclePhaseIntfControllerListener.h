@@ -20,7 +20,7 @@
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/InterfaceControllerListener.h>
-#include "RobotCleaningCyclePhaseInterface.h"
+#include <alljoyn/cdm/interfaces/operation/RobotCleaningCyclePhaseInterface.h>
 
 namespace ajn {
 namespace services {
@@ -30,53 +30,59 @@ namespace services {
  */
 class RobotCleaningCyclePhaseIntfControllerListener : public InterfaceControllerListener {
   public:
+    using CyclePhaseDescriptor = RobotCleaningCyclePhaseInterface::CyclePhaseDescriptor;
+
+    /**
+     * Destructor of RobotCleaningCyclePhaseIntfControllerListener
+     */
     virtual ~RobotCleaningCyclePhaseIntfControllerListener() {}
 
     /**
-     * Callback handler for getting CyclePhase property
+     * Callback handler for GetCyclePhase completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] cyclePhase cycle phase
+     * @param[in] value The value of CyclePhase
+     *                  (Current cycle phase. Range value [0x00-0x7F] is for standard phases; range value [0x80-0xFF] is for vendor-defined phases and so the meanings depend on manufacturer.)
      * @param[in] context the context that is passed from application
      */
-    virtual void OnResponseGetCyclePhase(QStatus status, const qcc::String& objectPath, const uint8_t cyclePhase, void* context) {}
-
-    /**
-     * Callback handler for getting SupportedCyclePhases property
-     * @param[in] status ER_OK on success
-     * @param[in] objectPath the object path
-     * @param[in] supportedCyclePhases supported cycle phases
-     * @param[in] context the context that is passed from application
-     */
-    virtual void OnResponseGetSupportedCyclePhases(QStatus status, const qcc::String& objectPath,
-                                                   const RobotCleaningCyclePhaseInterface::SupportedCyclePhases& supportedCyclePhases, void* context) {}
-
-    /**
-     * Callback handler for GetVendorPhasesDescription method
-     * @param[in] status ER_OK on success
-     * @param[in] objectPath the object path
-     * @param[in] phasesDescription the list of cycle phases description
-     * @param[in] context the context that is passed from application
-     * @param[in] errorName the detail errorName is passed when the method call is failed
-     * @param[in] errorMessage the errorMessage that describes the error
-     */
-    virtual void OnResponseGetVendorPhasesDescription(QStatus status, const qcc::String& objectPath,
-                                                      const RobotCleaningCyclePhaseInterface::CyclePhaseDescriptors& phasesDescription,
-                                                      void* context, const char* errorName, const char* errorMessage) {}
+    virtual void OnResponseGetCyclePhase(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) {}
 
     /**
      * Handler for CyclePhase property changed
      * @param[in] objectPath the object path
-     * @param[in] cyclePhase cycle phase
+     * @param[in] value The value of CyclePhase
+     *                  (Current cycle phase. Range value [0x00-0x7F] is for standard phases; range value [0x80-0xFF] is for vendor-defined phases and so the meanings depend on manufacturer.)
      */
-    virtual void OnCyclePhaseChanged(const qcc::String& objectPath, const uint8_t cyclePhase) {}
+    virtual void OnCyclePhaseChanged(const qcc::String& objectPath, const uint8_t value) {}
+
+    /**
+     * Callback handler for GetSupportedCyclePhases completion
+     * @param[in] status ER_OK on success
+     * @param[in] objectPath the object path
+     * @param[in] value The value of SupportedCyclePhases
+     *                  (List of supported cycle phases.)
+     * @param[in] context the context that is passed from application
+     */
+    virtual void OnResponseGetSupportedCyclePhases(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& value, void* context) {}
 
     /**
      * Handler for SupportedCyclePhases property changed
      * @param[in] objectPath the object path
-     * @param[in] supportedCyclePhases supported cycle phases
+     * @param[in] value The value of SupportedCyclePhases
+     *                  (List of supported cycle phases.)
      */
-    virtual void OnSupportedCyclePhasesChanged(const qcc::String& objectPath, const RobotCleaningCyclePhaseInterface::SupportedCyclePhases& supportedCyclePhases) {}
+    virtual void OnSupportedCyclePhasesChanged(const qcc::String& objectPath, const std::vector<uint8_t>& value) {}
+
+    /**
+     * Callback handler for GetVendorPhasesDescription completion
+     * @param[in] status ER_OK on success
+     * @param[in] objectPath the object path
+     * @param[in] phasesDescription Cycle phases description.
+     * @param[in] context the context that is passed from application
+     * @param[in] errorName the detail errorName is passed when the method call is failed
+     * @param[in] errorMessage the errorMessage that describes the error
+     */
+    virtual void OnResponseGetVendorPhasesDescription(QStatus status, const qcc::String& objectPath, const std::vector<CyclePhaseDescriptor>& phasesDescription, void* context, const char* errorName, const char* errorMessage) {}
 };
 
 } //namespace services

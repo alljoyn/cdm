@@ -17,10 +17,6 @@
 #ifndef CLIMATECONTROLMODEINTFCONTROLLER_H_
 #define CLIMATECONTROLMODEINTFCONTROLLER_H_
 
-#include <vector>
-#include <map>
-#include <utility>
-
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/operation/ClimateControlModeInterface.h>
@@ -34,39 +30,43 @@ namespace services {
 class ClimateControlModeIntfController : public ClimateControlModeInterface {
   public:
     /**
-     * Constructor of ClimateControlMode
+     * Constructor of ClimateControlModeIntfController
      */
     ClimateControlModeIntfController() {}
 
     /**
-     * Destructor of ClimateControlMode
+     * Destructor of ClimateControlModeIntfController
      */
     virtual ~ClimateControlModeIntfController() {}
 
     /**
-     * Get mode
+     * Get Mode property
+     * (Current mode of device.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetMode(void* context = NULL) = 0;
 
     /**
-     * Set mode
-     * @param[in] mode mode
+     * Set Mode property
+     * (Current mode of device.)
+     * @param[in] value The mode to set
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus SetMode(const uint16_t mode, void* context = NULL) = 0;
+    virtual QStatus SetMode(const Mode value, void* context = NULL) = 0;
 
     /**
-     * Get supported modes
+     * Get SupportedModes property
+     * (Array of supported modes.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetSupportedModes(void* context = NULL) = 0;
 
     /**
-     * Get operational state
+     * Get OperationalState property
+     * (Current status of device.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */

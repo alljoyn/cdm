@@ -36,12 +36,12 @@ class AlertsIntfControllerImpl : public InterfaceController, public AlertsIntfCo
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Constructor of AlertsIntfControllerImpl
      */
-    AlertsIntfControllerImpl(BusAttachment& busAttachment, AlertsIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    AlertsIntfControllerImpl(BusAttachment& busAttachment, AlertsIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Destructor of AlertsIntfControllerImpl
@@ -62,39 +62,40 @@ class AlertsIntfControllerImpl : public InterfaceController, public AlertsIntfCo
 
     /**
      * Get Alerts property
+     * (List of current pending alerts.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus GetAlerts(void * context = NULL);
+    virtual QStatus GetAlerts(void* context);
 
     /**
-     * Get AlertCodesDescription
-     * @param[in] language language
+     * Call GetAlertCodesDescription method
+     * (Get alert codes description.)
+     * @param[in] languageTag Language to be used in the output strings.
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus GetAlertCodesDescription(const qcc::String& language, void* context = NULL);
+    virtual QStatus GetAlertCodesDescription(const qcc::String& languageTag, void* context);
 
     /**
-     * AcknowledgeAlert
-     * @param[in] alertCode alert code
+     * Call AcknowledgeAlert method
+     * (Reset the user acknowledgment request of a specific pending alert.)
+     * @param[in] alertCode Alert code of the alert to be acknowledged.
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus AcknowledgeAlert(const uint16_t alertCode, void * context = NULL);
+    virtual QStatus AcknowledgeAlert(const uint16_t alertCode, void* context);
 
     /**
-     * AcknowledgeAllAlerts
+     * Call AcknowledgeAllAlerts method
+     * (Reset the user acknowledgment request of any pending alert.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus AcknowledgeAllAlerts(void * context = NULL);
+    virtual QStatus AcknowledgeAllAlerts(void* context);
 
   private:
-    AlertsIntfControllerImpl();
-
     void PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context);
-
     void GetAlertsPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
     void GetAlertCodesDescriptionReplyHandler(Message& message, void* context);
     void AcknowledgeAlertReplyHandler(Message& message, void* context);

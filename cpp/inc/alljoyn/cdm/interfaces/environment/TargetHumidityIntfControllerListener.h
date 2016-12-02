@@ -17,9 +17,6 @@
 #ifndef TARGETHUMIDITYINTFCONTROLLERLISTENER_H_
 #define TARGETHUMIDITYINTFCONTROLLERLISTENER_H_
 
-#include <map>
-#include <utility>
-
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/InterfaceControllerListener.h>
@@ -29,7 +26,7 @@ namespace ajn {
 namespace services {
 
 /**
- * TargetHumidity interface controller listener class
+ * TargetHumidity Interface Controller Listener class
  */
 class TargetHumidityIntfControllerListener : public InterfaceControllerListener {
   public:
@@ -40,7 +37,25 @@ class TargetHumidityIntfControllerListener : public InterfaceControllerListener 
     virtual ~TargetHumidityIntfControllerListener() {}
 
     /**
-     * Callback handler for setting TargetValue property
+     * Callback handler for GetTargetValue completion
+     * @param[in] status ER_OK on success
+     * @param[in] objectPath the object path
+     * @param[in] value The value of TargetValue
+     *                  (Target set-point value of relative humidity.)
+     * @param[in] context the context that is passed from application
+     */
+    virtual void OnResponseGetTargetValue(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) {}
+
+    /**
+     * Handler for TargetValue property changed
+     * @param[in] objectPath the object path
+     * @param[in] value The value of TargetValue
+     *                  (Target set-point value of relative humidity.)
+     */
+    virtual void OnTargetValueChanged(const qcc::String& objectPath, const uint8_t value) {}
+
+    /**
+     * Callback handler for SetTargetValue completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
      * @param[in] context the context that is passed from application
@@ -48,84 +63,76 @@ class TargetHumidityIntfControllerListener : public InterfaceControllerListener 
     virtual void OnResponseSetTargetValue(QStatus status, const qcc::String& objectPath, void* context) {}
 
     /**
-     * Callback handler for getting TargetValue property
+     * Callback handler for GetMinValue completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] TargetValue
-     * @param[in] context the context that is passed from application
-     */
-    virtual void OnResponseGetTargetValue(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) {}
-
-    /**
-     * Callback handler for getting MinValue property
-     * @param[in] status ER_OK on success
-     * @param[in] objectPath the object path
-     * @param[in] value the minimum value of target humidity
+     * @param[in] value The value of MinValue
+     *                  (Minimum value allowed for the TargetValue.)
      * @param[in] context the context that is passed from application
      */
     virtual void OnResponseGetMinValue(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) {}
 
     /**
-     * Callback handler for getting MaxValue property
+     * Handler for MinValue property changed
+     * @param[in] objectPath the object path
+     * @param[in] value The value of MinValue
+     *                  (Minimum value allowed for the TargetValue.)
+     */
+    virtual void OnMinValueChanged(const qcc::String& objectPath, const uint8_t value) {}
+
+    /**
+     * Callback handler for GetMaxValue completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] value the maximum value of target humidity
+     * @param[in] value The value of MaxValue
+     *                  (Maximum value allowed for the TargetValue.)
      * @param[in] context the context that is passed from application
      */
     virtual void OnResponseGetMaxValue(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) {}
 
     /**
-     * Callback handler for getting StepValue property
+     * Handler for MaxValue property changed
+     * @param[in] objectPath the object path
+     * @param[in] value The value of MaxValue
+     *                  (Maximum value allowed for the TargetValue.)
+     */
+    virtual void OnMaxValueChanged(const qcc::String& objectPath, const uint8_t value) {}
+
+    /**
+     * Callback handler for GetStepValue completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] value the step value of target humidity
+     * @param[in] value The value of StepValue
+     *                  (Step value allowed for the TargetValue setting.)
      * @param[in] context the context that is passed from application
      */
     virtual void OnResponseGetStepValue(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) {}
 
     /**
-     * Callback handler for getting SelectableHumidityLevels property
-     * @param[in] status ER_OK on success
-     * @param[in] objectPath the object path
-     * @param[in] value the selectable humidity levels
-     * @param[in] context the context that is passed from application
-     */
-    virtual void OnResponseGetSelectableHumidityLevels(QStatus status, const qcc::String& objectPath, const TargetHumidityInterface::HumidityLevels& value, void* context) {}
-
-    /**
-     * Handler for TargetValue property changed
-     * @param[in] objectPath the object path
-     * @param[in] TargetValue
-     */
-    virtual void OnTargetValueChanged(const qcc::String& objectPath, const uint8_t value) {}
-
-    /**
-     * Handler for MinValue property changed
-     * @param[in] objectPath the object path
-     * @param[in] value the minimum value of target humidity
-     */
-    virtual void OnMinValueChanged(const qcc::String& objectPath, const uint8_t value) {}
-
-    /**
-     * Handler for MaxValue property changed
-     * @param[in] objectPath the object path
-     * @param[in] value the maximum value of target humidity
-     */
-    virtual void OnMaxValueChanged(const qcc::String& objectPath, const uint8_t value) {}
-
-    /**
      * Handler for StepValue property changed
      * @param[in] objectPath the object path
-     * @param[in] value the step value of target humidity
+     * @param[in] value The value of StepValue
+     *                  (Step value allowed for the TargetValue setting.)
      */
     virtual void OnStepValueChanged(const qcc::String& objectPath, const uint8_t value) {}
 
     /**
+     * Callback handler for GetSelectableHumidityLevels completion
+     * @param[in] status ER_OK on success
+     * @param[in] objectPath the object path
+     * @param[in] value The value of SelectableHumidityLevels
+     *                  (List of the selectable levels of target humidity. The list is only available when this interface is implemented for setting a qualitative level of target humidity. (When MinValue = MaxValue))
+     * @param[in] context the context that is passed from application
+     */
+    virtual void OnResponseGetSelectableHumidityLevels(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& value, void* context) {}
+
+    /**
      * Handler for SelectableHumidityLevels property changed
      * @param[in] objectPath the object path
-     * @param[in] value the step value of target humidity
+     * @param[in] value The value of SelectableHumidityLevels
+     *                  (List of the selectable levels of target humidity. The list is only available when this interface is implemented for setting a qualitative level of target humidity. (When MinValue = MaxValue))
      */
-    virtual void OnSelectableHumidityLevelsChanged(const qcc::String& objectPath, const TargetHumidityInterface::HumidityLevels& value) {}
+    virtual void OnSelectableHumidityLevelsChanged(const qcc::String& objectPath, const std::vector<uint8_t>& value) {}
 };
 
 } //namespace services

@@ -36,12 +36,12 @@ class TimerIntfControllerImpl : public InterfaceController, public TimerIntfCont
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Constructor of TimerIntfControllerImpl
      */
-    TimerIntfControllerImpl(BusAttachment& busAttachment, TimerIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    TimerIntfControllerImpl(BusAttachment& busAttachment, TimerIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Destructor of TimerIntfControllerImpl
@@ -60,77 +60,78 @@ class TimerIntfControllerImpl : public InterfaceController, public TimerIntfCont
      */
     virtual BusAttachment& GetBusAttachment() const { return m_busAttachment; }
 
+    /**
+     * Get ReferenceTimer property
+     * (Time counter to be used as reference.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
+     */
+    virtual QStatus GetReferenceTimer(void* context);
 
     /**
-     * Get ReferenceTimer
-     * @param[in] context
-     * @return status
+     * Get TargetTimeToStart property
+     * (Time when the appliance is expected to start its operation.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
-    virtual QStatus GetReferenceTimer(void* context );
+    virtual QStatus GetTargetTimeToStart(void* context);
 
     /**
-     * Get target time to start
-     * @param[in] context
-     * @return status
+     * Get TargetTimeToStop property
+     * (Time when the appliance is expected to stop its operation.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
-    virtual QStatus GetTargetTimeToStart(void* context );
+    virtual QStatus GetTargetTimeToStop(void* context);
 
     /**
-     * Get target time to stop
-     * @param[in] context
-     * @return status
+     * Get EstimatedTimeToEnd property
+     * (Time to the end of appliance operation.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
-    virtual QStatus GetTargetTimeToStop(void* context );
+    virtual QStatus GetEstimatedTimeToEnd(void* context);
 
     /**
-     * Get estimated time to end
-     * @param[in] context
-     * @return status
+     * Get RunningTime property
+     * (Time of current operation.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
-    virtual QStatus GetEstimatedTimeToEnd(void* context );
+    virtual QStatus GetRunningTime(void* context);
 
     /**
-     * Get running time
-     * @param[in] context
-     * @return status
+     * Get TargetDuration property
+     * (Time representing the target duration of the operation as per user selection.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
-    virtual QStatus GetRunningTime(void* context );
+    virtual QStatus GetTargetDuration(void* context);
 
     /**
-     * Get target duration
-     * @param[in] context
-     * @return status
+     * Call SetTargetTimeToStart method
+     * @param[in] targetTimeToStart Time to be set.
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
-    virtual QStatus GetTargetDuration(void* context );
+    virtual QStatus SetTargetTimeToStart(const int32_t targetTimeToStart, void* context);
 
     /**
-     * Set starget time to start
-     * @param[in] time
-     * @param[in] context
-     * @return status
+     * Call SetTargetTimeToStop method
+     * @param[in] targetTimeToStop Time to be set.
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
-    virtual QStatus SetTargetTimeToStart(int32_t time, void* context );
-
-    /**
-     * Set starget time to stop
-     * @param[in] time
-     * @param[in] context
-     * @return status
-     */
-    virtual QStatus SetTargetTimeToStop(int32_t time, void* context );
+    virtual QStatus SetTargetTimeToStop(const int32_t targetTimeToStop, void* context);
 
   private:
-    TimerIntfControllerImpl();
-
     void PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context);
-
-    void GetReferenceTimerCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
-    void GetTargetTimeToStartCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
-    void GetTargetTimeToStopCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
-    void GetEstimatedTimeToEndCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
-    void GetRunningTimeCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
-    void GetTargetDurationCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
-
+    void GetReferenceTimerPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+    void GetTargetTimeToStartPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+    void GetTargetTimeToStopPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+    void GetEstimatedTimeToEndPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+    void GetRunningTimePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+    void GetTargetDurationPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
     void SetTargetTimeToStartReplyHandler(Message& message, void* context);
     void SetTargetTimeToStopReplyHandler(Message& message, void* context);
 

@@ -36,15 +36,15 @@ class AudioVolumeIntfControllerImpl : public InterfaceController, public AudioVo
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
-     * Constructor of AudioVolumeIntfControlleeImpl
+     * Constructor of AudioVolumeIntfControllerImpl
      */
-    AudioVolumeIntfControllerImpl(BusAttachment& busAttachment, AudioVolumeIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    AudioVolumeIntfControllerImpl(BusAttachment& busAttachment, AudioVolumeIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
-     * Destructor of AudioVolumeIntfControlleeImpl
+     * Destructor of AudioVolumeIntfControllerImpl
      */
     virtual ~AudioVolumeIntfControllerImpl();
 
@@ -61,51 +61,54 @@ class AudioVolumeIntfControllerImpl : public InterfaceController, public AudioVo
     virtual BusAttachment& GetBusAttachment() const { return m_busAttachment; }
 
     /**
-     * Set volume
-     * @param[in] volume
-     * @param[in] context
-     * @return status
-     */
-    virtual QStatus SetVolume(const uint8_t volume, void* context);
-
-    /**
-     * Set mute
-     * @param[in] mute
-     * @param[in] context
-     * @return status
-     */
-    virtual QStatus SetMute(const bool mute, void* context);
-
-    /**
-      * Get volume
-      * @param[in] context
-      * @return status
+     * Get Volume property
+     * (Speaker volume index of the device.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetVolume(void* context);
 
     /**
-      * Get max volume
-      * @param[in] context
-      * @return status
+     * Set Volume property
+     * (Speaker volume index of the device.)
+     * @param[in] value The volume to set
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
+     */
+    virtual QStatus SetVolume(const uint8_t value, void* context);
+
+    /**
+     * Get MaxVolume property
+     * (Maximum value allowed for Volume.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetMaxVolume(void* context);
 
     /**
-     * Get mute
-     * @param[in] context
-     * @return status
+     * Get Mute property
+     * (If true, state of volume is muted.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetMute(void* context);
 
-  private:
-    AudioVolumeIntfControllerImpl();
+    /**
+     * Set Mute property
+     * (If true, state of volume is muted.)
+     * @param[in] value The mute to set
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
+     */
+    virtual QStatus SetMute(const bool value, void* context);
 
+  private:
     void PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context);
-    void SetVolumePropertyCB(QStatus status, ProxyBusObject* obj, void* context);
-    void SetMutePropertyCB(QStatus status, ProxyBusObject* obj, void* context);
     void GetVolumePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+    void SetVolumePropertyCB(QStatus status, ProxyBusObject* obj, void* context);
     void GetMaxVolumePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
     void GetMutePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+    void SetMutePropertyCB(QStatus status, ProxyBusObject* obj, void* context);
 
     BusAttachment& m_busAttachment;
     AudioVolumeIntfControllerListener& m_interfaceListener;

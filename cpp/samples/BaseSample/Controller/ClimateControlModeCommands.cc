@@ -34,7 +34,7 @@ void ClimateControlModeListener::OnResponseSetMode(QStatus status, const qcc::St
     cout << "path: " << objectPath << endl;
 }
 
-void ClimateControlModeListener::OnResponseGetMode(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context)
+void ClimateControlModeListener::OnResponseGetMode(QStatus status, const qcc::String& objectPath, const Mode value, void* context)
 {
     cout << __func__ << endl;
     cout << "status: " << QCC_StatusText(status) << endl;
@@ -42,7 +42,7 @@ void ClimateControlModeListener::OnResponseGetMode(QStatus status, const qcc::St
     cout << "Mode: " << value << endl;
 }
 
-void ClimateControlModeListener::OnResponseGetSupportedModes(QStatus status, const qcc::String& objectPath, const SupportedModes& value, void* context)
+void ClimateControlModeListener::OnResponseGetSupportedModes(QStatus status, const qcc::String& objectPath, const std::vector<Mode>& value, void* context)
 {
     cout << __func__ << endl;
     cout << "status: " << QCC_StatusText(status) << endl;
@@ -55,7 +55,7 @@ void ClimateControlModeListener::OnResponseGetSupportedModes(QStatus status, con
     cout << endl;
 }
 
-void ClimateControlModeListener::OnResponseGetOperationalState(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context)
+void ClimateControlModeListener::OnResponseGetOperationalState(QStatus status, const qcc::String& objectPath, const OperationalState value, void* context)
 {
     cout << __func__ << endl;
     cout << "status: " << QCC_StatusText(status) << endl;
@@ -63,14 +63,14 @@ void ClimateControlModeListener::OnResponseGetOperationalState(QStatus status, c
     cout << "OperationalState: " << value << endl;
 }
 
-void ClimateControlModeListener::OnModeChanged(const qcc::String& objectPath, const uint16_t value)
+void ClimateControlModeListener::OnModeChanged(const qcc::String& objectPath, const Mode value)
 {
     cout << __func__ << endl;
     cout << "path: " << objectPath << endl;
     cout << "Mode: " << value << endl;
 }
 
-void ClimateControlModeListener::OnSupportedModesChanged(const qcc::String& objectPath, const SupportedModes& value)
+void ClimateControlModeListener::OnSupportedModesChanged(const qcc::String& objectPath, const std::vector<Mode>& value)
 {
     cout << __func__ << endl;
     cout << "path: " << objectPath << endl;
@@ -83,7 +83,7 @@ void ClimateControlModeListener::OnSupportedModesChanged(const qcc::String& obje
 
 }
 
-void ClimateControlModeListener::OnOperationalStateChanged(const qcc::String& objectPath, const uint16_t value)
+void ClimateControlModeListener::OnOperationalStateChanged(const qcc::String& objectPath, const OperationalState value)
 {
     cout << __func__ << endl;
     cout << "path: " << objectPath << endl;
@@ -148,7 +148,7 @@ void ClimateControlModeCommands::OnCmdSetMode(Commands* commands, std::string& c
         cout << "Input argument is wrong." << endl;
         return;
     }
-    intfController->SetMode(mode);
+    intfController->SetMode((ClimateControlModeInterface::Mode)mode);
 }
 
 void ClimateControlModeCommands::OnCmdGetSupportedModes(Commands* commands, std::string& cmd)

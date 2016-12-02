@@ -17,10 +17,6 @@
 #ifndef CURRENTHUMIDITYINTFCONTROLLER_H_
 #define CURRENTHUMIDITYINTFCONTROLLER_H_
 
-#include <vector>
-#include <map>
-#include <utility>
-
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/environment/CurrentHumidityInterface.h>
@@ -44,14 +40,16 @@ class CurrentHumidityIntfController : public CurrentHumidityInterface {
     virtual ~CurrentHumidityIntfController() {}
 
     /**
-     * Get CurrentValue
+     * Get CurrentValue property
+     * (Current relative humidity value)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetCurrentValue(void* context = NULL) = 0;
 
     /**
-     * Get MaxValue
+     * Get MaxValue property
+     * (Maximum value allowed for represented relative humidity)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */

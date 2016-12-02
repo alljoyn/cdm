@@ -20,6 +20,7 @@
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/InterfaceControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/BatteryStatusInterface.h>
 
 namespace ajn {
 namespace services {
@@ -29,40 +30,47 @@ namespace services {
  */
 class BatteryStatusIntfControllerListener : public InterfaceControllerListener {
   public:
+
+    /**
+     * Destructor of BatteryStatusIntfControllerListener
+     */
     virtual ~BatteryStatusIntfControllerListener() {}
 
     /**
-     * Callback handler for getting CurrentValue property
+     * Callback handler for GetCurrentValue completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] volume volume
+     * @param[in] value The value of CurrentValue
+     *                  (This interface provides capability to represent remaining battery status.)
      * @param[in] context the context that is passed from application
      */
-    virtual void OnResponseGetCurrentValue(QStatus status, const qcc::String& objectPath, const uint8_t currentValue, void* context) {}
-
-    /**
-     * Callback handler for getting IsCharging property
-     * @param[in] status ER_OK on success
-     * @param[in] objectPath the object path
-     * @param[in] isCharging if battery is being charged or not
-     * @param[in] context the context that is passed from application
-     */
-    virtual void OnResponseGetIsCharging(QStatus status, const qcc::String& objectPath, const bool isCharging, void* context) {}
+    virtual void OnResponseGetCurrentValue(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) {}
 
     /**
      * Handler for CurrentValue property changed
      * @param[in] objectPath the object path
-     * @param[in] volume volume
+     * @param[in] value The value of CurrentValue
+     *                  (This interface provides capability to represent remaining battery status.)
      */
-    virtual void OnCurrentValueChanged(const qcc::String& objectPath, const uint8_t currentValue) {}
+    virtual void OnCurrentValueChanged(const qcc::String& objectPath, const uint8_t value) {}
+
+    /**
+     * Callback handler for GetIsCharging completion
+     * @param[in] status ER_OK on success
+     * @param[in] objectPath the object path
+     * @param[in] value The value of IsCharging
+     *                  (If true, status is charging.)
+     * @param[in] context the context that is passed from application
+     */
+    virtual void OnResponseGetIsCharging(QStatus status, const qcc::String& objectPath, const bool value, void* context) {}
 
     /**
      * Handler for IsCharging property changed
      * @param[in] objectPath the object path
-     * @param[in] isCharging if batter is being charged or not
+     * @param[in] value The value of IsCharging
+     *                  (If true, status is charging.)
      */
-    virtual void OnIsChargingChanged(const qcc::String& objectPath, const bool isCharging) {}
-
+    virtual void OnIsChargingChanged(const qcc::String& objectPath, const bool value) {}
 };
 
 } //namespace services

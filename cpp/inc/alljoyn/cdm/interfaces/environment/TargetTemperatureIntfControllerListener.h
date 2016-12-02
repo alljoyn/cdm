@@ -17,18 +17,16 @@
 #ifndef TARGETTEMPERATUREINTFCONTROLLERLISTENER_H_
 #define TARGETTEMPERATUREINTFCONTROLLERLISTENER_H_
 
-#include <map>
-#include <utility>
-
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/InterfaceControllerListener.h>
+#include <alljoyn/cdm/interfaces/environment/TargetTemperatureInterface.h>
 
 namespace ajn {
 namespace services {
 
 /**
- * TargetTemperature interface controller listener class
+ * TargetTemperature Interface Controller Listener class
  */
 class TargetTemperatureIntfControllerListener : public InterfaceControllerListener {
   public:
@@ -39,7 +37,25 @@ class TargetTemperatureIntfControllerListener : public InterfaceControllerListen
     virtual ~TargetTemperatureIntfControllerListener() {}
 
     /**
-     * Callback handler for setting TargetValue property
+     * Callback handler for GetTargetValue completion
+     * @param[in] status ER_OK on success
+     * @param[in] objectPath the object path
+     * @param[in] value The value of TargetValue
+     *                  (Target temperature expressed in Celsius.)
+     * @param[in] context the context that is passed from application
+     */
+    virtual void OnResponseGetTargetValue(QStatus status, const qcc::String& objectPath, const double value, void* context) {}
+
+    /**
+     * Handler for TargetValue property changed
+     * @param[in] objectPath the object path
+     * @param[in] value The value of TargetValue
+     *                  (Target temperature expressed in Celsius.)
+     */
+    virtual void OnTargetValueChanged(const qcc::String& objectPath, const double value) {}
+
+    /**
+     * Callback handler for SetTargetValue completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
      * @param[in] context the context that is passed from application
@@ -47,69 +63,58 @@ class TargetTemperatureIntfControllerListener : public InterfaceControllerListen
     virtual void OnResponseSetTargetValue(QStatus status, const qcc::String& objectPath, void* context) {}
 
     /**
-     * Callback handler for getting TargetValue property
+     * Callback handler for GetMinValue completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] TargetValue
-     * @param[in] context the context that is passed from application
-     */
-    virtual void OnResponseGetTargetValue(QStatus status, const qcc::String& objectPath, const double value, void* context) {}
-
-    /**
-     * Callback handler for getting MinValue property
-     * @param[in] status ER_OK on success
-     * @param[in] objectPath the object path
-     * @param[in] value the minimum value of target temperature
+     * @param[in] value The value of MinValue
+     *                  (Minimum value of target temperature.)
      * @param[in] context the context that is passed from application
      */
     virtual void OnResponseGetMinValue(QStatus status, const qcc::String& objectPath, const double value, void* context) {}
 
     /**
-     * Callback handler for getting MaxValue property
+     * Handler for MinValue property changed
+     * @param[in] objectPath the object path
+     * @param[in] value The value of MinValue
+     *                  (Minimum value of target temperature.)
+     */
+    virtual void OnMinValueChanged(const qcc::String& objectPath, const double value) {}
+
+    /**
+     * Callback handler for GetMaxValue completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] value the maximum value of target temperature
+     * @param[in] value The value of MaxValue
+     *                  (Maximum value of target temperature.)
      * @param[in] context the context that is passed from application
      */
     virtual void OnResponseGetMaxValue(QStatus status, const qcc::String& objectPath, const double value, void* context) {}
 
     /**
-     * Callback handler for getting StepValue property
+     * Handler for MaxValue property changed
+     * @param[in] objectPath the object path
+     * @param[in] value The value of MaxValue
+     *                  (Maximum value of target temperature.)
+     */
+    virtual void OnMaxValueChanged(const qcc::String& objectPath, const double value) {}
+
+    /**
+     * Callback handler for GetStepValue completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] value the step value of target temperature
+     * @param[in] value The value of StepValue
+     *                  (Step value allowed for the TargetTemperature setting.)
      * @param[in] context the context that is passed from application
      */
     virtual void OnResponseGetStepValue(QStatus status, const qcc::String& objectPath, const double value, void* context) {}
 
     /**
-     * Handler for TargetValue property changed
-     * @param[in] objectPath the object path
-     * @param[in] TargetValue
-     */
-    virtual void OnTargetValueChanged(const qcc::String& objectPath, const double value) {}
-
-    /**
-     * Handler for MinValue property changed
-     * @param[in] objectPath the object path
-     * @param[in] value the minimum value of target temperature
-     */
-    virtual void OnMinValueChanged(const qcc::String& objectPath, const double value) {}
-
-    /**
-     * Handler for MaxValue property changed
-     * @param[in] objectPath the object path
-     * @param[in] value the maximum value of target temperature
-     */
-    virtual void OnMaxValueChanged(const qcc::String& objectPath, const double value) {}
-
-    /**
      * Handler for StepValue property changed
      * @param[in] objectPath the object path
-     * @param[in] value the step value of target temperature
+     * @param[in] value The value of StepValue
+     *                  (Step value allowed for the TargetTemperature setting.)
      */
     virtual void OnStepValueChanged(const qcc::String& objectPath, const double value) {}
-
 };
 
 } //namespace services

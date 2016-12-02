@@ -17,10 +17,6 @@
 #ifndef HVACFANMODEINTFCONTROLLER_H_
 #define HVACFANMODEINTFCONTROLLER_H_
 
-#include <vector>
-#include <map>
-#include <utility>
-
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/operation/HvacFanModeInterface.h>
@@ -34,32 +30,35 @@ namespace services {
 class HvacFanModeIntfController : public HvacFanModeInterface {
   public:
     /**
-     * Constructor of HvacFanMode
+     * Constructor of HvacFanModeIntfController
      */
     HvacFanModeIntfController() {}
 
     /**
-     * Destructor of HvacFanMode
+     * Destructor of HvacFanModeIntfController
      */
     virtual ~HvacFanModeIntfController() {}
 
     /**
-     * Get mode
+     * Get Mode property
+     * (Current mode of device.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetMode(void* context = NULL) = 0;
 
     /**
-     * Set mode
-     * @param[in] mode mode
+     * Set Mode property
+     * (Current mode of device.)
+     * @param[in] value The mode to set
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus SetMode(const uint16_t mode, void* context = NULL) = 0;
+    virtual QStatus SetMode(const Mode value, void* context = NULL) = 0;
 
     /**
-     * Get supported modes
+     * Get SupportedModes property
+     * (Array of supported modes.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */

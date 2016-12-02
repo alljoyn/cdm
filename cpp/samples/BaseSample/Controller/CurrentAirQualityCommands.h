@@ -31,14 +31,14 @@ class CurrentAirQualityListener : public CurrentAirQualityIntfControllerListener
     CurrentAirQualityListener();
     virtual ~CurrentAirQualityListener();
 
-    virtual void OnResponseGetContaminantType(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context);
+    virtual void OnResponseGetContaminantType(QStatus status, const qcc::String& objectPath, const ContaminantType value, void* context);
     virtual void OnResponseGetCurrentValue(QStatus status, const qcc::String& objectPath, const double value, void* context);
     virtual void OnResponseGetMinValue(QStatus status, const qcc::String& objectPath, const double value, void* context);
     virtual void OnResponseGetMaxValue(QStatus status, const qcc::String& objectPath, const double value, void* context);
     virtual void OnResponseGetPrecision(QStatus status, const qcc::String& objectPath, const double value, void* context);
     virtual void OnResponseGetUpdateMinTime(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context);
 
-    virtual void OnContaminantTypeChanged(const qcc::String& objectPath, const uint8_t value);
+    virtual void OnContaminantTypeChanged(const qcc::String& objectPath, const ContaminantType value);
     virtual void OnCurrentValueChanged(const qcc::String& objectPath, const double value);
     virtual void OnMaxValueChanged(const qcc::String& objectPath, const  double value);
     virtual void OnMinValueChanged(const qcc::String& objectPath, const double value);

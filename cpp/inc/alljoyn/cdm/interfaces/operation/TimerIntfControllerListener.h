@@ -20,6 +20,7 @@
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/InterfaceControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/TimerInterface.h>
 
 namespace ajn {
 namespace services {
@@ -27,115 +28,141 @@ namespace services {
 /**
  * Timer Interface Controller Listener class
  */
-class TimerIntfControllerListener : public InterfaceControllerListener
-{
+class TimerIntfControllerListener : public InterfaceControllerListener {
   public:
+
+    /**
+     * Destructor of TimerIntfControllerListener
+     */
     virtual ~TimerIntfControllerListener() {}
 
     /**
-     * Callback handler for getting ReferenceTimer property
+     * Callback handler for GetReferenceTimer completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] time reference timer value
+     * @param[in] value The value of ReferenceTimer
+     *                  (Time counter to be used as reference.)
      * @param[in] context the context that is passed from application
      */
-    virtual void OnResponseGetReferenceTimer(QStatus status, const qcc::String& objectPath, int32_t& time, void* context) {}
-    /**
-     * Callback handler for getting TargetTimeToStart property
-     * @param[in] status ER_OK on success
-     * @param[in] objectPath the object path
-     * @param[in] time target time to start
-     * @param[in] context the context that is passed from application
-     */
-    virtual void OnResponseGetTargetTimeToStart(QStatus status, const qcc::String& objectPath, int32_t& time, void* context) {}
-    /**
-     * Callback handler for getting TargetTimeToStop property
-     * @param[in] status ER_OK on success
-     * @param[in] objectPath the object path
-     * @param[in] timt target time to stop
-     * @param[in] context the context that is passed from application
-     */
-    virtual void OnResponseGetTargetTimeToStop(QStatus status, const qcc::String& objectPath, int32_t& time, void* context) {}
-    /**
-     * Callback handler for getting EstimatedTimeToEnd property
-     * @param[in] status ER_OK on success
-     * @param[in] objectPath the object path
-     * @param[in] time estimated time to end
-     * @param[in] context the context that is passed from application
-     */
-    virtual void OnResponseGetEstimatedTimeToEnd(QStatus status, const qcc::String& objectPath, int32_t& time, void* context) {}
-    /**
-     * Callback handler for getting RunningTime property
-     * @param[in] status ER_OK on success
-     * @param[in] objectPath the object path
-     * @param[in] time running time
-     * @param[in] context the context that is passed from application
-     */
-    virtual void OnResponseGetRunningTime(QStatus status, const qcc::String& objectPath, int32_t& time, void* context) {}
-    /**
-     * Callback handler for getting TargetDuration property
-     * @param[in] status ER_OK on success
-     * @param[in] objectPath the object path
-     * @param[in] time target duration
-     * @param[in] context the context that is passed from application
-     */
-    virtual void OnResponseGetTargetDuration(QStatus status, const qcc::String& objectPath, int32_t& time, void* context) {}
+    virtual void OnResponseGetReferenceTimer(QStatus status, const qcc::String& objectPath, const int32_t value, void* context) {}
 
     /**
      * Handler for ReferenceTimer property changed
      * @param[in] objectPath the object path
-     * @param[in] time reference timer value
+     * @param[in] value The value of ReferenceTimer
+     *                  (Time counter to be used as reference.)
      */
-    virtual void OnReferenceTimerChanged(const qcc::String& objectPath, int32_t time) {}
+    virtual void OnReferenceTimerChanged(const qcc::String& objectPath, const int32_t value) {}
+
+    /**
+     * Callback handler for GetTargetTimeToStart completion
+     * @param[in] status ER_OK on success
+     * @param[in] objectPath the object path
+     * @param[in] value The value of TargetTimeToStart
+     *                  (Time when the appliance is expected to start its operation.)
+     * @param[in] context the context that is passed from application
+     */
+    virtual void OnResponseGetTargetTimeToStart(QStatus status, const qcc::String& objectPath, const int32_t value, void* context) {}
+
     /**
      * Handler for TargetTimeToStart property changed
      * @param[in] objectPath the object path
-     * @param[in] time target time to start
+     * @param[in] value The value of TargetTimeToStart
+     *                  (Time when the appliance is expected to start its operation.)
      */
-    virtual void OnTargetTimeToStartChanged(const qcc::String& objectPath, int32_t time) {}
+    virtual void OnTargetTimeToStartChanged(const qcc::String& objectPath, const int32_t value) {}
+
+    /**
+     * Callback handler for GetTargetTimeToStop completion
+     * @param[in] status ER_OK on success
+     * @param[in] objectPath the object path
+     * @param[in] value The value of TargetTimeToStop
+     *                  (Time when the appliance is expected to stop its operation.)
+     * @param[in] context the context that is passed from application
+     */
+    virtual void OnResponseGetTargetTimeToStop(QStatus status, const qcc::String& objectPath, const int32_t value, void* context) {}
+
     /**
      * Handler for TargetTimeToStop property changed
      * @param[in] objectPath the object path
-     * @param[in] time target time to stop
+     * @param[in] value The value of TargetTimeToStop
+     *                  (Time when the appliance is expected to stop its operation.)
      */
-    virtual void OnTargetTimeToStopChanged(const qcc::String& objectPath, int32_t time) {}
+    virtual void OnTargetTimeToStopChanged(const qcc::String& objectPath, const int32_t value) {}
+
+    /**
+     * Callback handler for GetEstimatedTimeToEnd completion
+     * @param[in] status ER_OK on success
+     * @param[in] objectPath the object path
+     * @param[in] value The value of EstimatedTimeToEnd
+     *                  (Time to the end of appliance operation.)
+     * @param[in] context the context that is passed from application
+     */
+    virtual void OnResponseGetEstimatedTimeToEnd(QStatus status, const qcc::String& objectPath, const int32_t value, void* context) {}
+
     /**
      * Handler for EstimatedTimeToEnd property changed
      * @param[in] objectPath the object path
-     * @param[in] time estimated time to end
+     * @param[in] value The value of EstimatedTimeToEnd
+     *                  (Time to the end of appliance operation.)
      */
-    virtual void OnEstimatedTimeToEndChanged(const qcc::String& objectPath, int32_t time) {}
+    virtual void OnEstimatedTimeToEndChanged(const qcc::String& objectPath, const int32_t value) {}
+
+    /**
+     * Callback handler for GetRunningTime completion
+     * @param[in] status ER_OK on success
+     * @param[in] objectPath the object path
+     * @param[in] value The value of RunningTime
+     *                  (Time of current operation.)
+     * @param[in] context the context that is passed from application
+     */
+    virtual void OnResponseGetRunningTime(QStatus status, const qcc::String& objectPath, const int32_t value, void* context) {}
+
     /**
      * Handler for RunningTime property changed
      * @param[in] objectPath the object path
-     * @param[in] time running time
+     * @param[in] value The value of RunningTime
+     *                  (Time of current operation.)
      */
-    virtual void OnRunningTimeChanged(const qcc::String& objectPath, int32_t time) {}
+    virtual void OnRunningTimeChanged(const qcc::String& objectPath, const int32_t value) {}
+
+    /**
+     * Callback handler for GetTargetDuration completion
+     * @param[in] status ER_OK on success
+     * @param[in] objectPath the object path
+     * @param[in] value The value of TargetDuration
+     *                  (Time representing the target duration of the operation as per user selection.)
+     * @param[in] context the context that is passed from application
+     */
+    virtual void OnResponseGetTargetDuration(QStatus status, const qcc::String& objectPath, const int32_t value, void* context) {}
+
     /**
      * Handler for TargetDuration property changed
      * @param[in] objectPath the object path
-     * @param[in] time target duration
+     * @param[in] value The value of TargetDuration
+     *                  (Time representing the target duration of the operation as per user selection.)
      */
-    virtual void OnTargetDurationChanged(const qcc::String& objectPath, int32_t time) {}
+    virtual void OnTargetDurationChanged(const qcc::String& objectPath, const int32_t value) {}
 
     /**
-     * Callback handler for SetTargetTimerToStart method
+     * Callback handler for SetTargetTimeToStart completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
      * @param[in] context the context that is passed from application
      * @param[in] errorName the detail errorName is passed when the method call is failed
      * @param[in] errorMessage the errorMessage that describes the error
      */
-    virtual void OnResponseSetTargetTimeToStart(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage) {};
+    virtual void OnResponseSetTargetTimeToStart(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage) {}
+
     /**
-     * Callback handler for SetTargetTimerToStop method
+     * Callback handler for SetTargetTimeToStop completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
      * @param[in] context the context that is passed from application
      * @param[in] errorName the detail errorName is passed when the method call is failed
      * @param[in] errorMessage the errorMessage that describes the error
      */
-    virtual void OnResponseSetTargetTimeToStop(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage) {};
+    virtual void OnResponseSetTargetTimeToStop(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage) {}
 };
 
 } //namespace services

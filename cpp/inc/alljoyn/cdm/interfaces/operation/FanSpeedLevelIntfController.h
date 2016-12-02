@@ -40,42 +40,46 @@ class FanSpeedLevelIntfController : public FanSpeedLevelInterface {
     virtual ~FanSpeedLevelIntfController() {}
 
     /**
-     * Get FanSpeedLevel
+     * Get FanSpeedLevel property
+     * (Fan speed level of a device. Special value: 0x00 - Fan operation is turned off and controller shall not set 0x00. Turning on/off shall be operated by a different interface (OnOff).)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetFanSpeedLevel(void* context = NULL) = 0;
 
     /**
-     * Set FanSpeedLevel
-     * @param[in] FanSpeedLevel
+     * Set FanSpeedLevel property
+     * (Fan speed level of a device. Special value: 0x00 - Fan operation is turned off and controller shall not set 0x00. Turning on/off shall be operated by a different interface (OnOff).)
+     * @param[in] value The fan speed level to set
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus SetFanSpeedLevel(const uint8_t value, void* context = NULL) = 0;
 
     /**
-     * Get MaxFanSpeedLevel
+     * Get MaxFanSpeedLevel property
+     * (Maximum level allowed for target fan speed level.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetMaxFanSpeedLevel(void* context = NULL) = 0;
 
     /**
-     * Get AutoMode
+     * Get AutoMode property
+     * (Enabled/disabled state of the auto mode.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetAutoMode(void* context = NULL) = 0;
 
     /**
-     * Set AutoMode
-     * @param[in] AutoMode
+     * Set AutoMode property
+     * (Enabled/disabled state of the auto mode.)
+     * @param[in] value The auto mode to set
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus SetAutoMode(const uint8_t value, void* context = NULL) = 0;
-
+    virtual QStatus SetAutoMode(const AutoMode value, void* context = NULL) = 0;
 };
 
 } //namespace services

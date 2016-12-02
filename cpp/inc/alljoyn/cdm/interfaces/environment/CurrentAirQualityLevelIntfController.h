@@ -40,27 +40,29 @@ class CurrentAirQualityLevelIntfController : public CurrentAirQualityLevelInterf
     virtual ~CurrentAirQualityLevelIntfController() {}
 
     /**
-     * Get ContaminantType
+     * Get ContaminantType property
+     * (The contaminant type.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetContaminantType(void* context = NULL) = 0;
 
     /**
-     * Get CurrentLevel
+     * Get CurrentLevel property
+     * (The qualitative representation of current air quality level.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetCurrentLevel(void* context = NULL) = 0;
 
     /**
-     * Get the maximum level of air quality
+     * Get MaxLevel property
+     * (Maximum level allowed for represented air quality level.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetMaxLevel(void* context = NULL) = 0;
-
- };
+};
 
 } //namespace services
 } //namespace ajn

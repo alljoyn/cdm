@@ -20,6 +20,7 @@
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/InterfaceControllerListener.h>
+#include <alljoyn/cdm/interfaces/environment/CurrentAirQualityLevelInterface.h>
 
 namespace ajn {
 namespace services {
@@ -29,57 +30,66 @@ namespace services {
  */
 class CurrentAirQualityLevelIntfControllerListener : public InterfaceControllerListener {
   public:
+    using ContaminantType = CurrentAirQualityLevelInterface::ContaminantType;
+
+    /**
+     * Destructor of CurrentAirQualityLevelIntfControllerListener
+     */
     virtual ~CurrentAirQualityLevelIntfControllerListener() {}
 
     /**
-     * Callback handler for getting ContaminantType property
+     * Callback handler for GetContaminantType completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] value contaminant type
+     * @param[in] value The value of ContaminantType
+     *                  (The contaminant type.)
      * @param[in] context the context that is passed from application
      */
-    virtual void OnResponseGetContaminantType(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) {}
+    virtual void OnResponseGetContaminantType(QStatus status, const qcc::String& objectPath, const ContaminantType value, void* context) {}
 
     /**
-     * Callback handler for getting CurrentLevel property
+     * Handler for ContaminantType property changed
+     * @param[in] objectPath the object path
+     * @param[in] value The value of ContaminantType
+     *                  (The contaminant type.)
+     */
+    virtual void OnContaminantTypeChanged(const qcc::String& objectPath, const ContaminantType value) {}
+
+    /**
+     * Callback handler for GetCurrentLevel completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] value air quality level
+     * @param[in] value The value of CurrentLevel
+     *                  (The qualitative representation of current air quality level.)
      * @param[in] context the context that is passed from application
      */
     virtual void OnResponseGetCurrentLevel(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) {}
 
     /**
-     * Callback handler for getting MaxLevel property
+     * Handler for CurrentLevel property changed
+     * @param[in] objectPath the object path
+     * @param[in] value The value of CurrentLevel
+     *                  (The qualitative representation of current air quality level.)
+     */
+    virtual void OnCurrentLevelChanged(const qcc::String& objectPath, const uint8_t value) {}
+
+    /**
+     * Callback handler for GetMaxLevel completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] value the maximum level of air quality
+     * @param[in] value The value of MaxLevel
+     *                  (Maximum level allowed for represented air quality level.)
      * @param[in] context the context that is passed from application
      */
     virtual void OnResponseGetMaxLevel(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) {}
 
     /**
-     * Handler for ContaminantType property changed
-     * @param[in] objectPath the object path
-     * @param[in] value air quality
-     */
-    virtual void OnContaminantTypeChanged(const qcc::String& objectPath, const uint8_t value) {}
-
-    /**
-     * Handler for CurrentLevel property changed
-     * @param[in] objectPath the object path
-     * @param[in] value air quality
-     */
-    virtual void OnCurrentLevelChanged(const qcc::String& objectPath, const uint8_t value) {}
-
-    /**
      * Handler for MaxLevel property changed
      * @param[in] objectPath the object path
-     * @param[in] value the maximum value of air quality
+     * @param[in] value The value of MaxLevel
+     *                  (Maximum level allowed for represented air quality level.)
      */
     virtual void OnMaxLevelChanged(const qcc::String& objectPath, const uint8_t value) {}
-
-
 };
 
 } //namespace services

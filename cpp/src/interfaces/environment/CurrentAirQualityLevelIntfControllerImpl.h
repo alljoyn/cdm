@@ -36,12 +36,12 @@ class CurrentAirQualityLevelIntfControllerImpl : public InterfaceController, pub
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Constructor of CurrentAirQualityLevelIntfControllerImpl
      */
-    CurrentAirQualityLevelIntfControllerImpl(BusAttachment& busAttachment, CurrentAirQualityLevelIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    CurrentAirQualityLevelIntfControllerImpl(BusAttachment& busAttachment, CurrentAirQualityLevelIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Destructor of CurrentAirQualityLevelIntfControllerImpl
@@ -60,30 +60,31 @@ class CurrentAirQualityLevelIntfControllerImpl : public InterfaceController, pub
      */
     virtual BusAttachment& GetBusAttachment() const { return m_busAttachment; }
 
-     /**
-     * Get ContaminantType
-     * @param[in] context
-     * @return status
+    /**
+     * Get ContaminantType property
+     * (The contaminant type.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
-    QStatus GetContaminantType(void* context);
+    virtual QStatus GetContaminantType(void* context);
 
     /**
-     * Get CurrentVale
-     * @param[in] context
-     * @return status
+     * Get CurrentLevel property
+     * (The qualitative representation of current air quality level.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
-    QStatus GetCurrentLevel(void* context);
+    virtual QStatus GetCurrentLevel(void* context);
 
     /**
-     * Get MaxLevel
-     * @param[in] context
-     * @return status
+     * Get MaxLevel property
+     * (Maximum level allowed for represented air quality level.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
-    QStatus GetMaxLevel(void* context);
+    virtual QStatus GetMaxLevel(void* context);
 
   private:
-    CurrentAirQualityLevelIntfControllerImpl();
-
     void PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context);
     void GetContaminantTypePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
     void GetCurrentLevelPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);

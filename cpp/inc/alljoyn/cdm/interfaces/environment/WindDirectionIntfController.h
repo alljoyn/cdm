@@ -17,10 +17,6 @@
 #ifndef WINDDIRECTIONINTFCONTROLLER_H_
 #define WINDDIRECTIONINTFCONTROLLER_H_
 
-#include <vector>
-#include <map>
-#include <utility>
-
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/environment/WindDirectionInterface.h>
@@ -44,78 +40,88 @@ class WindDirectionIntfController : public WindDirectionInterface {
     virtual ~WindDirectionIntfController() {}
 
     /**
-     * Get horizontal direction
+     * Get HorizontalDirection property
+     * (Horizontal wind direction of a device.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus GetHorizontalDirection (void* context = NULL) = 0;
+    virtual QStatus GetHorizontalDirection(void* context = NULL) = 0;
 
     /**
-     * Set horizontal direction
-     * @param[in] value horizontal direction
+     * Set HorizontalDirection property
+     * (Horizontal wind direction of a device.)
+     * @param[in] value The horizontal direction to set
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus SetHorizontalDirection (const uint16_t value, void* context = NULL) = 0;
+    virtual QStatus SetHorizontalDirection(const uint16_t value, void* context = NULL) = 0;
 
     /**
-     * Get the maximum horizontal direction
+     * Get HorizontalMax property
+     * (Maximum value allowed for a target horizontal wind direction.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetHorizontalMax(void* context = NULL) = 0;
 
     /**
-     * Get horizontal auto mode
+     * Get HorizontalAutoMode property
+     * (Represent enabled/disabled state of the horizontal auto mode. HorizontalAutoMode is for controlling horizontal wind direction automatically.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus GetHorizontalAutoMode (void* context = NULL) = 0;
+    virtual QStatus GetHorizontalAutoMode(void* context = NULL) = 0;
 
     /**
-     * Set horizontal auto mode
-     * @param[in] value horizontal auto mode
+     * Set HorizontalAutoMode property
+     * (Represent enabled/disabled state of the horizontal auto mode. HorizontalAutoMode is for controlling horizontal wind direction automatically.)
+     * @param[in] value The horizontal auto mode to set
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus SetHorizontalAutoMode (const uint8_t value, void* context = NULL) = 0;
+    virtual QStatus SetHorizontalAutoMode(const AutoMode value, void* context = NULL) = 0;
 
     /**
-     * Get vertical direction
+     * Get VerticalDirection property
+     * (Vertical wind direction of a device.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus GetVerticalDirection (void* context = NULL) = 0;
+    virtual QStatus GetVerticalDirection(void* context = NULL) = 0;
 
     /**
-     * Set vertical direction
-     * @param[in] value vertical direction
+     * Set VerticalDirection property
+     * (Vertical wind direction of a device.)
+     * @param[in] value The vertical direction to set
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus SetVerticalDirection (const uint16_t value, void* context = NULL) = 0;
+    virtual QStatus SetVerticalDirection(const uint16_t value, void* context = NULL) = 0;
 
     /**
-     * Get the maximum vertical direction
+     * Get VerticalMax property
+     * (Maximum value allowed for a target vertical wind direction.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetVerticalMax(void* context = NULL) = 0;
 
     /**
-     * Get vertical auto mode
+     * Get VerticalAutoMode property
+     * (Represent enabled/disabled state of the vertical auto mode. VerticalAutoMode is for controlling vertical wind direction automatically.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus GetVerticalAutoMode (void* context = NULL) = 0;
+    virtual QStatus GetVerticalAutoMode(void* context = NULL) = 0;
 
     /**
-     * Set vertical auto mode
-     * @param[in] value vertical auto mode
+     * Set VerticalAutoMode property
+     * (Represent enabled/disabled state of the vertical auto mode. VerticalAutoMode is for controlling vertical wind direction automatically.)
+     * @param[in] value The vertical auto mode to set
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus SetVerticalAutoMode (const uint8_t value, void* context = NULL) = 0;
+    virtual QStatus SetVerticalAutoMode(const AutoMode value, void* context = NULL) = 0;
 };
 
 } //namespace services

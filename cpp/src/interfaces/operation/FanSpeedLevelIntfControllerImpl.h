@@ -36,12 +36,12 @@ class FanSpeedLevelIntfControllerImpl : public InterfaceController, public FanSp
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Constructor of FanSpeedLevelIntfControllerImpl
      */
-    FanSpeedLevelIntfControllerImpl(BusAttachment& busAttachment, FanSpeedLevelIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    FanSpeedLevelIntfControllerImpl(BusAttachment& busAttachment, FanSpeedLevelIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Destructor of FanSpeedLevelIntfControllerImpl
@@ -61,52 +61,54 @@ class FanSpeedLevelIntfControllerImpl : public InterfaceController, public FanSp
     virtual BusAttachment& GetBusAttachment() const { return m_busAttachment; }
 
     /**
-     * Get current FanSpeedLevel
-     * @param[in] context
-     * @return status
+     * Get FanSpeedLevel property
+     * (Fan speed level of a device. Special value: 0x00 - Fan operation is turned off and controller shall not set 0x00. Turning on/off shall be operated by a different interface (OnOff).)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetFanSpeedLevel(void* context);
 
     /**
-     * Set FanSpeedLevel
-     * @param[in] FanSpeedLevel
-     * @param[in] context
-     * @return status
+     * Set FanSpeedLevel property
+     * (Fan speed level of a device. Special value: 0x00 - Fan operation is turned off and controller shall not set 0x00. Turning on/off shall be operated by a different interface (OnOff).)
+     * @param[in] value The fan speed level to set
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus SetFanSpeedLevel(const uint8_t value, void* context);
 
     /**
-     * Get MaxFanSpeedLevel
-     * @param[in] context
-     * @return status
+     * Get MaxFanSpeedLevel property
+     * (Maximum level allowed for target fan speed level.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetMaxFanSpeedLevel(void* context);
 
     /**
-     * Get current AutoMode
-     * @param[in] context
-     * @return status
+     * Get AutoMode property
+     * (Enabled/disabled state of the auto mode.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetAutoMode(void* context);
 
     /**
-     * Set AutoMode
-     * @param[in] AutoMode
-     * @param[in] context
-     * @return status
+     * Set AutoMode property
+     * (Enabled/disabled state of the auto mode.)
+     * @param[in] value The auto mode to set
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
-    virtual QStatus SetAutoMode(const uint8_t value, void* context);
+    virtual QStatus SetAutoMode(const AutoMode value, void* context);
 
   private:
-    FanSpeedLevelIntfControllerImpl();
-
     void PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context);
-
-    void SetFanSpeedLevelPropertyCB(QStatus status, ProxyBusObject* obj, void* context);
     void GetFanSpeedLevelPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+    void SetFanSpeedLevelPropertyCB(QStatus status, ProxyBusObject* obj, void* context);
     void GetMaxFanSpeedLevelPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
-    void SetAutoModePropertyCB(QStatus status, ProxyBusObject* obj, void* context);
     void GetAutoModePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+    void SetAutoModePropertyCB(QStatus status, ProxyBusObject* obj, void* context);
 
     BusAttachment& m_busAttachment;
     FanSpeedLevelIntfControllerListener& m_interfaceListener;

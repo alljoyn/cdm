@@ -27,7 +27,7 @@ CurrentAirQualityListener::~CurrentAirQualityListener()
 {
 }
 
-void CurrentAirQualityListener::OnResponseGetContaminantType(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context)
+void CurrentAirQualityListener::OnResponseGetContaminantType(QStatus status, const qcc::String& objectPath, const ContaminantType value, void* context)
 {
     cout << __func__ << endl;
     cout << "status: " << QCC_StatusText(status) << endl;
@@ -75,7 +75,7 @@ void CurrentAirQualityListener::OnResponseGetUpdateMinTime(QStatus status, const
     cout << "UpdateMinTime: " << value << endl;
 }
 
-void CurrentAirQualityListener::OnContaminantTypeChanged(const qcc::String& objectPath, const uint8_t value)
+void CurrentAirQualityListener::OnContaminantTypeChanged(const qcc::String& objectPath, const ContaminantType value)
 {
     cout << __func__ << endl;
     cout << "path: " << objectPath << endl;

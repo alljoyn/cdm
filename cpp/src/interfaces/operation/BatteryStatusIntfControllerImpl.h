@@ -36,12 +36,12 @@ class BatteryStatusIntfControllerImpl : public InterfaceController, public Batte
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Constructor of BatteryStatusIntfControllerImpl
      */
-    BatteryStatusIntfControllerImpl(BusAttachment& busAttachment, BatteryStatusIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    BatteryStatusIntfControllerImpl(BusAttachment& busAttachment, BatteryStatusIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Destructor of BatteryStatusIntfControllerImpl
@@ -61,22 +61,22 @@ class BatteryStatusIntfControllerImpl : public InterfaceController, public Batte
     virtual BusAttachment& GetBusAttachment() const { return m_busAttachment; }
 
     /**
-     * Get current value of battery status
-     * @param[in] context
-     * @return status
+     * Get CurrentValue property
+     * (This interface provides capability to represent remaining battery status.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetCurrentValue(void* context);
 
     /**
-     * Get if battery is being charged
+     * Get IsCharging property
+     * (If true, status is charging.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetIsCharging(void* context);
 
   private:
-    BatteryStatusIntfControllerImpl();
-
     void PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context);
     void GetCurrentValuePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
     void GetIsChargingPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);

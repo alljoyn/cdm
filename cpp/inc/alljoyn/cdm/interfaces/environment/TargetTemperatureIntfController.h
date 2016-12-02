@@ -17,10 +17,6 @@
 #ifndef TARGETTEMPERATUREINTFCONTROLLER_H_
 #define TARGETTEMPERATUREINTFCONTROLLER_H_
 
-#include <vector>
-#include <map>
-#include <utility>
-
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/environment/TargetTemperatureInterface.h>
@@ -44,36 +40,41 @@ class TargetTemperatureIntfController : public TargetTemperatureInterface {
     virtual ~TargetTemperatureIntfController() {}
 
     /**
-     * Get current target temperature
+     * Get TargetValue property
+     * (Target temperature expressed in Celsius.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetTargetValue(void* context = NULL) = 0;
 
     /**
-     * Set Target Temperature
-     * @param[in] TargetTemperature target temperature
+     * Set TargetValue property
+     * (Target temperature expressed in Celsius.)
+     * @param[in] value The target value to set
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus SetTargetValue(const double TargetTemperature, void* context = NULL) = 0;
+    virtual QStatus SetTargetValue(const double value, void* context = NULL) = 0;
 
     /**
-     * Get the minimum value of target temperature
+     * Get MinValue property
+     * (Minimum value of target temperature.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetMinValue(void* context = NULL) = 0;
 
     /**
-     * Get the maximum value of target temperature
+     * Get MaxValue property
+     * (Maximum value of target temperature.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetMaxValue(void* context = NULL) = 0;
 
     /**
-     * Get the step value of target temperature
+     * Get StepValue property
+     * (Step value allowed for the TargetTemperature setting.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */

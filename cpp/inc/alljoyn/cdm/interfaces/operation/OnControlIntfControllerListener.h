@@ -20,6 +20,7 @@
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/InterfaceControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/OnControlInterface.h>
 
 namespace ajn {
 namespace services {
@@ -29,19 +30,21 @@ namespace services {
  */
 class OnControlIntfControllerListener : public InterfaceControllerListener {
   public:
+
+    /**
+     * Destructor of OnControlIntfControllerListener
+     */
     virtual ~OnControlIntfControllerListener() {}
 
     /**
-     * Callback handler for SwitchOn method
+     * Callback handler for SwitchOn completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
      * @param[in] context the context that is passed from application
      * @param[in] errorName the detail errorName is passed when the method call is failed
      * @param[in] errorMessage the errorMessage that describes the error
      */
-    virtual void OnResponseSwitchOn(QStatus status, const qcc::String& objectPath, void* context,
-                                         const char* errorName, const char* errorMessage) {}
-
+    virtual void OnResponseSwitchOn(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage) {}
 };
 
 } //namespace services

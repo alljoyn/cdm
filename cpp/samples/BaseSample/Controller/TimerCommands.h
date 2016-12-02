@@ -31,12 +31,12 @@ class TimerListener : public TimerIntfControllerListener{
     TimerListener();
     virtual ~TimerListener();
 
-    virtual void OnResponseGetReferenceTimer(QStatus status, const qcc::String& objectPath, int32_t& time, void* context);
-    virtual void OnResponseGetTargetTimeToStart(QStatus status, const qcc::String& objectPath, int32_t& time, void* context);
-    virtual void OnResponseGetTargetTimeToStop(QStatus status, const qcc::String& objectPath, int32_t& time, void* context);
-    virtual void OnResponseGetEstimatedTimeToEnd(QStatus status, const qcc::String& objectPath, int32_t& time, void* context);
-    virtual void OnResponseGetRunningTime(QStatus status, const qcc::String& objectPath, int32_t& time, void* context);
-    virtual void OnResponseGetTargetDuration(QStatus status, const qcc::String& objectPath, int32_t& time, void* context);
+    virtual void OnResponseGetReferenceTimer(QStatus status, const qcc::String& objectPath, const int32_t time, void* context);
+    virtual void OnResponseGetTargetTimeToStart(QStatus status, const qcc::String& objectPath, const int32_t time, void* context);
+    virtual void OnResponseGetTargetTimeToStop(QStatus status, const qcc::String& objectPath, const int32_t time, void* context);
+    virtual void OnResponseGetEstimatedTimeToEnd(QStatus status, const qcc::String& objectPath, const int32_t time, void* context);
+    virtual void OnResponseGetRunningTime(QStatus status, const qcc::String& objectPath, const int32_t time, void* context);
+    virtual void OnResponseGetTargetDuration(QStatus status, const qcc::String& objectPath, const int32_t time, void* context);
 
     virtual void OnReferenceTimerChanged(const qcc::String& objectPath, int32_t time);
     virtual void OnTargetTimeToStartChanged(const qcc::String& objectPath, int32_t time);

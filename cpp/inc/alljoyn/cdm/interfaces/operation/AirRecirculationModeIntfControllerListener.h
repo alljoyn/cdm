@@ -20,6 +20,7 @@
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/InterfaceControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/AirRecirculationModeInterface.h>
 
 namespace ajn {
 namespace services {
@@ -29,31 +30,37 @@ namespace services {
  */
 class AirRecirculationModeIntfControllerListener : public InterfaceControllerListener {
   public:
+
+    /**
+     * Destructor of AirRecirculationModeIntfControllerListener
+     */
     virtual ~AirRecirculationModeIntfControllerListener() {}
 
     /**
-     * Callback handler for setting IsRecirculating property
+     * Callback handler for GetIsRecirculating completion
+     * @param[in] status ER_OK on success
+     * @param[in] objectPath the object path
+     * @param[in] value The value of IsRecirculating
+     *                  (If true, air is being recirculated)
+     * @param[in] context the context that is passed from application
+     */
+    virtual void OnResponseGetIsRecirculating(QStatus status, const qcc::String& objectPath, const bool value, void* context) {}
+
+    /**
+     * Handler for IsRecirculating property changed
+     * @param[in] objectPath the object path
+     * @param[in] value The value of IsRecirculating
+     *                  (If true, air is being recirculated)
+     */
+    virtual void OnIsRecirculatingChanged(const qcc::String& objectPath, const bool value) {}
+
+    /**
+     * Callback handler for SetIsRecirculating completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
      * @param[in] context the context that is passed from application
      */
     virtual void OnResponseSetIsRecirculating(QStatus status, const qcc::String& objectPath, void* context) {}
-
-    /**
-     * Callback handler for getting IsRecirculating property
-     * @param[in] status ER_OK on success
-     * @param[in] objectPath the object path
-     * @param[in] isRecirculating if air is being recirculated or not
-     * @param[in] context the context that is passed from application
-     */
-    virtual void OnResponseGetIsRecirculating(QStatus status, const qcc::String& objectPath, const bool isRecirculating, void* context) {}
-
-    /**
-     * Handler for IsRecirculating property changed
-     * @param[in] objectPath the object path
-     * @param[in] isRecirculating if air is being recirculated or not
-     */
-    virtual void OnIsRecirculatingChanged(const qcc::String& objectPath, const bool isRecirculating) {}
 };
 
 } //namespace services

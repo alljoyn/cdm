@@ -36,12 +36,12 @@ class TargetHumidityIntfControllerImpl : public InterfaceController, public Targ
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Constructor of TargetHumidityIntfControllerImpl
      */
-    TargetHumidityIntfControllerImpl(BusAttachment& busAttachment, TargetHumidityIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    TargetHumidityIntfControllerImpl(BusAttachment& busAttachment, TargetHumidityIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Destructor of TargetHumidityIntfControllerImpl
@@ -61,54 +61,58 @@ class TargetHumidityIntfControllerImpl : public InterfaceController, public Targ
     virtual BusAttachment& GetBusAttachment() const { return m_busAttachment; }
 
     /**
-     * Get current TargetValue
-     * @param[in] context
-     * @return status
+     * Get TargetValue property
+     * (Target set-point value of relative humidity.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetTargetValue(void* context);
 
     /**
-     * Set TargetValue
-     * @param[in] TargetValue
-     * @param[in] context
-     * @return status
+     * Set TargetValue property
+     * (Target set-point value of relative humidity.)
+     * @param[in] value The target value to set
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus SetTargetValue(const uint8_t value, void* context);
 
     /**
-     * Get MinValue
-     * @param[in] context
-     * @return status
+     * Get MinValue property
+     * (Minimum value allowed for the TargetValue.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetMinValue(void* context);
 
     /**
-     * Get MaxValue
-     * @param[in] context
-     * @return status
+     * Get MaxValue property
+     * (Maximum value allowed for the TargetValue.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetMaxValue(void* context);
 
     /**
-     * Get StepValue
-     * @param[in] context
-     * @return status
+     * Get StepValue property
+     * (Step value allowed for the TargetValue setting.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetStepValue(void* context);
 
     /**
-     * Get SelectableHumidityLevels
-     * @param[in] context
-     * @return status
+     * Get SelectableHumidityLevels property
+     * (List of the selectable levels of target humidity. The list is only available when this interface is implemented for setting a qualitative level of target humidity. (When MinValue = MaxValue))
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetSelectableHumidityLevels(void* context);
 
   private:
-    TargetHumidityIntfControllerImpl();
-
     void PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context);
-    void SetTargetValuePropertyCB(QStatus status, ProxyBusObject* obj, void* context);
     void GetTargetValuePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+    void SetTargetValuePropertyCB(QStatus status, ProxyBusObject* obj, void* context);
     void GetMinValuePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
     void GetMaxValuePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
     void GetStepValuePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);

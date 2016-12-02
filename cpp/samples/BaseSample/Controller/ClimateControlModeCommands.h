@@ -32,12 +32,12 @@ class ClimateControlModeListener : public ClimateControlModeIntfControllerListen
     virtual ~ClimateControlModeListener();
 
     virtual void OnResponseSetMode(QStatus status, const qcc::String& objectPath, void* context);
-    virtual void OnResponseGetMode(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context);
-    virtual void OnResponseGetSupportedModes(QStatus status, const qcc::String& objectPath, const SupportedModes& value, void* context);
-    virtual void OnResponseGetOperationalState(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context);
-    virtual void OnModeChanged(const qcc::String& objectPath, const uint16_t value);
-    virtual void OnSupportedModesChanged(const qcc::String& objectPath, const SupportedModes& value);
-    virtual void OnOperationalStateChanged(const qcc::String& objectPath, const uint16_t value);
+    virtual void OnResponseGetMode(QStatus status, const qcc::String& objectPath, const Mode value, void* context);
+    virtual void OnResponseGetSupportedModes(QStatus status, const qcc::String& objectPath, const std::vector<Mode>& value, void* context);
+    virtual void OnResponseGetOperationalState(QStatus status, const qcc::String& objectPath, const OperationalState value, void* context);
+    virtual void OnModeChanged(const qcc::String& objectPath, const Mode value);
+    virtual void OnSupportedModesChanged(const qcc::String& objectPath, const std::vector<Mode>& value);
+    virtual void OnOperationalStateChanged(const qcc::String& objectPath, const OperationalState value);
 };
 
 

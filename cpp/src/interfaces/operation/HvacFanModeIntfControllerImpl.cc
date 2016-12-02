@@ -73,7 +73,7 @@ QStatus HvacFanModeIntfControllerImpl::GetMode(void* context)
 }
 
 
-QStatus HvacFanModeIntfControllerImpl::SetMode(const uint16_t mode, void* context)
+QStatus HvacFanModeIntfControllerImpl::SetMode(const Mode mode, void* context)
 {
     QStatus status = ER_OK;
     MsgArg arg;
@@ -107,11 +107,11 @@ void HvacFanModeIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const
         if (!s_prop_Mode.compare(propNameStr)) {
             if (propValue->typeId == ALLJOYN_UINT16) {
                 uint16_t value = propValue->v_uint16;
-                m_interfaceListener.OnModeChanged(obj.GetPath(), value);
+                m_interfaceListener.OnModeChanged(obj.GetPath(), (Mode)value);
             }
         } else if (!s_prop_SupportedModes.compare(propNameStr)) {
             if (propValue->typeId == ALLJOYN_UINT16_ARRAY) {
-                SupportedModes supportedmodes;
+                std::vector<Mode> supportedmodes;
                 uint16_t *vals;
                 size_t numVals;
                 propValue->Get("aq", &numVals, &vals);
@@ -119,7 +119,7 @@ void HvacFanModeIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const
                 for(size_t j = 0 ; j<numVals ; j++  )
                 {
                     cout << vals[j] << endl;
-                    supportedmodes.push_back(vals[j]);
+                    supportedmodes.push_back((Mode)vals[j]);
                 }
 
                 m_interfaceListener.OnSupportedModesChanged(obj.GetPath(), supportedmodes);
@@ -145,7 +145,7 @@ void HvacFanModeIntfControllerImpl::GetModePropertyCB(QStatus status, ProxyBusOb
 
     uint16_t val;
     value.Get("q", &val);
-    m_interfaceListener.OnResponseGetMode(status, obj->GetPath(), val, context);
+    m_interfaceListener.OnResponseGetMode(status, obj->GetPath(), (Mode)val, context);
 }
 
 void HvacFanModeIntfControllerImpl::GetSupportedModesPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
@@ -155,7 +155,7 @@ void HvacFanModeIntfControllerImpl::GetSupportedModesPropertyCB(QStatus status, 
         return;
     }
 
-    SupportedModes supportedmodes;
+    std::vector<Mode> supportedmodes;
 
     if (status == ER_OK) {
         uint16_t *vals;
@@ -166,7 +166,7 @@ void HvacFanModeIntfControllerImpl::GetSupportedModesPropertyCB(QStatus status, 
         {
             for(size_t j = 0 ; j<numVals ; j++  )
             {
-                supportedmodes.push_back(vals[j]);
+                supportedmodes.push_back((Mode)vals[j]);
             }
         }
     }

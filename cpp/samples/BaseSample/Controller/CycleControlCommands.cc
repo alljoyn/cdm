@@ -26,7 +26,7 @@ CycleControlListener::~CycleControlListener()
 }
 
 
-void CycleControlListener::OnOperationalStateChanged(const qcc::String& objectPath, const CycleControlInterface::OperationalState& state)
+void CycleControlListener::OnOperationalStateChanged(const qcc::String& objectPath, const CycleControlInterface::OperationalState state)
 {
     cout << __func__ << endl;
     cout << "# path: " << objectPath << endl;
@@ -34,7 +34,7 @@ void CycleControlListener::OnOperationalStateChanged(const qcc::String& objectPa
 }
 
 
-void CycleControlListener::OnResponseGetOperationalState(QStatus status, const qcc::String& objectPath, const CycleControlInterface::OperationalState& state, void* context)
+void CycleControlListener::OnResponseGetOperationalState(QStatus status, const qcc::String& objectPath, const CycleControlInterface::OperationalState state, void* context)
 {
     cout << __func__ << endl;
     cout << "# status: " << QCC_StatusText(status) << endl;

@@ -40,12 +40,12 @@ class RemoteControllabilityIntfController : public RemoteControllabilityInterfac
     virtual ~RemoteControllabilityIntfController() {}
 
     /**
-     * Get isControllable
+     * Get IsControllable property
+     * (Status of remote controllability; true if remote controllability enabled.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetIsControllable(void* context = NULL) = 0;
-
 };
 
 } //namespace services

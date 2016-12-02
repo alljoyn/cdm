@@ -36,12 +36,12 @@ class TargetTemperatureLevelIntfControllerImpl : public InterfaceController, pub
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Constructor of TargetTemperatureLevelIntfControllerImpl
      */
-    TargetTemperatureLevelIntfControllerImpl(BusAttachment& busAttachment, TargetTemperatureLevelIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    TargetTemperatureLevelIntfControllerImpl(BusAttachment& busAttachment, TargetTemperatureLevelIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Destructor of TargetTemperatureLevelIntfControllerImpl
@@ -61,41 +61,43 @@ class TargetTemperatureLevelIntfControllerImpl : public InterfaceController, pub
     virtual BusAttachment& GetBusAttachment() const { return m_busAttachment; }
 
     /**
-     * Get current TargetLevel
-     * @param[in] context
-     * @return status
-     */
-    virtual QStatus GetTargetLevel(void* context);
-
-    /**
-     * Set TargetValue
-     * @param[in] value TargetLevel
-     * @param[in] context
-     * @return status
-     */
-    virtual QStatus SetTargetLevel(const uint8_t value, void* context);
-
-    /**
-     * Get MaxLevel
-     * @param[in] context
-     * @return status
+     * Get MaxLevel property
+     * (Maximum value allowed for target temperature level setting.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetMaxLevel(void* context);
 
     /**
-     * Get SelectableTemperatureLevels
-     * @param[in] context
-     * @return status
+     * Get TargetLevel property
+     * (Target set-point value of temperature level.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
+     */
+    virtual QStatus GetTargetLevel(void* context);
+
+    /**
+     * Set TargetLevel property
+     * (Target set-point value of temperature level.)
+     * @param[in] value The target level to set
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
+     */
+    virtual QStatus SetTargetLevel(const uint8_t value, void* context);
+
+    /**
+     * Get SelectableTemperatureLevels property
+     * (List of the values of temperature level which can be selected.)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetSelectableTemperatureLevels(void* context);
 
   private:
-    TargetTemperatureLevelIntfControllerImpl();
-
     void PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context);
-    void SetTargetLevelPropertyCB(QStatus status, ProxyBusObject* obj, void* context);
-    void GetTargetLevelPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
     void GetMaxLevelPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+    void GetTargetLevelPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+    void SetTargetLevelPropertyCB(QStatus status, ProxyBusObject* obj, void* context);
     void GetSelectableTemperatureLevelsPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
 
     BusAttachment& m_busAttachment;

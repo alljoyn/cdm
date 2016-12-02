@@ -30,7 +30,7 @@ class OvenCyclePhaseListener : public OvenCyclePhaseIntfControllerListener{
   public:
     OvenCyclePhaseListener();
     virtual ~OvenCyclePhaseListener();
-    virtual void OnResponseGetCyclePhase(QStatus status, const qcc::String& objectPath, const uint8_t& cyclePhase, void* context);
+    virtual void OnResponseGetCyclePhase(QStatus status, const qcc::String& objectPath, const uint8_t cyclePhase, void* context);
 
     virtual void OnResponseGetSupportedCyclePhases(QStatus status, const qcc::String& objectPath, const OvenCyclePhaseInterface::SupportedCyclePhases& listOfCyclePhases, void* context);
 

@@ -36,12 +36,12 @@ class CurrentHumidityIntfControllerImpl : public InterfaceController, public Cur
     /**
      * Create interface
      */
-    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    static CdmInterface* CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Constructor of CurrentHumidityIntfControllerImpl
      */
-    CurrentHumidityIntfControllerImpl(BusAttachment& busAttachment, CurrentHumidityIntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject);
+    CurrentHumidityIntfControllerImpl(BusAttachment& busAttachment, CurrentHumidityIntfControllerListener& listener, CdmProxyBusObject& cdmProxyBusObject);
 
     /**
      * Destructor of CurrentHumidityIntfControllerImpl
@@ -61,22 +61,22 @@ class CurrentHumidityIntfControllerImpl : public InterfaceController, public Cur
     virtual BusAttachment& GetBusAttachment() const { return m_busAttachment; }
 
     /**
-     * Get CurrentHumidity
-     * @param[in] context
-     * @return status
+     * Get CurrentValue property
+     * (Current relative humidity value)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
-    QStatus GetCurrentValue(void* context);
+    virtual QStatus GetCurrentValue(void* context);
 
     /**
-     * Get Max Humidity
-     * @param[in] context
-     * @return status
+     * Get MaxValue property
+     * (Maximum value allowed for represented relative humidity)
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
      */
     virtual QStatus GetMaxValue(void* context);
 
   private:
-    CurrentHumidityIntfControllerImpl();
-
     void PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context);
     void GetCurrentValuePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
     void GetMaxValuePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);

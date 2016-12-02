@@ -78,7 +78,7 @@ QStatus ChannelIntfControllerImpl::Init()
     return status;
 }
 
-QStatus ChannelIntfControllerImpl::SetChannelId(const qcc::String channelId, void* context)
+QStatus ChannelIntfControllerImpl::SetChannelId(const qcc::String& channelId, void* context)
 {
     QStatus status = ER_OK;
 

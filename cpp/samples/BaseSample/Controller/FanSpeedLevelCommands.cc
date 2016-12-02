@@ -50,7 +50,7 @@ void FanSpeedLevelListener::OnResponseGetMaxFanSpeedLevel(QStatus status, const 
     printf("MaxFanSpeedLevel: %d \n",  value);
 }
 
-void FanSpeedLevelListener::OnResponseGetAutoMode(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context)
+void FanSpeedLevelListener::OnResponseGetAutoMode(QStatus status, const qcc::String& objectPath, const AutoMode value, void* context)
 {
     cout << __func__ << endl;
     cout << "status: " << QCC_StatusText(status) << endl;
@@ -72,7 +72,7 @@ void FanSpeedLevelListener::OnFanSpeedLevelChanged(const qcc::String& objectPath
     printf("FanSpeedLevel: %d \n",  value);
 }
 
-void FanSpeedLevelListener::OnAutoModeChanged(const qcc::String& objectPath, const uint8_t value)
+void FanSpeedLevelListener::OnAutoModeChanged(const qcc::String& objectPath, const AutoMode value)
 {
     cout << __func__ << endl;
     cout << "path: " << objectPath << endl;
@@ -178,7 +178,7 @@ void FanSpeedLevelCommands::OnCmdSetAutoMode(Commands* commands, std::string& cm
         cout << "Input argument is wrong." << endl;
         return;
     }
-    intfController->SetAutoMode(value);
+    intfController->SetAutoMode((FanSpeedLevelInterface::AutoMode)value);
 }
 
 

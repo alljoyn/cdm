@@ -20,12 +20,13 @@
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/InterfaceControllerListener.h>
+#include <alljoyn/cdm/interfaces/environment/CurrentTemperatureInterface.h>
 
 namespace ajn {
 namespace services {
 
 /**
- * CurrentTemperature interface controller listener class
+ * CurrentTemperature Interface Controller Listener class
  */
 class CurrentTemperatureIntfControllerListener : public InterfaceControllerListener {
   public:
@@ -36,52 +37,58 @@ class CurrentTemperatureIntfControllerListener : public InterfaceControllerListe
     virtual ~CurrentTemperatureIntfControllerListener() {}
 
     /**
-     * Callback handler for getting CurrentValue property
+     * Callback handler for GetCurrentValue completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
-     * @param[in] value current temperature
+     * @param[in] value The value of CurrentValue
+     *                  (Current temperature expressed in Celsius.)
      * @param[in] context the context that is passed from application
      */
     virtual void OnResponseGetCurrentValue(QStatus status, const qcc::String& objectPath, const double value, void* context) {}
 
     /**
-     * Callback handler for getting Precision property
-     * @param[in] status ER_OK on success
-     * @param[in] objectPath the object path
-     * @param[in] Precision precision
-     * @param[in] context the context that is passed from application
-     */
-    virtual void OnResponseGetPrecision(QStatus status, const qcc::String& objectPath, const double precision, void* context) {}
-
-    /**
-     * Callback handler for getting UpdateMinTime property
-     * @param[in] status ER_OK on success
-     * @param[in] objectPath the object path
-     * @param[in] UpdateMinTime the minimum time between updates
-     * @param[in] context the context that is passed from application
-     */
-    virtual void OnResponseGetUpdateMinTime(QStatus status, const qcc::String& objectPath, const uint16_t updateMinTime, void* context) {}
-
-    /**
      * Handler for CurrentValue property changed
      * @param[in] objectPath the object path
-     * @param[in] value current temperature
+     * @param[in] value The value of CurrentValue
+     *                  (Current temperature expressed in Celsius.)
      */
     virtual void OnCurrentValueChanged(const qcc::String& objectPath, const double value) {}
 
     /**
+     * Callback handler for GetPrecision completion
+     * @param[in] status ER_OK on success
+     * @param[in] objectPath the object path
+     * @param[in] value The value of Precision
+     *                  (The precision of the CurrentValue property.)
+     * @param[in] context the context that is passed from application
+     */
+    virtual void OnResponseGetPrecision(QStatus status, const qcc::String& objectPath, const double value, void* context) {}
+
+    /**
      * Handler for Precision property changed
      * @param[in] objectPath the object path
-     * @param[in] Precision precision
+     * @param[in] value The value of Precision
+     *                  (The precision of the CurrentValue property.)
      */
-    virtual void OnPrecisionChanged(const qcc::String& objectPath, const double precision) {}
+    virtual void OnPrecisionChanged(const qcc::String& objectPath, const double value) {}
+
+    /**
+     * Callback handler for GetUpdateMinTime completion
+     * @param[in] status ER_OK on success
+     * @param[in] objectPath the object path
+     * @param[in] value The value of UpdateMinTime
+     *                  (The minimum time between updates of the CurrentValue property in milliseconds.)
+     * @param[in] context the context that is passed from application
+     */
+    virtual void OnResponseGetUpdateMinTime(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context) {}
 
     /**
      * Handler for UpdateMinTime property changed
      * @param[in] objectPath the object path
-     * @param[in] UpdateMinTime the minimum time between updates
+     * @param[in] value The value of UpdateMinTime
+     *                  (The minimum time between updates of the CurrentValue property in milliseconds.)
      */
-    virtual void OnUpdateMinTimeChanged(const qcc::String& objectPath, const uint16_t updateMinTime) {}
+    virtual void OnUpdateMinTimeChanged(const qcc::String& objectPath, const uint16_t value) {}
 };
 
 } //namespace services

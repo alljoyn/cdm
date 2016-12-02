@@ -40,19 +40,21 @@ class AirRecirculationModeIntfController : public AirRecirculationModeInterface 
     virtual ~AirRecirculationModeIntfController() {}
 
     /**
-     * Set if air is being recirculated
-     * @param[in] isRecirculating if air is being recirculated or not
-     * @param[in] context the context that is passed to the callback handler
-     * @return ER_OK on success
-     */
-    virtual QStatus SetIsRecirculating(const bool isRecirculating, void* context = NULL) = 0;
-
-    /**
-     * Get if air is being recirculated
+     * Get IsRecirculating property
+     * (If true, air is being recirculated)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetIsRecirculating(void* context = NULL) = 0;
+
+    /**
+     * Set IsRecirculating property
+     * (If true, air is being recirculated)
+     * @param[in] value The is recirculating to set
+     * @param[in] context the context that is passed to the callback handler
+     * @return ER_OK on success
+     */
+    virtual QStatus SetIsRecirculating(const bool value, void* context = NULL) = 0;
 };
 
 } //namespace services

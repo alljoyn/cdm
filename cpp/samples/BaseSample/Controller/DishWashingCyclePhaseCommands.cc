@@ -26,7 +26,7 @@ DishWashingCyclePhaseListener::~DishWashingCyclePhaseListener()
 }
 
 
-void DishWashingCyclePhaseListener::OnResponseGetCyclePhase(QStatus status, const qcc::String& objectPath, const uint8_t& cyclePhase, void* context)
+void DishWashingCyclePhaseListener::OnResponseGetCyclePhase(QStatus status, const qcc::String& objectPath, const uint8_t cyclePhase, void* context)
 {
     cout << __func__ << endl;
     cout << "# status: " << QCC_StatusText(status) << endl;
@@ -51,7 +51,7 @@ void DishWashingCyclePhaseListener::OnCyclePhaseChanged(const qcc::String& objec
     cout << "# cyclePhase: " << (int)cyclePhase << endl;
 }
 
-void DishWashingCyclePhaseListener::OnSupportedCyclePhasesChanged(const qcc::String& objectPath, const DishWashingCyclePhaseInterface::SupportedCyclePhases listOfCyclePhases)
+void DishWashingCyclePhaseListener::OnSupportedCyclePhasesChanged(const qcc::String& objectPath, const DishWashingCyclePhaseInterface::SupportedCyclePhases& listOfCyclePhases)
 {
     cout << __func__ << endl;
     cout << "# path: " << objectPath << endl;

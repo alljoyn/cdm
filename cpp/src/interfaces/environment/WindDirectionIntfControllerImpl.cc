@@ -84,7 +84,7 @@ void WindDirectionIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, con
         } else if (!s_prop_HorizontalAutoMode.compare(propNameStr)) {
             if (propValue->typeId == ALLJOYN_BYTE) {
                 uint8_t value = propValue->v_byte;
-                m_interfaceListener.OnHorizontalAutoModeChanged(obj.GetPath(), value);
+                m_interfaceListener.OnHorizontalAutoModeChanged(obj.GetPath(), (AutoMode)value);
             }
         } else if (!s_prop_VerticalDirection.compare(propNameStr)) {
             if (propValue->typeId == ALLJOYN_UINT16) {
@@ -99,7 +99,7 @@ void WindDirectionIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, con
         } else if (!s_prop_VerticalAutoMode.compare(propNameStr)) {
             if (propValue->typeId == ALLJOYN_BYTE) {
                 uint8_t value = propValue->v_byte;
-                m_interfaceListener.OnVerticalAutoModeChanged(obj.GetPath(), value);
+                m_interfaceListener.OnVerticalAutoModeChanged(obj.GetPath(), (AutoMode)value);
             }
         }
     }
@@ -135,7 +135,7 @@ QStatus WindDirectionIntfControllerImpl::GetHorizontalAutoMode(void* context)
     return status;
 }
 
-QStatus WindDirectionIntfControllerImpl::SetHorizontalAutoMode(const uint8_t value, void* context)
+QStatus WindDirectionIntfControllerImpl::SetHorizontalAutoMode(const AutoMode value, void* context)
 {
     QStatus status = ER_OK;
     MsgArg arg;
@@ -175,7 +175,7 @@ QStatus WindDirectionIntfControllerImpl::GetVerticalAutoMode(void* context)
     return status;
 }
 
-QStatus WindDirectionIntfControllerImpl::SetVerticalAutoMode(const uint8_t value, void* context)
+QStatus WindDirectionIntfControllerImpl::SetVerticalAutoMode(const AutoMode value, void* context)
 {
     QStatus status = ER_OK;
     MsgArg arg;
@@ -226,7 +226,7 @@ void WindDirectionIntfControllerImpl::GetHorizontalAutoModePropertyCB(QStatus st
     }
     uint8_t val;
     value.Get("y", &val);
-    m_interfaceListener.OnResponseGetHorizontalAutoMode(status, obj->GetPath(), val, context);
+    m_interfaceListener.OnResponseGetHorizontalAutoMode(status, obj->GetPath(), (AutoMode)val, context);
 }
 
 
@@ -272,7 +272,7 @@ void WindDirectionIntfControllerImpl::GetVerticalAutoModePropertyCB(QStatus stat
     }
     uint8_t val;
     value.Get("y", &val);
-    m_interfaceListener.OnResponseGetVerticalAutoMode(status, obj->GetPath(), val, context);
+    m_interfaceListener.OnResponseGetVerticalAutoMode(status, obj->GetPath(), (AutoMode)val, context);
 }
 
 

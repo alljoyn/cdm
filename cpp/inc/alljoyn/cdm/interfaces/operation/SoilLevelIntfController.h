@@ -40,29 +40,33 @@ class SoilLevelIntfController : public SoilLevelInterface {
     virtual ~SoilLevelIntfController() {}
 
     /**
-     * Get MaxLevel
+     * Get MaxLevel property
+     * (Maximum value allowed for target soil level setting.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetMaxLevel(void* context = NULL) = 0;
 
     /**
-     * Get TargetLevel
+     * Get TargetLevel property
+     * (Target set-point value of soil level.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
     virtual QStatus GetTargetLevel(void* context = NULL) = 0;
 
     /**
-     * Set TargetLevel
-     * @param[in] targetLevel targetLevel
+     * Set TargetLevel property
+     * (Target set-point value of soil level.)
+     * @param[in] value The target level to set
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus SetTargetLevel(const uint8_t targetLevel, void* context = NULL) = 0;
+    virtual QStatus SetTargetLevel(const uint8_t value, void* context = NULL) = 0;
 
     /**
-     * Get SelectableLevels
+     * Get SelectableLevels property
+     * (List of the values of soil level which can be selected.)
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */

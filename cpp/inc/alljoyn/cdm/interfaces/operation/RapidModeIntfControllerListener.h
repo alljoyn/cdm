@@ -20,6 +20,7 @@
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/InterfaceControllerListener.h>
+#include <alljoyn/cdm/interfaces/operation/RapidModeInterface.h>
 
 namespace ajn {
 namespace services {
@@ -29,31 +30,37 @@ namespace services {
  */
 class RapidModeIntfControllerListener : public InterfaceControllerListener {
   public:
+
+    /**
+     * Destructor of RapidModeIntfControllerListener
+     */
     virtual ~RapidModeIntfControllerListener() {}
+
+    /**
+     * Callback handler for GetRapidMode completion
+     * @param[in] status ER_OK on success
+     * @param[in] objectPath the object path
+     * @param[in] value The value of RapidMode
+     *                  (True if the device is currently operating in rapid mode.)
+     * @param[in] context the context that is passed from application
+     */
+    virtual void OnResponseGetRapidMode(QStatus status, const qcc::String& objectPath, const bool value, void* context) {}
 
     /**
      * Handler for RapidMode property changed
      * @param[in] objectPath the object path
-     * @param[in] rapidMode rapid mode
+     * @param[in] value The value of RapidMode
+     *                  (True if the device is currently operating in rapid mode.)
      */
-    virtual void OnRapidModeChanged(const qcc::String& objectPath, const bool rapidMode) {}
+    virtual void OnRapidModeChanged(const qcc::String& objectPath, const bool value) {}
 
     /**
-     * Callback handler for setting RapidMode property
+     * Callback handler for SetRapidMode completion
      * @param[in] status ER_OK on success
      * @param[in] objectPath the object path
      * @param[in] context the context that is passed from application
      */
     virtual void OnResponseSetRapidMode(QStatus status, const qcc::String& objectPath, void* context) {}
-
-    /**
-     * Callback handler for getting RapidMode property
-     * @param[in] status ER_OK on success
-     * @param[in] objectPath the object path
-     * @param[in] rapidMode rapid mode
-     * @param[in] context the context that is passed from application
-     */
-    virtual void OnResponseGetRapidMode(QStatus status, const qcc::String& objectPath, const bool rapidMode, void* context) {}
 };
 
 } //namespace services

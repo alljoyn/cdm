@@ -25,7 +25,7 @@ LanguageDisplayListener::~LanguageDisplayListener()
 {
 }
 
-void LanguageDisplayListener::OnResponseGetDisplayLanguage(QStatus status, const qcc::String& objectPath, const qcc::String displayLanguage, void* context)
+void LanguageDisplayListener::OnResponseGetDisplayLanguage(QStatus status, const qcc::String& objectPath, const qcc::String& displayLanguage, void* context)
 {
     cout << __func__ << endl;
     cout << "# path: " << objectPath << endl;
