@@ -22,9 +22,9 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 
-#include <alljoyn/cdm/interfaces/operation/HeatingZoneInterface.h>
-#include <alljoyn/cdm/interfaces/operation/HeatingZoneIntfController.h>
-#include <alljoyn/cdm/interfaces/operation/HeatingZoneIntfControllerListener.h>
+#include <interfaces/common/operation/HeatingZoneInterface.h>
+#include <interfaces/controller/operation/HeatingZoneIntfController.h>
+#include <interfaces/controller/operation/HeatingZoneIntfControllerListener.h>
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
@@ -32,7 +32,7 @@ using namespace ajn::services;
 namespace CDMQtWidgets
 {
 
-class org_alljoyn_SmartSpaces_Operation_HeatingZone : public QWidget, public ajn::services::HeatingZoneIntfControllerListener
+class org_alljoyn_SmartSpaces_Operation_HeatingZone : public QWidget
 {
     Q_OBJECT
 public:
@@ -51,54 +51,66 @@ private slots:
 
 public:
     // ajn::services::HeatingZoneIntfControllerListener
-    void OnResponseGetNumberOfHeatingZones(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context)
+    class Listener: public ajn::services::HeatingZoneIntfControllerListener
     {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseGetNumberOfHeatingZones", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status),
-                          Q_ARG(uint8_t, value)
-                          );
-    }
-    void OnNumberOfHeatingZonesChanged(const qcc::String& objectPath, const uint8_t value)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnNumberOfHeatingZonesChanged", Qt::QueuedConnection,
-                          Q_ARG(uint8_t, value)
-                          );
-    }
-    void OnResponseGetMaxHeatingLevels(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& value, void* context)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseGetMaxHeatingLevels", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status),
-                          Q_ARG(std::vector<uint8_t>, value)
-                          );
-    }
-    void OnMaxHeatingLevelsChanged(const qcc::String& objectPath, const std::vector<uint8_t>& value)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnMaxHeatingLevelsChanged", Qt::QueuedConnection,
-                          Q_ARG(std::vector<uint8_t>, value)
-                          );
-    }
-    void OnResponseGetHeatingLevels(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& value, void* context)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseGetHeatingLevels", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status),
-                          Q_ARG(std::vector<uint8_t>, value)
-                          );
-    }
-    void OnHeatingLevelsChanged(const qcc::String& objectPath, const std::vector<uint8_t>& value)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnHeatingLevelsChanged", Qt::QueuedConnection,
-                          Q_ARG(std::vector<uint8_t>, value)
-                          );
-    }
+    public:
+        QWidget* m_widget;
+
+        Listener(QWidget* widget)
+          : m_widget(widget)
+        {
+        }
+
+        virtual void OnResponseGetNumberOfHeatingZones(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseGetNumberOfHeatingZones", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status),
+                              Q_ARG(uint8_t, value)
+                              );
+        }
+        virtual void OnNumberOfHeatingZonesChanged(const qcc::String& objectPath, const uint8_t value) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnNumberOfHeatingZonesChanged", Qt::QueuedConnection,
+                              Q_ARG(uint8_t, value)
+                              );
+        }
+        virtual void OnResponseGetMaxHeatingLevels(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& value, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseGetMaxHeatingLevels", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status),
+                              Q_ARG(std::vector<uint8_t>, value)
+                              );
+        }
+        virtual void OnMaxHeatingLevelsChanged(const qcc::String& objectPath, const std::vector<uint8_t>& value) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnMaxHeatingLevelsChanged", Qt::QueuedConnection,
+                              Q_ARG(std::vector<uint8_t>, value)
+                              );
+        }
+        virtual void OnResponseGetHeatingLevels(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& value, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseGetHeatingLevels", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status),
+                              Q_ARG(std::vector<uint8_t>, value)
+                              );
+        }
+        virtual void OnHeatingLevelsChanged(const qcc::String& objectPath, const std::vector<uint8_t>& value) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnHeatingLevelsChanged", Qt::QueuedConnection,
+                              Q_ARG(std::vector<uint8_t>, value)
+                              );
+        }
+    };
 
 private:
-    ajn::services::HeatingZoneIntfControllerPtr controller;
+    Ref<ajn::services::HeatingZoneIntfController> controller;
+    Ref<Listener> m_listener;
 
 
     QLineEdit* edit_NumberOfHeatingZones;

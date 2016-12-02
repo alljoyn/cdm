@@ -17,8 +17,10 @@
 #ifndef INTERFACECONTROLLER_H_
 #define INTERFACECONTROLLER_H_
 
+#include <alljoyn/InterfaceDescription.h>
 #include <alljoyn/MessageReceiver.h>
 #include <alljoyn/ProxyBusObject.h>
+#include <alljoyn/cdm/common/CdmTypes.h>
 
 namespace ajn {
 namespace services {
@@ -32,7 +34,7 @@ class InterfaceController : public MessageReceiver, public ProxyBusObject::Liste
     /**
      * Constructor of InterfaceController
      */
-    InterfaceController(ProxyBusObject& cdmProxyObject) : m_proxyObject(cdmProxyObject) {}
+    InterfaceController(Ref<ProxyBusObject> cdmProxyObject) : m_proxyObject(cdmProxyObject) {}
 
     /**
      * Destructor of InterfaceController
@@ -40,7 +42,7 @@ class InterfaceController : public MessageReceiver, public ProxyBusObject::Liste
     virtual ~InterfaceController() {}
 
   protected:
-    ProxyBusObject& m_proxyObject;
+    Ref<ProxyBusObject> m_proxyObject;
 };
 
 } //namespace services

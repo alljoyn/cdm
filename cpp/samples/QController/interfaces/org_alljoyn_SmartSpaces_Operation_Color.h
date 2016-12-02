@@ -22,9 +22,9 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 
-#include <alljoyn/cdm/interfaces/operation/ColorInterface.h>
-#include <alljoyn/cdm/interfaces/operation/ColorIntfController.h>
-#include <alljoyn/cdm/interfaces/operation/ColorIntfControllerListener.h>
+#include <interfaces/common/operation/ColorInterface.h>
+#include <interfaces/controller/operation/ColorIntfController.h>
+#include <interfaces/controller/operation/ColorIntfControllerListener.h>
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
@@ -32,7 +32,7 @@ using namespace ajn::services;
 namespace CDMQtWidgets
 {
 
-class org_alljoyn_SmartSpaces_Operation_Color : public QWidget, public ajn::services::ColorIntfControllerListener
+class org_alljoyn_SmartSpaces_Operation_Color : public QWidget
 {
     Q_OBJECT
 public:
@@ -53,53 +53,65 @@ private slots:
 
 public:
     // ajn::services::ColorIntfControllerListener
-    void OnResponseGetHue(QStatus status, const qcc::String& objectPath, const double value, void* context)
+    class Listener: public ajn::services::ColorIntfControllerListener
     {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseGetHue", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status),
-                          Q_ARG(double, value)
-                          );
-    }
-    void OnHueChanged(const qcc::String& objectPath, const double value)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnHueChanged", Qt::QueuedConnection,
-                          Q_ARG(double, value)
-                          );
-    }
-    void OnResponseSetHue(QStatus status, const qcc::String& objectPath, void* context)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseSetHue", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status)
-                          );
-    }
-    void OnResponseGetSaturation(QStatus status, const qcc::String& objectPath, const double value, void* context)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseGetSaturation", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status),
-                          Q_ARG(double, value)
-                          );
-    }
-    void OnSaturationChanged(const qcc::String& objectPath, const double value)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnSaturationChanged", Qt::QueuedConnection,
-                          Q_ARG(double, value)
-                          );
-    }
-    void OnResponseSetSaturation(QStatus status, const qcc::String& objectPath, void* context)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseSetSaturation", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status)
-                          );
-    }
+    public:
+        QWidget* m_widget;
+
+        Listener(QWidget* widget)
+          : m_widget(widget)
+        {
+        }
+
+        virtual void OnResponseGetHue(QStatus status, const qcc::String& objectPath, const double value, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseGetHue", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status),
+                              Q_ARG(double, value)
+                              );
+        }
+        virtual void OnHueChanged(const qcc::String& objectPath, const double value) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnHueChanged", Qt::QueuedConnection,
+                              Q_ARG(double, value)
+                              );
+        }
+        virtual void OnResponseSetHue(QStatus status, const qcc::String& objectPath, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseSetHue", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status)
+                              );
+        }
+        virtual void OnResponseGetSaturation(QStatus status, const qcc::String& objectPath, const double value, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseGetSaturation", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status),
+                              Q_ARG(double, value)
+                              );
+        }
+        virtual void OnSaturationChanged(const qcc::String& objectPath, const double value) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnSaturationChanged", Qt::QueuedConnection,
+                              Q_ARG(double, value)
+                              );
+        }
+        virtual void OnResponseSetSaturation(QStatus status, const qcc::String& objectPath, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseSetSaturation", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status)
+                              );
+        }
+    };
 
 private:
-    ajn::services::ColorIntfControllerPtr controller;
+    Ref<ajn::services::ColorIntfController> controller;
+    Ref<Listener> m_listener;
 
 
     QLineEdit* edit_Hue;

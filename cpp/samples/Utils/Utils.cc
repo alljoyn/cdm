@@ -19,6 +19,11 @@
 #include <iostream>
 #include <cctype>
 
+#if defined(QCC_OS_GROUP_WINDOWS)
+#else
+#include <sys/utsname.h>
+#endif
+
 #include "Utils.h"
 using namespace std;
 
@@ -51,6 +56,21 @@ QStatus MkDirPath(const string& path, char delim, int mode)
     }
 
     return ER_OK;
+}
+
+
+std::string GetHostName()
+{
+    std::string host;
+#if defined(QCC_OS_GROUP_WINDOWS)
+#else
+    utsname uts;
+    if (uname(&uts) == 0)
+    {
+        host = uts.nodename;
+    }
+#endif
+    return host;
 }
 
 

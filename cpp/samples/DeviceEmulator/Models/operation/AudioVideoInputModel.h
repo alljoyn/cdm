@@ -32,20 +32,20 @@ class AudioVideoInputModel : public virtual AudioVideoInputIntfControlleeModel {
      * Get InputSourceId
      * @return current input source id
      */
-    QStatus GetInputSourceId(SourceType& out) const override;
+    QStatus GetInputSourceId(AudioVideoInputInterface::SourceType& out) const override;
 
      /**
      * Set InputSourceId
      * @param[in] value The input source id to set
      * @return ER_OK on success
      */
-    QStatus SetInputSourceId(const SourceType value) override;
+    QStatus SetInputSourceId(const AudioVideoInputInterface::SourceType value) override;
 
     /**
      * Get SupportedInputSources
      * @return current supported input sources
      */
-    QStatus GetSupportedInputSources(std::vector<InputSource>& out) const override;
+    QStatus GetSupportedInputSources(std::vector<AudioVideoInputInterface::InputSource>& out) const override;
 
 
   private:

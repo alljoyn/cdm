@@ -22,9 +22,9 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 
-#include <alljoyn/cdm/interfaces/operation/ChannelInterface.h>
-#include <alljoyn/cdm/interfaces/operation/ChannelIntfController.h>
-#include <alljoyn/cdm/interfaces/operation/ChannelIntfControllerListener.h>
+#include <interfaces/common/operation/ChannelInterface.h>
+#include <interfaces/controller/operation/ChannelIntfController.h>
+#include <interfaces/controller/operation/ChannelIntfControllerListener.h>
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
@@ -32,7 +32,7 @@ using namespace ajn::services;
 namespace CDMQtWidgets
 {
 
-class org_alljoyn_SmartSpaces_Operation_Channel : public QWidget, public ajn::services::ChannelIntfControllerListener
+class org_alljoyn_SmartSpaces_Operation_Channel : public QWidget
 {
     Q_OBJECT
 public:
@@ -49,49 +49,74 @@ private slots:
     void slotSetChannelId();
     void slotOnResponseGetTotalNumberOfChannels(QStatus status, const uint16_t value);
     void slotOnTotalNumberOfChannelsChanged(const uint16_t value);
+    void slotOnResponseMethodGetChannelList(QStatus status);
+    void slotOnSignalChannelListChanged();
 
 public:
     // ajn::services::ChannelIntfControllerListener
-    void OnResponseGetChannelId(QStatus status, const qcc::String& objectPath, const qcc::String& value, void* context)
+    class Listener: public ajn::services::ChannelIntfControllerListener
     {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseGetChannelId", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status),
-                          Q_ARG(qcc::String, value)
-                          );
-    }
-    void OnChannelIdChanged(const qcc::String& objectPath, const qcc::String& value)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnChannelIdChanged", Qt::QueuedConnection,
-                          Q_ARG(qcc::String, value)
-                          );
-    }
-    void OnResponseSetChannelId(QStatus status, const qcc::String& objectPath, void* context)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseSetChannelId", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status)
-                          );
-    }
-    void OnResponseGetTotalNumberOfChannels(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseGetTotalNumberOfChannels", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status),
-                          Q_ARG(uint16_t, value)
-                          );
-    }
-    void OnTotalNumberOfChannelsChanged(const qcc::String& objectPath, const uint16_t value)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnTotalNumberOfChannelsChanged", Qt::QueuedConnection,
-                          Q_ARG(uint16_t, value)
-                          );
-    }
+    public:
+        QWidget* m_widget;
+
+        Listener(QWidget* widget)
+          : m_widget(widget)
+        {
+        }
+
+        virtual void OnResponseGetChannelId(QStatus status, const qcc::String& objectPath, const qcc::String& value, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseGetChannelId", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status),
+                              Q_ARG(qcc::String, value)
+                              );
+        }
+        virtual void OnChannelIdChanged(const qcc::String& objectPath, const qcc::String& value) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnChannelIdChanged", Qt::QueuedConnection,
+                              Q_ARG(qcc::String, value)
+                              );
+        }
+        virtual void OnResponseSetChannelId(QStatus status, const qcc::String& objectPath, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseSetChannelId", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status)
+                              );
+        }
+        virtual void OnResponseGetTotalNumberOfChannels(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseGetTotalNumberOfChannels", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status),
+                              Q_ARG(uint16_t, value)
+                              );
+        }
+        virtual void OnTotalNumberOfChannelsChanged(const qcc::String& objectPath, const uint16_t value) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnTotalNumberOfChannelsChanged", Qt::QueuedConnection,
+                              Q_ARG(uint16_t, value)
+                              );
+        }
+        virtual void OnResponseGetChannelList(QStatus status, const qcc::String& objectPath, const std::vector<ChannelInterface::ChannelInfoRecord>& listOfChannelInfoRecords, void* context, const char* errorName, const char* errorMessage) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseMethodGetChannelList", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status)
+                              );
+        }
+        virtual void OnChannelListChanged(const qcc::String& objectPath) override
+        {
+            QMetaObject::invokeMethod(m_widget, "slotOnSignalChannelListChanged", Qt::QueuedConnection);
+        }
+    };
 
 private:
-    ajn::services::ChannelIntfControllerPtr controller;
+    Ref<ajn::services::ChannelIntfController> controller;
+    Ref<Listener> m_listener;
 
     QPushButton* button_GetChannelList;
 

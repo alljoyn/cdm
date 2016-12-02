@@ -1,0 +1,23 @@
+#alertsList {
+   background-color: white;
+   border: 1px solid;
+   padding: 2px;
+   }
+
+.alert {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    }
+
+.alertDescription {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-left: 5px;
+    margin-right: 5px;
+    }
+
+*[severity="2"]{ background-color: red }
+*[severity="1"]{ background-color: orange }
+

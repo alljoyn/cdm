@@ -69,22 +69,22 @@ ClimateControlModeModel::ClimateControlModeModel(const std::string& busPath) :
     m_busPath(busPath)
 {}
 
-QStatus ClimateControlModeModel::GetMode(Mode& out) const
+QStatus ClimateControlModeModel::GetMode(ClimateControlModeInterface::Mode& out) const
 {
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.ClimateControlMode", "Mode", out);
 }
 
-QStatus ClimateControlModeModel::SetMode(const Mode value)
+QStatus ClimateControlModeModel::SetMode(const ClimateControlModeInterface::Mode value)
 {
     return HAL::WriteProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.ClimateControlMode", "Mode", value);
 }
 
-QStatus ClimateControlModeModel::GetSupportedModes(std::vector<Mode>& out) const
+QStatus ClimateControlModeModel::GetSupportedModes(std::vector<ClimateControlModeInterface::Mode>& out) const
 {
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.ClimateControlMode", "SupportedModes", out);
 }
 
-QStatus ClimateControlModeModel::GetOperationalState(OperationalState& out) const
+QStatus ClimateControlModeModel::GetOperationalState(ClimateControlModeInterface::OperationalState& out) const
 {
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.ClimateControlMode", "OperationalState", out);
 }

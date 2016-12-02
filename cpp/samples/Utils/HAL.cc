@@ -44,8 +44,8 @@ class X::Impl
 
     void SetRootDir(const std::string& rootDir);
     Element* ReadPropertyXml(const string& busPath, const string& interface, const string& property);
-    void WritePropertyXml(const string& busPath, const string& interface, const string& property, Element* xml);
-    void WritePropertyXml(const string& busPath, const string& interface, const string& property, const string& xml);
+    void WritePropertyXml(const string& busPath, const string& interface, const string& property, Element* xml, bool force);
+    void WritePropertyXml(const string& busPath, const string& interface, const string& property, const string& xml, bool force);
 
     struct Failure : public std::exception
     {
@@ -117,13 +117,13 @@ Element* X::Impl::ReadPropertyXml(const string& busPath, const string& interface
 
 
 
-void X::Impl::WritePropertyXml(const string& busPath, const string& interface, const string& property, const string& xml)
+void X::Impl::WritePropertyXml(const string& busPath, const string& interface, const string& property, const string& xml, bool force)
 {
     Element* elem = 0;
 
     if (ER_OK == Element::GetRoot(xml.c_str(), &elem))
     {
-        WritePropertyXml(busPath, interface, property, elem);
+        WritePropertyXml(busPath, interface, property, elem, force);
     }
 
     delete elem;
@@ -132,13 +132,25 @@ void X::Impl::WritePropertyXml(const string& busPath, const string& interface, c
 
 
 
-void X::Impl::WritePropertyXml(const string& busPath, const string& interface, const string& property, Element* xml)
+void X::Impl::WritePropertyXml(const string& busPath, const string& interface, const string& property, Element* xml, bool force)
 {
     MutLock lock(m_mutex);
 
     try
     {
         auto path = PropPath(busPath, interface, property);
+
+        if (!force)
+        {
+            // If the file already exists then don't change it.
+            ifstream strm(path);
+
+            if (strm.is_open())
+            {
+                return;
+            }
+        }
+
         auto text = xml-> Generate();
         ofstream strm(path);
 
@@ -218,16 +230,16 @@ Element* X::ReadPropertyXml(const string& busPath, const string& interface, cons
 
 
 
-void X::WritePropertyXml(const string& busPath, const string& interface, const string& property, Element* xml)
+void X::WritePropertyXml(const string& busPath, const string& interface, const string& property, Element* xml, bool force)
 {
-    m_impl->WritePropertyXml(busPath, interface, property, xml);
+    m_impl->WritePropertyXml(busPath, interface, property, xml, force);
 }
 
 
 
-void X::WritePropertyXml(const string& busPath, const string& interface, const string& property, const string& xml)
+void X::WritePropertyXml(const string& busPath, const string& interface, const string& property, const string& xml, bool force)
 {
-    m_impl->WritePropertyXml(busPath, interface, property, xml);
+    m_impl->WritePropertyXml(busPath, interface, property, xml, force);
 }
 
 

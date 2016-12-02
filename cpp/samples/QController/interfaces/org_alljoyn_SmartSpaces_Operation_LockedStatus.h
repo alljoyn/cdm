@@ -22,9 +22,9 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 
-#include <alljoyn/cdm/interfaces/operation/LockedStatusInterface.h>
-#include <alljoyn/cdm/interfaces/operation/LockedStatusIntfController.h>
-#include <alljoyn/cdm/interfaces/operation/LockedStatusIntfControllerListener.h>
+#include <interfaces/common/operation/LockedStatusInterface.h>
+#include <interfaces/controller/operation/LockedStatusIntfController.h>
+#include <interfaces/controller/operation/LockedStatusIntfControllerListener.h>
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
@@ -32,7 +32,7 @@ using namespace ajn::services;
 namespace CDMQtWidgets
 {
 
-class org_alljoyn_SmartSpaces_Operation_LockedStatus : public QWidget, public ajn::services::LockedStatusIntfControllerListener
+class org_alljoyn_SmartSpaces_Operation_LockedStatus : public QWidget
 {
     Q_OBJECT
 public:
@@ -47,24 +47,36 @@ private slots:
 
 public:
     // ajn::services::LockedStatusIntfControllerListener
-    void OnResponseGetIsLocked(QStatus status, const qcc::String& objectPath, const bool value, void* context)
+    class Listener: public ajn::services::LockedStatusIntfControllerListener
     {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseGetIsLocked", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status),
-                          Q_ARG(bool, value)
-                          );
-    }
-    void OnIsLockedChanged(const qcc::String& objectPath, const bool value)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnIsLockedChanged", Qt::QueuedConnection,
-                          Q_ARG(bool, value)
-                          );
-    }
+    public:
+        QWidget* m_widget;
+
+        Listener(QWidget* widget)
+          : m_widget(widget)
+        {
+        }
+
+        virtual void OnResponseGetIsLocked(QStatus status, const qcc::String& objectPath, const bool value, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseGetIsLocked", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status),
+                              Q_ARG(bool, value)
+                              );
+        }
+        virtual void OnIsLockedChanged(const qcc::String& objectPath, const bool value) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnIsLockedChanged", Qt::QueuedConnection,
+                              Q_ARG(bool, value)
+                              );
+        }
+    };
 
 private:
-    ajn::services::LockedStatusIntfControllerPtr controller;
+    Ref<ajn::services::LockedStatusIntfController> controller;
+    Ref<Listener> m_listener;
 
 
     QLineEdit* edit_IsLocked;

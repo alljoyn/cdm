@@ -17,6 +17,8 @@
 #include "ChannelModel.h"
 #include "../../../Utils/HAL.h"
 
+#include "Commands.h"
+#include <interfaces/controllee/operation/ChannelIntfControllee.h>
 
 namespace ajn {
 namespace services {
@@ -58,6 +60,9 @@ struct Serializer<ChannelInterface::ChannelInfoRecord>
         Serializer<std::vector<SerializerField>> ser;
         ChannelInterface::ChannelInfoRecord result;
         auto fields = ser.get(element);
+        if (fields.size() != 3) {
+            throw SerializerError();
+        }
         {
             auto& sfield = fields[0];
             if (sfield.name != "channelID")
@@ -105,6 +110,30 @@ static std::vector<ChannelInterface::ChannelInfoRecord> s_channels = {
     {"b",   "2",    "Shire Shopping Network"}
 };
 
+static const char* BusPath = "/CDM/Channel";
+
+static bool ChannelCommand(const std::string& key, const StringVec& args, CdmControllee& controllee)
+{
+    bool ok = false;
+
+    if (args.size() >= 1)
+    {
+        if (args[0] == "signal")
+        {
+            if (auto iface = controllee.GetInterface<ChannelIntfControllee>(BusPath, "org.alljoyn.SmartSpaces.Operation.Channel"))
+            {
+                iface->EmitChannelListChanged();
+                ok = true;
+            }
+        }
+    }
+
+    return ok;
+}
+
+static bool s_subscribed = Commands::Instance().Subscribe("channel", ChannelCommand, "channel signal");
+
+
 ChannelModel::ChannelModel(const std::string& busPath) :
     m_busPath(busPath)
 {}
@@ -124,20 +153,15 @@ QStatus ChannelModel::GetTotalNumberOfChannels(uint16_t& out) const
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.Channel", "TotalNumberOfChannels", out);
 }
 
-QStatus ChannelModel::GetChannelList(uint16_t arg_startingRecord, uint16_t arg_numRecords, std::vector<ChannelInfoRecord>& arg_listOfChannelInfoRecords, ErrorCode& error, CdmSideEffects& sideEffects)
+QStatus ChannelModel::GetChannelList(uint16_t arg_startingRecord, uint16_t arg_numRecords, std::vector<ChannelInterface::ChannelInfoRecord>& arg_listOfChannelInfoRecords, ErrorCode& error, CdmControllee& controllee)
 {
     if (arg_startingRecord >= s_channels.size())
     {
         error = INVALID_VALUE;
     }
     else
-    if (arg_startingRecord + arg_numRecords >= s_channels.size())
     {
-        error = INVALID_VALUE;
-    }
-    else
-    {
-        for (auto i = arg_startingRecord; i < arg_startingRecord + arg_numRecords; ++i)
+        for (auto i = arg_startingRecord; i < arg_startingRecord + arg_numRecords && i < s_channels.size(); ++i)
         {
             arg_listOfChannelInfoRecords.push_back(s_channels[i]);
         }

@@ -22,9 +22,9 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 
-#include <alljoyn/cdm/interfaces/operation/OvenCyclePhaseInterface.h>
-#include <alljoyn/cdm/interfaces/operation/OvenCyclePhaseIntfController.h>
-#include <alljoyn/cdm/interfaces/operation/OvenCyclePhaseIntfControllerListener.h>
+#include <interfaces/common/operation/OvenCyclePhaseInterface.h>
+#include <interfaces/controller/operation/OvenCyclePhaseIntfController.h>
+#include <interfaces/controller/operation/OvenCyclePhaseIntfControllerListener.h>
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
@@ -32,7 +32,7 @@ using namespace ajn::services;
 namespace CDMQtWidgets
 {
 
-class org_alljoyn_SmartSpaces_Operation_OvenCyclePhase : public QWidget, public ajn::services::OvenCyclePhaseIntfControllerListener
+class org_alljoyn_SmartSpaces_Operation_OvenCyclePhase : public QWidget
 {
     Q_OBJECT
 public:
@@ -47,42 +47,62 @@ private slots:
     void slotOnCyclePhaseChanged(const uint8_t value);
     void slotOnResponseGetSupportedCyclePhases(QStatus status, const std::vector<uint8_t>& value);
     void slotOnSupportedCyclePhasesChanged(const std::vector<uint8_t>& value);
+    void slotOnResponseMethodGetVendorPhasesDescription(QStatus status);
 
 public:
     // ajn::services::OvenCyclePhaseIntfControllerListener
-    void OnResponseGetCyclePhase(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context)
+    class Listener: public ajn::services::OvenCyclePhaseIntfControllerListener
     {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseGetCyclePhase", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status),
-                          Q_ARG(uint8_t, value)
-                          );
-    }
-    void OnCyclePhaseChanged(const qcc::String& objectPath, const uint8_t value)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnCyclePhaseChanged", Qt::QueuedConnection,
-                          Q_ARG(uint8_t, value)
-                          );
-    }
-    void OnResponseGetSupportedCyclePhases(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& value, void* context)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseGetSupportedCyclePhases", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status),
-                          Q_ARG(std::vector<uint8_t>, value)
-                          );
-    }
-    void OnSupportedCyclePhasesChanged(const qcc::String& objectPath, const std::vector<uint8_t>& value)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnSupportedCyclePhasesChanged", Qt::QueuedConnection,
-                          Q_ARG(std::vector<uint8_t>, value)
-                          );
-    }
+    public:
+        QWidget* m_widget;
+
+        Listener(QWidget* widget)
+          : m_widget(widget)
+        {
+        }
+
+        virtual void OnResponseGetCyclePhase(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseGetCyclePhase", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status),
+                              Q_ARG(uint8_t, value)
+                              );
+        }
+        virtual void OnCyclePhaseChanged(const qcc::String& objectPath, const uint8_t value) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnCyclePhaseChanged", Qt::QueuedConnection,
+                              Q_ARG(uint8_t, value)
+                              );
+        }
+        virtual void OnResponseGetSupportedCyclePhases(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& value, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseGetSupportedCyclePhases", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status),
+                              Q_ARG(std::vector<uint8_t>, value)
+                              );
+        }
+        virtual void OnSupportedCyclePhasesChanged(const qcc::String& objectPath, const std::vector<uint8_t>& value) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnSupportedCyclePhasesChanged", Qt::QueuedConnection,
+                              Q_ARG(std::vector<uint8_t>, value)
+                              );
+        }
+        virtual void OnResponseGetVendorPhasesDescription(QStatus status, const qcc::String& objectPath, const std::vector<OvenCyclePhaseInterface::CyclePhaseDescriptor>& phasesDescription, void* context, const char* errorName, const char* errorMessage) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseMethodGetVendorPhasesDescription", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status)
+                              );
+        }
+    };
 
 private:
-    ajn::services::OvenCyclePhaseIntfControllerPtr controller;
+    Ref<ajn::services::OvenCyclePhaseIntfController> controller;
+    Ref<Listener> m_listener;
 
     QPushButton* button_GetVendorPhasesDescription;
 

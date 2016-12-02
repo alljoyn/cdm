@@ -59,6 +59,16 @@ using namespace std;
 #include <interfaces/controllee/operation/TriggerSensorIntfControllee.h>
 #include <interfaces/controllee/operation/UnlockControlIntfControllee.h>
 
+#include <interfaces/controllee/environment/CurrentAirQualityIntfControllee.h>
+#include <interfaces/controllee/environment/CurrentAirQualityLevelIntfControllee.h>
+#include <interfaces/controllee/environment/CurrentHumidityIntfControllee.h>
+#include <interfaces/controllee/environment/CurrentTemperatureIntfControllee.h>
+#include <interfaces/controllee/environment/TargetHumidityIntfControllee.h>
+#include <interfaces/controllee/environment/TargetTemperatureIntfControllee.h>
+#include <interfaces/controllee/environment/TargetTemperatureLevelIntfControllee.h>
+#include <interfaces/controllee/environment/WaterLevelIntfControllee.h>
+#include <interfaces/controllee/environment/WindDirectionIntfControllee.h>
+
 #include "Models/operation/AirRecirculationModeModel.h"
 #include "Models/operation/AlertsModel.h"
 #include "Models/operation/AudioVideoInputModel.h"
@@ -98,6 +108,16 @@ using namespace std;
 #include "Models/operation/TimerModel.h"
 #include "Models/operation/TriggerSensorModel.h"
 #include "Models/operation/UnlockControlModel.h"
+
+#include "Models/environment/CurrentAirQualityModel.h"
+#include "Models/environment/CurrentAirQualityLevelModel.h"
+#include "Models/environment/CurrentHumidityModel.h"
+#include "Models/environment/CurrentTemperatureModel.h"
+#include "Models/environment/TargetHumidityModel.h"
+#include "Models/environment/TargetTemperatureModel.h"
+#include "Models/environment/TargetTemperatureLevelModel.h"
+#include "Models/environment/WaterLevelModel.h"
+#include "Models/environment/WindDirectionModel.h"
 
 #include "SuperControllee.h"
 #include "../Utils/HAL.h"
@@ -338,6 +358,51 @@ QStatus SuperControllee::CreateInterfaces()
                 status = mkInterface<UnlockControlIntfControllee, UnlockControlModel>(obj.path);
             }
             else
+            if (name == "org.alljoyn.SmartSpaces.Environment.CurrentAirQuality")
+            {
+                status = mkInterface<CurrentAirQualityIntfControllee, CurrentAirQualityModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Environment.CurrentAirQualityLevel")
+            {
+                status = mkInterface<CurrentAirQualityLevelIntfControllee, CurrentAirQualityLevelModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Environment.CurrentHumidity")
+            {
+                status = mkInterface<CurrentHumidityIntfControllee, CurrentHumidityModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Environment.CurrentTemperature")
+            {
+                status = mkInterface<CurrentTemperatureIntfControllee, CurrentTemperatureModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Environment.TargetHumidity")
+            {
+                status = mkInterface<TargetHumidityIntfControllee, TargetHumidityModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Environment.TargetTemperature")
+            {
+                status = mkInterface<TargetTemperatureIntfControllee, TargetTemperatureModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Environment.TargetTemperatureLevel")
+            {
+                status = mkInterface<TargetTemperatureLevelIntfControllee, TargetTemperatureLevelModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Environment.WaterLevel")
+            {
+                status = mkInterface<WaterLevelIntfControllee, WaterLevelModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Environment.WindDirection")
+            {
+                status = mkInterface<WindDirectionIntfControllee, WindDirectionModel>(obj.path);
+            }
+            else
             {
                 cerr << "Unrecognised interface name " << name << "\n";
                 status = ER_FAIL;
@@ -367,7 +432,8 @@ QStatus SuperControllee::PreloadHAL()
             {
                 if (!prop.initialState.empty())
                 {
-                    HAL::X::instance().WritePropertyXml(obj.path, iface.name, prop.name, prop.initialState);
+                    bool force = (prop.mode == Config::PropMode::Initialize);
+                    HAL::X::instance().WritePropertyXml(obj.path, iface.name, prop.name, prop.initialState, force);
                 }
             }
         }

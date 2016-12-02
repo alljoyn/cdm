@@ -45,7 +45,7 @@ class DishWashingCyclePhaseModel : public virtual DishWashingCyclePhaseIntfContr
      * @param[out] error Internal error code occurred during command execution
      * @return ER_OK on success
      */
-    QStatus GetVendorPhasesDescription(qcc::String arg_languageTag, std::vector<CyclePhaseDescriptor>& arg_phasesDescription, ErrorCode& error, CdmSideEffects& sideEffects) override;
+    QStatus GetVendorPhasesDescription(qcc::String& arg_languageTag, std::vector<DishWashingCyclePhaseInterface::CyclePhaseDescriptor>& arg_phasesDescription, ErrorCode& error, CdmControllee& controllee) override;
 
   private:
     std::string m_busPath;

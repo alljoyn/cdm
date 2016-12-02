@@ -52,17 +52,17 @@ HvacFanModeModel::HvacFanModeModel(const std::string& busPath) :
     m_busPath(busPath)
 {}
 
-QStatus HvacFanModeModel::GetMode(Mode& out) const
+QStatus HvacFanModeModel::GetMode(HvacFanModeInterface::Mode& out) const
 {
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.HvacFanMode", "Mode", out);
 }
 
-QStatus HvacFanModeModel::SetMode(const Mode value)
+QStatus HvacFanModeModel::SetMode(const HvacFanModeInterface::Mode value)
 {
     return HAL::WriteProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.HvacFanMode", "Mode", value);
 }
 
-QStatus HvacFanModeModel::GetSupportedModes(std::vector<Mode>& out) const
+QStatus HvacFanModeModel::GetSupportedModes(std::vector<HvacFanModeInterface::Mode>& out) const
 {
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.HvacFanMode", "SupportedModes", out);
 }

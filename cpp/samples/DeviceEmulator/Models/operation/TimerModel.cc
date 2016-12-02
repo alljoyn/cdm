@@ -65,12 +65,12 @@ QStatus TimerModel::GetTargetDuration(int32_t& out) const
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.Timer", "TargetDuration", out);
 }
 
-QStatus TimerModel::SetTargetTimeToStart(int32_t arg_targetTimeToStart, ErrorCode& error, CdmSideEffects& sideEffects)
+QStatus TimerModel::SetTargetTimeToStart(int32_t arg_targetTimeToStart, ErrorCode& error, CdmControllee& controllee)
 {
     return HAL::WriteProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.Timer", "TargetTimeToStart", arg_targetTimeToStart);
 }
 
-QStatus TimerModel::SetTargetTimeToStop(int32_t arg_targetTimeToStop, ErrorCode& error, CdmSideEffects& sideEffects)
+QStatus TimerModel::SetTargetTimeToStop(int32_t arg_targetTimeToStop, ErrorCode& error, CdmControllee& controllee)
 {
     return HAL::WriteProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.Timer", "TargetTimeToStop", arg_targetTimeToStop);
 }

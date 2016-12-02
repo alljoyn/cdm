@@ -42,8 +42,8 @@ public:
     HelpMap     m_help;
 
     void Subscribe(const string& key, Commands::Subscriber sub, const string& help);
-    bool Publish(const string& key, const StringVec& args);
-    bool Publish(const string& command);
+    bool Publish(const string& key, const StringVec& args, CdmControllee& controllee);
+    bool Publish(const string& command, CdmControllee& controllee);
     StringVec Help() const;
 };
 
@@ -57,13 +57,13 @@ void Commands::Impl::Subscribe(const string& key, Commands::Subscriber sub, cons
 
 
 
-bool Commands::Impl::Publish(const string& key, const StringVec& args)
+bool Commands::Impl::Publish(const string& key, const StringVec& args, CdmControllee& controllee)
 {
     auto iter = m_subs.find(key);
 
     if (iter != m_subs.end())
     {
-        return (iter->second)(key, args);
+        return (iter->second)(key, args, controllee);
     }
 
     return false;
@@ -71,7 +71,7 @@ bool Commands::Impl::Publish(const string& key, const StringVec& args)
 
 
 
-bool Commands::Impl::Publish(const string& command)
+bool Commands::Impl::Publish(const string& command, CdmControllee& controllee)
 {
     auto args = utils::SplitWords(command);
 
@@ -79,7 +79,7 @@ bool Commands::Impl::Publish(const string& command)
     {
         auto key = args[0];
         args.erase(args.begin());
-        return Publish(key, args);
+        return Publish(key, args, controllee);
     }
 
     return false;
@@ -139,16 +139,16 @@ bool Commands::Subscribe(const string& key, Subscriber subscriber, const string&
 
 
 
-bool Commands::Publish(const string& key, const StringVec& args)
+bool Commands::Publish(const string& key, const StringVec& args, CdmControllee& controllee)
 {
-    return m_impl->Publish(key, args);
+    return m_impl->Publish(key, args, controllee);
 }
 
 
 
-bool Commands::Publish(const string& command)
+bool Commands::Publish(const string& command, CdmControllee& controllee)
 {
-    return m_impl->Publish(command);
+    return m_impl->Publish(command, controllee);
 }
 
 

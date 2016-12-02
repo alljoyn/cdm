@@ -53,9 +53,9 @@ class {{Interface.Name}}Model : public virtual {{Interface.Name}}IntfControlleeM
      */
 {% set comma = joiner(", ") %}
     QStatus {{method.Name}}(
-{%- for arg in method.Args if arg.Direction == "in" %}{{comma()}}{{arg.Type.ctype()}} arg_{{arg.Name}}{% endfor %}
-{%- for arg in method.Args if arg.Direction == "out" %}{{comma()}}{{arg.Type.ctype()}}& arg_{{arg.Name}}{% endfor %}{{comma()-}}
-    ErrorCode& error, CdmSideEffects& sideEffects) override;
+{%- for arg in method.input_args() %}{{comma()}}{{arg.Type.ctype_arg()}} arg_{{arg.Name}}{% endfor %}
+{%- for arg in method.output_args() %}{{comma()}}{{arg.Type.ctype()}}& arg_{{arg.Name}}{% endfor %}{{comma()-}}
+    ErrorCode& error, CdmControllee& controllee) override;
     {% endfor %}
 
   private:

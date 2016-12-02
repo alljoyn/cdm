@@ -19,12 +19,19 @@
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <sstream>
+
+
+
 
 using namespace CDMQtWidgets;
 
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_SoilLevel*>();
 
-org_alljoyn_SmartSpaces_Operation_SoilLevel::org_alljoyn_SmartSpaces_Operation_SoilLevel(CommonControllerInterface *iface) : controller(NULL)
+
+org_alljoyn_SmartSpaces_Operation_SoilLevel::org_alljoyn_SmartSpaces_Operation_SoilLevel(CommonControllerInterface *iface)
+  : controller(NULL),
+    m_listener(mkRef<Listener>(this))
 {
     qWarning() << __FUNCTION__;
 
@@ -54,7 +61,7 @@ org_alljoyn_SmartSpaces_Operation_SoilLevel::org_alljoyn_SmartSpaces_Operation_S
 
     if (iface)
     {
-        controller = iface->CreateInterface<SoilLevelIntfController>(*this);
+        controller = iface->CreateInterface<SoilLevelIntfController>(m_listener);
         if (controller)
         {
             qWarning() << __FUNCTION__ << " Getting properties";
@@ -107,6 +114,9 @@ void org_alljoyn_SmartSpaces_Operation_SoilLevel::slotOnMaxLevelChanged(const ui
     edit_MaxLevel->setText(QStringFrom(value));
 }
 
+
+
+
 void org_alljoyn_SmartSpaces_Operation_SoilLevel::slotOnResponseGetTargetLevel(QStatus status, const uint8_t value)
 {
     qWarning() << __FUNCTION__;
@@ -144,6 +154,9 @@ void org_alljoyn_SmartSpaces_Operation_SoilLevel::slotSetTargetLevel()
         qWarning() << __FUNCTION__ << "Failed to convert '" << str << "' to uint8_t";
     }
 }
+
+
+
 
 void org_alljoyn_SmartSpaces_Operation_SoilLevel::slotOnResponseGetSelectableLevels(QStatus status, const std::vector<uint8_t>& value)
 {

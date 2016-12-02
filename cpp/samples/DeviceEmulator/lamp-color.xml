@@ -27,13 +27,51 @@
             <Interface name='org.alljoyn.SmartSpaces.Operation.OnControl'/>
             <Interface name='org.alljoyn.SmartSpaces.Operation.OffControl'/>
             <Interface name='org.alljoyn.SmartSpaces.Operation.OnOffStatus'>
-                <Property name='IsOn'>
+                <Property name='IsOn' mode='default'>
                     <scalar type='bool' value='false'/>
                 </Property>
             </Interface>
-            <Interface name='org.alljoyn.SmartSpaces.Operation.Color'/>
-            <Interface name='org.alljoyn.SmartSpaces.Operation.Brightness'/>
-            <Interface name='org.alljoyn.SmartSpaces.Operation.ColorTemperature'/>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.Color'>
+                <Property name='Hue' mode='default'>
+                    <scalar type='double' value='0.0'/>
+                </Property>
+                <Property name='Saturation' mode='default'>
+                    <scalar type='double' value='1.0'/>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.Brightness'>
+                <Property name='Brightness' mode='default'>
+                    <scalar type='double' value='1.0'/>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.ColorTemperature'>
+                <Property name='Temperature' mode='default'>
+                    <scalar type='double' value='3000.0'/>
+                </Property>
+                <Property name='MinTemperature'>
+                    <scalar type='double' value='3000.0'/>
+                </Property>
+                <Property name='MaxTemperature'>
+                    <scalar type='double' value='6000.0'/>
+                </Property>
+            </Interface>
+        </Object>
+        <Object path='/CDM/Channel'>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.Channel'>
+                <Property name='ChannelId' mode='default'>
+                    <scalar type='string' value='a'/>
+                </Property>
+                <Property name='TotalNumberOfChannels' mode='default'>
+                    <scalar type='unsigned' value='2'/>
+                </Property>
+            </Interface>
+        </Object>
+        <Object path='/CDM/Alerts'>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.Alerts'>
+                <Property name='Alerts' mode='default'>
+                    <array/>
+                </Property>
+            </Interface>
         </Object>
     </InterfaceList>
 </DeviceEmulator>

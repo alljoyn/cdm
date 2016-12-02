@@ -22,9 +22,9 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 
-#include <alljoyn/cdm/interfaces/operation/RapidModeTimedInterface.h>
-#include <alljoyn/cdm/interfaces/operation/RapidModeTimedIntfController.h>
-#include <alljoyn/cdm/interfaces/operation/RapidModeTimedIntfControllerListener.h>
+#include <interfaces/common/operation/RapidModeTimedInterface.h>
+#include <interfaces/controller/operation/RapidModeTimedIntfController.h>
+#include <interfaces/controller/operation/RapidModeTimedIntfControllerListener.h>
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
@@ -32,7 +32,7 @@ using namespace ajn::services;
 namespace CDMQtWidgets
 {
 
-class org_alljoyn_SmartSpaces_Operation_RapidModeTimed : public QWidget, public ajn::services::RapidModeTimedIntfControllerListener
+class org_alljoyn_SmartSpaces_Operation_RapidModeTimed : public QWidget
 {
     Q_OBJECT
 public:
@@ -51,46 +51,58 @@ private slots:
 
 public:
     // ajn::services::RapidModeTimedIntfControllerListener
-    void OnResponseGetRapidModeMinutesRemaining(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context)
+    class Listener: public ajn::services::RapidModeTimedIntfControllerListener
     {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseGetRapidModeMinutesRemaining", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status),
-                          Q_ARG(uint16_t, value)
-                          );
-    }
-    void OnRapidModeMinutesRemainingChanged(const qcc::String& objectPath, const uint16_t value)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnRapidModeMinutesRemainingChanged", Qt::QueuedConnection,
-                          Q_ARG(uint16_t, value)
-                          );
-    }
-    void OnResponseSetRapidModeMinutesRemaining(QStatus status, const qcc::String& objectPath, void* context)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseSetRapidModeMinutesRemaining", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status)
-                          );
-    }
-    void OnResponseGetMaxSetMinutes(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseGetMaxSetMinutes", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status),
-                          Q_ARG(uint16_t, value)
-                          );
-    }
-    void OnMaxSetMinutesChanged(const qcc::String& objectPath, const uint16_t value)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnMaxSetMinutesChanged", Qt::QueuedConnection,
-                          Q_ARG(uint16_t, value)
-                          );
-    }
+    public:
+        QWidget* m_widget;
+
+        Listener(QWidget* widget)
+          : m_widget(widget)
+        {
+        }
+
+        virtual void OnResponseGetRapidModeMinutesRemaining(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseGetRapidModeMinutesRemaining", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status),
+                              Q_ARG(uint16_t, value)
+                              );
+        }
+        virtual void OnRapidModeMinutesRemainingChanged(const qcc::String& objectPath, const uint16_t value) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnRapidModeMinutesRemainingChanged", Qt::QueuedConnection,
+                              Q_ARG(uint16_t, value)
+                              );
+        }
+        virtual void OnResponseSetRapidModeMinutesRemaining(QStatus status, const qcc::String& objectPath, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseSetRapidModeMinutesRemaining", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status)
+                              );
+        }
+        virtual void OnResponseGetMaxSetMinutes(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseGetMaxSetMinutes", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status),
+                              Q_ARG(uint16_t, value)
+                              );
+        }
+        virtual void OnMaxSetMinutesChanged(const qcc::String& objectPath, const uint16_t value) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnMaxSetMinutesChanged", Qt::QueuedConnection,
+                              Q_ARG(uint16_t, value)
+                              );
+        }
+    };
 
 private:
-    ajn::services::RapidModeTimedIntfControllerPtr controller;
+    Ref<ajn::services::RapidModeTimedIntfController> controller;
+    Ref<Listener> m_listener;
 
 
     QLineEdit* edit_RapidModeMinutesRemaining;

@@ -19,12 +19,52 @@
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <sstream>
+
+
+template<>
+QString
+QStringFrom<PlugInUnitsInterface::PlugInInfo>(const PlugInUnitsInterface::PlugInInfo& value)
+{
+    std::ostringstream strm;
+    strm << "{";
+    strm << "objectPath=" << value.objectPath.c_str();
+    strm << " ";
+    strm << "deviceId=" << value.deviceId;
+    strm << " ";
+    strm << "pluggedIn=" << value.pluggedIn;
+    strm << "}";
+
+    return QString::fromStdString(strm.str());
+}
+
+
+template<>
+QString
+QStringFrom<std::vector<PlugInUnitsInterface::PlugInInfo>>(const std::vector<PlugInUnitsInterface::PlugInInfo>& value)
+{
+    std::string result;
+
+    for (auto& v : value)
+    {
+        auto qs = QStringFrom<PlugInUnitsInterface::PlugInInfo>(v);
+        result += qs.toStdString();
+    }
+    return QString::fromStdString(result);
+}
+
+
+
+
 
 using namespace CDMQtWidgets;
 
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_PlugInUnits*>();
 
-org_alljoyn_SmartSpaces_Operation_PlugInUnits::org_alljoyn_SmartSpaces_Operation_PlugInUnits(CommonControllerInterface *iface) : controller(NULL)
+
+org_alljoyn_SmartSpaces_Operation_PlugInUnits::org_alljoyn_SmartSpaces_Operation_PlugInUnits(CommonControllerInterface *iface)
+  : controller(NULL),
+    m_listener(mkRef<Listener>(this))
 {
     qWarning() << __FUNCTION__;
 
@@ -41,7 +81,7 @@ org_alljoyn_SmartSpaces_Operation_PlugInUnits::org_alljoyn_SmartSpaces_Operation
 
     if (iface)
     {
-        controller = iface->CreateInterface<PlugInUnitsIntfController>(*this);
+        controller = iface->CreateInterface<PlugInUnitsIntfController>(m_listener);
         if (controller)
         {
             qWarning() << __FUNCTION__ << " Getting properties";
@@ -72,13 +112,13 @@ org_alljoyn_SmartSpaces_Operation_PlugInUnits::~org_alljoyn_SmartSpaces_Operatio
 
 
 
-void org_alljoyn_SmartSpaces_Operation_PlugInUnits::slotOnResponseGetPlugInUnits(QStatus status, const std::vector<PlugInInfo>& value)
+void org_alljoyn_SmartSpaces_Operation_PlugInUnits::slotOnResponseGetPlugInUnits(QStatus status, const std::vector<PlugInUnitsInterface::PlugInInfo>& value)
 {
     qWarning() << __FUNCTION__;
     edit_PlugInUnits->setText(QStringFrom(value));
 }
 
-void org_alljoyn_SmartSpaces_Operation_PlugInUnits::slotOnPlugInUnitsChanged(const std::vector<PlugInInfo>& value)
+void org_alljoyn_SmartSpaces_Operation_PlugInUnits::slotOnPlugInUnitsChanged(const std::vector<PlugInUnitsInterface::PlugInInfo>& value)
 {
     qWarning() << __FUNCTION__;
     edit_PlugInUnits->setText(QStringFrom(value));

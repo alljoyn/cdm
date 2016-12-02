@@ -22,9 +22,9 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 
-#include <alljoyn/cdm/interfaces/operation/OnOffStatusInterface.h>
-#include <alljoyn/cdm/interfaces/operation/OnOffStatusIntfController.h>
-#include <alljoyn/cdm/interfaces/operation/OnOffStatusIntfControllerListener.h>
+#include <interfaces/common/operation/OnOffStatusInterface.h>
+#include <interfaces/controller/operation/OnOffStatusIntfController.h>
+#include <interfaces/controller/operation/OnOffStatusIntfControllerListener.h>
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
@@ -32,7 +32,7 @@ using namespace ajn::services;
 namespace CDMQtWidgets
 {
 
-class org_alljoyn_SmartSpaces_Operation_OnOffStatus : public QWidget, public ajn::services::OnOffStatusIntfControllerListener
+class org_alljoyn_SmartSpaces_Operation_OnOffStatus : public QWidget
 {
     Q_OBJECT
 public:
@@ -47,24 +47,36 @@ private slots:
 
 public:
     // ajn::services::OnOffStatusIntfControllerListener
-    void OnResponseGetIsOn(QStatus status, const qcc::String& objectPath, const bool value, void* context)
+    class Listener: public ajn::services::OnOffStatusIntfControllerListener
     {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseGetIsOn", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status),
-                          Q_ARG(bool, value)
-                          );
-    }
-    void OnIsOnChanged(const qcc::String& objectPath, const bool value)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnIsOnChanged", Qt::QueuedConnection,
-                          Q_ARG(bool, value)
-                          );
-    }
+    public:
+        QWidget* m_widget;
+
+        Listener(QWidget* widget)
+          : m_widget(widget)
+        {
+        }
+
+        virtual void OnResponseGetIsOn(QStatus status, const qcc::String& objectPath, const bool value, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseGetIsOn", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status),
+                              Q_ARG(bool, value)
+                              );
+        }
+        virtual void OnIsOnChanged(const qcc::String& objectPath, const bool value) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnIsOnChanged", Qt::QueuedConnection,
+                              Q_ARG(bool, value)
+                              );
+        }
+    };
 
 private:
-    ajn::services::OnOffStatusIntfControllerPtr controller;
+    Ref<ajn::services::OnOffStatusIntfController> controller;
+    Ref<Listener> m_listener;
 
 
     QLineEdit* edit_IsOn;

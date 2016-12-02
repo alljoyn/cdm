@@ -22,9 +22,9 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 
-#include <alljoyn/cdm/interfaces/operation/ResourceSavingInterface.h>
-#include <alljoyn/cdm/interfaces/operation/ResourceSavingIntfController.h>
-#include <alljoyn/cdm/interfaces/operation/ResourceSavingIntfControllerListener.h>
+#include <interfaces/common/operation/ResourceSavingInterface.h>
+#include <interfaces/controller/operation/ResourceSavingIntfController.h>
+#include <interfaces/controller/operation/ResourceSavingIntfControllerListener.h>
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
@@ -32,7 +32,7 @@ using namespace ajn::services;
 namespace CDMQtWidgets
 {
 
-class org_alljoyn_SmartSpaces_Operation_ResourceSaving : public QWidget, public ajn::services::ResourceSavingIntfControllerListener
+class org_alljoyn_SmartSpaces_Operation_ResourceSaving : public QWidget
 {
     Q_OBJECT
 public:
@@ -49,31 +49,43 @@ private slots:
 
 public:
     // ajn::services::ResourceSavingIntfControllerListener
-    void OnResponseGetResourceSavingMode(QStatus status, const qcc::String& objectPath, const bool value, void* context)
+    class Listener: public ajn::services::ResourceSavingIntfControllerListener
     {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseGetResourceSavingMode", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status),
-                          Q_ARG(bool, value)
-                          );
-    }
-    void OnResourceSavingModeChanged(const qcc::String& objectPath, const bool value)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResourceSavingModeChanged", Qt::QueuedConnection,
-                          Q_ARG(bool, value)
-                          );
-    }
-    void OnResponseSetResourceSavingMode(QStatus status, const qcc::String& objectPath, void* context)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseSetResourceSavingMode", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status)
-                          );
-    }
+    public:
+        QWidget* m_widget;
+
+        Listener(QWidget* widget)
+          : m_widget(widget)
+        {
+        }
+
+        virtual void OnResponseGetResourceSavingMode(QStatus status, const qcc::String& objectPath, const bool value, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseGetResourceSavingMode", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status),
+                              Q_ARG(bool, value)
+                              );
+        }
+        virtual void OnResourceSavingModeChanged(const qcc::String& objectPath, const bool value) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResourceSavingModeChanged", Qt::QueuedConnection,
+                              Q_ARG(bool, value)
+                              );
+        }
+        virtual void OnResponseSetResourceSavingMode(QStatus status, const qcc::String& objectPath, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseSetResourceSavingMode", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status)
+                              );
+        }
+    };
 
 private:
-    ajn::services::ResourceSavingIntfControllerPtr controller;
+    Ref<ajn::services::ResourceSavingIntfController> controller;
+    Ref<Listener> m_listener;
 
 
     QLineEdit* edit_ResourceSavingMode;

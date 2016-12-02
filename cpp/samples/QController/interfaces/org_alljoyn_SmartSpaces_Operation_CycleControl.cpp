@@ -19,12 +19,19 @@
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <sstream>
+
+
+
 
 using namespace CDMQtWidgets;
 
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_CycleControl*>();
 
-org_alljoyn_SmartSpaces_Operation_CycleControl::org_alljoyn_SmartSpaces_Operation_CycleControl(CommonControllerInterface *iface) : controller(NULL)
+
+org_alljoyn_SmartSpaces_Operation_CycleControl::org_alljoyn_SmartSpaces_Operation_CycleControl(CommonControllerInterface *iface)
+  : controller(NULL),
+    m_listener(mkRef<Listener>(this))
 {
     qWarning() << __FUNCTION__;
 
@@ -58,7 +65,7 @@ org_alljoyn_SmartSpaces_Operation_CycleControl::org_alljoyn_SmartSpaces_Operatio
 
     if (iface)
     {
-        controller = iface->CreateInterface<CycleControlIntfController>(*this);
+        controller = iface->CreateInterface<CycleControlIntfController>(m_listener);
         if (controller)
         {
             qWarning() << __FUNCTION__ << " Getting properties";
@@ -97,11 +104,14 @@ org_alljoyn_SmartSpaces_Operation_CycleControl::~org_alljoyn_SmartSpaces_Operati
     qWarning() << __FUNCTION__;
 }
 
+
+
 void org_alljoyn_SmartSpaces_Operation_CycleControl::slotClickExecuteOperationalCommand()
 {
     qWarning() << __FUNCTION__;
 
-    OperationalCommands command {};
+    CycleControlInterface::OperationalCommands command {};
+
 
     QStatus status = controller->ExecuteOperationalCommand(command, NULL);
     if (status != ER_OK)
@@ -111,39 +121,60 @@ void org_alljoyn_SmartSpaces_Operation_CycleControl::slotClickExecuteOperational
 }
 
 
-void org_alljoyn_SmartSpaces_Operation_CycleControl::slotOnResponseGetOperationalState(QStatus status, const OperationalState value)
+
+void org_alljoyn_SmartSpaces_Operation_CycleControl::slotOnResponseGetOperationalState(QStatus status, const CycleControlInterface::OperationalState value)
 {
     qWarning() << __FUNCTION__;
     edit_OperationalState->setText(QStringFrom(value));
 }
 
-void org_alljoyn_SmartSpaces_Operation_CycleControl::slotOnOperationalStateChanged(const OperationalState value)
+void org_alljoyn_SmartSpaces_Operation_CycleControl::slotOnOperationalStateChanged(const CycleControlInterface::OperationalState value)
 {
     qWarning() << __FUNCTION__;
     edit_OperationalState->setText(QStringFrom(value));
 }
 
-void org_alljoyn_SmartSpaces_Operation_CycleControl::slotOnResponseGetSupportedOperationalStates(QStatus status, const std::vector<OperationalState>& value)
+
+
+
+void org_alljoyn_SmartSpaces_Operation_CycleControl::slotOnResponseGetSupportedOperationalStates(QStatus status, const std::vector<CycleControlInterface::OperationalState>& value)
 {
     qWarning() << __FUNCTION__;
     edit_SupportedOperationalStates->setText(QStringFrom(value));
 }
 
-void org_alljoyn_SmartSpaces_Operation_CycleControl::slotOnSupportedOperationalStatesChanged(const std::vector<OperationalState>& value)
+void org_alljoyn_SmartSpaces_Operation_CycleControl::slotOnSupportedOperationalStatesChanged(const std::vector<CycleControlInterface::OperationalState>& value)
 {
     qWarning() << __FUNCTION__;
     edit_SupportedOperationalStates->setText(QStringFrom(value));
 }
 
-void org_alljoyn_SmartSpaces_Operation_CycleControl::slotOnResponseGetSupportedOperationalCommands(QStatus status, const std::vector<OperationalCommands>& value)
+
+
+
+void org_alljoyn_SmartSpaces_Operation_CycleControl::slotOnResponseGetSupportedOperationalCommands(QStatus status, const std::vector<CycleControlInterface::OperationalCommands>& value)
 {
     qWarning() << __FUNCTION__;
     edit_SupportedOperationalCommands->setText(QStringFrom(value));
 }
 
-void org_alljoyn_SmartSpaces_Operation_CycleControl::slotOnSupportedOperationalCommandsChanged(const std::vector<OperationalCommands>& value)
+void org_alljoyn_SmartSpaces_Operation_CycleControl::slotOnSupportedOperationalCommandsChanged(const std::vector<CycleControlInterface::OperationalCommands>& value)
 {
     qWarning() << __FUNCTION__;
     edit_SupportedOperationalCommands->setText(QStringFrom(value));
 }
 
+
+
+
+void org_alljoyn_SmartSpaces_Operation_CycleControl::slotOnResponseMethodExecuteOperationalCommand(QStatus status)
+{
+    if (status == ER_OK)
+    {
+        qInfo() << "Received response to method ExecuteOperationalCommand";
+    }
+    else
+    {
+        qWarning() << "Received an error from method ExecuteOperationalCommand, status = " << status;
+    }
+}

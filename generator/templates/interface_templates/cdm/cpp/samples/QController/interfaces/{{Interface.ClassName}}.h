@@ -22,9 +22,9 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 
-#include <alljoyn/cdm/interfaces/{{Interface.Category}}/{{Interface.Name}}Interface.h>
-#include <alljoyn/cdm/interfaces/{{Interface.Category}}/{{Interface.Name}}IntfController.h>
-#include <alljoyn/cdm/interfaces/{{Interface.Category}}/{{Interface.Name}}IntfControllerListener.h>
+#include <interfaces/common/{{Interface.Category}}/{{Interface.Name}}Interface.h>
+#include <interfaces/controller/{{Interface.Category}}/{{Interface.Name}}IntfController.h>
+#include <interfaces/controller/{{Interface.Category}}/{{Interface.Name}}IntfControllerListener.h>
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
@@ -32,7 +32,7 @@ using namespace ajn::services;
 namespace CDMQtWidgets
 {
 
-class {{Interface.ClassName}} : public QWidget, public ajn::services::{{Interface.Name}}IntfControllerListener
+class {{Interface.ClassName}} : public QWidget
 {
     Q_OBJECT
 public:
@@ -41,50 +41,83 @@ public:
 
     // Slots mirror the callbacks to avoid threading issues
 private slots:
-    {% for method in Interface.Methods %}
+{% for method in Interface.Methods %}
     void slotClick{{method.Name}}();
-    {% endfor %}
+{% endfor %}
 
-    {% for property in Interface.UserProperties %}
+{% for property in Interface.UserProperties %}
     void slotOnResponseGet{{property.Name}}(QStatus status, const {{property.Type.ctype_arg()}} value);
     void slotOn{{property.Name}}Changed(const {{property.Type.ctype_arg()}} value);
-    {% if property.Writable %}
+{% if property.Writable %}
     void slotOnResponseSet{{property.Name}}(QStatus status);
     void slotSet{{property.Name}}();
-    {% endif %}
-    {% endfor %}
+{% endif %}
+{% endfor %}
+{% for method in Interface.Methods %}
+    void slotOnResponseMethod{{method.Name}}(QStatus status);
+{% endfor %}
+{% for signal in Interface.Signals %}
+    void slotOnSignal{{signal.Name}}();
+{% endfor %}
 
 public:
     // ajn::services::{{InterfaceName}}IntfControllerListener
-    {% for property in Interface.UserProperties %}
-    void OnResponseGet{{property.Name}}(QStatus status, const qcc::String& objectPath, const {{property.Type.ctype_arg()}} value, void* context)
+    class Listener: public ajn::services::{{Interface.Name}}IntfControllerListener
     {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseGet{{property.Name}}", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status),
-                          Q_ARG({{property.Type.ctype()}}, value)
-                          );
-    }
-    void On{{property.Name}}Changed(const qcc::String& objectPath, const {{property.Type.ctype_arg()}} value)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOn{{property.Name}}Changed", Qt::QueuedConnection,
-                          Q_ARG({{property.Type.ctype()}}, value)
-                          );
-    }
-    {% if property.Writable %}
-    void OnResponseSet{{property.Name}}(QStatus status, const qcc::String& objectPath, void* context)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseSet{{property.Name}}", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status)
-                          );
-    }
-    {% endif %}
-    {% endfor %}
+    public:
+        QWidget* m_widget;
+
+        Listener(QWidget* widget)
+          : m_widget(widget)
+        {
+        }
+
+{% for property in Interface.UserProperties %}
+        virtual void OnResponseGet{{property.Name}}(QStatus status, const qcc::String& objectPath, const {{property.Type.ctype_arg()}} value, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseGet{{property.Name}}", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status),
+                              Q_ARG({{property.Type.ctype()}}, value)
+                              );
+        }
+        virtual void On{{property.Name}}Changed(const qcc::String& objectPath, const {{property.Type.ctype_arg()}} value) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOn{{property.Name}}Changed", Qt::QueuedConnection,
+                              Q_ARG({{property.Type.ctype()}}, value)
+                              );
+        }
+{% if property.Writable %}
+        virtual void OnResponseSet{{property.Name}}(QStatus status, const qcc::String& objectPath, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseSet{{property.Name}}", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status)
+                              );
+        }
+{% endif %}
+{% endfor %}
+{% for method in Interface.Methods %}
+        virtual void OnResponse{{method.Name}}(QStatus status, const qcc::String& objectPath, {% for arg in method.output_args() %}const {{arg.Type.ctype_arg()}} {{arg.Name.camel_case()}}, {% endfor %}void* context, const char* errorName, const char* errorMessage) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseMethod{{method.Name}}", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status)
+                              );
+        }
+{% endfor %}
+{% for signal in Interface.Signals %}
+        virtual void On{{signal.Name}}(const qcc::String& objectPath) override
+        {
+            QMetaObject::invokeMethod(m_widget, "slotOnSignal{{signal.Name}}", Qt::QueuedConnection);
+        }
+{% endfor %}
+    };
 
 private:
-    ajn::services::{{InterfaceName}}IntfControllerPtr controller;
+    Ref<ajn::services::{{InterfaceName}}IntfController> controller;
+    Ref<Listener> m_listener;
 
     {% for method in Interface.Methods %}
     QPushButton* button_{{method.Name}};

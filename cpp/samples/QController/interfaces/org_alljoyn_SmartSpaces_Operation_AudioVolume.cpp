@@ -19,12 +19,19 @@
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <sstream>
+
+
+
 
 using namespace CDMQtWidgets;
 
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_AudioVolume*>();
 
-org_alljoyn_SmartSpaces_Operation_AudioVolume::org_alljoyn_SmartSpaces_Operation_AudioVolume(CommonControllerInterface *iface) : controller(NULL)
+
+org_alljoyn_SmartSpaces_Operation_AudioVolume::org_alljoyn_SmartSpaces_Operation_AudioVolume(CommonControllerInterface *iface)
+  : controller(NULL),
+    m_listener(mkRef<Listener>(this))
 {
     qWarning() << __FUNCTION__;
 
@@ -55,7 +62,7 @@ org_alljoyn_SmartSpaces_Operation_AudioVolume::org_alljoyn_SmartSpaces_Operation
 
     if (iface)
     {
-        controller = iface->CreateInterface<AudioVolumeIntfController>(*this);
+        controller = iface->CreateInterface<AudioVolumeIntfController>(m_listener);
         if (controller)
         {
             qWarning() << __FUNCTION__ << " Getting properties";
@@ -134,6 +141,9 @@ void org_alljoyn_SmartSpaces_Operation_AudioVolume::slotSetVolume()
     }
 }
 
+
+
+
 void org_alljoyn_SmartSpaces_Operation_AudioVolume::slotOnResponseGetMaxVolume(QStatus status, const uint8_t value)
 {
     qWarning() << __FUNCTION__;
@@ -145,6 +155,9 @@ void org_alljoyn_SmartSpaces_Operation_AudioVolume::slotOnMaxVolumeChanged(const
     qWarning() << __FUNCTION__;
     edit_MaxVolume->setText(QStringFrom(value));
 }
+
+
+
 
 void org_alljoyn_SmartSpaces_Operation_AudioVolume::slotOnResponseGetMute(QStatus status, const bool value)
 {

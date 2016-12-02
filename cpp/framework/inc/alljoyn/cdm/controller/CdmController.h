@@ -108,20 +108,28 @@ class CdmController {
      * @param[in] listener interface listener
      * @return Interface
      */
-    std::shared_ptr<CdmInterface> CreateInterface(const CdmInterfaceType type, const std::string& busName, const qcc::String& objectPath, const SessionId& sessionId, InterfaceControllerListener& listener);
+    Ref<CdmInterface> CreateInterface(const std::string& ifaceName, const std::string& busName, const qcc::String& objectPath, const SessionId& sessionId, Ref<InterfaceControllerListener> listener);
 
     template <typename T>
-    std::shared_ptr<T> CreateInterface(const std::string& busName, const qcc::String& objectPath, const SessionId& sessionId, InterfaceControllerListener& listener) {
-        return std::static_pointer_cast<T>(CreateInterface(T::INTERFACE_TYPE, busName, objectPath, sessionId, listener));
+    Ref<T> CreateInterface(const std::string& busName, const qcc::String& objectPath, const SessionId& sessionId, Ref<InterfaceControllerListener> listener) {
+        return std::static_pointer_cast<T>(CreateInterface(T::INTERFACE_NAME, busName, objectPath, sessionId, listener));
     }
 
     /**
-     * Register vendor defined interface
+     * Register an interface
      * @param[in] interfaceName interface name
      * @param[in] createIntfController interface creator function
-     * @return CDM interface type
+     * @return ER_OK or ER_DUPLICATE_KEY
      */
-    const CdmInterfaceType RegisterVendorDefinedInterface(const qcc::String& interfaceName, CreateIntfControllerFptr createIntfController);
+    QStatus RegisterInterface(const qcc::String& interfaceName, CreateIntfControllerFptr createIntfController);
+
+    /**
+     * Unregister an interface
+     * @param[in] interfaceName interface name
+     * @param[in] createIntfController interface creator function
+     * @return ER_OK or ER_FAIL
+     */
+    QStatus UnregisterInterface(const qcc::String& interfaceName, CreateIntfControllerFptr createIntfController);
 
   private:
     CdmControllerImpl* m_impl;

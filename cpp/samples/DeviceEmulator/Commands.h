@@ -20,6 +20,7 @@
 #include <string>
 #include <vector>
 #include <functional>
+#include <alljoyn/cdm/controllee/CdmControllee.h>
 
 
 namespace ajn {
@@ -39,15 +40,15 @@ typedef std::vector<std::string> StringVec;
 class Commands
 {
 public:
-    typedef std::function<bool(const std::string& key, const StringVec& args)> Subscriber;
+    typedef std::function<bool(const std::string& key, const StringVec& args, CdmControllee& controllee)> Subscriber;
 
     static Commands& Instance();
 
     ~Commands();
 
     bool    Subscribe(const std::string& key, Subscriber subscriber, const std::string& help);
-    bool    Publish(const std::string& key, const StringVec& args);
-    bool    Publish(const std::string& command);
+    bool    Publish(const std::string& key, const StringVec& args, CdmControllee& controllee);
+    bool    Publish(const std::string& command, CdmControllee& controllee);
     StringVec Help() const;
 
 private:

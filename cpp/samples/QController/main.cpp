@@ -1,7 +1,9 @@
 #include "qcontroller.h"
 #include <QApplication>
 
-Q_DECLARE_METATYPE(ajn::services::DeviceInfoPtr)
+#include <interfaces/common/operation/AlertsInterface.h>
+
+Q_DECLARE_METATYPE(Ref<ajn::services::DeviceInfo>)
 Q_DECLARE_METATYPE(QStatus)
 Q_DECLARE_METATYPE(uint8_t)
 Q_DECLARE_METATYPE(uint16_t)
@@ -12,10 +14,23 @@ Q_DECLARE_METATYPE(uint64_t)
 Q_DECLARE_METATYPE(int64_t)
 Q_DECLARE_METATYPE(qcc::String)
 
+Q_DECLARE_METATYPE(std::vector<ajn::services::AlertsInterface::AlertRecord>);
+
+static const char* DefaultStyle =
+"#alertsList {\n"
+"   background-color: white;\n"
+"   border: 1px solid;\n"
+"   padding: 2px;\n"
+"   }\n"
+".alertDescription { margin-left: 5px; margin-right: 5px; }\n"
+"*[severity=\"2\"]{ background-color: red }\n"
+"*[severity=\"1\"]{ background-color: orange }\n"
+;
+
 
 int main(int argc, char *argv[])
 {
-    qRegisterMetaType<ajn::services::DeviceInfoPtr>();
+    qRegisterMetaType<Ref<ajn::services::DeviceInfo>>();
     qRegisterMetaType<QStatus>("QStatus");
     qRegisterMetaType<uint8_t>("uint8_t");
     qRegisterMetaType<uint16_t>("uint16_t");
@@ -26,7 +41,16 @@ int main(int argc, char *argv[])
     qRegisterMetaType<int64_t>("int64_t");
     qRegisterMetaType<qcc::String>();
 
+    qRegisterMetaType<std::vector<ajn::services::AlertsInterface::AlertRecord>>("std::vector<AlertsInterface::AlertRecord>");
+    qRegisterMetaType<std::vector<ajn::services::AlertsInterface::AlertCodesDescriptor>>("std::vector<AlertsInterface::AlertCodesDescriptor>");
+
     QApplication a(argc, argv);
+
+    if (a.styleSheet().isEmpty())
+    {
+        a.setStyleSheet(DefaultStyle);
+    }
+
     QController w;
     w.show();
 

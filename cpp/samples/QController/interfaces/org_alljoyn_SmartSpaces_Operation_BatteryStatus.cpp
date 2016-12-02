@@ -19,12 +19,19 @@
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <sstream>
+
+
+
 
 using namespace CDMQtWidgets;
 
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_BatteryStatus*>();
 
-org_alljoyn_SmartSpaces_Operation_BatteryStatus::org_alljoyn_SmartSpaces_Operation_BatteryStatus(CommonControllerInterface *iface) : controller(NULL)
+
+org_alljoyn_SmartSpaces_Operation_BatteryStatus::org_alljoyn_SmartSpaces_Operation_BatteryStatus(CommonControllerInterface *iface)
+  : controller(NULL),
+    m_listener(mkRef<Listener>(this))
 {
     qWarning() << __FUNCTION__;
 
@@ -47,7 +54,7 @@ org_alljoyn_SmartSpaces_Operation_BatteryStatus::org_alljoyn_SmartSpaces_Operati
 
     if (iface)
     {
-        controller = iface->CreateInterface<BatteryStatusIntfController>(*this);
+        controller = iface->CreateInterface<BatteryStatusIntfController>(m_listener);
         if (controller)
         {
             qWarning() << __FUNCTION__ << " Getting properties";
@@ -94,6 +101,9 @@ void org_alljoyn_SmartSpaces_Operation_BatteryStatus::slotOnCurrentValueChanged(
     qWarning() << __FUNCTION__;
     edit_CurrentValue->setText(QStringFrom(value));
 }
+
+
+
 
 void org_alljoyn_SmartSpaces_Operation_BatteryStatus::slotOnResponseGetIsCharging(QStatus status, const bool value)
 {

@@ -22,9 +22,9 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 
-#include <alljoyn/cdm/interfaces/operation/TriggerSensorInterface.h>
-#include <alljoyn/cdm/interfaces/operation/TriggerSensorIntfController.h>
-#include <alljoyn/cdm/interfaces/operation/TriggerSensorIntfControllerListener.h>
+#include <interfaces/common/operation/TriggerSensorInterface.h>
+#include <interfaces/controller/operation/TriggerSensorIntfController.h>
+#include <interfaces/controller/operation/TriggerSensorIntfControllerListener.h>
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
@@ -32,7 +32,7 @@ using namespace ajn::services;
 namespace CDMQtWidgets
 {
 
-class org_alljoyn_SmartSpaces_Operation_TriggerSensor : public QWidget, public ajn::services::TriggerSensorIntfControllerListener
+class org_alljoyn_SmartSpaces_Operation_TriggerSensor : public QWidget
 {
     Q_OBJECT
 public:
@@ -47,24 +47,36 @@ private slots:
 
 public:
     // ajn::services::TriggerSensorIntfControllerListener
-    void OnResponseGetCurrentlyTriggered(QStatus status, const qcc::String& objectPath, const bool value, void* context)
+    class Listener: public ajn::services::TriggerSensorIntfControllerListener
     {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseGetCurrentlyTriggered", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status),
-                          Q_ARG(bool, value)
-                          );
-    }
-    void OnCurrentlyTriggeredChanged(const qcc::String& objectPath, const bool value)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnCurrentlyTriggeredChanged", Qt::QueuedConnection,
-                          Q_ARG(bool, value)
-                          );
-    }
+    public:
+        QWidget* m_widget;
+
+        Listener(QWidget* widget)
+          : m_widget(widget)
+        {
+        }
+
+        virtual void OnResponseGetCurrentlyTriggered(QStatus status, const qcc::String& objectPath, const bool value, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseGetCurrentlyTriggered", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status),
+                              Q_ARG(bool, value)
+                              );
+        }
+        virtual void OnCurrentlyTriggeredChanged(const qcc::String& objectPath, const bool value) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnCurrentlyTriggeredChanged", Qt::QueuedConnection,
+                              Q_ARG(bool, value)
+                              );
+        }
+    };
 
 private:
-    ajn::services::TriggerSensorIntfControllerPtr controller;
+    Ref<ajn::services::TriggerSensorIntfController> controller;
+    Ref<Listener> m_listener;
 
 
     QLineEdit* edit_CurrentlyTriggered;

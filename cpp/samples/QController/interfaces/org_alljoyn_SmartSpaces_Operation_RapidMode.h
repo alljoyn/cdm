@@ -22,9 +22,9 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 
-#include <alljoyn/cdm/interfaces/operation/RapidModeInterface.h>
-#include <alljoyn/cdm/interfaces/operation/RapidModeIntfController.h>
-#include <alljoyn/cdm/interfaces/operation/RapidModeIntfControllerListener.h>
+#include <interfaces/common/operation/RapidModeInterface.h>
+#include <interfaces/controller/operation/RapidModeIntfController.h>
+#include <interfaces/controller/operation/RapidModeIntfControllerListener.h>
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
@@ -32,7 +32,7 @@ using namespace ajn::services;
 namespace CDMQtWidgets
 {
 
-class org_alljoyn_SmartSpaces_Operation_RapidMode : public QWidget, public ajn::services::RapidModeIntfControllerListener
+class org_alljoyn_SmartSpaces_Operation_RapidMode : public QWidget
 {
     Q_OBJECT
 public:
@@ -49,31 +49,43 @@ private slots:
 
 public:
     // ajn::services::RapidModeIntfControllerListener
-    void OnResponseGetRapidMode(QStatus status, const qcc::String& objectPath, const bool value, void* context)
+    class Listener: public ajn::services::RapidModeIntfControllerListener
     {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseGetRapidMode", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status),
-                          Q_ARG(bool, value)
-                          );
-    }
-    void OnRapidModeChanged(const qcc::String& objectPath, const bool value)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnRapidModeChanged", Qt::QueuedConnection,
-                          Q_ARG(bool, value)
-                          );
-    }
-    void OnResponseSetRapidMode(QStatus status, const qcc::String& objectPath, void* context)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseSetRapidMode", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status)
-                          );
-    }
+    public:
+        QWidget* m_widget;
+
+        Listener(QWidget* widget)
+          : m_widget(widget)
+        {
+        }
+
+        virtual void OnResponseGetRapidMode(QStatus status, const qcc::String& objectPath, const bool value, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseGetRapidMode", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status),
+                              Q_ARG(bool, value)
+                              );
+        }
+        virtual void OnRapidModeChanged(const qcc::String& objectPath, const bool value) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnRapidModeChanged", Qt::QueuedConnection,
+                              Q_ARG(bool, value)
+                              );
+        }
+        virtual void OnResponseSetRapidMode(QStatus status, const qcc::String& objectPath, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseSetRapidMode", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status)
+                              );
+        }
+    };
 
 private:
-    ajn::services::RapidModeIntfControllerPtr controller;
+    Ref<ajn::services::RapidModeIntfController> controller;
+    Ref<Listener> m_listener;
 
 
     QLineEdit* edit_RapidMode;

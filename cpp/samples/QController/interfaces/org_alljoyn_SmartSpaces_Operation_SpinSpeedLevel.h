@@ -22,9 +22,9 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 
-#include <alljoyn/cdm/interfaces/operation/SpinSpeedLevelInterface.h>
-#include <alljoyn/cdm/interfaces/operation/SpinSpeedLevelIntfController.h>
-#include <alljoyn/cdm/interfaces/operation/SpinSpeedLevelIntfControllerListener.h>
+#include <interfaces/common/operation/SpinSpeedLevelInterface.h>
+#include <interfaces/controller/operation/SpinSpeedLevelIntfController.h>
+#include <interfaces/controller/operation/SpinSpeedLevelIntfControllerListener.h>
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
@@ -32,7 +32,7 @@ using namespace ajn::services;
 namespace CDMQtWidgets
 {
 
-class org_alljoyn_SmartSpaces_Operation_SpinSpeedLevel : public QWidget, public ajn::services::SpinSpeedLevelIntfControllerListener
+class org_alljoyn_SmartSpaces_Operation_SpinSpeedLevel : public QWidget
 {
     Q_OBJECT
 public:
@@ -53,61 +53,73 @@ private slots:
 
 public:
     // ajn::services::SpinSpeedLevelIntfControllerListener
-    void OnResponseGetMaxLevel(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context)
+    class Listener: public ajn::services::SpinSpeedLevelIntfControllerListener
     {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseGetMaxLevel", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status),
-                          Q_ARG(uint8_t, value)
-                          );
-    }
-    void OnMaxLevelChanged(const qcc::String& objectPath, const uint8_t value)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnMaxLevelChanged", Qt::QueuedConnection,
-                          Q_ARG(uint8_t, value)
-                          );
-    }
-    void OnResponseGetTargetLevel(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseGetTargetLevel", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status),
-                          Q_ARG(uint8_t, value)
-                          );
-    }
-    void OnTargetLevelChanged(const qcc::String& objectPath, const uint8_t value)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnTargetLevelChanged", Qt::QueuedConnection,
-                          Q_ARG(uint8_t, value)
-                          );
-    }
-    void OnResponseSetTargetLevel(QStatus status, const qcc::String& objectPath, void* context)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseSetTargetLevel", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status)
-                          );
-    }
-    void OnResponseGetSelectableLevels(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& value, void* context)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseGetSelectableLevels", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status),
-                          Q_ARG(std::vector<uint8_t>, value)
-                          );
-    }
-    void OnSelectableLevelsChanged(const qcc::String& objectPath, const std::vector<uint8_t>& value)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnSelectableLevelsChanged", Qt::QueuedConnection,
-                          Q_ARG(std::vector<uint8_t>, value)
-                          );
-    }
+    public:
+        QWidget* m_widget;
+
+        Listener(QWidget* widget)
+          : m_widget(widget)
+        {
+        }
+
+        virtual void OnResponseGetMaxLevel(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseGetMaxLevel", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status),
+                              Q_ARG(uint8_t, value)
+                              );
+        }
+        virtual void OnMaxLevelChanged(const qcc::String& objectPath, const uint8_t value) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnMaxLevelChanged", Qt::QueuedConnection,
+                              Q_ARG(uint8_t, value)
+                              );
+        }
+        virtual void OnResponseGetTargetLevel(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseGetTargetLevel", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status),
+                              Q_ARG(uint8_t, value)
+                              );
+        }
+        virtual void OnTargetLevelChanged(const qcc::String& objectPath, const uint8_t value) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnTargetLevelChanged", Qt::QueuedConnection,
+                              Q_ARG(uint8_t, value)
+                              );
+        }
+        virtual void OnResponseSetTargetLevel(QStatus status, const qcc::String& objectPath, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseSetTargetLevel", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status)
+                              );
+        }
+        virtual void OnResponseGetSelectableLevels(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& value, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseGetSelectableLevels", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status),
+                              Q_ARG(std::vector<uint8_t>, value)
+                              );
+        }
+        virtual void OnSelectableLevelsChanged(const qcc::String& objectPath, const std::vector<uint8_t>& value) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnSelectableLevelsChanged", Qt::QueuedConnection,
+                              Q_ARG(std::vector<uint8_t>, value)
+                              );
+        }
+    };
 
 private:
-    ajn::services::SpinSpeedLevelIntfControllerPtr controller;
+    Ref<ajn::services::SpinSpeedLevelIntfController> controller;
+    Ref<Listener> m_listener;
 
 
     QLineEdit* edit_MaxLevel;

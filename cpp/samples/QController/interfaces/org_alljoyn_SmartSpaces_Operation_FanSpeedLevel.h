@@ -22,9 +22,9 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 
-#include <alljoyn/cdm/interfaces/operation/FanSpeedLevelInterface.h>
-#include <alljoyn/cdm/interfaces/operation/FanSpeedLevelIntfController.h>
-#include <alljoyn/cdm/interfaces/operation/FanSpeedLevelIntfControllerListener.h>
+#include <interfaces/common/operation/FanSpeedLevelInterface.h>
+#include <interfaces/controller/operation/FanSpeedLevelIntfController.h>
+#include <interfaces/controller/operation/FanSpeedLevelIntfControllerListener.h>
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
@@ -32,7 +32,7 @@ using namespace ajn::services;
 namespace CDMQtWidgets
 {
 
-class org_alljoyn_SmartSpaces_Operation_FanSpeedLevel : public QWidget, public ajn::services::FanSpeedLevelIntfControllerListener
+class org_alljoyn_SmartSpaces_Operation_FanSpeedLevel : public QWidget
 {
     Q_OBJECT
 public:
@@ -48,75 +48,87 @@ private slots:
     void slotSetFanSpeedLevel();
     void slotOnResponseGetMaxFanSpeedLevel(QStatus status, const uint8_t value);
     void slotOnMaxFanSpeedLevelChanged(const uint8_t value);
-    void slotOnResponseGetAutoMode(QStatus status, const AutoMode value);
-    void slotOnAutoModeChanged(const AutoMode value);
+    void slotOnResponseGetAutoMode(QStatus status, const FanSpeedLevelInterface::AutoMode value);
+    void slotOnAutoModeChanged(const FanSpeedLevelInterface::AutoMode value);
     void slotOnResponseSetAutoMode(QStatus status);
     void slotSetAutoMode();
 
 public:
     // ajn::services::FanSpeedLevelIntfControllerListener
-    void OnResponseGetFanSpeedLevel(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context)
+    class Listener: public ajn::services::FanSpeedLevelIntfControllerListener
     {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseGetFanSpeedLevel", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status),
-                          Q_ARG(uint8_t, value)
-                          );
-    }
-    void OnFanSpeedLevelChanged(const qcc::String& objectPath, const uint8_t value)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnFanSpeedLevelChanged", Qt::QueuedConnection,
-                          Q_ARG(uint8_t, value)
-                          );
-    }
-    void OnResponseSetFanSpeedLevel(QStatus status, const qcc::String& objectPath, void* context)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseSetFanSpeedLevel", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status)
-                          );
-    }
-    void OnResponseGetMaxFanSpeedLevel(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseGetMaxFanSpeedLevel", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status),
-                          Q_ARG(uint8_t, value)
-                          );
-    }
-    void OnMaxFanSpeedLevelChanged(const qcc::String& objectPath, const uint8_t value)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnMaxFanSpeedLevelChanged", Qt::QueuedConnection,
-                          Q_ARG(uint8_t, value)
-                          );
-    }
-    void OnResponseGetAutoMode(QStatus status, const qcc::String& objectPath, const AutoMode value, void* context)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseGetAutoMode", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status),
-                          Q_ARG(AutoMode, value)
-                          );
-    }
-    void OnAutoModeChanged(const qcc::String& objectPath, const AutoMode value)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnAutoModeChanged", Qt::QueuedConnection,
-                          Q_ARG(AutoMode, value)
-                          );
-    }
-    void OnResponseSetAutoMode(QStatus status, const qcc::String& objectPath, void* context)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseSetAutoMode", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status)
-                          );
-    }
+    public:
+        QWidget* m_widget;
+
+        Listener(QWidget* widget)
+          : m_widget(widget)
+        {
+        }
+
+        virtual void OnResponseGetFanSpeedLevel(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseGetFanSpeedLevel", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status),
+                              Q_ARG(uint8_t, value)
+                              );
+        }
+        virtual void OnFanSpeedLevelChanged(const qcc::String& objectPath, const uint8_t value) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnFanSpeedLevelChanged", Qt::QueuedConnection,
+                              Q_ARG(uint8_t, value)
+                              );
+        }
+        virtual void OnResponseSetFanSpeedLevel(QStatus status, const qcc::String& objectPath, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseSetFanSpeedLevel", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status)
+                              );
+        }
+        virtual void OnResponseGetMaxFanSpeedLevel(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseGetMaxFanSpeedLevel", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status),
+                              Q_ARG(uint8_t, value)
+                              );
+        }
+        virtual void OnMaxFanSpeedLevelChanged(const qcc::String& objectPath, const uint8_t value) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnMaxFanSpeedLevelChanged", Qt::QueuedConnection,
+                              Q_ARG(uint8_t, value)
+                              );
+        }
+        virtual void OnResponseGetAutoMode(QStatus status, const qcc::String& objectPath, const FanSpeedLevelInterface::AutoMode value, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseGetAutoMode", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status),
+                              Q_ARG(FanSpeedLevelInterface::AutoMode, value)
+                              );
+        }
+        virtual void OnAutoModeChanged(const qcc::String& objectPath, const FanSpeedLevelInterface::AutoMode value) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnAutoModeChanged", Qt::QueuedConnection,
+                              Q_ARG(FanSpeedLevelInterface::AutoMode, value)
+                              );
+        }
+        virtual void OnResponseSetAutoMode(QStatus status, const qcc::String& objectPath, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseSetAutoMode", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status)
+                              );
+        }
+    };
 
 private:
-    ajn::services::FanSpeedLevelIntfControllerPtr controller;
+    Ref<ajn::services::FanSpeedLevelIntfController> controller;
+    Ref<Listener> m_listener;
 
 
     QLineEdit* edit_FanSpeedLevel;

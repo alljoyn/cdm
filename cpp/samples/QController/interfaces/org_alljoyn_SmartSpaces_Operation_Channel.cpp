@@ -19,12 +19,52 @@
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <sstream>
+
+
+template<>
+QString
+QStringFrom<ChannelInterface::ChannelInfoRecord>(const ChannelInterface::ChannelInfoRecord& value)
+{
+    std::ostringstream strm;
+    strm << "{";
+    strm << "channelID=" << value.channelID.c_str();
+    strm << " ";
+    strm << "channelNumber=" << value.channelNumber.c_str();
+    strm << " ";
+    strm << "channelName=" << value.channelName.c_str();
+    strm << "}";
+
+    return QString::fromStdString(strm.str());
+}
+
+
+template<>
+QString
+QStringFrom<std::vector<ChannelInterface::ChannelInfoRecord>>(const std::vector<ChannelInterface::ChannelInfoRecord>& value)
+{
+    std::string result;
+
+    for (auto& v : value)
+    {
+        auto qs = QStringFrom<ChannelInterface::ChannelInfoRecord>(v);
+        result += qs.toStdString();
+    }
+    return QString::fromStdString(result);
+}
+
+
+
+
 
 using namespace CDMQtWidgets;
 
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_Channel*>();
 
-org_alljoyn_SmartSpaces_Operation_Channel::org_alljoyn_SmartSpaces_Operation_Channel(CommonControllerInterface *iface) : controller(NULL)
+
+org_alljoyn_SmartSpaces_Operation_Channel::org_alljoyn_SmartSpaces_Operation_Channel(CommonControllerInterface *iface)
+  : controller(NULL),
+    m_listener(mkRef<Listener>(this))
 {
     qWarning() << __FUNCTION__;
 
@@ -53,7 +93,7 @@ org_alljoyn_SmartSpaces_Operation_Channel::org_alljoyn_SmartSpaces_Operation_Cha
 
     if (iface)
     {
-        controller = iface->CreateInterface<ChannelIntfController>(*this);
+        controller = iface->CreateInterface<ChannelIntfController>(m_listener);
         if (controller)
         {
             qWarning() << __FUNCTION__ << " Getting properties";
@@ -87,6 +127,8 @@ org_alljoyn_SmartSpaces_Operation_Channel::~org_alljoyn_SmartSpaces_Operation_Ch
     qWarning() << __FUNCTION__;
 }
 
+
+
 void org_alljoyn_SmartSpaces_Operation_Channel::slotClickGetChannelList()
 {
     qWarning() << __FUNCTION__;
@@ -94,12 +136,16 @@ void org_alljoyn_SmartSpaces_Operation_Channel::slotClickGetChannelList()
     uint16_t startingRecord {};
     uint16_t numRecords {};
 
+    startingRecord = 0;
+    numRecords = 100;
+
     QStatus status = controller->GetChannelList(startingRecord, numRecords, NULL);
     if (status != ER_OK)
     {
         qWarning() << __FUNCTION__ << " Failed to call GetChannelList" << QCC_StatusText(status);
     }
 }
+
 
 
 void org_alljoyn_SmartSpaces_Operation_Channel::slotOnResponseGetChannelId(QStatus status, const qcc::String& value)
@@ -140,6 +186,9 @@ void org_alljoyn_SmartSpaces_Operation_Channel::slotSetChannelId()
     }
 }
 
+
+
+
 void org_alljoyn_SmartSpaces_Operation_Channel::slotOnResponseGetTotalNumberOfChannels(QStatus status, const uint16_t value)
 {
     qWarning() << __FUNCTION__;
@@ -152,3 +201,24 @@ void org_alljoyn_SmartSpaces_Operation_Channel::slotOnTotalNumberOfChannelsChang
     edit_TotalNumberOfChannels->setText(QStringFrom(value));
 }
 
+
+
+
+void org_alljoyn_SmartSpaces_Operation_Channel::slotOnResponseMethodGetChannelList(QStatus status)
+{
+    if (status == ER_OK)
+    {
+        qInfo() << "Received response to method GetChannelList";
+    }
+    else
+    {
+        qWarning() << "Received an error from method GetChannelList, status = " << status;
+    }
+}
+
+
+
+void org_alljoyn_SmartSpaces_Operation_Channel::slotOnSignalChannelListChanged()
+{
+        qInfo() << "Received signal ChannelListChanged";
+}

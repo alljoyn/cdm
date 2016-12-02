@@ -22,9 +22,9 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 
-#include <alljoyn/cdm/interfaces/operation/ClosedStatusInterface.h>
-#include <alljoyn/cdm/interfaces/operation/ClosedStatusIntfController.h>
-#include <alljoyn/cdm/interfaces/operation/ClosedStatusIntfControllerListener.h>
+#include <interfaces/common/operation/ClosedStatusInterface.h>
+#include <interfaces/controller/operation/ClosedStatusIntfController.h>
+#include <interfaces/controller/operation/ClosedStatusIntfControllerListener.h>
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
@@ -32,7 +32,7 @@ using namespace ajn::services;
 namespace CDMQtWidgets
 {
 
-class org_alljoyn_SmartSpaces_Operation_ClosedStatus : public QWidget, public ajn::services::ClosedStatusIntfControllerListener
+class org_alljoyn_SmartSpaces_Operation_ClosedStatus : public QWidget
 {
     Q_OBJECT
 public:
@@ -47,24 +47,36 @@ private slots:
 
 public:
     // ajn::services::ClosedStatusIntfControllerListener
-    void OnResponseGetIsClosed(QStatus status, const qcc::String& objectPath, const bool value, void* context)
+    class Listener: public ajn::services::ClosedStatusIntfControllerListener
     {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseGetIsClosed", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status),
-                          Q_ARG(bool, value)
-                          );
-    }
-    void OnIsClosedChanged(const qcc::String& objectPath, const bool value)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnIsClosedChanged", Qt::QueuedConnection,
-                          Q_ARG(bool, value)
-                          );
-    }
+    public:
+        QWidget* m_widget;
+
+        Listener(QWidget* widget)
+          : m_widget(widget)
+        {
+        }
+
+        virtual void OnResponseGetIsClosed(QStatus status, const qcc::String& objectPath, const bool value, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseGetIsClosed", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status),
+                              Q_ARG(bool, value)
+                              );
+        }
+        virtual void OnIsClosedChanged(const qcc::String& objectPath, const bool value) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnIsClosedChanged", Qt::QueuedConnection,
+                              Q_ARG(bool, value)
+                              );
+        }
+    };
 
 private:
-    ajn::services::ClosedStatusIntfControllerPtr controller;
+    Ref<ajn::services::ClosedStatusIntfController> controller;
+    Ref<Listener> m_listener;
 
 
     QLineEdit* edit_IsClosed;

@@ -36,6 +36,7 @@ class InterfaceControlleeModel;
 class CdmAboutData;
 class CdmBusObject;
 class CdmBusListener;
+class CdmControllee;
 
 /**
  * Cdm ControlleeImpl class.
@@ -43,7 +44,7 @@ class CdmBusListener;
  */
 class CdmControlleeImpl {
   public:
-    CdmControlleeImpl(BusAttachment& bus);
+    CdmControlleeImpl(BusAttachment& bus, CdmControllee& outer);
 
     ~CdmControlleeImpl();
 
@@ -65,6 +66,7 @@ class CdmControlleeImpl {
     QStatus UnregisterBusListener();
 
     BusAttachment& m_bus;
+    CdmControllee& m_outer;
     std::map<qcc::String, Ref<CdmBusObject>> m_cdmBusObjectsMap;
     std::map<std::pair<qcc::String, qcc::String>, Ref<CdmControlleeInterface>> m_interfaces;
     CdmBusListener* m_cdmBusListener;

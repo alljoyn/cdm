@@ -22,9 +22,9 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 
-#include <alljoyn/cdm/interfaces/operation/OnControlInterface.h>
-#include <alljoyn/cdm/interfaces/operation/OnControlIntfController.h>
-#include <alljoyn/cdm/interfaces/operation/OnControlIntfControllerListener.h>
+#include <interfaces/common/operation/OnControlInterface.h>
+#include <interfaces/controller/operation/OnControlIntfController.h>
+#include <interfaces/controller/operation/OnControlIntfControllerListener.h>
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
@@ -32,7 +32,7 @@ using namespace ajn::services;
 namespace CDMQtWidgets
 {
 
-class org_alljoyn_SmartSpaces_Operation_OnControl : public QWidget, public ajn::services::OnControlIntfControllerListener
+class org_alljoyn_SmartSpaces_Operation_OnControl : public QWidget
 {
     Q_OBJECT
 public:
@@ -43,12 +43,32 @@ public:
 private slots:
     void slotClickSwitchOn();
 
+    void slotOnResponseMethodSwitchOn(QStatus status);
 
 public:
     // ajn::services::OnControlIntfControllerListener
+    class Listener: public ajn::services::OnControlIntfControllerListener
+    {
+    public:
+        QWidget* m_widget;
+
+        Listener(QWidget* widget)
+          : m_widget(widget)
+        {
+        }
+
+        virtual void OnResponseSwitchOn(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseMethodSwitchOn", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status)
+                              );
+        }
+    };
 
 private:
-    ajn::services::OnControlIntfControllerPtr controller;
+    Ref<ajn::services::OnControlIntfController> controller;
+    Ref<Listener> m_listener;
 
     QPushButton* button_SwitchOn;
 

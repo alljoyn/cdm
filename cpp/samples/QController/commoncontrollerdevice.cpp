@@ -2,13 +2,13 @@
 #include <qcc/Log.h>
 #include <alljoyn/Init.h>
 #include <alljoyn/version.h>
-#include <alljoyn/cdm/CdmTranslator.h>
+#include <alljoyn/cdm/controller/CdmTranslator.h>
 
 //------------------------------------------------------------
 // CommonControllerDevice
 //------------------------------------------------------------
 
-CommonControllerDevice::CommonControllerDevice(CommonControllerRoot *root, ajn::services::DeviceInfoPtr device_info)
+CommonControllerDevice::CommonControllerDevice(CommonControllerRoot *root, Ref<ajn::services::DeviceInfo> device_info)
     : root(root),
       device_info(device_info)
 {
@@ -18,7 +18,7 @@ CommonControllerDevice::CommonControllerDevice(CommonControllerRoot *root, ajn::
 
     // TODO: We probably want a unified way of getting all the interfaces (translated and real ones) for a path
 
-    const std::map<std::string, ajn::services::CdmTranslatorPtr>& translators = device_info->GetTranslators();
+    const std::map<std::string, Ref<ajn::services::CdmTranslator>>& translators = device_info->GetTranslators();
 
     for (size_t i = 0; i < paths.size(); i++) {
         std::vector<const char*> interfaces(description.GetInterfaces(paths[i], NULL, 0));

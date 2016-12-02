@@ -19,12 +19,19 @@
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <sstream>
+
+
+
 
 using namespace CDMQtWidgets;
 
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_Color*>();
 
-org_alljoyn_SmartSpaces_Operation_Color::org_alljoyn_SmartSpaces_Operation_Color(CommonControllerInterface *iface) : controller(NULL)
+
+org_alljoyn_SmartSpaces_Operation_Color::org_alljoyn_SmartSpaces_Operation_Color(CommonControllerInterface *iface)
+  : controller(NULL),
+    m_listener(mkRef<Listener>(this))
 {
     qWarning() << __FUNCTION__;
 
@@ -49,7 +56,7 @@ org_alljoyn_SmartSpaces_Operation_Color::org_alljoyn_SmartSpaces_Operation_Color
 
     if (iface)
     {
-        controller = iface->CreateInterface<ColorIntfController>(*this);
+        controller = iface->CreateInterface<ColorIntfController>(m_listener);
         if (controller)
         {
             qWarning() << __FUNCTION__ << " Getting properties";
@@ -122,6 +129,9 @@ void org_alljoyn_SmartSpaces_Operation_Color::slotSetHue()
         qWarning() << __FUNCTION__ << "Failed to convert '" << str << "' to double";
     }
 }
+
+
+
 
 void org_alljoyn_SmartSpaces_Operation_Color::slotOnResponseGetSaturation(QStatus status, const double value)
 {

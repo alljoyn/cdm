@@ -37,7 +37,7 @@ typedef std::vector<std::string> StringVec;
 
 static bool s_quit = false;
 
-static bool HelpCommand(const string& key, const StringVec& args)
+static bool HelpCommand(const string& key, const StringVec& args, CdmControllee&)
 {
     for (auto& h : emulator::Commands::Instance().Help())
     {
@@ -48,7 +48,7 @@ static bool HelpCommand(const string& key, const StringVec& args)
 
 
 
-static bool QuitCommand(const string& key, const StringVec& args)
+static bool QuitCommand(const string& key, const StringVec& args, CdmControllee&)
 {
     s_quit = true;
     return true;
@@ -56,12 +56,15 @@ static bool QuitCommand(const string& key, const StringVec& args)
 
 
 
-static void CommandLoop()
+static void CommandLoop(Ref<emulator::SuperControllee> supercontrollee)
 {
     auto& cmds = emulator::Commands::Instance();
+    auto& clee = supercontrollee->GetControllee();
 
     cmds.Subscribe("help", HelpCommand, "help");
+    cmds.Subscribe("h",    HelpCommand, "h - help");
     cmds.Subscribe("quit", QuitCommand, "quit");
+    cmds.Subscribe("q",    QuitCommand, "q - quit");
 
     // testing cin detects an eof (^D)
     while (!s_quit && std::cin)
@@ -69,7 +72,7 @@ static void CommandLoop()
         string line;
         std::cout << "emul> ";
         std::getline(std::cin, line);
-        if (!cmds.Publish(line))
+        if (!line.empty() && !cmds.Publish(line, clee))
         {
             std::cout << "Failed\n";
         }
@@ -115,7 +118,7 @@ int CDECL_CALL main(int argc, char** argv)
         return 1;
     }
 
-    CommandLoop();
+    CommandLoop(device);
 
     device->Stop();
     return 0;

@@ -22,9 +22,9 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 
-#include <alljoyn/cdm/interfaces/operation/UnlockControlInterface.h>
-#include <alljoyn/cdm/interfaces/operation/UnlockControlIntfController.h>
-#include <alljoyn/cdm/interfaces/operation/UnlockControlIntfControllerListener.h>
+#include <interfaces/common/operation/UnlockControlInterface.h>
+#include <interfaces/controller/operation/UnlockControlIntfController.h>
+#include <interfaces/controller/operation/UnlockControlIntfControllerListener.h>
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
@@ -32,7 +32,7 @@ using namespace ajn::services;
 namespace CDMQtWidgets
 {
 
-class org_alljoyn_SmartSpaces_Operation_UnlockControl : public QWidget, public ajn::services::UnlockControlIntfControllerListener
+class org_alljoyn_SmartSpaces_Operation_UnlockControl : public QWidget
 {
     Q_OBJECT
 public:
@@ -43,12 +43,32 @@ public:
 private slots:
     void slotClickUnlock();
 
+    void slotOnResponseMethodUnlock(QStatus status);
 
 public:
     // ajn::services::UnlockControlIntfControllerListener
+    class Listener: public ajn::services::UnlockControlIntfControllerListener
+    {
+    public:
+        QWidget* m_widget;
+
+        Listener(QWidget* widget)
+          : m_widget(widget)
+        {
+        }
+
+        virtual void OnResponseUnlock(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseMethodUnlock", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status)
+                              );
+        }
+    };
 
 private:
-    ajn::services::UnlockControlIntfControllerPtr controller;
+    Ref<ajn::services::UnlockControlIntfController> controller;
+    Ref<Listener> m_listener;
 
     QPushButton* button_Unlock;
 

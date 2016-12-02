@@ -22,9 +22,9 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 
-#include <alljoyn/cdm/interfaces/operation/BrightnessInterface.h>
-#include <alljoyn/cdm/interfaces/operation/BrightnessIntfController.h>
-#include <alljoyn/cdm/interfaces/operation/BrightnessIntfControllerListener.h>
+#include <interfaces/common/operation/BrightnessInterface.h>
+#include <interfaces/controller/operation/BrightnessIntfController.h>
+#include <interfaces/controller/operation/BrightnessIntfControllerListener.h>
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
@@ -32,7 +32,7 @@ using namespace ajn::services;
 namespace CDMQtWidgets
 {
 
-class org_alljoyn_SmartSpaces_Operation_Brightness : public QWidget, public ajn::services::BrightnessIntfControllerListener
+class org_alljoyn_SmartSpaces_Operation_Brightness : public QWidget
 {
     Q_OBJECT
 public:
@@ -49,31 +49,43 @@ private slots:
 
 public:
     // ajn::services::BrightnessIntfControllerListener
-    void OnResponseGetBrightness(QStatus status, const qcc::String& objectPath, const double value, void* context)
+    class Listener: public ajn::services::BrightnessIntfControllerListener
     {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseGetBrightness", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status),
-                          Q_ARG(double, value)
-                          );
-    }
-    void OnBrightnessChanged(const qcc::String& objectPath, const double value)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnBrightnessChanged", Qt::QueuedConnection,
-                          Q_ARG(double, value)
-                          );
-    }
-    void OnResponseSetBrightness(QStatus status, const qcc::String& objectPath, void* context)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseSetBrightness", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status)
-                          );
-    }
+    public:
+        QWidget* m_widget;
+
+        Listener(QWidget* widget)
+          : m_widget(widget)
+        {
+        }
+
+        virtual void OnResponseGetBrightness(QStatus status, const qcc::String& objectPath, const double value, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseGetBrightness", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status),
+                              Q_ARG(double, value)
+                              );
+        }
+        virtual void OnBrightnessChanged(const qcc::String& objectPath, const double value) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnBrightnessChanged", Qt::QueuedConnection,
+                              Q_ARG(double, value)
+                              );
+        }
+        virtual void OnResponseSetBrightness(QStatus status, const qcc::String& objectPath, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseSetBrightness", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status)
+                              );
+        }
+    };
 
 private:
-    ajn::services::BrightnessIntfControllerPtr controller;
+    Ref<ajn::services::BrightnessIntfController> controller;
+    Ref<Listener> m_listener;
 
 
     QLineEdit* edit_Brightness;

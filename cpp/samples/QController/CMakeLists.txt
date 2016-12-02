@@ -6,6 +6,10 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
+IF(NOT CMAKE_BUILD_TYPE)
+  SET(CMAKE_BUILD_TYPE Debug)
+ENDIF(NOT CMAKE_BUILD_TYPE)
+
 
 find_package(Qt5Widgets)
 
@@ -35,7 +39,8 @@ set(ALLJOYN_DIST "${PROJECT_SOURCE_DIR}/../../../build/darwin/x86_64/debug/dist"
 
 include_directories(SYSTEM
     ${ALLJOYN_DIST}/cpp/inc
-    ${ALLJOYN_DIST}/cdm/inc
+    ${ALLJOYN_DIST}/cdm/framework/inc
+    ${ALLJOYN_DIST}/cdm/interfaces/inc
 )
 
 link_directories(
@@ -51,4 +56,9 @@ add_definitions(
 )
 
 add_executable(QController ${SOURCE_FILES} ${INTERFACE_SOURCE_FILES})
-target_link_libraries(QController Qt5::Widgets ${ALLJOYN_DIST}/cdm/lib/liballjoyn_cdm.a alljoyn ajrouter)
+target_link_libraries(QController Qt5::Widgets 
+    ${ALLJOYN_DIST}/cdm/lib/liballjoyn_cdm_common.a 
+    ${ALLJOYN_DIST}/cdm/lib/liballjoyn_cdm_controller.a 
+    ${ALLJOYN_DIST}/cdm/lib/liballjoyn_cdm_interfaces.a 
+    ${ALLJOYN_DIST}/cdm/lib/liballjoyn_cdm_util.a 
+    alljoyn ajrouter)

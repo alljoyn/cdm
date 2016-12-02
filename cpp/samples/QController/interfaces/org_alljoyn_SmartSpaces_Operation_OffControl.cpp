@@ -19,12 +19,19 @@
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <sstream>
+
+
+
 
 using namespace CDMQtWidgets;
 
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_OffControl*>();
 
-org_alljoyn_SmartSpaces_Operation_OffControl::org_alljoyn_SmartSpaces_Operation_OffControl(CommonControllerInterface *iface) : controller(NULL)
+
+org_alljoyn_SmartSpaces_Operation_OffControl::org_alljoyn_SmartSpaces_Operation_OffControl(CommonControllerInterface *iface)
+  : controller(NULL),
+    m_listener(mkRef<Listener>(this))
 {
     qWarning() << __FUNCTION__;
 
@@ -40,7 +47,7 @@ org_alljoyn_SmartSpaces_Operation_OffControl::org_alljoyn_SmartSpaces_Operation_
 
     if (iface)
     {
-        controller = iface->CreateInterface<OffControlIntfController>(*this);
+        controller = iface->CreateInterface<OffControlIntfController>(m_listener);
         if (controller)
         {
             qWarning() << __FUNCTION__ << " Getting properties";
@@ -64,9 +71,12 @@ org_alljoyn_SmartSpaces_Operation_OffControl::~org_alljoyn_SmartSpaces_Operation
     qWarning() << __FUNCTION__;
 }
 
+
+
 void org_alljoyn_SmartSpaces_Operation_OffControl::slotClickSwitchOff()
 {
     qWarning() << __FUNCTION__;
+
 
 
     QStatus status = controller->SwitchOff(NULL);
@@ -77,3 +87,15 @@ void org_alljoyn_SmartSpaces_Operation_OffControl::slotClickSwitchOff()
 }
 
 
+
+void org_alljoyn_SmartSpaces_Operation_OffControl::slotOnResponseMethodSwitchOff(QStatus status)
+{
+    if (status == ER_OK)
+    {
+        qInfo() << "Received response to method SwitchOff";
+    }
+    else
+    {
+        qWarning() << "Received an error from method SwitchOff, status = " << status;
+    }
+}

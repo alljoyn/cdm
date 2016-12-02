@@ -17,6 +17,7 @@
 #include "LockControlModel.h"
 #include "../../../Utils/HAL.h"
 
+#include <interfaces/controllee/operation/LockedStatusIntfControllee.h>
 
 namespace ajn {
 namespace services {
@@ -35,14 +36,15 @@ LockControlModel::LockControlModel(const std::string& busPath) :
     m_busPath(busPath)
 {}
 
-QStatus LockControlModel::Lock(ErrorCode& error, CdmSideEffects& sideEffects)
+QStatus LockControlModel::Lock(ErrorCode& error, CdmControllee& controllee)
 {
     bool value = true;
     QStatus status = HAL::WriteProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.LockedStatus", "IsLocked", value);
 
     if (status == ER_OK)
     {
-        sideEffects[{"org.alljoyn.SmartSpaces.Operation.LockedStatus", "IsLocked"}] = CdmSideEffect("b", value);
+        auto iface = controllee.GetInterface<LockedStatusIntfControllee>("alerts", "org.alljoyn.SmartSpaces.Operation.LockedStatus");
+        iface->EmitIsLockedChanged(value);
     }
 
     return status;

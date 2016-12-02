@@ -19,12 +19,52 @@
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <sstream>
+
+
+template<>
+QString
+QStringFrom<RobotCleaningCyclePhaseInterface::CyclePhaseDescriptor>(const RobotCleaningCyclePhaseInterface::CyclePhaseDescriptor& value)
+{
+    std::ostringstream strm;
+    strm << "{";
+    strm << "phase=" << value.phase;
+    strm << " ";
+    strm << "name=" << value.name.c_str();
+    strm << " ";
+    strm << "description=" << value.description.c_str();
+    strm << "}";
+
+    return QString::fromStdString(strm.str());
+}
+
+
+template<>
+QString
+QStringFrom<std::vector<RobotCleaningCyclePhaseInterface::CyclePhaseDescriptor>>(const std::vector<RobotCleaningCyclePhaseInterface::CyclePhaseDescriptor>& value)
+{
+    std::string result;
+
+    for (auto& v : value)
+    {
+        auto qs = QStringFrom<RobotCleaningCyclePhaseInterface::CyclePhaseDescriptor>(v);
+        result += qs.toStdString();
+    }
+    return QString::fromStdString(result);
+}
+
+
+
+
 
 using namespace CDMQtWidgets;
 
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_RobotCleaningCyclePhase*>();
 
-org_alljoyn_SmartSpaces_Operation_RobotCleaningCyclePhase::org_alljoyn_SmartSpaces_Operation_RobotCleaningCyclePhase(CommonControllerInterface *iface) : controller(NULL)
+
+org_alljoyn_SmartSpaces_Operation_RobotCleaningCyclePhase::org_alljoyn_SmartSpaces_Operation_RobotCleaningCyclePhase(CommonControllerInterface *iface)
+  : controller(NULL),
+    m_listener(mkRef<Listener>(this))
 {
     qWarning() << __FUNCTION__;
 
@@ -52,7 +92,7 @@ org_alljoyn_SmartSpaces_Operation_RobotCleaningCyclePhase::org_alljoyn_SmartSpac
 
     if (iface)
     {
-        controller = iface->CreateInterface<RobotCleaningCyclePhaseIntfController>(*this);
+        controller = iface->CreateInterface<RobotCleaningCyclePhaseIntfController>(m_listener);
         if (controller)
         {
             qWarning() << __FUNCTION__ << " Getting properties";
@@ -86,11 +126,14 @@ org_alljoyn_SmartSpaces_Operation_RobotCleaningCyclePhase::~org_alljoyn_SmartSpa
     qWarning() << __FUNCTION__;
 }
 
+
+
 void org_alljoyn_SmartSpaces_Operation_RobotCleaningCyclePhase::slotClickGetVendorPhasesDescription()
 {
     qWarning() << __FUNCTION__;
 
     qcc::String languageTag {};
+
 
     QStatus status = controller->GetVendorPhasesDescription(languageTag, NULL);
     if (status != ER_OK)
@@ -98,6 +141,7 @@ void org_alljoyn_SmartSpaces_Operation_RobotCleaningCyclePhase::slotClickGetVend
         qWarning() << __FUNCTION__ << " Failed to call GetVendorPhasesDescription" << QCC_StatusText(status);
     }
 }
+
 
 
 void org_alljoyn_SmartSpaces_Operation_RobotCleaningCyclePhase::slotOnResponseGetCyclePhase(QStatus status, const uint8_t value)
@@ -112,6 +156,9 @@ void org_alljoyn_SmartSpaces_Operation_RobotCleaningCyclePhase::slotOnCyclePhase
     edit_CyclePhase->setText(QStringFrom(value));
 }
 
+
+
+
 void org_alljoyn_SmartSpaces_Operation_RobotCleaningCyclePhase::slotOnResponseGetSupportedCyclePhases(QStatus status, const std::vector<uint8_t>& value)
 {
     qWarning() << __FUNCTION__;
@@ -124,3 +171,17 @@ void org_alljoyn_SmartSpaces_Operation_RobotCleaningCyclePhase::slotOnSupportedC
     edit_SupportedCyclePhases->setText(QStringFrom(value));
 }
 
+
+
+
+void org_alljoyn_SmartSpaces_Operation_RobotCleaningCyclePhase::slotOnResponseMethodGetVendorPhasesDescription(QStatus status)
+{
+    if (status == ER_OK)
+    {
+        qInfo() << "Received response to method GetVendorPhasesDescription";
+    }
+    else
+    {
+        qWarning() << "Received an error from method GetVendorPhasesDescription, status = " << status;
+    }
+}

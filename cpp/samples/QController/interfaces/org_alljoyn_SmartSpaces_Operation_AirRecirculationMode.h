@@ -22,9 +22,9 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 
-#include <alljoyn/cdm/interfaces/operation/AirRecirculationModeInterface.h>
-#include <alljoyn/cdm/interfaces/operation/AirRecirculationModeIntfController.h>
-#include <alljoyn/cdm/interfaces/operation/AirRecirculationModeIntfControllerListener.h>
+#include <interfaces/common/operation/AirRecirculationModeInterface.h>
+#include <interfaces/controller/operation/AirRecirculationModeIntfController.h>
+#include <interfaces/controller/operation/AirRecirculationModeIntfControllerListener.h>
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
@@ -32,7 +32,7 @@ using namespace ajn::services;
 namespace CDMQtWidgets
 {
 
-class org_alljoyn_SmartSpaces_Operation_AirRecirculationMode : public QWidget, public ajn::services::AirRecirculationModeIntfControllerListener
+class org_alljoyn_SmartSpaces_Operation_AirRecirculationMode : public QWidget
 {
     Q_OBJECT
 public:
@@ -49,31 +49,43 @@ private slots:
 
 public:
     // ajn::services::AirRecirculationModeIntfControllerListener
-    void OnResponseGetIsRecirculating(QStatus status, const qcc::String& objectPath, const bool value, void* context)
+    class Listener: public ajn::services::AirRecirculationModeIntfControllerListener
     {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseGetIsRecirculating", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status),
-                          Q_ARG(bool, value)
-                          );
-    }
-    void OnIsRecirculatingChanged(const qcc::String& objectPath, const bool value)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnIsRecirculatingChanged", Qt::QueuedConnection,
-                          Q_ARG(bool, value)
-                          );
-    }
-    void OnResponseSetIsRecirculating(QStatus status, const qcc::String& objectPath, void* context)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseSetIsRecirculating", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status)
-                          );
-    }
+    public:
+        QWidget* m_widget;
+
+        Listener(QWidget* widget)
+          : m_widget(widget)
+        {
+        }
+
+        virtual void OnResponseGetIsRecirculating(QStatus status, const qcc::String& objectPath, const bool value, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseGetIsRecirculating", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status),
+                              Q_ARG(bool, value)
+                              );
+        }
+        virtual void OnIsRecirculatingChanged(const qcc::String& objectPath, const bool value) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnIsRecirculatingChanged", Qt::QueuedConnection,
+                              Q_ARG(bool, value)
+                              );
+        }
+        virtual void OnResponseSetIsRecirculating(QStatus status, const qcc::String& objectPath, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseSetIsRecirculating", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status)
+                              );
+        }
+    };
 
 private:
-    ajn::services::AirRecirculationModeIntfControllerPtr controller;
+    Ref<ajn::services::AirRecirculationModeIntfController> controller;
+    Ref<Listener> m_listener;
 
 
     QLineEdit* edit_IsRecirculating;

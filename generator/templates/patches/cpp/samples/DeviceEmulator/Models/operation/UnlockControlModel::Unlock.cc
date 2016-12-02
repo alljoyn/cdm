@@ -3,7 +3,8 @@
 
     if (status == ER_OK)
     {
-        sideEffects[{"org.alljoyn.SmartSpaces.Operation.LockedStatus", "IsLocked"}] = CdmSideEffect("b", value);
+        auto iface = controllee.GetInterface<LockedStatusIntfControllee>(m_busPath, "org.alljoyn.SmartSpaces.Operation.LockedStatus");
+        iface->EmitIsLockedChanged(value);
     }
 
     return status;

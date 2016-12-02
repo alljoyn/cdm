@@ -22,9 +22,9 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 
-#include <alljoyn/cdm/interfaces/operation/ClimateControlModeInterface.h>
-#include <alljoyn/cdm/interfaces/operation/ClimateControlModeIntfController.h>
-#include <alljoyn/cdm/interfaces/operation/ClimateControlModeIntfControllerListener.h>
+#include <interfaces/common/operation/ClimateControlModeInterface.h>
+#include <interfaces/controller/operation/ClimateControlModeIntfController.h>
+#include <interfaces/controller/operation/ClimateControlModeIntfControllerListener.h>
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
@@ -32,7 +32,7 @@ using namespace ajn::services;
 namespace CDMQtWidgets
 {
 
-class org_alljoyn_SmartSpaces_Operation_ClimateControlMode : public QWidget, public ajn::services::ClimateControlModeIntfControllerListener
+class org_alljoyn_SmartSpaces_Operation_ClimateControlMode : public QWidget
 {
     Q_OBJECT
 public:
@@ -42,72 +42,84 @@ public:
     // Slots mirror the callbacks to avoid threading issues
 private slots:
 
-    void slotOnResponseGetMode(QStatus status, const Mode value);
-    void slotOnModeChanged(const Mode value);
+    void slotOnResponseGetMode(QStatus status, const ClimateControlModeInterface::Mode value);
+    void slotOnModeChanged(const ClimateControlModeInterface::Mode value);
     void slotOnResponseSetMode(QStatus status);
     void slotSetMode();
-    void slotOnResponseGetSupportedModes(QStatus status, const std::vector<Mode>& value);
-    void slotOnSupportedModesChanged(const std::vector<Mode>& value);
-    void slotOnResponseGetOperationalState(QStatus status, const OperationalState value);
-    void slotOnOperationalStateChanged(const OperationalState value);
+    void slotOnResponseGetSupportedModes(QStatus status, const std::vector<ClimateControlModeInterface::Mode>& value);
+    void slotOnSupportedModesChanged(const std::vector<ClimateControlModeInterface::Mode>& value);
+    void slotOnResponseGetOperationalState(QStatus status, const ClimateControlModeInterface::OperationalState value);
+    void slotOnOperationalStateChanged(const ClimateControlModeInterface::OperationalState value);
 
 public:
     // ajn::services::ClimateControlModeIntfControllerListener
-    void OnResponseGetMode(QStatus status, const qcc::String& objectPath, const Mode value, void* context)
+    class Listener: public ajn::services::ClimateControlModeIntfControllerListener
     {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseGetMode", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status),
-                          Q_ARG(Mode, value)
-                          );
-    }
-    void OnModeChanged(const qcc::String& objectPath, const Mode value)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnModeChanged", Qt::QueuedConnection,
-                          Q_ARG(Mode, value)
-                          );
-    }
-    void OnResponseSetMode(QStatus status, const qcc::String& objectPath, void* context)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseSetMode", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status)
-                          );
-    }
-    void OnResponseGetSupportedModes(QStatus status, const qcc::String& objectPath, const std::vector<Mode>& value, void* context)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseGetSupportedModes", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status),
-                          Q_ARG(std::vector<Mode>, value)
-                          );
-    }
-    void OnSupportedModesChanged(const qcc::String& objectPath, const std::vector<Mode>& value)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnSupportedModesChanged", Qt::QueuedConnection,
-                          Q_ARG(std::vector<Mode>, value)
-                          );
-    }
-    void OnResponseGetOperationalState(QStatus status, const qcc::String& objectPath, const OperationalState value, void* context)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseGetOperationalState", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status),
-                          Q_ARG(OperationalState, value)
-                          );
-    }
-    void OnOperationalStateChanged(const qcc::String& objectPath, const OperationalState value)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnOperationalStateChanged", Qt::QueuedConnection,
-                          Q_ARG(OperationalState, value)
-                          );
-    }
+    public:
+        QWidget* m_widget;
+
+        Listener(QWidget* widget)
+          : m_widget(widget)
+        {
+        }
+
+        virtual void OnResponseGetMode(QStatus status, const qcc::String& objectPath, const ClimateControlModeInterface::Mode value, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseGetMode", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status),
+                              Q_ARG(ClimateControlModeInterface::Mode, value)
+                              );
+        }
+        virtual void OnModeChanged(const qcc::String& objectPath, const ClimateControlModeInterface::Mode value) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnModeChanged", Qt::QueuedConnection,
+                              Q_ARG(ClimateControlModeInterface::Mode, value)
+                              );
+        }
+        virtual void OnResponseSetMode(QStatus status, const qcc::String& objectPath, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseSetMode", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status)
+                              );
+        }
+        virtual void OnResponseGetSupportedModes(QStatus status, const qcc::String& objectPath, const std::vector<ClimateControlModeInterface::Mode>& value, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseGetSupportedModes", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status),
+                              Q_ARG(std::vector<ClimateControlModeInterface::Mode>, value)
+                              );
+        }
+        virtual void OnSupportedModesChanged(const qcc::String& objectPath, const std::vector<ClimateControlModeInterface::Mode>& value) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnSupportedModesChanged", Qt::QueuedConnection,
+                              Q_ARG(std::vector<ClimateControlModeInterface::Mode>, value)
+                              );
+        }
+        virtual void OnResponseGetOperationalState(QStatus status, const qcc::String& objectPath, const ClimateControlModeInterface::OperationalState value, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseGetOperationalState", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status),
+                              Q_ARG(ClimateControlModeInterface::OperationalState, value)
+                              );
+        }
+        virtual void OnOperationalStateChanged(const qcc::String& objectPath, const ClimateControlModeInterface::OperationalState value) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnOperationalStateChanged", Qt::QueuedConnection,
+                              Q_ARG(ClimateControlModeInterface::OperationalState, value)
+                              );
+        }
+    };
 
 private:
-    ajn::services::ClimateControlModeIntfControllerPtr controller;
+    Ref<ajn::services::ClimateControlModeIntfController> controller;
+    Ref<Listener> m_listener;
 
 
     QLineEdit* edit_Mode;

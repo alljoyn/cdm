@@ -37,10 +37,17 @@ typedef std::vector<std::string> StringVec;
 class Config
 {
 public:
+    enum class PropMode
+    {
+        Default,                        // only use it as a default
+        Initialize                      // forceably initialise the property
+    };
+
     struct Property
     {
         std::string name;
         std::string initialState;       // as xml
+        PropMode    mode;
     };
 
     typedef std::vector<Property> PropertyVec;

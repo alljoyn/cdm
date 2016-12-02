@@ -19,12 +19,19 @@
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <sstream>
+
+
+
 
 using namespace CDMQtWidgets;
 
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_OnControl*>();
 
-org_alljoyn_SmartSpaces_Operation_OnControl::org_alljoyn_SmartSpaces_Operation_OnControl(CommonControllerInterface *iface) : controller(NULL)
+
+org_alljoyn_SmartSpaces_Operation_OnControl::org_alljoyn_SmartSpaces_Operation_OnControl(CommonControllerInterface *iface)
+  : controller(NULL),
+    m_listener(mkRef<Listener>(this))
 {
     qWarning() << __FUNCTION__;
 
@@ -40,7 +47,7 @@ org_alljoyn_SmartSpaces_Operation_OnControl::org_alljoyn_SmartSpaces_Operation_O
 
     if (iface)
     {
-        controller = iface->CreateInterface<OnControlIntfController>(*this);
+        controller = iface->CreateInterface<OnControlIntfController>(m_listener);
         if (controller)
         {
             qWarning() << __FUNCTION__ << " Getting properties";
@@ -64,9 +71,12 @@ org_alljoyn_SmartSpaces_Operation_OnControl::~org_alljoyn_SmartSpaces_Operation_
     qWarning() << __FUNCTION__;
 }
 
+
+
 void org_alljoyn_SmartSpaces_Operation_OnControl::slotClickSwitchOn()
 {
     qWarning() << __FUNCTION__;
+
 
 
     QStatus status = controller->SwitchOn(NULL);
@@ -77,3 +87,15 @@ void org_alljoyn_SmartSpaces_Operation_OnControl::slotClickSwitchOn()
 }
 
 
+
+void org_alljoyn_SmartSpaces_Operation_OnControl::slotOnResponseMethodSwitchOn(QStatus status)
+{
+    if (status == ER_OK)
+    {
+        qInfo() << "Received response to method SwitchOn";
+    }
+    else
+    {
+        qWarning() << "Received an error from method SwitchOn, status = " << status;
+    }
+}

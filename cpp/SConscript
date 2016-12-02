@@ -30,8 +30,9 @@ cdm_env.Install('$CDM_DISTDIR/framework/inc/alljoyn/cdm/common', cdm_env.Glob('f
 cdm_env.Install('$CDM_DISTDIR/framework/inc/alljoyn/cdm/util', cdm_env.Glob('framework/inc/alljoyn/cdm/util/*.h'))
 cdm_env.Install('$CDM_DISTDIR/framework/inc/alljoyn/cdm/controllee', cdm_env.Glob('framework/inc/alljoyn/cdm/controllee/*.h'))
 cdm_env.Install('$CDM_DISTDIR/framework/inc/alljoyn/cdm/controller', cdm_env.Glob('framework/inc/alljoyn/cdm/controller/*.h'))
+cdm_env.Install('$CDM_DISTDIR/interfaces/inc/interfaces/controller', cdm_env.Glob('interfaces/inc/interfaces/controller/*.h'))
 
-for component in ('common', 'controllee'):
+for component in ('common', 'controllee', 'controller'):
     cdm_env.Install('$CDM_DISTDIR/interfaces/inc/interfaces/%s/operation' % component, cdm_env.Glob('interfaces/inc/interfaces/%s/operation/*.h' % component))
     cdm_env.Install('$CDM_DISTDIR/interfaces/inc/interfaces/%s/environment' % component, cdm_env.Glob('interfaces/inc/interfaces/%s/environment/*.h' % component))
     cdm_env.Install('$CDM_DISTDIR/interfaces/inc/interfaces/%s/input' % component, cdm_env.Glob('interfaces/inc/interfaces/%s/input/*.h' % component))

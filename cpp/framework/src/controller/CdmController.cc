@@ -31,85 +31,76 @@ CdmController::CdmController(BusAttachment& bus, DeviceListener* listener)
 
 }
 
+
+
 CdmController::~CdmController()
 {
-    if (m_impl) {
-        delete m_impl;
-        m_impl = 0;
-    }
+    delete m_impl;
 }
+
+
 
 QStatus CdmController::EnablePeerSecurity(const char* authMechanisms,
                                           AuthListener* authListener,
                                           const char* keyStoreFileName,
                                           bool isKeyStoreShared)
 {
-    if (!m_impl) {
-        return ER_FAIL;
-    }
     return m_impl->EnablePeerSecurity(authMechanisms, authListener, keyStoreFileName, isKeyStoreShared);
 }
 
+
+
 QStatus CdmController::Init(const InterestDeviceList& list)
 {
-    if (!m_impl) {
-        return ER_FAIL;
-    }
     return m_impl->Init(list);
 }
 
+
+
 QStatus CdmController::Start()
 {
-    if (!m_impl) {
-        return ER_FAIL;
-    }
     return m_impl->Start();
 }
 
+
+
 QStatus CdmController::Stop()
 {
-    if (!m_impl) {
-        return ER_FAIL;
-    }
     return m_impl->Stop();
 }
+
+
 
 QStatus CdmController::JoinDevice(const std::string& busName, SessionPort port, const CdmAboutData& data,
                                   AboutObjectDescription& description)
 {
-    if (!m_impl) {
-        return ER_FAIL;
-    }
     return m_impl->JoinDevice(busName, port, data, description);
 }
 
 /*
 QStatus CdmController::GetAboutObjectDescription(const DeviceInfo& deviceInfo, AboutObjectDescription& aboutObjectDesc)
 {
-    if (!m_impl) {
-        return ER_FAIL;
-    }
-
     return m_impl->GetAboutObjectDescription(deviceInfo, aboutObjectDesc);
 }
 */
 
-std::shared_ptr<CdmInterface> CdmController::CreateInterface(const CdmInterfaceType type, const std::string& busName, const qcc::String& objectPath, const SessionId& sessionId, InterfaceControllerListener& listener)
-{
-    if (m_impl) {
-        return m_impl->CreateInterface(type, busName, objectPath, sessionId, listener);
-    }
 
-    return NULL;
+
+Ref<CdmInterface> CdmController::CreateInterface(const std::string& interfaceName, const std::string& busName, const qcc::String& objectPath, const SessionId& sessionId, Ref<InterfaceControllerListener> listener)
+{
+    return m_impl->CreateInterface(interfaceName, busName, objectPath, sessionId, listener);
 }
 
-const CdmInterfaceType CdmController::RegisterVendorDefinedInterface(const qcc::String& interfaceName, CreateIntfControllerFptr createIntfController)
+
+
+QStatus CdmController::RegisterInterface(const qcc::String& interfaceName, CreateIntfControllerFptr createIntfController)
 {
-    CdmInterfaceType type = UNDEFINED_INTERFACE;
+    return m_impl->RegisterInterface(interfaceName, createIntfController);
+}
 
-    if (m_impl) {
-        return m_impl->RegisterVendorDefinedInterface(interfaceName, createIntfController);
-    }
 
-    return type;
+
+QStatus CdmController::UnregisterInterface(const qcc::String& interfaceName, CreateIntfControllerFptr createIntfController)
+{
+    return m_impl->UnregisterInterface(interfaceName, createIntfController);
 }

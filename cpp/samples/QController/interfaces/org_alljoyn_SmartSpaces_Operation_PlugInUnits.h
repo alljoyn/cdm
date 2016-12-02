@@ -22,9 +22,9 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 
-#include <alljoyn/cdm/interfaces/operation/PlugInUnitsInterface.h>
-#include <alljoyn/cdm/interfaces/operation/PlugInUnitsIntfController.h>
-#include <alljoyn/cdm/interfaces/operation/PlugInUnitsIntfControllerListener.h>
+#include <interfaces/common/operation/PlugInUnitsInterface.h>
+#include <interfaces/controller/operation/PlugInUnitsIntfController.h>
+#include <interfaces/controller/operation/PlugInUnitsIntfControllerListener.h>
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
@@ -32,7 +32,7 @@ using namespace ajn::services;
 namespace CDMQtWidgets
 {
 
-class org_alljoyn_SmartSpaces_Operation_PlugInUnits : public QWidget, public ajn::services::PlugInUnitsIntfControllerListener
+class org_alljoyn_SmartSpaces_Operation_PlugInUnits : public QWidget
 {
     Q_OBJECT
 public:
@@ -42,29 +42,41 @@ public:
     // Slots mirror the callbacks to avoid threading issues
 private slots:
 
-    void slotOnResponseGetPlugInUnits(QStatus status, const std::vector<PlugInInfo>& value);
-    void slotOnPlugInUnitsChanged(const std::vector<PlugInInfo>& value);
+    void slotOnResponseGetPlugInUnits(QStatus status, const std::vector<PlugInUnitsInterface::PlugInInfo>& value);
+    void slotOnPlugInUnitsChanged(const std::vector<PlugInUnitsInterface::PlugInInfo>& value);
 
 public:
     // ajn::services::PlugInUnitsIntfControllerListener
-    void OnResponseGetPlugInUnits(QStatus status, const qcc::String& objectPath, const std::vector<PlugInInfo>& value, void* context)
+    class Listener: public ajn::services::PlugInUnitsIntfControllerListener
     {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseGetPlugInUnits", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status),
-                          Q_ARG(std::vector<PlugInInfo>, value)
-                          );
-    }
-    void OnPlugInUnitsChanged(const qcc::String& objectPath, const std::vector<PlugInInfo>& value)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnPlugInUnitsChanged", Qt::QueuedConnection,
-                          Q_ARG(std::vector<PlugInInfo>, value)
-                          );
-    }
+    public:
+        QWidget* m_widget;
+
+        Listener(QWidget* widget)
+          : m_widget(widget)
+        {
+        }
+
+        virtual void OnResponseGetPlugInUnits(QStatus status, const qcc::String& objectPath, const std::vector<PlugInUnitsInterface::PlugInInfo>& value, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseGetPlugInUnits", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status),
+                              Q_ARG(std::vector<PlugInUnitsInterface::PlugInInfo>, value)
+                              );
+        }
+        virtual void OnPlugInUnitsChanged(const qcc::String& objectPath, const std::vector<PlugInUnitsInterface::PlugInInfo>& value) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnPlugInUnitsChanged", Qt::QueuedConnection,
+                              Q_ARG(std::vector<PlugInUnitsInterface::PlugInInfo>, value)
+                              );
+        }
+    };
 
 private:
-    ajn::services::PlugInUnitsIntfControllerPtr controller;
+    Ref<ajn::services::PlugInUnitsIntfController> controller;
+    Ref<Listener> m_listener;
 
 
     QLineEdit* edit_PlugInUnits;

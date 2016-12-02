@@ -22,9 +22,9 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 
-#include <alljoyn/cdm/interfaces/operation/RemoteControllabilityInterface.h>
-#include <alljoyn/cdm/interfaces/operation/RemoteControllabilityIntfController.h>
-#include <alljoyn/cdm/interfaces/operation/RemoteControllabilityIntfControllerListener.h>
+#include <interfaces/common/operation/RemoteControllabilityInterface.h>
+#include <interfaces/controller/operation/RemoteControllabilityIntfController.h>
+#include <interfaces/controller/operation/RemoteControllabilityIntfControllerListener.h>
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
@@ -32,7 +32,7 @@ using namespace ajn::services;
 namespace CDMQtWidgets
 {
 
-class org_alljoyn_SmartSpaces_Operation_RemoteControllability : public QWidget, public ajn::services::RemoteControllabilityIntfControllerListener
+class org_alljoyn_SmartSpaces_Operation_RemoteControllability : public QWidget
 {
     Q_OBJECT
 public:
@@ -47,24 +47,36 @@ private slots:
 
 public:
     // ajn::services::RemoteControllabilityIntfControllerListener
-    void OnResponseGetIsControllable(QStatus status, const qcc::String& objectPath, const bool value, void* context)
+    class Listener: public ajn::services::RemoteControllabilityIntfControllerListener
     {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseGetIsControllable", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status),
-                          Q_ARG(bool, value)
-                          );
-    }
-    void OnIsControllableChanged(const qcc::String& objectPath, const bool value)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnIsControllableChanged", Qt::QueuedConnection,
-                          Q_ARG(bool, value)
-                          );
-    }
+    public:
+        QWidget* m_widget;
+
+        Listener(QWidget* widget)
+          : m_widget(widget)
+        {
+        }
+
+        virtual void OnResponseGetIsControllable(QStatus status, const qcc::String& objectPath, const bool value, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseGetIsControllable", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status),
+                              Q_ARG(bool, value)
+                              );
+        }
+        virtual void OnIsControllableChanged(const qcc::String& objectPath, const bool value) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnIsControllableChanged", Qt::QueuedConnection,
+                              Q_ARG(bool, value)
+                              );
+        }
+    };
 
 private:
-    ajn::services::RemoteControllabilityIntfControllerPtr controller;
+    Ref<ajn::services::RemoteControllabilityIntfController> controller;
+    Ref<Listener> m_listener;
 
 
     QLineEdit* edit_IsControllable;

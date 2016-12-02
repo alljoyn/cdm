@@ -19,12 +19,19 @@
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <sstream>
+
+
+
 
 using namespace CDMQtWidgets;
 
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_OnOffStatus*>();
 
-org_alljoyn_SmartSpaces_Operation_OnOffStatus::org_alljoyn_SmartSpaces_Operation_OnOffStatus(CommonControllerInterface *iface) : controller(NULL)
+
+org_alljoyn_SmartSpaces_Operation_OnOffStatus::org_alljoyn_SmartSpaces_Operation_OnOffStatus(CommonControllerInterface *iface)
+  : controller(NULL),
+    m_listener(mkRef<Listener>(this))
 {
     qWarning() << __FUNCTION__;
 
@@ -41,7 +48,7 @@ org_alljoyn_SmartSpaces_Operation_OnOffStatus::org_alljoyn_SmartSpaces_Operation
 
     if (iface)
     {
-        controller = iface->CreateInterface<OnOffStatusIntfController>(*this);
+        controller = iface->CreateInterface<OnOffStatusIntfController>(m_listener);
         if (controller)
         {
             qWarning() << __FUNCTION__ << " Getting properties";

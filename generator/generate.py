@@ -29,6 +29,25 @@ import argparse
 # Ugly global for the current template relative path
 CurrentRelativePath = ""
 
+# Load local macro files from the current directory.
+class LocalLoader(jinja2.BaseLoader):
+
+    def __init__(self):
+        self.files = ["macros"]
+
+    def get_source(self, environment, template):
+        # "patch/foo" maps to somewhere in the patches tree according to the template relative path
+        if template in self.files:
+            path = template
+            if not os.path.exists(path):
+                raise jinja2.TemplateNotFound(template)
+            mtime = os.path.getmtime(path)
+            with file(path) as f:
+                source = f.read().decode('utf-8')
+            return source, path, lambda: mtime == os.path.getmtime(path)
+        raise jinja2.TemplateNotFound(template)
+
+
 class PatchLoader(jinja2.BaseLoader):
 
     def __init__(self, patchespath):
@@ -83,7 +102,7 @@ class Generator(object):
         global CurrentRelativePath
 
         def file_checker(fname):
-            not_hidden = not fname.startswith('.')
+            not_hidden = not (fname.startswith('.') or fname.endswith('~'))
 
             def do_check(valid_matches, chosen):
                 return any([match in chosen for match in valid_matches])
@@ -106,13 +125,14 @@ class Generator(object):
 
             return is_valid
 
-        print 'Running %s' % type(self).__name__
+        # print 'Running %s' % type(self).__name__
 
         saxhandler = self.get_parser()
         parser = xml.make_parser()
         parser.setContentHandler(saxhandler)
 
         myLoader = jinja2.ChoiceLoader([
+            LocalLoader(),
             PatchLoader(self.cmd_args.patches),
             jinja2.FileSystemLoader(self.cmd_args.template_dir)
             ])
@@ -132,14 +152,32 @@ class Generator(object):
             for root, _, files in os.walk(self.cmd_args.template_dir):
                 template_paths = [os.path.join(root, fname) for fname in files]
                 for template_path in filter(file_checker, template_paths):
+
                     relative_path = os.path.relpath(template_path, self.cmd_args.template_dir)
-
-                    print "  " + relative_path
-                    template = env.get_template(relative_path)
-
                     result_path = jinja2.Template(relative_path).render(render_root)
-                    CurrentRelativePath = os.path.dirname(result_path)
-                    render_result = template.render(render_root)
+
+                    # See if we can load a whole file from the patches directory
+                    # The path components don't contain variables and the patches
+                    # aren't rendered
+                    whole_path = os.path.join(self.cmd_args.patches, relative_path)
+                    whole_path = jinja2.Template(whole_path).render(render_root)
+                    #print "whole_path", whole_path
+
+                    if os.path.exists(whole_path):
+                        try:
+                            f = open(whole_path)
+                            render_result = f.read()
+                            f.close()
+                            print "  using whole file", whole_path
+                        except OSError:
+                            print "ERROR reading path:", whole_path
+                            render_result = ("ERROR unreadable %s\n" % whole_path)
+                    else:
+                        print "  " + relative_path
+                        template = env.get_template(relative_path)
+
+                        CurrentRelativePath = os.path.dirname(result_path)
+                        render_result = template.render(render_root)
 
                     result_path = self.get_output_path(result_path)
                     result_dir  = os.path.dirname(result_path)

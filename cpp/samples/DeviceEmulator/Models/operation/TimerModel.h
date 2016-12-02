@@ -69,13 +69,13 @@ class TimerModel : public virtual TimerIntfControlleeModel {
      * @param[out] error Internal error code occurred during command execution
      * @return ER_OK on success
      */
-    QStatus SetTargetTimeToStart(int32_t arg_targetTimeToStart, ErrorCode& error, CdmSideEffects& sideEffects) override;
+    QStatus SetTargetTimeToStart(int32_t arg_targetTimeToStart, ErrorCode& error, CdmControllee& controllee) override;
     /**
      * Handler for method SetTargetTimeToStop
      * @param[out] error Internal error code occurred during command execution
      * @return ER_OK on success
      */
-    QStatus SetTargetTimeToStop(int32_t arg_targetTimeToStop, ErrorCode& error, CdmSideEffects& sideEffects) override;
+    QStatus SetTargetTimeToStop(int32_t arg_targetTimeToStop, ErrorCode& error, CdmControllee& controllee) override;
 
   private:
     std::string m_busPath;

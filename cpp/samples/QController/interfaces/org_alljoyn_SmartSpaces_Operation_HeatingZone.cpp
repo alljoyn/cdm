@@ -19,12 +19,19 @@
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <sstream>
+
+
+
 
 using namespace CDMQtWidgets;
 
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_HeatingZone*>();
 
-org_alljoyn_SmartSpaces_Operation_HeatingZone::org_alljoyn_SmartSpaces_Operation_HeatingZone(CommonControllerInterface *iface) : controller(NULL)
+
+org_alljoyn_SmartSpaces_Operation_HeatingZone::org_alljoyn_SmartSpaces_Operation_HeatingZone(CommonControllerInterface *iface)
+  : controller(NULL),
+    m_listener(mkRef<Listener>(this))
 {
     qWarning() << __FUNCTION__;
 
@@ -53,7 +60,7 @@ org_alljoyn_SmartSpaces_Operation_HeatingZone::org_alljoyn_SmartSpaces_Operation
 
     if (iface)
     {
-        controller = iface->CreateInterface<HeatingZoneIntfController>(*this);
+        controller = iface->CreateInterface<HeatingZoneIntfController>(m_listener);
         if (controller)
         {
             qWarning() << __FUNCTION__ << " Getting properties";
@@ -106,6 +113,9 @@ void org_alljoyn_SmartSpaces_Operation_HeatingZone::slotOnNumberOfHeatingZonesCh
     edit_NumberOfHeatingZones->setText(QStringFrom(value));
 }
 
+
+
+
 void org_alljoyn_SmartSpaces_Operation_HeatingZone::slotOnResponseGetMaxHeatingLevels(QStatus status, const std::vector<uint8_t>& value)
 {
     qWarning() << __FUNCTION__;
@@ -117,6 +127,9 @@ void org_alljoyn_SmartSpaces_Operation_HeatingZone::slotOnMaxHeatingLevelsChange
     qWarning() << __FUNCTION__;
     edit_MaxHeatingLevels->setText(QStringFrom(value));
 }
+
+
+
 
 void org_alljoyn_SmartSpaces_Operation_HeatingZone::slotOnResponseGetHeatingLevels(QStatus status, const std::vector<uint8_t>& value)
 {

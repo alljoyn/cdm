@@ -33,8 +33,9 @@ using namespace qcc;
 namespace ajn {
 namespace services {
 
-CdmControlleeImpl::CdmControlleeImpl(BusAttachment& bus) :
+CdmControlleeImpl::CdmControlleeImpl(BusAttachment& bus, CdmControllee& outer) :
     m_bus(bus),
+    m_outer(outer),
     m_cdmBusListener(new CdmBusListener(m_bus)),
     m_isStarted(false)
 {
@@ -102,7 +103,7 @@ Ref<CdmBusObject> CdmControlleeImpl::GetCdmBusObject(const qcc::String &busPath)
     if (iter != m_cdmBusObjectsMap.end()) {
         cdmBusObject = iter->second;
     } else {
-        cdmBusObject = Ref<CdmBusObject>(new CdmBusObject(m_bus, busPath));
+        cdmBusObject = Ref<CdmBusObject>(new CdmBusObject(m_bus, busPath, m_outer));
         created = true;
     }
 

@@ -45,9 +45,9 @@ class X
     xml::Element* ReadPropertyXml(const std::string& busPath, const std::string& interface, const std::string& property);
 
     // This doesn't retain the Element pointer.
-    void WritePropertyXml(const std::string& busPath, const std::string& interface, const std::string& property, xml::Element* xml);
+    void WritePropertyXml(const std::string& busPath, const std::string& interface, const std::string& property, xml::Element* xml, bool force = true);
 
-    void WritePropertyXml(const std::string& busPath, const std::string& interface, const std::string& property, const std::string& xml);
+    void WritePropertyXml(const std::string& busPath, const std::string& interface, const std::string& property, const std::string& xml, bool force = true);
 
   private:
     X();
@@ -95,7 +95,7 @@ inline QStatus ReadProperty(const std::string& busPath, const std::string& inter
 
 
 template<typename T>
-inline QStatus WriteProperty(const std::string& busPath, const std::string& interface, const std::string& property, const T& value)
+inline QStatus WriteProperty(const std::string& busPath, const std::string& interface, const std::string& property, const T& value, bool force = true)
 {
     typedef typename std::remove_const<T>::type BaseType;
     QStatus status = ER_FAIL;
@@ -104,7 +104,7 @@ inline QStatus WriteProperty(const std::string& busPath, const std::string& inte
     {
         Serializer<BaseType> ser;
         Element* xml = ser.put(nullptr, value);
-        X::instance().WritePropertyXml(busPath, interface, property, xml);
+        X::instance().WritePropertyXml(busPath, interface, property, xml, force);
         delete xml;
         status = ER_OK;
     }

@@ -22,9 +22,9 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 
-#include <alljoyn/cdm/interfaces/operation/RepeatModeInterface.h>
-#include <alljoyn/cdm/interfaces/operation/RepeatModeIntfController.h>
-#include <alljoyn/cdm/interfaces/operation/RepeatModeIntfControllerListener.h>
+#include <interfaces/common/operation/RepeatModeInterface.h>
+#include <interfaces/controller/operation/RepeatModeIntfController.h>
+#include <interfaces/controller/operation/RepeatModeIntfControllerListener.h>
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
@@ -32,7 +32,7 @@ using namespace ajn::services;
 namespace CDMQtWidgets
 {
 
-class org_alljoyn_SmartSpaces_Operation_RepeatMode : public QWidget, public ajn::services::RepeatModeIntfControllerListener
+class org_alljoyn_SmartSpaces_Operation_RepeatMode : public QWidget
 {
     Q_OBJECT
 public:
@@ -49,31 +49,43 @@ private slots:
 
 public:
     // ajn::services::RepeatModeIntfControllerListener
-    void OnResponseGetRepeatMode(QStatus status, const qcc::String& objectPath, const bool value, void* context)
+    class Listener: public ajn::services::RepeatModeIntfControllerListener
     {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseGetRepeatMode", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status),
-                          Q_ARG(bool, value)
-                          );
-    }
-    void OnRepeatModeChanged(const qcc::String& objectPath, const bool value)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnRepeatModeChanged", Qt::QueuedConnection,
-                          Q_ARG(bool, value)
-                          );
-    }
-    void OnResponseSetRepeatMode(QStatus status, const qcc::String& objectPath, void* context)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseSetRepeatMode", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status)
-                          );
-    }
+    public:
+        QWidget* m_widget;
+
+        Listener(QWidget* widget)
+          : m_widget(widget)
+        {
+        }
+
+        virtual void OnResponseGetRepeatMode(QStatus status, const qcc::String& objectPath, const bool value, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseGetRepeatMode", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status),
+                              Q_ARG(bool, value)
+                              );
+        }
+        virtual void OnRepeatModeChanged(const qcc::String& objectPath, const bool value) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnRepeatModeChanged", Qt::QueuedConnection,
+                              Q_ARG(bool, value)
+                              );
+        }
+        virtual void OnResponseSetRepeatMode(QStatus status, const qcc::String& objectPath, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseSetRepeatMode", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status)
+                              );
+        }
+    };
 
 private:
-    ajn::services::RepeatModeIntfControllerPtr controller;
+    Ref<ajn::services::RepeatModeIntfController> controller;
+    Ref<Listener> m_listener;
 
 
     QLineEdit* edit_RepeatMode;

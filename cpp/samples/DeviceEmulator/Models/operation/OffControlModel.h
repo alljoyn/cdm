@@ -33,7 +33,7 @@ class OffControlModel : public virtual OffControlIntfControlleeModel {
      * @param[out] error Internal error code occurred during command execution
      * @return ER_OK on success
      */
-    QStatus SwitchOff(ErrorCode& error, CdmSideEffects& sideEffects) override;
+    QStatus SwitchOff(ErrorCode& error, CdmControllee& controllee) override;
 
   private:
     std::string m_busPath;

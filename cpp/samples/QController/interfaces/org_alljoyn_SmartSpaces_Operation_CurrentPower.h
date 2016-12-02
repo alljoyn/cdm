@@ -22,9 +22,9 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 
-#include <alljoyn/cdm/interfaces/operation/CurrentPowerInterface.h>
-#include <alljoyn/cdm/interfaces/operation/CurrentPowerIntfController.h>
-#include <alljoyn/cdm/interfaces/operation/CurrentPowerIntfControllerListener.h>
+#include <interfaces/common/operation/CurrentPowerInterface.h>
+#include <interfaces/controller/operation/CurrentPowerIntfController.h>
+#include <interfaces/controller/operation/CurrentPowerIntfControllerListener.h>
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
@@ -32,7 +32,7 @@ using namespace ajn::services;
 namespace CDMQtWidgets
 {
 
-class org_alljoyn_SmartSpaces_Operation_CurrentPower : public QWidget, public ajn::services::CurrentPowerIntfControllerListener
+class org_alljoyn_SmartSpaces_Operation_CurrentPower : public QWidget
 {
     Q_OBJECT
 public:
@@ -51,54 +51,66 @@ private slots:
 
 public:
     // ajn::services::CurrentPowerIntfControllerListener
-    void OnResponseGetCurrentPower(QStatus status, const qcc::String& objectPath, const double value, void* context)
+    class Listener: public ajn::services::CurrentPowerIntfControllerListener
     {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseGetCurrentPower", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status),
-                          Q_ARG(double, value)
-                          );
-    }
-    void OnCurrentPowerChanged(const qcc::String& objectPath, const double value)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnCurrentPowerChanged", Qt::QueuedConnection,
-                          Q_ARG(double, value)
-                          );
-    }
-    void OnResponseGetPrecision(QStatus status, const qcc::String& objectPath, const double value, void* context)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseGetPrecision", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status),
-                          Q_ARG(double, value)
-                          );
-    }
-    void OnPrecisionChanged(const qcc::String& objectPath, const double value)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnPrecisionChanged", Qt::QueuedConnection,
-                          Q_ARG(double, value)
-                          );
-    }
-    void OnResponseGetUpdateMinTime(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnResponseGetUpdateMinTime", Qt::QueuedConnection,
-                          Q_ARG(QStatus, status),
-                          Q_ARG(uint16_t, value)
-                          );
-    }
-    void OnUpdateMinTimeChanged(const qcc::String& objectPath, const uint16_t value)
-    {
-        qWarning() << __FUNCTION__;
-        QMetaObject::invokeMethod(this, "slotOnUpdateMinTimeChanged", Qt::QueuedConnection,
-                          Q_ARG(uint16_t, value)
-                          );
-    }
+    public:
+        QWidget* m_widget;
+
+        Listener(QWidget* widget)
+          : m_widget(widget)
+        {
+        }
+
+        virtual void OnResponseGetCurrentPower(QStatus status, const qcc::String& objectPath, const double value, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseGetCurrentPower", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status),
+                              Q_ARG(double, value)
+                              );
+        }
+        virtual void OnCurrentPowerChanged(const qcc::String& objectPath, const double value) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnCurrentPowerChanged", Qt::QueuedConnection,
+                              Q_ARG(double, value)
+                              );
+        }
+        virtual void OnResponseGetPrecision(QStatus status, const qcc::String& objectPath, const double value, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseGetPrecision", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status),
+                              Q_ARG(double, value)
+                              );
+        }
+        virtual void OnPrecisionChanged(const qcc::String& objectPath, const double value) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnPrecisionChanged", Qt::QueuedConnection,
+                              Q_ARG(double, value)
+                              );
+        }
+        virtual void OnResponseGetUpdateMinTime(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseGetUpdateMinTime", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status),
+                              Q_ARG(uint16_t, value)
+                              );
+        }
+        virtual void OnUpdateMinTimeChanged(const qcc::String& objectPath, const uint16_t value) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnUpdateMinTimeChanged", Qt::QueuedConnection,
+                              Q_ARG(uint16_t, value)
+                              );
+        }
+    };
 
 private:
-    ajn::services::CurrentPowerIntfControllerPtr controller;
+    Ref<ajn::services::CurrentPowerIntfController> controller;
+    Ref<Listener> m_listener;
 
 
     QLineEdit* edit_CurrentPower;

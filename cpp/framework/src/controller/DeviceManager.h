@@ -27,10 +27,10 @@ namespace services {
 class DeviceManager {
   public:
     void Clear();
-    QStatus AddDeviceInfo(DeviceInfoPtr& info);
+    QStatus AddDeviceInfo(Ref<DeviceInfo> info);
     QStatus RemoveDeviceInfo(SessionId id);
-    QStatus FindDeviceInfoBySessionId(SessionId, DeviceInfoPtr& info);
-    QStatus FindDeviceInfoByBusName(const std::string busName, DeviceInfoPtr& info);
+    QStatus FindDeviceInfoBySessionId(SessionId, Ref<DeviceInfo> info);
+    QStatus FindDeviceInfoByBusName(const std::string busName, Ref<DeviceInfo> info);
 
   private:
     qcc::Mutex m_mutex;

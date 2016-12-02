@@ -57,7 +57,7 @@ class DeviceListener {
      * Device session joined
      * @param[in] info device info pointer
      */
-    virtual void OnDeviceSessionJoined(const DeviceInfoPtr& info) = 0;
+    virtual void OnDeviceSessionJoined(const Ref<DeviceInfo> info) = 0;
 
     /**
      * Device session lost

@@ -19,12 +19,57 @@
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <sstream>
+
+
+{% for struc in Interface.Structs %}
+template<>
+QString
+QStringFrom<{{Interface.Name}}Interface::{{struc.Name}}>(const {{Interface.Name}}Interface::{{struc.Name}}& value)
+{
+    std::ostringstream strm;
+    strm << "{";
+{% for field in struc.Fields %}
+{% if not loop.first %}
+    strm << " ";
+{% endif %}
+    strm << "{{field.Name}}=" << {{field.Type.toMsgArg("value."~field.Name)}};
+{% endfor %}
+    strm << "}";
+
+    return QString::fromStdString(strm.str());
+}
+
+
+template<>
+QString
+QStringFrom<std::vector<{{Interface.Name}}Interface::{{struc.Name}}>>(const std::vector<{{Interface.Name}}Interface::{{struc.Name}}>& value)
+{
+    std::string result;
+
+    for (auto& v : value)
+    {
+        auto qs = QStringFrom<{{Interface.Name}}Interface::{{struc.Name}}>(v);
+        result += qs.toStdString();
+    }
+    return QString::fromStdString(result);
+}
+
+
+
+{% endfor %}
+
+{% include ("patch/" ~ Interface.ClassName ~ "_header.cpp") ignore missing with context %}
 
 using namespace CDMQtWidgets;
 
 static const int auto_register_meta_type = qRegisterMetaType<{{Interface.ClassName}}*>();
 
-{{Interface.ClassName}}::{{Interface.ClassName}}(CommonControllerInterface *iface) : controller(NULL)
+{% include ("patch/" ~ Interface.ClassName ~ "_static.cpp") ignore missing with context %}
+
+{{Interface.ClassName}}::{{Interface.ClassName}}(CommonControllerInterface *iface)
+  : controller(NULL),
+    m_listener(mkRef<Listener>(this))
 {
     qWarning() << __FUNCTION__;
 
@@ -59,7 +104,7 @@ static const int auto_register_meta_type = qRegisterMetaType<{{Interface.ClassNa
 
     if (iface)
     {
-        controller = iface->CreateInterface<{{Interface.Name}}IntfController>(*this);
+        controller = iface->CreateInterface<{{Interface.Name}}IntfController>(m_listener);
         if (controller)
         {
             qWarning() << __FUNCTION__ << " Getting properties";
@@ -89,8 +134,10 @@ static const int auto_register_meta_type = qRegisterMetaType<{{Interface.ClassNa
 {
     qWarning() << __FUNCTION__;
 }
-
 {% for method in Interface.Methods %}
+
+
+
 void {{Interface.ClassName}}::slotClick{{method.Name}}()
 {
     qWarning() << __FUNCTION__;
@@ -99,6 +146,8 @@ void {{Interface.ClassName}}::slotClick{{method.Name}}()
     {{arg.Type.ctype()}} {{arg.Name.camel_case()}} {};
     {% endfor %}
 
+    {% include ("patch/" ~ Interface.ClassName ~ "::slotClick" ~ method.Name ~ ".cpp") ignore missing with context %}
+
     QStatus status = controller->{{method.Name}}({% for arg in method.input_args() %}{{arg.Name.camel_case()}}, {% endfor %}NULL);
     if (status != ER_OK)
     {
@@ -106,9 +155,10 @@ void {{Interface.ClassName}}::slotClick{{method.Name}}()
     }
 }
 {% endfor %}
-
-
 {% for property in Interface.UserProperties %}
+
+
+
 void {{Interface.ClassName}}::slotOnResponseGet{{property.Name}}(QStatus status, const {{property.Type.ctype_arg()}} value)
 {
     qWarning() << __FUNCTION__;
@@ -149,4 +199,29 @@ void {{Interface.ClassName}}::slotSet{{property.Name}}()
 }
 
 {% endif %}
+{% endfor %}
+{% for method in Interface.Methods %}
+
+
+
+void {{Interface.ClassName}}::slotOnResponseMethod{{method.Name}}(QStatus status)
+{
+    if (status == ER_OK)
+    {
+        qInfo() << "Received response to method {{method.Name}}";
+    }
+    else
+    {
+        qWarning() << "Received an error from method {{method.Name}}, status = " << status;
+    }
+}
+{% endfor %}
+{% for signal in Interface.Signals %}
+
+
+
+void {{Interface.ClassName}}::slotOnSignal{{signal.Name}}()
+{
+        qInfo() << "Received signal {{signal.Name}}";
+}
 {% endfor %}

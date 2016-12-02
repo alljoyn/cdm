@@ -28,13 +28,13 @@ void DeviceManager::Clear()
     m_deviceMap.clear();
 }
 
-QStatus DeviceManager::AddDeviceInfo(DeviceInfoPtr& info)
+QStatus DeviceManager::AddDeviceInfo(Ref<DeviceInfo> info)
 {
     if (m_deviceMap.find(info->GetSessionId()) != m_deviceMap.end()) {
         return ER_FAIL;
     }
 
-    m_deviceMap.insert(std::pair<SessionId, DeviceInfoPtr>(info->GetSessionId(), info));
+    m_deviceMap.insert(std::pair<SessionId, Ref<DeviceInfo>>(info->GetSessionId(), info));
 
     return ER_OK;
 }
@@ -51,7 +51,7 @@ QStatus DeviceManager::RemoveDeviceInfo(SessionId id)
     return ER_OK;
 }
 
-QStatus DeviceManager::FindDeviceInfoBySessionId(SessionId id, DeviceInfoPtr& info)
+QStatus DeviceManager::FindDeviceInfoBySessionId(SessionId id, Ref<DeviceInfo> info)
 {
     DeviceMap::iterator itr = m_deviceMap.find(id);
     if (itr == m_deviceMap.end()) {
@@ -62,7 +62,7 @@ QStatus DeviceManager::FindDeviceInfoBySessionId(SessionId id, DeviceInfoPtr& in
     return ER_OK;
 }
 
-QStatus DeviceManager::FindDeviceInfoByBusName(const std::string busName, DeviceInfoPtr& info)
+QStatus DeviceManager::FindDeviceInfoByBusName(const std::string busName, Ref<DeviceInfo> info)
 {
     DeviceMap::iterator itr;
 

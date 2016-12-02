@@ -24,6 +24,7 @@
 #include <alljoyn/MsgArg.h>
 #include <alljoyn/MessageReceiver.h>
 #include <alljoyn/cdm/common/CdmTypes.h>
+#include <alljoyn/cdm/controllee/CdmControllee.h>
 
 namespace ajn {
 namespace services {
@@ -36,7 +37,7 @@ class CdmBusObject;
 class InterfaceReceiver : public MessageReceiver {
   public:
 
-    typedef void (InterfaceReceiver::* CdmMethodHandler)(const InterfaceDescription::Member* member, Message& message, CdmSideEffects& sideEffects);
+    typedef void (InterfaceReceiver::* CdmMethodHandler)(const InterfaceDescription::Member* member, Message& message, CdmControllee& controllee);
     typedef std::vector<std::pair<const InterfaceDescription::Member*, InterfaceReceiver::CdmMethodHandler> > MethodHandlers;
 
     explicit InterfaceReceiver(CdmBusObject& cdmBusObject) : m_busObject(cdmBusObject) {};
@@ -66,7 +67,7 @@ class InterfaceReceiver : public MessageReceiver {
      * @param[in] member method interface member entry.
      * @param[in] message the received method call message.
      */
-    virtual void OnMethodHandler(const InterfaceDescription::Member* member, Message& msg, CdmSideEffects& sideEffects) = 0;
+    virtual void OnMethodHandler(const InterfaceDescription::Member* member, Message& msg, CdmControllee& controllee) = 0;
 
     /**
      * Get method handlers

@@ -67,12 +67,12 @@ QStatus FanSpeedLevelModel::GetMaxFanSpeedLevel(uint8_t& out) const
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.FanSpeedLevel", "MaxFanSpeedLevel", out);
 }
 
-QStatus FanSpeedLevelModel::GetAutoMode(AutoMode& out) const
+QStatus FanSpeedLevelModel::GetAutoMode(FanSpeedLevelInterface::AutoMode& out) const
 {
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.FanSpeedLevel", "AutoMode", out);
 }
 
-QStatus FanSpeedLevelModel::SetAutoMode(const AutoMode value)
+QStatus FanSpeedLevelModel::SetAutoMode(const FanSpeedLevelInterface::AutoMode value)
 {
     return HAL::WriteProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.FanSpeedLevel", "AutoMode", value);
 }

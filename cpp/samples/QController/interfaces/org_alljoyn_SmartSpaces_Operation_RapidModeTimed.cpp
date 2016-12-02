@@ -19,12 +19,19 @@
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <sstream>
+
+
+
 
 using namespace CDMQtWidgets;
 
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_RapidModeTimed*>();
 
-org_alljoyn_SmartSpaces_Operation_RapidModeTimed::org_alljoyn_SmartSpaces_Operation_RapidModeTimed(CommonControllerInterface *iface) : controller(NULL)
+
+org_alljoyn_SmartSpaces_Operation_RapidModeTimed::org_alljoyn_SmartSpaces_Operation_RapidModeTimed(CommonControllerInterface *iface)
+  : controller(NULL),
+    m_listener(mkRef<Listener>(this))
 {
     qWarning() << __FUNCTION__;
 
@@ -48,7 +55,7 @@ org_alljoyn_SmartSpaces_Operation_RapidModeTimed::org_alljoyn_SmartSpaces_Operat
 
     if (iface)
     {
-        controller = iface->CreateInterface<RapidModeTimedIntfController>(*this);
+        controller = iface->CreateInterface<RapidModeTimedIntfController>(m_listener);
         if (controller)
         {
             qWarning() << __FUNCTION__ << " Getting properties";
@@ -121,6 +128,9 @@ void org_alljoyn_SmartSpaces_Operation_RapidModeTimed::slotSetRapidModeMinutesRe
         qWarning() << __FUNCTION__ << "Failed to convert '" << str << "' to uint16_t";
     }
 }
+
+
+
 
 void org_alljoyn_SmartSpaces_Operation_RapidModeTimed::slotOnResponseGetMaxSetMinutes(QStatus status, const uint16_t value)
 {

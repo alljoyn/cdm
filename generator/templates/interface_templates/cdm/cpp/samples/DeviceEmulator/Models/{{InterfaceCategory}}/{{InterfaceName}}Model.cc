@@ -67,6 +67,9 @@ struct Serializer<{{Interface.Name}}Interface::{{struc.Name}}>
         Serializer<std::vector<SerializerField>> ser;
         {{Interface.Name}}Interface::{{struc.Name}} result;
         auto fields = ser.get(element);
+        if (fields.size() != {{struc.Fields|length}}) {
+            throw SerializerError();
+        }
 {% for field in struc.Fields %}
         {
             auto& sfield = fields[{{loop.index0}}];
@@ -115,9 +118,9 @@ QStatus {{Interface.Name}}Model::Set{{property.Name}}(const {{property.Type.ctyp
 
 {% set comma = joiner(", ") %}
 QStatus {{Interface.Name}}Model::{{method.Name}}(
-{%- for arg in method.Args if arg.Direction == "in" %}{{comma()}}{{arg.Type.ctype()}} arg_{{arg.Name}}{% endfor %}
-{%- for arg in method.Args if arg.Direction == "out" %}{{comma()}}{{arg.Type.ctype()}}& arg_{{arg.Name}}{% endfor %}{{comma()-}}
-    ErrorCode& error, CdmSideEffects& sideEffects)
+{%- for arg in method.input_args() %}{{comma()}}{{arg.Type.ctype_arg()}} arg_{{arg.Name}}{% endfor %}
+{%- for arg in method.output_args() %}{{comma()}}{{arg.Type.ctype()}}& arg_{{arg.Name}}{% endfor %}{{comma()-}}
+    ErrorCode& error, CdmControllee& controllee)
 {
     {% include ["patch/" ~ Interface.Name ~ "Model::" ~ method.Name ~ ".cc", "patch/TODO.cc"] ignore missing with context %}
 }

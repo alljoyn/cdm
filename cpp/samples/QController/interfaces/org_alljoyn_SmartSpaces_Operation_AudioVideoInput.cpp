@@ -19,12 +19,56 @@
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <sstream>
+
+
+template<>
+QString
+QStringFrom<AudioVideoInputInterface::InputSource>(const AudioVideoInputInterface::InputSource& value)
+{
+    std::ostringstream strm;
+    strm << "{";
+    strm << "id=" << value.id;
+    strm << " ";
+    strm << "sourceType=" << value.sourceType;
+    strm << " ";
+    strm << "signalPresence=" << value.signalPresence;
+    strm << " ";
+    strm << "portNumber=" << value.portNumber;
+    strm << " ";
+    strm << "friendlyName=" << value.friendlyName.c_str();
+    strm << "}";
+
+    return QString::fromStdString(strm.str());
+}
+
+
+template<>
+QString
+QStringFrom<std::vector<AudioVideoInputInterface::InputSource>>(const std::vector<AudioVideoInputInterface::InputSource>& value)
+{
+    std::string result;
+
+    for (auto& v : value)
+    {
+        auto qs = QStringFrom<AudioVideoInputInterface::InputSource>(v);
+        result += qs.toStdString();
+    }
+    return QString::fromStdString(result);
+}
+
+
+
+
 
 using namespace CDMQtWidgets;
 
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_AudioVideoInput*>();
 
-org_alljoyn_SmartSpaces_Operation_AudioVideoInput::org_alljoyn_SmartSpaces_Operation_AudioVideoInput(CommonControllerInterface *iface) : controller(NULL)
+
+org_alljoyn_SmartSpaces_Operation_AudioVideoInput::org_alljoyn_SmartSpaces_Operation_AudioVideoInput(CommonControllerInterface *iface)
+  : controller(NULL),
+    m_listener(mkRef<Listener>(this))
 {
     qWarning() << __FUNCTION__;
 
@@ -48,7 +92,7 @@ org_alljoyn_SmartSpaces_Operation_AudioVideoInput::org_alljoyn_SmartSpaces_Opera
 
     if (iface)
     {
-        controller = iface->CreateInterface<AudioVideoInputIntfController>(*this);
+        controller = iface->CreateInterface<AudioVideoInputIntfController>(m_listener);
         if (controller)
         {
             qWarning() << __FUNCTION__ << " Getting properties";
@@ -84,13 +128,13 @@ org_alljoyn_SmartSpaces_Operation_AudioVideoInput::~org_alljoyn_SmartSpaces_Oper
 
 
 
-void org_alljoyn_SmartSpaces_Operation_AudioVideoInput::slotOnResponseGetInputSourceId(QStatus status, const SourceType value)
+void org_alljoyn_SmartSpaces_Operation_AudioVideoInput::slotOnResponseGetInputSourceId(QStatus status, const AudioVideoInputInterface::SourceType value)
 {
     qWarning() << __FUNCTION__;
     edit_InputSourceId->setText(QStringFrom(value));
 }
 
-void org_alljoyn_SmartSpaces_Operation_AudioVideoInput::slotOnInputSourceIdChanged(const SourceType value)
+void org_alljoyn_SmartSpaces_Operation_AudioVideoInput::slotOnInputSourceIdChanged(const AudioVideoInputInterface::SourceType value)
 {
     qWarning() << __FUNCTION__;
     edit_InputSourceId->setText(QStringFrom(value));
@@ -107,7 +151,7 @@ void org_alljoyn_SmartSpaces_Operation_AudioVideoInput::slotSetInputSourceId()
 
     bool ok = false;
     QString str = edit_InputSourceId->text();
-    SourceType value = QStringTo<SourceType>(str, &ok);
+    AudioVideoInputInterface::SourceType value = QStringTo<AudioVideoInputInterface::SourceType>(str, &ok);
     if (ok)
     {
         QStatus status = controller->SetInputSourceId(value);
@@ -118,17 +162,20 @@ void org_alljoyn_SmartSpaces_Operation_AudioVideoInput::slotSetInputSourceId()
     }
     else
     {
-        qWarning() << __FUNCTION__ << "Failed to convert '" << str << "' to SourceType";
+        qWarning() << __FUNCTION__ << "Failed to convert '" << str << "' to AudioVideoInputInterface::SourceType";
     }
 }
 
-void org_alljoyn_SmartSpaces_Operation_AudioVideoInput::slotOnResponseGetSupportedInputSources(QStatus status, const std::vector<InputSource>& value)
+
+
+
+void org_alljoyn_SmartSpaces_Operation_AudioVideoInput::slotOnResponseGetSupportedInputSources(QStatus status, const std::vector<AudioVideoInputInterface::InputSource>& value)
 {
     qWarning() << __FUNCTION__;
     edit_SupportedInputSources->setText(QStringFrom(value));
 }
 
-void org_alljoyn_SmartSpaces_Operation_AudioVideoInput::slotOnSupportedInputSourcesChanged(const std::vector<InputSource>& value)
+void org_alljoyn_SmartSpaces_Operation_AudioVideoInput::slotOnSupportedInputSourcesChanged(const std::vector<AudioVideoInputInterface::InputSource>& value)
 {
     qWarning() << __FUNCTION__;
     edit_SupportedInputSources->setText(QStringFrom(value));

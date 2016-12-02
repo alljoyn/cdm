@@ -21,7 +21,6 @@
 #include <alljoyn/cdm/common/CdmTypes.h>
 #include <alljoyn/cdm/controllee/InterfaceReceiver.h>
 #include <alljoyn/cdm/controllee/InterfaceControlleeModel.h>
-#include "../controller/InterfaceFactory.h"
 
 using namespace std;
 using namespace qcc;
@@ -29,9 +28,10 @@ using namespace qcc;
 namespace ajn {
 namespace services {
 
-CdmBusObject::CdmBusObject(BusAttachment& busAttachment, String const& objectPath) :
+CdmBusObject::CdmBusObject(BusAttachment& busAttachment, String const& objectPath, CdmControllee& controllee) :
         BusObject(objectPath.c_str()),
-        m_busAttachment(busAttachment)
+        m_busAttachment(busAttachment),
+        m_controllee(controllee)
 {}
 
 CdmBusObject::~CdmBusObject()
@@ -115,11 +115,6 @@ QStatus CdmBusObject::Set(const char* ifcName, const char* propName, MsgArg& val
     return status;
 }
 
-void CdmBusObject::ProcessSideEffects(const CdmSideEffects& sideEffects) {
-    for (auto sideEffect : sideEffects) {
-        EmitPropChanged(sideEffect.first.first.c_str(), sideEffect.first.second.c_str(), sideEffect.second, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
-    }
-}
 
 void CdmBusObject::OnMethodHandler(const InterfaceDescription::Member* member, Message& msg)
 {
@@ -131,9 +126,7 @@ void CdmBusObject::OnMethodHandler(const InterfaceDescription::Member* member, M
 
         InterfaceReceiver* controllee = dynamic_cast<InterfaceReceiver*>(it->second);
         if (controllee) {
-            CdmSideEffects sideEffects;
-            controllee->OnMethodHandler(member, msg, sideEffects);
-            ProcessSideEffects(sideEffects);
+            controllee->OnMethodHandler(member, msg, m_controllee);
         } else {
             status = ER_BUS_METHOD_CALL_ABORTED;
             QCC_LogError(status, ("%s: interface object not found.", __func__));

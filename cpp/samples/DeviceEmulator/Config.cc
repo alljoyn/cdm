@@ -18,6 +18,7 @@
 #include <fstream>
 
 #include "Config.h"
+#include "../Utils/Utils.h"
 #include "../../framework/src/util/BSXML.h"
 
 using namespace std;
@@ -72,6 +73,17 @@ Config::Impl::ParseXml()
 
         if (nodes.size() == 1)
         {
+            // Jigger the device name to include the host name
+            for (auto* elem : nodes[0]->GetChildren())
+            {
+                if (elem->GetName() == "DeviceName")
+                {
+                    auto content = elem->GetContent() + ", " + utils::GetHostName();
+                    elem->SetContent(content);
+                    break;
+                }
+            }
+
             m_aboutData = nodes[0]->Generate();
         }
         else
@@ -116,6 +128,7 @@ Config::Impl::ParseXml()
                                 Property prObj;
 
                                 prObj.name = prop->GetAttribute("name");
+                                auto mode  = prop->GetAttribute("mode");
 
                                 if (!prObj.name.empty())
                                 {
@@ -131,6 +144,15 @@ Config::Impl::ParseXml()
                                     if (cs.size() > 1)
                                     {
                                         cerr << "The initial state is confused for " << objPath << " : " << ifObj.name << "\n";
+                                    }
+
+                                    if (mode == "default")
+                                    {
+                                        prObj.mode = PropMode::Default;
+                                    }
+                                    else
+                                    {
+                                        prObj.mode = PropMode::Initialize;
                                     }
 
                                     ifObj.properties.push_back(prObj);

@@ -50,9 +50,6 @@ mkRef(Args&& ...args)
     return std::make_shared<T>(std::forward<Args>(args)...);
 }
 
-typedef ajn::MsgArg CdmSideEffect;
-typedef std::map<std::pair<qcc::String, qcc::String>, CdmSideEffect> CdmSideEffects;
-
 //======================================================================
 // Forward Declarations
 

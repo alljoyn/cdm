@@ -58,6 +58,9 @@ struct Serializer<DishWashingCyclePhaseInterface::CyclePhaseDescriptor>
         Serializer<std::vector<SerializerField>> ser;
         DishWashingCyclePhaseInterface::CyclePhaseDescriptor result;
         auto fields = ser.get(element);
+        if (fields.size() != 3) {
+            throw SerializerError();
+        }
         {
             auto& sfield = fields[0];
             if (sfield.name != "phase")
@@ -119,7 +122,7 @@ QStatus DishWashingCyclePhaseModel::GetSupportedCyclePhases(std::vector<uint8_t>
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.DishWashingCyclePhase", "SupportedCyclePhases", out);
 }
 
-QStatus DishWashingCyclePhaseModel::GetVendorPhasesDescription(qcc::String arg_languageTag, std::vector<CyclePhaseDescriptor>& arg_phasesDescription, ErrorCode& error, CdmSideEffects& sideEffects)
+QStatus DishWashingCyclePhaseModel::GetVendorPhasesDescription(qcc::String& arg_languageTag, std::vector<DishWashingCyclePhaseInterface::CyclePhaseDescriptor>& arg_phasesDescription, ErrorCode& error, CdmControllee& controllee)
 {
     arg_phasesDescription = s_phases;
     return ER_OK;

@@ -27,7 +27,7 @@ namespace ajn {
 namespace services {
 
 CdmControllee::CdmControllee(BusAttachment& bus)
-  : m_impl(new CdmControlleeImpl(bus))
+  : m_impl(new CdmControlleeImpl(bus, *this))
 {
 }
 

@@ -32,7 +32,7 @@ class PlugInUnitsModel : public virtual PlugInUnitsIntfControlleeModel {
      * Get PlugInUnits
      * @return current plug in units
      */
-    QStatus GetPlugInUnits(std::vector<PlugInInfo>& out) const override;
+    QStatus GetPlugInUnits(std::vector<PlugInUnitsInterface::PlugInInfo>& out) const override;
 
 
   private:

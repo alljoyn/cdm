@@ -69,22 +69,22 @@ CycleControlModel::CycleControlModel(const std::string& busPath) :
     m_busPath(busPath)
 {}
 
-QStatus CycleControlModel::GetOperationalState(OperationalState& out) const
+QStatus CycleControlModel::GetOperationalState(CycleControlInterface::OperationalState& out) const
 {
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.CycleControl", "OperationalState", out);
 }
 
-QStatus CycleControlModel::GetSupportedOperationalStates(std::vector<OperationalState>& out) const
+QStatus CycleControlModel::GetSupportedOperationalStates(std::vector<CycleControlInterface::OperationalState>& out) const
 {
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.CycleControl", "SupportedOperationalStates", out);
 }
 
-QStatus CycleControlModel::GetSupportedOperationalCommands(std::vector<OperationalCommands>& out) const
+QStatus CycleControlModel::GetSupportedOperationalCommands(std::vector<CycleControlInterface::OperationalCommands>& out) const
 {
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.CycleControl", "SupportedOperationalCommands", out);
 }
 
-QStatus CycleControlModel::ExecuteOperationalCommand(OperationalCommands arg_command, ErrorCode& error, CdmSideEffects& sideEffects)
+QStatus CycleControlModel::ExecuteOperationalCommand(CycleControlInterface::OperationalCommands arg_command, ErrorCode& error, CdmControllee& controllee)
 {
     // TODO - fix me up manually
     return ER_FAIL;

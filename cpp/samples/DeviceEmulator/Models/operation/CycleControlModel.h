@@ -32,26 +32,26 @@ class CycleControlModel : public virtual CycleControlIntfControlleeModel {
      * Get OperationalState
      * @return current operational state
      */
-    QStatus GetOperationalState(OperationalState& out) const override;
+    QStatus GetOperationalState(CycleControlInterface::OperationalState& out) const override;
 
     /**
      * Get SupportedOperationalStates
      * @return current supported operational states
      */
-    QStatus GetSupportedOperationalStates(std::vector<OperationalState>& out) const override;
+    QStatus GetSupportedOperationalStates(std::vector<CycleControlInterface::OperationalState>& out) const override;
 
     /**
      * Get SupportedOperationalCommands
      * @return current supported operational commands
      */
-    QStatus GetSupportedOperationalCommands(std::vector<OperationalCommands>& out) const override;
+    QStatus GetSupportedOperationalCommands(std::vector<CycleControlInterface::OperationalCommands>& out) const override;
 
     /**
      * Handler for method ExecuteOperationalCommand
      * @param[out] error Internal error code occurred during command execution
      * @return ER_OK on success
      */
-    QStatus ExecuteOperationalCommand(OperationalCommands arg_command, ErrorCode& error, CdmSideEffects& sideEffects) override;
+    QStatus ExecuteOperationalCommand(CycleControlInterface::OperationalCommands arg_command, ErrorCode& error, CdmControllee& controllee) override;
 
   private:
     std::string m_busPath;

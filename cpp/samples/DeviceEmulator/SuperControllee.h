@@ -39,6 +39,8 @@ class SuperControllee {
         const std::string& certPath
         );
 
+    CdmControllee&  GetControllee() {return m_controllee;}
+
     QStatus CreateInterfaces();
     QStatus Start();
     QStatus Stop();

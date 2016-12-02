@@ -32,26 +32,26 @@ class ClimateControlModeModel : public virtual ClimateControlModeIntfControlleeM
      * Get Mode
      * @return current mode
      */
-    QStatus GetMode(Mode& out) const override;
+    QStatus GetMode(ClimateControlModeInterface::Mode& out) const override;
 
      /**
      * Set Mode
      * @param[in] value The mode to set
      * @return ER_OK on success
      */
-    QStatus SetMode(const Mode value) override;
+    QStatus SetMode(const ClimateControlModeInterface::Mode value) override;
 
     /**
      * Get SupportedModes
      * @return current supported modes
      */
-    QStatus GetSupportedModes(std::vector<Mode>& out) const override;
+    QStatus GetSupportedModes(std::vector<ClimateControlModeInterface::Mode>& out) const override;
 
     /**
      * Get OperationalState
      * @return current operational state
      */
-    QStatus GetOperationalState(OperationalState& out) const override;
+    QStatus GetOperationalState(ClimateControlModeInterface::OperationalState& out) const override;
 
 
   private:

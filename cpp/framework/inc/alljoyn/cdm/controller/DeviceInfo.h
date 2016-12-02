@@ -22,6 +22,8 @@
 #include <memory>
 #include <alljoyn/Session.h>
 #include <alljoyn/cdm/common/CdmAboutData.h>
+#include <alljoyn/cdm/common/CdmTypes.h>
+#include <alljoyn/cdm/controller/CdmTranslator.h>
 #include <alljoyn/AboutObjectDescription.h>
 
 namespace ajn {
@@ -82,10 +84,28 @@ class DeviceInfo {
     SessionPort GetSessionPort() const { return m_sessionPort; }
 
     /**
+     * Get About data
+     * @return About data
+     */
+    CdmAboutData& GetAboutData() { return m_aboutData; };
+
+    /**
      * Get About object description
      * @return About object description
      */
     const AboutObjectDescription& GetAboutObjectDescription() { return m_aboutObjectDescription; };
+
+    /**
+     * Get a map of bus paths to translation modules
+     * @return Translator map
+     */
+    const std::map<std::string, Ref<CdmTranslator>>& GetTranslators() { return m_translators; }
+
+    /**
+     * Add a translator module for a bus path
+     * @return Translator map
+     */
+    void RegisterTranslator(const std::string& busPath, Ref<CdmTranslator> translator) { m_translators[busPath] = translator; }
 
   private:
     std::string m_busName;
@@ -93,10 +113,10 @@ class DeviceInfo {
     SessionPort m_sessionPort;
     CdmAboutData m_aboutData;
     AboutObjectDescription m_aboutObjectDescription;
+    std::map<std::string, Ref<CdmTranslator>> m_translators;
 };
 
-typedef std::shared_ptr<DeviceInfo> DeviceInfoPtr;
-typedef std::map<SessionId, DeviceInfoPtr> DeviceMap;
+typedef std::map<SessionId, Ref<DeviceInfo>> DeviceMap;
 
 }  // services
 }  // ajn

@@ -211,10 +211,10 @@ void CommonControllerRoot::OnDeviceRemoved(const char* busname)
     qDebug() << "OnDeviceRemoved: " << busname;
 }
 
-void CommonControllerRoot::OnDeviceSessionJoined(const ajn::services::DeviceInfoPtr& info)
+void CommonControllerRoot::OnDeviceSessionJoined(const Ref<ajn::services::DeviceInfo> info)
 {
     qDebug() << "OnDeviceSessionJoined: " << info->GetBusName().c_str() << " Session: " << info->GetSessionId();
-    QMetaObject::invokeMethod(this, "addSession", Qt::QueuedConnection, Q_ARG(ajn::services::DeviceInfoPtr, info));
+    QMetaObject::invokeMethod(this, "addSession", Qt::QueuedConnection, Q_ARG(Ref<ajn::services::DeviceInfo>, info));
 }
 
 void CommonControllerRoot::OnDeviceSessionLost(ajn::SessionId sessionId)
@@ -223,7 +223,7 @@ void CommonControllerRoot::OnDeviceSessionLost(ajn::SessionId sessionId)
     QMetaObject::invokeMethod(this, "removeSession", Qt::QueuedConnection, Q_ARG(unsigned int, sessionId));
 }
 
-void CommonControllerRoot::addSession(ajn::services::DeviceInfoPtr deviceinfo) {
+void CommonControllerRoot::addSession(Ref<ajn::services::DeviceInfo> deviceinfo) {
     LockGuard lock(childrenMutex);
     model->beginInsertChild(this, children.size());
     children.push_back(new CommonControllerDevice(this, deviceinfo));

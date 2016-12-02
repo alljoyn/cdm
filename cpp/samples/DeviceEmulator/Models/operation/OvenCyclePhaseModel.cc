@@ -58,6 +58,9 @@ struct Serializer<OvenCyclePhaseInterface::CyclePhaseDescriptor>
         Serializer<std::vector<SerializerField>> ser;
         OvenCyclePhaseInterface::CyclePhaseDescriptor result;
         auto fields = ser.get(element);
+        if (fields.size() != 3) {
+            throw SerializerError();
+        }
         {
             auto& sfield = fields[0];
             if (sfield.name != "phase")
@@ -119,7 +122,7 @@ QStatus OvenCyclePhaseModel::GetSupportedCyclePhases(std::vector<uint8_t>& out) 
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.OvenCyclePhase", "SupportedCyclePhases", out);
 }
 
-QStatus OvenCyclePhaseModel::GetVendorPhasesDescription(qcc::String arg_languageTag, std::vector<CyclePhaseDescriptor>& arg_phasesDescription, ErrorCode& error, CdmSideEffects& sideEffects)
+QStatus OvenCyclePhaseModel::GetVendorPhasesDescription(qcc::String& arg_languageTag, std::vector<OvenCyclePhaseInterface::CyclePhaseDescriptor>& arg_phasesDescription, ErrorCode& error, CdmControllee& controllee)
 {
     arg_phasesDescription = s_phases;
     return ER_OK;

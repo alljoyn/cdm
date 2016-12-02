@@ -19,12 +19,19 @@
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <sstream>
+
+
+
 
 using namespace CDMQtWidgets;
 
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_ClimateControlMode*>();
 
-org_alljoyn_SmartSpaces_Operation_ClimateControlMode::org_alljoyn_SmartSpaces_Operation_ClimateControlMode(CommonControllerInterface *iface) : controller(NULL)
+
+org_alljoyn_SmartSpaces_Operation_ClimateControlMode::org_alljoyn_SmartSpaces_Operation_ClimateControlMode(CommonControllerInterface *iface)
+  : controller(NULL),
+    m_listener(mkRef<Listener>(this))
 {
     qWarning() << __FUNCTION__;
 
@@ -54,7 +61,7 @@ org_alljoyn_SmartSpaces_Operation_ClimateControlMode::org_alljoyn_SmartSpaces_Op
 
     if (iface)
     {
-        controller = iface->CreateInterface<ClimateControlModeIntfController>(*this);
+        controller = iface->CreateInterface<ClimateControlModeIntfController>(m_listener);
         if (controller)
         {
             qWarning() << __FUNCTION__ << " Getting properties";
@@ -95,13 +102,13 @@ org_alljoyn_SmartSpaces_Operation_ClimateControlMode::~org_alljoyn_SmartSpaces_O
 
 
 
-void org_alljoyn_SmartSpaces_Operation_ClimateControlMode::slotOnResponseGetMode(QStatus status, const Mode value)
+void org_alljoyn_SmartSpaces_Operation_ClimateControlMode::slotOnResponseGetMode(QStatus status, const ClimateControlModeInterface::Mode value)
 {
     qWarning() << __FUNCTION__;
     edit_Mode->setText(QStringFrom(value));
 }
 
-void org_alljoyn_SmartSpaces_Operation_ClimateControlMode::slotOnModeChanged(const Mode value)
+void org_alljoyn_SmartSpaces_Operation_ClimateControlMode::slotOnModeChanged(const ClimateControlModeInterface::Mode value)
 {
     qWarning() << __FUNCTION__;
     edit_Mode->setText(QStringFrom(value));
@@ -118,7 +125,7 @@ void org_alljoyn_SmartSpaces_Operation_ClimateControlMode::slotSetMode()
 
     bool ok = false;
     QString str = edit_Mode->text();
-    Mode value = QStringTo<Mode>(str, &ok);
+    ClimateControlModeInterface::Mode value = QStringTo<ClimateControlModeInterface::Mode>(str, &ok);
     if (ok)
     {
         QStatus status = controller->SetMode(value);
@@ -129,29 +136,35 @@ void org_alljoyn_SmartSpaces_Operation_ClimateControlMode::slotSetMode()
     }
     else
     {
-        qWarning() << __FUNCTION__ << "Failed to convert '" << str << "' to Mode";
+        qWarning() << __FUNCTION__ << "Failed to convert '" << str << "' to ClimateControlModeInterface::Mode";
     }
 }
 
-void org_alljoyn_SmartSpaces_Operation_ClimateControlMode::slotOnResponseGetSupportedModes(QStatus status, const std::vector<Mode>& value)
+
+
+
+void org_alljoyn_SmartSpaces_Operation_ClimateControlMode::slotOnResponseGetSupportedModes(QStatus status, const std::vector<ClimateControlModeInterface::Mode>& value)
 {
     qWarning() << __FUNCTION__;
     edit_SupportedModes->setText(QStringFrom(value));
 }
 
-void org_alljoyn_SmartSpaces_Operation_ClimateControlMode::slotOnSupportedModesChanged(const std::vector<Mode>& value)
+void org_alljoyn_SmartSpaces_Operation_ClimateControlMode::slotOnSupportedModesChanged(const std::vector<ClimateControlModeInterface::Mode>& value)
 {
     qWarning() << __FUNCTION__;
     edit_SupportedModes->setText(QStringFrom(value));
 }
 
-void org_alljoyn_SmartSpaces_Operation_ClimateControlMode::slotOnResponseGetOperationalState(QStatus status, const OperationalState value)
+
+
+
+void org_alljoyn_SmartSpaces_Operation_ClimateControlMode::slotOnResponseGetOperationalState(QStatus status, const ClimateControlModeInterface::OperationalState value)
 {
     qWarning() << __FUNCTION__;
     edit_OperationalState->setText(QStringFrom(value));
 }
 
-void org_alljoyn_SmartSpaces_Operation_ClimateControlMode::slotOnOperationalStateChanged(const OperationalState value)
+void org_alljoyn_SmartSpaces_Operation_ClimateControlMode::slotOnOperationalStateChanged(const ClimateControlModeInterface::OperationalState value)
 {
     qWarning() << __FUNCTION__;
     edit_OperationalState->setText(QStringFrom(value));

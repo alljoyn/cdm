@@ -19,12 +19,19 @@
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <sstream>
+
+
+
 
 using namespace CDMQtWidgets;
 
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_FanSpeedLevel*>();
 
-org_alljoyn_SmartSpaces_Operation_FanSpeedLevel::org_alljoyn_SmartSpaces_Operation_FanSpeedLevel(CommonControllerInterface *iface) : controller(NULL)
+
+org_alljoyn_SmartSpaces_Operation_FanSpeedLevel::org_alljoyn_SmartSpaces_Operation_FanSpeedLevel(CommonControllerInterface *iface)
+  : controller(NULL),
+    m_listener(mkRef<Listener>(this))
 {
     qWarning() << __FUNCTION__;
 
@@ -55,7 +62,7 @@ org_alljoyn_SmartSpaces_Operation_FanSpeedLevel::org_alljoyn_SmartSpaces_Operati
 
     if (iface)
     {
-        controller = iface->CreateInterface<FanSpeedLevelIntfController>(*this);
+        controller = iface->CreateInterface<FanSpeedLevelIntfController>(m_listener);
         if (controller)
         {
             qWarning() << __FUNCTION__ << " Getting properties";
@@ -134,6 +141,9 @@ void org_alljoyn_SmartSpaces_Operation_FanSpeedLevel::slotSetFanSpeedLevel()
     }
 }
 
+
+
+
 void org_alljoyn_SmartSpaces_Operation_FanSpeedLevel::slotOnResponseGetMaxFanSpeedLevel(QStatus status, const uint8_t value)
 {
     qWarning() << __FUNCTION__;
@@ -146,13 +156,16 @@ void org_alljoyn_SmartSpaces_Operation_FanSpeedLevel::slotOnMaxFanSpeedLevelChan
     edit_MaxFanSpeedLevel->setText(QStringFrom(value));
 }
 
-void org_alljoyn_SmartSpaces_Operation_FanSpeedLevel::slotOnResponseGetAutoMode(QStatus status, const AutoMode value)
+
+
+
+void org_alljoyn_SmartSpaces_Operation_FanSpeedLevel::slotOnResponseGetAutoMode(QStatus status, const FanSpeedLevelInterface::AutoMode value)
 {
     qWarning() << __FUNCTION__;
     edit_AutoMode->setText(QStringFrom(value));
 }
 
-void org_alljoyn_SmartSpaces_Operation_FanSpeedLevel::slotOnAutoModeChanged(const AutoMode value)
+void org_alljoyn_SmartSpaces_Operation_FanSpeedLevel::slotOnAutoModeChanged(const FanSpeedLevelInterface::AutoMode value)
 {
     qWarning() << __FUNCTION__;
     edit_AutoMode->setText(QStringFrom(value));
@@ -169,7 +182,7 @@ void org_alljoyn_SmartSpaces_Operation_FanSpeedLevel::slotSetAutoMode()
 
     bool ok = false;
     QString str = edit_AutoMode->text();
-    AutoMode value = QStringTo<AutoMode>(str, &ok);
+    FanSpeedLevelInterface::AutoMode value = QStringTo<FanSpeedLevelInterface::AutoMode>(str, &ok);
     if (ok)
     {
         QStatus status = controller->SetAutoMode(value);
@@ -180,7 +193,7 @@ void org_alljoyn_SmartSpaces_Operation_FanSpeedLevel::slotSetAutoMode()
     }
     else
     {
-        qWarning() << __FUNCTION__ << "Failed to convert '" << str << "' to AutoMode";
+        qWarning() << __FUNCTION__ << "Failed to convert '" << str << "' to FanSpeedLevelInterface::AutoMode";
     }
 }
 

@@ -58,6 +58,9 @@ struct Serializer<PlugInUnitsInterface::PlugInInfo>
         Serializer<std::vector<SerializerField>> ser;
         PlugInUnitsInterface::PlugInInfo result;
         auto fields = ser.get(element);
+        if (fields.size() != 3) {
+            throw SerializerError();
+        }
         {
             auto& sfield = fields[0];
             if (sfield.name != "objectPath")
@@ -103,7 +106,7 @@ PlugInUnitsModel::PlugInUnitsModel(const std::string& busPath) :
     m_busPath(busPath)
 {}
 
-QStatus PlugInUnitsModel::GetPlugInUnits(std::vector<PlugInInfo>& out) const
+QStatus PlugInUnitsModel::GetPlugInUnits(std::vector<PlugInUnitsInterface::PlugInInfo>& out) const
 {
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.PlugInUnits", "PlugInUnits", out);
 }

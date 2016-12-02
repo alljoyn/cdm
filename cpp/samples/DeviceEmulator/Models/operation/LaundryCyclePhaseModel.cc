@@ -58,6 +58,9 @@ struct Serializer<LaundryCyclePhaseInterface::CyclePhaseDescriptor>
         Serializer<std::vector<SerializerField>> ser;
         LaundryCyclePhaseInterface::CyclePhaseDescriptor result;
         auto fields = ser.get(element);
+        if (fields.size() != 3) {
+            throw SerializerError();
+        }
         {
             auto& sfield = fields[0];
             if (sfield.name != "phase")
@@ -119,7 +122,7 @@ QStatus LaundryCyclePhaseModel::GetSupportedCyclePhases(std::vector<uint8_t>& ou
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.LaundryCyclePhase", "SupportedCyclePhases", out);
 }
 
-QStatus LaundryCyclePhaseModel::GetVendorPhasesDescription(qcc::String arg_languageTag, std::vector<CyclePhaseDescriptor>& arg_phasesDescription, ErrorCode& error, CdmSideEffects& sideEffects)
+QStatus LaundryCyclePhaseModel::GetVendorPhasesDescription(qcc::String& arg_languageTag, std::vector<LaundryCyclePhaseInterface::CyclePhaseDescriptor>& arg_phasesDescription, ErrorCode& error, CdmControllee& controllee)
 {
     arg_phasesDescription = s_phases;
     return ER_OK;

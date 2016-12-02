@@ -19,12 +19,19 @@
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <sstream>
+
+
+
 
 using namespace CDMQtWidgets;
 
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_FilterStatus*>();
 
-org_alljoyn_SmartSpaces_Operation_FilterStatus::org_alljoyn_SmartSpaces_Operation_FilterStatus(CommonControllerInterface *iface) : controller(NULL)
+
+org_alljoyn_SmartSpaces_Operation_FilterStatus::org_alljoyn_SmartSpaces_Operation_FilterStatus(CommonControllerInterface *iface)
+  : controller(NULL),
+    m_listener(mkRef<Listener>(this))
 {
     qWarning() << __FUNCTION__;
 
@@ -77,7 +84,7 @@ org_alljoyn_SmartSpaces_Operation_FilterStatus::org_alljoyn_SmartSpaces_Operatio
 
     if (iface)
     {
-        controller = iface->CreateInterface<FilterStatusIntfController>(*this);
+        controller = iface->CreateInterface<FilterStatusIntfController>(m_listener);
         if (controller)
         {
             qWarning() << __FUNCTION__ << " Getting properties";
@@ -150,6 +157,9 @@ void org_alljoyn_SmartSpaces_Operation_FilterStatus::slotOnExpectedLifeInDaysCha
     edit_ExpectedLifeInDays->setText(QStringFrom(value));
 }
 
+
+
+
 void org_alljoyn_SmartSpaces_Operation_FilterStatus::slotOnResponseGetIsCleanable(QStatus status, const bool value)
 {
     qWarning() << __FUNCTION__;
@@ -161,6 +171,9 @@ void org_alljoyn_SmartSpaces_Operation_FilterStatus::slotOnIsCleanableChanged(co
     qWarning() << __FUNCTION__;
     edit_IsCleanable->setText(QStringFrom(value));
 }
+
+
+
 
 void org_alljoyn_SmartSpaces_Operation_FilterStatus::slotOnResponseGetOrderPercentage(QStatus status, const uint8_t value)
 {
@@ -174,6 +187,9 @@ void org_alljoyn_SmartSpaces_Operation_FilterStatus::slotOnOrderPercentageChange
     edit_OrderPercentage->setText(QStringFrom(value));
 }
 
+
+
+
 void org_alljoyn_SmartSpaces_Operation_FilterStatus::slotOnResponseGetManufacturer(QStatus status, const qcc::String& value)
 {
     qWarning() << __FUNCTION__;
@@ -185,6 +201,9 @@ void org_alljoyn_SmartSpaces_Operation_FilterStatus::slotOnManufacturerChanged(c
     qWarning() << __FUNCTION__;
     edit_Manufacturer->setText(QStringFrom(value));
 }
+
+
+
 
 void org_alljoyn_SmartSpaces_Operation_FilterStatus::slotOnResponseGetPartNumber(QStatus status, const qcc::String& value)
 {
@@ -198,6 +217,9 @@ void org_alljoyn_SmartSpaces_Operation_FilterStatus::slotOnPartNumberChanged(con
     edit_PartNumber->setText(QStringFrom(value));
 }
 
+
+
+
 void org_alljoyn_SmartSpaces_Operation_FilterStatus::slotOnResponseGetUrl(QStatus status, const qcc::String& value)
 {
     qWarning() << __FUNCTION__;
@@ -209,6 +231,9 @@ void org_alljoyn_SmartSpaces_Operation_FilterStatus::slotOnUrlChanged(const qcc:
     qWarning() << __FUNCTION__;
     edit_Url->setText(QStringFrom(value));
 }
+
+
+
 
 void org_alljoyn_SmartSpaces_Operation_FilterStatus::slotOnResponseGetLifeRemaining(QStatus status, const uint8_t value)
 {

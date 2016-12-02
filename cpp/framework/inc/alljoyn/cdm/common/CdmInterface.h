@@ -20,6 +20,7 @@
 #include <qcc/String.h>
 #include <alljoyn/BusAttachment.h>
 #include <alljoyn/InterfaceDescription.h>
+#include <alljoyn/cdm/common/CdmTypes.h>
 #include <alljoyn/cdm/common/CdmInterfaceTypes.h>
 #include <alljoyn/cdm/common/CdmInterfaceErrors.h>
 
@@ -31,8 +32,8 @@ class InterfaceControlleeModel;
 class InterfaceControllerListener;
 class CdmBusObject;
 
-typedef CdmInterface* (*CreateIntfControlleeFptr)(BusAttachment& busAttachment, InterfaceControlleeModel& listener, CdmBusObject& cdmBusObject);
-typedef CdmInterface* (*CreateIntfControllerFptr)(BusAttachment& busAttachment, InterfaceControllerListener& listener, ProxyBusObject& cdmProxyObject);
+typedef CdmInterface* (*CreateIntfControlleeFptr)(BusAttachment& busAttachment, Ref<InterfaceControlleeModel> listener, CdmBusObject& cdmBusObject);
+typedef Ref<CdmInterface> (*CreateIntfControllerFptr)(BusAttachment& busAttachment, Ref<InterfaceControllerListener> listener, Ref<ProxyBusObject> cdmProxyObject);
 
 /**
  * Cdm Interface class.

@@ -1,0 +1,17 @@
+
+{%- macro setMsgArg(msgName, valueName, type) %}
+{
+    CdmMsgCvt<{{type.ctype()}}> converter;
+    converter.set({{msgName}}, {{valueName}});
+}
+{%- endmacro %}
+
+
+
+
+{%- macro getMsgArg(msgName, valueName, type) %}
+{
+    CdmMsgCvt<{{type.ctype()}}> converter;
+    converter.get({{msgName}}, {{valueName}});
+}
+{%- endmacro %}

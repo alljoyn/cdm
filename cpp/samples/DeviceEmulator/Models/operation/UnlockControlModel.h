@@ -33,7 +33,7 @@ class UnlockControlModel : public virtual UnlockControlIntfControlleeModel {
      * @param[out] error Internal error code occurred during command execution
      * @return ER_OK on success
      */
-    QStatus Unlock(ErrorCode& error, CdmSideEffects& sideEffects) override;
+    QStatus Unlock(ErrorCode& error, CdmControllee& controllee) override;
 
   private:
     std::string m_busPath;

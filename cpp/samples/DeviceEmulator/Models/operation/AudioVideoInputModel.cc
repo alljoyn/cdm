@@ -106,6 +106,9 @@ struct Serializer<AudioVideoInputInterface::InputSource>
         Serializer<std::vector<SerializerField>> ser;
         AudioVideoInputInterface::InputSource result;
         auto fields = ser.get(element);
+        if (fields.size() != 5) {
+            throw SerializerError();
+        }
         {
             auto& sfield = fields[0];
             if (sfield.name != "id")
@@ -169,17 +172,17 @@ AudioVideoInputModel::AudioVideoInputModel(const std::string& busPath) :
     m_busPath(busPath)
 {}
 
-QStatus AudioVideoInputModel::GetInputSourceId(SourceType& out) const
+QStatus AudioVideoInputModel::GetInputSourceId(AudioVideoInputInterface::SourceType& out) const
 {
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.AudioVideoInput", "InputSourceId", out);
 }
 
-QStatus AudioVideoInputModel::SetInputSourceId(const SourceType value)
+QStatus AudioVideoInputModel::SetInputSourceId(const AudioVideoInputInterface::SourceType value)
 {
     return HAL::WriteProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.AudioVideoInput", "InputSourceId", value);
 }
 
-QStatus AudioVideoInputModel::GetSupportedInputSources(std::vector<InputSource>& out) const
+QStatus AudioVideoInputModel::GetSupportedInputSources(std::vector<AudioVideoInputInterface::InputSource>& out) const
 {
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.AudioVideoInput", "SupportedInputSources", out);
 }

@@ -52,7 +52,7 @@ class ChannelModel : public virtual ChannelIntfControlleeModel {
      * @param[out] error Internal error code occurred during command execution
      * @return ER_OK on success
      */
-    QStatus GetChannelList(uint16_t arg_startingRecord, uint16_t arg_numRecords, std::vector<ChannelInfoRecord>& arg_listOfChannelInfoRecords, ErrorCode& error, CdmSideEffects& sideEffects) override;
+    QStatus GetChannelList(uint16_t arg_startingRecord, uint16_t arg_numRecords, std::vector<ChannelInterface::ChannelInfoRecord>& arg_listOfChannelInfoRecords, ErrorCode& error, CdmControllee& controllee) override;
 
   private:
     std::string m_busPath;

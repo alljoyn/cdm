@@ -67,12 +67,12 @@ QStatus MoistureOutputLevelModel::GetMaxMoistureOutputLevel(uint8_t& out) const
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.MoistureOutputLevel", "MaxMoistureOutputLevel", out);
 }
 
-QStatus MoistureOutputLevelModel::GetAutoMode(AutoMode& out) const
+QStatus MoistureOutputLevelModel::GetAutoMode(MoistureOutputLevelInterface::AutoMode& out) const
 {
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.MoistureOutputLevel", "AutoMode", out);
 }
 
-QStatus MoistureOutputLevelModel::SetAutoMode(const AutoMode value)
+QStatus MoistureOutputLevelModel::SetAutoMode(const MoistureOutputLevelInterface::AutoMode value)
 {
     return HAL::WriteProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.MoistureOutputLevel", "AutoMode", value);
 }

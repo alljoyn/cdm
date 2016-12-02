@@ -19,7 +19,6 @@ import string
 import inspect
 from collections import namedtuple
 
-
 class Symbol(object):
     """
     Used to wrap a string and allow it to be converted to various formats...
@@ -176,10 +175,10 @@ class AJType(object):
         'o': '@',  # Object Path
     }
 
-    def __init__(self, signature, parent_interface=None):
+    def __init__(self, signature, parent = None):
         self.annotated_type = None
         self.signature = signature
-        self.parent_interface = parent_interface
+        self.parent = parent
 
     def ajtypeid(self):
         return self.AJTypeIdMap.get(self.signature, "/* TODO:%{} */".format(self.signature))
@@ -187,26 +186,22 @@ class AJType(object):
     def ajtype(self):
         return _padded_tag_replacement(self.AJTypeVarMap.get(self.signature, "unknown"), "Type")
 
-    def ajtypeIsSimpleVector(self):
-        # REVISIT not currently used
-        return len(self.signature) == 2 and self.signature[0] == "a" and self.signature[1] in self.CTypeMap
-
-    def ajtypeIsVectorOfStruct(self, interface):
+    def ajtypeIsVectorOfStruct(self):
         # the annotated type is e.g. a[PlugInInfo] but the name must not be an enum
         if self.annotated_type:
             m = re.match("a\[(\w+)\]$", self.annotated_type)
             if m != None:
                 name = m.group(1)
-                return not self.ajtypeIsEnum(name, interface)
+                return not self.ajtypeIsEnum(name)
         return False
 
-    def ajtypeVectorOfStructName(self, interface):
+    def ajtypeVectorOfStructName(self):
         # Get the T out of a[T] in the annotated type
         if self.annotated_type:
             m = re.match("a\[(\w+)\]$", self.annotated_type)
             if m != None:
                 name = m.group(1)
-                if not self.ajtypeIsEnum(name, interface):
+                if not self.ajtypeIsEnum(name):
                     return name
         return None
 
@@ -216,23 +211,41 @@ class AJType(object):
         if m != None:
             return m.group(1)
 
-    def ajtypeIsEnum(self, name, interface):
+    def ajtypeIsEnum(self, name = None):
         # See if the name in [Name] is an enum in this interface
-        for enum in interface.Enums:
-            if enum.Name == name:
+        if name == None:
+            # like ctype
+            ajtype = self.annotated_type if self.annotated_type else self.signature
+
+            if ajtype.startswith('[') and ajtype.endswith(']'):
+                name = ajtype[1:-1]
+
+        if name != None:
+            interface = interface_of(self)
+            for enum in interface.Enums:
+                if enum.Name == name:
+                    return True
+        return False
+
+    def ajtypeIsStruct(self, name):
+        # See if the name in [Name] is a struct in this interface
+        interface = interface_of(self)
+        for stru in interface.Structs:
+            if stru.Name == name:
                 return True
         return False
 
     def ajtypeIsString(self):
         return self.signature == 's' or self.signature == 'o'
 
-    def ajtypeVectorOfStructFieldGets(self, interface):
-        # Given the interface, find the struct and return the field getters. We expect
+    def ajtypeVectorOfStructFieldGets(self):
+        # Given the interface, find the expression to pass the field go a MsgArg. We expect
         # that they are in the correct order in the XML for serialisation.
         # The fields must be scalar types except for strings. For strings we append a .c_str().
         names = []
+        interface = interface_of(self)
 
-        struc = self.ajtypeVectorOfStructName(interface)
+        struc = self.ajtypeVectorOfStructName()
         # print "struct name", struc
         if struc:
             for s in interface.Structs:
@@ -248,11 +261,12 @@ class AJType(object):
         # print "names", names
         return names
 
-    def ajtypeVectorOfStructFieldSets(self, interface):
+    def ajtypeVectorOfStructFieldSets(self):
         # Like ajtypeVectorOfStructFieldGets, find the struct and return info for setters.
         # We return an array of pairs of (name, ctype). The ctype for a string must be a char*
         names = []
-        struc = self.ajtypeVectorOfStructName(interface)
+        interface = interface_of(self)
+        struc = self.ajtypeVectorOfStructName()
         # print "struct name", struc
         if struc:
             for s in interface.Structs:
@@ -278,8 +292,9 @@ class AJType(object):
             sig = sig[1:]
 
         if sig.startswith('[') and sig.endswith(']'):
-            if self.parent_interface:
-                for enum in self.parent_interface.Enums:
+            interface = interface_of(self)
+            if interface:
+                for enum in interface.Enums:
                     if enum.Name == sig[1:-1] and enum.enum_type():
                         return str(enum.enum_type())
 
@@ -288,9 +303,6 @@ class AJType(object):
 
         return sig
 
-    def ajvar(self):
-        base_var = "v_" + self.AJTypeVarMap.get(self.signature, "/* TODO:%{} */".format(self.signature))
-        return base_var + ".str" if self.ajtypeIsString() else base_var
 
     def ctype(self, arg=False):
         template = None
@@ -303,8 +315,9 @@ class AJType(object):
 
         if ajtype.startswith('[') and ajtype.endswith(']'):
             ctype = ajtype[1:-1]
-            if self.parent_interface and self.ajtypeIsEnum(ctype, self.parent_interface):
-                ctype = "%sInterface::%s" % (self.parent_interface.Name, ctype)
+            interface = interface_of(self)
+            if interface and (self.ajtypeIsEnum(ctype) or self.ajtypeIsStruct(ctype)):
+                ctype = "%sInterface::%s" % (interface.Name, ctype)
         else:
             ctype = self.CTypeMap.get(ajtype, "/* TODO:%{} */".format(ajtype))
 
@@ -318,6 +331,43 @@ class AJType(object):
 
     def ctype_arg(self):
         return self.ctype(arg=True)
+
+    def msgType(self):
+        # This is the type that an arg to MsgArg.Get/Set must be.
+        ajtype = self.annotated_type if self.annotated_type else self.signature
+
+        if ajtype.startswith("a"):
+            return "ERROR_ARRAY";
+
+        if ajtype.startswith('[') and ajtype.endswith(']'):
+            ctype = ajtype[1:-1]
+            interface = interface_of(self)
+
+            if interface and self.ajtypeIsStruct(ctype):
+                return "ERROR_STRUCT";
+
+            if interface and self.ajtypeIsEnum(ctype):
+                ctype = "int32_t"
+
+        elif self.ajtypeIsString():
+            ctype = "const char*"
+        else:
+            ctype = self.CTypeMap.get(ajtype, "/* TODO:%{} */".format(ajtype))
+
+        return ctype
+
+    def toMsgArg(self, expr):
+        # Patch the expression to assign to the type from msgtype()
+        if self.ajtypeIsString():
+            return expr + ".c_str()"
+        return expr
+
+    def fromMsgArg(self, expr):
+        # For going from msgType() to the carrier type
+        if self.ajtypeIsEnum():
+            return "static_cast<%s>(%s)" % (self.ctype(), expr)
+        return expr
+
 
     def javatype(self):
         array = False
@@ -390,50 +440,51 @@ class AJType(object):
 class InterfaceEnum(object):
     EnumEntry = namedtuple("EnumEntry", "Name Value")
 
-    def __init__(self, name, interface):
+    def __init__(self, name, parent = None):
         self.Name = Symbol(name)
         self.Values = []
-        self.parent_interface = interface
+        self.parent = parent
 
     def add_value(self, enumerator, value):
-
         enum_value_name = str(enumerator).replace("-", "_")
         enum_value_name = filter(lambda c: c in (string.ascii_letters + string.digits + "_"), enum_value_name)
         self.Values.append(InterfaceEnum.EnumEntry(Symbol(enum_value_name), value))
 
     def enum_type(self):
         name = '['+str(self.Name)+']'
+        interface = interface_of(self)
 
-        for prop in self.parent_interface.Properties:
+        for prop in interface.Properties:
             for annotation in prop.Annotations:
                 if annotation.Value == name:
                     return prop.Type
 
-        for method in self.parent_interface.Methods:
+        for method in interface.Methods:
             for method_arg in method.Args:
                 for annotation in method_arg.Annotations:
                     if annotation.Value == name:
                         return method_arg.Type
 
-        return AJType('i')
+        return AJType('i', self)
 
 
 class InterfaceStruct(object):
     StructField = namedtuple("StructField", "Type Name")
 
-    def __init__(self, name, interface):
+    def __init__(self, name, parent = None):
         self.Name = name
         self.Fields = []
-        self.parent_interface = interface
+        self.parent = parent
 
     def add_field(self, name, ajtype, interface):
-        self.Fields.append(InterfaceStruct.StructField(AJType(ajtype, interface), name))
+        self.Fields.append(InterfaceStruct.StructField(AJType(ajtype, self), name))
 
     def resolve_signature(self):
         # Join the signatures of the fields and wrap them in ()
+        interface = interface_of(self)
         sig = ""
         for f in self.Fields:
-            sig += self.parent_interface.resolve_signature(f[0].signature)
+            sig += interface.resolve_signature(f[0].signature)
         return "(" + sig + ")"
 
 
@@ -453,6 +504,7 @@ class Interface(object):
         self.Signals = []
         self.doc = {}
         self.PropertiesLUT = {}
+        self.parent = None
 
     @property
     def UserProperties(self):
@@ -520,8 +572,8 @@ class Interface(object):
             print "Unknown interface annotation:", name
 
     def add_child(self, child):
+        child.parent = self
         if isinstance(child, Property):
-            child.parent_interface = self
             self.Properties.append(child)
             self.PropertiesLUT[child.Name.string] = child
         elif isinstance(child, Method):
@@ -572,13 +624,14 @@ class Selector(object):
 
     @property
     def Property(self):
-        return self.RelatedProperty.parent_interface.get_property_with_name(self.Name)
+        interface = interface_of(self.RelatedProperty)
+        return interface.get_property_with_name(self.Name)
 
 
 class Property(object):
     def __init__(self, name, type, access):
         self.Name = Symbol(name)
-        self.Type = AJType(type)
+        self.Type = AJType(type, self)
         self.Access = access
         self.doc = {}
         self.EmitsChangedSignal = False
@@ -590,7 +643,7 @@ class Property(object):
         self.MaxFromProperty = None
         self.MinFromProperty = None
         self.Units = None
-        self.parent_interface = None
+        self.parent = None
         self.Selector = None
 
     def emit_changed(self):
@@ -669,6 +722,7 @@ class Property(object):
             print "Unknown property annotation:", name
 
     def add_child(self, child):
+        child.parent = self
         if isinstance(child, Annotation):
             self.Annotations.append(child)
             self.add_annotation(child.Name, child.Value)
@@ -684,21 +738,24 @@ class Property(object):
 
     def is_enum(self):
         annotation_values = [annotation.Value for annotation in self.Annotations]
-        for enum in self.parent_interface.Enums:
+        interface = interface_of(self)
+        for enum in interface.Enums:
             for value in annotation_values:
                 if str(enum.Name) in value:
                     return True
         return False
 
     def is_selector(self):
-        properties_with_selectors = [property.Selector for property in self.parent_interface.UserProperties if property.Selector]
+        interface = interface_of(self)
+        properties_with_selectors = [property.Selector for property in interface.UserProperties if property.Selector]
         for property in properties_with_selectors:
             if property.Name == self.Name:
                 return True
         return False
 
     def enum_name(self):
-        for enum in self.parent_interface.Enums:
+        interface = interface_of(self)
+        for enum in interface.Enums:
             for annotation in self.Annotations:
                 if str(enum.Name) in annotation.Value and 'org.alljoyn.Bus.Type.Name' == annotation.Name:
                     name = annotation.Value
@@ -724,7 +781,8 @@ class Property(object):
         if self.is_bool():
             return 'this, this.intf, "%s"' % self.Name
         elif self.is_enum():
-            return 'this, this.intf, "%s", %s.%s.class' % (self.Name, self.parent_interface.Name, self.enum_name())
+            interface = interface_of(self)
+            return 'this, this.intf, "%s", %s.%s.class' % (self.Name, interface.Name, self.enum_name())
         else:
             return 'this, this.intf, "%s", null' % self.Name
 
@@ -734,7 +792,7 @@ class Mutator(object):
         self.Name = name
         self.Interface = interface
         self.Property = prop
-        self.PropertyType = AJType(prop_signature)
+        self.PropertyType = AJType(prop_signature, self)
         self.DefaultValue = default_value
 
 
@@ -745,6 +803,7 @@ class Method(object):
         self.Annotations = []
         self.Mutators = []
         self.doc = {}
+        self.parent = None
 
     @property
     def CodeDoc(self):
@@ -775,6 +834,7 @@ class Method(object):
             print "Unknown method annotation:", name
 
     def add_child(self, child): 
+        child.parent = self
         if isinstance(child, MethodArg): 
             self.add_arg(child)
         elif isinstance(child, Annotation):
@@ -807,12 +867,14 @@ class Method(object):
 class MethodArg(object):
     def __init__(self, name, type, direction):
         self.Name = Symbol(name)
-        self.Type = AJType(type)
+        self.Type = AJType(type, self)
         self.Direction = direction
         self.Annotations = []
         self.doc = {}
+        self.parent = None
 
     def add_child(self, child):
+        child.parent = self
         if isinstance(child, Annotation):
             self.Annotations.append(child)
             self.add_annotation(child.Name, child.Value)
@@ -847,6 +909,7 @@ class Signal:
     def __init__(self, name, sessionless):
         self.Name = Symbol(name)
         self.Sessionless = sessionless.lower() == "true"
+        self.parent = None
 
     def add_child(self, child):
         pass
@@ -872,6 +935,7 @@ class Root:
         self.list = []
 
     def add_child(self, child):
+        child.parent = None
         self.list.append(child)
 
 
@@ -1085,3 +1149,10 @@ class AJEmulatorXMLParser(AJXMLParser, object):
 
 def make_parser():
     return xml.sax.make_parser()
+
+def interface_of(obj):
+    if isinstance(obj, Interface):
+        return obj
+    if obj.parent:
+        return interface_of(obj.parent)
+    return None

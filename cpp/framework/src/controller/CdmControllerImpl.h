@@ -95,15 +95,23 @@ class CdmControllerImpl : public ajn::AboutListener
      * @param[in] listener
      * @return interface
      */
-    std::shared_ptr<CdmInterface> CreateInterface(const CdmInterfaceType type, const std::string& busName, const qcc::String& objectPath, const SessionId& sessionId, InterfaceControllerListener& listener);
+    Ref<CdmInterface> CreateInterface(const std::string& ifaceName, const std::string& busName, const qcc::String& objectPath, const SessionId& sessionId, Ref<InterfaceControllerListener> listener);
 
     /**
-     * Register vendor defined interface
+     * Register an interface
      * @param[in] interfaceName
      * @param[in] creator
-     * @return CdmInterfaceType
+     * @return ER_OK or ER_DUPLICATE_KEY
      */
-    const CdmInterfaceType RegisterVendorDefinedInterface(const qcc::String& interfaceName, CreateIntfControllerFptr createIntfController);
+    QStatus RegisterInterface(const std::string& interfaceName, CreateIntfControllerFptr createIntfController);
+
+    /**
+     * Unregister an interface
+     * @param[in] interfaceName
+     * @param[in] creator
+     * @return ER_OK or ER_FAIL
+     */
+    QStatus UnregisterInterface(const std::string& interfaceName, CreateIntfControllerFptr createIntfController);
 
 
     QStatus EnablePeerSecurity(const char* authMechanisms,

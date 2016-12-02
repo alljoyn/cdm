@@ -50,7 +50,7 @@ QStatus EnergyUsageModel::GetUpdateMinTime(uint16_t& out) const
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.EnergyUsage", "UpdateMinTime", out);
 }
 
-QStatus EnergyUsageModel::ResetCumulativeEnergy(ErrorCode& error, CdmSideEffects& sideEffects)
+QStatus EnergyUsageModel::ResetCumulativeEnergy(ErrorCode& error, CdmControllee& controllee)
 {
     return HAL::WriteProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.EnergyUsage", "CumulativeEnergy", 0);
     return ER_OK;

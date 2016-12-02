@@ -17,6 +17,7 @@
 #include <iostream>
 
 #include "SwitchModel.h"
+#include <interfaces/controllee/operation/OnOffStatusIntfControllee.h>
 #include "../Utils/HAL.h"
 
 using namespace ajn::services;
@@ -30,24 +31,24 @@ QStatus SwitchModel::GetIsOn(bool& out) const
     return HAL::ReadProperty<bool>(m_busPath, "OnOffStatus", "IsOn", out);
 }
 
-static QStatus writeIsOnWithSideEffect(const qcc::String& busPath, bool value, ajn::services::CdmSideEffects& sideEffects)
+static QStatus writeIsOnWithSideEffect(const qcc::String& busPath, bool value, ajn::services::CdmControllee& controllee)
 {
     QStatus status = HAL::WriteProperty(busPath, "OnOffStatus", "IsOn", value);
 
-    if (status != ER_OK)
-        return ER_FAIL;
+    if (status == ER_OK) {
+        auto iface = controllee.GetInterface<OnOffStatusIntfControllee>(busPath, "org.alljoyn.SmartSpaces.Operation.OnOffStatus");
+        iface->EmitIsOnChanged(value);
+    }
 
-    sideEffects[{"org.alljoyn.SmartSpaces.Operation.OnOffStatus", "IsOn"}] = ajn::services::CdmSideEffect("b", value);
-
-    return ER_OK;
+    return status;
 }
 
-QStatus SwitchModel::SwitchOn(ajn::services::ErrorCode& error, ajn::services::CdmSideEffects& sideEffects)
+QStatus SwitchModel::SwitchOn(ajn::services::ErrorCode& error, ajn::services::CdmControllee& controllee)
 {
-    return writeIsOnWithSideEffect(m_busPath, true, sideEffects);
+    return writeIsOnWithSideEffect(m_busPath, true, controllee);
 }
 
-QStatus SwitchModel::SwitchOff(ajn::services::ErrorCode& error, ajn::services::CdmSideEffects& sideEffects)
+QStatus SwitchModel::SwitchOff(ajn::services::ErrorCode& error, ajn::services::CdmControllee& controllee)
 {
-    return writeIsOnWithSideEffect(m_busPath, false, sideEffects);
+    return writeIsOnWithSideEffect(m_busPath, false, controllee);
 }

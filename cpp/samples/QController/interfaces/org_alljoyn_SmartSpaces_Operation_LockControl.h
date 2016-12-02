@@ -22,9 +22,9 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 
-#include <alljoyn/cdm/interfaces/operation/LockControlInterface.h>
-#include <alljoyn/cdm/interfaces/operation/LockControlIntfController.h>
-#include <alljoyn/cdm/interfaces/operation/LockControlIntfControllerListener.h>
+#include <interfaces/common/operation/LockControlInterface.h>
+#include <interfaces/controller/operation/LockControlIntfController.h>
+#include <interfaces/controller/operation/LockControlIntfControllerListener.h>
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
@@ -32,7 +32,7 @@ using namespace ajn::services;
 namespace CDMQtWidgets
 {
 
-class org_alljoyn_SmartSpaces_Operation_LockControl : public QWidget, public ajn::services::LockControlIntfControllerListener
+class org_alljoyn_SmartSpaces_Operation_LockControl : public QWidget
 {
     Q_OBJECT
 public:
@@ -43,12 +43,32 @@ public:
 private slots:
     void slotClickLock();
 
+    void slotOnResponseMethodLock(QStatus status);
 
 public:
     // ajn::services::LockControlIntfControllerListener
+    class Listener: public ajn::services::LockControlIntfControllerListener
+    {
+    public:
+        QWidget* m_widget;
+
+        Listener(QWidget* widget)
+          : m_widget(widget)
+        {
+        }
+
+        virtual void OnResponseLock(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage) override
+        {
+            qWarning() << __FUNCTION__;
+            QMetaObject::invokeMethod(m_widget, "slotOnResponseMethodLock", Qt::QueuedConnection,
+                              Q_ARG(QStatus, status)
+                              );
+        }
+    };
 
 private:
-    ajn::services::LockControlIntfControllerPtr controller;
+    Ref<ajn::services::LockControlIntfController> controller;
+    Ref<Listener> m_listener;
 
     QPushButton* button_Lock;
 

@@ -17,6 +17,7 @@
 #include "OnControlModel.h"
 #include "../../../Utils/HAL.h"
 
+#include <interfaces/controllee/operation/OnOffStatusIntfControllee.h>
 
 namespace ajn {
 namespace services {
@@ -35,14 +36,15 @@ OnControlModel::OnControlModel(const std::string& busPath) :
     m_busPath(busPath)
 {}
 
-QStatus OnControlModel::SwitchOn(ErrorCode& error, CdmSideEffects& sideEffects)
+QStatus OnControlModel::SwitchOn(ErrorCode& error, CdmControllee& controllee)
 {
     bool value = true;
     QStatus status = HAL::WriteProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.OnOffStatus", "IsOn", value);
 
     if (status == ER_OK)
     {
-        sideEffects[{"org.alljoyn.SmartSpaces.Operation.OnOffStatus", "IsOn"}] = CdmSideEffect("b", value);
+        auto iface = controllee.GetInterface<OnOffStatusIntfControllee>(m_busPath, "org.alljoyn.SmartSpaces.Operation.OnOffStatus");
+        iface->EmitIsOnChanged(value);
     }
 
     return status;

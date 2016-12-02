@@ -19,12 +19,19 @@
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <sstream>
+
+
+
 
 using namespace CDMQtWidgets;
 
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_UnlockControl*>();
 
-org_alljoyn_SmartSpaces_Operation_UnlockControl::org_alljoyn_SmartSpaces_Operation_UnlockControl(CommonControllerInterface *iface) : controller(NULL)
+
+org_alljoyn_SmartSpaces_Operation_UnlockControl::org_alljoyn_SmartSpaces_Operation_UnlockControl(CommonControllerInterface *iface)
+  : controller(NULL),
+    m_listener(mkRef<Listener>(this))
 {
     qWarning() << __FUNCTION__;
 
@@ -40,7 +47,7 @@ org_alljoyn_SmartSpaces_Operation_UnlockControl::org_alljoyn_SmartSpaces_Operati
 
     if (iface)
     {
-        controller = iface->CreateInterface<UnlockControlIntfController>(*this);
+        controller = iface->CreateInterface<UnlockControlIntfController>(m_listener);
         if (controller)
         {
             qWarning() << __FUNCTION__ << " Getting properties";
@@ -64,9 +71,12 @@ org_alljoyn_SmartSpaces_Operation_UnlockControl::~org_alljoyn_SmartSpaces_Operat
     qWarning() << __FUNCTION__;
 }
 
+
+
 void org_alljoyn_SmartSpaces_Operation_UnlockControl::slotClickUnlock()
 {
     qWarning() << __FUNCTION__;
+
 
 
     QStatus status = controller->Unlock(NULL);
@@ -77,3 +87,15 @@ void org_alljoyn_SmartSpaces_Operation_UnlockControl::slotClickUnlock()
 }
 
 
+
+void org_alljoyn_SmartSpaces_Operation_UnlockControl::slotOnResponseMethodUnlock(QStatus status)
+{
+    if (status == ER_OK)
+    {
+        qInfo() << "Received response to method Unlock";
+    }
+    else
+    {
+        qWarning() << "Received an error from method Unlock, status = " << status;
+    }
+}

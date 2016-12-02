@@ -3,7 +3,8 @@
 
     if (status == ER_OK)
     {
-        sideEffects[{"org.alljoyn.SmartSpaces.Operation.OnOffStatus", "IsOn"}] = CdmSideEffect("b", value);
+        auto iface = controllee.GetInterface<OnOffStatusIntfControllee>(m_busPath, "org.alljoyn.SmartSpaces.Operation.OnOffStatus");
+        iface->EmitIsOnChanged(value);
     }
 
     return status;

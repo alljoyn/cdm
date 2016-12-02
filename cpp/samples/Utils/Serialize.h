@@ -404,7 +404,7 @@ struct Serializer<std::vector<SerializerField>>
     {
         std::vector<SerializerField> result;
 
-        if (struc->GetName() == "struc")
+        if (struc->GetName() == "struct")
         {
             for (auto* f : struc->GetChildren())
             {

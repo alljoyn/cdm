@@ -19,12 +19,19 @@
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <sstream>
+
+
+
 
 using namespace CDMQtWidgets;
 
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_CurrentPower*>();
 
-org_alljoyn_SmartSpaces_Operation_CurrentPower::org_alljoyn_SmartSpaces_Operation_CurrentPower(CommonControllerInterface *iface) : controller(NULL)
+
+org_alljoyn_SmartSpaces_Operation_CurrentPower::org_alljoyn_SmartSpaces_Operation_CurrentPower(CommonControllerInterface *iface)
+  : controller(NULL),
+    m_listener(mkRef<Listener>(this))
 {
     qWarning() << __FUNCTION__;
 
@@ -53,7 +60,7 @@ org_alljoyn_SmartSpaces_Operation_CurrentPower::org_alljoyn_SmartSpaces_Operatio
 
     if (iface)
     {
-        controller = iface->CreateInterface<CurrentPowerIntfController>(*this);
+        controller = iface->CreateInterface<CurrentPowerIntfController>(m_listener);
         if (controller)
         {
             qWarning() << __FUNCTION__ << " Getting properties";
@@ -106,6 +113,9 @@ void org_alljoyn_SmartSpaces_Operation_CurrentPower::slotOnCurrentPowerChanged(c
     edit_CurrentPower->setText(QStringFrom(value));
 }
 
+
+
+
 void org_alljoyn_SmartSpaces_Operation_CurrentPower::slotOnResponseGetPrecision(QStatus status, const double value)
 {
     qWarning() << __FUNCTION__;
@@ -117,6 +127,9 @@ void org_alljoyn_SmartSpaces_Operation_CurrentPower::slotOnPrecisionChanged(cons
     qWarning() << __FUNCTION__;
     edit_Precision->setText(QStringFrom(value));
 }
+
+
+
 
 void org_alljoyn_SmartSpaces_Operation_CurrentPower::slotOnResponseGetUpdateMinTime(QStatus status, const uint16_t value)
 {

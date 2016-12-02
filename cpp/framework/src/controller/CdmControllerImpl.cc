@@ -25,7 +25,7 @@
 #include "../common/CdmConstants.h"
 #include "CdmControllerImpl.h"
 #include "../common/CdmBusListener.h"
-#include "InterfaceFactory.h"
+#include "interfaces/controller/ControllerFactory.h"
 
 using namespace ajn;
 using namespace services;
@@ -39,7 +39,7 @@ CdmControllerImpl::CdmControllerImpl(BusAttachment& bus, DeviceListener* listene
 {
     m_cdmBusListener.SetSessionPort(CDM_SERVICE_PORT);
 
-    QStatus status = InterfaceFactory::GetInstance()->InitInterfaceFactory(&m_bus);
+    QStatus status = ControllerFactory::Instance().InitControllerFactory(&m_bus);
     if (status != ER_OK) {
         QCC_LogError(status, ("%s: Interface factory initialization is failed.", __func__));
     }
@@ -145,7 +145,7 @@ QStatus CdmControllerImpl::JoinDevice(const std::string& busName, SessionPort po
     QCC_DbgPrintf(("SessionJoined sessionId = %u, status = %s\n", sessionId, QCC_StatusText(status)));
 
     if (ER_OK == status && 0 != sessionId) {
-        DeviceInfoPtr info(new DeviceInfo(busName.c_str(), sessionId, port, data, description));
+        Ref<DeviceInfo> info(new DeviceInfo(busName.c_str(), sessionId, port, data, description));
         QStatus ret = m_deviceManager.AddDeviceInfo(info);
         if (ER_OK == ret && m_deviceListener) {
             m_deviceListener->OnDeviceSessionJoined(info);
@@ -165,86 +165,64 @@ QStatus CdmControllerImpl::JoinDevice(const std::string& busName, SessionPort po
     return status;
 }
 
-std::shared_ptr<CdmInterface> CdmControllerImpl::CreateInterface(const CdmInterfaceType type, const std::string& busName, const qcc::String& objectPath, const SessionId& sessionId, InterfaceControllerListener& listener)
+Ref<CdmInterface> CdmControllerImpl::CreateInterface(const std::string& interfaceName, const std::string& busName, const qcc::String& objectPath, const SessionId& sessionId, Ref<InterfaceControllerListener> listener)
 {
     QStatus status = ER_OK;
-    std::shared_ptr<CdmInterface> interface = NULL;
+    Ref<CdmInterface> interface = NULL;
+
     {
         AutoLock lock(m_lock);
         if (!m_isStarted) {
             status = ER_FAIL;
             QCC_LogError(status, ("%s: CdmControllee is currently stopped.", __func__));
-            return NULL;
+            return interface;
         }
     }
 
-    if (InterfaceTypesMap.find(type) == InterfaceTypesMap.end()) {
+    if (!ControllerFactory::Instance().GetCreateIntfControllerFptr(interfaceName)) {
         QCC_LogError(ER_BAD_ARG_1, ("%s: Function call argument 1 is invalid.", __func__));
-        return NULL;
+        return interface;
     }
 
     if (objectPath.empty()) {
         QCC_LogError(ER_BAD_ARG_2, ("%s: Function call argument 2 is invalid.", __func__));
+        return interface;
+    }
+
+    auto pbo = mkRef<ProxyBusObject>(m_bus, busName.c_str(), objectPath.c_str(), sessionId);
+
+    interface = ControllerFactory::Instance().CreateIntfController(interfaceName, listener, pbo);
+
+    if (!interface) {
+        QCC_LogError(ER_FAIL, ("%s: could not create interface.", __func__));
         return NULL;
     }
 
-    std::map<CdmInterfaceType, String>::const_iterator it = InterfaceTypesMap.find(type);
-    if (it != InterfaceTypesMap.end()) {
-        const String interfaceName = it->second;
-
-        std::shared_ptr<ProxyBusObject> pbo = std::make_shared<ProxyBusObject>(m_bus, busName.c_str(), objectPath.c_str(), sessionId);
-        interface = std::shared_ptr<CdmInterface>(InterfaceFactory::GetInstance()->CreateIntfController(type, listener, *pbo.get()), [pbo](CdmInterface* ptr) { delete ptr; });
-        if (!interface) {
-            QCC_LogError(ER_FAIL, ("%s: could not create interface.", __func__));
-            return NULL;
-        }
-
-        const InterfaceDescription* description = interface->GetInterfaceDescription();
-        status = pbo->AddInterface(*description);
-        if (status != ER_OK) {
-            QCC_LogError(status, ("%s: could not add interface.", __func__));
-            return NULL;
-        }
-    } else {
-        QCC_LogError(ER_FAIL, ("%s: interface type not found.", __func__));
+    const InterfaceDescription* description = interface->GetInterfaceDescription();
+    status = pbo->AddInterface(*description);
+    if (status != ER_OK) {
+        QCC_LogError(status, ("%s: could not add interface.", __func__));
         return NULL;
     }
+
     return interface;
 }
 
-const CdmInterfaceType CdmControllerImpl::RegisterVendorDefinedInterface(const qcc::String& interfaceName, CreateIntfControllerFptr createIntfController)
+
+
+QStatus CdmControllerImpl::RegisterInterface(const std::string& interfaceName, CreateIntfControllerFptr createIntfController)
 {
-    InterfaceFactory* factory = InterfaceFactory::GetInstance();
-    CdmInterfaceType type = UNDEFINED_INTERFACE;
-    uint32_t vendorCnt = 0;
-
-    std::map<CdmInterfaceType, qcc::String>::iterator it;
-    for (it = InterfaceTypesMap.begin(); it != InterfaceTypesMap.end(); ++it) {
-        type = it->first;
-        if (type >= VENDOR_DEFINED_INTERFACE) {
-            ++vendorCnt;
-        }
-
-        if (!interfaceName.compare(it->second)) {
-            CreateIntfControllerFptr registeredFptr = factory->GetCreateIntfControllerFptr(type);
-
-            if (registeredFptr == createIntfController) {
-                QCC_DbgPrintf(("%s: Vendor defined interface is already registered.", __func__));
-            } else {
-                factory->RegisterVendorDefinedIntfController(type, createIntfController);
-            }
-            return type;
-        }
-    }
-
-    // Add new interface type
-    CdmInterfaceType newVendorType = VENDOR_DEFINED_INTERFACE + vendorCnt;
-
-    InterfaceTypesMap[newVendorType] = interfaceName;
-    factory->RegisterVendorDefinedIntfController(newVendorType, createIntfController);
-
-    return newVendorType;
+    return ControllerFactory::Instance().RegisterIntfController(interfaceName, createIntfController);
 }
+
+
+
+QStatus CdmControllerImpl::UnregisterInterface(const std::string& interfaceName, CreateIntfControllerFptr createIntfController)
+{
+    return ControllerFactory::Instance().UnregisterIntfController(interfaceName, createIntfController);
+}
+
+
 
 void CdmControllerImpl::Announced(const char* busName, uint16_t version, SessionPort port, const MsgArg& objectDescriptionArg, const MsgArg& aboutDataArg)
 {
@@ -271,26 +249,9 @@ void CdmControllerImpl::Announced(const char* busName, uint16_t version, Session
     aboutData.GetDeviceId(&deviceID);
     aboutData.GetDeviceName(&deviceName);
 
-    QCC_DbgPrintf(("%s: Received Announce: busName=%s port=%u deviceID=%s deviceName=%s rank=%s isLeader=%d", __func__, busName, port, deviceID, deviceName));
+    QCC_DbgPrintf(("%s: Received Announce: busName=%s port=%u deviceID=%s deviceName=%s", __func__, busName, port, deviceID, deviceName));
 
-    status = aboutData.GetField(CdmAboutData::DEVICE_TYPE_DESCRIPTION.c_str(), deviceTypeArg);
-    if (status != ER_OK) {
-        QCC_DbgPrintf(("Error (%d)", status));
-        return;
-
-    } else if (!deviceTypeArg) {
-        return;
-    }
-
-    status = deviceTypeArg->Get(aboutData.GetFieldSignature(CdmAboutData::DEVICE_TYPE_DESCRIPTION.c_str()), &elemCount, &elemArg);
-    if (status != ER_OK) {
-        QCC_DbgPrintf(("Error (%d)", status));
-        return;
-    }
-
-    if (elemCount > 0) {
-        m_deviceListener->OnDeviceAdded(busName, port, aboutData, objectDescs);
-    }
+    m_deviceListener->OnDeviceAdded(busName, port, aboutData, objectDescs);
 }
 
 void CdmControllerImpl::SessionLost(ajn::SessionId sessionId, ajn::SessionListener::SessionLostReason reason)

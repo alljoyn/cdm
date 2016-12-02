@@ -32,26 +32,26 @@ class AlertsModel : public virtual AlertsIntfControlleeModel {
      * Get Alerts
      * @return current alerts
      */
-    QStatus GetAlerts(std::vector<AlertRecord>& out) const override;
+    QStatus GetAlerts(std::vector<AlertsInterface::AlertRecord>& out) const override;
 
     /**
      * Handler for method GetAlertCodesDescription
      * @param[out] error Internal error code occurred during command execution
      * @return ER_OK on success
      */
-    QStatus GetAlertCodesDescription(qcc::String arg_languageTag, std::vector<AlertCodesDescriptor>& arg_description, ErrorCode& error, CdmSideEffects& sideEffects) override;
+    QStatus GetAlertCodesDescription(qcc::String& arg_languageTag, std::vector<AlertsInterface::AlertCodesDescriptor>& arg_description, ErrorCode& error, CdmControllee& controllee) override;
     /**
      * Handler for method AcknowledgeAlert
      * @param[out] error Internal error code occurred during command execution
      * @return ER_OK on success
      */
-    QStatus AcknowledgeAlert(uint16_t arg_alertCode, ErrorCode& error, CdmSideEffects& sideEffects) override;
+    QStatus AcknowledgeAlert(uint16_t arg_alertCode, ErrorCode& error, CdmControllee& controllee) override;
     /**
      * Handler for method AcknowledgeAllAlerts
      * @param[out] error Internal error code occurred during command execution
      * @return ER_OK on success
      */
-    QStatus AcknowledgeAllAlerts(ErrorCode& error, CdmSideEffects& sideEffects) override;
+    QStatus AcknowledgeAllAlerts(ErrorCode& error, CdmControllee& controllee) override;
 
   private:
     std::string m_busPath;

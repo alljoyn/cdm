@@ -5,25 +5,66 @@ static std::vector<AlertsInterface::AlertCodesDescriptor> s_descriptions = {
     {3,   "stuffed" }
 };
 
-using MutLock = std::lock_guard<std::mutex>;
+static const char* BusPath = "/CDM/Alerts";
 
-static std::vector<uint16_t> s_alerts;
-static std::mutex s_alertsMutex;
-
-static bool AlertCommand(const std::string& key, const StringVec& args)
+static bool AlertCommand(const std::string& key, const StringVec& args, CdmControllee& controllee)
 {
     bool ok = false;
 
-    if (args.size() == 2)
+    if (args.size() >= 1 && args[0] == "show")
     {
-        if (args[0] == "alert")
+        std::vector<AlertsInterface::AlertRecord> alerts;
+        HAL::ReadProperty(BusPath, "org.alljoyn.SmartSpaces.Operation.Alerts", "Alerts", alerts);
+        ok = true;
+
+        for (auto& alert : alerts)
+        {
+            std::cout << "severity " << alert.severity << ", code " << alert.alertCode << "\n";
+        }
+    }
+    else
+    if (args.size() >= 2)
+    {
+        AlertsInterface::Severity severity = AlertsInterface::SEVERITY_WARNING;
+        uint16_t code = 0;
+
+        if (args[0] == "w" || args[0] == "warning")
+        {
+            severity = AlertsInterface::SEVERITY_WARNING;
+        }
+        else
+        if (args[0] == "a" || args[0] == "alarm")
+        {
+            severity = AlertsInterface::SEVERITY_ALARM;
+        }
+        else
+        if (args[0] == "f" || args[0] == "fault")
+        {
+            severity = AlertsInterface::SEVERITY_FAULT;
+        }
+
         {
             std::istringstream strm(args[1]);
-            uint16_t a;
-            strm >> a;
-            ok = true;
-            MutLock lock(s_alertsMutex);
-            s_alerts.push_back(a);
+            strm >> code;
+        }
+
+        ok = true;
+
+        std::vector<AlertsInterface::AlertRecord> alerts;
+        HAL::ReadProperty(BusPath, "org.alljoyn.SmartSpaces.Operation.Alerts", "Alerts", alerts);
+
+        AlertsInterface::AlertRecord record;
+
+        record.severity = severity;
+        record.alertCode = code;
+        record.needAcknowledgement = true;
+
+        alerts.push_back(record);
+        HAL::WriteProperty(BusPath, "org.alljoyn.SmartSpaces.Operation.Alerts", "Alerts", alerts);
+
+        if (auto iface = controllee.GetInterface<AlertsIntfControllee>(BusPath, "org.alljoyn.SmartSpaces.Operation.Alerts"))
+        {
+            iface->EmitAlertsChanged(alerts);
         }
     }
 

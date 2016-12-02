@@ -33,10 +33,10 @@ class SwitchModel final :
     QStatus GetIsOn(bool& out) const override;
 
     // From OnControl interface
-    QStatus SwitchOn(ajn::services::ErrorCode& error, ajn::services::CdmSideEffects& sideEffects) override;
+    QStatus SwitchOn(ajn::services::ErrorCode& error, ajn::services::CdmControllee& controllee) override;
 
     // From OffControl interface
-    QStatus SwitchOff(ajn::services::ErrorCode& error, ajn::services::CdmSideEffects& sideEffects) override;
+    QStatus SwitchOff(ajn::services::ErrorCode& error, ajn::services::CdmControllee& controllee) override;
  private:
     std::string m_busPath;
 };

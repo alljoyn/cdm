@@ -33,6 +33,12 @@ namespace utils {
  */
 QStatus MkDirPath(const std::string& path, char delim = '/', int mode = 0777);
 
+
+/**
+ *  Return a host name, if available.
+ */
+std::string GetHostName();
+
 /**
  *  Split the text at the delimiter.  Consecutive delimiters are treated
  *  as a single one.

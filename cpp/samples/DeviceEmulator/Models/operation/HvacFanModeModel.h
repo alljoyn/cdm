@@ -32,20 +32,20 @@ class HvacFanModeModel : public virtual HvacFanModeIntfControlleeModel {
      * Get Mode
      * @return current mode
      */
-    QStatus GetMode(Mode& out) const override;
+    QStatus GetMode(HvacFanModeInterface::Mode& out) const override;
 
      /**
      * Set Mode
      * @param[in] value The mode to set
      * @return ER_OK on success
      */
-    QStatus SetMode(const Mode value) override;
+    QStatus SetMode(const HvacFanModeInterface::Mode value) override;
 
     /**
      * Get SupportedModes
      * @return current supported modes
      */
-    QStatus GetSupportedModes(std::vector<Mode>& out) const override;
+    QStatus GetSupportedModes(std::vector<HvacFanModeInterface::Mode>& out) const override;
 
 
   private:

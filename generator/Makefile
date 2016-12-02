@@ -48,7 +48,16 @@ XML_FILES = \
     org.alljoyn.SmartSpaces.Operation/SpinSpeedLevel-v1.xml \
     org.alljoyn.SmartSpaces.Operation/Timer-v1.xml \
     org.alljoyn.SmartSpaces.Operation/TriggerSensor-v1.xml \
-    org.alljoyn.SmartSpaces.Operation/UnlockControl-v1.xml
+    org.alljoyn.SmartSpaces.Operation/UnlockControl-v1.xml \
+    org.alljoyn.SmartSpaces.Environment/CurrentAirQuality-v1.xml \
+    org.alljoyn.SmartSpaces.Environment/CurrentAirQualityLevel-v1.xml \
+    org.alljoyn.SmartSpaces.Environment/CurrentHumidity-v1.xml \
+    org.alljoyn.SmartSpaces.Environment/CurrentTemperature-v1.xml \
+    org.alljoyn.SmartSpaces.Environment/TargetHumidity-v1.xml \
+    org.alljoyn.SmartSpaces.Environment/TargetTemperature-v1.xml \
+    org.alljoyn.SmartSpaces.Environment/TargetTemperatureLevel-v1.xml \
+    org.alljoyn.SmartSpaces.Environment/WaterLevel-v1.xml \
+    org.alljoyn.SmartSpaces.Environment/WindDirection-v1.xml
 
 XML_PATHS = $(addprefix $(IFACES),$(XML_FILES))
 
@@ -56,7 +65,7 @@ all:
 	@ echo "Will process:"
 	@ for x in $(XML_FILES); do echo $$x; done
 
-generate: generate_common generate_controllee generate_samples
+generate: generate_common generate_controllee generate_controller generate_samples generate_factory
 
 generate_common:
 	@for x in $(XML_PATHS); do \
@@ -68,18 +77,29 @@ generate_controllee:
             ./generate.py --patches templates/patches/cpp --components=controllee $(TEMPLATES) $$x ;\
 	done
 
+generate_controller:
+	@for x in $(XML_PATHS); do \
+            ./generate.py --patches templates/patches/cpp --components=controller $(TEMPLATES) $$x ;\
+	done
+
 generate_samples:
 	@for x in $(XML_PATHS); do \
             ./generate.py --patches templates/patches/cpp --components=samples $(TEMPLATES) $$x ;\
 	done
 
-install: install_interfaces install_samples
+generate_factory:
+	@./genFactory.py $(XML_PATHS)
+
+install: install_interfaces install_samples install_factory
 
 install_interfaces:
 	(cd $(OUTPUT); find interfaces -type f|cpio -dump $(CDM)/cpp)
 
 install_samples:
 	(cd $(OUTPUT); find samples -type f|cpio -dump $(CDM)/cpp)
+
+install_factory:
+	cp ControllerFactory.cc $(CDM)/cpp/interfaces/src
 
 clean:
 	$(RM) -rf $(OUTPUT)

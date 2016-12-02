@@ -51,14 +51,14 @@ class FanSpeedLevelModel : public virtual FanSpeedLevelIntfControlleeModel {
      * Get AutoMode
      * @return current auto mode
      */
-    QStatus GetAutoMode(AutoMode& out) const override;
+    QStatus GetAutoMode(FanSpeedLevelInterface::AutoMode& out) const override;
 
      /**
      * Set AutoMode
      * @param[in] value The auto mode to set
      * @return ER_OK on success
      */
-    QStatus SetAutoMode(const AutoMode value) override;
+    QStatus SetAutoMode(const FanSpeedLevelInterface::AutoMode value) override;
 
 
   private:
