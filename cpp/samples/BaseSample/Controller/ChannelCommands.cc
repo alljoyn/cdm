@@ -17,6 +17,8 @@
 #include "ChannelCommands.h"
 #include "ControllerSample.h"
 
+#include <sstream>
+
 using namespace std;
 
 ChannelListener::ChannelListener()
@@ -116,7 +118,7 @@ void ChannelCommands::Init()
     RegisterCommand(&ChannelCommands::OnCmdGetChannelId, "gci", "get channel id");
     RegisterCommand(&ChannelCommands::OnCmdGetTotalNumberOfChannels, "gtnc", "get total number of channels");
     RegisterCommand(&ChannelCommands::OnCmdSetChannelId, "sci", "set channel id");
-    RegisterCommand(&ChannelCommands::OnCmdGetChannelList, "gcl", "get channel list");
+    RegisterCommand(&ChannelCommands::OnCmdGetChannelList, "gcl", "get channel list (use 'gcl <startingRecord> <numRecords>')");
     PrintCommands();
 }
 
@@ -158,7 +160,12 @@ void ChannelCommands::OnCmdGetChannelList(Commands* commands, std::string& cmd)
         return;
     }
     uint16_t startingRecord = 0;
-    uint16_t numRecords = 100;
+    uint16_t numRecords = 50;
+
+    // Override defaults if provided by user.
+    stringstream ss(cmd);
+    ss >> startingRecord >> numRecords;
+
     intfController->GetChannelList(startingRecord, numRecords);
 }
 
