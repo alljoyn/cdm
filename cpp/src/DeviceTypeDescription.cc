@@ -38,12 +38,13 @@ QStatus DeviceTypeDescription::AddDeviceType(DeviceType type, const String& obje
 {
     QStatus status = ER_OK;
 
-    if (type < 0 || type > MAX_DEVICE_TYPE) {
-        return ER_BAD_ARG_1;
-    }
-
     if (!objectPath.length()) {
         return ER_BAD_ARG_2;
+    }
+
+    if (type < 0 || type > MAX_DEVICE_TYPE) {
+        QCC_LogError(ER_BAD_ARG_1, ("Device Type '%d' for path '%s' is unknown! Mapping to 'OTHER'", type, objectPath.c_str()));
+        type = OTHER;
     }
 
     m_descriptions.insert(make_pair(type, objectPath));

@@ -76,6 +76,7 @@ static bool ParseInterfaceList(const String xml, InterfaceList& list)
             const String& intfName = (*citr2)->GetAttribute(ConfigLoader::NAME);
             CdmInterfaceType intfType = GetCdmInterfaceType(intfName);
             if (intfType == UNDEFINED_INTERFACE) {
+                printf("Unknown interface: %s\n", intfName.c_str());
                 continue;
             }
 

@@ -176,6 +176,27 @@ void DeviceEmulator::Startup()
         exit(1);
     }
 
+    // If there was no AppId in the XML file, generate one
+    uint8_t *appId = NULL;
+    size_t appIdSize = 0;
+    if (m_aboutData.GetAppId(&appId, &appIdSize) != ER_OK) {
+        GUID128 uniqueAppId;
+        m_aboutData.SetAppId(uniqueAppId.ToString().c_str());
+        printf("Using generated AppId: %s\n", uniqueAppId.ToString().c_str());
+    }
+
+    // If there was no DeviceId in the XML file, generate one
+    char *deviceId = NULL;
+    if (m_aboutData.GetDeviceId(&deviceId) != ER_OK) {
+        GUID128 uniqueDeviceId;
+        m_aboutData.SetDeviceId(uniqueDeviceId.ToString().c_str());
+        printf("Using generated DeviceId: %s\n", uniqueDeviceId.ToString().c_str());
+    }
+
+    if (!m_aboutData.IsValid()) {
+        printf("Warning: About Data is not valid!\n");
+    }
+
     QStatus status = m_bus->Start();
     if (ER_OK != status) {
         printf("BusAttachment::Start failed (%s)\n", QCC_StatusText(status));

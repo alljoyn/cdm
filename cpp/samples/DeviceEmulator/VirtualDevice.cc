@@ -36,6 +36,8 @@ void VirtualDevice::CreateInterfaces()
             string key(buf);
             m_rootCommands->RegisterChildCommands(key, commands);
             commands->Init();
+        } else {
+            printf("Failed to create commands for %s\n", itr->second.c_str());
         }
     }
 }
