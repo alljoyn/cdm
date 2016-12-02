@@ -66,8 +66,8 @@ class CurrentAirQualityInterface : public CdmInterface {
         CONTAMINANT_TYPE_VOC = 5
     };
     enum {
-        DEFAULT_MAX_VALUE = 0x7FF0000000000000,
-        DEFAULT_MIN_VALUE = 0x0
+        DEFAULT_MIN_VALUE = 0x0,
+        DEFAULT_MAX_VALUE = 0xffffffff,
     };
 
   protected:

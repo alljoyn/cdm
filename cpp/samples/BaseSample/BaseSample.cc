@@ -25,7 +25,7 @@
 using namespace std;
 
 static volatile sig_atomic_t s_interrupt = false;
-static void SigIntHandler(int sig)
+static void CDECL_CALL SigIntHandler(int sig)
 {
     s_interrupt = true;
 }

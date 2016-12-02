@@ -50,7 +50,7 @@ class AudioVideoInputIntfControllee : public AudioVideoInputInterface {
      * @param[in] inputSourceId input source id
      * @return ER_OK on success
      */
-    virtual QStatus SetInputSourceId(uint16_t inputSourceId) = 0;
+    virtual QStatus SetInputSourceId(const uint16_t inputSourceId) = 0;
 
     /**
      * Get supported input sources

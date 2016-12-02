@@ -156,7 +156,7 @@ QStatus VendorDefinedIntfControlleeImpl::SetTestProperty(int property)
 QStatus VendorDefinedIntfControlleeImpl::EmitTestSignal()
 {
     const InterfaceDescription::Member* member = GetInterfaceDescription()->GetMember(s_signal_TestSignal.c_str());
-    assert(member);
+    QCC_ASSERT(member);
     return m_busObject.Signal(NULL, SESSION_ID_ALL_HOSTED, *member, NULL, 0, 0);
 }
 

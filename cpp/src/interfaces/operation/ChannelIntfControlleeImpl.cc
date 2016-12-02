@@ -230,7 +230,7 @@ void ChannelIntfControlleeImpl::OnGetChannelList(const InterfaceDescription::Mem
 QStatus ChannelIntfControlleeImpl::EmitChannelListChanged()
 {
     const InterfaceDescription::Member* member = GetInterfaceDescription()->GetMember(s_signal_ChannelListChanged.c_str());
-    assert(member);
+    QCC_ASSERT(member);
     return m_busObject.Signal(NULL, SESSION_ID_ALL_HOSTED, *member, NULL, 0, 0);
 }
 

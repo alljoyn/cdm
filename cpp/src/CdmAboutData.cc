@@ -95,7 +95,7 @@ QStatus CdmAboutData::CreateFromXml(const qcc::String& aboutDataXml)
                     qcc::String codeText =descriptionChildren[i]->GetChild(descriptionXmlTypeTag)->GetContent();
                     qcc::String pathText =descriptionChildren[i]->GetChild(descriptionXmlPathTag)->GetContent();
                     std::stringstream convert(codeText.c_str());
-                    uint code;
+                    unsigned int code;
                     if (!(convert>>code)) {
                         status = ER_ABOUT_ABOUTDATA_MISSING_REQUIRED_FIELD;
                         QCC_LogError(status, ("%s: Could not convert device type to a uint", __func__));

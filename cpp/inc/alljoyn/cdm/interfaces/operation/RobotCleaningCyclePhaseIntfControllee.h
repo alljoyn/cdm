@@ -50,7 +50,7 @@ class RobotCleaningCyclePhaseIntfControllee : public RobotCleaningCyclePhaseInte
      * @param[in] cyclePhase cycle phase
      * @return ER_OK on success
      */
-    virtual QStatus SetCyclePhase(uint8_t cyclePhase) = 0;
+    virtual QStatus SetCyclePhase(const uint8_t cyclePhase) = 0;
 
     /**
      * Get supported cycle phases

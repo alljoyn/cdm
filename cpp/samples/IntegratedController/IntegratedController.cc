@@ -10,7 +10,7 @@ class IntegratedController : public ControllerSample
     IntegratedController(BusAttachment* bus) : ControllerSample(bus) {}
 };
 
-int main()
+int CDECL_CALL main()
 {
     if (AllJoynInit() != ER_OK) {
         printf("FAILED to init alljoyn\n");

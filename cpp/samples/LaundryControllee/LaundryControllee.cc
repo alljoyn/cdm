@@ -295,7 +295,7 @@ QStatus FillAboutData(CdmAboutData* aboutData)
     return ER_OK;
 }
 
-int main()
+int CDECL_CALL main()
 {
 
 

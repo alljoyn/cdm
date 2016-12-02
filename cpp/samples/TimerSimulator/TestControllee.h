@@ -1,6 +1,8 @@
 #ifndef _TESTCONTROLLEE_H_
 #define _TESTCONTROLLEE_H_
 
+#include <time.h>
+
 #include <qcc/Log.h>
 #include <qcc/String.h>
 

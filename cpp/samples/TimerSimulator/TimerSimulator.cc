@@ -81,7 +81,6 @@ QStatus FillAboutData(CdmAboutData* aboutData)
 
 void timerThread(TestControllee* controllee)
 {
-    clock_t t;
     clock_t initT = clock();
     clock_t iter;
     int sec = 0;
@@ -103,7 +102,7 @@ void timerThread(TestControllee* controllee)
     cout << "tmrThread exit "<< endl;
 }
 
-int main()
+int CDECL_CALL main()
 {
     if (AllJoynInit() != ER_OK) {
         printf("FAILED to init alljoyn\n");

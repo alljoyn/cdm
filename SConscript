@@ -13,6 +13,9 @@
 #    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 import os
+import platform
+
+WINDOWS = "Windows"
 
 Import('env')
 
@@ -43,13 +46,19 @@ if 'cpp' in env['bindings'] and not env.has_key('_ALLJOYNCORE_') and os.path.exi
 if 'java' in env['bindings'] and not env.has_key('_ALLJOYN_JAVA_') and os.path.exists('../../core/alljoyn/alljoyn_java/SConscript'):
    env.SConscript('../../core/alljoyn/alljoyn_java/SConscript')
 
-env.Append(CPPFLAGS=['-Wno-unused-variable', '-Wno-unused-parameter'])
+if platform.system() != WINDOWS:
+    env.Append(CPPFLAGS=['-Wno-unused-variable', '-Wno-unused-parameter'])
+else:
+    env.Append(CPPFLAGS=['/wd4100', '/wd4189'])
+    # Disable due to bug in VS 2015 update 1 http://stackoverflow.com/questions/34013930/error-c4592-symbol-will-be-dynamically-initialized-vs2015-1-static-const-std
+    env.Append(CPPFLAGS=['/wd4592'])
 
 cdm_env = env.Clone()
 cdm_env.Append(LIBPATH = '$DISTDIR/cdm/lib')
 cdm_env.Append(CPPPATH = '$DISTDIR/cdm/inc')
 #do not allow variable length arrays on the heap
-cdm_env.Append(CPPFLAGS = '-Werror=vla');
+if platform.system() != WINDOWS:
+    cdm_env.Append(CPPFLAGS = '-Werror=vla');
 
 for b in cdm_env['bindings']:
     if os.path.exists('%s/SConscript' % b):

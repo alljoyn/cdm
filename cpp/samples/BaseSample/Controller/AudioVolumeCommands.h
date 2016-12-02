@@ -31,7 +31,7 @@ class AudioVolumeListener : public AudioVolumeIntfControllerListener {
     AudioVolumeListener();
     virtual ~AudioVolumeListener();
     virtual void OnResponseSetVolume(QStatus status, const qcc::String& objectPath, void* context);
-    virtual void OnResponseGetVolume(QStatus status, const qcc::String& objectPath, uint8_t volume, void* context);
+    virtual void OnResponseGetVolume(QStatus status, const qcc::String& objectPath, const uint8_t volume, void* context);
     virtual void OnResponseGetMaxVolume(QStatus status, const qcc::String& objectPath, const uint8_t maxVolume, void* context);
     virtual void OnResponseSetMute(QStatus status, const qcc::String& objectPath, void* context);
     virtual void OnResponseGetMute(QStatus status, const qcc::String& objectPath, const bool mute, void* context);

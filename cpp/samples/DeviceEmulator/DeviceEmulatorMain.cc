@@ -1,6 +1,6 @@
 #include "DeviceEmulator.h"
 
-int main(int argc, char** argv)
+int CDECL_CALL main(int argc, char** argv)
 {
     if (argc != 2) {
         cout << "Argument(xml file path) is needed" << endl;
