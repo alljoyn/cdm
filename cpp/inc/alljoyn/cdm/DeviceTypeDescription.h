@@ -55,7 +55,7 @@ class DeviceTypeDescription {
     /**
      * Reset the device type descriptions
      */
-    void ResetDescriptions();
+    void Clear();
 
     /**
      * Get device type descriptions

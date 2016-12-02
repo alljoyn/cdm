@@ -1,21 +1,23 @@
 /******************************************************************************
- * Copyright (c) 2013-2014, AllSeen Alliance. All rights reserved.
- *
- *    Permission to use, copy, modify, and/or distribute this software for any
- *    purpose with or without fee is hereby granted, provided that the above
- *    copyright notice and this permission notice appear in all copies.
- *
- *    THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- *    WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- *    MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- *    ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- *    WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- *    ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- ******************************************************************************/
+* Copyright (c) 2013-2014, AllSeen Alliance. All rights reserved.
+*
+*    Permission to use, copy, modify, and/or distribute this software for any
+*    purpose with or without fee is hereby granted, provided that the above
+*    copyright notice and this permission notice appear in all copies.
+*
+*    THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+*    WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+*    MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+*    ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+*    WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+*    ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+*    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+******************************************************************************/
 
 #include <sstream>
-#include <assert.h>
+#include <iomanip>
+#include <cassert>
+
 #include <alljoyn/cdm/LogModule.h>
 #include <alljoyn/cdm/CdmAboutData.h>
 #include <alljoyn/cdm/DeviceTypeDescription.h>
@@ -257,43 +259,102 @@ QStatus CdmAboutData::SetDeviceTypeDescription(const DeviceTypeDescription *devi
     return status;
 }
 
-QStatus CdmAboutData::GetDeviceTypeDescription(DeviceTypeDescription **deviceTypes)
+DeviceTypeDescription CdmAboutData::GetDeviceTypeDescription()
 {
+    DeviceTypeDescription result;
     QStatus status = ER_OK;
     MsgArg* arg = NULL;
 
-    (*deviceTypes)->ResetDescriptions();
-
     status = GetField(CdmAboutKeys::DEVICE_TYPE_DESCRIPTION.c_str(), arg);
-    if (status != ER_OK) {
-        QCC_LogError(status, ("%s: failed to get field.", __func__));
-        return status;
-    }
-    MsgArg* elemArg = NULL;
-    size_t elemSize = 0;
-    status = arg->Get(GetFieldSignature(CdmAboutKeys::DEVICE_TYPE_DESCRIPTION.c_str()), &elemSize, &elemArg);
-    if (status != ER_OK) {
-        QCC_LogError(status, ("%s: failed to get MsgArg.", __func__));
-        return status;
-    }
 
-    for (size_t i = 0; i < elemSize; ++i) {
-        DeviceType type;
-        char* objectPath = NULL;
+    if (status == ER_OK) {
+        MsgArg* elemArg = NULL;
+        size_t elemSize = 0;
 
-        status = elemArg->Get("(uo)", &type, &objectPath);
-        if (status != ER_OK) {
-            QCC_LogError(status, ("%s: failed to get MsgArg.", __func__));
-            return status;
+        status = arg->Get(GetFieldSignature(CdmAboutKeys::DEVICE_TYPE_DESCRIPTION.c_str()), &elemSize, &elemArg);
+
+        if (status == ER_OK) {
+            for (size_t i = 0; i < elemSize; ++i) {
+                DeviceType type;
+                char* objectPath = NULL;
+
+                status = elemArg->Get("(uo)", &type, &objectPath);
+
+                if (status == ER_OK) {
+                    result.AddDeviceType(type, objectPath);
+                }
+                elemArg++;
+            }
         }
-
-        (*deviceTypes)->AddDeviceType(type, objectPath);
-
-        elemArg++;
     }
 
-    return status;
+    return result;
 }
+
+
+
+std::string CdmAboutData::toString() const
+{
+    std::ostringstream strm;
+    strm << "About Data\n";
+
+    // Presumably these char* point to strings within the internal field data.
+    size_t count = GetFields();
+    const char** fields = new const char*[count];
+
+    GetFields(fields, count);
+
+    for (size_t i = 0; i < count; ++i) {
+        strm << "\tKey: " << fields[i];
+
+        MsgArg* field;
+        GetField(fields[i], field);
+
+        strm << "\t";
+
+        if (field->Signature() == "s") {
+            const char* tmp_s;
+            field->Get("s", &tmp_s);
+            strm << tmp_s;
+        } else if (field->Signature() == "as") {
+            size_t las;
+            MsgArg* as_arg;
+            field->Get("as", &las, &as_arg);
+            for (size_t j = 0; j < las; ++j) {
+                const char* tmp_s;
+                as_arg[j].Get("s", &tmp_s);
+                strm << tmp_s;
+            }
+        } else if (field->Signature() == "ay") {
+            size_t lay;
+            uint8_t* pay;
+            field->Get("ay", &lay, &pay);
+            for (size_t j = 0; j < lay; ++j) {
+                strm << std::hex << std::setfill('0') << std::setw(2) << (int)pay[j] << " ";
+            }
+            strm << std::dec;
+        } else if (field->Signature() == "a(uo)") {
+            MsgArg* elemArg = NULL;
+            size_t elemSize = 0;
+            field->Get("a(uo)", &elemSize, &elemArg);
+
+            for(size_t i = 0; i < elemSize; ++i) {
+                DeviceType type;
+                char* objectPath = NULL;
+
+                elemArg[i].Get("(uo)", &type, &objectPath);
+                strm << "[" << type << ", " << objectPath << "]";
+            }
+        } else {
+            strm << "User Defined Value\tSignature: " << field->Signature().c_str();
+        }
+        strm << "\n";
+    }
+
+    delete [] fields;
+    return strm.str();
+}
+
 
 
 void CdmAboutData::InitializeCustomFieldDetails()

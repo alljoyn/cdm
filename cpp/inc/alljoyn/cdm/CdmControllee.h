@@ -19,6 +19,7 @@
 #define CDMCONTROLLEE_H_
 
 #include <alljoyn/Status.h>
+#include <alljoyn/cdm/CdmTypes.h>
 #include <alljoyn/cdm/CdmConfig.h>
 #include <alljoyn/cdm/interfaces/CdmInterface.h>
 #include <alljoyn/cdm/interfaces/CdmInterfaceTypes.h>
@@ -46,26 +47,16 @@ class CdmControllee {
      * @param[in] bus bus attachment
      * @param[in] aboutData CDM About data
      */
-    CdmControllee(BusAttachment& bus, CdmAboutData* aboutData);
+    CdmControllee(
+        BusAttachment& bus,
+        Ref<CdmAnnouncer> announcer,
+        Ref<CdmSecurity> security
+        );
 
     /**
      * Destructor of CdmControllee
      */
     virtual ~CdmControllee();
-
-    /**
-     * Enable peer-to-peer security.
-     * @param[in] authMechanisms   ALLJOYN_SRP_LOGON, ALLJOYN_SRP_KEYX, ALLJOYN_ECDHE_NULL, ALLJOYN_ECDHE_PSK,
-     *                         ALLJOYN_ECDHE_ECDSA, GSSAPI.
-     * @param[in] listener authentication listener
-     * @param[in] keyStoreFileName optional parameter to specify the filename of the default key store
-     * @param[in] isShared optional parameter that indicates if the key store is shared between multiple applications.
-     * @return ER_OK on success
-     */
-    QStatus EnablePeerSecurity(const char* authMechanisms,
-                               AuthListener* listener,
-                               const char* keyStoreFileName = NULL,
-                               bool isShared = false);
 
     /**
      * Start controllee

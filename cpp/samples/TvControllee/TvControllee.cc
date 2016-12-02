@@ -2,15 +2,19 @@
 #include <map>
 #include <qcc/Log.h>
 #include <qcc/String.h>
-#include <alljoyn/Init.h>
 #include <alljoyn/version.h>
-#include <alljoyn/cdm/DeviceTypeDescription.h>
+
+#include <alljoyn/cdm/CdmSystem.h>
+#include <alljoyn/cdm/CdmAnnouncer.h>
+#include <alljoyn/cdm/CdmSecurity.h>
+
 #include "ControlleeSample.h"
 #include "AudioVolumeListener.h"
 #include "ChannelListener.h"
 #include "AudioVideoInputListener.h"
 #include "ClosedStatusListener.h"
 #include "HidListener.h"
+
 #include <alljoyn/cdm/interfaces/operation/AudioVolumeIntfControllee.h>
 #include <alljoyn/cdm/interfaces/operation/ClosedStatusIntfControllee.h>
 #include <alljoyn/cdm/interfaces/operation/ChannelIntfControllee.h>
@@ -48,14 +52,15 @@ private:
     ClosedStatusIntfControllee* m_closedStatusIntfControllee;
 
 public:
-    TvControllee(BusAttachment* bus, CdmAboutData* aboutData);
+    TvControllee(BusAttachment* bus, Ref<CdmAnnouncer> announcer, Ref<CdmSecurity> security);
     virtual ~TvControllee();
     void CreateInterfaces();
     void SetInitialProperty();
 };
 
-TvControllee::TvControllee(BusAttachment* bus, CdmAboutData* aboutData) :
-    ControlleeSample(bus, aboutData), m_audioVolumeListener(NULL), m_channelListener(NULL), m_avInputListener(NULL), m_hidListener(NULL),
+TvControllee::TvControllee(BusAttachment* bus, Ref<CdmAnnouncer> announcer, Ref<CdmSecurity> security) :
+    ControlleeSample(bus, announcer, security),
+    m_audioVolumeListener(NULL), m_channelListener(NULL), m_avInputListener(NULL), m_hidListener(NULL),
     m_audioVolumeIntfControllee(NULL), m_channelIntfControllee(NULL), m_avInputIntfControllee(NULL), m_hidIntfControllee(NULL),
     m_closedStatusIntfControllee(NULL)
 {
@@ -68,21 +73,11 @@ TvControllee::TvControllee(BusAttachment* bus, CdmAboutData* aboutData) :
 
 TvControllee::~TvControllee()
 {
-    if (m_audioVolumeListener) {
-        delete m_audioVolumeListener;
-    }
-    if (m_channelListener) {
-        delete m_channelListener;
-    }
-    if (m_avInputListener) {
-        delete m_avInputListener;
-    }
-    if (m_hidListener) {
-        delete m_hidListener;
-    }
-    if (m_closedStatusListener) {
-        delete m_closedStatusListener;
-    }
+    delete m_audioVolumeListener;
+    delete m_channelListener;
+    delete m_avInputListener;
+    delete m_hidListener;
+    delete m_closedStatusListener;
 }
 
 void TvControllee::CreateInterfaces()
@@ -178,122 +173,56 @@ void TvControllee::SetInitialProperty()
     }
 }
 
-QStatus FillAboutData(CdmAboutData* aboutData)
-{
-    String const& defaultLanguage = "en";
-    String device_id = "deviceID";
-    String app_id = "4a354637-5649-4518-8a48-323c158bc004";
-    String app_name = "TVControllee";
-    map<String, String> deviceNames;
-    deviceNames.insert(pair<String, String>("en", "TV"));
 
-    if (!app_id.empty()) {
-        aboutData->SetAppId(app_id.c_str());
-    }
-
-    if (device_id != "") {
-        aboutData->SetDeviceId(device_id.c_str());
-    }
-
-    vector<String> languages(1);
-    languages[0] = "en";
-
-    for (size_t i = 0; i < languages.size(); i++) {
-        aboutData->SetSupportedLanguage(languages[i].c_str());
-    }
-
-    if (defaultLanguage != "") {
-        aboutData->SetDefaultLanguage(defaultLanguage.c_str());
-    }
-
-    if (app_name != "") {
-        aboutData->SetAppName(app_name.c_str(), languages[0].c_str());
-    }
-
-    aboutData->SetModelNumber("Wxfy388i");
-    aboutData->SetDateOfManufacture("10/1/2199");
-    aboutData->SetSoftwareVersion("12.20.44 build 44454");
-    aboutData->SetHardwareVersion("355.499. b");
-
-    map<String, String>::const_iterator iter = deviceNames.find(languages[0]);
-    if (iter != deviceNames.end()) {
-        aboutData->SetDeviceName(iter->second.c_str(), languages[0].c_str());
-    } else {
-        aboutData->SetDeviceName("My device name", "en");
-    }
-
-    aboutData->SetDescription("This is an TV Controllee Application", "en");
-    aboutData->SetManufacturer("Manufacturer", "en");
-    aboutData->SetSupportUrl("http://www.alljoyn.org");
-
-    // CDM custom metadata fields
-    aboutData->SetCountryOfProduction("USA", "en");
-    aboutData->SetCorporateBrand("TV Brand", "en");
-    aboutData->SetProductBrand("TV", "en");
-    aboutData->SetLocation("Room1", "en");
-
-    DeviceTypeDescription description;
-    description.AddDeviceType(TELEVISION, "/Cdm/Tv");
-    aboutData->SetDeviceTypeDescription(&description);
-
-    if (!aboutData->IsValid()) {
-
-        return ER_FAIL;
-    }
-
-    return ER_OK;
-}
 
 int CDECL_CALL main()
 {
-    if (AllJoynInit() != ER_OK) {
-        printf("FAILED to init alljoyn\n");
-        exit(1);
+    CdmSystem system("TVControllee");
+
+    QStatus status = system.Start();
+
+    if (status != ER_OK) {
+        cerr << "Failed to start the TvControllee " << QCC_StatusText(status) << "\n";
+        return 1;
     }
-#ifdef ROUTER
-    if (AllJoynRouterInit() != ER_OK) {
-        AllJoynShutdown();
-        printf("FAILED to init router\n");
-        exit(1);
-    }
-#endif
+
+    // Note that QCC_SetLogLevels can't be called until CdmSystem has been started.
     printf("AllJoyn Library version: %s\n", ajn::GetVersion());
     printf("AllJoyn Library build info: %s\n", ajn::GetBuildInfo());
     QCC_SetLogLevels("CDM_MODULE_LOG_NAME=15;");
 
-    BusAttachment* bus = new BusAttachment("TVControllee", true);
-    if (!bus) {
-        printf("BusAttachment creation failed.\n");
-        exit(1);
-    }
+    auto announcer = mkRef<CdmAnnouncer>(system.GetBusAttachment());
+    auto security  = mkRef<CdmSecurity>(system.GetBusAttachment());
 
-    CdmAboutData* aboutData = new CdmAboutData();
-    if (!aboutData) {
-        printf("AboutData creation failed.\n");
-        delete bus;
-        exit(1);
-    }
-    FillAboutData(aboutData);
+    security->LoadFiles("security");
 
-    QStatus status = bus->Start();
-    if (ER_OK != status) {
-        printf("BusAttachment::Start failed (%s)\n", QCC_StatusText(status));
-        delete bus;
-        delete aboutData;
-        exit(1);
-    }
+    announcer->SetAboutData(
+       "<AboutData>"
+       "  <AppId>4a354637-5649-4518-8a48-323c158bc004</AppId>"
+       "  <DefaultLanguage>en</DefaultLanguage>"
+       "  <DeviceName>TV</DeviceName>"
+       "  <DeviceId>deviceID</DeviceId>"
+       "  <AppName>TVControllee</AppName>"
+       "  <Manufacturer>Manufacturer</Manufacturer>"
+       "  <ModelNumber>Wxfy388i</ModelNumber>"
+       "  <Description>This is an TV Controllee Application</Description>"
+       "  <DateOfManufacture>10/1/2199</DateOfManufacture>"
+       "  <SoftwareVersion>12.20.44 build 44454</SoftwareVersion>"
+       "  <HardwareVersion>355.499.b</HardwareVersion>"
+       "  <SupportUrl>http://www.alljoyn.org</SupportUrl>"
+       "  <CountryOfProduction>USA</CountryOfProduction>"
+       "  <CorporateBrand>TV Brand</CorporateBrand>"
+       "  <ProductBrand>TV</ProductBrand>"
+       "  <Location>Room1</Location>"
+       "  <DeviceTypeDescription>"
+       "      <TypeDescription>"
+       "          <device_type>21</device_type>"
+       "          <object_path>/Cdm/Tv</object_path>"
+       "      </TypeDescription>"
+       "  </DeviceTypeDescription>"
+       "</AboutData>");
 
-    status = bus->Connect();
-    if (ER_OK != status) {
-        printf("BusAttachment::Connect failed (%s)\n", QCC_StatusText(status));
-        bus->Stop();
-        bus->Join();
-        delete bus;
-        delete aboutData;
-        exit(1);
-    }
-
-    TvControllee controllee(bus, aboutData);
+    TvControllee controllee(&system.GetBusAttachment(), announcer, security);
 
     controllee.Startup();
 
@@ -303,23 +232,5 @@ int CDECL_CALL main()
     // Release the UInput instance (to destroy the input device on system)
     UInput::Instance().Release();
 #endif
-
-    if (bus) {
-        bus->Disconnect();
-        bus->Stop();
-        bus->Join();
-
-        delete bus;
-    }
-
-    if (aboutData) {
-        delete aboutData;
-    }
-
-#ifdef ROUTER
-    AllJoynRouterShutdown();
-#endif
-    AllJoynShutdown();
-
     return 0;
 }

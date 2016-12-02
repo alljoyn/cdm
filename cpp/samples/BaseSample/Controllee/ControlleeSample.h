@@ -23,7 +23,6 @@
 #include <alljoyn/AboutObj.h>
 #include <alljoyn/AboutObjectDescription.h>
 #include <alljoyn/cdm/CdmControllee.h>
-#include <alljoyn/cdm/CdmAboutData.h>
 #include "BaseSample.h"
 
 class Commands;
@@ -32,30 +31,18 @@ using namespace std;
 using namespace ajn;
 using namespace services;
 
-class AboutSessionListener : public SessionPortListener {
-  public:
-    /**
-     * AcceptSessionJoiner - Receive request to join session and decide whether to accept it or not
-     * @param sessionPort - the port of the request
-     * @param joiner - the name of the joiner
-     * @param opts - the session options
-     * @return true/false
-     */
-    virtual bool AcceptSessionJoiner(SessionPort sessionPort, const char* joiner, const SessionOpts& opts) {
-        QCC_UNUSED(sessionPort);
-        QCC_UNUSED(joiner);
-        QCC_UNUSED(opts);
-        return true;
-    }
-};
 
 class ControlleeSample : public BaseSample
 {
   public:
-    ControlleeSample(BusAttachment* bus, CdmAboutData* aboutData);
+    ControlleeSample(
+        BusAttachment* bus,
+        Ref<CdmAnnouncer> announcer,
+        Ref<CdmSecurity> security
+        );
     virtual ~ControlleeSample();
 
-    CdmAboutData* GetAboutData() { return m_aboutData; }
+    CdmAboutData* GetAboutData();
     CdmControllee* GetControllee() { return m_controllee; }
     CdmInterface* CreateInterface(const CdmInterfaceType type, const qcc::String& objectPath, InterfaceControlleeListener& listener);
 
@@ -65,17 +52,15 @@ class ControlleeSample : public BaseSample
     virtual void SetInitialProperty() = 0;
 
     BusAttachment* m_bus;
-    CdmAboutData* m_aboutData;
-    AboutObj* m_aboutObj;
-    AboutSessionListener* m_aboutSessionListener;
+    Ref<CdmAnnouncer> m_announcer;
+    Ref<CdmSecurity> m_security;
 
     QStatus Init();
     void Deinit();
-    QStatus AnnounceAboutObj();
-    void UnannounceAboutObj();
 
     CdmControllee* m_controllee;
     Commands* m_rootCommands;
+    bool m_isInit = false;
 };
 
 

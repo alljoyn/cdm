@@ -52,7 +52,7 @@ QStatus DeviceTypeDescription::AddDeviceType(DeviceType type, const String& obje
     return status;
 }
 
-void DeviceTypeDescription::ResetDescriptions()
+void DeviceTypeDescription::Clear()
 {
     m_descriptions.clear();
 }

@@ -23,10 +23,11 @@
 #include <alljoyn/cdm/CdmBusObject.h>
 #include <alljoyn/cdm/LogModule.h>
 #include <alljoyn/cdm/CdmAboutData.h>
+#include <alljoyn/cdm/CdmAnnouncer.h>
+#include <alljoyn/cdm/CdmSecurity.h>
 #include <alljoyn/cdm/DeviceTypeDescription.h>
 #include <alljoyn/cdm/interfaces/InterfaceControlleeListener.h>
 
-#include "AutoLock.h"
 #include "CdmBusListener.h"
 #include "CdmConstants.h"
 #include "InterfaceFactory.h"
@@ -38,18 +39,18 @@ using namespace qcc;
 namespace ajn {
 namespace services {
 
-CdmControlleeImpl::CdmControlleeImpl(BusAttachment& bus, CdmAboutData* aboutData) :
+CdmControlleeImpl::CdmControlleeImpl(
+    BusAttachment& bus,
+    Ref<CdmAnnouncer> announcer,
+    Ref<CdmSecurity> security
+    ) :
     m_bus(bus),
-    m_aboutData(aboutData),
+    m_announcer(announcer),
+    m_security(security),
     m_cdmBusListener(new CdmBusListener(m_bus)),
     m_isStarted(false)
 {
     m_cdmBusListener->SetSessionPort(CDM_SERVICE_PORT);
-
-    m_security.m_authMechanisms = NULL;
-    m_security.m_authListener = NULL;
-    m_security.m_keyStoreFileName = NULL;
-    m_security.m_isKeyStoreShared = false;
 
     QStatus status = InterfaceFactory::GetInstance()->InitInterfaceFactory(&m_bus);
     if (status != ER_OK) {
@@ -57,63 +58,20 @@ CdmControlleeImpl::CdmControlleeImpl(BusAttachment& bus, CdmAboutData* aboutData
     }
 }
 
+
 CdmControlleeImpl::~CdmControlleeImpl()
 {
-    map<String, CdmBusObject*>::const_iterator it;
-    for (it = m_cdmBusObjectsMap.begin(); it != m_cdmBusObjectsMap.end(); ++it) {
-        CdmBusObject* cdmBusObject = it->second;
-
-        if (cdmBusObject) {
-            delete cdmBusObject;
-            cdmBusObject = 0;
-        }
-    }
-
-    if (m_cdmBusListener) {
-        delete m_cdmBusListener;
-    }
+    delete m_cdmBusListener;
 }
 
-QStatus CdmControlleeImpl::EnablePeerSecurity(const char* authMechanisms,
-                                          AuthListener* authListener,
-                                          const char* keyStoreFileName,
-                                          bool isKeyStoreShared)
-{
-    AutoLock lock(m_lock);
-    if (m_isStarted) {
-        QCC_DbgPrintf(("%s: CdmControllee is already started.", __func__));
-        return ER_BUS_ALREADY_CONNECTED;
-    }
-
-    if (!authMechanisms) {
-        return ER_BAD_ARG_1;
-    }
-    if (!authListener) {
-        return ER_BAD_ARG_2;
-    }
-
-    m_security.m_authMechanisms = authMechanisms;
-    m_security.m_authListener = authListener;
-    m_security.m_keyStoreFileName = keyStoreFileName;
-    m_security.m_isKeyStoreShared = isKeyStoreShared;
-
-    return ER_OK;
-}
 
 QStatus CdmControlleeImpl::Start()
 {
     QStatus status = ER_OK;
 
-    AutoLock lock(m_lock);
     if (m_isStarted) {
         QCC_DbgPrintf(("%s: CdmControllee is already started.", __func__));
         return ER_OK;
-    }
-
-    if (!m_aboutData) {
-        status = ER_FAIL;
-        QCC_LogError(status, ("%s: AboutData is not exist.", __func__));
-        return status;
     }
 
     status = RegisterBusObject();
@@ -121,14 +79,14 @@ QStatus CdmControlleeImpl::Start()
         return status;
     }
 
-    if (m_security.m_authListener && m_security.m_authMechanisms) {
-        status = m_bus.EnablePeerSecurity(m_security.m_authMechanisms, m_security.m_authListener, m_security.m_keyStoreFileName, m_security.m_isKeyStoreShared);
+    if (m_security) {
+        status = m_security->Enable();
         if (status != ER_OK) {
             return status;
         }
     }
 
-    status = RegisterBusListener(m_cdmBusListener);
+    status = RegisterBusListener();
     if (status != ER_OK) {
         QCC_LogError(status, ("%s: CdmBus listener registration is failed.", __func__));
         goto cleanup;
@@ -145,7 +103,7 @@ QStatus CdmControlleeImpl::Start()
 
 cleanup:
     QStatus ret = ER_OK;
-    ret = UnregisterBusListener(m_cdmBusListener);
+    ret = UnregisterBusListener();
     if (ret != ER_OK) {
         QCC_LogError(ret, ("%s: CdmBus listener unregistration is failed.", __func__));
     }
@@ -155,14 +113,14 @@ cleanup:
 QStatus CdmControlleeImpl::Stop()
 {
     QStatus status = ER_OK;
-    AutoLock lock(m_lock);
+
     if (!m_isStarted) {
         QCC_DbgPrintf(("%s: CdmControllee is already stopped.", __func__));
         return ER_OK;
     }
 
     QStatus ret = ER_OK;
-    ret = UnregisterBusListener(m_cdmBusListener);
+    ret = UnregisterBusListener();
     if (ret != ER_OK) {
         QCC_LogError(ret, ("%s: CdmBus listener unregistration is failed.", __func__));
     }
@@ -175,9 +133,7 @@ QStatus CdmControlleeImpl::Stop()
 CdmInterface* CdmControlleeImpl::CreateInterface(const CdmInterfaceType type, const qcc::String& objectPath, InterfaceControlleeListener& listener)
 {
     QStatus status = ER_OK;
-    CdmInterface* interface = NULL;
     {
-        AutoLock lock(m_lock);
         if (m_isStarted) {
             status = ER_FAIL;
             QCC_LogError(status, ("%s: CdmControllee is already started.", __func__));
@@ -195,26 +151,28 @@ CdmInterface* CdmControlleeImpl::CreateInterface(const CdmInterfaceType type, co
         return NULL;
     }
 
-    CdmBusObject* cdmBusObject = NULL;
-    map<String, CdmBusObject*>::const_iterator it = m_cdmBusObjectsMap.find(objectPath);
-    if (it != m_cdmBusObjectsMap.end()) {
-        cdmBusObject = it->second;
+    Ref<CdmBusObject> cdmBusObject;
+
+    auto iter = m_cdmBusObjectsMap.find(objectPath);
+    bool created = false;
+
+    if (iter != m_cdmBusObjectsMap.end()) {
+        cdmBusObject = iter->second;
     } else {
-        cdmBusObject = new CdmBusObject(m_bus, objectPath);
-        if (!cdmBusObject) {
-            QCC_LogError(ER_OUT_OF_MEMORY, ("%s: could not create CdmBusObject class.", __func__));
-            return NULL;
-        }
-        m_cdmBusObjectsMap[objectPath] = cdmBusObject;
+        cdmBusObject = Ref<CdmBusObject>(new CdmBusObject(m_bus, objectPath));
+        created = true;
     }
 
-    interface = cdmBusObject->CreateInterface(type, listener);
+    auto interface = cdmBusObject->CreateInterface(type, listener);
+
     if (!interface) {
         QCC_LogError(ER_FAIL, ("%s: could not register bus object to bus attachment.", __func__));
-        delete m_cdmBusObjectsMap[objectPath];
-        m_cdmBusObjectsMap.erase(objectPath);
-        cdmBusObject = NULL;
         return NULL;
+    }
+
+    if (created)
+    {
+        m_cdmBusObjectsMap[objectPath] = cdmBusObject;
     }
 
     return interface;
@@ -256,94 +214,52 @@ const CdmInterfaceType CdmControlleeImpl::RegisterVendorDefinedInterface(const q
 
 QStatus CdmControlleeImpl::CheckAboutDeviceTypeValidation()
 {
-    QStatus status;
-    MsgArg* deviceTypeArg = NULL;
-    MsgArg* elemArg = NULL;
-    size_t elemCount = 0;
-    DeviceType deviceType;
-    const char* objectPath = NULL;
+    DeviceTypeDescription devTypes = m_announcer->GetAboutData()->GetDeviceTypeDescription();
 
-    if (!m_aboutData) {
-        return ER_INVALID_DATA;
-    }
-
-    status = m_aboutData->GetField(CdmAboutData::DEVICE_TYPE_DESCRIPTION.c_str(), deviceTypeArg);
-    if (status != ER_OK) {
-        return status;
-    } else if (!deviceTypeArg) {
-        return ER_FAIL;
-    }
-
-    status = deviceTypeArg->Get(m_aboutData->GetFieldSignature(CdmAboutData::DEVICE_TYPE_DESCRIPTION.c_str()), &elemCount, &elemArg);
-    if (status != ER_OK) {
-        return status;
-    }
-
-    for (size_t i=0; i<elemCount; ++i) {
-        status = elemArg[i].Get("(uo)", &deviceType, &objectPath);
-        if (status != ER_OK) {
-            return status;
-        }
-
-        if (!objectPath || deviceType < 0 || deviceType > MAX_DEVICE_TYPE) {
-            return ER_FAIL;
-        }
+    for (auto& pair : devTypes.GetDescriptions()) {
+        auto& deviceType = pair.first;
+        auto& objectPath = pair.second;
 
         if (m_cdmBusObjectsMap.find(objectPath) == m_cdmBusObjectsMap.end()) {
             return ER_FAIL;
         }
     }
-    return status;
+
+    return ER_OK;
 }
 
 QStatus CdmControlleeImpl::RegisterBusObject()
 {
-    QStatus status = ER_OK;
-
     /* Register bus objects */
-    for (map<String, CdmBusObject*>::const_iterator it = m_cdmBusObjectsMap.begin(); it != m_cdmBusObjectsMap.end(); ++it ) {
-        CdmBusObject* cdmBusObject = it->second;
-        status = m_bus.RegisterBusObject(*cdmBusObject, false);
+    for (auto& pair : m_cdmBusObjectsMap) {
+        auto status = m_bus.RegisterBusObject(*pair.second, false);
         if (status != ER_OK) {
-            QCC_LogError(status, ("%s: could not register bus object(%s) to bus attachment.", __func__, it->first.c_str()));
+            QCC_LogError(status, ("%s: could not register bus object(%s) to bus attachment.", __func__, pair.first.c_str()));
             return status;
         }
     }
-    return status;
+
+    return ER_OK;
 }
 
 
-QStatus CdmControlleeImpl::RegisterBusListener(CdmBusListener* listener, TransportMask transportMask)
+QStatus CdmControlleeImpl::RegisterBusListener()
 {
-    QStatus status = ER_OK;
+    m_bus.RegisterBusListener(*m_cdmBusListener);
 
-    if (!listener) {
-        status = ER_FAIL;
-        QCC_LogError(status, ("%s: CdmBusListener is not allocated.", __func__));
-        return status;
-    }
-
-    m_bus.RegisterBusListener(*listener);
+    TransportMask transportMask = TRANSPORT_ANY;
 
     SessionOpts opts(SessionOpts::TRAFFIC_MESSAGES, false, SessionOpts::PROXIMITY_ANY, transportMask);
-    SessionPort port = listener->GetSessionPort();
-    status = m_bus.BindSessionPort(port, opts, *listener);
+    SessionPort port = m_cdmBusListener->GetSessionPort();
+    auto status = m_bus.BindSessionPort(port, opts, *m_cdmBusListener);
 
     return status;
 }
 
-QStatus CdmControlleeImpl::UnregisterBusListener(CdmBusListener* listener)
+QStatus CdmControlleeImpl::UnregisterBusListener()
 {
-    QStatus status = ER_OK;
-
-    if (!listener) {
-        status = ER_FAIL;
-        QCC_LogError(status, ("%s: CdmBusListener is not allocated.", __func__));
-        return status;
-    }
-
-    m_bus.UnregisterBusListener(*listener);
-    status = m_bus.UnbindSessionPort(listener->GetSessionPort());
+    m_bus.UnregisterBusListener(*m_cdmBusListener);
+    auto status = m_bus.UnbindSessionPort(m_cdmBusListener->GetSessionPort());
 
     return status;
 }

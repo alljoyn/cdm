@@ -14,51 +14,48 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include <qcc/Debug.h>
+
+#ifndef CDMTYPES_H_
+#define CDMTYPES_H_
+
+#include <memory>
 #include <qcc/String.h>
 
-#include <alljoyn/cdm/CdmControllee.h>
-#include "CdmControlleeImpl.h"
-
-using namespace std;
-using namespace qcc;
-
 namespace ajn {
+
+// Forward declarations that should be in core
+class BusAttachment;
+class AuthListener;
+class SessionPortListener;
+class PermissionConfigurationListener;
+
 namespace services {
+//======================================================================
 
-CdmControllee::CdmControllee(
-    BusAttachment& bus,
-    Ref<CdmAnnouncer> announcer,
-    Ref<CdmSecurity> security
-    )
-  : m_impl(new CdmControlleeImpl(bus, announcer, security))
+/*  Shorthands for shared_ptr.
+*/
+
+template<typename T>
+using Ref = std::shared_ptr<T>;
+
+
+template<typename T, typename ... Args>
+static inline
+Ref<T>
+mkRef(Args&& ...args)
 {
+    return std::make_shared<T>(std::forward<Args>(args)...);
 }
 
-CdmControllee::~CdmControllee()
-{
-    delete m_impl;
-}
+//======================================================================
+// Forward Declarations
 
-QStatus CdmControllee::Start()
-{
-    return m_impl->Start();
-}
+class CdmAboutData;
+class CdmAnnouncer;
+class CdmSecurity;
 
-QStatus CdmControllee::Stop()
-{
-    return m_impl->Stop();
-}
+//======================================================================
+}  // services
+}  // ajn
 
-CdmInterface* CdmControllee::CreateInterface(const CdmInterfaceType type, const qcc::String& objectPath, InterfaceControlleeListener& listener)
-{
-    return m_impl->CreateInterface(type, objectPath, listener);
-}
-
-const CdmInterfaceType CdmControllee::RegisterVendorDefinedInterface(const qcc::String& interfaceName, CreateIntfControlleeFptr createIntfControllee)
-{
-    return m_impl->RegisterVendorDefinedInterface(interfaceName, createIntfControllee);
-}
-
-} //namespace services
-} //namespace ajn
+#endif //  CDMTYPES_H_

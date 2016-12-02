@@ -29,16 +29,16 @@ if local_env.get('UINPUT') == 'on':
 # Sample programs
 
 sample_dirs = [
-    'IntegratedController',
-    'IntegratedControllee',
+#   'IntegratedController',
+#   'IntegratedControllee',
     'TvControllee',
     'VDIControllee',
-    'ACControllee',
-    'RobotCleanerControllee',
-    'CookTopControllee',
-    'LaundryControllee',
-    'TimerSimulator',
-    'DeviceEmulator'
+#   'ACControllee',
+#   'RobotCleanerControllee',
+#   'CookTopControllee',
+#   'LaundryControllee',
+#   'TimerSimulator',
+#   'DeviceEmulator'
     ]
 
 exports = { 'env': local_env }

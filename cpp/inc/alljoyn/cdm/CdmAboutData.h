@@ -187,10 +187,14 @@ class CdmAboutData : public AboutData , public CdmAboutKeys {
 
     /**
      * Get device type description
-     * @param[out] deviceTypeDescription device type description
-     * @return ER_OK on success
+     * @return deviceTypeDescription device type description
      */
-    QStatus GetDeviceTypeDescription(DeviceTypeDescription **deviceTypeDescription);
+    DeviceTypeDescription GetDeviceTypeDescription();
+
+    /**
+     * @return the formatted about data.
+     */
+    std::string toString() const;
 
   private:
     /**

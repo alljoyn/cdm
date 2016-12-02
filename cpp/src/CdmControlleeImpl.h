@@ -19,18 +19,15 @@
 #define CDMCONTROLLEEIMPL_H_
 
 #include <map>
-#include <qcc/Mutex.h>
+#include <atomic>
+
 #include <alljoyn/Status.h>
 #include <alljoyn/AboutObj.h>
+#include <alljoyn/cdm/CdmTypes.h>
 #include <alljoyn/cdm/interfaces/CdmInterface.h>
 #include <alljoyn/cdm/interfaces/CdmInterfaceTypes.h>
 
-#include "SecurityInfo.h"
-
 namespace ajn {
-
-class BusAttachment;
-class AuthListener;
 
 namespace services {
 
@@ -49,26 +46,16 @@ class CdmControlleeImpl {
     /**
      * Constructor of CdmControlleeImpl
      */
-    CdmControlleeImpl(BusAttachment& bus, CdmAboutData* aboutData);
+    CdmControlleeImpl(
+        BusAttachment& bus,
+        Ref<CdmAnnouncer> announcer,
+        Ref<CdmSecurity> security
+        );
 
     /**
      * Destructor of CdmControlleeImpl
      */
     ~CdmControlleeImpl();
-
-    /**
-     * Enable peer-to-peer security.
-     * @param authMechanisms   ALLJOYN_SRP_LOGON, ALLJOYN_SRP_KEYX, ALLJOYN_ECDHE_NULL, ALLJOYN_ECDHE_PSK,
-     *                         ALLJOYN_ECDHE_ECDSA, GSSAPI.
-     * @param listener
-     * @param keyStoreFileName
-     * @param isShared
-     * @return status
-     */
-    QStatus EnablePeerSecurity(const char* authMechanisms,
-                               AuthListener* listener,
-                               const char* keyStoreFileName = NULL,
-                               bool isShared = false);
 
     /**
      * Start controllee
@@ -112,19 +99,15 @@ class CdmControlleeImpl {
 
     /**
      * Register Cdm Bus listener
-     * @param TBD
      * @return status
-     * @todo
      */
-    QStatus RegisterBusListener(CdmBusListener* listener, TransportMask transportMask = TRANSPORT_ANY);
+    QStatus RegisterBusListener();
 
     /**
      * Unregister Cdm Bus listener
-     * @param TBD
      * @return status
-     * @todo
      */
-    QStatus UnregisterBusListener(CdmBusListener* listener);
+    QStatus UnregisterBusListener();
 
     /**
      * Check device type validation in about custom fields
@@ -132,13 +115,12 @@ class CdmControlleeImpl {
      */
     QStatus CheckAboutDeviceTypeValidation();
 
-    qcc::Mutex m_lock;             /* Mutex that protects m_isStarted */
     BusAttachment& m_bus;
-    CdmAboutData* m_aboutData;
-    std::map<qcc::String, CdmBusObject*> m_cdmBusObjectsMap;
+    Ref<CdmAnnouncer> m_announcer;
+    Ref<CdmSecurity> m_security;
+    std::map<qcc::String, Ref<CdmBusObject>> m_cdmBusObjectsMap;
     CdmBusListener* m_cdmBusListener;
-    bool m_isStarted;
-    SecurityInfo m_security;
+    std::atomic_bool m_isStarted;
 };
 
 }
