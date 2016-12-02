@@ -14,8 +14,6 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include <qcc/Util.h>
-
 #include <alljoyn/cdm/LogModule.h>
 #include <alljoyn/cdm/CdmBusObject.h>
 #include <alljoyn/cdm/interfaces/operation/RobotCleaningCyclePhaseIntfControlleeListener.h>
@@ -257,7 +255,7 @@ void RobotCleaningCyclePhaseIntfControlleeImpl::OnGetVendorPhasesDescription(con
             }
             status = retArgs[0].Set("a(yss)", i, args);
 
-            status = m_busObject.ReplyMethodCall(msg, retArgs, ArraySize(retArgs));
+            status = m_busObject.ReplyMethodCall(msg, retArgs, 1);
             delete[] args;
         } else {
             if (errorCode == NOT_ERROR) {

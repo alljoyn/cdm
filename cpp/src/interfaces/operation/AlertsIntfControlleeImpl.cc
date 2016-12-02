@@ -14,8 +14,6 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include <qcc/Util.h>
-
 #include <algorithm>
 #include <alljoyn/cdm/LogModule.h>
 #include <alljoyn/cdm/CdmBusObject.h>
@@ -254,7 +252,7 @@ void AlertsIntfControlleeImpl::OnGetAlertCodesDescription(const InterfaceDescrip
             }
             status = retArgs[0].Set("a(qs)", i, args);
             retArgs[0].Stabilize();
-            status = m_busObject.ReplyMethodCall(msg, retArgs, ArraySize(retArgs));
+            status = m_busObject.ReplyMethodCall(msg, retArgs, 1);
             delete [] args;
         }
         else

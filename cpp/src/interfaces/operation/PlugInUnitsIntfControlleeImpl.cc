@@ -15,8 +15,6 @@
  ******************************************************************************/
 
 #include <algorithm>
-#include <qcc/Util.h>
-
 #include <alljoyn/cdm/LogModule.h>
 #include <alljoyn/cdm/CdmBusObject.h>
 #include <alljoyn/cdm/interfaces/operation/PlugInUnitsIntfControlleeListener.h>

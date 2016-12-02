@@ -14,7 +14,6 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include <qcc/Util.h>
 #include <vector>
 #include <algorithm>
 #include <alljoyn/cdm/LogModule.h>

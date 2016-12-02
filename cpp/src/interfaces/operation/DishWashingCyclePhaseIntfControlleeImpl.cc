@@ -14,7 +14,6 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include <qcc/Util.h>
 #include <vector>
 #include <algorithm>
 #include <alljoyn/cdm/LogModule.h>
@@ -293,7 +292,7 @@ void DishWashingCyclePhaseIntfControlleeImpl::OnGetCyclePhasesDescription(const 
             }
             status = retArgs[0].Set("a(yss)", i, args);
             retArgs[0].Stabilize();
-            status = m_busObject.ReplyMethodCall(msg, retArgs, ArraySize(retArgs));
+            status = m_busObject.ReplyMethodCall(msg, retArgs, 1);
             delete [] args;
         }
         else

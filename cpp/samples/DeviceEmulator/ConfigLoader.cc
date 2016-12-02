@@ -22,8 +22,7 @@
 #include <alljoyn/cdm/CdmAboutData.h>
 #include <alljoyn/cdm/interfaces/CdmInterface.h>
 #include <qcc/String.h>
-#include <qcc/StringSource.h>
-#include <qcc/XmlElement.h>
+#include "../../src/BSXML.h"
 
 using namespace std;
 using namespace ajn;
@@ -51,28 +50,28 @@ static CdmInterfaceType GetCdmInterfaceType(const String& intfName)
 
 static bool ParseInterfaceList(const String xml, InterfaceList& list)
 {
-    StringSource source(xml);
-    XmlParseContext context(source);
-    QStatus status = XmlElement::Parse(context);
+    std::stringstream source(xml);
+    xml::Context context(source);
+    QStatus status = xml::Element::Parse(context);
     if (status != ER_OK) {
         return false;
     }
 
-    const XmlElement* intfList = context.GetRoot();
-    vector<const XmlElement*> objects = intfList->GetChildren(ConfigLoader::OBJECT);
-    for (vector<const XmlElement*>::const_iterator citr = objects.begin(); citr != objects.end(); ++citr) {
+    const xml::Element* intfList = context.GetRoot();
+    vector<const xml::Element*> objects = intfList->GetChildren(ConfigLoader::OBJECT);
+    for (vector<const xml::Element*>::const_iterator citr = objects.begin(); citr != objects.end(); ++citr) {
         const String& objPath = (*citr)->GetAttribute(ConfigLoader::PATH);
         String objXml = (*citr)->Generate();
-        StringSource objSource(objXml);
-        XmlParseContext objContext(objSource);
-        status = XmlElement::Parse(objContext);
+        std::stringstream objSource(objXml);
+        xml::Context objContext(objSource);
+        status = xml::Element::Parse(objContext);
         if (status != ER_OK) {
             continue;
         }
 
-        const XmlElement* object = objContext.GetRoot();
-        vector<const XmlElement*> intfs = object->GetChildren(ConfigLoader::INTERFACE);
-        for (vector<const XmlElement*>::const_iterator citr2 = intfs.begin(); citr2 != intfs.end(); ++citr2) {
+        const xml::Element* object = objContext.GetRoot();
+        vector<const xml::Element*> intfs = object->GetChildren(ConfigLoader::INTERFACE);
+        for (vector<const xml::Element*>::const_iterator citr2 = intfs.begin(); citr2 != intfs.end(); ++citr2) {
             const String& intfName = (*citr2)->GetAttribute(ConfigLoader::NAME);
             CdmInterfaceType intfType = GetCdmInterfaceType(intfName);
             if (intfType == UNDEFINED_INTERFACE) {
@@ -87,23 +86,23 @@ static bool ParseInterfaceList(const String xml, InterfaceList& list)
     return true;
 }
 
-static bool ParseXml(const String xml, CdmAboutData& data, InterfaceList& list)
+static bool ParseXml(const string xml, CdmAboutData& data, InterfaceList& list)
 {
-    StringSource source(xml);
-    XmlParseContext context(source);
-    QStatus status = XmlElement::Parse(context);
+    std::stringstream source(xml);
+    xml::Context context(source);
+    QStatus status = xml::Element::Parse(context);
     if (status != ER_OK) {
         return false;
     }
 
-    const XmlElement* root = context.GetRoot();
+    const xml::Element* root = context.GetRoot();
     if (!root) {
         return false;
     } else if (root->GetName() != ConfigLoader::DEVICE_EMULATOR) {
         return false;
     }
 
-    const XmlElement* aboutData = root->GetChild(ConfigLoader::ABOUT_DATA);
+    const xml::Element* aboutData = root->GetChild(ConfigLoader::ABOUT_DATA);
     if (!aboutData) {
         return false;
     }
@@ -113,7 +112,7 @@ static bool ParseXml(const String xml, CdmAboutData& data, InterfaceList& list)
         return false;
     }
 
-    const XmlElement* intfList = root->GetChild(ConfigLoader::INTERFACE_LIST);
+    const xml::Element* intfList = root->GetChild(ConfigLoader::INTERFACE_LIST);
     if (!intfList) {
         return false;
     }

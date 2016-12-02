@@ -22,8 +22,7 @@
 #include <alljoyn/cdm/CdmAboutData.h>
 #include <alljoyn/cdm/DeviceTypeDescription.h>
 #include <CdmAboutKeys.h>
-#include <qcc/StringSource.h>
-#include <qcc/XmlElement.h>
+#include "BSXML.h"
 
 using ajn::services::CdmAboutKeys;
 
@@ -73,20 +72,20 @@ QStatus CdmAboutData::CreateFromXml(const qcc::String& aboutDataXml)
     if (status != ER_OK) {
         QCC_LogError(status, ("%s: unexpected return from AboutData::CreateFromXml.", __func__));
     } else {
-        qcc::StringSource source(aboutDataXml);
-        qcc::XmlParseContext pc(source);
-        status = qcc::XmlElement::Parse(pc);
+        std::stringstream source(aboutDataXml);
+        xml::Context pc(source);
+        status = xml::Element::Parse(pc);
         if (status != ER_OK) {
             QCC_LogError(status, ("%s: unable to parse DeviceTypeDescriptionXml.", __func__));
             status = ER_ABOUT_ABOUTDATA_MISSING_REQUIRED_FIELD;
         } else {
-            const qcc::XmlElement* root = pc.GetRoot();
+            const xml::Element* root = pc.GetRoot();
 
             qcc::String descriptionXmlTag = "TypeDescription";
             qcc::String descriptionXmlTypeTag = "device_type";
             qcc::String descriptionXmlPathTag = "object_path";
 
-            std::vector<const qcc::XmlElement*> descriptionChildren = root->GetChild(DEVICE_TYPE_DESCRIPTION)->GetChildren(descriptionXmlTag);
+            std::vector<const xml::Element*> descriptionChildren = root->GetChild(DEVICE_TYPE_DESCRIPTION)->GetChildren(descriptionXmlTag);
             if (0 == descriptionChildren.size()) {
                 status = ER_ABOUT_ABOUTDATA_MISSING_REQUIRED_FIELD;
                 QCC_LogError(status, ("%s: unable to find descriptions Xml Tag.", __func__));
