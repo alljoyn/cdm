@@ -50,6 +50,16 @@ typedef enum {
     FOOD_PROBE           = 20,
     TELEVISION           = 21,
     SET_TOP_BOX          = 22,
+    LAMP                 = 23,
+    LOCK                 = 24,
+    SWITCH               = 25,
+    DOOR_SENSOR          = 26,
+    WINDOW_SENSOR        = 27,
+    MOTION_SENSOR        = 28,
+    POWER_OUTLET         = 29,
+    SMOKE_DETECTOR       = 30,
+    SPEAKER              = 31,
+    WATER_SENSOR         = 32,
 
     NUMBER_OF_DEVICE_TYPE,
     MAX_DEVICE_TYPE      = NUMBER_OF_DEVICE_TYPE - 1
