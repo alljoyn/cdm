@@ -1,0 +1,30 @@
+<DeviceEmulator name="WindowSensor">
+    <AboutData>
+        <AppId><!-- Runtime Generated --></AppId>
+        <DefaultLanguage>en</DefaultLanguage>
+        <DeviceName>Virtual Window Sensor</DeviceName>
+        <DeviceId><!-- Runtime Generated --></DeviceId>
+        <AppName>AllJoyn CDM Controllee</AppName>
+        <Manufacturer>AllJoyn Sample</Manufacturer>
+        <ModelNumber>window-sensor</ModelNumber>
+        <Description>Simulated AllJoyn Device</Description>
+        <DateOfManufacture>2016-10-01</DateOfManufacture>
+        <SoftwareVersion>1.0.0</SoftwareVersion>
+        <HardwareVersion>1.0.0</HardwareVersion>
+        <SupportUrl>https://allseenalliance.org/</SupportUrl>
+        <CountryOfProduction>Nowhere</CountryOfProduction>
+        <Location>Sample Location</Location>
+        <ProductBrand>AllJoyn Sample</ProductBrand>
+        <DeviceTypeDescription>
+            <TypeDescription>
+                <device_type>30</device_type><!-- TODO: Ensure enum value is correct -->
+                <object_path>/CDM/DoorSensor</object_path>
+            </TypeDescription>
+        </DeviceTypeDescription>
+    </AboutData>
+    <InterfaceList>
+        <Object path='/CDM/WindowSensor'>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.ClosedStatus'/>
+        </Object>
+    </InterfaceList>
+</DeviceEmulator>
