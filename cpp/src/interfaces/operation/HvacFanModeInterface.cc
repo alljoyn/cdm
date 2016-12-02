@@ -20,6 +20,10 @@
 namespace ajn {
 namespace services {
 
+const char* const HvacFanModeInterface::INTERFACE_NAME = "org.alljoyn.SmartSpaces.Operation.HvacFanMode";
+const CdmInterfaceType HvacFanModeInterface::INTERFACE_TYPE = HVAC_FAN_MODE_INTERFACE;
+
+
 const uint16_t HvacFanModeInterface::s_interfaceVersion = 1;
 
 const qcc::String HvacFanModeInterface::s_xml =

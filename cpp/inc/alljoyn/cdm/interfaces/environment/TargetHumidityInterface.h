@@ -29,6 +29,9 @@ namespace services {
  */
 class TargetHumidityInterface : public CdmInterface {
   public:
+    static const char* const INTERFACE_NAME;
+    static const CdmInterfaceType INTERFACE_TYPE;
+
     typedef std::vector<uint8_t> HumidityLevels;
     enum {
         MIN_HUMIDITY = 0,

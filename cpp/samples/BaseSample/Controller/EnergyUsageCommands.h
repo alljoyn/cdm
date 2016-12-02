@@ -48,14 +48,14 @@ class EnergyUsageCommands : public InterfaceCommands
 
     virtual void Init();
 
-    EnergyUsageIntfController* GetInterface() { return m_intfController; }
+    EnergyUsageIntfController* GetInterface() { return m_intfController.get(); }
     static void OnCmdGetCumulativeEnergy(Commands* commands, std::string& cmd);
     static void OnCmdGetPrecision(Commands* commands, std::string& cmd);
     static void OnCmdGetUpdateMinTime(Commands* commands, std::string& cmd);
     static void OnCmdResetCumulativeEnergy(Commands* commands, std::string& cmd);
 
   private:
-    EnergyUsageIntfController* m_intfController;
+    EnergyUsageIntfControllerPtr m_intfController;
     EnergyUsageListener m_listener;
 };
 

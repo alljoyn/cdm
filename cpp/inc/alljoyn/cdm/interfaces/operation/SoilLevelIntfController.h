@@ -73,6 +73,8 @@ class SoilLevelIntfController : public SoilLevelInterface {
     virtual QStatus GetSelectableLevels(void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<SoilLevelIntfController> SoilLevelIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

@@ -47,14 +47,14 @@ class CurrentTemperatureCommands : public InterfaceCommands
 
     virtual void Init();
 
-    CurrentTemperatureIntfController* GetInterface() { return m_intfController; }
+    CurrentTemperatureIntfController* GetInterface() { return m_intfController.get(); }
 
     static void OnCmdGetCurrentValue(Commands* commands, std::string& cmd);
     static void OnCmdGetPrecision(Commands* commands, std::string& cmd);
     static void OnCmdGetUpdateMinTime(Commands* commands, std::string& cmd);
 
   private:
-    CurrentTemperatureIntfController* m_intfController;
+    CurrentTemperatureIntfControllerPtr m_intfController;
     CurrentTemperatureListener m_listener;
 };
 

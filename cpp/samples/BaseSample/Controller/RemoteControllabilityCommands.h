@@ -42,12 +42,12 @@ class RemoteControllabilityCommands : public InterfaceCommands
 
     virtual void Init();
 
-    RemoteControllabilityIntfController* GetInterface() { return m_intfController; }
+    RemoteControllabilityIntfController* GetInterface() { return m_intfController.get(); }
     static void OnCmdGetIsControllable(Commands* commands, std::string& cmd);
     //static void OnCmdSetIsClosed(Commands* commands, std::string& cmd);
 
   private:
-    RemoteControllabilityIntfController* m_intfController;
+    RemoteControllabilityIntfControllerPtr m_intfController;
     RemoteControllabilityListener m_listener;
 };
 

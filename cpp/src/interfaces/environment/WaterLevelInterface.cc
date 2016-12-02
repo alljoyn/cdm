@@ -20,6 +20,10 @@
 namespace ajn {
 namespace services {
 
+const char* const WaterLevelInterface::INTERFACE_NAME = "org.alljoyn.SmartSpaces.Environment.WaterLevel";
+const CdmInterfaceType WaterLevelInterface::INTERFACE_TYPE = WATER_LEVEL_INTERFACE;
+
+
 const uint16_t WaterLevelInterface::s_interfaceVersion = 1;
 
 const qcc::String WaterLevelInterface::s_xml =

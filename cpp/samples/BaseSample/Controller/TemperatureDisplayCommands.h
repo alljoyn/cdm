@@ -51,13 +51,13 @@ class TemperatureDisplayCommands : public InterfaceCommands
 
     virtual void Init();
 
-    TemperatureDisplayIntfController* GetInterface() { return m_intfController; }
+    TemperatureDisplayIntfController* GetInterface() { return m_intfController.get(); }
     static void OnCmdGetDisplayTemperatureUnit(Commands* commands, std::string& cmd);
     static void OnCmdSetDisplayTemperatureUnit(Commands* commands, std::string& cmd);
     static void OnCmdGetSupportedDisplayTemperatureUnits(Commands* commands, std::string& cmd);
 
   private:
-    TemperatureDisplayIntfController* m_intfController;
+    TemperatureDisplayIntfControllerPtr m_intfController;
     TemperatureDisplayListener m_listener;
 };
 

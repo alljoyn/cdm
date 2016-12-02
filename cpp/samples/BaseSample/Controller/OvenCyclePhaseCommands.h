@@ -49,14 +49,14 @@ class OvenCyclePhaseCommands : public InterfaceCommands
 
     virtual void Init();
 
-    OvenCyclePhaseIntfController* GetInterface() { return m_intfController; }
+    OvenCyclePhaseIntfController* GetInterface() { return m_intfController.get(); }
     static void OnCmdGetCyclePhase(Commands* commands, std::string& cmd);
 
     static void OnCmdGetSupportedCyclePhases(Commands* commands, std::string& cmd);
 
     static void OnCmdGetCyclePhasesDescriptions(Commands* commands, std::string& cmd);
   private:
-    OvenCyclePhaseIntfController* m_intfController;
+    OvenCyclePhaseIntfControllerPtr m_intfController;
     OvenCyclePhaseListener m_listener;
 };
 

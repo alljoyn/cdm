@@ -73,6 +73,8 @@ class ClimateControlModeIntfController : public ClimateControlModeInterface {
     virtual QStatus GetOperationalState(void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<ClimateControlModeIntfController> ClimateControlModeIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

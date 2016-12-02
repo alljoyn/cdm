@@ -20,6 +20,10 @@
 namespace ajn {
 namespace services {
 
+const char* const BatteryStatusInterface::INTERFACE_NAME = "org.alljoyn.SmartSpaces.Operation.BatteryStatus";
+const CdmInterfaceType BatteryStatusInterface::INTERFACE_TYPE = BATTERY_STATUS_INTERFACE;
+
+
 const uint16_t BatteryStatusInterface::s_interfaceVersion = 1;
 
 const qcc::String BatteryStatusInterface::s_xml =

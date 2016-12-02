@@ -20,6 +20,10 @@
 namespace ajn {
 namespace services {
 
+const char* const HeatingZoneInterface::INTERFACE_NAME = "org.alljoyn.SmartSpaces.Operation.HeatingZone";
+const CdmInterfaceType HeatingZoneInterface::INTERFACE_TYPE = HEATING_ZONE_INTERFACE;
+
+
 const uint16_t HeatingZoneInterface::s_interfaceVersion = 1;
 
 const qcc::String HeatingZoneInterface::s_xml =

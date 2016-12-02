@@ -54,14 +54,14 @@ class SoilLevelCommands : public InterfaceCommands
 
     virtual void Init();
 
-    SoilLevelIntfController* GetInterface() { return m_intfController; }
+    SoilLevelIntfController* GetInterface() { return m_intfController.get(); }
     static void OnCmdGetMaxLevel(Commands* commands, std::string& cmd);
     static void OnCmdGetTargetLevel(Commands* commands, std::string& cmd);
     static void OnCmdSetTargetLevel(Commands* commands, std::string& cmd);
     static void OnCmdGetSelectableLevels(Commands* commands, std::string& cmd);
 
   private:
-    SoilLevelIntfController* m_intfController;
+    SoilLevelIntfControllerPtr m_intfController;
     SoilLevelListener m_listener;
 };
 

@@ -29,6 +29,9 @@ namespace services {
  */
 class AlertsInterface : public CdmInterface {
   public:
+    static const char* const INTERFACE_NAME;
+    static const CdmInterfaceType INTERFACE_TYPE;
+
     enum Severity {
         SEVERITY_WARNING = 0,
         SEVERITY_ALARM = 1,

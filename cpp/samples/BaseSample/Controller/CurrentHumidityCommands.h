@@ -45,13 +45,13 @@ class CurrentHumidityCommands : public InterfaceCommands
 
     virtual void Init();
 
-    CurrentHumidityIntfController* GetInterface() { return m_intfController; }
+    CurrentHumidityIntfController* GetInterface() { return m_intfController.get(); }
 
     static void OnCmdGetCurrentValue(Commands* commands, std::string& cmd);
     static void OnCmdGetMaxValue(Commands* commands, std::string& cmd);
 
   private:
-    CurrentHumidityIntfController* m_intfController;
+    CurrentHumidityIntfControllerPtr m_intfController;
     CurrentHumidityListener m_listener;
 };
 

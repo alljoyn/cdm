@@ -20,6 +20,10 @@
 namespace ajn {
 namespace services {
 
+const char* const TargetHumidityInterface::INTERFACE_NAME = "org.alljoyn.SmartSpaces.Environment.TargetHumidity";
+const CdmInterfaceType TargetHumidityInterface::INTERFACE_TYPE = TARGET_HUMIDITY_INTERFACE;
+
+
 const uint16_t TargetHumidityInterface::s_interfaceVersion = 1;
 
 const qcc::String TargetHumidityInterface::s_xml =

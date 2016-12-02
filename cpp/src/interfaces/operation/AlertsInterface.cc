@@ -20,6 +20,10 @@
 namespace ajn {
 namespace services {
 
+const char* const AlertsInterface::INTERFACE_NAME = "org.alljoyn.SmartSpaces.Operation.Alerts";
+const CdmInterfaceType AlertsInterface::INTERFACE_TYPE = ALERTS_INTERFACE;
+
+
 const uint16_t AlertsInterface::s_interfaceVersion = 1;
 
 const qcc::String AlertsInterface::s_xml =

@@ -31,7 +31,6 @@ class BusAttachment;
 namespace services {
 
 class CdmProxyBusObject;
-typedef std::map<qcc::String, CdmProxyBusObject*> CdmProxyObjectMap;
 
 /**
  * Device Info class
@@ -84,27 +83,10 @@ class DeviceInfo {
     SessionPort GetSessionPort() const { return m_sessionPort; }
 
     /**
-     * Get CDM Proxy bus object
-     * @param[in] bus bus attachment
-     * @param[in] objectPath the object path
-     * @return CDM Proxy bus object
-     */
-    CdmProxyBusObject* GetCdmProxyBusObject(BusAttachment& bus, const qcc::String& objectPath);
-
-    /**
      * Get About object description
      * @return About object description
      */
     const AboutObjectDescription& GetAboutObjectDescription() { return m_aboutObjectDescription; };
-
-    /**
-     * Remove CDM Proxy Bus Object from map
-     * @param[in] objectPath The object path
-     * @return
-     *     - #ER_OK if CDM Proxy bus object removed successfully
-     *     - #ER_FAIL if CDM Proxy bus object could not be found for key objectPath
-     */
-    QStatus RemoveCdmProxyBusObject(const qcc::String& objectPath);
 
   private:
     std::string m_busName;
@@ -112,7 +94,6 @@ class DeviceInfo {
     SessionPort m_sessionPort;
     CdmAboutData m_aboutData;
     AboutObjectDescription m_aboutObjectDescription;
-    CdmProxyObjectMap m_cdmProxyObjectsMap;
 };
 
 typedef std::shared_ptr<DeviceInfo> DeviceInfoPtr;

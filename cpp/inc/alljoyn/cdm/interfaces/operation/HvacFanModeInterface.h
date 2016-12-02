@@ -30,6 +30,9 @@ namespace services {
 class HvacFanModeInterface : public CdmInterface {
   public:
     typedef std::vector<uint16_t> SupportedModes;
+    static const char* const INTERFACE_NAME;
+    static const CdmInterfaceType INTERFACE_TYPE;
+
     enum Mode {
         MODE_AUTO = 0,
         MODE_CIRCULATION = 1,

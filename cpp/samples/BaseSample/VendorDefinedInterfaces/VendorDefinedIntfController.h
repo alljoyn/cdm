@@ -52,6 +52,8 @@ class VendorDefinedIntfController : public VendorDefinedInterface {
     virtual QStatus TestMethod(int32_t arg1, void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<VendorDefinedIntfController> VendorDefinedIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

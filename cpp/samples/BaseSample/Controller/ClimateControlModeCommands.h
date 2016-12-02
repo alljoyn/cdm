@@ -49,7 +49,7 @@ class ClimateControlModeCommands : public InterfaceCommands
 
     virtual void Init();
 
-    ClimateControlModeIntfController* GetInterface() { return m_intfController; }
+    ClimateControlModeIntfController* GetInterface() { return m_intfController.get(); }
 
     static void OnCmdGetMode(Commands* commands, std::string& cmd);
     static void OnCmdSetMode(Commands* commands, std::string& cmd);
@@ -57,7 +57,7 @@ class ClimateControlModeCommands : public InterfaceCommands
     static void OnCmdGetOperationalState(Commands* commands, std::string& cmd);
 
   private:
-    ClimateControlModeIntfController* m_intfController;
+    ClimateControlModeIntfControllerPtr m_intfController;
     ClimateControlModeListener m_listener;
 };
 

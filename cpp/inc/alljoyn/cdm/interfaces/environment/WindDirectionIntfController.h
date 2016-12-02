@@ -124,6 +124,8 @@ class WindDirectionIntfController : public WindDirectionInterface {
     virtual QStatus SetVerticalAutoMode(const AutoMode value, void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<WindDirectionIntfController> WindDirectionIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

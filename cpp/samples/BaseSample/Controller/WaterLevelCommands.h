@@ -47,13 +47,13 @@ class WaterLevelCommands : public InterfaceCommands
 
     virtual void Init();
 
-    WaterLevelIntfController* GetInterface() { return m_intfController; }
+    WaterLevelIntfController* GetInterface() { return m_intfController.get(); }
     static void OnCmdGetMaxLevel(Commands* commands, std::string& cmd);
     static void OnCmdGetCurrentLevel(Commands* commands, std::string& cmd);
     static void OnCmdSetSupplySource(Commands* commands, std::string& cmd);
 
   private:
-    WaterLevelIntfController* m_intfController;
+    WaterLevelIntfControllerPtr m_intfController;
     WaterLevelListener m_listener;
 };
 

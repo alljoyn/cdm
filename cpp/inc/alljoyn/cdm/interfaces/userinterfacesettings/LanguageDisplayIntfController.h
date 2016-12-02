@@ -65,6 +65,8 @@ class LanguageDisplayIntfController : public LanguageDisplayInterface {
     virtual QStatus GetSupportedDisplayLanguages(void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<LanguageDisplayIntfController> LanguageDisplayIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

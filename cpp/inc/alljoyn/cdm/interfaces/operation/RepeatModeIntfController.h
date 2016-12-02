@@ -57,6 +57,8 @@ class RepeatModeIntfController : public RepeatModeInterface {
     virtual QStatus SetRepeatMode(const bool value, void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<RepeatModeIntfController> RepeatModeIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

@@ -47,14 +47,14 @@ class HeatingZoneCommands : public InterfaceCommands
 
     virtual void Init();
 
-    HeatingZoneIntfController* GetInterface() { return m_intfController; }
+    HeatingZoneIntfController* GetInterface() { return m_intfController.get(); }
     static void OnCmdGetNumberOfHeatingZones(Commands* commands, std::string& cmd);
 
     static void OnCmdGetMaxHeatingLevels(Commands* commands, std::string& cmd);
 
     static void OnCmdGetHeatingLevels(Commands* commands, std::string& cmd);
   private:
-    HeatingZoneIntfController* m_intfController;
+    HeatingZoneIntfControllerPtr m_intfController;
     HeatingZoneListener m_listener;
 };
 

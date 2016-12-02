@@ -88,13 +88,13 @@ HvacFanModeCommands::~HvacFanModeCommands()
 void HvacFanModeCommands::Init()
 {
     if (!m_intfController) {
-        CdmInterface* cdmInterface = m_sample->CreateInterface(HVAC_FAN_MODE_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
-        if (!cdmInterface) {
+        m_intfController = m_sample->GetController()->CreateInterface<HvacFanModeIntfController>(m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
+        if (!m_intfController) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfController = static_cast<HvacFanModeIntfController*>(cdmInterface);
+
     }
 
     RegisterCommand(&HvacFanModeCommands::OnCmdGetMode, "getmode", "Get Mode");

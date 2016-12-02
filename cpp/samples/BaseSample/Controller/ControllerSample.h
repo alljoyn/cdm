@@ -77,9 +77,6 @@ class ControllerSample : public BaseSample
     FoundDeviceInfo* GetFoundDeviceInfo(int index);
     FoundDeviceInfo* GetDeviceInfoBySessionId(SessionId id);
 
-    CdmInterface* CreateInterface(const CdmInterfaceType type, const std::string& busName, const qcc::String& objectPath,
-                                  const SessionId& sessionId, InterfaceControllerListener& listener);
-
     void DropDeviceSession();
 
     const CdmInterfaceType RegisterVendorDefinedInterface(const qcc::String& interfaceName, CreateIntfControllerFptr createIntfController);

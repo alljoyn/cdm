@@ -73,6 +73,8 @@ class SpinSpeedLevelIntfController : public SpinSpeedLevelInterface {
     virtual QStatus GetSelectableLevels(void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<SpinSpeedLevelIntfController> SpinSpeedLevelIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

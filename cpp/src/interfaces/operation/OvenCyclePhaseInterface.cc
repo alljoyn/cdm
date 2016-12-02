@@ -20,6 +20,10 @@
 namespace ajn {
 namespace services {
 
+const char* const OvenCyclePhaseInterface::INTERFACE_NAME = "org.alljoyn.SmartSpaces.Operation.OvenCyclePhase";
+const CdmInterfaceType OvenCyclePhaseInterface::INTERFACE_TYPE = OVEN_CYCLE_PHASE_INTERFACE;
+
+
 const uint16_t OvenCyclePhaseInterface::s_interfaceVersion = 1;
 
 const qcc::String OvenCyclePhaseInterface::s_xml =

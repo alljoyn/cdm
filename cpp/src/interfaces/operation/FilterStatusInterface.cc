@@ -20,6 +20,10 @@
 namespace ajn {
 namespace services {
 
+const char* const FilterStatusInterface::INTERFACE_NAME = "org.alljoyn.SmartSpaces.Operation.FilterStatus";
+const CdmInterfaceType FilterStatusInterface::INTERFACE_TYPE = FILTER_STATUS_INTERFACE;
+
+
 const uint16_t FilterStatusInterface::s_interfaceVersion = 1;
 
 const qcc::String FilterStatusInterface::s_xml =

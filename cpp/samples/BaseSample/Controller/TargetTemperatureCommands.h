@@ -52,7 +52,7 @@ class TargetTemperatureCommands : public InterfaceCommands
 
     virtual void Init();
 
-    TargetTemperatureIntfController* GetInterface() { return m_intfController; }
+    TargetTemperatureIntfController* GetInterface() { return m_intfController.get(); }
 
     static void OnCmdGetTargetValue(Commands* commands, std::string& cmd);
     static void OnCmdSetTargetValue(Commands* commands, std::string& cmd);
@@ -62,7 +62,7 @@ class TargetTemperatureCommands : public InterfaceCommands
     static void OnCmdGetStepValue(Commands* commands, std::string& cmd);
 
   private:
-    TargetTemperatureIntfController* m_intfController;
+    TargetTemperatureIntfControllerPtr m_intfController;
     TargetTemperatureListener m_listener;
 };
 

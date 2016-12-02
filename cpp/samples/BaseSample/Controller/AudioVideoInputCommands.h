@@ -45,14 +45,14 @@ class AudioVideoInputCommands : public InterfaceCommands
 
     virtual void Init();
 
-    AudioVideoInputIntfController* GetInterface() { return m_intfController; }
+    AudioVideoInputIntfController* GetInterface() { return m_intfController.get(); }
 
     static void OnCmdGetInputSourceId(Commands* commands, std::string& cmd);
     static void OnCmdSetInputSourceId(Commands* commands, std::string& cmd);
     static void OnCmdGetSupportedInputSources(Commands* commands, std::string& cmd);
 
   private:
-    AudioVideoInputIntfController* m_intfController;
+    AudioVideoInputIntfControllerPtr m_intfController;
     AudioVideoInputListener m_listener;
 };
 

@@ -65,6 +65,8 @@ class DishWashingCyclePhaseIntfController : public DishWashingCyclePhaseInterfac
     virtual QStatus GetVendorPhasesDescription(const qcc::String& languageTag, void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<DishWashingCyclePhaseIntfController> DishWashingCyclePhaseIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

@@ -47,14 +47,14 @@ class CurrentAirQualityLevelCommands : public InterfaceCommands
 
     virtual void Init();
 
-    CurrentAirQualityLevelIntfController* GetInterface() { return m_intfController; }
+    CurrentAirQualityLevelIntfController* GetInterface() { return m_intfController.get(); }
 
     static void OnCmdGetContaminantType(Commands* commands, std::string& cmd);
     static void OnCmdGetCurrentLevel(Commands* commands, std::string& cmd);
     static void OnCmdGetMaxLevel(Commands* commands, std::string& cmd);
 
   private:
-    CurrentAirQualityLevelIntfController* m_intfController;
+    CurrentAirQualityLevelIntfControllerPtr m_intfController;
     CurrentAirQualityLevelListener m_listener;
 };
 

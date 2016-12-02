@@ -57,6 +57,8 @@ class RapidModeIntfController : public RapidModeInterface {
     virtual QStatus SetRapidMode(const bool value, void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<RapidModeIntfController> RapidModeIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

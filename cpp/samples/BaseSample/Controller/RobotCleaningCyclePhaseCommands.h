@@ -48,14 +48,14 @@ class RobotCleaningCyclePhaseCommands : public InterfaceCommands
 
     virtual void Init();
 
-    RobotCleaningCyclePhaseIntfController* GetInterface() { return m_intfController; }
+    RobotCleaningCyclePhaseIntfController* GetInterface() { return m_intfController.get(); }
 
     static void OnCmdGetCyclePhase(Commands* commands, std::string& cmd);
     static void OnCmdGetSupportedCyclePhases(Commands* commands, std::string& cmd);
     static void OnCmdGetVendorPhasesDescription(Commands* commands, std::string& cmd);
 
   private:
-    RobotCleaningCyclePhaseIntfController* m_intfController;
+    RobotCleaningCyclePhaseIntfControllerPtr m_intfController;
     RobotCleaningCyclePhaseListener m_listener;
 };
 

@@ -29,6 +29,9 @@ namespace services {
  */
 class CurrentAirQualityLevelInterface : public CdmInterface {
   public:
+    static const char* const INTERFACE_NAME;
+    static const CdmInterfaceType INTERFACE_TYPE;
+
     enum ContaminantType {
         CONTAMINANT_TYPE_CH2O = 0,
         CONTAMINANT_TYPE_CO2 = 1,

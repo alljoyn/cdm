@@ -57,6 +57,8 @@ class HidIntfController : public HidInterface {
     virtual QStatus InjectEvents(const std::vector<InputEvent>& inputEvents, void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<HidIntfController> HidIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

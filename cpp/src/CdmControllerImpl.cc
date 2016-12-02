@@ -166,10 +166,10 @@ QStatus CdmControllerImpl::JoinDevice(const std::string& busName, SessionPort po
     return status;
 }
 
-CdmInterface* CdmControllerImpl::CreateInterface(const CdmInterfaceType type, const std::string& busName, const qcc::String& objectPath, const SessionId& sessionId, InterfaceControllerListener& listener)
+std::shared_ptr<CdmInterface> CdmControllerImpl::CreateInterface(const CdmInterfaceType type, const std::string& busName, const qcc::String& objectPath, const SessionId& sessionId, InterfaceControllerListener& listener)
 {
     QStatus status = ER_OK;
-    CdmInterface* interface = NULL;
+    std::shared_ptr<CdmInterface> interface = NULL;
     {
         AutoLock lock(m_lock);
         if (!m_isStarted) {
@@ -189,29 +189,27 @@ CdmInterface* CdmControllerImpl::CreateInterface(const CdmInterfaceType type, co
         return NULL;
     }
 
-    CdmProxyBusObject* cdmProxyObject = NULL;
-    DeviceInfoPtr info(new DeviceInfo());
-    status = m_deviceManager.FindDeviceInfoByBusName(busName, info);
-    if (ER_OK != status) {
-        QCC_LogError(status, ("Device is not exist.", __func__));
-        return NULL;
-    } else {
-        cdmProxyObject = info->GetCdmProxyBusObject(m_bus, objectPath);
-        if(!cdmProxyObject) {
-            status = ER_FAIL;
-            QCC_LogError(status, ("Failed to get proxy bus object.", __func__));
+    std::map<CdmInterfaceType, String>::const_iterator it = InterfaceTypesMap.find(type);
+    if (it != InterfaceTypesMap.end()) {
+        const String interfaceName = it->second;
+
+        std::shared_ptr<CdmProxyBusObject> pbo = std::make_shared<CdmProxyBusObject>(m_bus, busName.c_str(), objectPath.c_str(), sessionId);
+        interface = std::shared_ptr<CdmInterface>(InterfaceFactory::GetInstance()->CreateIntfController(type, listener, *pbo.get()), [pbo](CdmInterface* ptr) { delete ptr; });
+        if (!interface) {
+            QCC_LogError(ER_FAIL, ("%s: could not create interface.", __func__));
             return NULL;
         }
-    }
 
-    interface = cdmProxyObject->CreateInterface(type, listener);
-    if (!interface) {
-        QCC_LogError(ER_FAIL, ("%s: could not create interface.", __func__));
-        info->RemoveCdmProxyBusObject(objectPath);
-        cdmProxyObject = NULL;
+        const InterfaceDescription* description = interface->GetInterfaceDescription();
+        status = pbo->AddInterface(*description);
+        if (status != ER_OK) {
+            QCC_LogError(status, ("%s: could not add interface.", __func__));
+            return NULL;
+        }
+    } else {
+        QCC_LogError(ER_FAIL, ("%s: interface type not found.", __func__));
         return NULL;
     }
-
     return interface;
 }
 

@@ -42,11 +42,11 @@ class ClosedStatusCommands : public InterfaceCommands
 
     virtual void Init();
 
-    ClosedStatusIntfController* GetInterface() { return m_intfController; }
+    ClosedStatusIntfController* GetInterface() { return m_intfController.get(); }
     static void OnCmdGetIsClosed(Commands* commands, std::string& cmd);
 
   private:
-    ClosedStatusIntfController* m_intfController;
+    ClosedStatusIntfControllerPtr m_intfController;
     ClosedStatusListener m_listener;
 };
 

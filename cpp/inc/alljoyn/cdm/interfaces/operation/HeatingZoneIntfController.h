@@ -64,6 +64,8 @@ class HeatingZoneIntfController : public HeatingZoneInterface {
     virtual QStatus GetHeatingLevels(void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<HeatingZoneIntfController> HeatingZoneIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

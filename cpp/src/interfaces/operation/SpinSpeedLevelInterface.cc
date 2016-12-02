@@ -20,6 +20,10 @@
 namespace ajn {
 namespace services {
 
+const char* const SpinSpeedLevelInterface::INTERFACE_NAME = "org.alljoyn.SmartSpaces.Operation.SpinSpeedLevel";
+const CdmInterfaceType SpinSpeedLevelInterface::INTERFACE_TYPE = SPIN_SPEED_LEVEL_INTERFACE;
+
+
 const uint16_t SpinSpeedLevelInterface::s_interfaceVersion = 1;
 
 const qcc::String SpinSpeedLevelInterface::s_xml =

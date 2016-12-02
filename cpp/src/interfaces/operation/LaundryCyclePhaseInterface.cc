@@ -20,6 +20,10 @@
 namespace ajn {
 namespace services {
 
+const char* const LaundryCyclePhaseInterface::INTERFACE_NAME = "org.alljoyn.SmartSpaces.Operation.LaundryCyclePhase";
+const CdmInterfaceType LaundryCyclePhaseInterface::INTERFACE_TYPE = LAUNDRY_CYCLE_PHASE_INTERFACE;
+
+
 const uint16_t LaundryCyclePhaseInterface::s_interfaceVersion = 1;
 
 const qcc::String LaundryCyclePhaseInterface::s_xml =

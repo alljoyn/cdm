@@ -60,7 +60,7 @@ class WindDirectionCommands : public InterfaceCommands
 
     virtual void Init();
 
-    WindDirectionIntfController* GetInterface() { return m_intfController; }
+    WindDirectionIntfController* GetInterface() { return m_intfController.get(); }
 
     static void OnCmdGetHorizontalDirection(Commands* commands, std::string& cmd);
     static void OnCmdSetHorizontalDirection(Commands* commands, std::string& cmd);
@@ -75,7 +75,7 @@ class WindDirectionCommands : public InterfaceCommands
     static void OnCmdSetVerticalAutoMode(Commands* commands, std::string& cmd);
 
   private:
-    WindDirectionIntfController* m_intfController;
+    WindDirectionIntfControllerPtr m_intfController;
     WindDirectionListener m_listener;
 };
 

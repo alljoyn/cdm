@@ -20,6 +20,10 @@
 namespace ajn {
 namespace services {
 
+const char* const WindDirectionInterface::INTERFACE_NAME = "org.alljoyn.SmartSpaces.Environment.WindDirection";
+const CdmInterfaceType WindDirectionInterface::INTERFACE_TYPE = WIND_DIRECTION_INTERFACE;
+
+
 const uint16_t WindDirectionInterface::s_interfaceVersion = 1;
 
 const qcc::String WindDirectionInterface::s_xml =

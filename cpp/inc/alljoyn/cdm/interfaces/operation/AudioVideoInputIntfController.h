@@ -65,6 +65,8 @@ class AudioVideoInputIntfController : public AudioVideoInputInterface {
     virtual QStatus GetSupportedInputSources(void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<AudioVideoInputIntfController> AudioVideoInputIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

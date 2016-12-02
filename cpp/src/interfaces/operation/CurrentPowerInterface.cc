@@ -20,6 +20,10 @@
 namespace ajn {
 namespace services {
 
+const char* const CurrentPowerInterface::INTERFACE_NAME = "org.alljoyn.SmartSpaces.Operation.CurrentPower";
+const CdmInterfaceType CurrentPowerInterface::INTERFACE_TYPE = CURRENT_POWER_INTERFACE;
+
+
 const uint16_t CurrentPowerInterface::s_interfaceVersion = 1;
 
 const qcc::String CurrentPowerInterface::s_xml =

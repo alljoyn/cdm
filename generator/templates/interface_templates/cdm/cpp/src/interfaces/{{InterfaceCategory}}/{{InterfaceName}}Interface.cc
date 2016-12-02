@@ -20,6 +20,10 @@
 namespace ajn {
 namespace services {
 
+const char* const {{Interface.Name}}Interface::INTERFACE_NAME = "{{Interface.FullName}}";
+const CdmInterfaceType {{Interface.Name}}Interface::INTERFACE_TYPE = {{Interface.Name.upper_snake()}}_INTERFACE;
+
+
 const uint16_t {{Interface.Name}}Interface::s_interfaceVersion = 1;
 
 const qcc::String {{Interface.Name}}Interface::s_xml =

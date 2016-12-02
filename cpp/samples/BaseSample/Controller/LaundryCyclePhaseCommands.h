@@ -49,14 +49,14 @@ class LaundryCyclePhaseCommands : public InterfaceCommands
 
     virtual void Init();
 
-    LaundryCyclePhaseIntfController* GetInterface() { return m_intfController; }
+    LaundryCyclePhaseIntfController* GetInterface() { return m_intfController.get(); }
     static void OnCmdGetCyclePhase(Commands* commands, std::string& cmd);
 
     static void OnCmdGetSupportedCyclePhases(Commands* commands, std::string& cmd);
 
     static void OnCmdGetCyclePhasesDescriptions(Commands* commands, std::string& cmd);
   private:
-    LaundryCyclePhaseIntfController* m_intfController;
+    LaundryCyclePhaseIntfControllerPtr m_intfController;
     LaundryCyclePhaseListener m_listener;
 };
 

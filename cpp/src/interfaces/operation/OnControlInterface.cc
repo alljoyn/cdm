@@ -20,6 +20,10 @@
 namespace ajn {
 namespace services {
 
+const char* const OnControlInterface::INTERFACE_NAME = "org.alljoyn.SmartSpaces.Operation.OnControl";
+const CdmInterfaceType OnControlInterface::INTERFACE_TYPE = ON_CONTROL_INTERFACE;
+
+
 const uint16_t OnControlInterface::s_interfaceVersion = 1;
 
 const qcc::String OnControlInterface::s_xml =

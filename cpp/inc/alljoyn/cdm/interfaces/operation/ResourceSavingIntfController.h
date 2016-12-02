@@ -57,6 +57,8 @@ class ResourceSavingIntfController : public ResourceSavingInterface {
     virtual QStatus SetResourceSavingMode(const bool value, void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<ResourceSavingIntfController> ResourceSavingIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

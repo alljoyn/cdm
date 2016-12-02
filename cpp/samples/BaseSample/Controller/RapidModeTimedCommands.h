@@ -46,13 +46,13 @@ class RapidModeTimedCommands : public InterfaceCommands
 
     virtual void Init();
 
-    RapidModeTimedIntfController* GetInterface() { return m_intfController; }
+    RapidModeTimedIntfController* GetInterface() { return m_intfController.get(); }
     static void OnCmdGetRapidModeMinutesRemaining(Commands* commands, std::string& cmd);
     static void OnCmdSetRapidModeMinutesRemaining(Commands* commands, std::string& cmd);
     static void OnCmdGetMaxSetMinutes(Commands* commands, std::string& cmd);
 
   private:
-    RapidModeTimedIntfController* m_intfController;
+    RapidModeTimedIntfControllerPtr m_intfController;
     RapidModeTimedListener m_listener;
 };
 

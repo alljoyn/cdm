@@ -44,12 +44,12 @@ class RapidModeCommands : public InterfaceCommands
 
     virtual void Init();
 
-    RapidModeIntfController* GetInterface() { return m_intfController; }
+    RapidModeIntfController* GetInterface() { return m_intfController.get(); }
     static void OnCmdGetRapidMode(Commands* commands, std::string& cmd);
     static void OnCmdSetRapidMode(Commands* commands, std::string& cmd);
 
   private:
-    RapidModeIntfController* m_intfController;
+    RapidModeIntfControllerPtr m_intfController;
     RapidModeListener m_listener;
 };
 

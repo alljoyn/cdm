@@ -88,15 +88,15 @@ void VendorDefinedCommands::Init()
 {
     if (!m_intfController) {
 
-        CdmInterfaceType vendorDefinedIntfType = m_sample->RegisterVendorDefinedInterface("com.foo.bar.test", static_cast<CreateIntfControllerFptr>(&VendorDefinedIntfControllerImpl::CreateInterface));
+        VendorDefinedIntfController::INTERFACE_TYPE = m_sample->RegisterVendorDefinedInterface("com.foo.bar.test", static_cast<CreateIntfControllerFptr>(&VendorDefinedIntfControllerImpl::CreateInterface));
 
-        CdmInterface* cdmInterface = m_sample->CreateInterface(vendorDefinedIntfType, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
-        if (!cdmInterface) {
+        m_intfController = m_sample->GetController()->CreateInterface<VendorDefinedIntfController>(m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
+        if (!m_intfController) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfController = static_cast<VendorDefinedIntfController*>(cdmInterface);
+
     }
 
     RegisterCommand(&VendorDefinedCommands::OnCmdGetTestProperty, "gp", "get property");

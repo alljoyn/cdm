@@ -20,6 +20,10 @@
 namespace ajn {
 namespace services {
 
+const char* const TimeDisplayInterface::INTERFACE_NAME = "org.alljoyn.SmartSpaces.UserInterfaceSettings.TimeDisplay";
+const CdmInterfaceType TimeDisplayInterface::INTERFACE_TYPE = TIME_DISPLAY_INTERFACE;
+
+
 const uint16_t TimeDisplayInterface::s_interfaceVersion = 1;
 
 const qcc::String TimeDisplayInterface::s_xml =

@@ -49,14 +49,14 @@ class DishWashingCyclePhaseCommands : public InterfaceCommands
 
     virtual void Init();
 
-    DishWashingCyclePhaseIntfController* GetInterface() { return m_intfController; }
+    DishWashingCyclePhaseIntfController* GetInterface() { return m_intfController.get(); }
     static void OnCmdGetCyclePhase(Commands* commands, std::string& cmd);
 
     static void OnCmdGetSupportedCyclePhases(Commands* commands, std::string& cmd);
 
     static void OnCmdGetCyclePhasesDescriptions(Commands* commands, std::string& cmd);
   private:
-    DishWashingCyclePhaseIntfController* m_intfController;
+    DishWashingCyclePhaseIntfControllerPtr m_intfController;
     DishWashingCyclePhaseListener m_listener;
 };
 

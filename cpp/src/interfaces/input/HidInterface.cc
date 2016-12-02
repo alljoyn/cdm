@@ -20,6 +20,10 @@
 namespace ajn {
 namespace services {
 
+const char* const HidInterface::INTERFACE_NAME = "org.alljoyn.Input.Hid";
+const CdmInterfaceType HidInterface::INTERFACE_TYPE = HID_INTERFACE;
+
+
 const uint16_t HidInterface::s_interfaceVersion = 1;
 
 const qcc::String HidInterface::s_xml =

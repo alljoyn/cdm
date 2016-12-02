@@ -20,6 +20,10 @@
 namespace ajn {
 namespace services {
 
+const char* const AirRecirculationModeInterface::INTERFACE_NAME = "org.alljoyn.SmartSpaces.Operation.AirRecirculationMode";
+const CdmInterfaceType AirRecirculationModeInterface::INTERFACE_TYPE = AIR_RECIRCULATION_MODE_INTERFACE;
+
+
 const uint16_t AirRecirculationModeInterface::s_interfaceVersion = 1;
 
 const qcc::String AirRecirculationModeInterface::s_xml =

@@ -74,6 +74,8 @@ class AlertsIntfController : public AlertsInterface {
     virtual QStatus AcknowledgeAllAlerts(void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<AlertsIntfController> AlertsIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

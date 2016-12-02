@@ -95,7 +95,7 @@ class CdmControllerImpl : public ajn::AboutListener
      * @param[in] listener
      * @return interface
      */
-    CdmInterface* CreateInterface(const CdmInterfaceType type, const std::string& busName, const qcc::String& objectPath, const SessionId& sessionId, InterfaceControllerListener& listener);
+    std::shared_ptr<CdmInterface> CreateInterface(const CdmInterfaceType type, const std::string& busName, const qcc::String& objectPath, const SessionId& sessionId, InterfaceControllerListener& listener);
 
     /**
      * Register vendor defined interface

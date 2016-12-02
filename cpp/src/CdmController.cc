@@ -94,15 +94,13 @@ QStatus CdmController::GetAboutObjectDescription(const DeviceInfo& deviceInfo, A
 }
 */
 
-CdmInterface* CdmController::CreateInterface(const CdmInterfaceType type, const std::string& busName, const qcc::String& objectPath, const SessionId& sessionId, InterfaceControllerListener& listener)
+std::shared_ptr<CdmInterface> CdmController::CreateInterface(const CdmInterfaceType type, const std::string& busName, const qcc::String& objectPath, const SessionId& sessionId, InterfaceControllerListener& listener)
 {
-    CdmInterface* interface = NULL;
-
     if (m_impl) {
         return m_impl->CreateInterface(type, busName, objectPath, sessionId, listener);
     }
 
-    return interface;
+    return NULL;
 }
 
 const CdmInterfaceType CdmController::RegisterVendorDefinedInterface(const qcc::String& interfaceName, CreateIntfControllerFptr createIntfController)

@@ -64,6 +64,8 @@ class WaterLevelIntfController : public WaterLevelInterface {
     virtual QStatus GetMaxLevel(void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<WaterLevelIntfController> WaterLevelIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

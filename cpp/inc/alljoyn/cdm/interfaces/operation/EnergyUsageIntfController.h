@@ -72,6 +72,8 @@ class EnergyUsageIntfController : public EnergyUsageInterface {
     virtual QStatus ResetCumulativeEnergy(void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<EnergyUsageIntfController> EnergyUsageIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

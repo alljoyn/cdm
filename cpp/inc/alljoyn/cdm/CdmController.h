@@ -18,6 +18,7 @@
 #ifndef CDMCONTROLLER_H_
 #define CDMCONTROLLER_H_
 
+#include <memory>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/CdmConfig.h>
 #include <alljoyn/cdm/interfaces/CdmInterface.h>
@@ -108,7 +109,12 @@ class CdmController {
      * @param[in] listener interface listener
      * @return Interface
      */
-    CdmInterface* CreateInterface(const CdmInterfaceType type, const std::string& busName, const qcc::String& objectPath, const SessionId& sessionId, InterfaceControllerListener& listener);
+    std::shared_ptr<CdmInterface> CreateInterface(const CdmInterfaceType type, const std::string& busName, const qcc::String& objectPath, const SessionId& sessionId, InterfaceControllerListener& listener);
+
+    template <typename T>
+    std::shared_ptr<T> CreateInterface(const std::string& busName, const qcc::String& objectPath, const SessionId& sessionId, InterfaceControllerListener& listener) {
+        return std::static_pointer_cast<T>(CreateInterface(T::INTERFACE_TYPE, busName, objectPath, sessionId, listener));
+    }
 
     /**
      * Register vendor defined interface

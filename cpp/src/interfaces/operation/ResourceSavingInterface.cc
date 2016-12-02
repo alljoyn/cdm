@@ -20,6 +20,10 @@
 namespace ajn {
 namespace services {
 
+const char* const ResourceSavingInterface::INTERFACE_NAME = "org.alljoyn.SmartSpaces.Operation.ResourceSaving";
+const CdmInterfaceType ResourceSavingInterface::INTERFACE_TYPE = RESOURCE_SAVING_INTERFACE;
+
+
 const uint16_t ResourceSavingInterface::s_interfaceVersion = 1;
 
 const qcc::String ResourceSavingInterface::s_xml =

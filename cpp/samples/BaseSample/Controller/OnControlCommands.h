@@ -42,12 +42,12 @@ class OnControlCommands : public InterfaceCommands
 
     virtual void Init();
 
-    OnControlIntfController* GetInterface() { return m_intfController; }
+    OnControlIntfController* GetInterface() { return m_intfController.get(); }
 
     static void OnCmdSwitchOn(Commands* commands, std::string& cmd);
 
   private:
-    OnControlIntfController* m_intfController;
+    OnControlIntfControllerPtr m_intfController;
     OnControlListener m_listener;
 };
 

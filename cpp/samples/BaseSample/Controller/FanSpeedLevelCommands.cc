@@ -93,13 +93,13 @@ FanSpeedLevelCommands::~FanSpeedLevelCommands()
 void FanSpeedLevelCommands::Init()
 {
     if (!m_intfController) {
-        CdmInterface* cdmInterface = m_sample->CreateInterface(FAN_SPEED_LEVEL_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
-        if (!cdmInterface) {
+        m_intfController = m_sample->GetController()->CreateInterface<FanSpeedLevelIntfController>(m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
+        if (!m_intfController) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfController = static_cast<FanSpeedLevelIntfController*>(cdmInterface);
+
     }
 
     RegisterCommand(&FanSpeedLevelCommands::OnCmdGetFanSpeedLevel, "getfsl", "Get FanSpeedLevel");

@@ -20,6 +20,10 @@
 namespace ajn {
 namespace services {
 
+const char* const RemoteControllabilityInterface::INTERFACE_NAME = "org.alljoyn.SmartSpaces.Operation.RemoteControllability";
+const CdmInterfaceType RemoteControllabilityInterface::INTERFACE_TYPE = REMOTE_CONTROLLABILITY_INTERFACE;
+
+
 const uint16_t RemoteControllabilityInterface::s_interfaceVersion = 1;
 
 const qcc::String RemoteControllabilityInterface::s_xml =

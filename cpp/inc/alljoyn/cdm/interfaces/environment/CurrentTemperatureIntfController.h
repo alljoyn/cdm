@@ -64,6 +64,8 @@ class CurrentTemperatureIntfController : public CurrentTemperatureInterface {
     virtual QStatus GetUpdateMinTime(void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<CurrentTemperatureIntfController> CurrentTemperatureIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

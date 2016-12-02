@@ -20,6 +20,10 @@
 namespace ajn {
 namespace services {
 
+const char* const TemperatureDisplayInterface::INTERFACE_NAME = "org.alljoyn.SmartSpaces.UserInterfaceSettings.TemperatureDisplay";
+const CdmInterfaceType TemperatureDisplayInterface::INTERFACE_TYPE = TEMPERATURE_DISPLAY_INTERFACE;
+
+
 const uint16_t TemperatureDisplayInterface::s_interfaceVersion = 1;
 
 const qcc::String TemperatureDisplayInterface::s_xml =

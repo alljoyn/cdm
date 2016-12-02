@@ -29,6 +29,9 @@ namespace services {
  */
 class CycleControlInterface : public CdmInterface {
   public:
+    static const char* const INTERFACE_NAME;
+    static const CdmInterfaceType INTERFACE_TYPE;
+
     enum OperationalState {
         OPERATIONAL_STATE_IDLE = 0,
         OPERATIONAL_STATE_WORKING = 1,

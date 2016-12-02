@@ -48,6 +48,8 @@ class OffControlIntfController : public OffControlInterface {
     virtual QStatus SwitchOff(void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<OffControlIntfController> OffControlIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

@@ -54,14 +54,14 @@ class SpinSpeedLevelCommands : public InterfaceCommands
 
     virtual void Init();
 
-    SpinSpeedLevelIntfController* GetInterface() { return m_intfController; }
+    SpinSpeedLevelIntfController* GetInterface() { return m_intfController.get(); }
     static void OnCmdGetMaxLevel(Commands* commands, std::string& cmd);
     static void OnCmdGetTargetLevel(Commands* commands, std::string& cmd);
     static void OnCmdSetTargetLevel(Commands* commands, std::string& cmd);
     static void OnCmdGetSelectableLevels(Commands* commands, std::string& cmd);
 
   private:
-    SpinSpeedLevelIntfController* m_intfController;
+    SpinSpeedLevelIntfControllerPtr m_intfController;
     SpinSpeedLevelListener m_listener;
 };
 

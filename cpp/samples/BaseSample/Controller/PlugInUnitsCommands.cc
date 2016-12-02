@@ -68,13 +68,13 @@ PlugInUnitsCommands::~PlugInUnitsCommands()
 void PlugInUnitsCommands::Init()
 {
     if (!m_intfController) {
-        CdmInterface* cdmInterface = m_sample->CreateInterface(PLUG_IN_UNITS_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
-        if (!cdmInterface) {
+        m_intfController = m_sample->GetController()->CreateInterface<PlugInUnitsIntfController>(m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
+        if (!m_intfController) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfController = static_cast<PlugInUnitsIntfController*>(cdmInterface);
+
     }
 
     RegisterCommand(&PlugInUnitsCommands::OnCmdGetPlugInUnits, "gpu", "get plug in units");

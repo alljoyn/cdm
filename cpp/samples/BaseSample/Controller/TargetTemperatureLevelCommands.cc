@@ -103,13 +103,13 @@ TargetTemperatureLevelCommands::~TargetTemperatureLevelCommands()
 void TargetTemperatureLevelCommands::Init()
 {
     if (!m_intfController) {
-        CdmInterface* cdmInterface = m_sample->CreateInterface(TARGET_TEMPERATURE_LEVEL_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
-        if (!cdmInterface) {
+        m_intfController = m_sample->GetController()->CreateInterface<TargetTemperatureLevelIntfController>(m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
+        if (!m_intfController) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfController = static_cast<TargetTemperatureLevelIntfController*>(cdmInterface);
+
     }
 
     RegisterCommand(&TargetTemperatureLevelCommands::OnCmdGetTargetLevel, "gtv", "Get TargetLevel");

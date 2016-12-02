@@ -29,6 +29,9 @@ namespace services {
  */
 class AudioVideoInputInterface : public CdmInterface {
   public:
+    static const char* const INTERFACE_NAME;
+    static const CdmInterfaceType INTERFACE_TYPE;
+
     enum SourceType {
         SOURCE_TYPE_UNKNOWN = 0,
         SOURCE_TYPE_TUNER = 1,

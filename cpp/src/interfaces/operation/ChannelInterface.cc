@@ -20,6 +20,10 @@
 namespace ajn {
 namespace services {
 
+const char* const ChannelInterface::INTERFACE_NAME = "org.alljoyn.SmartSpaces.Operation.Channel";
+const CdmInterfaceType ChannelInterface::INTERFACE_TYPE = CHANNEL_INTERFACE;
+
+
 const uint16_t ChannelInterface::s_interfaceVersion = 1;
 
 const qcc::String ChannelInterface::s_xml =

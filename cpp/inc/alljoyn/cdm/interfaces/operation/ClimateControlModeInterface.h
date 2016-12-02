@@ -30,6 +30,9 @@ namespace services {
 class ClimateControlModeInterface : public CdmInterface {
   public:
     typedef std::vector<uint16_t> SupportedModes;
+    static const char* const INTERFACE_NAME;
+    static const CdmInterfaceType INTERFACE_TYPE;
+
     enum Mode {
         MODE_OFF = 0,
         MODE_HEAT = 1,

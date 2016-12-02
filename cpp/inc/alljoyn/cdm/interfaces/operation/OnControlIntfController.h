@@ -48,6 +48,8 @@ class OnControlIntfController : public OnControlInterface {
     virtual QStatus SwitchOn(void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<OnControlIntfController> OnControlIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

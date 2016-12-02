@@ -88,6 +88,8 @@ class CurrentAirQualityIntfController : public CurrentAirQualityInterface {
     virtual QStatus GetUpdateMinTime(void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<CurrentAirQualityIntfController> CurrentAirQualityIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

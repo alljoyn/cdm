@@ -30,6 +30,9 @@ namespace services {
 class TargetTemperatureLevelInterface : public CdmInterface {
   public:
     typedef std::vector<uint8_t> TemperatureLevels;
+    static const char* const INTERFACE_NAME;
+    static const CdmInterfaceType INTERFACE_TYPE;
+
 
 
     /**

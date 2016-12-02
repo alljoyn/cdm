@@ -29,6 +29,9 @@ namespace services {
  */
 class FanSpeedLevelInterface : public CdmInterface {
   public:
+    static const char* const INTERFACE_NAME;
+    static const CdmInterfaceType INTERFACE_TYPE;
+
     enum AutoMode {
         AUTO_MODE_OFF = 0x00,
         AUTO_MODE_ON = 0x01,

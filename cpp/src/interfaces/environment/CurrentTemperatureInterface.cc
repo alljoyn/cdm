@@ -20,6 +20,10 @@
 namespace ajn {
 namespace services {
 
+const char* const CurrentTemperatureInterface::INTERFACE_NAME = "org.alljoyn.SmartSpaces.Environment.CurrentTemperature";
+const CdmInterfaceType CurrentTemperatureInterface::INTERFACE_TYPE = CURRENT_TEMPERATURE_INTERFACE;
+
+
 const uint16_t CurrentTemperatureInterface::s_interfaceVersion = 1;
 
 const qcc::String CurrentTemperatureInterface::s_xml =

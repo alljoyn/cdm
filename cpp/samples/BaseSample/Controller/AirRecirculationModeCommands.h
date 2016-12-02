@@ -43,12 +43,12 @@ class AirRecirculationModeCommands : public InterfaceCommands
 
     virtual void Init();
 
-    AirRecirculationModeIntfController* GetInterface() { return m_intfController; }
+    AirRecirculationModeIntfController* GetInterface() { return m_intfController.get(); }
     static void OnCmdGetIsRecirculating(Commands* commands, std::string& cmd);
     static void OnCmdSetIsRecirculating(Commands* commands, std::string& cmd);
 
   private:
-    AirRecirculationModeIntfController* m_intfController;
+    AirRecirculationModeIntfControllerPtr m_intfController;
     AirRecirculationModeListener m_listener;
 };
 

@@ -87,13 +87,13 @@ CurrentAirQualityLevelCommands::~CurrentAirQualityLevelCommands()
 void CurrentAirQualityLevelCommands::Init()
 {
     if (!m_intfController) {
-        CdmInterface* cdmInterface = m_sample->CreateInterface(CURRENT_AIR_QUALITY_LEVEL_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
-        if (!cdmInterface) {
+        m_intfController = m_sample->GetController()->CreateInterface<CurrentAirQualityLevelIntfController>(m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
+        if (!m_intfController) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfController = static_cast<CurrentAirQualityLevelIntfController*>(cdmInterface);
+
     }
 
     RegisterCommand(&CurrentAirQualityLevelCommands::OnCmdGetContaminantType, "gct", "Get ContaminantType");

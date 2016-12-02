@@ -70,13 +70,13 @@ RapidModeTimedCommands::~RapidModeTimedCommands()
 void RapidModeTimedCommands::Init()
 {
     if (!m_intfController) {
-        CdmInterface* cdmInterface = m_sample->CreateInterface(RAPID_MODE_TIMED_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
-        if (!cdmInterface) {
+        m_intfController = m_sample->GetController()->CreateInterface<RapidModeTimedIntfController>(m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
+        if (!m_intfController) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfController = static_cast<RapidModeTimedIntfController*>(cdmInterface);
+
     }
 
     RegisterCommand(&RapidModeTimedCommands::OnCmdGetRapidModeMinutesRemaining, "grmmr", "get rapid mode minutes remaining");

@@ -47,14 +47,14 @@ class CurrentPowerCommands : public InterfaceCommands
 
     virtual void Init();
 
-    CurrentPowerIntfController* GetInterface() { return m_intfController; }
+    CurrentPowerIntfController* GetInterface() { return m_intfController.get(); }
 
     static void OnCmdGetCurrentPower(Commands* commands, std::string& cmd);
     static void OnCmdGetPrecision(Commands* commands, std::string& cmd);
     static void OnCmdGetUpdateMinTime(Commands* commands, std::string& cmd);
 
   private:
-    CurrentPowerIntfController* m_intfController;
+    CurrentPowerIntfControllerPtr m_intfController;
     CurrentPowerListener m_listener;
 };
 

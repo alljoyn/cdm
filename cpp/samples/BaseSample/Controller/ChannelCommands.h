@@ -48,14 +48,14 @@ class ChannelCommands : public InterfaceCommands
 
     virtual void Init();
 
-    ChannelIntfController* GetInterface() { return m_intfController; }
+    ChannelIntfController* GetInterface() { return m_intfController.get(); }
     static void OnCmdGetChannelId(Commands* commands, std::string& cmd);
     static void OnCmdGetTotalNumberOfChannels(Commands* commands, std::string& cmd);
     static void OnCmdSetChannelId(Commands* commands, std::string& cmd);
     static void OnCmdGetChannelList(Commands* commands, std::string& cmd);
 
   private:
-    ChannelIntfController* m_intfController;
+    ChannelIntfControllerPtr m_intfController;
     ChannelListener m_listener;
 };
 

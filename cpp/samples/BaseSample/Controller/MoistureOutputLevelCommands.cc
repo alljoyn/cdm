@@ -99,13 +99,13 @@ MoistureOutputLevelCommands::~MoistureOutputLevelCommands()
 void MoistureOutputLevelCommands::Init()
 {
     if (!m_intfController) {
-        CdmInterface* cdmInterface = m_sample->CreateInterface(MOISTURE_OUTPUT_LEVEL_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
-        if (!cdmInterface) {
+        m_intfController = m_sample->GetController()->CreateInterface<MoistureOutputLevelIntfController>(m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
+        if (!m_intfController) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfController = static_cast<MoistureOutputLevelIntfController*>(cdmInterface);
+
     }
 
     RegisterCommand(&MoistureOutputLevelCommands::OnCmdGetMoistureOutputLevel, "getmol", "Get MoistureOutputLevel");

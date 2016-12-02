@@ -29,6 +29,8 @@ namespace services {
  */
 class VendorDefinedInterface : public CdmInterface {
   public:
+    static CdmInterfaceType INTERFACE_TYPE;
+
     /**
      * Constructor of VendorDefined
      */

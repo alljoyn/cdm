@@ -82,6 +82,8 @@ class FanSpeedLevelIntfController : public FanSpeedLevelInterface {
     virtual QStatus SetAutoMode(const AutoMode value, void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<FanSpeedLevelIntfController> FanSpeedLevelIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

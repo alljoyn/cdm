@@ -48,7 +48,7 @@ class AudioVolumeCommands : public InterfaceCommands
 
     virtual void Init();
 
-    AudioVolumeIntfController* GetInterface() { return m_intfController; }
+    AudioVolumeIntfController* GetInterface() { return m_intfController.get(); }
     static void OnCmdGetVolume(Commands* commands, std::string& cmd);
     static void OnCmdSetVolume(Commands* commands, std::string& cmd);
     static void OnCmdGetMaxVolume(Commands* commands, std::string& cmd);
@@ -56,7 +56,7 @@ class AudioVolumeCommands : public InterfaceCommands
     static void OnCmdSetMute(Commands* commands, std::string& cmd);
 
   private:
-    AudioVolumeIntfController* m_intfController;
+    AudioVolumeIntfControllerPtr m_intfController;
     AudioVolumeListener m_listener;
 };
 

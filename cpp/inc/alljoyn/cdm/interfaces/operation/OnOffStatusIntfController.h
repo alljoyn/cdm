@@ -48,6 +48,8 @@ class OnOffStatusIntfController : public OnOffStatusInterface {
     virtual QStatus GetIsOn(void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<OnOffStatusIntfController> OnOffStatusIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

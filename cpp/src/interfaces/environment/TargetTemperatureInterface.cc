@@ -20,6 +20,10 @@
 namespace ajn {
 namespace services {
 
+const char* const TargetTemperatureInterface::INTERFACE_NAME = "org.alljoyn.SmartSpaces.Environment.TargetTemperature";
+const CdmInterfaceType TargetTemperatureInterface::INTERFACE_TYPE = TARGET_TEMPERATURE_INTERFACE;
+
+
 const uint16_t TargetTemperatureInterface::s_interfaceVersion = 1;
 
 const qcc::String TargetTemperatureInterface::s_xml =

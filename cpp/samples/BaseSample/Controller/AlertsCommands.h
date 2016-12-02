@@ -46,7 +46,7 @@ class AlertsCommands : public InterfaceCommands
 
     virtual void Init();
 
-    AlertsIntfController* GetInterface() { return m_intfController; }
+    AlertsIntfController* GetInterface() { return m_intfController.get(); }
     static void OnCmdGetAlerts(Commands* commands, std::string& cmd);
 
     static void OnCmdGetAlertCodesDescription(Commands* commands, std::string& cmd);
@@ -54,7 +54,7 @@ class AlertsCommands : public InterfaceCommands
     static void OnCmdAcknowledgeAlert(Commands* commands, std::string& cmd);
     static void OnCmdAcknowledgeAllAlerts(Commands* commands, std::string& cmd);
   private:
-    AlertsIntfController* m_intfController;
+    AlertsIntfControllerPtr m_intfController;
     AlertsListener m_listener;
 };
 

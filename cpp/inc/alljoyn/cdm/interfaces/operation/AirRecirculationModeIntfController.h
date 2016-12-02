@@ -57,6 +57,8 @@ class AirRecirculationModeIntfController : public AirRecirculationModeInterface 
     virtual QStatus SetIsRecirculating(const bool value, void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<AirRecirculationModeIntfController> AirRecirculationModeIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

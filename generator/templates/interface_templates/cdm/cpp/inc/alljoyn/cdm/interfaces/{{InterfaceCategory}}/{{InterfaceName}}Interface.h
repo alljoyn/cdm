@@ -29,6 +29,9 @@ namespace services {
  */
 class {{Interface.Name}}Interface : public CdmInterface {
   public:
+    static const char* const INTERFACE_NAME;
+    static const CdmInterfaceType INTERFACE_TYPE;
+
     {% for enum in Interface.Enums %}
     enum {{enum.Name}} {
         {% for value in enum.Values %}

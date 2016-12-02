@@ -20,6 +20,10 @@
 namespace ajn {
 namespace services {
 
+const char* const MoistureOutputLevelInterface::INTERFACE_NAME = "org.alljoyn.SmartSpaces.Operation.MoistureOutputLevel";
+const CdmInterfaceType MoistureOutputLevelInterface::INTERFACE_TYPE = MOISTURE_OUTPUT_LEVEL_INTERFACE;
+
+
 const uint16_t MoistureOutputLevelInterface::s_interfaceVersion = 1;
 
 const qcc::String MoistureOutputLevelInterface::s_xml =

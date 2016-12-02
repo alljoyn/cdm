@@ -96,6 +96,8 @@ class FilterStatusIntfController : public FilterStatusInterface {
     virtual QStatus GetLifeRemaining(void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<FilterStatusIntfController> FilterStatusIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

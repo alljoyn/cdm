@@ -20,6 +20,10 @@
 namespace ajn {
 namespace services {
 
+const char* const PlugInUnitsInterface::INTERFACE_NAME = "org.alljoyn.SmartSpaces.Operation.PlugInUnits";
+const CdmInterfaceType PlugInUnitsInterface::INTERFACE_TYPE = PLUG_IN_UNITS_INTERFACE;
+
+
 const uint16_t PlugInUnitsInterface::s_interfaceVersion = 1;
 
 const qcc::String PlugInUnitsInterface::s_xml =

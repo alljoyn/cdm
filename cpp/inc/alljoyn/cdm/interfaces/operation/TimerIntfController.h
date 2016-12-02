@@ -104,6 +104,8 @@ class TimerIntfController : public TimerInterface {
     virtual QStatus SetTargetTimeToStop(const int32_t targetTimeToStop, void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<TimerIntfController> TimerIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

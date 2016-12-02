@@ -45,13 +45,13 @@ class ResourceSavingCommands : public InterfaceCommands
 
     virtual void Init();
 
-    ResourceSavingIntfController* GetInterface() { return m_intfController; }
+    ResourceSavingIntfController* GetInterface() { return m_intfController.get(); }
 
     static void OnCmdGetResourceSavingMode(Commands* commands, std::string& cmd);
     static void OnCmdSetResourceSavingMode(Commands* commands, std::string& cmd);
 
   private:
-    ResourceSavingIntfController* m_intfController;
+    ResourceSavingIntfControllerPtr m_intfController;
     ResourceSavingListener m_listener;
 };
 

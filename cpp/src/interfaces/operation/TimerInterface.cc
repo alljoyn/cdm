@@ -20,6 +20,10 @@
 namespace ajn {
 namespace services {
 
+const char* const TimerInterface::INTERFACE_NAME = "org.alljoyn.SmartSpaces.Operation.Timer";
+const CdmInterfaceType TimerInterface::INTERFACE_TYPE = TIMER_INTERFACE;
+
+
 const uint16_t TimerInterface::s_interfaceVersion = 1;
 
 const qcc::String TimerInterface::s_xml =

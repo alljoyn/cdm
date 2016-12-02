@@ -47,14 +47,14 @@ class HvacFanModeCommands : public InterfaceCommands
 
     virtual void Init();
 
-    HvacFanModeIntfController* GetInterface() { return m_intfController; }
+    HvacFanModeIntfController* GetInterface() { return m_intfController.get(); }
 
     static void OnCmdGetMode(Commands* commands, std::string& cmd);
     static void OnCmdSetMode(Commands* commands, std::string& cmd);
     static void OnCmdGetSupportedModes(Commands* commands, std::string& cmd);
 
   private:
-    HvacFanModeIntfController* m_intfController;
+    HvacFanModeIntfControllerPtr m_intfController;
     HvacFanModeListener m_listener;
 };
 

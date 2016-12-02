@@ -20,6 +20,10 @@
 namespace ajn {
 namespace services {
 
+const char* const CurrentAirQualityLevelInterface::INTERFACE_NAME = "org.alljoyn.SmartSpaces.Environment.CurrentAirQualityLevel";
+const CdmInterfaceType CurrentAirQualityLevelInterface::INTERFACE_TYPE = CURRENT_AIR_QUALITY_LEVEL_INTERFACE;
+
+
 const uint16_t CurrentAirQualityLevelInterface::s_interfaceVersion = 1;
 
 const qcc::String CurrentAirQualityLevelInterface::s_xml =

@@ -20,6 +20,10 @@
 namespace ajn {
 namespace services {
 
+const char* const ClimateControlModeInterface::INTERFACE_NAME = "org.alljoyn.SmartSpaces.Operation.ClimateControlMode";
+const CdmInterfaceType ClimateControlModeInterface::INTERFACE_TYPE = CLIMATE_CONTROL_MODE_INTERFACE;
+
+
 const uint16_t ClimateControlModeInterface::s_interfaceVersion = 1;
 
 const qcc::String ClimateControlModeInterface::s_xml =

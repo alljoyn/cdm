@@ -20,6 +20,10 @@
 namespace ajn {
 namespace services {
 
+const char* const OnOffStatusInterface::INTERFACE_NAME = "org.alljoyn.SmartSpaces.Operation.OnOffStatus";
+const CdmInterfaceType OnOffStatusInterface::INTERFACE_TYPE = ON_OFF_STATUS_INTERFACE;
+
+
 const uint16_t OnOffStatusInterface::s_interfaceVersion = 1;
 
 const qcc::String OnOffStatusInterface::s_xml =

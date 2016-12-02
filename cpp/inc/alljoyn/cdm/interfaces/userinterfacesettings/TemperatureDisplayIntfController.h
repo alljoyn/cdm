@@ -65,6 +65,8 @@ class TemperatureDisplayIntfController : public TemperatureDisplayInterface {
     virtual QStatus GetSupportedDisplayTemperatureUnits(void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<TemperatureDisplayIntfController> TemperatureDisplayIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

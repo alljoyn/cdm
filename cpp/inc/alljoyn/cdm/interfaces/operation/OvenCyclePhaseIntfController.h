@@ -65,6 +65,8 @@ class OvenCyclePhaseIntfController : public OvenCyclePhaseInterface {
     virtual QStatus GetVendorPhasesDescription(const qcc::String& languageTag, void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<OvenCyclePhaseIntfController> OvenCyclePhaseIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

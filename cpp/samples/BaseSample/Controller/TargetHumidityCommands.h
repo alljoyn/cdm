@@ -53,7 +53,7 @@ class TargetHumidityCommands : public InterfaceCommands
 
     virtual void Init();
 
-    TargetHumidityIntfController* GetInterface() { return m_intfController; }
+    TargetHumidityIntfController* GetInterface() { return m_intfController.get(); }
 
     static void OnCmdGetTargetValue(Commands* commands, std::string& cmd);
     static void OnCmdSetTargetValue(Commands* commands, std::string& cmd);
@@ -64,7 +64,7 @@ class TargetHumidityCommands : public InterfaceCommands
     static void OnCmdGetSelectableHumidityLevels(Commands* commands, std::string& cmd);
 
   private:
-    TargetHumidityIntfController* m_intfController;
+    TargetHumidityIntfControllerPtr m_intfController;
     TargetHumidityListener m_listener;
 };
 

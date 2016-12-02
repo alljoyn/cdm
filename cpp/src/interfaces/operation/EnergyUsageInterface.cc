@@ -20,6 +20,10 @@
 namespace ajn {
 namespace services {
 
+const char* const EnergyUsageInterface::INTERFACE_NAME = "org.alljoyn.SmartSpaces.Operation.EnergyUsage";
+const CdmInterfaceType EnergyUsageInterface::INTERFACE_TYPE = ENERGY_USAGE_INTERFACE;
+
+
 const uint16_t EnergyUsageInterface::s_interfaceVersion = 1;
 
 const qcc::String EnergyUsageInterface::s_xml =

@@ -49,7 +49,7 @@ class TargetTemperatureLevelCommands : public InterfaceCommands
 
     virtual void Init();
 
-    TargetTemperatureLevelIntfController* GetInterface() { return m_intfController; }
+    TargetTemperatureLevelIntfController* GetInterface() { return m_intfController.get(); }
 
     static void OnCmdGetTargetLevel(Commands* commands, std::string& cmd);
     static void OnCmdSetTargetLevel(Commands* commands, std::string& cmd);
@@ -58,7 +58,7 @@ class TargetTemperatureLevelCommands : public InterfaceCommands
     static void OnCmdGetSelectableTemperatureLevels(Commands* commands, std::string& cmd);
 
   private:
-    TargetTemperatureLevelIntfController* m_intfController;
+    TargetTemperatureLevelIntfControllerPtr m_intfController;
     TargetTemperatureLevelListener m_listener;
 };
 

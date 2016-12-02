@@ -100,13 +100,13 @@ EnergyUsageCommands::~EnergyUsageCommands()
 void EnergyUsageCommands::Init()
 {
     if (!m_intfController) {
-        CdmInterface* cdmInterface = m_sample->CreateInterface(ENERGY_USAGE_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
-        if (!cdmInterface) {
+        m_intfController = m_sample->GetController()->CreateInterface<EnergyUsageIntfController>(m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
+        if (!m_intfController) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfController = static_cast<EnergyUsageIntfController*>(cdmInterface);
+
     }
 
     RegisterCommand(&EnergyUsageCommands::OnCmdGetCumulativeEnergy, "gce", "get cumulative energy");

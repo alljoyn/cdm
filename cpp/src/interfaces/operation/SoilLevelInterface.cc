@@ -20,6 +20,10 @@
 namespace ajn {
 namespace services {
 
+const char* const SoilLevelInterface::INTERFACE_NAME = "org.alljoyn.SmartSpaces.Operation.SoilLevel";
+const CdmInterfaceType SoilLevelInterface::INTERFACE_TYPE = SOIL_LEVEL_INTERFACE;
+
+
 const uint16_t SoilLevelInterface::s_interfaceVersion = 1;
 
 const qcc::String SoilLevelInterface::s_xml =

@@ -29,6 +29,9 @@ namespace services {
  */
 class RobotCleaningCyclePhaseInterface : public CdmInterface {
   public:
+    static const char* const INTERFACE_NAME;
+    static const CdmInterfaceType INTERFACE_TYPE;
+
     typedef std::vector<uint8_t> SupportedCyclePhases;
 
     struct CyclePhaseDescriptor {

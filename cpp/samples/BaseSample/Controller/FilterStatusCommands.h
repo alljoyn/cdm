@@ -49,7 +49,7 @@ class FilterStatusCommands : public InterfaceCommands
 
     virtual void Init();
 
-    FilterStatusIntfController* GetInterface() { return m_intfController; }
+    FilterStatusIntfController* GetInterface() { return m_intfController.get(); }
 
     static void OnCmdGetExpectedLifeInDays(Commands* commands, std::string& cmd);
     static void OnCmdGetIsCleanable(Commands* commands, std::string& cmd);
@@ -60,7 +60,7 @@ class FilterStatusCommands : public InterfaceCommands
     static void OnCmdGetLifeRemaining(Commands* commands, std::string& cmd);
 
   private:
-    FilterStatusIntfController* m_intfController;
+    FilterStatusIntfControllerPtr m_intfController;
     FilterStatusListener m_listener;
 };
 

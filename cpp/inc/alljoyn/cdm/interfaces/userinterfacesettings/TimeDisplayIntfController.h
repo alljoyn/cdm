@@ -65,6 +65,8 @@ class TimeDisplayIntfController : public TimeDisplayInterface {
     virtual QStatus GetSupportedDisplayTimeFormats(void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<TimeDisplayIntfController> TimeDisplayIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

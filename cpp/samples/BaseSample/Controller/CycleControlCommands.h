@@ -53,7 +53,7 @@ class CycleControlCommands : public InterfaceCommands
 
     virtual void Init();
 
-    CycleControlIntfController* GetInterface() { return m_intfController; }
+    CycleControlIntfController* GetInterface() { return m_intfController.get(); }
     static void OnCmdGetOperationalState(Commands* commands, std::string& cmd);
 
     static void OnCmdExecuteCommand(Commands* commands, std::string& cmd);
@@ -62,7 +62,7 @@ class CycleControlCommands : public InterfaceCommands
 
     static void OnCmdGetSupportedOperationalStates(Commands* commands, std::string& cmd);
   private:
-    CycleControlIntfController* m_intfController;
+    CycleControlIntfControllerPtr m_intfController;
     CycleControlListener m_listener;
 };
 

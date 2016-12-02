@@ -51,13 +51,13 @@ class LanguageDisplayCommands : public InterfaceCommands
 
     virtual void Init();
 
-    LanguageDisplayIntfController* GetInterface() { return m_intfController; }
+    LanguageDisplayIntfController* GetInterface() { return m_intfController.get(); }
     static void OnCmdGetDisplayLanguage(Commands* commands, std::string& cmd);
     static void OnCmdSetDisplayLanguage(Commands* commands, std::string& cmd);
     static void OnCmdGetSupportedDisplayLanguages(Commands* commands, std::string& cmd);
 
   private:
-    LanguageDisplayIntfController* m_intfController;
+    LanguageDisplayIntfControllerPtr m_intfController;
     LanguageDisplayListener m_listener;
 };
 

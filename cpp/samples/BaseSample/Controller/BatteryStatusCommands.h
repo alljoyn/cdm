@@ -44,13 +44,13 @@ class BatteryStatusCommands : public InterfaceCommands
 
     virtual void Init();
 
-    BatteryStatusIntfController* GetInterface() { return m_intfController; }
+    BatteryStatusIntfController* GetInterface() { return m_intfController.get(); }
 
     static void OnCmdGetCurrentValue(Commands* commands, std::string& cmd);
     static void OnCmdGetIsCharging(Commands* commands, std::string& cmd);
 
   private:
-    BatteryStatusIntfController* m_intfController;
+    BatteryStatusIntfControllerPtr m_intfController;
     BatteryStatusListener m_listener;
 };
 

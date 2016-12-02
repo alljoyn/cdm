@@ -20,6 +20,8 @@
 namespace ajn {
 namespace services {
 
+CdmInterfaceType VendorDefinedInterface::INTERFACE_TYPE = 0;
+
 const uint16_t VendorDefinedInterface::s_interfaceVersion = 1;
 
 // Below none secure xml is only for test

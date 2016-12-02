@@ -73,6 +73,8 @@ class TargetTemperatureLevelIntfController : public TargetTemperatureLevelInterf
     virtual QStatus GetSelectableTemperatureLevels(void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<TargetTemperatureLevelIntfController> TargetTemperatureLevelIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

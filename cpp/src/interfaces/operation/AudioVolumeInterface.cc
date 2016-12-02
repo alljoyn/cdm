@@ -20,6 +20,10 @@
 namespace ajn {
 namespace services {
 
+const char* const AudioVolumeInterface::INTERFACE_NAME = "org.alljoyn.SmartSpaces.Operation.AudioVolume";
+const CdmInterfaceType AudioVolumeInterface::INTERFACE_TYPE = AUDIO_VOLUME_INTERFACE;
+
+
 const uint16_t AudioVolumeInterface::s_interfaceVersion = 1;
 
 const qcc::String AudioVolumeInterface::s_xml =

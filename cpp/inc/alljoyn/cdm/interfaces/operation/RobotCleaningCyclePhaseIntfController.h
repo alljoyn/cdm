@@ -65,6 +65,8 @@ class RobotCleaningCyclePhaseIntfController : public RobotCleaningCyclePhaseInte
     virtual QStatus GetVendorPhasesDescription(const qcc::String& languageTag, void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<RobotCleaningCyclePhaseIntfController> RobotCleaningCyclePhaseIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

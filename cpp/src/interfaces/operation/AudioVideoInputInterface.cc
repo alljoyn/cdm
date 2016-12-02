@@ -20,6 +20,10 @@
 namespace ajn {
 namespace services {
 
+const char* const AudioVideoInputInterface::INTERFACE_NAME = "org.alljoyn.SmartSpaces.Operation.AudioVideoInput";
+const CdmInterfaceType AudioVideoInputInterface::INTERFACE_TYPE = AUDIO_VIDEO_INPUT_INTERFACE;
+
+
 const uint16_t AudioVideoInputInterface::s_interfaceVersion = 1;
 
 const qcc::String AudioVideoInputInterface::s_xml =

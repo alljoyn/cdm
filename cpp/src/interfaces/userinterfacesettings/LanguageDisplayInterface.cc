@@ -20,6 +20,10 @@
 namespace ajn {
 namespace services {
 
+const char* const LanguageDisplayInterface::INTERFACE_NAME = "org.alljoyn.SmartSpaces.UserInterfaceSettings.LanguageDisplay";
+const CdmInterfaceType LanguageDisplayInterface::INTERFACE_TYPE = LANGUAGE_DISPLAY_INTERFACE;
+
+
 const uint16_t LanguageDisplayInterface::s_interfaceVersion = 1;
 
 const qcc::String LanguageDisplayInterface::s_xml =

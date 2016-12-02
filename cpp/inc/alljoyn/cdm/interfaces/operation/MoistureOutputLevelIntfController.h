@@ -82,6 +82,8 @@ class MoistureOutputLevelIntfController : public MoistureOutputLevelInterface {
     virtual QStatus SetAutoMode(const AutoMode value, void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<MoistureOutputLevelIntfController> MoistureOutputLevelIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

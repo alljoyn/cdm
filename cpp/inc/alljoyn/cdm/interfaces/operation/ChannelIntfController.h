@@ -75,6 +75,8 @@ class ChannelIntfController : public ChannelInterface {
     virtual QStatus GetChannelList(const uint16_t startingRecord, const uint16_t numRecords, void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<ChannelIntfController> ChannelIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

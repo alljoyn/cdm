@@ -81,6 +81,8 @@ class {{Interface.Name}}IntfController : public {{Interface.Name}}Interface {
     {% endfor %}
 };
 
+typedef std::shared_ptr<{{Interface.Name}}IntfController> {{Interface.Name}}IntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

@@ -50,13 +50,13 @@ class TimeDisplayCommands : public InterfaceCommands
 
     virtual void Init();
 
-    TimeDisplayIntfController* GetInterface() { return m_intfController; }
+    TimeDisplayIntfController* GetInterface() { return m_intfController.get(); }
     static void OnCmdGetDisplayTimeFormat(Commands* commands, std::string& cmd);
     static void OnCmdSetDisplayTimeFormat(Commands* commands, std::string& cmd);
     static void OnCmdGetSupportedDisplayTimeFormats(Commands* commands, std::string& cmd);
 
   private:
-    TimeDisplayIntfController* m_intfController;
+    TimeDisplayIntfControllerPtr m_intfController;
     TimeDisplayListener m_listener;
 };
 

@@ -89,6 +89,8 @@ class TargetHumidityIntfController : public TargetHumidityInterface {
     virtual QStatus GetSelectableHumidityLevels(void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<TargetHumidityIntfController> TargetHumidityIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

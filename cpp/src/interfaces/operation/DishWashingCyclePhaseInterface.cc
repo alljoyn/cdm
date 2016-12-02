@@ -20,6 +20,10 @@
 namespace ajn {
 namespace services {
 
+const char* const DishWashingCyclePhaseInterface::INTERFACE_NAME = "org.alljoyn.SmartSpaces.Operation.DishWashingCyclePhase";
+const CdmInterfaceType DishWashingCyclePhaseInterface::INTERFACE_TYPE = DISH_WASHING_CYCLE_PHASE_INTERFACE;
+
+
 const uint16_t DishWashingCyclePhaseInterface::s_interfaceVersion = 1;
 
 const qcc::String DishWashingCyclePhaseInterface::s_xml =

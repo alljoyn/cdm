@@ -57,7 +57,7 @@ class TimerCommands : public InterfaceCommands
 
     virtual void Init();
 
-    TimerIntfController* GetInterface() { return m_intfController; }
+    TimerIntfController* GetInterface() { return m_intfController.get(); }
 
     static void OnCmdGetReferenceTimer(Commands* commands, std::string& cmd);
     static void OnCmdGetTargetTimeToStart(Commands* commands, std::string& cmd);
@@ -69,7 +69,7 @@ class TimerCommands : public InterfaceCommands
     static void OnCmdSetTargetTimeToStop(Commands* commands, std::string& cmd);
 
   private:
-    TimerIntfController* m_intfController;
+    TimerIntfControllerPtr m_intfController;
     TimerListener m_listener;
 };
 

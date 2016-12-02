@@ -20,6 +20,10 @@
 namespace ajn {
 namespace services {
 
+const char* const RobotCleaningCyclePhaseInterface::INTERFACE_NAME = "org.alljoyn.SmartSpaces.Operation.RobotCleaningCyclePhase";
+const CdmInterfaceType RobotCleaningCyclePhaseInterface::INTERFACE_TYPE = ROBOT_CLEANING_CYCLE_PHASE_INTERFACE;
+
+
 const uint16_t RobotCleaningCyclePhaseInterface::s_interfaceVersion = 1;
 
 const qcc::String RobotCleaningCyclePhaseInterface::s_xml =

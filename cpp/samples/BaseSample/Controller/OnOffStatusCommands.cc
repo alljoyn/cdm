@@ -55,13 +55,13 @@ OnOffStatusCommands::~OnOffStatusCommands()
 void OnOffStatusCommands::Init()
 {
     if (!m_intfController) {
-        CdmInterface* cdmInterface = m_sample->CreateInterface(ON_OFF_STATUS_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
-        if (!cdmInterface) {
+        m_intfController = m_sample->GetController()->CreateInterface<OnOffStatusIntfController>(m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
+        if (!m_intfController) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfController = static_cast<OnOffStatusIntfController*>(cdmInterface);
+
     }
 
     RegisterCommand(&OnOffStatusCommands::OnCmdOnOffStatus, "onoff", "Current IsOn Status");

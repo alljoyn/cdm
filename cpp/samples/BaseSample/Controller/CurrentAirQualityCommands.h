@@ -54,7 +54,7 @@ class CurrentAirQualityCommands : public InterfaceCommands
 
     virtual void Init();
 
-    CurrentAirQualityIntfController* GetInterface() { return m_intfController; }
+    CurrentAirQualityIntfController* GetInterface() { return m_intfController.get(); }
 
     static void OnCmdGetContaminantType(Commands* commands, std::string& cmd);
     static void OnCmdGetCurrentValue(Commands* commands, std::string& cmd);
@@ -64,7 +64,7 @@ class CurrentAirQualityCommands : public InterfaceCommands
     static void OnCmdGetUpdateMinTime(Commands* commands, std::string& cmd);
 
   private:
-    CurrentAirQualityIntfController* m_intfController;
+    CurrentAirQualityIntfControllerPtr m_intfController;
     CurrentAirQualityListener m_listener;
 };
 

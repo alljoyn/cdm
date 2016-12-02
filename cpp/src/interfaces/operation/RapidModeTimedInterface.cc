@@ -20,6 +20,10 @@
 namespace ajn {
 namespace services {
 
+const char* const RapidModeTimedInterface::INTERFACE_NAME = "org.alljoyn.SmartSpaces.Operation.RapidModeTimed";
+const CdmInterfaceType RapidModeTimedInterface::INTERFACE_TYPE = RAPID_MODE_TIMED_INTERFACE;
+
+
 const uint16_t RapidModeTimedInterface::s_interfaceVersion = 1;
 
 const qcc::String RapidModeTimedInterface::s_xml =

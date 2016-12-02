@@ -56,6 +56,8 @@ class BatteryStatusIntfController : public BatteryStatusInterface {
     virtual QStatus GetIsCharging(void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<BatteryStatusIntfController> BatteryStatusIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

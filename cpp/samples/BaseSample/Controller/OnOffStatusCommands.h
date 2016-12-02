@@ -42,12 +42,12 @@ class OnOffStatusCommands : public InterfaceCommands
 
     virtual void Init();
 
-    OnOffStatusIntfController* GetInterface() { return m_intfController; }
+    OnOffStatusIntfController* GetInterface() { return m_intfController.get(); }
 
     static void OnCmdOnOffStatus(Commands* commands, std::string& cmd);
 
   private:
-    OnOffStatusIntfController* m_intfController;
+    OnOffStatusIntfControllerPtr m_intfController;
     OnOffStatusListener m_listener;
 };
 

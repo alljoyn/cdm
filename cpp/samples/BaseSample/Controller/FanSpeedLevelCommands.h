@@ -49,7 +49,7 @@ class FanSpeedLevelCommands : public InterfaceCommands
 
     virtual void Init();
 
-    FanSpeedLevelIntfController* GetInterface() { return m_intfController; }
+    FanSpeedLevelIntfController* GetInterface() { return m_intfController.get(); }
 
     static void OnCmdGetFanSpeedLevel(Commands* commands, std::string& cmd);
     static void OnCmdSetFanSpeedLevel(Commands* commands, std::string& cmd);
@@ -58,7 +58,7 @@ class FanSpeedLevelCommands : public InterfaceCommands
     static void OnCmdSetAutoMode(Commands* commands, std::string& cmd);
 
   private:
-    FanSpeedLevelIntfController* m_intfController;
+    FanSpeedLevelIntfControllerPtr m_intfController;
     FanSpeedLevelListener m_listener;
 };
 

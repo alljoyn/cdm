@@ -48,6 +48,8 @@ class RemoteControllabilityIntfController : public RemoteControllabilityInterfac
     virtual QStatus GetIsControllable(void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<RemoteControllabilityIntfController> RemoteControllabilityIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

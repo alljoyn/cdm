@@ -42,14 +42,14 @@ class HidCommands : public InterfaceCommands
 
     virtual void Init();
 
-    HidIntfController* GetInterface() { return m_intfController; }
+    HidIntfController* GetInterface() { return m_intfController.get(); }
 
     static void OnCmdGetSupportedEvents(Commands* commands, std::string& cmd);
     static void OnCmdInjectGenericEvent(Commands* commands, std::string& cmd);
     static void OnCmdInjectKeyEvent(Commands* commands, std::string& cmd);
 
   private:
-    HidIntfController* m_intfController;
+    HidIntfControllerPtr m_intfController;
     HidListener m_listener;
 };
 

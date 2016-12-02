@@ -50,13 +50,13 @@ class VendorDefinedCommands : public InterfaceCommands
 
     virtual void Init();
 
-    VendorDefinedIntfController* GetInterface() { return m_intfController; }
+    VendorDefinedIntfController* GetInterface() { return m_intfController.get(); }
     static void OnCmdGetTestProperty(Commands* commands, std::string& cmd);
     static void OnCmdSetTestProperty(Commands* commands, std::string& cmd);
     static void OnCmdTestMethod(Commands* commands, std::string& cmd);
 
   private:
-    VendorDefinedIntfController* m_intfController;
+    VendorDefinedIntfControllerPtr m_intfController;
     VendorDefinedListener m_listener;
 };
 

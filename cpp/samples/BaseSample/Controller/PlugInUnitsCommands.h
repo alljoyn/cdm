@@ -43,12 +43,12 @@ class PlugInUnitsCommands : public InterfaceCommands
 
     virtual void Init();
 
-    PlugInUnitsIntfController* GetInterface() { return m_intfController; }
+    PlugInUnitsIntfController* GetInterface() { return m_intfController.get(); }
 
     static void OnCmdGetPlugInUnits(Commands* commands, std::string& cmd);
 
   private:
-    PlugInUnitsIntfController* m_intfController;
+    PlugInUnitsIntfControllerPtr m_intfController;
     PlugInUnitsListener m_listener;
 };
 

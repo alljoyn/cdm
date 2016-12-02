@@ -42,12 +42,12 @@ class OffControlCommands : public InterfaceCommands
 
     virtual void Init();
 
-    OffControlIntfController* GetInterface() { return m_intfController; }
+    OffControlIntfController* GetInterface() { return m_intfController.get(); }
 
     static void OffCmdSwitchOff(Commands* commands, std::string& cmd);
 
   private:
-    OffControlIntfController* m_intfController;
+    OffControlIntfControllerPtr m_intfController;
     OffControlListener m_listener;
 };
 

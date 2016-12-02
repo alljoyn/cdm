@@ -48,6 +48,8 @@ class PlugInUnitsIntfController : public PlugInUnitsInterface {
     virtual QStatus GetPlugInUnits(void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<PlugInUnitsIntfController> PlugInUnitsIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

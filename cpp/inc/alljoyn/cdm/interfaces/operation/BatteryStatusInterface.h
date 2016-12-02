@@ -29,6 +29,9 @@ namespace services {
  */
 class BatteryStatusInterface : public CdmInterface {
   public:
+    static const char* const INTERFACE_NAME;
+    static const CdmInterfaceType INTERFACE_TYPE;
+
 
 
     /**

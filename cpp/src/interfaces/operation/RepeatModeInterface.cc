@@ -20,6 +20,10 @@
 namespace ajn {
 namespace services {
 
+const char* const RepeatModeInterface::INTERFACE_NAME = "org.alljoyn.SmartSpaces.Operation.RepeatMode";
+const CdmInterfaceType RepeatModeInterface::INTERFACE_TYPE = REPEAT_MODE_INTERFACE;
+
+
 const uint16_t RepeatModeInterface::s_interfaceVersion = 1;
 
 const qcc::String RepeatModeInterface::s_xml =

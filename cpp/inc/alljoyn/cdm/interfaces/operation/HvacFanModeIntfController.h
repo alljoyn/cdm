@@ -65,6 +65,8 @@ class HvacFanModeIntfController : public HvacFanModeInterface {
     virtual QStatus GetSupportedModes(void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<HvacFanModeIntfController> HvacFanModeIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

@@ -64,13 +64,13 @@ RepeatModeCommands::~RepeatModeCommands()
 void RepeatModeCommands::Init()
 {
     if (!m_intfController) {
-        CdmInterface* cdmInterface = m_sample->CreateInterface(REPEAT_MODE_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
-        if (!cdmInterface) {
+        m_intfController = m_sample->GetController()->CreateInterface<RepeatModeIntfController>(m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
+        if (!m_intfController) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfController = static_cast<RepeatModeIntfController*>(cdmInterface);
+
     }
 
     RegisterCommand(&RepeatModeCommands::OnCmdGetRepeatMode, "grm", "get repeat mode");

@@ -56,6 +56,8 @@ class CurrentHumidityIntfController : public CurrentHumidityInterface {
     virtual QStatus GetMaxValue(void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<CurrentHumidityIntfController> CurrentHumidityIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

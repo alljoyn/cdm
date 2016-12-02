@@ -20,6 +20,10 @@
 namespace ajn {
 namespace services {
 
+const char* const CycleControlInterface::INTERFACE_NAME = "org.alljoyn.SmartSpaces.Operation.CycleControl";
+const CdmInterfaceType CycleControlInterface::INTERFACE_TYPE = CYCLE_CONTROL_INTERFACE;
+
+
 const uint16_t CycleControlInterface::s_interfaceVersion = 1;
 
 const qcc::String CycleControlInterface::s_xml =

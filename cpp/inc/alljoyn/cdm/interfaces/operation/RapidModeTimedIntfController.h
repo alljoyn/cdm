@@ -65,6 +65,8 @@ class RapidModeTimedIntfController : public RapidModeTimedInterface {
     virtual QStatus GetMaxSetMinutes(void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<RapidModeTimedIntfController> RapidModeTimedIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

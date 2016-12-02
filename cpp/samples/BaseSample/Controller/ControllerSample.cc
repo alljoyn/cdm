@@ -318,12 +318,6 @@ FoundDeviceInfo* ControllerSample::GetDeviceInfoBySessionId(SessionId id)
     return 0;
 }
 
-CdmInterface* ControllerSample::CreateInterface(const CdmInterfaceType type, const std::string& busName, const qcc::String& objectPath, const SessionId& sessionId, InterfaceControllerListener& listener)
-{
-    return m_controller->CreateInterface(type, busName, objectPath, sessionId, listener);
-}
-
-
 const CdmInterfaceType ControllerSample::RegisterVendorDefinedInterface(const qcc::String& interfaceName, CreateIntfControllerFptr createIntfController)
 {
     return m_controller->RegisterVendorDefinedInterface(interfaceName, createIntfController);

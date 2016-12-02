@@ -82,6 +82,8 @@ class AudioVolumeIntfController : public AudioVolumeInterface {
     virtual QStatus SetMute(const bool value, void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<AudioVolumeIntfController> AudioVolumeIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

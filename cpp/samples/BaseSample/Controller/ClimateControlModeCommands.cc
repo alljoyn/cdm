@@ -105,13 +105,13 @@ ClimateControlModeCommands::~ClimateControlModeCommands()
 void ClimateControlModeCommands::Init()
 {
     if (!m_intfController) {
-        CdmInterface* cdmInterface = m_sample->CreateInterface(CLIMATE_CONTROL_MODE_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
-        if (!cdmInterface) {
+        m_intfController = m_sample->GetController()->CreateInterface<ClimateControlModeIntfController>(m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
+        if (!m_intfController) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfController = static_cast<ClimateControlModeIntfController*>(cdmInterface);
+
     }
 
     RegisterCommand(&ClimateControlModeCommands::OnCmdGetMode, "getmode", "Get Mode");

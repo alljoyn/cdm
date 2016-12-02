@@ -81,6 +81,8 @@ class TargetTemperatureIntfController : public TargetTemperatureInterface {
     virtual QStatus GetStepValue(void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<TargetTemperatureIntfController> TargetTemperatureIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

@@ -73,6 +73,8 @@ class CycleControlIntfController : public CycleControlInterface {
     virtual QStatus ExecuteOperationalCommand(const OperationalCommands command, void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<CycleControlIntfController> CycleControlIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

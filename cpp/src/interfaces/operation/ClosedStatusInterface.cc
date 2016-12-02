@@ -20,6 +20,10 @@
 namespace ajn {
 namespace services {
 
+const char* const ClosedStatusInterface::INTERFACE_NAME = "org.alljoyn.SmartSpaces.Operation.ClosedStatus";
+const CdmInterfaceType ClosedStatusInterface::INTERFACE_TYPE = CLOSED_STATUS_INTERFACE;
+
+
 const uint16_t ClosedStatusInterface::s_interfaceVersion = 1;
 
 const qcc::String ClosedStatusInterface::s_xml =

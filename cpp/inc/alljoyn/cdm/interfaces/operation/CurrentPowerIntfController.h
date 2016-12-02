@@ -64,6 +64,8 @@ class CurrentPowerIntfController : public CurrentPowerInterface {
     virtual QStatus GetUpdateMinTime(void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<CurrentPowerIntfController> CurrentPowerIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

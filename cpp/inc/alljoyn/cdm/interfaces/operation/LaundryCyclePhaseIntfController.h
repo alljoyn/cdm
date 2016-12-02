@@ -65,6 +65,8 @@ class LaundryCyclePhaseIntfController : public LaundryCyclePhaseInterface {
     virtual QStatus GetVendorPhasesDescription(const qcc::String& languageTag, void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<LaundryCyclePhaseIntfController> LaundryCyclePhaseIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

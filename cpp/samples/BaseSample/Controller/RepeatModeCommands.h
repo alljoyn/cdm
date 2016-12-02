@@ -44,13 +44,13 @@ class RepeatModeCommands : public InterfaceCommands
 
     virtual void Init();
 
-    RepeatModeIntfController* GetInterface() { return m_intfController; }
+    RepeatModeIntfController* GetInterface() { return m_intfController.get(); }
 
     static void OnCmdGetRepeatMode(Commands* commands, std::string& cmd);
     static void OnCmdSetRepeatMode(Commands* commands, std::string& cmd);
 
   private:
-    RepeatModeIntfController* m_intfController;
+    RepeatModeIntfControllerPtr m_intfController;
     RepeatModeListener m_listener;
 };
 

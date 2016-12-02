@@ -64,6 +64,8 @@ class CurrentAirQualityLevelIntfController : public CurrentAirQualityLevelInterf
     virtual QStatus GetMaxLevel(void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<CurrentAirQualityLevelIntfController> CurrentAirQualityLevelIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

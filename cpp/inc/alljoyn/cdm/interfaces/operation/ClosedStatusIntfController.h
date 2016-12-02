@@ -48,6 +48,8 @@ class ClosedStatusIntfController : public ClosedStatusInterface {
     virtual QStatus GetIsClosed(void* context = NULL) = 0;
 };
 
+typedef std::shared_ptr<ClosedStatusIntfController> ClosedStatusIntfControllerPtr;
+
 } //namespace services
 } //namespace ajn
 

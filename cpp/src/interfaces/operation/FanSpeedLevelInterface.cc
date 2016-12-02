@@ -20,6 +20,10 @@
 namespace ajn {
 namespace services {
 
+const char* const FanSpeedLevelInterface::INTERFACE_NAME = "org.alljoyn.SmartSpaces.Operation.FanSpeedLevel";
+const CdmInterfaceType FanSpeedLevelInterface::INTERFACE_TYPE = FAN_SPEED_LEVEL_INTERFACE;
+
+
 const uint16_t FanSpeedLevelInterface::s_interfaceVersion = 1;
 
 const qcc::String FanSpeedLevelInterface::s_xml =

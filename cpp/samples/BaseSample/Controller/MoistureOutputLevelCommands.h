@@ -51,7 +51,7 @@ class MoistureOutputLevelCommands : public InterfaceCommands
 
     virtual void Init();
 
-    MoistureOutputLevelIntfController* GetInterface() { return m_intfController; }
+    MoistureOutputLevelIntfController* GetInterface() { return m_intfController.get(); }
 
     static void OnCmdGetMoistureOutputLevel(Commands* commands, std::string& cmd);
     static void OnCmdSetMoistureOutputLevel(Commands* commands, std::string& cmd);
@@ -60,7 +60,7 @@ class MoistureOutputLevelCommands : public InterfaceCommands
     static void OnCmdSetAutoMode(Commands* commands, std::string& cmd);
 
   private:
-    MoistureOutputLevelIntfController* m_intfController;
+    MoistureOutputLevelIntfControllerPtr m_intfController;
     MoistureOutputLevelListener m_listener;
 };
 

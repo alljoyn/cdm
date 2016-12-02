@@ -127,13 +127,13 @@ FilterStatusCommands::~FilterStatusCommands()
 void FilterStatusCommands::Init()
 {
     if (!m_intfController) {
-        CdmInterface* cdmInterface = m_sample->CreateInterface(FILTER_STATUS_INTERFACE, m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
-        if (!cdmInterface) {
+        m_intfController = m_sample->GetController()->CreateInterface<FilterStatusIntfController>(m_deviceInfo->GetBusName(), m_objectPath, m_deviceInfo->GetSessionId(), m_listener);
+        if (!m_intfController) {
             cout << "Interface creation failed." << endl;
             return;
         }
 
-        m_intfController = static_cast<FilterStatusIntfController*>(cdmInterface);
+
     }
 
     RegisterCommand(&FilterStatusCommands::OnCmdGetExpectedLifeInDays, "getelid", "Get ExpectedLifeInDays");
