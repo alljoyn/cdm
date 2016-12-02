@@ -14,8 +14,8 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#ifndef BASICCOMMANDS_H_
-#define BASICCOMMANDS_H_
+#ifndef BASICCONTROLLERCOMMANDS_H_
+#define BASICCONTROLLERCOMMANDS_H_
 
 #include "ControllerCommands.h"
 

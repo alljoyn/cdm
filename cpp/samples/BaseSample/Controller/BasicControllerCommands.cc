@@ -1,7 +1,7 @@
 #include <iomanip>
 #include <alljoyn/AboutObjectDescription.h>
 #include <alljoyn/cdm/CdmAboutData.h>
-#include "BasicCommands.h"
+#include "BasicControllerCommands.h"
 #include "ControllerSample.h"
 
 BasicControllerCommands::BasicControllerCommands(ControllerSample* sample)

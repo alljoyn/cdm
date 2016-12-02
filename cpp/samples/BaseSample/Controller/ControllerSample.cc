@@ -1,7 +1,7 @@
 #include <qcc/String.h>
 #include <qcc/Log.h>
 #include "ControllerSample.h"
-#include "BasicCommands.h"
+#include "BasicControllerCommands.h"
 #include "DeviceCommands.h"
 #include "../SampleCertificateChainEngine.h"
 
