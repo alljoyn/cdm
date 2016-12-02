@@ -524,11 +524,21 @@ class Property(object):
             return 'this, this.intf, "%s", null' % self.Name
 
 
+class Mutator(object):
+    def __init__(self, name, interface, prop, prop_signature, default_value):
+        self.Name = name
+        self.Interface = interface
+        self.Property = prop
+        self.PropertyType = AJType(prop_signature)
+        self.DefaultValue = default_value
+
+
 class Method(object):
     def __init__(self, name):
         self.Name = Symbol(name)
         self.Args = []
         self.Annotations = []
+        self.Mutators = []
         self.doc = {}
 
     @property
@@ -545,6 +555,8 @@ class Method(object):
         regexs = {
             re.compile(r'org\.alljoyn\.Bus\.DocString\.(\w*)'):
                 lambda m: self.set_doc_string(m.group(1), value),
+            re.compile(r'org\.twobulls\.Method\.Mutates'):
+                lambda m: self.add_mutator(value),
         }
 
         handled = False
@@ -555,8 +567,7 @@ class Method(object):
                 handled = True
 
         if not handled:
-            print "Unknown annotation:", name
-
+            print "Unknown method annotation:", name
 
     def add_child(self, child): 
         if isinstance(child, MethodArg): 
@@ -564,6 +575,10 @@ class Method(object):
         elif isinstance(child, Annotation):
             self.Annotations.append(child)
             self.add_annotation(child.Name, child.Value)
+
+    def add_mutator(self, value):
+        interface, prop, prop_signature, default_value = value.split(":")
+        self.Mutators.append(Mutator(self.Name, interface, prop, prop_signature, default_value))
 
     def input_args(self):
         return [arg for arg in self.Args if arg.Direction == 'in']

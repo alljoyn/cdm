@@ -27,7 +27,8 @@ namespace services {
 /**
  * {{Interface.Name}} Interface Controllee class
  */
-class {{Interface.Name}}IntfControllee : public {{Interface.Name}}Interface {
+class {{Interface.Name}}IntfControllee : public {{Interface.Name}}Interface
+{
   public:
     /**
      * Constructor of {{Interface.Name}}IntfControllee
@@ -40,19 +41,24 @@ class {{Interface.Name}}IntfControllee : public {{Interface.Name}}Interface {
     virtual ~{{Interface.Name}}IntfControllee() {}
 
     {% for property in Interface.UserProperties %}
-
+    {% if property.EmitsChangedSignal %}
     /**
-     * Get {{property.Name}}
-     * @return current {{property.Name.add_spaces_lower()}}
-     */
-    virtual const {{property.Type.ctype()}} Get{{property.Name}}() const = 0;
-
-    /**
-     * Set {{property.Name}}
-     * @param[in] value The {{property.Name.add_spaces_lower()}} to set
+     * Emits a changed signal for the {{property.Name}} property
+     * @param[in] newValue new value of {{property.Name.add_spaces_lower()}}
      * @return ER_OK on success
      */
-    virtual QStatus Set{{property.Name}}(const {{property.Type.ctype_arg()}} value) = 0;
+    virtual QStatus Emit{{property.Name}}Changed(const {{property.Type.ctype()}} newValue) = 0;
+    {% endif %}
+    {% endfor %}
+
+    {% for method in Interface.Methods %}
+    {% for mutator in method.Mutators %}
+     /**
+     * Emits a signal that the {{mutator.Property}} property from the {{mutator.Interface}} interface has been changed
+     * @return ER_OK on success
+     */
+    virtual QStatus Emit{{mutator.Property}}Changed() = 0;
+    {% endfor %}
     {% endfor %}
 
     {% for signal in Interface.Signals %}

@@ -55,7 +55,7 @@ class Generator(object):
         env.filters["pad"] = lambda s, width: str.ljust(str(s), width)
 
         for xml_file in glob.iglob(self.cmd_args.xml_files):
-            print xml_file
+            print "XML:", xml_file
             parser.parse(xml_file)
 
             self.process_xml_file(saxhandler, xml_file)
@@ -99,7 +99,7 @@ class InterfaceCodeGenerator(Generator):
         }
 
     def process_xml_file(self, saxhandler, xml_file):
-        saxhandler.root.list[0].XML = "\n".join(['"'+line.rstrip("\n").replace('"', "'")+'"' for line in open(xml_file)])
+        saxhandler.root.list[0].XML = "\n".join(['"'+line.rstrip("\n").replace('"', "'")+'"' for line in open(xml_file) if "org.twobulls." not in line])
         xml_version = xml_file.split("-v")[-1][:-4]
         saxhandler.root.list[0].Version = xml_version
 

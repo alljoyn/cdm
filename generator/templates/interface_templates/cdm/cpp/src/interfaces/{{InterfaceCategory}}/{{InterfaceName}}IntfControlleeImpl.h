@@ -23,6 +23,7 @@
 #include <alljoyn/cdm/interfaces/InterfaceControllee.h>
 #include <alljoyn/cdm/interfaces/InterfaceControlleeListener.h>
 #include <alljoyn/cdm/interfaces/{{Interface.Category}}/{{Interface.Name}}IntfControllee.h>
+#include <alljoyn/cdm/interfaces/{{Interface.Category}}/{{Interface.Name}}IntfControlleeModel.h>
 
 namespace ajn {
 namespace services {
@@ -33,7 +34,10 @@ class CdmBusObject;
 /**
  * {{Interface.Name}} Interface Controllee implementation class
  */
-class {{Interface.Name}}IntfControlleeImpl : public InterfaceControllee, public {{Interface.Name}}IntfControllee {
+class {{Interface.Name}}IntfControlleeImpl :
+    public InterfaceControllee,
+    public {{Interface.Name}}IntfControllee {
+
   public:
     /**
      * Create interface
@@ -43,7 +47,7 @@ class {{Interface.Name}}IntfControlleeImpl : public InterfaceControllee, public 
     /**
      * Constructor of {{Interface.Name}}IntfControlleeImpl
      */
-    {{Interface.Name}}IntfControlleeImpl(BusAttachment& busAttachment, {{Interface.Name}}IntfControlleeListener& listener, CdmBusObject& cdmBusObject);
+    {{Interface.Name}}IntfControlleeImpl(BusAttachment& busAttachment, {{Interface.Name}}IntfControlleeModel& model, CdmBusObject& cdmBusObject);
 
     /**
      * Destructor of {{Interface.Name}}IntfControlleeImpl
@@ -89,40 +93,49 @@ class {{Interface.Name}}IntfControlleeImpl : public InterfaceControllee, public 
      * @return bus attachment
      */
     virtual BusAttachment& GetBusAttachment() const { return m_busAttachment; }
-
     {% for property in Interface.UserProperties %}
-    /**
-     * Get {{property.Name}}
-     * @return current {{property.Name.add_spaces_lower()}}
-     */
-    virtual const {{property.Type.ctype()}} Get{{property.Name}}() const { return m_{{property.Name.camel_case()}}; }
+    {% if property.EmitsChangedSignal %}
 
     /**
-     * Set {{property.Name}}
-     * @param[in] value The {{property.Name.add_spaces_lower()}} to set
+     * Emits a changed signal for the {{property.Name}} property
+     * This function is only called, when InterfaceControllee::s_retrievingActualPropertyValue is true.
+     * @param[in] newValue new value of {{property.Name.add_spaces_lower()}}
      * @return ER_OK on success
      */
-    virtual QStatus Set{{property.Name}}(const {{property.Type.ctype_arg()}} value);
+    virtual QStatus Emit{{property.Name}}Changed(const {{property.Type.ctype()}} newValue);
+    {% endif %}
     {% endfor %}
+    {% for method in Interface.Methods %}
 
+    /**
+     * Handler of {{method.Name}} method
+     * @param member
+     * @param msg reference of alljoyn Message
+     */
+    void On{{method.Name}}(const InterfaceDescription::Member* member, Message& msg);
+    {% endfor %}
+    {% for method in Interface.Methods %}
+    {% for mutator in method.Mutators %}
+
+     /**
+     * Emits a signal that the {{mutator.Property}} property from the {{mutator.Interface}} interface has been changed
+     * @return ER_OK on success
+     */
+    QStatus Emit{{mutator.Property}}Changed();
+    {% endfor %}
+    {% endfor %}
     {% for signal in Interface.Signals %}
+
     /**
      * Emit {{signal.Name}} signal
      * @return ER_OK on success
      */
     virtual QStatus Emit{{signal.Name}}();
-
     {% endfor %}
 
   private:
-    {{Interface.Name}}IntfControlleeImpl();
-
     BusAttachment& m_busAttachment;
-    {{Interface.Name}}IntfControlleeListener& m_interfaceListener;
-
-    {% for property in Interface.UserProperties %}
-    {{property.Type.ctype()}} m_{{property.Name.camel_case()}};
-    {% endfor %}
+    {{Interface.Name}}IntfControlleeModel& m_{{Interface.Name}}ModelInterface;
 
     MethodHandlers m_methodHandlers;
 };

@@ -18,7 +18,7 @@
 
 #include <alljoyn/cdm/LogModule.h>
 #include <alljoyn/cdm/CdmBusObject.h>
-#include <alljoyn/cdm/interfaces/operation/{{Interface.Name}}IntfControlleeListener.h>
+#include <alljoyn/cdm/interfaces/operation/{{Interface.Name}}IntfControlleeModel.h>
 
 #include "{{Interface.Name}}IntfControlleeImpl.h"
 
@@ -30,16 +30,13 @@ namespace services {
 
 CdmInterface* {{Interface.Name}}IntfControlleeImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControlleeListener& listener, CdmBusObject& cdmBusObject)
 {
-    return new {{Interface.Name}}IntfControlleeImpl(busAttachment, dynamic_cast<{{Interface.Name}}IntfControlleeListener&>(listener), cdmBusObject);
+    return new {{Interface.Name}}IntfControlleeImpl(busAttachment, dynamic_cast<{{Interface.Name}}IntfControlleeModel&>(listener), cdmBusObject);
 }
 
-{{Interface.Name}}IntfControlleeImpl::{{Interface.Name}}IntfControlleeImpl(BusAttachment& busAttachment, {{Interface.Name}}IntfControlleeListener& listener, CdmBusObject& cdmBusObject) :
+{{Interface.Name}}IntfControlleeImpl::{{Interface.Name}}IntfControlleeImpl(BusAttachment& busAttachment, {{Interface.Name}}IntfControlleeModel& model, CdmBusObject& cdmBusObject) :
     InterfaceControllee(cdmBusObject),
     m_busAttachment(busAttachment),
-    m_interfaceListener(listener),
-    {% for property in Interface.UserProperties %}
-    m_{{property.Name.camel_case()}}(),
-    {% endfor %}
+    m_{{Interface.Name}}ModelInterface(model),
     m_methodHandlers()
 {
 }
@@ -51,7 +48,6 @@ CdmInterface* {{Interface.Name}}IntfControlleeImpl::CreateInterface(BusAttachmen
 QStatus {{Interface.Name}}IntfControlleeImpl::Init()
 {
     QStatus status = CdmInterface::Init();
-
     {% for method in Interface.Methods %}
 
     const InterfaceDescription::Member* {{method.Name}}Member = m_interfaceDescription->GetMember(s_method_{{method.Name}}.c_str());
@@ -65,68 +61,71 @@ QStatus {{Interface.Name}}IntfControlleeImpl::Init()
 
 QStatus {{Interface.Name}}IntfControlleeImpl::OnGetProperty(const String& propName, MsgArg& msgarg)
 {
-    QStatus status = ER_OK;
+    QStatus status;
 
     if (!(s_prop_Version.compare(propName))) {
         msgarg.typeId = ALLJOYN_UINT16;
         msgarg.v_uint16 = GetInterfaceVersion();
+        return ER_OK;
     } else {
-        if (s_retrievingActualPropertyValue) {
-            {% for property in Interface.UserProperties %}
-            if (!(s_prop_{{property.Name}}.compare(propName))) {
-                {{property.Type.ctype()}} value;
-                status = m_interfaceListener.OnGet{{property.Name}}(value);
-                if (status != ER_OK) {
-                    value = Get{{property.Name}}();
-                    QCC_LogError(status, ("%s: failed to get actual property value from application. use previous value.", __func__));
-                    status = ER_OK;
-                } else {
-                    Set{{property.Name}}(value); // update the value in {{Interface.Name}}IntfControllee.
-                }
+        {% for property in Interface.UserProperties %}
+        if (!(s_prop_{{property.Name}}.compare(propName))) {
+            {{property.Type.ctype()}} value;
+            status = m_{{Interface.Name}}ModelInterface.Get{{property.Name}}(value);
+            if (status != ER_OK) {
+                QCC_LogError(status, ("%s: failed to get actual property value from application. use previous value.", __func__));
+                return ER_FAIL;
+            }
+            msgarg.typeId = {{property.Type.ajtypeid()}};
+            msgarg.{{property.Type.ajvar()}} = value;
 
-                msgarg.typeId = {{property.Type.ajtypeid()}};
-                msgarg.{{property.Type.ajvar()}} = value;
-            } else {%- endfor %} {
-                status = ER_BUS_NO_SUCH_PROPERTY;
-            }
-        } else {
-            {% for property in Interface.UserProperties %}
-            if (!(s_prop_{{property.Name}}.compare(propName))) {
-                const {{property.Type.ctype()}} value = Get{{property.Name}}();
-                msgarg.typeId = {{property.Type.ajtypeid()}};
-                msgarg.{{property.Type.ajvar()}} = value;
-            } else{% endfor %} {
-                status = ER_BUS_NO_SUCH_PROPERTY;
-            }
-       }
+            return ER_OK;
+        } else {%- endfor %} {
+            return ER_BUS_NO_SUCH_PROPERTY;
+        }
     }
-
-    return status;
 }
 
 QStatus {{Interface.Name}}IntfControlleeImpl::OnSetProperty(const String& propName, MsgArg& msgarg)
 {
-    QStatus status = ER_OK;
+    QStatus status;
 
     {% for property in Interface.UserProperties %}
     if (!(s_prop_{{property.Name}}.compare(propName))) {
         if (msgarg.typeId != {{property.Type.ajtypeid()}}) {
-            status = ER_BUS_NO_SUCH_PROPERTY;
-            return status;
+            return ER_BUS_NO_SUCH_PROPERTY;
         }
+
+        {% if property.Writable %}
         {{property.Type.ctype()}} value = msgarg.{{property.Type.ajvar()}};
-        status = m_interfaceListener.OnSet{{property.Name}}(value);
+        {% if property.Max != None %}
+
+        if (value > {{property.Max}})
+            return ER_BUS_PROPERTY_VALUE_NOT_SET;
+        {% endif %}
+        {% if property.Min != None %}
+
+        if (value < {{property.Min}})
+            return ER_BUS_PROPERTY_VALUE_NOT_SET;
+
+        {% endif %}
+        status = m_{{Interface.Name}}ModelInterface.Set{{property.Name}}(value);
         if (status != ER_OK) {
             QCC_LogError(status, ("%s: failed to set property value", __func__));
-            status = ER_BUS_PROPERTY_VALUE_NOT_SET;
-        } else {
-            Set{{property.Name}}(value); // update the value in {{Interface.Name}}IntfControllee.
+            return ER_BUS_PROPERTY_VALUE_NOT_SET;
         }
-    } else{% endfor %} {
-        status = ER_BUS_NO_SUCH_PROPERTY;
-    }
+        {% if property.EmitsChangedSignal %}
 
-    return status;
+        Emit{{property.Name}}Changed(value);
+        {% endif %}
+
+        return ER_OK;
+        {% else %}
+        return ER_BUS_PROPERTY_VALUE_NOT_SET;
+        {% endif %}
+    } else {%- endfor %} {
+        return ER_BUS_NO_SUCH_PROPERTY;
+    }
 }
 
 void {{Interface.Name}}IntfControlleeImpl::OnMethodHandler(const InterfaceDescription::Member* member, Message& msg)
@@ -151,20 +150,61 @@ void {{Interface.Name}}IntfControlleeImpl::OnMethodHandler(const InterfaceDescri
 }
 
 {% for property in Interface.UserProperties %}
-QStatus {{Interface.Name}}IntfControlleeImpl::Set{{property.Name}}(const {{property.Type.ctype_arg()}} value)
+{% if property.EmitsChangedSignal %}
+QStatus {{Interface.Name}}IntfControlleeImpl::Emit{{property.Name}}Changed(const {{property.Type.ctype()}} newValue)
 {
-    if (m_{{property.Name.camel_case()}} != value) {
-        {% if property.EmitsChangedSignal %}
-        MsgArg msgarg;
-        msgarg.typeId = {{property.Type.ajtypeid()}};
-        msgarg.{{property.Type.ajvar()}} = value;
-        m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_{{property.Name}}.c_str(), msgarg, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
-        {% endif %}
-        m_{{property.Name.camel_case()}} = value;
-    }
-    return ER_OK;
-}
+    QStatus status = ER_OK;
 
+    MsgArg val;
+    val.typeId = {{property.Type.ajtypeid()}};
+    val.v_bool = newValue;
+    m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_{{property.Name}}.c_str(), val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+
+    return status;
+}
+{% endif %}
+{% endfor %}
+
+{% for method in Interface.Methods %}
+void {{Interface.Name}}IntfControlleeImpl::On{{method.Name}}(const InterfaceDescription::Member* member, Message& msg) {
+    QStatus status = ER_OK;
+    const MsgArg* args = NULL;
+    size_t numArgs = 0;
+
+    msg->GetArgs(numArgs, args);
+
+    ErrorCode errorCode = NOT_ERROR;
+    status = m_{{Interface.Name}}ModelInterface.{{method.Name}}(errorCode);
+
+    if (status == ER_OK) {
+        m_busObject.ReplyMethodCall(msg, status);
+        {% for mutator in method.Mutators %}
+        Emit{{mutator.Property}}Changed();
+        {% endfor %}
+    } else {
+        if (errorCode == NOT_ERROR) {
+            QCC_LogError(status, ("%s: status is not ER_OK, but errorCode was not set.", __func__));
+            m_busObject.ReplyMethodCall(msg, status);
+        } else {
+                m_busObject.ReplyMethodCall(msg, CdmInterface::GetInterfaceErrorName(errorCode).c_str(),
+                        CdmInterface::GetInterfaceErrorMessage(errorCode).c_str());
+        }
+    }
+}
+{% for mutator in method.Mutators %}
+
+QStatus {{Interface.Name}}IntfControlleeImpl::Emit{{mutator.Property}}Changed()
+{
+    QStatus status = ER_OK;
+
+    MsgArg val;
+    val.typeId = {{mutator.PropertyType.ajtypeid()}};
+    val.v_bool = {{mutator.DefaultValue}};
+    m_busObject.EmitPropChanged("{{mutator.Interface}}", "{{mutator.Property}}", val, SESSION_ID_ALL_HOSTED, ALLJOYN_FLAG_GLOBAL_BROADCAST);
+
+    return status;
+}
+{% endfor %}
 {% endfor %}
 
 {% for signal in Interface.Signals %}
@@ -180,7 +220,6 @@ QStatus {{Interface.Name}}IntfControlleeImpl::Emit{{signal.Name}}()
     {% endif %}
 }
 
-{% endfor %}
-
+{%- endfor %}
 } //namespace services
 } //namespace ajn
