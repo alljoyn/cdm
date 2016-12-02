@@ -22,7 +22,6 @@ namespace services {
 
 const uint16_t AudioVolumeInterface::s_interfaceVersion = 1;
 
-// Below none secure xml is only for test
 const qcc::String AudioVolumeInterface::s_xml =
 "<node xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='http://www.allseenalliance.org/schemas/introspect.xsd'>"
 "    <interface name='org.alljoyn.SmartSpaces.Operation.AudioVolume'>"
@@ -51,9 +50,8 @@ const qcc::String AudioVolumeInterface::s_xml =
 
 const qcc::String AudioVolumeInterface::s_prop_Version = "Version";
 const qcc::String AudioVolumeInterface::s_prop_Volume = "Volume";
-const qcc::String AudioVolumeInterface::s_prop_Mute = "Mute";
 const qcc::String AudioVolumeInterface::s_prop_MaxVolume = "MaxVolume";
-
+const qcc::String AudioVolumeInterface::s_prop_Mute = "Mute";
 
 } //namespace services
 } //namespace ajn

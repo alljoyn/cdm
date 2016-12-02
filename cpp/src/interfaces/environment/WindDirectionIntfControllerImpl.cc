@@ -59,6 +59,85 @@ QStatus WindDirectionIntfControllerImpl::Init()
     return status;
 }
 
+QStatus WindDirectionIntfControllerImpl::GetHorizontalDirection(void* context)
+{
+    QStatus status = ER_OK;
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_HorizontalDirection.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&WindDirectionIntfControllerImpl::GetHorizontalDirectionPropertyCB, context);
+    return status;
+}
+
+QStatus WindDirectionIntfControllerImpl::SetHorizontalDirection(const uint16_t value, void* context)
+{
+    QStatus status = ER_OK;
+    MsgArg arg;
+    arg.Set("q", value);
+    status = m_proxyObject.SetPropertyAsync(GetInterfaceName().c_str(), s_prop_HorizontalDirection.c_str(), arg, this, (ProxyBusObject::Listener::SetPropertyCB)&WindDirectionIntfControllerImpl::SetHorizontalDirectionPropertyCB, context);
+    return status;
+}
+
+QStatus WindDirectionIntfControllerImpl::GetHorizontalMax(void* context)
+{
+    QStatus status = ER_OK;
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_HorizontalMax.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&WindDirectionIntfControllerImpl::GetHorizontalMaxPropertyCB, context);
+    return status;
+}
+
+QStatus WindDirectionIntfControllerImpl::GetHorizontalAutoMode(void* context)
+{
+    QStatus status = ER_OK;
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_HorizontalAutoMode.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&WindDirectionIntfControllerImpl::GetHorizontalAutoModePropertyCB, context);
+    return status;
+}
+
+QStatus WindDirectionIntfControllerImpl::SetHorizontalAutoMode(const AutoMode value, void* context)
+{
+    QStatus status = ER_OK;
+    MsgArg arg;
+    arg.Set("y", value);
+    status = m_proxyObject.SetPropertyAsync(GetInterfaceName().c_str(), s_prop_HorizontalAutoMode.c_str(), arg, this, (ProxyBusObject::Listener::SetPropertyCB)&WindDirectionIntfControllerImpl::SetHorizontalAutoModePropertyCB, context);
+    return status;
+}
+
+QStatus WindDirectionIntfControllerImpl::GetVerticalDirection(void* context)
+{
+    QStatus status = ER_OK;
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_VerticalDirection.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&WindDirectionIntfControllerImpl::GetVerticalDirectionPropertyCB, context);
+    return status;
+}
+
+
+QStatus WindDirectionIntfControllerImpl::SetVerticalDirection(const uint16_t value, void* context)
+{
+    QStatus status = ER_OK;
+    MsgArg arg;
+    arg.Set("q", value);
+    status = m_proxyObject.SetPropertyAsync(GetInterfaceName().c_str(), s_prop_VerticalDirection.c_str(), arg, this, (ProxyBusObject::Listener::SetPropertyCB)&WindDirectionIntfControllerImpl::SetVerticalDirectionPropertyCB, context);
+    return status;
+}
+
+QStatus WindDirectionIntfControllerImpl::GetVerticalMax(void* context)
+{
+    QStatus status = ER_OK;
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_VerticalMax.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&WindDirectionIntfControllerImpl::GetVerticalMaxPropertyCB, context);
+    return status;
+}
+
+QStatus WindDirectionIntfControllerImpl::GetVerticalAutoMode(void* context)
+{
+    QStatus status = ER_OK;
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_VerticalAutoMode.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&WindDirectionIntfControllerImpl::GetVerticalAutoModePropertyCB, context);
+    return status;
+}
+
+QStatus WindDirectionIntfControllerImpl::SetVerticalAutoMode(const AutoMode value, void* context)
+{
+    QStatus status = ER_OK;
+    MsgArg arg;
+    arg.Set("y", value);
+    status = m_proxyObject.SetPropertyAsync(GetInterfaceName().c_str(), s_prop_VerticalAutoMode.c_str(), arg, this, (ProxyBusObject::Listener::SetPropertyCB)&WindDirectionIntfControllerImpl::SetVerticalAutoModePropertyCB, context);
+    return status;
+}
+
 void WindDirectionIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
 {
     MsgArg* entries;
@@ -105,93 +184,6 @@ void WindDirectionIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, con
     }
 }
 
-QStatus WindDirectionIntfControllerImpl::GetHorizontalDirection(void* context)
-{
-    QStatus status = ER_OK;
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_HorizontalDirection.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&WindDirectionIntfControllerImpl::GetHorizontalDirectionPropertyCB, context);
-    return status;
-}
-
-QStatus WindDirectionIntfControllerImpl::SetHorizontalDirection(const uint16_t value, void* context)
-{
-    QStatus status = ER_OK;
-    MsgArg arg;
-    arg.Set("q", value);
-    status = m_proxyObject.SetPropertyAsync(GetInterfaceName().c_str(), s_prop_HorizontalDirection.c_str(), arg, this, (ProxyBusObject::Listener::SetPropertyCB)&WindDirectionIntfControllerImpl::SetHorizontalDirectionPropertyCB, context);
-    return status;
-}
-
-QStatus WindDirectionIntfControllerImpl::GetHorizontalMax(void* context)
-{
-    QStatus status = ER_OK;
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_HorizontalMax.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&WindDirectionIntfControllerImpl::GetHorizontalMaxPropertyCB, context);
-    return status;
-}
-
-QStatus WindDirectionIntfControllerImpl::GetHorizontalAutoMode(void* context)
-{
-    QStatus status = ER_OK;
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_HorizontalAutoMode.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&WindDirectionIntfControllerImpl::GetHorizontalAutoModePropertyCB, context);
-    return status;
-}
-
-QStatus WindDirectionIntfControllerImpl::SetHorizontalAutoMode(const AutoMode value, void* context)
-{
-    QStatus status = ER_OK;
-    MsgArg arg;
-    arg.Set("y", value);
-    status = m_proxyObject.SetPropertyAsync(GetInterfaceName().c_str(), s_prop_HorizontalAutoMode.c_str(), arg, this, (ProxyBusObject::Listener::SetPropertyCB)&WindDirectionIntfControllerImpl::SetHorizontalAutoModePropertyCB, context);
-    return status;
-}
-
-
-QStatus WindDirectionIntfControllerImpl::GetVerticalDirection(void* context)
-{
-    QStatus status = ER_OK;
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_VerticalDirection.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&WindDirectionIntfControllerImpl::GetVerticalDirectionPropertyCB, context);
-    return status;
-}
-
-QStatus WindDirectionIntfControllerImpl::SetVerticalDirection(const uint16_t value, void* context)
-{
-    QStatus status = ER_OK;
-    MsgArg arg;
-    arg.Set("q", value);
-    status = m_proxyObject.SetPropertyAsync(GetInterfaceName().c_str(), s_prop_VerticalDirection.c_str(), arg, this, (ProxyBusObject::Listener::SetPropertyCB)&WindDirectionIntfControllerImpl::SetVerticalDirectionPropertyCB, context);
-    return status;
-}
-
-QStatus WindDirectionIntfControllerImpl::GetVerticalMax(void* context)
-{
-    QStatus status = ER_OK;
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_VerticalMax.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&WindDirectionIntfControllerImpl::GetVerticalMaxPropertyCB, context);
-    return status;
-}
-
-QStatus WindDirectionIntfControllerImpl::GetVerticalAutoMode(void* context)
-{
-    QStatus status = ER_OK;
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_VerticalAutoMode.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&WindDirectionIntfControllerImpl::GetVerticalAutoModePropertyCB, context);
-    return status;
-}
-
-QStatus WindDirectionIntfControllerImpl::SetVerticalAutoMode(const AutoMode value, void* context)
-{
-    QStatus status = ER_OK;
-    MsgArg arg;
-    arg.Set("y", value);
-    status = m_proxyObject.SetPropertyAsync(GetInterfaceName().c_str(), s_prop_VerticalAutoMode.c_str(), arg, this, (ProxyBusObject::Listener::SetPropertyCB)&WindDirectionIntfControllerImpl::SetVerticalAutoModePropertyCB, context);
-    return status;
-}
-
-void WindDirectionIntfControllerImpl::SetHorizontalDirectionPropertyCB(QStatus status, ProxyBusObject* obj, void* context)
-{
-    if (!obj) {
-        return;
-    }
-    m_interfaceListener.OnResponseSetHorizontalDirection(status, obj->GetPath(), context);
-}
-
 void WindDirectionIntfControllerImpl::GetHorizontalDirectionPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
     if (!obj) {
@@ -200,6 +192,14 @@ void WindDirectionIntfControllerImpl::GetHorizontalDirectionPropertyCB(QStatus s
     uint16_t val;
     value.Get("q", &val);
     m_interfaceListener.OnResponseGetHorizontalDirection(status, obj->GetPath(), val, context);
+}
+
+void WindDirectionIntfControllerImpl::SetHorizontalDirectionPropertyCB(QStatus status, ProxyBusObject* obj, void* context)
+{
+    if (!obj) {
+        return;
+    }
+    m_interfaceListener.OnResponseSetHorizontalDirection(status, obj->GetPath(), context);
 }
 
 void WindDirectionIntfControllerImpl::GetHorizontalMaxPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
@@ -211,14 +211,6 @@ void WindDirectionIntfControllerImpl::GetHorizontalMaxPropertyCB(QStatus status,
     value.Get("q", &val);
     m_interfaceListener.OnResponseGetHorizontalMax(status, obj->GetPath(), val, context);
 }
-void WindDirectionIntfControllerImpl::SetHorizontalAutoModePropertyCB(QStatus status, ProxyBusObject* obj, void* context)
-{
-    if (!obj) {
-        return;
-    }
-    m_interfaceListener.OnResponseSetHorizontalAutoMode(status, obj->GetPath(), context);
-}
-
 void WindDirectionIntfControllerImpl::GetHorizontalAutoModePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
     if (!obj) {
@@ -229,14 +221,14 @@ void WindDirectionIntfControllerImpl::GetHorizontalAutoModePropertyCB(QStatus st
     m_interfaceListener.OnResponseGetHorizontalAutoMode(status, obj->GetPath(), (AutoMode)val, context);
 }
 
-
-void WindDirectionIntfControllerImpl::SetVerticalDirectionPropertyCB(QStatus status, ProxyBusObject* obj, void* context)
+void WindDirectionIntfControllerImpl::SetHorizontalAutoModePropertyCB(QStatus status, ProxyBusObject* obj, void* context)
 {
     if (!obj) {
         return;
     }
-    m_interfaceListener.OnResponseSetVerticalDirection(status, obj->GetPath(), context);
+    m_interfaceListener.OnResponseSetHorizontalAutoMode(status, obj->GetPath(), context);
 }
+
 
 void WindDirectionIntfControllerImpl::GetVerticalDirectionPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
@@ -248,6 +240,14 @@ void WindDirectionIntfControllerImpl::GetVerticalDirectionPropertyCB(QStatus sta
     m_interfaceListener.OnResponseGetVerticalDirection(status, obj->GetPath(), val, context);
 }
 
+void WindDirectionIntfControllerImpl::SetVerticalDirectionPropertyCB(QStatus status, ProxyBusObject* obj, void* context)
+{
+    if (!obj) {
+        return;
+    }
+    m_interfaceListener.OnResponseSetVerticalDirection(status, obj->GetPath(), context);
+}
+
 void WindDirectionIntfControllerImpl::GetVerticalMaxPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
     if (!obj) {
@@ -257,14 +257,6 @@ void WindDirectionIntfControllerImpl::GetVerticalMaxPropertyCB(QStatus status, P
     value.Get("q", &val);
     m_interfaceListener.OnResponseGetVerticalMax(status, obj->GetPath(), val, context);
 }
-void WindDirectionIntfControllerImpl::SetVerticalAutoModePropertyCB(QStatus status, ProxyBusObject* obj, void* context)
-{
-    if (!obj) {
-        return;
-    }
-    m_interfaceListener.OnResponseSetVerticalAutoMode(status, obj->GetPath(), context);
-}
-
 void WindDirectionIntfControllerImpl::GetVerticalAutoModePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
     if (!obj) {
@@ -273,6 +265,14 @@ void WindDirectionIntfControllerImpl::GetVerticalAutoModePropertyCB(QStatus stat
     uint8_t val;
     value.Get("y", &val);
     m_interfaceListener.OnResponseGetVerticalAutoMode(status, obj->GetPath(), (AutoMode)val, context);
+}
+
+void WindDirectionIntfControllerImpl::SetVerticalAutoModePropertyCB(QStatus status, ProxyBusObject* obj, void* context)
+{
+    if (!obj) {
+        return;
+    }
+    m_interfaceListener.OnResponseSetVerticalAutoMode(status, obj->GetPath(), context);
 }
 
 

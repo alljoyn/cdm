@@ -60,6 +60,26 @@ QStatus AirRecirculationModeIntfControllerImpl::Init()
     return status;
 }
 
+QStatus AirRecirculationModeIntfControllerImpl::GetIsRecirculating(void* context)
+{
+    QStatus status = ER_OK;
+
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_IsRecirculating.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&AirRecirculationModeIntfControllerImpl::GetIsRecirculatingPropertyCB, context);
+
+    return status;
+}
+
+QStatus AirRecirculationModeIntfControllerImpl::SetIsRecirculating(const bool isRecirculating, void* context)
+{
+    QStatus status = ER_OK;
+
+    MsgArg arg;
+    arg.Set("b", isRecirculating);
+    status = m_proxyObject.SetPropertyAsync(GetInterfaceName().c_str(), s_prop_IsRecirculating.c_str(), arg, this, (ProxyBusObject::Listener::SetPropertyCB)&AirRecirculationModeIntfControllerImpl::SetIsRecirculatingPropertyCB, context);
+
+    return status;
+}
+
 void AirRecirculationModeIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
 {
     MsgArg* entries;
@@ -81,35 +101,6 @@ void AirRecirculationModeIntfControllerImpl::PropertiesChanged(ProxyBusObject& o
     }
 }
 
-QStatus AirRecirculationModeIntfControllerImpl::SetIsRecirculating(const bool isRecirculating, void* context)
-{
-    QStatus status = ER_OK;
-
-    MsgArg arg;
-    arg.Set("b", isRecirculating);
-    status = m_proxyObject.SetPropertyAsync(GetInterfaceName().c_str(), s_prop_IsRecirculating.c_str(), arg, this, (ProxyBusObject::Listener::SetPropertyCB)&AirRecirculationModeIntfControllerImpl::SetIsRecirculatingPropertyCB, context);
-
-    return status;
-}
-
-QStatus AirRecirculationModeIntfControllerImpl::GetIsRecirculating(void* context)
-{
-    QStatus status = ER_OK;
-
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_IsRecirculating.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&AirRecirculationModeIntfControllerImpl::GetIsRecirculatingPropertyCB, context);
-
-    return status;
-}
-
-void AirRecirculationModeIntfControllerImpl::SetIsRecirculatingPropertyCB(QStatus status, ProxyBusObject* obj, void* context)
-{
-    if(!obj) {
-        return;
-    }
-
-    m_interfaceListener.OnResponseSetIsRecirculating(status, obj->GetPath(), context);
-}
-
 void AirRecirculationModeIntfControllerImpl::GetIsRecirculatingPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
     if (!obj) {
@@ -120,6 +111,15 @@ void AirRecirculationModeIntfControllerImpl::GetIsRecirculatingPropertyCB(QStatu
     value.Get("b", &isRecirculating);
 
     m_interfaceListener.OnResponseGetIsRecirculating(status, obj->GetPath(), isRecirculating, context);
+}
+
+void AirRecirculationModeIntfControllerImpl::SetIsRecirculatingPropertyCB(QStatus status, ProxyBusObject* obj, void* context)
+{
+    if(!obj) {
+        return;
+    }
+
+    m_interfaceListener.OnResponseSetIsRecirculating(status, obj->GetPath(), context);
 }
 
 } //namespace services

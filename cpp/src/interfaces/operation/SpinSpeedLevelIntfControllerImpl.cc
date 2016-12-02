@@ -60,6 +60,42 @@ QStatus SpinSpeedLevelIntfControllerImpl::Init()
     return status;
 }
 
+QStatus SpinSpeedLevelIntfControllerImpl::GetMaxLevel(void* context)
+{
+    QStatus status = ER_OK;
+
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_MaxLevel.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&SpinSpeedLevelIntfControllerImpl::GetMaxLevelPropertyCB,context);
+
+    return status;
+}
+QStatus SpinSpeedLevelIntfControllerImpl::GetTargetLevel(void* context)
+{
+    QStatus status = ER_OK;
+
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_TargetLevel.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&SpinSpeedLevelIntfControllerImpl::GetTargetLevelPropertyCB,context);
+
+    return status;
+}
+
+QStatus SpinSpeedLevelIntfControllerImpl::SetTargetLevel(const uint8_t targetLevel, void* context)
+{
+    QStatus status = ER_OK;
+
+    MsgArg arg;
+    arg.Set("y", targetLevel);
+
+    status = m_proxyObject.SetPropertyAsync(GetInterfaceName().c_str(), s_prop_TargetLevel.c_str(), arg, this, (ProxyBusObject::Listener::SetPropertyCB)&SpinSpeedLevelIntfControllerImpl::SetTargetLevelPropertyCB,context);
+
+    return status;
+}
+QStatus SpinSpeedLevelIntfControllerImpl::GetSelectableLevels(void* context)
+{
+    QStatus status = ER_OK;
+
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_SelectableLevels.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&SpinSpeedLevelIntfControllerImpl::GetSelectableLevelsPropertyCB,context);
+
+    return status;
+}
 void SpinSpeedLevelIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
 {
     MsgArg* entries;
@@ -95,42 +131,6 @@ void SpinSpeedLevelIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, co
             m_interfaceListener.OnSelectableLevelsChanged(obj.GetPath(), levels);
         }
     }
-}
-QStatus SpinSpeedLevelIntfControllerImpl::GetMaxLevel(void* context)
-{
-    QStatus status = ER_OK;
-
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_MaxLevel.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&SpinSpeedLevelIntfControllerImpl::GetMaxLevelPropertyCB,context);
-
-    return status;
-}
-
-QStatus SpinSpeedLevelIntfControllerImpl::GetTargetLevel(void* context)
-{
-    QStatus status = ER_OK;
-
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_TargetLevel.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&SpinSpeedLevelIntfControllerImpl::GetTargetLevelPropertyCB,context);
-
-    return status;
-}
-QStatus SpinSpeedLevelIntfControllerImpl::SetTargetLevel(const uint8_t targetLevel, void* context)
-{
-    QStatus status = ER_OK;
-
-    MsgArg arg;
-    arg.Set("y", targetLevel);
-
-    status = m_proxyObject.SetPropertyAsync(GetInterfaceName().c_str(), s_prop_TargetLevel.c_str(), arg, this, (ProxyBusObject::Listener::SetPropertyCB)&SpinSpeedLevelIntfControllerImpl::SetTargetLevelPropertyCB,context);
-
-    return status;
-}
-QStatus SpinSpeedLevelIntfControllerImpl::GetSelectableLevels(void* context)
-{
-    QStatus status = ER_OK;
-
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_SelectableLevels.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&SpinSpeedLevelIntfControllerImpl::GetSelectableLevelsPropertyCB,context);
-
-    return status;
 }
 
 void SpinSpeedLevelIntfControllerImpl::GetMaxLevelPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)

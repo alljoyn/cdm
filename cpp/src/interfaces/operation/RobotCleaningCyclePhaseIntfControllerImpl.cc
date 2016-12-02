@@ -60,6 +60,36 @@ QStatus RobotCleaningCyclePhaseIntfControllerImpl::Init()
     return status;
 }
 
+QStatus RobotCleaningCyclePhaseIntfControllerImpl::GetCyclePhase(void* context)
+{
+    QStatus status = ER_OK;
+
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_CyclePhase.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&RobotCleaningCyclePhaseIntfControllerImpl::GetCyclePhasePropertyCB, context);
+
+    return status;
+}
+
+QStatus RobotCleaningCyclePhaseIntfControllerImpl::GetSupportedCyclePhases(void* context)
+{
+    QStatus status = ER_OK;
+
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_SupportedCyclePhases.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&RobotCleaningCyclePhaseIntfControllerImpl::GetSupportedCyclePhasesPropertyCB, context);
+
+    return status;
+}
+
+QStatus RobotCleaningCyclePhaseIntfControllerImpl::GetVendorPhasesDescription(const qcc::String& languageTag, void* context)
+{
+    QStatus status = ER_OK;
+
+    MsgArg args[1];
+    args[0].Set("s", languageTag.c_str());
+
+    status = m_proxyObject.MethodCallAsync(GetInterfaceName().c_str(), s_method_GetVendorPhasesDescription.c_str(), this, (MessageReceiver::ReplyHandler)&RobotCleaningCyclePhaseIntfControllerImpl::GetVendorPhasesDescriptionReplyHandler, args, 1, context);
+
+    return status;
+}
+
 void RobotCleaningCyclePhaseIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
 {
     MsgArg* entries;
@@ -93,36 +123,6 @@ void RobotCleaningCyclePhaseIntfControllerImpl::PropertiesChanged(ProxyBusObject
             }
         }
     }
-}
-
-QStatus RobotCleaningCyclePhaseIntfControllerImpl::GetCyclePhase(void* context)
-{
-    QStatus status = ER_OK;
-
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_CyclePhase.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&RobotCleaningCyclePhaseIntfControllerImpl::GetCyclePhasePropertyCB, context);
-
-    return status;
-}
-
-QStatus RobotCleaningCyclePhaseIntfControllerImpl::GetSupportedCyclePhases(void* context)
-{
-    QStatus status = ER_OK;
-
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_SupportedCyclePhases.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&RobotCleaningCyclePhaseIntfControllerImpl::GetSupportedCyclePhasesPropertyCB, context);
-
-    return status;
-}
-
-QStatus RobotCleaningCyclePhaseIntfControllerImpl::GetVendorPhasesDescription(const qcc::String& languageTag, void* context)
-{
-    QStatus status = ER_OK;
-
-    MsgArg args[1];
-    args[0].Set("s", languageTag.c_str());
-
-    status = m_proxyObject.MethodCallAsync(GetInterfaceName().c_str(), s_method_GetVendorPhasesDescription.c_str(), this, (MessageReceiver::ReplyHandler)&RobotCleaningCyclePhaseIntfControllerImpl::GetVendorPhasesDescriptionReplyHandler, args, 1, context);
-
-    return status;
 }
 
 void RobotCleaningCyclePhaseIntfControllerImpl::GetCyclePhasePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)

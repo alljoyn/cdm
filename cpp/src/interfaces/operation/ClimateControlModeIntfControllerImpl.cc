@@ -138,15 +138,6 @@ void ClimateControlModeIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj
     }
 }
 
-void ClimateControlModeIntfControllerImpl::SetModePropertyCB(QStatus status, ProxyBusObject* obj, void* context)
-{
-    if (!obj) {
-        return;
-    }
-
-    m_interfaceListener.OnResponseSetMode(status, obj->GetPath(), context);
-}
-
 void ClimateControlModeIntfControllerImpl::GetModePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
     if (!obj) {
@@ -156,6 +147,15 @@ void ClimateControlModeIntfControllerImpl::GetModePropertyCB(QStatus status, Pro
     uint16_t val;
     value.Get("q", &val);
     m_interfaceListener.OnResponseGetMode(status, obj->GetPath(), (Mode)val, context);
+}
+
+void ClimateControlModeIntfControllerImpl::SetModePropertyCB(QStatus status, ProxyBusObject* obj, void* context)
+{
+    if (!obj) {
+        return;
+    }
+
+    m_interfaceListener.OnResponseSetMode(status, obj->GetPath(), context);
 }
 
 void ClimateControlModeIntfControllerImpl::GetSupportedModesPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)

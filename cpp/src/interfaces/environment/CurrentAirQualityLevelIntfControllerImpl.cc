@@ -60,6 +60,27 @@ QStatus CurrentAirQualityLevelIntfControllerImpl::Init()
     return status;
 }
 
+QStatus CurrentAirQualityLevelIntfControllerImpl::GetContaminantType(void* context)
+{
+    QStatus status = ER_OK;
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_ContaminantType.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&CurrentAirQualityLevelIntfControllerImpl::GetContaminantTypePropertyCB, context);
+    return status;
+}
+
+QStatus CurrentAirQualityLevelIntfControllerImpl::GetCurrentLevel(void* context)
+{
+    QStatus status = ER_OK;
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_CurrentLevel.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&CurrentAirQualityLevelIntfControllerImpl::GetCurrentLevelPropertyCB, context);
+    return status;
+}
+
+QStatus CurrentAirQualityLevelIntfControllerImpl::GetMaxLevel(void* context)
+{
+    QStatus status = ER_OK;
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_MaxLevel.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&CurrentAirQualityLevelIntfControllerImpl::GetMaxLevelPropertyCB, context);
+    return status;
+}
+
 void CurrentAirQualityLevelIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
 {
     MsgArg* entries;
@@ -121,27 +142,6 @@ void CurrentAirQualityLevelIntfControllerImpl::GetMaxLevelPropertyCB(QStatus sta
     uint8_t val;
     value.Get("y", &val);
     m_interfaceListener.OnResponseGetMaxLevel(status, obj->GetPath(), val, context);
-}
-
-QStatus CurrentAirQualityLevelIntfControllerImpl::GetContaminantType(void* context)
-{
-    QStatus status = ER_OK;
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_ContaminantType.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&CurrentAirQualityLevelIntfControllerImpl::GetContaminantTypePropertyCB, context);
-    return status;
-}
-
-QStatus CurrentAirQualityLevelIntfControllerImpl::GetCurrentLevel(void* context)
-{
-    QStatus status = ER_OK;
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_CurrentLevel.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&CurrentAirQualityLevelIntfControllerImpl::GetCurrentLevelPropertyCB, context);
-    return status;
-}
-
-QStatus CurrentAirQualityLevelIntfControllerImpl::GetMaxLevel(void* context)
-{
-    QStatus status = ER_OK;
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_MaxLevel.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&CurrentAirQualityLevelIntfControllerImpl::GetMaxLevelPropertyCB, context);
-    return status;
 }
 
 } //namespace services

@@ -22,7 +22,6 @@ namespace services {
 
 const uint16_t {{Interface.Name}}Interface::s_interfaceVersion = 1;
 
-// Below none secure xml is only for test
 const qcc::String {{Interface.Name}}Interface::s_xml =
 {{Interface.XML}}
 ;
@@ -30,11 +29,9 @@ const qcc::String {{Interface.Name}}Interface::s_xml =
 {% for property in Interface.Properties %}
 const qcc::String {{Interface.Name}}Interface::s_prop_{{property.Name}} = "{{property.Name}}";
 {% endfor %}
-
 {% for method in Interface.Methods %}
 const qcc::String {{Interface.Name}}Interface::s_method_{{method.Name}} = "{{method.Name}}";
 {% endfor %}
-
 {% for signal in Interface.Signals %}
 const qcc::String {{Interface.Name}}Interface::s_signal_{{signal.Name}} = "{{signal.Name}}";
 {% endfor %}

@@ -22,7 +22,6 @@ namespace services {
 
 const uint16_t WaterLevelInterface::s_interfaceVersion = 1;
 
-// Below none secure xml is only for test
 const qcc::String WaterLevelInterface::s_xml =
 "<node xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns='http://www.allseenalliance.org/schemas/introspect' xsi:schemaLocation='http://www.allseenalliance.org/schemas/introspect.xsd'>"
 "    <interface name='org.alljoyn.SmartSpaces.Environment.WaterLevel'>"
@@ -50,7 +49,9 @@ const qcc::String WaterLevelInterface::s_xml =
 "            <annotation name='org.freedesktop.DBus.Property.EmitsChangedSignal' value='true'/>"
 "        </property>"
 "    </interface>"
-"</node>";
+"</node>"
+;
+
 const qcc::String WaterLevelInterface::s_prop_Version = "Version";
 const qcc::String WaterLevelInterface::s_prop_SupplySource = "SupplySource";
 const qcc::String WaterLevelInterface::s_prop_CurrentLevel = "CurrentLevel";

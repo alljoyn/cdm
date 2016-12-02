@@ -68,6 +68,12 @@ QStatus OffControlIntfControllerImpl::SwitchOff(void* context)
 
 }
 
+void OffControlIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
+{
+    // This interface doesn't have any property.
+}
+
+
 void OffControlIntfControllerImpl::SwitchOffReplyHandler(Message& message, void* context)
 {
     qcc::String errorMsg;
@@ -75,12 +81,6 @@ void OffControlIntfControllerImpl::SwitchOffReplyHandler(Message& message, void*
     QStatus status = (message->GetType() == MESSAGE_METHOD_RET) ? ER_OK : ER_FAIL;
     m_interfaceListener.OnResponseSwitchOff(status, m_proxyObject.GetPath(),
             context, errorName, errorMsg.c_str());
-}
-
-
-void OffControlIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
-{
-    // This interface doesn't have any property.
 }
 
 } //namespace services

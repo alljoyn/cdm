@@ -60,6 +60,43 @@ QStatus SoilLevelIntfControllerImpl::Init()
     return status;
 }
 
+QStatus SoilLevelIntfControllerImpl::GetMaxLevel(void* context)
+{
+    QStatus status = ER_OK;
+
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_MaxLevel.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&SoilLevelIntfControllerImpl::GetMaxLevelPropertyCB,context);
+
+    return status;
+}
+
+QStatus SoilLevelIntfControllerImpl::GetTargetLevel(void* context)
+{
+    QStatus status = ER_OK;
+
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_TargetLevel.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&SoilLevelIntfControllerImpl::GetTargetLevelPropertyCB,context);
+
+    return status;
+}
+
+QStatus SoilLevelIntfControllerImpl::SetTargetLevel(const uint8_t targetLevel, void* context)
+{
+    QStatus status = ER_OK;
+
+    MsgArg arg;
+    arg.Set("y", targetLevel);
+
+    status = m_proxyObject.SetPropertyAsync(GetInterfaceName().c_str(), s_prop_TargetLevel.c_str(), arg, this, (ProxyBusObject::Listener::SetPropertyCB)&SoilLevelIntfControllerImpl::SetTargetLevelPropertyCB,context);
+
+    return status;
+}
+QStatus SoilLevelIntfControllerImpl::GetSelectableLevels(void* context)
+{
+    QStatus status = ER_OK;
+
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_SelectableLevels.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&SoilLevelIntfControllerImpl::GetSelectableLevelsPropertyCB,context);
+
+    return status;
+}
 void SoilLevelIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
 {
     MsgArg* entries;
@@ -95,43 +132,6 @@ void SoilLevelIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const c
             m_interfaceListener.OnSelectableLevelsChanged(obj.GetPath(), levels);
         }
     }
-}
-
-QStatus SoilLevelIntfControllerImpl::GetMaxLevel(void* context)
-{
-    QStatus status = ER_OK;
-
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_MaxLevel.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&SoilLevelIntfControllerImpl::GetMaxLevelPropertyCB,context);
-
-    return status;
-}
-
-QStatus SoilLevelIntfControllerImpl::GetTargetLevel(void* context)
-{
-    QStatus status = ER_OK;
-
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_TargetLevel.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&SoilLevelIntfControllerImpl::GetTargetLevelPropertyCB,context);
-
-    return status;
-}
-QStatus SoilLevelIntfControllerImpl::SetTargetLevel(const uint8_t targetLevel, void* context)
-{
-    QStatus status = ER_OK;
-
-    MsgArg arg;
-    arg.Set("y", targetLevel);
-
-    status = m_proxyObject.SetPropertyAsync(GetInterfaceName().c_str(), s_prop_TargetLevel.c_str(), arg, this, (ProxyBusObject::Listener::SetPropertyCB)&SoilLevelIntfControllerImpl::SetTargetLevelPropertyCB,context);
-
-    return status;
-}
-QStatus SoilLevelIntfControllerImpl::GetSelectableLevels(void* context)
-{
-    QStatus status = ER_OK;
-
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_SelectableLevels.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&SoilLevelIntfControllerImpl::GetSelectableLevelsPropertyCB,context);
-
-    return status;
 }
 
 void SoilLevelIntfControllerImpl::GetMaxLevelPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)

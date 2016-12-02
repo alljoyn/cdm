@@ -22,7 +22,6 @@ namespace services {
 
 const uint16_t ChannelInterface::s_interfaceVersion = 1;
 
-// Below none secure xml is only for test
 const qcc::String ChannelInterface::s_xml =
 "<node xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='http://www.allseenalliance.org/schemas/introspect.xsd'>"
 "    <interface name='org.alljoyn.SmartSpaces.Operation.Channel'>"
@@ -68,7 +67,6 @@ const qcc::String ChannelInterface::s_prop_ChannelId = "ChannelId";
 const qcc::String ChannelInterface::s_prop_TotalNumberOfChannels = "TotalNumberOfChannels";
 const qcc::String ChannelInterface::s_method_GetChannelList = "GetChannelList";
 const qcc::String ChannelInterface::s_signal_ChannelListChanged = "ChannelListChanged";
-
 
 } //namespace services
 } //namespace ajn

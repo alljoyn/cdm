@@ -61,5 +61,6 @@ const qcc::String DishWashingCyclePhaseInterface::s_prop_CyclePhase = "CyclePhas
 const qcc::String DishWashingCyclePhaseInterface::s_prop_SupportedCyclePhases = "SupportedCyclePhases";
 const qcc::String DishWashingCyclePhaseInterface::s_method_GetVendorPhasesDescription = "GetVendorPhasesDescription";
 const DishWashingCyclePhaseInterface::StandardCyclePhases DishWashingCyclePhaseInterface::m_standardCyclePhases = {DISH_WASHING_PHASE_UNAVAILABLE, DISH_WASHING_PHASE_PRE_WASH, DISH_WASHING_PHASE_WASH, DISH_WASHING_PHASE_RINSE, DISH_WASHING_PHASE_DRY};
+
 } //namespace services
 } //namespace ajn

@@ -69,6 +69,11 @@ QStatus OnControlIntfControllerImpl::SwitchOn(void* context)
 
 }
 
+void OnControlIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
+{
+    // This interface doesn't have any property.
+}
+
 void OnControlIntfControllerImpl::SwitchOnReplyHandler(Message& message, void* context)
 {
     qcc::String errorMsg;
@@ -76,11 +81,6 @@ void OnControlIntfControllerImpl::SwitchOnReplyHandler(Message& message, void* c
     QStatus status = (message->GetType() == MESSAGE_METHOD_RET) ? ER_OK : ER_FAIL;
     m_interfaceListener.OnResponseSwitchOn(status, m_proxyObject.GetPath(),
             context, errorName, errorMsg.c_str());
-}
-
-void OnControlIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
-{
-    // This interface doesn't have any property.
 }
 
 } //namespace services

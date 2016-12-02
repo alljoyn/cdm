@@ -60,42 +60,6 @@ QStatus FilterStatusIntfControllerImpl::Init()
     return status;
 }
 
-void FilterStatusIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
-{
-    MsgArg* entries;
-    size_t numEntries;
-
-    changed.Get("a{sv}", &numEntries, &entries);
-    for (size_t i = 0; i < numEntries; ++i) {
-        const char* propName;
-        MsgArg* propValue;
-        entries[i].Get("{sv}", &propName, &propValue);
-        String propNameStr(propName);
-
-        if (!s_prop_ExpectedLifeInDays.compare(propNameStr)) {
-            if (propValue->typeId == ALLJOYN_UINT16) {
-                uint16_t value = propValue->v_uint16;
-                m_interfaceListener.OnExpectedLifeInDaysChanged(obj.GetPath(), value);
-            }
-        } else if (!s_prop_IsCleanable.compare(propNameStr)) {
-            if (propValue->typeId == ALLJOYN_BOOLEAN) {
-                bool isCleanable = propValue->v_bool;
-                m_interfaceListener.OnIsCleanableChanged(obj.GetPath(), isCleanable);
-            }
-        } else if (!s_prop_OrderPercentage.compare(propNameStr)) {
-            if (propValue->typeId == ALLJOYN_BYTE) {
-                uint8_t value = propValue->v_byte;
-                m_interfaceListener.OnOrderPercentageChanged(obj.GetPath(), value);
-            }
-        } else if (!s_prop_LifeRemaining.compare(propNameStr)) {
-            if (propValue->typeId == ALLJOYN_BYTE) {
-                uint8_t value = propValue->v_byte;
-                m_interfaceListener.OnLifeRemainingChanged(obj.GetPath(), value);
-            }
-        }
-    }
-}
-
 QStatus FilterStatusIntfControllerImpl::GetExpectedLifeInDays(void* context)
 {
     QStatus status = ER_OK;
@@ -143,6 +107,42 @@ QStatus FilterStatusIntfControllerImpl::GetLifeRemaining(void* context)
     QStatus status = ER_OK;
     status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_LifeRemaining.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&FilterStatusIntfControllerImpl::GetLifeRemainingPropertyCB, context);
     return status;
+}
+
+void FilterStatusIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
+{
+    MsgArg* entries;
+    size_t numEntries;
+
+    changed.Get("a{sv}", &numEntries, &entries);
+    for (size_t i = 0; i < numEntries; ++i) {
+        const char* propName;
+        MsgArg* propValue;
+        entries[i].Get("{sv}", &propName, &propValue);
+        String propNameStr(propName);
+
+        if (!s_prop_ExpectedLifeInDays.compare(propNameStr)) {
+            if (propValue->typeId == ALLJOYN_UINT16) {
+                uint16_t value = propValue->v_uint16;
+                m_interfaceListener.OnExpectedLifeInDaysChanged(obj.GetPath(), value);
+            }
+        } else if (!s_prop_IsCleanable.compare(propNameStr)) {
+            if (propValue->typeId == ALLJOYN_BOOLEAN) {
+                bool isCleanable = propValue->v_bool;
+                m_interfaceListener.OnIsCleanableChanged(obj.GetPath(), isCleanable);
+            }
+        } else if (!s_prop_OrderPercentage.compare(propNameStr)) {
+            if (propValue->typeId == ALLJOYN_BYTE) {
+                uint8_t value = propValue->v_byte;
+                m_interfaceListener.OnOrderPercentageChanged(obj.GetPath(), value);
+            }
+        } else if (!s_prop_LifeRemaining.compare(propNameStr)) {
+            if (propValue->typeId == ALLJOYN_BYTE) {
+                uint8_t value = propValue->v_byte;
+                m_interfaceListener.OnLifeRemainingChanged(obj.GetPath(), value);
+            }
+        }
+    }
 }
 
 void FilterStatusIntfControllerImpl::GetExpectedLifeInDaysPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)

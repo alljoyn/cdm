@@ -60,6 +60,24 @@ QStatus BatteryStatusIntfControllerImpl::Init()
     return status;
 }
 
+QStatus BatteryStatusIntfControllerImpl::GetCurrentValue(void* context)
+{
+    QStatus status = ER_OK;
+
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_CurrentValue.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&BatteryStatusIntfControllerImpl::GetCurrentValuePropertyCB, context);
+
+    return status;
+}
+
+QStatus BatteryStatusIntfControllerImpl::GetIsCharging(void* context)
+{
+    QStatus status = ER_OK;
+
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_IsCharging.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&BatteryStatusIntfControllerImpl::GetIsChargingPropertyCB, context);
+
+    return status;
+}
+
 void BatteryStatusIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
 {
     MsgArg* entries;
@@ -84,24 +102,6 @@ void BatteryStatusIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, con
             }
         }
     }
-}
-
-QStatus BatteryStatusIntfControllerImpl::GetCurrentValue(void* context)
-{
-    QStatus status = ER_OK;
-
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_CurrentValue.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&BatteryStatusIntfControllerImpl::GetCurrentValuePropertyCB, context);
-
-    return status;
-}
-
-QStatus BatteryStatusIntfControllerImpl::GetIsCharging(void* context)
-{
-    QStatus status = ER_OK;
-
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_IsCharging.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&BatteryStatusIntfControllerImpl::GetIsChargingPropertyCB, context);
-
-    return status;
 }
 
 void BatteryStatusIntfControllerImpl::GetCurrentValuePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)

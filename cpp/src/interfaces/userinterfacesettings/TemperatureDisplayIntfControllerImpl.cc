@@ -60,6 +60,35 @@ QStatus TemperatureDisplayIntfControllerImpl::Init()
     return status;
 }
 
+QStatus TemperatureDisplayIntfControllerImpl::GetDisplayTemperatureUnit(void* context)
+{
+    QStatus status = ER_OK;
+
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_DisplayTemperatureUnit.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&TemperatureDisplayIntfControllerImpl::GetDisplayTemperatureUnitPropertyCB,context);
+
+    return status;
+
+}
+
+QStatus TemperatureDisplayIntfControllerImpl::SetDisplayTemperatureUnit(const uint8_t temperatureUnit, void* context)
+{
+    QStatus status = ER_OK;
+
+    MsgArg arg;
+    arg.Set("y", temperatureUnit);
+
+    status = m_proxyObject.SetPropertyAsync(GetInterfaceName().c_str(), s_prop_DisplayTemperatureUnit.c_str(), arg, this, (ProxyBusObject::Listener::SetPropertyCB)&TemperatureDisplayIntfControllerImpl::SetDisplayTemperatureUnitPropertyCB,context);
+
+    return status;
+}
+QStatus TemperatureDisplayIntfControllerImpl::GetSupportedDisplayTemperatureUnits(void* context)
+{
+    QStatus status = ER_OK;
+
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_SupportedDisplayTemperatureUnits.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&TemperatureDisplayIntfControllerImpl::GetSupportedDisplayTemperatureUnitsPropertyCB,context);
+
+    return status;
+}
 void TemperatureDisplayIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
 {
     MsgArg* entries;
@@ -90,35 +119,6 @@ void TemperatureDisplayIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj
             m_interfaceListener.OnSupportedDisplayTemperatureUnitsChanged(obj.GetPath(), supportedTemperatureUnits);
         }
     }
-}
-
-QStatus TemperatureDisplayIntfControllerImpl::GetDisplayTemperatureUnit(void* context)
-{
-    QStatus status = ER_OK;
-
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_DisplayTemperatureUnit.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&TemperatureDisplayIntfControllerImpl::GetDisplayTemperatureUnitPropertyCB,context);
-
-    return status;
-
-}
-QStatus TemperatureDisplayIntfControllerImpl::SetDisplayTemperatureUnit(const uint8_t temperatureUnit, void* context)
-{
-    QStatus status = ER_OK;
-
-    MsgArg arg;
-    arg.Set("y", temperatureUnit);
-
-    status = m_proxyObject.SetPropertyAsync(GetInterfaceName().c_str(), s_prop_DisplayTemperatureUnit.c_str(), arg, this, (ProxyBusObject::Listener::SetPropertyCB)&TemperatureDisplayIntfControllerImpl::SetDisplayTemperatureUnitPropertyCB,context);
-
-    return status;
-}
-QStatus TemperatureDisplayIntfControllerImpl::GetSupportedDisplayTemperatureUnits(void* context)
-{
-    QStatus status = ER_OK;
-
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_SupportedDisplayTemperatureUnits.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&TemperatureDisplayIntfControllerImpl::GetSupportedDisplayTemperatureUnitsPropertyCB,context);
-
-    return status;
 }
 
 void TemperatureDisplayIntfControllerImpl::GetDisplayTemperatureUnitPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)

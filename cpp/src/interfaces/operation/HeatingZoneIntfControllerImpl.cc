@@ -60,6 +60,33 @@ QStatus HeatingZoneIntfControllerImpl::Init()
     return status;
 }
 
+QStatus HeatingZoneIntfControllerImpl::GetNumberOfHeatingZones(void* context)
+{
+    QStatus status = ER_OK;
+
+    m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_NumberOfHeatingZones.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&HeatingZoneIntfControllerImpl::GetNumberOfHeatingZonesPropertyCB, context);
+
+    return status;
+}
+
+QStatus HeatingZoneIntfControllerImpl::GetMaxHeatingLevels(void* context )
+{
+    QStatus status = ER_OK;
+
+    m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_MaxHeatingLevels.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&HeatingZoneIntfControllerImpl::GetMaxHeatingLevelsPropertyCB, context);
+
+    return status;
+}
+
+QStatus HeatingZoneIntfControllerImpl::GetHeatingLevels(void* context)
+{
+    QStatus status = ER_OK;
+
+    m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_HeatingLevels.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&HeatingZoneIntfControllerImpl::GetHeatingLevelsPropertyCB, context);
+
+    return status;
+}
+
 void HeatingZoneIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
 {
     MsgArg* entries;
@@ -103,33 +130,6 @@ void HeatingZoneIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const
             }
         }
     }
-}
-
-QStatus HeatingZoneIntfControllerImpl::GetNumberOfHeatingZones(void* context)
-{
-    QStatus status = ER_OK;
-
-    m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_NumberOfHeatingZones.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&HeatingZoneIntfControllerImpl::GetNumberOfHeatingZonesPropertyCB, context);
-
-    return status;
-}
-
-QStatus HeatingZoneIntfControllerImpl::GetMaxHeatingLevels(void* context )
-{
-    QStatus status = ER_OK;
-
-    m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_MaxHeatingLevels.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&HeatingZoneIntfControllerImpl::GetMaxHeatingLevelsPropertyCB, context);
-
-    return status;
-}
-
-QStatus HeatingZoneIntfControllerImpl::GetHeatingLevels(void* context)
-{
-    QStatus status = ER_OK;
-
-    m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_HeatingLevels.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&HeatingZoneIntfControllerImpl::GetHeatingLevelsPropertyCB, context);
-
-    return status;
 }
 
 void HeatingZoneIntfControllerImpl::GetNumberOfHeatingZonesPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)

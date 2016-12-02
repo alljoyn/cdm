@@ -128,15 +128,6 @@ void HvacFanModeIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const
     }
 }
 
-void HvacFanModeIntfControllerImpl::SetModePropertyCB(QStatus status, ProxyBusObject* obj, void* context)
-{
-    if (!obj) {
-        return;
-    }
-
-    m_interfaceListener.OnResponseSetMode(status, obj->GetPath(), context);
-}
-
 void HvacFanModeIntfControllerImpl::GetModePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
     if (!obj) {
@@ -146,6 +137,15 @@ void HvacFanModeIntfControllerImpl::GetModePropertyCB(QStatus status, ProxyBusOb
     uint16_t val;
     value.Get("q", &val);
     m_interfaceListener.OnResponseGetMode(status, obj->GetPath(), (Mode)val, context);
+}
+
+void HvacFanModeIntfControllerImpl::SetModePropertyCB(QStatus status, ProxyBusObject* obj, void* context)
+{
+    if (!obj) {
+        return;
+    }
+
+    m_interfaceListener.OnResponseSetMode(status, obj->GetPath(), context);
 }
 
 void HvacFanModeIntfControllerImpl::GetSupportedModesPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)

@@ -60,6 +60,49 @@ QStatus CurrentAirQualityIntfControllerImpl::Init()
     return status;
 }
 
+QStatus CurrentAirQualityIntfControllerImpl::GetContaminantType(void* context)
+{
+    QStatus status = ER_OK;
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_ContaminantType.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&CurrentAirQualityIntfControllerImpl::GetContaminantTypePropertyCB, context);
+    return status;
+}
+
+QStatus CurrentAirQualityIntfControllerImpl::GetCurrentValue(void* context)
+{
+    QStatus status = ER_OK;
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_CurrentValue.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&CurrentAirQualityIntfControllerImpl::GetCurrentValuePropertyCB, context);
+    return status;
+}
+
+QStatus CurrentAirQualityIntfControllerImpl::GetMinValue(void* context)
+{
+    QStatus status = ER_OK;
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_MinValue.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&CurrentAirQualityIntfControllerImpl::GetMinValuePropertyCB, context);
+    return status;
+}
+
+QStatus CurrentAirQualityIntfControllerImpl::GetMaxValue(void* context)
+{
+    QStatus status = ER_OK;
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_MaxValue.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&CurrentAirQualityIntfControllerImpl::GetMaxValuePropertyCB, context);
+    return status;
+}
+
+QStatus CurrentAirQualityIntfControllerImpl::GetPrecision(void* context)
+{
+    QStatus status = ER_OK;
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_Precision.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&CurrentAirQualityIntfControllerImpl::GetPrecisionPropertyCB, context);
+    return status;
+}
+
+
+QStatus CurrentAirQualityIntfControllerImpl::GetUpdateMinTime(void* context)
+{
+    QStatus status = ER_OK;
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_UpdateMinTime.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&CurrentAirQualityIntfControllerImpl::GetUpdateMinTimePropertyCB, context);
+    return status;
+}
+
 void CurrentAirQualityIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
 {
     MsgArg* entries;
@@ -129,16 +172,6 @@ void CurrentAirQualityIntfControllerImpl::GetCurrentValuePropertyCB(QStatus stat
     m_interfaceListener.OnResponseGetCurrentValue(status, obj->GetPath(), val, context);
 }
 
-void CurrentAirQualityIntfControllerImpl::GetMaxValuePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
-{
-    if (!obj) {
-        return;
-    }
-    double val;
-    value.Get("d", &val);
-    m_interfaceListener.OnResponseGetMaxValue(status, obj->GetPath(), val, context);
-}
-
 void CurrentAirQualityIntfControllerImpl::GetMinValuePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
     if (!obj) {
@@ -149,6 +182,15 @@ void CurrentAirQualityIntfControllerImpl::GetMinValuePropertyCB(QStatus status, 
     m_interfaceListener.OnResponseGetMinValue(status, obj->GetPath(), val, context);
 }
 
+void CurrentAirQualityIntfControllerImpl::GetMaxValuePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
+{
+    if (!obj) {
+        return;
+    }
+    double val;
+    value.Get("d", &val);
+    m_interfaceListener.OnResponseGetMaxValue(status, obj->GetPath(), val, context);
+}
 
 void CurrentAirQualityIntfControllerImpl::GetPrecisionPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
@@ -168,48 +210,6 @@ void CurrentAirQualityIntfControllerImpl::GetUpdateMinTimePropertyCB(QStatus sta
     uint16_t val;
     value.Get("q", &val);
     m_interfaceListener.OnResponseGetUpdateMinTime(status, obj->GetPath(), val, context);
-}
-
-QStatus CurrentAirQualityIntfControllerImpl::GetContaminantType(void* context)
-{
-    QStatus status = ER_OK;
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_ContaminantType.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&CurrentAirQualityIntfControllerImpl::GetContaminantTypePropertyCB, context);
-    return status;
-}
-
-QStatus CurrentAirQualityIntfControllerImpl::GetCurrentValue(void* context)
-{
-    QStatus status = ER_OK;
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_CurrentValue.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&CurrentAirQualityIntfControllerImpl::GetCurrentValuePropertyCB, context);
-    return status;
-}
-
-QStatus CurrentAirQualityIntfControllerImpl::GetMaxValue(void* context)
-{
-    QStatus status = ER_OK;
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_MaxValue.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&CurrentAirQualityIntfControllerImpl::GetMaxValuePropertyCB, context);
-    return status;
-}
-
-QStatus CurrentAirQualityIntfControllerImpl::GetMinValue(void* context)
-{
-    QStatus status = ER_OK;
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_MinValue.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&CurrentAirQualityIntfControllerImpl::GetMinValuePropertyCB, context);
-    return status;
-}
-
-QStatus CurrentAirQualityIntfControllerImpl::GetPrecision(void* context)
-{
-    QStatus status = ER_OK;
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_Precision.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&CurrentAirQualityIntfControllerImpl::GetPrecisionPropertyCB, context);
-    return status;
-}
-
-QStatus CurrentAirQualityIntfControllerImpl::GetUpdateMinTime(void* context)
-{
-    QStatus status = ER_OK;
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_UpdateMinTime.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&CurrentAirQualityIntfControllerImpl::GetUpdateMinTimePropertyCB, context);
-    return status;
 }
 
 

@@ -61,6 +61,36 @@ QStatus LanguageDisplayIntfControllerImpl::Init()
     return status;
 }
 
+QStatus LanguageDisplayIntfControllerImpl::GetDisplayLanguage(void* context)
+{
+    QStatus status = ER_OK;
+
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_DisplayLanguage.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&LanguageDisplayIntfControllerImpl::GetDisplayLanguagePropertyCB,context);
+
+    return status;
+
+}
+
+
+QStatus LanguageDisplayIntfControllerImpl::SetDisplayLanguage(const qcc::String& displayLanguage, void* context)
+{
+    QStatus status = ER_OK;
+
+    MsgArg arg;
+    arg.Set("s", displayLanguage.c_str());
+    arg.Stabilize();
+    status = m_proxyObject.SetPropertyAsync(GetInterfaceName().c_str(), s_prop_DisplayLanguage.c_str(), arg, this, (ProxyBusObject::Listener::SetPropertyCB)&LanguageDisplayIntfControllerImpl::SetDisplayLanguagePropertyCB,context);
+
+    return status;
+}
+QStatus LanguageDisplayIntfControllerImpl::GetSupportedDisplayLanguages(void* context)
+{
+    QStatus status = ER_OK;
+
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_SupportedDisplayLanguages.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&LanguageDisplayIntfControllerImpl::GetSupportedDisplayLanguagesPropertyCB,context);
+
+    return status;
+}
 void LanguageDisplayIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
 {
     MsgArg* entries;
@@ -91,36 +121,6 @@ void LanguageDisplayIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, c
             m_interfaceListener.OnSupportedDisplayLanguagesChanged(obj.GetPath(), supportedDisplayLanguages);
         }
     }
-}
-
-
-QStatus LanguageDisplayIntfControllerImpl::GetDisplayLanguage(void* context)
-{
-    QStatus status = ER_OK;
-
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_DisplayLanguage.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&LanguageDisplayIntfControllerImpl::GetDisplayLanguagePropertyCB,context);
-
-    return status;
-
-}
-QStatus LanguageDisplayIntfControllerImpl::SetDisplayLanguage(const qcc::String& displayLanguage, void* context)
-{
-    QStatus status = ER_OK;
-
-    MsgArg arg;
-    arg.Set("s", displayLanguage.c_str());
-    arg.Stabilize();
-    status = m_proxyObject.SetPropertyAsync(GetInterfaceName().c_str(), s_prop_DisplayLanguage.c_str(), arg, this, (ProxyBusObject::Listener::SetPropertyCB)&LanguageDisplayIntfControllerImpl::SetDisplayLanguagePropertyCB,context);
-
-    return status;
-}
-QStatus LanguageDisplayIntfControllerImpl::GetSupportedDisplayLanguages(void* context)
-{
-    QStatus status = ER_OK;
-
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_SupportedDisplayLanguages.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&LanguageDisplayIntfControllerImpl::GetSupportedDisplayLanguagesPropertyCB,context);
-
-    return status;
 }
 
 void LanguageDisplayIntfControllerImpl::GetDisplayLanguagePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)

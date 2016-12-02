@@ -59,6 +59,20 @@ QStatus CurrentHumidityIntfControllerImpl::Init()
     return status;
 }
 
+QStatus CurrentHumidityIntfControllerImpl::GetCurrentValue(void* context)
+{
+    QStatus status = ER_OK;
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_CurrentValue.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&CurrentHumidityIntfControllerImpl::GetCurrentValuePropertyCB, context);
+    return status;
+}
+
+QStatus CurrentHumidityIntfControllerImpl::GetMaxValue(void* context)
+{
+    QStatus status = ER_OK;
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_MaxValue.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&CurrentHumidityIntfControllerImpl::GetMaxValuePropertyCB, context);
+    return status;
+}
+
 void CurrentHumidityIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
 {
     MsgArg* entries;
@@ -103,20 +117,6 @@ void CurrentHumidityIntfControllerImpl::GetMaxValuePropertyCB(QStatus status, Pr
     uint8_t val;
     value.Get("y", &val);
     m_interfaceListener.OnResponseGetMaxValue(status, obj->GetPath(), val, context);
-}
-
-QStatus CurrentHumidityIntfControllerImpl::GetCurrentValue(void* context)
-{
-    QStatus status = ER_OK;
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_CurrentValue.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&CurrentHumidityIntfControllerImpl::GetCurrentValuePropertyCB, context);
-    return status;
-}
-
-QStatus CurrentHumidityIntfControllerImpl::GetMaxValue(void* context)
-{
-    QStatus status = ER_OK;
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_MaxValue.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&CurrentHumidityIntfControllerImpl::GetMaxValuePropertyCB, context);
-    return status;
 }
 
 } //namespace services

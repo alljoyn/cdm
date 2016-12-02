@@ -60,37 +60,6 @@ QStatus EnergyUsageIntfControllerImpl::Init()
     return status;
 }
 
-void EnergyUsageIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
-{
-    MsgArg* entries;
-    size_t numEntries;
-
-    changed.Get("a{sv}", &numEntries, &entries);
-    for (size_t i = 0; i < numEntries; ++i) {
-        const char* propName;
-        MsgArg* propValue;
-        entries[i].Get("{sv}", &propName, &propValue);
-        String propNameStr(propName);
-
-        if (!s_prop_CumulativeEnergy.compare(propNameStr)) {
-            if (propValue->typeId == ALLJOYN_DOUBLE) {
-                double cumulativeEnergy = propValue->v_double;
-                m_interfaceListener.OnCumulativeEnergyChanged(obj.GetPath(), cumulativeEnergy);
-            }
-        } else if (!s_prop_Precision.compare(propNameStr)) {
-            if (propValue->typeId == ALLJOYN_DOUBLE) {
-                double precision = propValue->v_double;
-                m_interfaceListener.OnPrecisionChanged(obj.GetPath(), precision);
-            }
-        } else if (!s_prop_UpdateMinTime.compare(propNameStr)) {
-            if (propValue->typeId == ALLJOYN_UINT16) {
-                uint16_t updateMinTime = propValue->v_uint16;
-                m_interfaceListener.OnUpdateMinTimeChanged(obj.GetPath(), updateMinTime);
-            }
-        }
-    }
-}
-
 QStatus EnergyUsageIntfControllerImpl::GetCumulativeEnergy(void* context)
 {
     QStatus status = ER_OK;
@@ -125,6 +94,37 @@ QStatus EnergyUsageIntfControllerImpl::ResetCumulativeEnergy(void* context)
     status = m_proxyObject.MethodCallAsync(GetInterfaceName().c_str(), s_method_ResetCumulativeEnergy.c_str(), this, (MessageReceiver::ReplyHandler)&EnergyUsageIntfControllerImpl::ResetCumulativeEnergyReplyHandler, NULL, 0, context);
 
     return status;
+}
+
+void EnergyUsageIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
+{
+    MsgArg* entries;
+    size_t numEntries;
+
+    changed.Get("a{sv}", &numEntries, &entries);
+    for (size_t i = 0; i < numEntries; ++i) {
+        const char* propName;
+        MsgArg* propValue;
+        entries[i].Get("{sv}", &propName, &propValue);
+        String propNameStr(propName);
+
+        if (!s_prop_CumulativeEnergy.compare(propNameStr)) {
+            if (propValue->typeId == ALLJOYN_DOUBLE) {
+                double cumulativeEnergy = propValue->v_double;
+                m_interfaceListener.OnCumulativeEnergyChanged(obj.GetPath(), cumulativeEnergy);
+            }
+        } else if (!s_prop_Precision.compare(propNameStr)) {
+            if (propValue->typeId == ALLJOYN_DOUBLE) {
+                double precision = propValue->v_double;
+                m_interfaceListener.OnPrecisionChanged(obj.GetPath(), precision);
+            }
+        } else if (!s_prop_UpdateMinTime.compare(propNameStr)) {
+            if (propValue->typeId == ALLJOYN_UINT16) {
+                uint16_t updateMinTime = propValue->v_uint16;
+                m_interfaceListener.OnUpdateMinTimeChanged(obj.GetPath(), updateMinTime);
+            }
+        }
+    }
 }
 
 void EnergyUsageIntfControllerImpl::GetCumulativeEnergyPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)

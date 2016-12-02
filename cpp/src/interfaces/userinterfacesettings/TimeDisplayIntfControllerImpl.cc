@@ -60,6 +60,34 @@ QStatus TimeDisplayIntfControllerImpl::Init()
     return status;
 }
 
+QStatus TimeDisplayIntfControllerImpl::GetDisplayTimeFormat(void* context)
+{
+    QStatus status = ER_OK;
+
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_DisplayTimeFormat.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&TimeDisplayIntfControllerImpl::GetDisplayTimeFormatPropertyCB,context);
+
+    return status;
+}
+
+QStatus TimeDisplayIntfControllerImpl::SetDisplayTimeFormat(const uint8_t timeFormat, void* context)
+{
+    QStatus status = ER_OK;
+
+    MsgArg arg;
+    arg.Set("y", timeFormat);
+
+    status = m_proxyObject.SetPropertyAsync(GetInterfaceName().c_str(), s_prop_DisplayTimeFormat.c_str(), arg, this, (ProxyBusObject::Listener::SetPropertyCB)&TimeDisplayIntfControllerImpl::SetDisplayTimeFormatPropertyCB,context);
+
+    return status;
+}
+QStatus TimeDisplayIntfControllerImpl::GetSupportedDisplayTimeFormats(void* context)
+{
+    QStatus status = ER_OK;
+
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_SupportedDisplayTimeFormats.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&TimeDisplayIntfControllerImpl::GetSupportedDisplayTimeFormatsPropertyCB,context);
+
+    return status;
+}
 void TimeDisplayIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
 {
     MsgArg* entries;
@@ -90,34 +118,6 @@ void TimeDisplayIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const
             m_interfaceListener.OnSupportedDisplayTimeFormatsChanged(obj.GetPath(), supportedTimeFormats);
         }
     }
-}
-
-QStatus TimeDisplayIntfControllerImpl::GetDisplayTimeFormat(void* context)
-{
-    QStatus status = ER_OK;
-
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_DisplayTimeFormat.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&TimeDisplayIntfControllerImpl::GetDisplayTimeFormatPropertyCB,context);
-
-    return status;
-}
-QStatus TimeDisplayIntfControllerImpl::SetDisplayTimeFormat(const uint8_t timeFormat, void* context)
-{
-    QStatus status = ER_OK;
-
-    MsgArg arg;
-    arg.Set("y", timeFormat);
-
-    status = m_proxyObject.SetPropertyAsync(GetInterfaceName().c_str(), s_prop_DisplayTimeFormat.c_str(), arg, this, (ProxyBusObject::Listener::SetPropertyCB)&TimeDisplayIntfControllerImpl::SetDisplayTimeFormatPropertyCB,context);
-
-    return status;
-}
-QStatus TimeDisplayIntfControllerImpl::GetSupportedDisplayTimeFormats(void* context)
-{
-    QStatus status = ER_OK;
-
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_SupportedDisplayTimeFormats.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&TimeDisplayIntfControllerImpl::GetSupportedDisplayTimeFormatsPropertyCB,context);
-
-    return status;
 }
 
 void TimeDisplayIntfControllerImpl::GetDisplayTimeFormatPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)

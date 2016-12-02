@@ -61,6 +61,14 @@ QStatus RemoteControllabilityIntfControllerImpl::Init()
     return status;
 }
 
+QStatus RemoteControllabilityIntfControllerImpl::GetIsControllable(void* context)
+{
+    QStatus status = ER_OK;
+
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_IsControllable.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&RemoteControllabilityIntfControllerImpl::GetIsControllablePropertyCB, context);
+
+    return status;
+}
 void RemoteControllabilityIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
 {
     MsgArg* entries;
@@ -80,14 +88,6 @@ void RemoteControllabilityIntfControllerImpl::PropertiesChanged(ProxyBusObject& 
             }
         }
     }
-}
-QStatus RemoteControllabilityIntfControllerImpl::GetIsControllable(void* context)
-{
-    QStatus status = ER_OK;
-
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_IsControllable.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&RemoteControllabilityIntfControllerImpl::GetIsControllablePropertyCB, context);
-
-    return status;
 }
 
 void RemoteControllabilityIntfControllerImpl::GetIsControllablePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)

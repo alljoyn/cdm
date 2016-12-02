@@ -18,7 +18,7 @@
 
 #include <alljoyn/cdm/LogModule.h>
 #include <alljoyn/cdm/CdmProxyBusObject.h>
-#include <alljoyn/cdm/interfaces/operation/{{Interface.Name}}IntfControllerListener.h>
+#include <alljoyn/cdm/interfaces/{{Interface.Category}}/{{Interface.Name}}IntfControllerListener.h>
 
 #include "{{Interface.Name}}IntfControllerImpl.h"
 
@@ -30,7 +30,7 @@ namespace services {
 
 CdmInterface* {{Interface.Name}}IntfControllerImpl::CreateInterface(BusAttachment& busAttachment, InterfaceControllerListener& listener, CdmProxyBusObject& cdmProxyObject)
 {
-    return new {{Interface.Name}}IntfControllerImpl(busAttachment, static_cast<{{Interface.Name}}IntfControllerListener&>(listener), cdmProxyObject);
+    return new {{Interface.Name}}IntfControllerImpl(busAttachment, dynamic_cast<{{Interface.Name}}IntfControllerListener&>(listener), cdmProxyObject);
 }
 
 {{Interface.Name}}IntfControllerImpl::{{Interface.Name}}IntfControllerImpl(BusAttachment& busAttachment, {{Interface.Name}}IntfControllerListener& listener, CdmProxyBusObject& cdmProxyObject) :
@@ -59,33 +59,33 @@ QStatus {{Interface.Name}}IntfControllerImpl::Init()
 
     return status;
 }
-
 {% for property in Interface.UserProperties %}
-
-
 
 QStatus {{Interface.Name}}IntfControllerImpl::Get{{property.Name}}(void* context)
 {
     QStatus status = ER_OK;
-
     status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_{{property.Name}}.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&{{Interface.Name}}IntfControllerImpl::Get{{property.Name}}PropertyCB, context);
-
     return status;
 }
-
 {% if property.Writable %}
+
 QStatus {{Interface.Name}}IntfControllerImpl::Set{{property.Name}}(const {{property.Type.ctype_arg()}} value, void* context)
 {
     QStatus status = ER_OK;
-
     MsgArg arg;
     arg.Set("{{property.Type}}", value);
     status = m_proxyObject.SetPropertyAsync(GetInterfaceName().c_str(), s_prop_{{property.Name}}.c_str(), arg, this, (ProxyBusObject::Listener::SetPropertyCB)&{{Interface.Name}}IntfControllerImpl::Set{{property.Name}}PropertyCB, context);
-
     return status;
 }
 {% endif %}
+{% endfor %}
+{% for method in Interface.Methods %}
 
+QStatus {{Interface.Name}}IntfControllerImpl::{{method.Name}}({% for arg in method.input_args() %}const {{arg.Type.ctype_arg()}} {{arg.Name.camel_case()}}, {% endfor %}void* context)
+{
+
+
+}
 {% endfor %}
 
 void {{Interface.Name}}IntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
@@ -100,31 +100,28 @@ void {{Interface.Name}}IntfControllerImpl::PropertiesChanged(ProxyBusObject& obj
         entries[i].Get("{sv}", &propName, &propValue);
         String propNameStr(propName);
 
-        {% for property in Interface.UserProperties %}
-        if (!s_prop_{{property.Name}}.compare(propNameStr)) {
+        {%+ for property in Interface.UserProperties %}if (!s_prop_{{property.Name}}.compare(propNameStr)) {
             if (propValue->typeId == {{property.Type.ajtypeid()}}) {
                 m_interfaceListener.On{{property.Name}}Changed(obj.GetPath(), propValue->{{property.Type.ajvar()}});
             }
-        } else{% endfor %} {
+        } else {% endfor %}{
             QCC_DbgTrace(("Unknown property change signal received"));
         }
     }
 }
-
 {% for property in Interface.UserProperties %}
-void {{Interface.Name}}IntfControllerImpl::Get{{property.Name}}PropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& msgarg, void* context)
+
+void {{Interface.Name}}IntfControllerImpl::Get{{property.Name}}PropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
     if (!obj) {
         return;
     }
-
-    {{property.Type.ctype()}} value;
-    msgarg.Get("{{property.Type}}", &value);
-
-    m_interfaceListener.OnResponseGet{{property.Name}}(status, obj->GetPath(), value, context);
+    {{property.Type.ctype()}} val;
+    value.Get("{{property.Type}}", &val);
+    m_interfaceListener.OnResponseGet{{property.Name}}(status, obj->GetPath(), val, context);
 }
-
 {% if property.Writable %}
+
 void {{Interface.Name}}IntfControllerImpl::Set{{property.Name}}PropertyCB(QStatus status, ProxyBusObject* obj, void* context)
 {
     if(!obj) {
@@ -133,11 +130,7 @@ void {{Interface.Name}}IntfControllerImpl::Set{{property.Name}}PropertyCB(QStatu
 
     m_interfaceListener.OnResponseSet{{property.Name}}(status, obj->GetPath(), context);
 }
-
 {% endif %}
 {% endfor %}
-
-
-
 } //namespace services
 } //namespace ajn

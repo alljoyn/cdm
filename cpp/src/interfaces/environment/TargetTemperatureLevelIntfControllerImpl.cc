@@ -59,6 +59,36 @@ QStatus TargetTemperatureLevelIntfControllerImpl::Init()
     return status;
 }
 
+QStatus TargetTemperatureLevelIntfControllerImpl::GetMaxLevel(void* context)
+{
+    QStatus status = ER_OK;
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_MaxLevel.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&TargetTemperatureLevelIntfControllerImpl::GetMaxLevelPropertyCB, context);
+    return status;
+}
+
+QStatus TargetTemperatureLevelIntfControllerImpl::GetTargetLevel(void* context)
+{
+    QStatus status = ER_OK;
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_TargetLevel.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&TargetTemperatureLevelIntfControllerImpl::GetTargetLevelPropertyCB, context);
+    return status;
+}
+
+QStatus TargetTemperatureLevelIntfControllerImpl::SetTargetLevel(const uint8_t value, void* context)
+{
+    QStatus status = ER_OK;
+    MsgArg arg;
+    arg.Set("y", value);
+    status = m_proxyObject.SetPropertyAsync(GetInterfaceName().c_str(), s_prop_TargetLevel.c_str(), arg, this, (ProxyBusObject::Listener::SetPropertyCB)&TargetTemperatureLevelIntfControllerImpl::SetTargetLevelPropertyCB, context);
+    return status;
+}
+
+QStatus TargetTemperatureLevelIntfControllerImpl::GetSelectableTemperatureLevels(void* context)
+{
+    QStatus status = ER_OK;
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_SelectableTemperatureLevels.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&TargetTemperatureLevelIntfControllerImpl::GetSelectableTemperatureLevelsPropertyCB, context);
+    return status;
+}
+
 void TargetTemperatureLevelIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
 {
     MsgArg* entries;
@@ -96,42 +126,14 @@ void TargetTemperatureLevelIntfControllerImpl::PropertiesChanged(ProxyBusObject&
     }
 }
 
-QStatus TargetTemperatureLevelIntfControllerImpl::GetTargetLevel(void* context)
-{
-    QStatus status = ER_OK;
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_TargetLevel.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&TargetTemperatureLevelIntfControllerImpl::GetTargetLevelPropertyCB, context);
-    return status;
-}
-
-QStatus TargetTemperatureLevelIntfControllerImpl::SetTargetLevel(const uint8_t value, void* context)
-{
-    QStatus status = ER_OK;
-    MsgArg arg;
-    arg.Set("y", value);
-    status = m_proxyObject.SetPropertyAsync(GetInterfaceName().c_str(), s_prop_TargetLevel.c_str(), arg, this, (ProxyBusObject::Listener::SetPropertyCB)&TargetTemperatureLevelIntfControllerImpl::SetTargetLevelPropertyCB, context);
-    return status;
-}
-
-QStatus TargetTemperatureLevelIntfControllerImpl::GetMaxLevel(void* context)
-{
-    QStatus status = ER_OK;
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_MaxLevel.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&TargetTemperatureLevelIntfControllerImpl::GetMaxLevelPropertyCB, context);
-    return status;
-}
-
-QStatus TargetTemperatureLevelIntfControllerImpl::GetSelectableTemperatureLevels(void* context)
-{
-    QStatus status = ER_OK;
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_SelectableTemperatureLevels.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&TargetTemperatureLevelIntfControllerImpl::GetSelectableTemperatureLevelsPropertyCB, context);
-    return status;
-}
-
-void TargetTemperatureLevelIntfControllerImpl::SetTargetLevelPropertyCB(QStatus status, ProxyBusObject* obj, void* context)
+void TargetTemperatureLevelIntfControllerImpl::GetMaxLevelPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
     if (!obj) {
-        return;
+            return;
     }
-    m_interfaceListener.OnResponseSetTargetLevel(status, obj->GetPath(), context);
+    uint8_t val;
+    value.Get("y", &val);
+    m_interfaceListener.OnResponseGetMaxLevel(status, obj->GetPath(), val, context);
 }
 
 void TargetTemperatureLevelIntfControllerImpl::GetTargetLevelPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
@@ -144,14 +146,12 @@ void TargetTemperatureLevelIntfControllerImpl::GetTargetLevelPropertyCB(QStatus 
     m_interfaceListener.OnResponseGetTargetLevel(status, obj->GetPath(), val, context);
 }
 
-void TargetTemperatureLevelIntfControllerImpl::GetMaxLevelPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
+void TargetTemperatureLevelIntfControllerImpl::SetTargetLevelPropertyCB(QStatus status, ProxyBusObject* obj, void* context)
 {
     if (!obj) {
-            return;
+        return;
     }
-    uint8_t val;
-    value.Get("y", &val);
-    m_interfaceListener.OnResponseGetMaxLevel(status, obj->GetPath(), val, context);
+    m_interfaceListener.OnResponseSetTargetLevel(status, obj->GetPath(), context);
 }
 
 void TargetTemperatureLevelIntfControllerImpl::GetSelectableTemperatureLevelsPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)

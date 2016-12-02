@@ -78,6 +78,15 @@ QStatus ChannelIntfControllerImpl::Init()
     return status;
 }
 
+QStatus ChannelIntfControllerImpl::GetChannelId(void* context)
+{
+    QStatus status = ER_OK;
+
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_ChannelId.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&ChannelIntfControllerImpl::GetChannelIdPropertyCB, context);
+
+    return status;
+}
+
 QStatus ChannelIntfControllerImpl::SetChannelId(const qcc::String& channelId, void* context)
 {
     QStatus status = ER_OK;
@@ -85,15 +94,6 @@ QStatus ChannelIntfControllerImpl::SetChannelId(const qcc::String& channelId, vo
     MsgArg arg;
     arg.Set("s", channelId.c_str());
     status = m_proxyObject.SetPropertyAsync(GetInterfaceName().c_str(), s_prop_ChannelId.c_str(), arg, this, (ProxyBusObject::Listener::SetPropertyCB)&ChannelIntfControllerImpl::SetChannelIdPropertyCB, context);
-
-    return status;
-}
-
-QStatus ChannelIntfControllerImpl::GetChannelId(void* context)
-{
-    QStatus status = ER_OK;
-
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_ChannelId.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&ChannelIntfControllerImpl::GetChannelIdPropertyCB, context);
 
     return status;
 }
@@ -145,15 +145,6 @@ void ChannelIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const cha
     }
 }
 
-void ChannelIntfControllerImpl::SetChannelIdPropertyCB(QStatus status, ProxyBusObject* obj, void* context)
-{
-    if (!obj) {
-        return;
-    }
-
-    m_interfaceListener.OnResponseSetChannelId(status, obj->GetPath(), context);
-}
-
 void ChannelIntfControllerImpl::GetChannelIdPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
     if (!obj) {
@@ -165,6 +156,15 @@ void ChannelIntfControllerImpl::GetChannelIdPropertyCB(QStatus status, ProxyBusO
     String channelId = String(id);
 
     m_interfaceListener.OnResponseGetChannelId(status, obj->GetPath(), channelId, context);
+}
+
+void ChannelIntfControllerImpl::SetChannelIdPropertyCB(QStatus status, ProxyBusObject* obj, void* context)
+{
+    if (!obj) {
+        return;
+    }
+
+    m_interfaceListener.OnResponseSetChannelId(status, obj->GetPath(), context);
 }
 
 void ChannelIntfControllerImpl::GetTotalNumberOfChannelsPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)

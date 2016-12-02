@@ -22,7 +22,6 @@ namespace services {
 
 const uint16_t CycleControlInterface::s_interfaceVersion = 1;
 
-// Below none secure xml is only for test
 const qcc::String CycleControlInterface::s_xml =
 "<node xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='http://www.allseenalliance.org/schemas/introspect.xsd'>"
 "    <interface name='org.alljoyn.SmartSpaces.Operation.CycleControl'>"
@@ -64,17 +63,14 @@ const qcc::String CycleControlInterface::s_xml =
 "                <annotation name='org.alljoyn.Bus.Type.Name' value='[OperationalCommands]'/>"
 "            </arg>"
 "        </method>"
-"        <signal name='EndOfCycle' sessionless='true'>"
-"            <annotation name='org.alljoyn.Bus.DocString.En' value='This signal is emitted if the cycle is completed.'/>"
-"        </signal>"
 "    </interface>"
 "</node>"
 ;
 
 const qcc::String CycleControlInterface::s_prop_Version = "Version";
 const qcc::String CycleControlInterface::s_prop_OperationalState = "OperationalState";
-const qcc::String CycleControlInterface::s_prop_SupportedOperationalCommands = "SupportedOperationalCommands";
 const qcc::String CycleControlInterface::s_prop_SupportedOperationalStates = "SupportedOperationalStates";
+const qcc::String CycleControlInterface::s_prop_SupportedOperationalCommands = "SupportedOperationalCommands";
 const qcc::String CycleControlInterface::s_method_ExecuteOperationalCommand = "ExecuteOperationalCommand";
 const qcc::String CycleControlInterface::OPERATIONAL_STATE_STRINGS[6] = {
         "Idle",

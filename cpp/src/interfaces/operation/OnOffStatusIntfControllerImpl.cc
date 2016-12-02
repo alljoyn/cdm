@@ -66,17 +66,6 @@ QStatus OnOffStatusIntfControllerImpl::GetIsOn(void* context)
     return status;
 }
 
-void OnOffStatusIntfControllerImpl::GetIsOnPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
-{
-    if (!obj) {
-        return;
-    }
-
-    bool val;
-    value.Get("b", &val);
-    m_interfaceListener.OnResponseGetIsOn(status, obj->GetPath(), val, context);
-}
-
 void OnOffStatusIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
 {
     MsgArg* entries;
@@ -96,6 +85,17 @@ void OnOffStatusIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const
             }
         }
     }
+}
+
+void OnOffStatusIntfControllerImpl::GetIsOnPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
+{
+    if (!obj) {
+        return;
+    }
+
+    bool val;
+    value.Get("b", &val);
+    m_interfaceListener.OnResponseGetIsOn(status, obj->GetPath(), val, context);
 }
 
 } //namespace services

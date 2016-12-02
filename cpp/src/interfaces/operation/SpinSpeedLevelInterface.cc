@@ -22,7 +22,6 @@ namespace services {
 
 const uint16_t SpinSpeedLevelInterface::s_interfaceVersion = 1;
 
-// Below none secure xml is only for test
 const qcc::String SpinSpeedLevelInterface::s_xml =
 "<node xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='http://www.allseenalliance.org/schemas/introspect.xsd'>"
 "    <interface name='org.alljoyn.SmartSpaces.Operation.SpinSpeedLevel'>"
@@ -52,5 +51,6 @@ const qcc::String SpinSpeedLevelInterface::s_prop_Version = "Version";
 const qcc::String SpinSpeedLevelInterface::s_prop_MaxLevel = "MaxLevel";
 const qcc::String SpinSpeedLevelInterface::s_prop_TargetLevel = "TargetLevel";
 const qcc::String SpinSpeedLevelInterface::s_prop_SelectableLevels = "SelectableLevels";
+
 } //namespace services
 } //namespace ajn

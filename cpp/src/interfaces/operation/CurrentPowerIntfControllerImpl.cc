@@ -60,6 +60,27 @@ QStatus CurrentPowerIntfControllerImpl::Init()
     return status;
 }
 
+QStatus CurrentPowerIntfControllerImpl::GetCurrentPower(void* context)
+{
+    QStatus status = ER_OK;
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_CurrentPower.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&CurrentPowerIntfControllerImpl::GetCurrentPowerPropertyCB, context);
+    return status;
+}
+
+QStatus CurrentPowerIntfControllerImpl::GetPrecision(void* context)
+{
+    QStatus status = ER_OK;
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_Precision.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&CurrentPowerIntfControllerImpl::GetPrecisionPropertyCB, context);
+    return status;
+}
+
+QStatus CurrentPowerIntfControllerImpl::GetUpdateMinTime(void* context)
+{
+    QStatus status = ER_OK;
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_UpdateMinTime.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&CurrentPowerIntfControllerImpl::GetUpdateMinTimePropertyCB, context);
+    return status;
+}
+
 void CurrentPowerIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context)
 {
     MsgArg* entries;
@@ -89,27 +110,6 @@ void CurrentPowerIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, cons
             }
         }
     }
-}
-
-QStatus CurrentPowerIntfControllerImpl::GetCurrentPower(void* context)
-{
-    QStatus status = ER_OK;
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_CurrentPower.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&CurrentPowerIntfControllerImpl::GetCurrentPowerPropertyCB, context);
-    return status;
-}
-
-QStatus CurrentPowerIntfControllerImpl::GetPrecision(void* context)
-{
-    QStatus status = ER_OK;
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_Precision.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&CurrentPowerIntfControllerImpl::GetPrecisionPropertyCB, context);
-    return status;
-}
-
-QStatus CurrentPowerIntfControllerImpl::GetUpdateMinTime(void* context)
-{
-    QStatus status = ER_OK;
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_UpdateMinTime.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&CurrentPowerIntfControllerImpl::GetUpdateMinTimePropertyCB, context);
-    return status;
 }
 
 void CurrentPowerIntfControllerImpl::GetCurrentPowerPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)

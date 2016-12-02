@@ -22,7 +22,6 @@ namespace services {
 
 const uint16_t TimerInterface::s_interfaceVersion = 1;
 
-// Below none secure xml is only for test
 const qcc::String TimerInterface::s_xml =
 "<node xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='http://www.allseenalliance.org/schemas/introspect.xsd'>"
 "    <interface name='org.alljoyn.SmartSpaces.Operation.Timer'>"
@@ -85,7 +84,6 @@ const qcc::String TimerInterface::s_prop_TargetTimeToStop = "TargetTimeToStop";
 const qcc::String TimerInterface::s_prop_EstimatedTimeToEnd = "EstimatedTimeToEnd";
 const qcc::String TimerInterface::s_prop_RunningTime = "RunningTime";
 const qcc::String TimerInterface::s_prop_TargetDuration = "TargetDuration";
-
 const qcc::String TimerInterface::s_method_SetTargetTimeToStart = "SetTargetTimeToStart";
 const qcc::String TimerInterface::s_method_SetTargetTimeToStop = "SetTargetTimeToStop";
 

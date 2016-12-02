@@ -60,6 +60,15 @@ QStatus AudioVideoInputIntfControllerImpl::Init()
     return status;
 }
 
+QStatus AudioVideoInputIntfControllerImpl::GetInputSourceId(void* context)
+{
+    QStatus status = ER_OK;
+
+    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_InputSourceId.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&AudioVideoInputIntfControllerImpl::GetInputSourceIdPropertyCB, context);
+
+    return status;
+}
+
 QStatus AudioVideoInputIntfControllerImpl::SetInputSourceId(const uint16_t inputSourceId, void* context)
 {
     QStatus status = ER_OK;
@@ -67,15 +76,6 @@ QStatus AudioVideoInputIntfControllerImpl::SetInputSourceId(const uint16_t input
     MsgArg arg;
     arg.Set("q", inputSourceId);
     status = m_proxyObject.SetPropertyAsync(GetInterfaceName().c_str(), s_prop_InputSourceId.c_str(), arg, this, (ProxyBusObject::Listener::SetPropertyCB)&AudioVideoInputIntfControllerImpl::SetInputSourceIdPropertyCB, context);
-
-    return status;
-}
-
-QStatus AudioVideoInputIntfControllerImpl::GetInputSourceId(void* context)
-{
-    QStatus status = ER_OK;
-
-    status = m_proxyObject.GetPropertyAsync(GetInterfaceName().c_str(), s_prop_InputSourceId.c_str(), this, (ProxyBusObject::Listener::GetPropertyCB)&AudioVideoInputIntfControllerImpl::GetInputSourceIdPropertyCB, context);
 
     return status;
 }
@@ -131,15 +131,6 @@ void AudioVideoInputIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, c
     }
 }
 
-void AudioVideoInputIntfControllerImpl::SetInputSourceIdPropertyCB(QStatus status, ProxyBusObject* obj, void* context)
-{
-    if (!obj) {
-        return;
-    }
-
-    m_interfaceListener.OnResponseSetInputSourceId(status, obj->GetPath(), context);
-}
-
 void AudioVideoInputIntfControllerImpl::GetInputSourceIdPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
     if (!obj) {
@@ -150,6 +141,15 @@ void AudioVideoInputIntfControllerImpl::GetInputSourceIdPropertyCB(QStatus statu
     value.Get("q", &inputSourceId);
 
     m_interfaceListener.OnResponseGetInputSourceId(status, obj->GetPath(), inputSourceId, context);
+}
+
+void AudioVideoInputIntfControllerImpl::SetInputSourceIdPropertyCB(QStatus status, ProxyBusObject* obj, void* context)
+{
+    if (!obj) {
+        return;
+    }
+
+    m_interfaceListener.OnResponseSetInputSourceId(status, obj->GetPath(), context);
 }
 
 void AudioVideoInputIntfControllerImpl::GetSupportedInputSourcesPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
