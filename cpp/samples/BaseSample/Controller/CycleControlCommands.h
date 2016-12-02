@@ -30,13 +30,13 @@ class CycleControlListener : public CycleControlIntfControllerListener{
   public:
     CycleControlListener();
     virtual ~CycleControlListener();
-    virtual void GetOperationalStatePropertyCallback(QStatus status, const qcc::String& objectPath, const CycleControlInterface::CycleControlOperationalState& state, void* context);
+    virtual void GetOperationalStatePropertyCallback(QStatus status, const qcc::String& objectPath, const CycleControlInterface::OperationalState& state, void* context);
 
     virtual void GetSupportedStatesPropertyCallbalck(QStatus status, const qcc::String& objectPath, const CycleControlInterface::SupportedOperationalStates& states, void* context);
 
     virtual void GetSupportedCommandsPropertyCallbalck(QStatus status, const qcc::String& objectPath, const CycleControlInterface::SupportedOperationalCommands& commands, void* context);
 
-    virtual void OperationalStatePropertyChanged(const qcc::String& objectPath, const CycleControlInterface::CycleControlOperationalState& state);
+    virtual void OperationalStatePropertyChanged(const qcc::String& objectPath, const CycleControlInterface::OperationalState& state);
 
     virtual void SupportedOperationalStatesProperyChanged(const qcc::String& objectPath, const CycleControlInterface::SupportedOperationalStates& states);
 

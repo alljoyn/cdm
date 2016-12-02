@@ -22,7 +22,7 @@
 #include <alljoyn/InterfaceDescription.h>
 #include <alljoyn/cdm/interfaces/InterfaceControllee.h>
 #include <alljoyn/cdm/interfaces/InterfaceControlleeListener.h>
-#include <alljoyn/cdm/interfaces/operation/{{Interface.Name}}IntfControllee.h>
+#include <alljoyn/cdm/interfaces/{{Interface.Category}}/{{Interface.Name}}IntfControllee.h>
 
 namespace ajn {
 namespace services {

@@ -29,13 +29,15 @@ namespace services {
  */
 class RepeatModeInterface : public CdmInterface {
   public:
+
+
     /**
-     * Constructor of RepeatMode
+     * Constructor of RepeatModeInterface
      */
     RepeatModeInterface() {}
 
     /**
-     * Destructor of RepeatMode
+     * Destructor of RepeatModeInterface
      */
     virtual ~RepeatModeInterface() {}
 
@@ -46,14 +48,14 @@ class RepeatModeInterface : public CdmInterface {
     const CdmInterfaceType GetInterfaceType() const { return REPEAT_MODE_INTERFACE; }
 
     /**
-     * Get Introspection Xml
-     * @return xml
+     * Get Introspection XML
+     * @return Introspection XML
      */
     virtual const qcc::String& GetIntrospectionXml() { return s_xml; }
 
     /**
      * Get Interface version
-     * @return interface version
+     * @return Interface version
      */
     virtual const uint16_t GetInterfaceVersion() const { return s_interfaceVersion; }
 
@@ -64,7 +66,6 @@ class RepeatModeInterface : public CdmInterface {
   private:
     static const qcc::String s_xml;
     static const uint16_t s_interfaceVersion;
-
 };
 
 } //namespace services

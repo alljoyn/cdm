@@ -17,11 +17,6 @@
 #ifndef HVACFANMODEINTERFACE_H_
 #define HVACFANMODEINTERFACE_H_
 
-
-#include <vector>
-#include <map>
-#include <utility>
-
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/CdmInterface.h>
@@ -35,6 +30,12 @@ namespace services {
 class HvacFanModeInterface : public CdmInterface {
   public:
     typedef std::vector<uint16_t> SupportedModes;
+    enum Mode {
+        MODE_AUTO = 0,
+        MODE_CIRCULATION = 1,
+        MODE_CONTINUOUS = 2,
+    };
+
 
     /**
      * Constructor of HvacFanModeInterface
@@ -48,13 +49,13 @@ class HvacFanModeInterface : public CdmInterface {
 
     /**
      * Get Interface Type
-     * @return Interface type
+     * @return interface type
      */
     const CdmInterfaceType GetInterfaceType() const { return HVAC_FAN_MODE_INTERFACE; }
 
     /**
-     * Get Introspection Xml
-     * @return Introspection xml
+     * Get Introspection XML
+     * @return Introspection XML
      */
     virtual const qcc::String& GetIntrospectionXml() { return s_xml; }
 
@@ -65,14 +66,8 @@ class HvacFanModeInterface : public CdmInterface {
     virtual const uint16_t GetInterfaceVersion() const { return s_interfaceVersion; }
 
     enum {
-        HVAC_FAN_MODE_AUTO = 0,
-        HVAC_FAN_MODE_CIRCULATION,
-        HVAC_FAN_MODE_CONTINUOUS
-    };
-
-    enum {
-        MIN_HVAC_FAN_MODE = HVAC_FAN_MODE_AUTO,
-        MAX_HVAC_FAN_MODE = HVAC_FAN_MODE_CONTINUOUS
+        MIN_HVAC_FAN_MODE = MODE_AUTO,
+        MAX_HVAC_FAN_MODE = MODE_CONTINUOUS
     };
 
   protected:
@@ -87,6 +82,5 @@ class HvacFanModeInterface : public CdmInterface {
 
 } //namespace services
 } //namespace ajn
-
 
 #endif /* HVACFANMODEINTERFACE_H_ */

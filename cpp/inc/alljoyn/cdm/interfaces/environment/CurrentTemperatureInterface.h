@@ -30,6 +30,7 @@ namespace services {
 class CurrentTemperatureInterface : public CdmInterface {
   public:
 
+
     /**
      * Constructor of CurrentTemperatureInterface
      */
@@ -42,13 +43,13 @@ class CurrentTemperatureInterface : public CdmInterface {
 
     /**
      * Get Interface Type
-     * @return Interface type
+     * @return interface type
      */
     const CdmInterfaceType GetInterfaceType() const { return CURRENT_TEMPERATURE_INTERFACE; }
 
     /**
-     * Get Introspection Xml
-     * @return Introspection xml
+     * Get Introspection XML
+     * @return Introspection XML
      */
     virtual const qcc::String& GetIntrospectionXml() { return s_xml; }
 
@@ -71,6 +72,5 @@ class CurrentTemperatureInterface : public CdmInterface {
 
 } //namespace services
 } //namespace ajn
-
 
 #endif /* CURRENTTEMPERATUREINTERFACE_H_ */

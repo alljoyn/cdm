@@ -46,7 +46,7 @@ void LanguageDisplayListener::GetSupportedDisplayLanguagesPropertyCallback(QStat
         cout << supportedDisplayLanguages[i].c_str() << endl;
     }
 }
-void LanguageDisplayListener::DisplayLanguagePropertyChanged(const qcc::String& objectPath, const qcc::String displayLanguage)
+void LanguageDisplayListener::DisplayLanguagePropertyChanged(const qcc::String& objectPath, const qcc::String& displayLanguage)
 {
     cout << __func__ << endl;
     cout << "# path: " << objectPath << endl;

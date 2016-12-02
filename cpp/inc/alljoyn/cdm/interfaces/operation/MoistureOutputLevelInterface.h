@@ -17,7 +17,6 @@
 #ifndef MOISTUREOUTPUTLEVELINTERFACE_H_
 #define MOISTUREOUTPUTLEVELINTERFACE_H_
 
-#include <vector>
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/CdmInterface.h>
@@ -30,6 +29,12 @@ namespace services {
  */
 class MoistureOutputLevelInterface : public CdmInterface {
   public:
+    enum AutoMode {
+        AUTO_MODE_OFF = 0,
+        AUTO_MODE_ON = 1,
+        AUTO_MODE_NOT_SUPPORTED = 255,
+    };
+
 
     /**
      * Constructor of MoistureOutputLevelInterface
@@ -43,13 +48,13 @@ class MoistureOutputLevelInterface : public CdmInterface {
 
     /**
      * Get Interface Type
-     * @return Interface type
+     * @return interface type
      */
     const CdmInterfaceType GetInterfaceType() const { return MOISTURE_OUTPUT_LEVEL_INTERFACE; }
 
     /**
-     * Get Introspection Xml
-     * @return Introspection xml
+     * Get Introspection XML
+     * @return Introspection XML
      */
     virtual const qcc::String& GetIntrospectionXml() { return s_xml; }
 
@@ -58,12 +63,6 @@ class MoistureOutputLevelInterface : public CdmInterface {
      * @return Interface version
      */
     virtual const uint16_t GetInterfaceVersion() const { return s_interfaceVersion; }
-
-    enum {
-        OFF = 0x00,
-        ON = 0x01,
-        NOT_SUPPORTED = 0xff
-    };
 
   protected:
     static const qcc::String s_prop_Version;

@@ -176,7 +176,7 @@ void OvenCyclePhaseIntfControllerImpl::GetCyclePhasesDescriptionReplyHandler(Mes
 
         MsgArg* entries;
         size_t numEntries;
-        OvenCyclePhaseInterface::OvenPhaseDescriptor desc;
+        OvenCyclePhaseInterface::CyclePhaseDescriptor desc;
 
         args[0].Get("a(yss)", &numEntries, &entries);
         for (size_t i = 0; i < numEntries; ++i)

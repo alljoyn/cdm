@@ -33,8 +33,8 @@ public:
     uint8_t m_currentLevel;
     uint8_t m_currentLevelSignal;
 
-    WaterLevelInterface::WaterLevelSupplySource m_supplySource;
-    WaterLevelInterface::WaterLevelSupplySource m_supplySourceSignal;
+    WaterLevelInterface::SupplySource m_supplySource;
+    WaterLevelInterface::SupplySource m_supplySourceSignal;
 
     qcc::String m_errorName;
     qcc::String m_errorMessage;
@@ -45,7 +45,7 @@ public:
         m_status = status;
         m_event.SetEvent();
     }
-    virtual void OnGetSupplySourcePropertyCallback (QStatus status, const qcc::String& objectPath, const WaterLevelInterface::WaterLevelSupplySource value, void* context)
+    virtual void OnGetSupplySourcePropertyCallback (QStatus status, const qcc::String& objectPath, const WaterLevelInterface::SupplySource value, void* context)
     {
         m_status = status;
         m_supplySource = value;
@@ -67,7 +67,7 @@ public:
         m_currentLevelSignal = value;
         m_eventSignal.SetEvent();
     }
-    virtual void SupplySourceProprtyChanged(const qcc::String& objectPath, const WaterLevelInterface::WaterLevelSupplySource value)
+    virtual void SupplySourceProprtyChanged(const qcc::String& objectPath, const WaterLevelInterface::SupplySource value)
     {
         m_supplySourceSignal = value;
         m_eventSignal.SetEvent();

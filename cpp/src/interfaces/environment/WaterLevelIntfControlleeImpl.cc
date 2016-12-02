@@ -85,7 +85,7 @@ QStatus WaterLevelIntfControlleeImpl::OnGetProperty(const String& propName, MsgA
                 val.typeId = ALLJOYN_BYTE;
                 val.v_byte = maxLevel;
             } else if (!s_prop_SupplySource.compare(propName)) {
-                WaterLevelSupplySource suppSrc;
+                SupplySource suppSrc;
                 status = m_interfaceListener.OnGetSupplySource(suppSrc);
                 if(status !=  ER_OK) {
                     QCC_LogError(status, ("%s: failed to get property.", __func__));
@@ -110,7 +110,7 @@ QStatus WaterLevelIntfControlleeImpl::OnGetProperty(const String& propName, MsgA
                 val.typeId = ALLJOYN_BYTE;
                 val.v_byte = maxLevel;
             } else if (!s_prop_SupplySource.compare(propName)) {
-                WaterLevelSupplySource suppSrc;
+                SupplySource suppSrc;
                 suppSrc = GetSupplySource();
                 val.typeId = ALLJOYN_BYTE;
                 val.v_byte = (uint8_t)suppSrc;
@@ -152,9 +152,9 @@ void WaterLevelIntfControlleeImpl::OnMethodHandler(const InterfaceDescription::M
 }
 QStatus WaterLevelIntfControlleeImpl::SetCurrentLevel(const uint8_t currentLevel)
 {
-    WaterLevelSupplySource src = GetSupplySource();
+    SupplySource src = GetSupplySource();
 
-    if((src == WaterLevelSupplySource::SUPPLY_SOURCE_NOT_SUPPORTED || src == WaterLevelSupplySource::SUPPLY_SOURCE_PIPE) && currentLevel !=0 )
+    if((src == SupplySource::SUPPLY_SOURCE_NOT_SUPPORTED || src == SupplySource::SUPPLY_SOURCE_PIPE) && currentLevel !=0 )
     {
         return ER_FAIL;
     }
@@ -178,8 +178,8 @@ QStatus WaterLevelIntfControlleeImpl::SetCurrentLevel(const uint8_t currentLevel
 
 QStatus WaterLevelIntfControlleeImpl::SetMaxLevel(const uint8_t maxLevel)
 {
-    WaterLevelSupplySource src = GetSupplySource();
-    if((src == WaterLevelSupplySource::SUPPLY_SOURCE_NOT_SUPPORTED || src == WaterLevelSupplySource::SUPPLY_SOURCE_PIPE) && maxLevel !=0 )
+    SupplySource src = GetSupplySource();
+    if((src == SupplySource::SUPPLY_SOURCE_NOT_SUPPORTED || src == SupplySource::SUPPLY_SOURCE_PIPE) && maxLevel !=0 )
     {
         return ER_FAIL;
     }
@@ -195,7 +195,7 @@ QStatus WaterLevelIntfControlleeImpl::SetMaxLevel(const uint8_t maxLevel)
     return ER_OK;
 }
 
-QStatus WaterLevelIntfControlleeImpl::SetSupplySource(const WaterLevelSupplySource supplySource)
+QStatus WaterLevelIntfControlleeImpl::SetSupplySource(const SupplySource supplySource)
 {
     if(supplySource!= m_supplySource)
     {
@@ -205,7 +205,7 @@ QStatus WaterLevelIntfControlleeImpl::SetSupplySource(const WaterLevelSupplySour
         m_busObject.EmitPropChanged(GetInterfaceName().c_str(), s_prop_SupplySource.c_str(), arg, 0 ,ALLJOYN_FLAG_GLOBAL_BROADCAST);
         m_supplySource = supplySource;
     }
-    if(m_supplySource == WaterLevelSupplySource::SUPPLY_SOURCE_NOT_SUPPORTED || m_supplySource == WaterLevelSupplySource::SUPPLY_SOURCE_PIPE)
+    if(m_supplySource == SupplySource::SUPPLY_SOURCE_NOT_SUPPORTED || m_supplySource == SupplySource::SUPPLY_SOURCE_PIPE)
     {
         SetMaxLevel(0);
         SetCurrentLevel(0);

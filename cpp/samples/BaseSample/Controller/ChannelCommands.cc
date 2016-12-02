@@ -62,7 +62,7 @@ void ChannelListener::OnResponseGetChannelList(QStatus status, const qcc::String
         for(ChannelInterface::ChannelInfoRecords::const_iterator citer = listOfChannelInfoRecords.begin();
                 citer != listOfChannelInfoRecords.end(); citer++)
         {
-            cout << citer->channelId.c_str() << " "
+            cout << citer->channelID.c_str() << " "
                  << citer->channelNumber.c_str() << " "
                  << citer->channelName.c_str() << endl;
         }

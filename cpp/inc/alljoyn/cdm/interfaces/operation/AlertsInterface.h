@@ -17,7 +17,6 @@
 #ifndef ALERTSINTERFACE_H_
 #define ALERTSINTERFACE_H_
 
-#include <vector>
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/CdmInterface.h>
@@ -30,41 +29,39 @@ namespace services {
  */
 class AlertsInterface : public CdmInterface {
   public:
-
-    typedef enum
-    {
-        ALERT_SEVERITY_WARRNING,
-        ALERT_SEVERITY_ALARM,
-        ALERT_SEVERITY_FAULT
-    } AlertSeverity;
+    enum Severity {
+        SEVERITY_WARNING = 0,
+        SEVERITY_ALARM = 1,
+        SEVERITY_FAULT = 2,
+    };
 
     struct AlertRecord {
-        AlertSeverity severity; // enumeration field
-        uint16_t alertCode; // alert code
-        bool needAcknowledgement; // acknowledgment request state
+        Severity severity;
+        uint16_t alertCode;
+        bool needAcknowledgement;
+
         inline bool operator==(const AlertRecord& a) {
-        if (a.severity==severity && a.alertCode== alertCode && a.needAcknowledgement == needAcknowledgement)
-            return true;
-        else
-            return false;
+            return a.severity==severity && a.alertCode==alertCode && a.needAcknowledgement==needAcknowledgement;
+        }
+    };
+    struct AlertCodesDescriptor {
+        uint16_t alertCode;
+        qcc::String description;
+
+        inline bool operator==(const AlertCodesDescriptor& a) {
+            return a.alertCode==alertCode && a.description==description;
         }
     };
 
-    typedef struct {
-        uint16_t code;
-        qcc::String description;
-    } AlertCodeDescriptor;
-
     typedef std::vector<AlertRecord> Alerts;
-
-    typedef std::vector<AlertCodeDescriptor> AlertCodesDescription;
+    typedef std::vector<AlertCodesDescriptor> AlertCodesDescriptors;
     /**
-     * Constructor of Alerts
+     * Constructor of AlertsInterface
      */
     AlertsInterface() {}
 
     /**
-     * Destructor of Alerts
+     * Destructor of AlertsInterface
      */
     virtual ~AlertsInterface() {}
 
@@ -75,14 +72,14 @@ class AlertsInterface : public CdmInterface {
     const CdmInterfaceType GetInterfaceType() const { return ALERTS_INTERFACE; }
 
     /**
-     * Get Introspection Xml
-     * @return xml
+     * Get Introspection XML
+     * @return Introspection XML
      */
     virtual const qcc::String& GetIntrospectionXml() { return s_xml; }
 
     /**
      * Get Interface version
-     * @return interface version
+     * @return Interface version
      */
     virtual const uint16_t GetInterfaceVersion() const { return s_interfaceVersion; }
 

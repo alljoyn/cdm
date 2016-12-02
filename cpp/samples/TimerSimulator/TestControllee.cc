@@ -52,7 +52,7 @@ void TestControllee::OnCmdSetRecipe(Commands* commands, std::string& cmd)
     int lvl = strtol(cmd.c_str(), NULL, 10);
 
     if (static_cast<TestControllee*>(sample)->m_cycleControlIntfControllee) {
-        static_cast<TestControllee*>(sample)->m_cycleControlIntfControllee->SetOperationalState(CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_READY_TO_START);
+        static_cast<TestControllee*>(sample)->m_cycleControlIntfControllee->SetOperationalState(CycleControlInterface::OperationalState::OPERATIONAL_STATE_READY_TO_START);
     }
 }
 void TestControllee::CreateInterfaces()
@@ -76,25 +76,25 @@ void TestControllee::SetInitialProperty()
 
     //CycleCControlInterface
     CycleControlInterface::SupportedOperationalCommands comm;
-    comm.push_back(CycleControlInterface::CycleControlOperationalCommand::OPERATIONAL_COMMAND_START);
-    comm.push_back(CycleControlInterface::CycleControlOperationalCommand::OPERATIONAL_COMMAND_STOP);
-    comm.push_back(CycleControlInterface::CycleControlOperationalCommand::OPERATIONAL_COMMAND_PAUSE);
-    comm.push_back(CycleControlInterface::CycleControlOperationalCommand::OPERATIONAL_COMMAND_RESUME);
+    comm.push_back(CycleControlInterface::OperationalCommands::OPERATIONAL_COMMANDS_START);
+    comm.push_back(CycleControlInterface::OperationalCommands::OPERATIONAL_COMMANDS_STOP);
+    comm.push_back(CycleControlInterface::OperationalCommands::OPERATIONAL_COMMANDS_PAUSE);
+    comm.push_back(CycleControlInterface::OperationalCommands::OPERATIONAL_COMMANDS_RESUME);
     m_cycleControlIntfControllee->SetSupportedCommands(comm);
 
     CycleControlInterface::SupportedOperationalStates states;
-    states.push_back(CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_IDLE);
-    states.push_back(CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_PAUSED);
-    states.push_back(CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_READY_TO_START);
-    states.push_back(CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_END_OF_CYCLE);
-    states.push_back(CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_DELAYED_START);
-    states.push_back(CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_WORKING);
+    states.push_back(CycleControlInterface::OperationalState::OPERATIONAL_STATE_IDLE);
+    states.push_back(CycleControlInterface::OperationalState::OPERATIONAL_STATE_PAUSED);
+    states.push_back(CycleControlInterface::OperationalState::OPERATIONAL_STATE_READY_TO_START);
+    states.push_back(CycleControlInterface::OperationalState::OPERATIONAL_STATE_END_OF_CYCLE);
+    states.push_back(CycleControlInterface::OperationalState::OPERATIONAL_STATE_DELAYED_START);
+    states.push_back(CycleControlInterface::OperationalState::OPERATIONAL_STATE_WORKING);
 
     m_cycleControlIntfControllee->SetSupportedStates(states);
 
     if(IsRecipeSet())
     {
-        m_cycleControlIntfControllee->SetOperationalState(CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_READY_TO_START);
+        m_cycleControlIntfControllee->SetOperationalState(CycleControlInterface::OperationalState::OPERATIONAL_STATE_READY_TO_START);
     }
 }
 
@@ -103,28 +103,28 @@ void TestControllee::TimeChangedCallback(int sec)
     QStatus status = ER_OK;
     CdmInterface* intf = NULL;
     m_timerIntfControllee->SetReferenceTimer(sec);
-    if(this->m_cycleControlIntfControllee->GetOperationalState() == CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_DELAYED_START)
+    if(this->m_cycleControlIntfControllee->GetOperationalState() == CycleControlInterface::OperationalState::OPERATIONAL_STATE_DELAYED_START)
     {
         if(sec == this->m_timerIntfControllee->GetTargetTimeToStart())
         {
             cout << "time == starttime. Setting state Working." << endl;
-            status = this->m_cycleControlIntfControllee->SetOperationalState(CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_WORKING);
+            status = this->m_cycleControlIntfControllee->SetOperationalState(CycleControlInterface::OperationalState::OPERATIONAL_STATE_WORKING);
         }
     }
-    if(this->m_cycleControlIntfControllee->GetOperationalState() == CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_WORKING)
+    if(this->m_cycleControlIntfControllee->GetOperationalState() == CycleControlInterface::OperationalState::OPERATIONAL_STATE_WORKING)
     {
         if(sec == this->m_timerIntfControllee->GetTargetTimeToStop())
         {
             cout << "time == stoptime. Setting state EOC." << endl;
-            status = this->m_cycleControlIntfControllee->SetOperationalState(CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_END_OF_CYCLE);
+            status = this->m_cycleControlIntfControllee->SetOperationalState(CycleControlInterface::OperationalState::OPERATIONAL_STATE_END_OF_CYCLE);
         }
     }
-    if(this->m_cycleControlIntfControllee->GetOperationalState() == CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_END_OF_CYCLE)
+    if(this->m_cycleControlIntfControllee->GetOperationalState() == CycleControlInterface::OperationalState::OPERATIONAL_STATE_END_OF_CYCLE)
     {
             cout << "setting initial state" << endl;
             IsRecipeSet() ?
-            status = this->m_cycleControlIntfControllee->SetOperationalState(CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_READY_TO_START) : 
-            status = this->m_cycleControlIntfControllee->SetOperationalState(CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_IDLE); 
+            status = this->m_cycleControlIntfControllee->SetOperationalState(CycleControlInterface::OperationalState::OPERATIONAL_STATE_READY_TO_START) :
+            status = this->m_cycleControlIntfControllee->SetOperationalState(CycleControlInterface::OperationalState::OPERATIONAL_STATE_IDLE);
     }
 
     if(status != ER_OK)

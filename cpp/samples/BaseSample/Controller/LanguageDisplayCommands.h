@@ -37,7 +37,7 @@ class LanguageDisplayListener : public LanguageDisplayIntfControllerListener {
 
     virtual void GetSupportedDisplayLanguagesPropertyCallback(QStatus status, const qcc::String& objectPath, const std::vector<qcc::String>& supportedDisplayLanguages, void* context);
 
-    virtual void DisplayLanguagePropertyChanged(const qcc::String& objectPath, const qcc::String displayLanguage);
+    virtual void DisplayLanguagePropertyChanged(const qcc::String& objectPath, const qcc::String& displayLanguage);
 
     virtual void SupportedDisplayLanguagesPropertyChanged(const qcc::String& objectPath, const std::vector<qcc::String>& supportedDisplayLanguages);
 

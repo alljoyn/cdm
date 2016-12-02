@@ -41,7 +41,7 @@ QStatus OvenCyclePhaseListener::OnGetCyclePhasesDescriptions(const qcc::String& 
     cout << "OvenCyclePhaseListener::OnGetCyclePhasesDescriptions" << endl;
     if(language == "en")
     {
-        OvenCyclePhaseInterface::OvenPhaseDescriptor disc;
+        OvenCyclePhaseInterface::CyclePhaseDescriptor disc;
         disc.phase = 1;
         disc.name = "Oven phase1";
         disc.description = "Oven this is phase 1";

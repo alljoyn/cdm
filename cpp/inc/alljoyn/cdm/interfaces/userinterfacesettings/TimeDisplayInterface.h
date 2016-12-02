@@ -20,7 +20,7 @@
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/CdmInterface.h>
-#include <vector>
+
 namespace ajn {
 namespace services {
 
@@ -29,13 +29,15 @@ namespace services {
  */
 class TimeDisplayInterface : public CdmInterface {
   public:
+
+
     /**
-     * Constructor of TimeDisplay
+     * Constructor of TimeDisplayInterface
      */
     TimeDisplayInterface() {}
 
     /**
-     * Destructor of TimeDisplay
+     * Destructor of TimeDisplayInterface
      */
     virtual ~TimeDisplayInterface() {}
 
@@ -46,14 +48,14 @@ class TimeDisplayInterface : public CdmInterface {
     const CdmInterfaceType GetInterfaceType() const { return TIME_DISPLAY_INTERFACE; }
 
     /**
-     * Get Introspection Xml
-     * @return xml
+     * Get Introspection XML
+     * @return Introspection XML
      */
     virtual const qcc::String& GetIntrospectionXml() { return s_xml; }
 
     /**
      * Get Interface version
-     * @return interface version
+     * @return Interface version
      */
     virtual const uint16_t GetInterfaceVersion() const { return s_interfaceVersion; }
 
@@ -61,7 +63,6 @@ class TimeDisplayInterface : public CdmInterface {
     static const qcc::String s_prop_Version;
     static const qcc::String s_prop_DisplayTimeFormat;
     static const qcc::String s_prop_SupportedDisplayTimeFormats;
-
 
   private:
     static const qcc::String s_xml;

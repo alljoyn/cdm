@@ -39,7 +39,7 @@ class CycleControlIntfControllerListener : public InterfaceControllerListener {
      * @param[in] currentState current state
      * @param[in] context the context that is passed from application
      */
-    virtual void GetOperationalStatePropertyCallback(QStatus status, const qcc::String& objectPath, const CycleControlInterface::CycleControlOperationalState& currentState, void* context) {}
+    virtual void GetOperationalStatePropertyCallback(QStatus status, const qcc::String& objectPath, const CycleControlInterface::OperationalState& currentState, void* context) {}
 
     /**
      * Callback handler for getting SupportedOperationalStates property
@@ -64,7 +64,7 @@ class CycleControlIntfControllerListener : public InterfaceControllerListener {
      * @param[in] objectPath the object path
      * @param[in] currentState current state
      */
-    virtual void OperationalStatePropertyChanged(const qcc::String& objectPath, const CycleControlInterface::CycleControlOperationalState& currentState) {}
+    virtual void OperationalStatePropertyChanged(const qcc::String& objectPath, const CycleControlInterface::OperationalState& currentState) {}
 
     /**
      * Handler for SupportedOperationalStates property changed

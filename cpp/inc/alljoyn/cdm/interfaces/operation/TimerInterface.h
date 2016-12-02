@@ -29,13 +29,15 @@ namespace services {
  */
 class TimerInterface : public CdmInterface {
   public:
+
+
     /**
-     * Constructor of Timer
+     * Constructor of TimerInterface
      */
     TimerInterface() {}
 
     /**
-     * Destructor of Timer
+     * Destructor of TimerInterface
      */
     virtual ~TimerInterface() {}
 
@@ -46,14 +48,14 @@ class TimerInterface : public CdmInterface {
     const CdmInterfaceType GetInterfaceType() const { return TIMER_INTERFACE; }
 
     /**
-     * Get Introspection Xml
-     * @return xml
+     * Get Introspection XML
+     * @return Introspection XML
      */
     virtual const qcc::String& GetIntrospectionXml() { return s_xml; }
 
     /**
      * Get Interface version
-     * @return interface version
+     * @return Interface version
      */
     virtual const uint16_t GetInterfaceVersion() const { return s_interfaceVersion; }
 
@@ -68,10 +70,8 @@ class TimerInterface : public CdmInterface {
     static const qcc::String s_prop_EstimatedTimeToEnd;
     static const qcc::String s_prop_RunningTime;
     static const qcc::String s_prop_TargetDuration;
-
     static const qcc::String s_method_SetTargetTimeToStart;
     static const qcc::String s_method_SetTargetTimeToStop;
-
 
   private:
     static const qcc::String s_xml;

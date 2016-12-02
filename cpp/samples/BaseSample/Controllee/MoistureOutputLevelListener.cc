@@ -162,11 +162,11 @@ void MoistureOutputLevelCommands::OnCmdGetAutoMode(Commands* commands, std::stri
     }
 
     uint8_t result = intfControllee->GetAutoMode();
-    if (result == MoistureOutputLevelInterface::ON) {
+    if (result == MoistureOutputLevelInterface::AUTO_MODE_ON) {
         cout << "ON" << endl;
-    } else if (result  == MoistureOutputLevelInterface::OFF) {
+    } else if (result  == MoistureOutputLevelInterface::AUTO_MODE_OFF) {
         cout << "OFF" << endl;
-    } else if (result  == MoistureOutputLevelInterface::NOT_SUPPORTED) {
+    } else if (result  == MoistureOutputLevelInterface::AUTO_MODE_NOT_SUPPORTED) {
         cout << "NOT_SUPPORTED" << endl;
     } else {
         cout << "UNKNOWN_VALUE : " << (int)result << endl;
@@ -182,9 +182,9 @@ void MoistureOutputLevelCommands::OnCmdSetAutoMode(Commands* commands, std::stri
     }
 
     uint8_t autoMode = strtol(cmd.c_str(), NULL, 10);
-    if (autoMode != MoistureOutputLevelInterface::OFF &&
-        autoMode != MoistureOutputLevelInterface::ON &&
-        autoMode != MoistureOutputLevelInterface::NOT_SUPPORTED) {
+    if (autoMode != MoistureOutputLevelInterface::AUTO_MODE_OFF &&
+        autoMode != MoistureOutputLevelInterface::AUTO_MODE_ON &&
+        autoMode != MoistureOutputLevelInterface::AUTO_MODE_NOT_SUPPORTED) {
         cout << "Input argument is wrong." << endl;
     } else {
         intfControllee->SetAutoMode(autoMode);

@@ -17,7 +17,6 @@
 #ifndef PLUGINUNITSINTERFACE_H_
 #define PLUGINUNITSINTERFACE_H_
 
-#include <vector>
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/CdmInterface.h>
@@ -30,13 +29,24 @@ namespace services {
  */
 class PlugInUnitsInterface : public CdmInterface {
   public:
+
+    struct PlugInInfo {
+        qcc::String objectPath;
+        uint32_t deviceId;
+        bool pluggedIn;
+
+        inline bool operator==(const PlugInInfo& a) {
+            return a.objectPath==objectPath && a.deviceId==deviceId && a.pluggedIn==pluggedIn;
+        }
+    };
+
     /**
-     * Constructor of PlugInUnits
+     * Constructor of PlugInUnitsInterface
      */
     PlugInUnitsInterface() {}
 
     /**
-     * Destructor of PlugInUnits
+     * Destructor of PlugInUnitsInterface
      */
     virtual ~PlugInUnitsInterface() {}
 
@@ -47,28 +57,16 @@ class PlugInUnitsInterface : public CdmInterface {
     const CdmInterfaceType GetInterfaceType() const { return PLUG_IN_UNITS_INTERFACE; }
 
     /**
-     * Get Introspection Xml
-     * @return xml
+     * Get Introspection XML
+     * @return Introspection XML
      */
     virtual const qcc::String& GetIntrospectionXml() { return s_xml; }
 
     /**
      * Get Interface version
-     * @return interface version
+     * @return Interface version
      */
     virtual const uint16_t GetInterfaceVersion() const { return s_interfaceVersion; }
-
-
-    struct PlugInInfo {
-        qcc::String objectPath;
-        uint32_t deviceId;
-        bool pluggedIn;
-        inline bool operator==(const PlugInInfo& info) const {
-            return (info.objectPath == objectPath &&
-                    info.deviceId == deviceId &&
-                    info.pluggedIn == pluggedIn);
-        }
-    };
 
     typedef std::vector<PlugInInfo> PlugInUnits;
 

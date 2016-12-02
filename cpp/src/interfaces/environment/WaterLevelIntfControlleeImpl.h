@@ -120,7 +120,7 @@ class WaterLevelIntfControlleeImpl : public InterfaceControllee, public WaterLev
      * Get SupplySource
      * @return supply source
      */
-    virtual const WaterLevelSupplySource GetSupplySource() const { return m_supplySource; }
+    virtual const SupplySource GetSupplySource() const { return m_supplySource; }
 
 
     /**
@@ -128,7 +128,7 @@ class WaterLevelIntfControlleeImpl : public InterfaceControllee, public WaterLev
      * @param[in] supplySource supply source
      * @return ER_OK on success
      */
-    virtual QStatus SetSupplySource(const WaterLevelSupplySource supplySource);
+    virtual QStatus SetSupplySource(const SupplySource supplySource);
 
   private:
     WaterLevelIntfControlleeImpl();
@@ -137,7 +137,7 @@ class WaterLevelIntfControlleeImpl : public InterfaceControllee, public WaterLev
     WaterLevelIntfControlleeListener& m_interfaceListener;
     MethodHandlers m_methodHandlers;
     uint8_t m_currentLevel;
-    WaterLevelSupplySource m_supplySource;
+    SupplySource m_supplySource;
     uint8_t m_maxLevel;
 };
 

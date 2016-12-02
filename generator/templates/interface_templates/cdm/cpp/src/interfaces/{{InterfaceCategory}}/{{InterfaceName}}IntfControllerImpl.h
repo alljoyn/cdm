@@ -20,7 +20,7 @@
 #include <alljoyn/Status.h>
 #include <alljoyn/BusAttachment.h>
 #include <alljoyn/cdm/interfaces/InterfaceController.h>
-#include <alljoyn/cdm/interfaces/operation/{{Interface.Name}}IntfController.h>
+#include <alljoyn/cdm/interfaces/{{Interface.Category}}/{{Interface.Name}}IntfController.h>
 
 namespace ajn {
 namespace services {

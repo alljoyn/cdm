@@ -94,14 +94,14 @@ class CycleControlIntfControlleeImpl : public InterfaceControllee, public CycleC
      * Get OperationalState
      * @return operationalState
      */
-    virtual const CycleControlOperationalState GetOperationalState() const { return m_currentState; }
+    virtual const OperationalState GetOperationalState() const { return m_currentState; }
 
     /**
      * Set OperationalState
      * @param[in] state operationalState
      * @return ER_OK on successful
      */
-    virtual QStatus SetOperationalState(CycleControlOperationalState state);
+    virtual QStatus SetOperationalState(OperationalState state);
 
     /**
      * Get SupportedOperationalCommands
@@ -142,7 +142,7 @@ class CycleControlIntfControlleeImpl : public InterfaceControllee, public CycleC
     BusAttachment& m_busAttachment;
     CycleControlIntfControlleeListener& m_interfaceListener;
     MethodHandlers m_methodHandlers;
-    CycleControlOperationalState m_currentState;
+    OperationalState m_currentState;
     SupportedOperationalCommands m_supportedCommands;
     SupportedOperationalStates m_supportedStates;
 };

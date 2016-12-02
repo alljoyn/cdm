@@ -87,7 +87,7 @@ class CycleControlIntfControllerImpl : public InterfaceController, public CycleC
      * @param[in] context
      * @return status
      */
-    virtual QStatus ExecuteCommand(const CycleControlOperationalCommand command, void* context);
+    virtual QStatus ExecuteCommand(const OperationalCommands command, void* context);
 
   private:
     CycleControlIntfControllerImpl();

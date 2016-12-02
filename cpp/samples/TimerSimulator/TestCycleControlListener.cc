@@ -25,32 +25,32 @@ TestCycleControlListener::TestCycleControlListener(void* controllee)
     m_testControllee = controllee;
 }
 
-QStatus TestCycleControlListener::OnGetOperationalState(CycleControlInterface::CycleControlOperationalState& state)
+QStatus TestCycleControlListener::OnGetOperationalState(CycleControlInterface::OperationalState& state)
 {
     cout << "TestCycleControlListener::OnGetOperationalState()" << endl;
     return ER_OK;
 }
 
-QStatus TestCycleControlListener::OnExecuteCommand(CycleControlInterface::CycleControlOperationalCommand command, CycleControlInterface::CycleControlOperationalState& newState, ErrorCode& error)
+QStatus TestCycleControlListener::OnExecuteCommand(CycleControlInterface::OperationalCommands command, CycleControlInterface::OperationalState& newState, ErrorCode& error)
 {
     QStatus status = ER_OK;
     cout << "TestCycleControlListener::OnExecuteCommand. Command: " << (int)command << ". Command name: " << CycleControlInterface::OPERATIONAL_COMMAND_STRINGS[command] <<endl;
     TestControllee *controllee =  static_cast<TestControllee*>(m_testControllee);
     error = ErrorCode::NOT_ERROR;
-    CycleControlInterface::CycleControlOperationalState currentState = controllee->CycleIntf()->GetOperationalState();
+    CycleControlInterface::OperationalState currentState = controllee->CycleIntf()->GetOperationalState();
     switch (command)
     {
-        case CycleControlInterface::CycleControlOperationalCommand::OPERATIONAL_COMMAND_START:
+        case CycleControlInterface::OperationalCommands::OPERATIONAL_COMMANDS_START:
         {
-            if(currentState == CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_READY_TO_START)
+            if(currentState == CycleControlInterface::OperationalState::OPERATIONAL_STATE_READY_TO_START)
             {
                 if(controllee->TimerIntf()->GetTargetTimeToStart() > 0 )
                 {
-                    controllee->CycleIntf()->SetOperationalState(CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_DELAYED_START);
+                    controllee->CycleIntf()->SetOperationalState(CycleControlInterface::OperationalState::OPERATIONAL_STATE_DELAYED_START);
                 }
                 else
                 {
-                    controllee->CycleIntf()->SetOperationalState(CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_WORKING);
+                    controllee->CycleIntf()->SetOperationalState(CycleControlInterface::OperationalState::OPERATIONAL_STATE_WORKING);
                 }
             }
             else
@@ -59,15 +59,15 @@ QStatus TestCycleControlListener::OnExecuteCommand(CycleControlInterface::CycleC
             }
         }
         break;
-        case CycleControlInterface::CycleControlOperationalCommand::OPERATIONAL_COMMAND_STOP:
+        case CycleControlInterface::OperationalCommands::OPERATIONAL_COMMANDS_STOP:
         {
-            if(currentState == CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_WORKING ||
-               currentState == CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_PAUSED  ||
-               currentState == CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_DELAYED_START)
+            if(currentState == CycleControlInterface::OperationalState::OPERATIONAL_STATE_WORKING ||
+               currentState == CycleControlInterface::OperationalState::OPERATIONAL_STATE_PAUSED  ||
+               currentState == CycleControlInterface::OperationalState::OPERATIONAL_STATE_DELAYED_START)
             {
                 controllee->IsRecipeSet() ?
-                    controllee->CycleIntf()->SetOperationalState(CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_READY_TO_START) :
-                    controllee->CycleIntf()->SetOperationalState(CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_IDLE);
+                    controllee->CycleIntf()->SetOperationalState(CycleControlInterface::OperationalState::OPERATIONAL_STATE_READY_TO_START) :
+                    controllee->CycleIntf()->SetOperationalState(CycleControlInterface::OperationalState::OPERATIONAL_STATE_IDLE);
             }
             else
             {
@@ -75,19 +75,19 @@ QStatus TestCycleControlListener::OnExecuteCommand(CycleControlInterface::CycleC
             }
         }
         break;
-        case CycleControlInterface::CycleControlOperationalCommand::OPERATIONAL_COMMAND_PAUSE:
+        case CycleControlInterface::OperationalCommands::OPERATIONAL_COMMANDS_PAUSE:
         {
-            if(currentState == CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_WORKING)
+            if(currentState == CycleControlInterface::OperationalState::OPERATIONAL_STATE_WORKING)
             {
                 controllee->m_pausedState = controllee->CycleIntf()->GetOperationalState();
                 controllee->m_timeElapsed = controllee->TimerIntf()->GetTargetTimeToStop() - controllee->TimerIntf()->GetReferenceTimer();
-                controllee->CycleIntf()->SetOperationalState(CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_PAUSED);
+                controllee->CycleIntf()->SetOperationalState(CycleControlInterface::OperationalState::OPERATIONAL_STATE_PAUSED);
             }
-            else if (currentState == CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_DELAYED_START)
+            else if (currentState == CycleControlInterface::OperationalState::OPERATIONAL_STATE_DELAYED_START)
             {
                 controllee->m_pausedState = controllee->CycleIntf()->GetOperationalState();
                 controllee->m_timeTillStart = controllee->TimerIntf()->GetTargetTimeToStart() - controllee->TimerIntf()->GetReferenceTimer();
-                controllee->CycleIntf()->SetOperationalState(CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_PAUSED);
+                controllee->CycleIntf()->SetOperationalState(CycleControlInterface::OperationalState::OPERATIONAL_STATE_PAUSED);
             }
             else
             {
@@ -95,15 +95,15 @@ QStatus TestCycleControlListener::OnExecuteCommand(CycleControlInterface::CycleC
             }
         }
         break;
-        case CycleControlInterface::CycleControlOperationalCommand::OPERATIONAL_COMMAND_RESUME:
+        case CycleControlInterface::OperationalCommands::OPERATIONAL_COMMANDS_RESUME:
         {
-            if(currentState == CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_PAUSED)
+            if(currentState == CycleControlInterface::OperationalState::OPERATIONAL_STATE_PAUSED)
             {
-                if(controllee->m_pausedState == CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_WORKING)
+                if(controllee->m_pausedState == CycleControlInterface::OperationalState::OPERATIONAL_STATE_WORKING)
                 {
                     controllee->CycleIntf()->SetOperationalState(controllee->m_pausedState);
                 }
-                else if(controllee->m_pausedState == CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_DELAYED_START)
+                else if(controllee->m_pausedState == CycleControlInterface::OperationalState::OPERATIONAL_STATE_DELAYED_START)
                 {
                     controllee->CycleIntf()->SetOperationalState(controllee->m_pausedState);
                 }

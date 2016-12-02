@@ -29,13 +29,15 @@ namespace services {
  */
 class SoilLevelInterface : public CdmInterface {
   public:
+
+
     /**
-     * Constructor of SoilLevel
+     * Constructor of SoilLevelInterface
      */
     SoilLevelInterface() {}
 
     /**
-     * Destructor of SoilLevel
+     * Destructor of SoilLevelInterface
      */
     virtual ~SoilLevelInterface() {}
 
@@ -46,14 +48,14 @@ class SoilLevelInterface : public CdmInterface {
     const CdmInterfaceType GetInterfaceType() const { return SOIL_LEVEL_INTERFACE; }
 
     /**
-     * Get Introspection Xml
-     * @return xml
+     * Get Introspection XML
+     * @return Introspection XML
      */
     virtual const qcc::String& GetIntrospectionXml() { return s_xml; }
 
     /**
      * Get Interface version
-     * @return interface version
+     * @return Interface version
      */
     virtual const uint16_t GetInterfaceVersion() const { return s_interfaceVersion; }
 

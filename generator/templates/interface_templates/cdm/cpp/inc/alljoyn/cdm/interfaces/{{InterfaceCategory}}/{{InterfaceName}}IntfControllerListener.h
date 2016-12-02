@@ -20,6 +20,7 @@
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/InterfaceControllerListener.h>
+#include <alljoyn/cdm/interfaces/{{Interface.Category}}/{{Interface.Name}}Interface.h>
 
 namespace ajn {
 namespace services {
@@ -29,6 +30,13 @@ namespace services {
  */
 class {{Interface.Name}}IntfControllerListener : public InterfaceControllerListener {
   public:
+    {% for enum in Interface.Enums %}
+    using {{enum.Name}} = {{Interface.Name}}Interface::{{enum.Name}};
+    {% endfor %}
+    {% for struct in Interface.Structs %}
+    using {{struct.Name}} = {{Interface.Name}}Interface::{{struct.Name}};
+    {% endfor %}
+
     /**
      * Destructor of ChannelIntfControllerListener
      */
@@ -63,7 +71,15 @@ class {{Interface.Name}}IntfControllerListener : public InterfaceControllerListe
 
     {% endif %}
     {% endfor %}
+    {% for method in Interface.Methods %}
+    /**
+     * Handler for method {{method.Name}}
+     * @param[out] error Internal error code occurred during command execution
+     * @return ER_OK on success
+     */
+    virtual QStatus OnResponse{{method.Name}}(QStatus status, const qcc::String& objectPath, {% for arg in method.output_args() %}const {{arg.Type.ctype_arg()}} {{arg.Name}}, {% endfor %} void* context, const char* errorName, const char* errorMessage) = 0;
 
+    {% endfor %}
     {% for signal in Interface.Signals %}
     /**
      * Handler for {{signal.Name}} signal

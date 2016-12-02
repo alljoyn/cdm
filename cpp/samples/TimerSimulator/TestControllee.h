@@ -42,7 +42,7 @@ class TestControllee : public ControlleeSample
     bool IsRecipeSet() {return m_recipeIsSet;}
     void SetRecipe() { m_recipeIsSet = true;}
     void ResetRecipe() { m_recipeIsSet = false;}
-    CycleControlIntfControllee::CycleControlOperationalState m_pausedState;
+    CycleControlIntfControllee::OperationalState m_pausedState;
     int m_timeElapsed;
     int m_timeTillStart;
 

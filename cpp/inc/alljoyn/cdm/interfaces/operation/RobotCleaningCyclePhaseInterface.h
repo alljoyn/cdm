@@ -17,8 +17,6 @@
 #ifndef ROBOTCLEANINGCYCLEPHASEINTERFACE_H_
 #define ROBOTCLEANINGCYCLEPHASEINTERFACE_H_
 
-#include <vector>
-
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/CdmInterface.h>
@@ -32,23 +30,25 @@ namespace services {
 class RobotCleaningCyclePhaseInterface : public CdmInterface {
   public:
     typedef std::vector<uint8_t> SupportedCyclePhases;
-    /**
-     * CyclePhaseDescriptor struct
-     */
-    typedef struct {
+
+    struct CyclePhaseDescriptor {
         uint8_t phase;
         qcc::String name;
         qcc::String description;
-    } CyclePhaseDescriptor;
+
+        inline bool operator==(const CyclePhaseDescriptor& a) {
+            return a.phase==phase && a.name==name && a.description==description;
+        }
+    };
     typedef std::vector<CyclePhaseDescriptor> CyclePhaseDescriptors;
 
     /**
-     * Constructor of RobotCleaningCyclePhase
+     * Constructor of RobotCleaningCyclePhaseInterface
      */
     RobotCleaningCyclePhaseInterface() {}
 
     /**
-     * Destructor of RobotCleaningCyclePhase
+     * Destructor of RobotCleaningCyclePhaseInterface
      */
     virtual ~RobotCleaningCyclePhaseInterface() {}
 
@@ -59,14 +59,14 @@ class RobotCleaningCyclePhaseInterface : public CdmInterface {
     const CdmInterfaceType GetInterfaceType() const { return ROBOT_CLEANING_CYCLE_PHASE_INTERFACE; }
 
     /**
-     * Get Introspection Xml
-     * @return xml
+     * Get Introspection XML
+     * @return Introspection XML
      */
     virtual const qcc::String& GetIntrospectionXml() { return s_xml; }
 
     /**
      * Get Interface version
-     * @return interface version
+     * @return Interface version
      */
     virtual const uint16_t GetInterfaceVersion() const { return s_interfaceVersion; }
 

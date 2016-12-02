@@ -434,14 +434,14 @@ void IntegratedControllee::SetInitialProperty()
         AudioVideoInputInterface::InputSources inputSources;
         AudioVideoInputInterface::InputSource inputSource1, inputSource2;
         uint16_t inputSource1Id = 8080;
-        inputSource1.sourceType = AudioVideoInputInterface::AUDIO_VIDEO_INPUT_SOURCE_TYPE_HDMI;
-        inputSource1.signalPresence = AudioVideoInputInterface::AUDIO_VIDEO_INPUT_SIGNAL_PRESENCE_ABSENT;
+        inputSource1.sourceType = AudioVideoInputInterface::SOURCE_TYPE_HDMI;
+        inputSource1.signalPresence = AudioVideoInputInterface::SIGNAL_PRESENCE_SIGNAL_ABSENT;
         inputSource1.portNumber = 1;
         inputSource1.friendlyName = "HDMI1";
         inputSources.insert(std::pair<uint16_t, AudioVideoInputInterface::InputSource>(inputSource1Id, inputSource1));
         uint16_t inputSource2Id = 8000;
-        inputSource2.sourceType = AudioVideoInputInterface::AUDIO_VIDEO_INPUT_SOURCE_TYPE_TUNER;
-        inputSource2.signalPresence = AudioVideoInputInterface::AUDIO_VIDEO_INPUT_SIGNAL_PRESENCE_PRESENT;
+        inputSource2.sourceType = AudioVideoInputInterface::SOURCE_TYPE_TUNER;
+        inputSource2.signalPresence = AudioVideoInputInterface::SIGNAL_PRESENCE_SIGNAL_PRESENT;
         inputSource2.portNumber = 1;
         inputSource2.friendlyName = "TUNER";
         inputSources.insert(std::pair<uint16_t, AudioVideoInputInterface::InputSource>(inputSource2Id, inputSource2));
@@ -473,12 +473,12 @@ void IntegratedControllee::SetInitialProperty()
 
     if (m_climateControlModeIntfControllee) {
         ClimateControlModeInterface::SupportedModes supportedModes;
-        supportedModes.push_back(ClimateControlModeInterface::CLIMATE_CONTROL_MODE_OFF);
-        supportedModes.push_back(ClimateControlModeInterface::CLIMATE_CONTROL_MODE_COOL);
+        supportedModes.push_back(ClimateControlModeInterface::MODE_OFF);
+        supportedModes.push_back(ClimateControlModeInterface::MODE_COOL);
         m_climateControlModeIntfControllee->SetSupportedModes(supportedModes);
-        uint16_t mode = ClimateControlModeInterface::CLIMATE_CONTROL_MODE_OFF;
+        uint16_t mode = ClimateControlModeInterface::MODE_OFF;
         m_climateControlModeIntfControllee->SetMode(mode);
-        uint16_t operationalState = ClimateControlModeInterface::CLIMATE_CONTROL_OPERATIONAL_STATE_IDLE;
+        uint16_t operationalState = ClimateControlModeInterface::OPERATIONAL_STATE_IDLE;
         m_climateControlModeIntfControllee->SetOperationalState(operationalState);
     }
 
@@ -543,19 +543,19 @@ void IntegratedControllee::SetInitialProperty()
 
     if (m_cycleControlIntfControllee) {
         CycleControlInterface::SupportedOperationalCommands comm;
-        comm.push_back(CycleControlInterface::CycleControlOperationalCommand::OPERATIONAL_COMMAND_START);
-        comm.push_back(CycleControlInterface::CycleControlOperationalCommand::OPERATIONAL_COMMAND_STOP);
-        comm.push_back(CycleControlInterface::CycleControlOperationalCommand::OPERATIONAL_COMMAND_PAUSE);
-        comm.push_back(CycleControlInterface::CycleControlOperationalCommand::OPERATIONAL_COMMAND_RESUME);
+        comm.push_back(CycleControlInterface::OperationalCommands::OPERATIONAL_COMMANDS_START);
+        comm.push_back(CycleControlInterface::OperationalCommands::OPERATIONAL_COMMANDS_STOP);
+        comm.push_back(CycleControlInterface::OperationalCommands::OPERATIONAL_COMMANDS_PAUSE);
+        comm.push_back(CycleControlInterface::OperationalCommands::OPERATIONAL_COMMANDS_RESUME);
         m_cycleControlIntfControllee->SetSupportedCommands(comm);
 
         CycleControlInterface::SupportedOperationalStates states;
-        states.push_back(CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_IDLE);
-        states.push_back(CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_WORKING);
-        states.push_back(CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_READY_TO_START);
-        states.push_back(CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_DELAYED_START);
-        states.push_back(CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_PAUSED);
-        states.push_back(CycleControlInterface::CycleControlOperationalState::OPERATIONAL_STATE_END_OF_CYCLE);
+        states.push_back(CycleControlInterface::OperationalState::OPERATIONAL_STATE_IDLE);
+        states.push_back(CycleControlInterface::OperationalState::OPERATIONAL_STATE_WORKING);
+        states.push_back(CycleControlInterface::OperationalState::OPERATIONAL_STATE_READY_TO_START);
+        states.push_back(CycleControlInterface::OperationalState::OPERATIONAL_STATE_DELAYED_START);
+        states.push_back(CycleControlInterface::OperationalState::OPERATIONAL_STATE_PAUSED);
+        states.push_back(CycleControlInterface::OperationalState::OPERATIONAL_STATE_END_OF_CYCLE);
 
         m_cycleControlIntfControllee->SetSupportedStates(states);
     }
@@ -669,7 +669,7 @@ void IntegratedControllee::SetInitialProperty()
 
     if (m_waterLevelIntfControllee) {
 
-        WaterLevelInterface::WaterLevelSupplySource supplySource = WaterLevelInterface::SUPPLY_SOURCE_TANK;
+        WaterLevelInterface::SupplySource supplySource = WaterLevelInterface::SUPPLY_SOURCE_TANK;
         uint8_t maxLvl = 5;
         uint8_t currentLvl = 0;
 
@@ -681,17 +681,17 @@ void IntegratedControllee::SetInitialProperty()
         AlertsInterface::Alerts alerts;
         AlertsInterface::AlertRecord aRecord;
 
-        aRecord.severity = AlertsInterface::ALERT_SEVERITY_WARRNING;
+        aRecord.severity = AlertsInterface::SEVERITY_WARNING;
         aRecord.alertCode = 0x8000;
         aRecord.needAcknowledgement = false;
         alerts.push_back(aRecord);
 
-        aRecord.severity = AlertsInterface::ALERT_SEVERITY_ALARM;
+        aRecord.severity = AlertsInterface::SEVERITY_ALARM;
         aRecord.alertCode = 0x8001;
         aRecord.needAcknowledgement = false;
         alerts.push_back(aRecord);
 
-        aRecord.severity = AlertsInterface::ALERT_SEVERITY_FAULT;
+        aRecord.severity = AlertsInterface::SEVERITY_FAULT;
         aRecord.alertCode = 0x8002;
         aRecord.needAcknowledgement = true;
         alerts.push_back(aRecord);
@@ -761,7 +761,7 @@ void IntegratedControllee::SetInitialProperty()
 
     if (m_moistureOutputLevelIntfControllee) {
         uint8_t value = 0;
-        uint8_t autoMode = MoistureOutputLevelInterface::OFF;
+        uint8_t autoMode = MoistureOutputLevelInterface::AUTO_MODE_OFF;
 
         m_moistureOutputLevelIntfControllee->SetMoistureOutputLevel(value);
         m_moistureOutputLevelIntfControllee->SetAutoMode(autoMode);
@@ -783,10 +783,10 @@ void IntegratedControllee::SetInitialProperty()
 
     if (m_hvacFanModeIntfControllee) {
         HvacFanModeInterface::SupportedModes supportedModes;
-        supportedModes.push_back(HvacFanModeInterface::HVAC_FAN_MODE_AUTO);
-        supportedModes.push_back(HvacFanModeInterface::HVAC_FAN_MODE_CIRCULATION);
+        supportedModes.push_back(HvacFanModeInterface::MODE_AUTO);
+        supportedModes.push_back(HvacFanModeInterface::MODE_CIRCULATION);
         m_hvacFanModeIntfControllee->SetSupportedModes(supportedModes);
-        uint16_t mode = HvacFanModeInterface::HVAC_FAN_MODE_AUTO;
+        uint16_t mode = HvacFanModeInterface::MODE_AUTO;
         m_hvacFanModeIntfControllee->SetMode(mode);
     }
 

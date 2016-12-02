@@ -27,7 +27,7 @@ public:
     QStatus m_status;
     AlertsInterface::Alerts m_Alerts;
     AlertsInterface::Alerts m_AlertsSignal;
-    AlertsInterface::AlertCodesDescription m_AlertCodesDescription;
+    AlertsInterface::AlertCodesDescriptors m_AlertCodesDescription;
 
     qcc::String m_errorName;
     qcc::String m_errorMessage;
@@ -43,7 +43,7 @@ public:
         m_AlertsSignal = alerts;
         m_eventSignal.SetEvent();
     }
-    virtual void OnResponseGetAlertCodesDescription(QStatus status, const qcc::String& objectPath, const AlertsInterface::AlertCodesDescription& descriptions,
+    virtual void OnResponseGetAlertCodesDescription(QStatus status, const qcc::String& objectPath, const AlertsInterface::AlertCodesDescriptors& descriptions,
                                                       void* context, const char* errorName, const char* errorMessage)
     {
         m_AlertCodesDescription = descriptions;

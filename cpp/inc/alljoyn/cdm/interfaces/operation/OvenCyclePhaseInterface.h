@@ -17,7 +17,6 @@
 #ifndef OVENCYCLEPHASEINTERFACE_H_
 #define OVENCYCLEPHASEINTERFACE_H_
 
-#include <vector>
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/CdmInterface.h>
@@ -31,11 +30,15 @@ namespace services {
 class OvenCyclePhaseInterface : public CdmInterface {
   public:
 
-    typedef struct {
+    struct CyclePhaseDescriptor {
         uint8_t phase;
         qcc::String name;
         qcc::String description;
-    }OvenPhaseDescriptor;
+
+        inline bool operator==(const CyclePhaseDescriptor& a) {
+            return a.phase==phase && a.name==name && a.description==description;
+        }
+    };
 
     typedef enum {
         OVEN_PHASE_UNAVAILABLE,
@@ -47,16 +50,16 @@ class OvenCyclePhaseInterface : public CdmInterface {
     typedef std::vector<OvenCyclePhase> StandardCyclePhases;
 
     typedef std::vector<uint8_t> SupportedCyclePhases;
-    typedef std::vector<OvenPhaseDescriptor> CyclePhaseDescriptions;
+    typedef std::vector<CyclePhaseDescriptor> CyclePhaseDescriptions;
 
     static const StandardCyclePhases m_standardCyclePhases;
     /**
-     * Constructor of OvenCyclePhase
+     * Constructor of OvenCyclePhaseInterface
      */
     OvenCyclePhaseInterface() {}
 
     /**
-     * Destructor of OvenCyclePhase
+     * Destructor of OvenCyclePhaseInterface
      */
     virtual ~OvenCyclePhaseInterface() {}
 
@@ -67,14 +70,14 @@ class OvenCyclePhaseInterface : public CdmInterface {
     const CdmInterfaceType GetInterfaceType() const { return OVEN_CYCLE_PHASE_INTERFACE; }
 
     /**
-     * Get Introspection Xml
-     * @return xml
+     * Get Introspection XML
+     * @return Introspection XML
      */
     virtual const qcc::String& GetIntrospectionXml() { return s_xml; }
 
     /**
      * Get Interface version
-     * @return interface version
+     * @return Interface version
      */
     virtual const uint16_t GetInterfaceVersion() const { return s_interfaceVersion; }
 
@@ -83,7 +86,6 @@ class OvenCyclePhaseInterface : public CdmInterface {
     static const qcc::String s_prop_CyclePhase;
     static const qcc::String s_prop_SupportedCyclePhases;
     static const qcc::String s_method_GetVendorPhasesDescription;
-
 
   private:
     static const qcc::String s_xml;

@@ -21,6 +21,7 @@
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/CdmInterfaceErrors.h>
 #include <alljoyn/cdm/interfaces/InterfaceControlleeListener.h>
+#include <alljoyn/cdm/interfaces/{{Interface.Category}}/{{Interface.Name}}Interface.h>
 
 namespace ajn {
 namespace services {
@@ -30,6 +31,13 @@ namespace services {
  */
 class {{Interface.Name}}IntfControlleeListener : public InterfaceControlleeListener {
   public:
+    {% for enum in Interface.Enums %}
+    using {{enum.Name}} = {{Interface.Name}}Interface::{{enum.Name}};
+    {% endfor %}
+    {% for struct in Interface.Structs %}
+    using {{struct.Name}} = {{Interface.Name}}Interface::{{struct.Name}};
+    {% endfor %}
+
     /**
      * Destructor of {{Interface.Name}}IntfControlleeListener
      */

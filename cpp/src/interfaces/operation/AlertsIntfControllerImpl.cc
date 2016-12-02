@@ -91,7 +91,7 @@ void AlertsIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const char
                 bool acknowledgeNeeded;
 
                 alertEntries[i].Get("(yqb)", &severity, &alertCode, &acknowledgeNeeded);
-                alertRecord.severity = (AlertSeverity)severity;
+                alertRecord.severity = (Severity)severity;
                 alertRecord.alertCode = alertCode;
                 alertRecord.needAcknowledgement = acknowledgeNeeded;
                 alerts.push_back(alertRecord);
@@ -165,7 +165,7 @@ void AlertsIntfControllerImpl::GetAlertsPropertyCB(QStatus status, ProxyBusObjec
         bool acknowledgeNeeded;
 
         entries[i].Get("(yqb)", &severity, &alertCode, &acknowledgeNeeded);
-        alertRecord.severity = (AlertSeverity)severity;
+        alertRecord.severity = (Severity)severity;
         alertRecord.alertCode = alertCode;
         alertRecord.needAcknowledgement = acknowledgeNeeded;
         alerts.push_back(alertRecord);
@@ -176,7 +176,7 @@ void AlertsIntfControllerImpl::GetAlertsPropertyCB(QStatus status, ProxyBusObjec
 void AlertsIntfControllerImpl::GetAlertCodesDescriptionReplyHandler(Message& message, void* context)
 {
     cout << "AlertsIntfControllerImpl::GetAlertCodesDescriptionReplyHandler" << endl;
-    AlertsInterface::AlertCodesDescription descriptions;
+    AlertsInterface::AlertCodesDescriptors descriptions;
     qcc::String errorMessage;
     const char* errorName = message->GetErrorName(&errorMessage);
     QStatus status = ER_OK;
@@ -197,7 +197,7 @@ void AlertsIntfControllerImpl::GetAlertCodesDescriptionReplyHandler(Message& mes
 
         MsgArg* entries;
         size_t numEntries;
-        AlertsInterface::AlertCodeDescriptor desc;
+        AlertsInterface::AlertCodesDescriptor desc;
 
         args[0].Get("a(qs)", &numEntries, &entries);
         for (size_t i = 0; i < numEntries; ++i)
@@ -205,7 +205,7 @@ void AlertsIntfControllerImpl::GetAlertCodesDescriptionReplyHandler(Message& mes
             const char* codeDesc;
             uint16_t alertCode;
             entries[i].Get("(qs)", &alertCode, &codeDesc);
-            desc.code = alertCode;
+            desc.alertCode = alertCode;
             desc.description = String(codeDesc);
             descriptions.push_back(desc);
         }

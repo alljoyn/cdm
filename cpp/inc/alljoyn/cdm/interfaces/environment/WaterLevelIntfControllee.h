@@ -69,14 +69,14 @@ class WaterLevelIntfControllee : public WaterLevelInterface {
      * Get supply source
      * @return supply source
      */
-    virtual const WaterLevelSupplySource GetSupplySource() const = 0;
+    virtual const SupplySource GetSupplySource() const = 0;
 
     /**
      * Set SupplySource
      * @param[in] supplySource supplySource
      * @return ER_OK on success
      */
-    virtual QStatus SetSupplySource(const WaterLevelSupplySource supplySource) = 0;
+    virtual QStatus SetSupplySource(const SupplySource supplySource) = 0;
 };
 
 } //namespace services

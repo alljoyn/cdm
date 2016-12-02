@@ -206,7 +206,7 @@ void ChannelIntfControlleeImpl::OnGetChannelList(const InterfaceDescription::Mem
             int i = 0;
 
             for (citer = listOfChannelInfoRecords.begin(); citer != listOfChannelInfoRecords.end(); citer++, i++) {
-                status = args[i].Set("(sss)", citer->channelId.c_str(), citer->channelNumber.c_str(), citer->channelName.c_str());
+                status = args[i].Set("(sss)", citer->channelID.c_str(), citer->channelNumber.c_str(), citer->channelName.c_str());
                 args[i].Stabilize();
             }
             status = retArgs[0].Set("a(sss)", i, args);

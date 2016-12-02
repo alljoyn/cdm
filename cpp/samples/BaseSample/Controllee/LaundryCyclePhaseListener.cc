@@ -42,7 +42,7 @@ QStatus LaundryCyclePhaseListener::OnGetCyclePhasesDescriptions(const qcc::Strin
 
     if(language == "en")
     {
-        LaundryCyclePhaseInterface::LaundryPhaseDescriptor disc;
+        LaundryCyclePhaseInterface::CyclePhaseDescriptor disc;
         disc.phase = 1;
         disc.name = "laundy phase1";
         disc.description = "laundry this is phase 1";

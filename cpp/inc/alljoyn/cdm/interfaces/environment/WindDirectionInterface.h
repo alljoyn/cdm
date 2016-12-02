@@ -17,11 +17,6 @@
 #ifndef WINDDIRECTIONINTERFACE_H_
 #define WINDDIRECTIONINTERFACE_H_
 
-
-#include <vector>
-#include <map>
-#include <utility>
-
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/CdmInterface.h>
@@ -34,6 +29,12 @@ namespace services {
  */
 class WindDirectionInterface : public CdmInterface {
   public:
+    enum AutoMode {
+        AUTO_MODE_OFF = 0,
+        AUTO_MODE_ON = 1,
+        AUTO_MODE_NOT_SUPPORTED = 255,
+    };
+
 
     /**
      * Constructor of WindDirectionInterface
@@ -47,13 +48,13 @@ class WindDirectionInterface : public CdmInterface {
 
     /**
      * Get Interface Type
-     * @return Interface type
+     * @return interface type
      */
     const CdmInterfaceType GetInterfaceType() const { return WIND_DIRECTION_INTERFACE; }
 
     /**
-     * Get Introspection Xml
-     * @return Introspection xml
+     * Get Introspection XML
+     * @return Introspection XML
      */
     virtual const qcc::String& GetIntrospectionXml() { return s_xml; }
 
@@ -62,12 +63,6 @@ class WindDirectionInterface : public CdmInterface {
      * @return Interface version
      */
     virtual const uint16_t GetInterfaceVersion() const { return s_interfaceVersion; }
-
-    enum {
-        OFF = 0x00,
-        ON = 0x01,
-        NOT_SUPPORTED = 0xff
-    };
 
   protected:
     static const qcc::String s_prop_Version;
@@ -85,6 +80,5 @@ class WindDirectionInterface : public CdmInterface {
 
 } //namespace services
 } //namespace ajn
-
 
 #endif /* WINDDIRECTIONINTERFACE_H_ */

@@ -47,7 +47,7 @@ class WaterLevelIntfControllerListener : public InterfaceControllerListener {
      * @param[in] supplySource supplySource
      * @param[in] context the context that is passed from application
      */
-    virtual void OnGetSupplySourcePropertyCallback (QStatus status, const qcc::String& objectPath, const WaterLevelInterface::WaterLevelSupplySource value, void* context) {}
+    virtual void OnGetSupplySourcePropertyCallback (QStatus status, const qcc::String& objectPath, const WaterLevelInterface::SupplySource value, void* context) {}
     /**
      * Callback handler for getting CurrentLevel property
      * @param[in] status ER_OK on success
@@ -74,7 +74,7 @@ class WaterLevelIntfControllerListener : public InterfaceControllerListener {
      * @param[in] objectPath the object path
      * @param[in] value SupplySource
      */
-    virtual void SupplySourceProprtyChanged(const qcc::String& objectPath, const WaterLevelInterface::WaterLevelSupplySource value){}
+    virtual void SupplySourceProprtyChanged(const qcc::String& objectPath, const WaterLevelInterface::SupplySource value){}
 };
 
 } //namespace services

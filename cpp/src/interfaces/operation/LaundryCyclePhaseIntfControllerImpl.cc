@@ -181,7 +181,7 @@ void LaundryCyclePhaseIntfControllerImpl::GetCyclePhasesDescriptionReplyHandler(
 
         MsgArg* entries;
         size_t numEntries;
-        LaundryCyclePhaseInterface::LaundryPhaseDescriptor desc;
+        LaundryCyclePhaseInterface::CyclePhaseDescriptor desc;
 
         args[0].Get("a(yss)", &numEntries, &entries);
         for (size_t i = 0; i < numEntries; ++i)

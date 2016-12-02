@@ -29,19 +29,20 @@ namespace services {
  */
 class WaterLevelInterface : public CdmInterface {
   public:
-    typedef enum
-    {
-        SUPPLY_SOURCE_TANK,
-        SUPPLY_SOURCE_PIPE,
-        SUPPLY_SOURCE_NOT_SUPPORTED = 0xFF
-    }WaterLevelSupplySource;
+    enum SupplySource {
+        SUPPLY_SOURCE_TANK = 0,
+        SUPPLY_SOURCE_PIPE = 1,
+        SUPPLY_SOURCE_NOT_SUPPORTED = 255,
+    };
+
+
     /**
-     * Constructor of WaterLevel
+     * Constructor of WaterLevelInterface
      */
     WaterLevelInterface() {}
 
     /**
-     * Destructor of WaterLevel
+     * Destructor of WaterLevelInterface
      */
     virtual ~WaterLevelInterface() {}
 
@@ -52,14 +53,14 @@ class WaterLevelInterface : public CdmInterface {
     const CdmInterfaceType GetInterfaceType() const { return WATER_LEVEL_INTERFACE; }
 
     /**
-     * Get Introspection Xml
-     * @return xml
+     * Get Introspection XML
+     * @return Introspection XML
      */
     virtual const qcc::String& GetIntrospectionXml() { return s_xml; }
 
     /**
      * Get Interface version
-     * @return interface version
+     * @return Interface version
      */
     virtual const uint16_t GetInterfaceVersion() const { return s_interfaceVersion; }
 

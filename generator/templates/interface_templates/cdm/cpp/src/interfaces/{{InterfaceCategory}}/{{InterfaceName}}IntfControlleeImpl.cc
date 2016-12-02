@@ -120,7 +120,7 @@ QStatus {{Interface.Name}}IntfControlleeImpl::OnSetProperty(const String& propNa
             QCC_LogError(status, ("%s: failed to set property value", __func__));
             status = ER_BUS_PROPERTY_VALUE_NOT_SET;
         } else {
-            Set{{Interface.Name}}(value); // update the value in {{Interface.Name}}IntfControllee.
+            Set{{property.Name}}(value); // update the value in {{Interface.Name}}IntfControllee.
         }
     } else{% endfor %} {
         status = ER_BUS_NO_SUCH_PROPERTY;

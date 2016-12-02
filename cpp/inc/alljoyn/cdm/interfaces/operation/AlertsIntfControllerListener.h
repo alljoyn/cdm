@@ -57,7 +57,7 @@ class AlertsIntfControllerListener : public InterfaceControllerListener {
      * @param[in] errorMessage the errorMessage that describes the error
      * @param[out]descriptions list of alert codes descriptions
      */
-    virtual void OnResponseGetAlertCodesDescription(QStatus status, const qcc::String& objectPath, const AlertsInterface::AlertCodesDescription& descriptions,
+    virtual void OnResponseGetAlertCodesDescription(QStatus status, const qcc::String& objectPath, const AlertsInterface::AlertCodesDescriptors& descriptions,
                                                       void* context, const char* errorName, const char* errorMessage) {}
 
     /**

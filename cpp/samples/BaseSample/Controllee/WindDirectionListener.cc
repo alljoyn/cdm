@@ -203,11 +203,11 @@ void WindDirectionCommands::OnCmdGetHorizontalAutoMode(Commands* commands, std::
     }
 
     uint8_t result = intfControllee->GetHorizontalAutoMode();
-    if (result == WindDirectionInterface::ON) {
+    if (result == WindDirectionInterface::AUTO_MODE_ON) {
         cout << "ON" << endl;
-    } else if (result  == WindDirectionInterface::OFF) {
+    } else if (result  == WindDirectionInterface::AUTO_MODE_OFF) {
         cout << "OFF" << endl;
-    } else if (result  == WindDirectionInterface::NOT_SUPPORTED) {
+    } else if (result  == WindDirectionInterface::AUTO_MODE_NOT_SUPPORTED) {
         cout << "NOT_SUPPORTED" << endl;
     } else {
         cout << "UNKNOWN_VALUE : " << (int)result << endl;
@@ -223,9 +223,9 @@ void WindDirectionCommands::OnCmdSetHorizontalAutoMode(Commands* commands, std::
     }
 
     uint8_t autoMode = strtol(cmd.c_str(), NULL, 10);
-    if (autoMode != WindDirectionInterface::OFF &&
-        autoMode != WindDirectionInterface::ON &&
-        autoMode != WindDirectionInterface::NOT_SUPPORTED) {
+    if (autoMode != WindDirectionInterface::AUTO_MODE_OFF &&
+        autoMode != WindDirectionInterface::AUTO_MODE_ON &&
+        autoMode != WindDirectionInterface::AUTO_MODE_NOT_SUPPORTED) {
         cout << "Input argument is wrong." << endl;
     } else {
         intfControllee->SetHorizontalAutoMode(autoMode);
@@ -291,11 +291,11 @@ void WindDirectionCommands::OnCmdGetVerticalAutoMode(Commands* commands, std::st
     }
 
     uint8_t result = intfControllee->GetVerticalAutoMode();
-    if (result == WindDirectionInterface::ON) {
+    if (result == WindDirectionInterface::AUTO_MODE_ON) {
         cout << "ON" << endl;
-    } else if (result  == WindDirectionInterface::OFF) {
+    } else if (result  == WindDirectionInterface::AUTO_MODE_OFF) {
         cout << "OFF" << endl;
-    } else if (result  == WindDirectionInterface::NOT_SUPPORTED) {
+    } else if (result  == WindDirectionInterface::AUTO_MODE_NOT_SUPPORTED) {
         cout << "NOT_SUPPORTED" << endl;
     } else {
         cout << "UNKNOWN_VALUE : " << (int)result << endl;
@@ -311,9 +311,9 @@ void WindDirectionCommands::OnCmdSetVerticalAutoMode(Commands* commands, std::st
     }
 
     uint8_t autoMode = strtol(cmd.c_str(), NULL, 10);
-    if (autoMode != WindDirectionInterface::OFF &&
-        autoMode != WindDirectionInterface::ON &&
-        autoMode != WindDirectionInterface::NOT_SUPPORTED) {
+    if (autoMode != WindDirectionInterface::AUTO_MODE_OFF &&
+        autoMode != WindDirectionInterface::AUTO_MODE_ON &&
+        autoMode != WindDirectionInterface::AUTO_MODE_NOT_SUPPORTED) {
         cout << "Input argument is wrong." << endl;
     } else {
         intfControllee->SetVerticalAutoMode(autoMode);

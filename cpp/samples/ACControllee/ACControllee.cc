@@ -170,12 +170,12 @@ void ACControllee::SetInitialProperty()
 
     if (m_climateControlModeIntfControllee) {
         ClimateControlModeInterface::SupportedModes supportedModes;
-        supportedModes.push_back(ClimateControlModeInterface::CLIMATE_CONTROL_MODE_OFF);
-        supportedModes.push_back(ClimateControlModeInterface::CLIMATE_CONTROL_MODE_COOL);
+        supportedModes.push_back(ClimateControlModeInterface::MODE_OFF);
+        supportedModes.push_back(ClimateControlModeInterface::MODE_COOL);
         m_climateControlModeIntfControllee->SetSupportedModes(supportedModes);
-        uint16_t mode = ClimateControlModeInterface::CLIMATE_CONTROL_MODE_OFF;
+        uint16_t mode = ClimateControlModeInterface::MODE_OFF;
         m_climateControlModeIntfControllee->SetMode(mode);
-        uint16_t operationalState = ClimateControlModeInterface::CLIMATE_CONTROL_OPERATIONAL_STATE_IDLE;
+        uint16_t operationalState = ClimateControlModeInterface::OPERATIONAL_STATE_IDLE;
         m_climateControlModeIntfControllee->SetOperationalState(operationalState);
     }
 

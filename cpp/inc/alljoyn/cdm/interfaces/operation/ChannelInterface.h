@@ -17,8 +17,6 @@
 #ifndef CHANNELINTERFACE_H_
 #define CHANNELINTERFACE_H_
 
-#include <vector>
-
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/CdmInterface.h>
@@ -31,35 +29,37 @@ namespace services {
  */
 class ChannelInterface : public CdmInterface {
   public:
-    /**
-     * ChannelInfoRecord struct
-     */
-    typedef struct {
-        qcc::String channelId;
+
+    struct ChannelInfoRecord {
+        qcc::String channelID;
         qcc::String channelNumber;
         qcc::String channelName;
-    } ChannelInfoRecord;
+
+        inline bool operator==(const ChannelInfoRecord& a) {
+            return a.channelID==channelID && a.channelNumber==channelNumber && a.channelName==channelName;
+        }
+    };
     typedef std::vector<ChannelInfoRecord> ChannelInfoRecords;
 
     /**
-     * Constructor of Channel
+     * Constructor of ChannelInterface
      */
     ChannelInterface() {}
 
     /**
-     * Destructor of Channel
+     * Destructor of ChannelInterface
      */
     virtual ~ChannelInterface() {}
 
     /**
      * Get Interface Type
-     * @return Interface type
+     * @return interface type
      */
     const CdmInterfaceType GetInterfaceType() const { return CHANNEL_INTERFACE; }
 
     /**
-     * Get Introspection Xml
-     * @return Introspection xml
+     * Get Introspection XML
+     * @return Introspection XML
      */
     virtual const qcc::String& GetIntrospectionXml() { return s_xml; }
 

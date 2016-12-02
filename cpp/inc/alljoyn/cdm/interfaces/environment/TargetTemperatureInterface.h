@@ -17,11 +17,6 @@
 #ifndef TARGETTEMPERATUREINTERFACE_H_
 #define TARGETTEMPERATUREINTERFACE_H_
 
-
-#include <vector>
-#include <map>
-#include <utility>
-
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/CdmInterface.h>
@@ -35,6 +30,7 @@ namespace services {
 class TargetTemperatureInterface : public CdmInterface {
   public:
 
+
     /**
      * Constructor of TargetTemperatureInterface
      */
@@ -47,13 +43,13 @@ class TargetTemperatureInterface : public CdmInterface {
 
     /**
      * Get Interface Type
-     * @return Interface type
+     * @return interface type
      */
     const CdmInterfaceType GetInterfaceType() const { return TARGET_TEMPERATURE_INTERFACE; }
 
     /**
-     * Get Introspection Xml
-     * @return Introspection xml
+     * Get Introspection XML
+     * @return Introspection XML
      */
     virtual const qcc::String& GetIntrospectionXml() { return s_xml; }
 
@@ -77,6 +73,5 @@ class TargetTemperatureInterface : public CdmInterface {
 
 } //namespace services
 } //namespace ajn
-
 
 #endif /* TARGETTEMPERATUREINTERFACE_H_ */

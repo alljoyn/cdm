@@ -26,7 +26,7 @@ CycleControlListener::~CycleControlListener()
 }
 
 
-void CycleControlListener::OperationalStatePropertyChanged(const qcc::String& objectPath, const CycleControlInterface::CycleControlOperationalState& state)
+void CycleControlListener::OperationalStatePropertyChanged(const qcc::String& objectPath, const CycleControlInterface::OperationalState& state)
 {
     cout << __func__ << endl;
     cout << "# path: " << objectPath << endl;
@@ -34,7 +34,7 @@ void CycleControlListener::OperationalStatePropertyChanged(const qcc::String& ob
 }
 
 
-void CycleControlListener::GetOperationalStatePropertyCallback(QStatus status, const qcc::String& objectPath, const CycleControlInterface::CycleControlOperationalState& state, void* context)
+void CycleControlListener::GetOperationalStatePropertyCallback(QStatus status, const qcc::String& objectPath, const CycleControlInterface::OperationalState& state, void* context)
 {
     cout << __func__ << endl;
     cout << "# status: " << QCC_StatusText(status) << endl;
@@ -180,7 +180,7 @@ void CycleControlCommands::OnCmdExecuteCommand(Commands * commands, std::string&
     cout << "Command string: " << cmd.c_str() << endl;
     int command = strtol(cmd.c_str(), NULL, 10);
     if ( command >=0 && command <=3 ) {
-        intfController->ExecuteCommand((CycleControlInterface::CycleControlOperationalCommand)command);
+        intfController->ExecuteCommand((CycleControlInterface::OperationalCommands)command);
     } else {
         cout << "Input argument is wrong." << endl;
         return;

@@ -41,7 +41,7 @@ class Symbol(object):
     def split_camel_case(self, seperator):
         s = ""
         for c in self.string:
-            if c in string.ascii_uppercase and s and s[-1] not in string.ascii_uppercase:
+            if c in string.ascii_uppercase and s and s[-1] not in (string.ascii_uppercase + string.digits + "_"):
                 s = s + seperator + c
             else:
                 s = s + c
@@ -56,7 +56,7 @@ class Symbol(object):
     def camel_case(self):
         s = ""
         for c in self.string:
-            if c in string.ascii_uppercase and s and s[-1] not in string.ascii_uppercase:
+            if c in string.ascii_uppercase and s and s[-1] not in (string.ascii_uppercase + string.digits + "_"):
                 s = s + c.upper()
             else:
                 s = s + c.lower()
@@ -280,7 +280,9 @@ class InterfaceEnum(object):
         self.parent_interface = interface
 
     def add_value(self, enumerator, value):
-        enum_value_name = remove_special_chars(str(enumerator))
+
+        enum_value_name = str(enumerator).replace("-", "_")
+        enum_value_name = filter(lambda c: c in (string.ascii_letters + string.digits + "_"), enum_value_name)
         self.Values.append(InterfaceEnum.EnumEntry(Symbol(enum_value_name), value))
 
     def enum_type(self):
@@ -536,6 +538,9 @@ class Method(object):
 
     def input_args(self):
         return [arg for arg in self.Args if arg.Direction == 'in']
+
+    def output_args(self):
+        return [arg for arg in self.Args if arg.Direction == 'out']
 
     def output_arg(self):
         try:
@@ -821,7 +826,3 @@ class AJEmulatorXMLParser(AJXMLParser, object):
 
 def make_parser():
     return xml.sax.make_parser()
-
-
-def remove_special_chars(s):
-    return filter(str.isalnum, s)

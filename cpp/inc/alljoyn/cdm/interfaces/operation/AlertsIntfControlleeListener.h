@@ -52,7 +52,7 @@ class AlertsIntfControlleeListener : public InterfaceControlleeListener {
      * @param[out] error Internal error code occurred during command execution
      * @return ER_OK on success
      */
-    virtual QStatus OnGetAlertCodesDescription(const qcc::String& language, AlertsInterface::AlertCodesDescription& description, ErrorCode& error) = 0;
+    virtual QStatus OnGetAlertCodesDescription(const qcc::String& language, AlertsInterface::AlertCodesDescriptors& description, ErrorCode& error) = 0;
 
     /**
      * Handler for AcknowledgeAlert

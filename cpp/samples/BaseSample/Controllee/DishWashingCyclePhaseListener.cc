@@ -41,7 +41,7 @@ QStatus DishWashingCyclePhaseListener::OnGetCyclePhasesDescriptions(const qcc::S
     cout << "DishWashingCyclePhaseListener::OnGetCyclePhasesDescriptions" << endl;
     if(language == "en")
     {
-        DishWashingCyclePhaseInterface::DishWashingPhaseDescriptor disc;
+        DishWashingCyclePhaseInterface::CyclePhaseDescriptor disc;
         disc.phase = 1;
         disc.name = "phase1";
         disc.description = "this is phase 1";

@@ -17,11 +17,6 @@
 #ifndef CURRENTHUMIDITYINTERFACE_H_
 #define CURRENTHUMIDITYINTERFACE_H_
 
-
-#include <vector>
-#include <map>
-#include <utility>
-
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/CdmInterface.h>
@@ -35,6 +30,7 @@ namespace services {
 class CurrentHumidityInterface : public CdmInterface {
   public:
 
+
     /**
      * Constructor of CurrentHumidityInterface
      */
@@ -47,13 +43,13 @@ class CurrentHumidityInterface : public CdmInterface {
 
     /**
      * Get Interface Type
-     * @return Interface type
+     * @return interface type
      */
     const CdmInterfaceType GetInterfaceType() const { return CURRENT_HUMIDITY_INTERFACE; }
 
     /**
-     * Get Introspection Xml
-     * @return Introspection xml
+     * Get Introspection XML
+     * @return Introspection XML
      */
     virtual const qcc::String& GetIntrospectionXml() { return s_xml; }
 
@@ -78,6 +74,5 @@ class CurrentHumidityInterface : public CdmInterface {
 
 } //namespace services
 } //namespace ajn
-
 
 #endif /* CURRENTHUMIDITYINTERFACE_H_ */

@@ -176,7 +176,7 @@ void DishWashingCyclePhaseIntfControllerImpl::GetCyclePhasesDescriptionReplyHand
 
         MsgArg* entries;
         size_t numEntries;
-        DishWashingCyclePhaseInterface::DishWashingPhaseDescriptor desc;
+        DishWashingCyclePhaseInterface::CyclePhaseDescriptor desc;
 
         args[0].Get("a(yss)", &numEntries, &entries);
         for (size_t i = 0; i < numEntries; ++i)

@@ -29,13 +29,15 @@ namespace services {
  */
 class AirRecirculationModeInterface : public CdmInterface {
   public:
+
+
     /**
-     * Constructor of AirRecirculationMode
+     * Constructor of AirRecirculationModeInterface
      */
     AirRecirculationModeInterface() {}
 
     /**
-     * Destructor of AirRecirculationMode
+     * Destructor of AirRecirculationModeInterface
      */
     virtual ~AirRecirculationModeInterface() {}
 
@@ -46,14 +48,14 @@ class AirRecirculationModeInterface : public CdmInterface {
     const CdmInterfaceType GetInterfaceType() const { return AIR_RECIRCULATION_MODE_INTERFACE; }
 
     /**
-     * Get Introspection Xml
-     * @return xml
+     * Get Introspection XML
+     * @return Introspection XML
      */
     virtual const qcc::String& GetIntrospectionXml() { return s_xml; }
 
     /**
      * Get Interface version
-     * @return interface version
+     * @return Interface version
      */
     virtual const uint16_t GetInterfaceVersion() const { return s_interfaceVersion; }
 

@@ -29,13 +29,15 @@ namespace services {
  */
 class FilterStatusInterface : public CdmInterface {
   public:
+
+
     /**
-     * Constructor of FilterStatus
+     * Constructor of FilterStatusInterface
      */
     FilterStatusInterface() {}
 
     /**
-     * Destructor of FilterStatus
+     * Destructor of FilterStatusInterface
      */
     virtual ~FilterStatusInterface() {}
 
@@ -46,14 +48,14 @@ class FilterStatusInterface : public CdmInterface {
     const CdmInterfaceType GetInterfaceType() const { return FILTER_STATUS_INTERFACE; }
 
     /**
-     * Get Introspection Xml
-     * @return xml
+     * Get Introspection XML
+     * @return Introspection XML
      */
     virtual const qcc::String& GetIntrospectionXml() { return s_xml; }
 
     /**
      * Get Interface version
-     * @return interface version
+     * @return Interface version
      */
     virtual const uint16_t GetInterfaceVersion() const { return s_interfaceVersion; }
 

@@ -44,14 +44,14 @@ class CycleControlIntfControllee : public CycleControlInterface {
      * Get OpertaionalState
      * @return OpertaionalState
      */
-    virtual const CycleControlOperationalState GetOperationalState() const = 0 ;
+    virtual const OperationalState GetOperationalState() const = 0 ;
 
     /**
      * Set OperationalState
      * @param[in]  state the state to set
      * @return ER_OK on success
      */
-    virtual QStatus SetOperationalState(CycleControlOperationalState state) = 0;
+    virtual QStatus SetOperationalState(OperationalState state) = 0;
 
     /**
      * Get SupportedCommands

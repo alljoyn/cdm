@@ -29,13 +29,15 @@ namespace services {
  */
 class SpinSpeedLevelInterface : public CdmInterface {
   public:
+
+
     /**
-     * Constructor of SpinSpeedLevel
+     * Constructor of SpinSpeedLevelInterface
      */
     SpinSpeedLevelInterface() {}
 
     /**
-     * Destructor of SpinSpeedLevel
+     * Destructor of SpinSpeedLevelInterface
      */
     virtual ~SpinSpeedLevelInterface() {}
 
@@ -46,14 +48,14 @@ class SpinSpeedLevelInterface : public CdmInterface {
     const CdmInterfaceType GetInterfaceType() const { return SPIN_SPEED_LEVEL_INTERFACE; }
 
     /**
-     * Get Introspection Xml
-     * @return xml
+     * Get Introspection XML
+     * @return Introspection XML
      */
     virtual const qcc::String& GetIntrospectionXml() { return s_xml; }
 
     /**
      * Get Interface version
-     * @return interface version
+     * @return Interface version
      */
     virtual const uint16_t GetInterfaceVersion() const { return s_interfaceVersion; }
 
@@ -62,7 +64,6 @@ class SpinSpeedLevelInterface : public CdmInterface {
     static const qcc::String s_prop_MaxLevel;
     static const qcc::String s_prop_TargetLevel;
     static const qcc::String s_prop_SelectableLevels;
-
 
   private:
     static const qcc::String s_xml;

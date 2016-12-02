@@ -62,7 +62,7 @@ QStatus ChannelListener::OnGetChannelList(const uint16_t& startingRecord, const 
         ChannelInterface::ChannelInfoRecord chInfo;
         char buff[10];
         sprintf(buff, "%d", i);
-        chInfo.channelId = CHANNELID_PREFIX + qcc::String(buff);
+        chInfo.channelID = CHANNELID_PREFIX + qcc::String(buff);
         chInfo.channelName = CHANNELNAME_PREFIX + qcc::String(buff);
         chInfo.channelNumber = CHANNELNO_PREFIX + qcc::String(buff);
         listOfChannelInfoRecords.push_back(chInfo);

@@ -204,7 +204,7 @@ void ChannelIntfControllerImpl::GetChannelListReplyHandler(Message& message, voi
         for (size_t i = 0; i < numEntries; ++i) {
             const char* channelId, *channelNumber, *channelName;
             entries[i].Get("(sss)", &channelId, &channelNumber, &channelName);
-            record.channelId = String(channelId);
+            record.channelID = String(channelId);
             record.channelName = String(channelName);
             record.channelNumber = String(channelNumber);
             records.push_back(record);

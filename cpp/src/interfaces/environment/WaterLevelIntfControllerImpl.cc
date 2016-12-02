@@ -93,7 +93,7 @@ void WaterLevelIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, const 
             if (propValue->typeId == ALLJOYN_BYTE)
             {
                 uint8_t volume = propValue->v_byte;
-                m_interfaceListener.SupplySourceProprtyChanged(obj.GetPath(), (WaterLevelSupplySource)volume);
+                m_interfaceListener.SupplySourceProprtyChanged(obj.GetPath(), (SupplySource)volume);
             }
         }
     }
@@ -150,7 +150,7 @@ void WaterLevelIntfControllerImpl::OnGetSupplySourcePropertyCB(QStatus status, P
     }
     uint8_t suppSrc;
     value.Get("y", & suppSrc);
-    m_interfaceListener.OnGetSupplySourcePropertyCallback(status, obj->GetPath(),(WaterLevelSupplySource)suppSrc, context);
+    m_interfaceListener.OnGetSupplySourcePropertyCallback(status, obj->GetPath(),(SupplySource)suppSrc, context);
 }
 
 } //namespace services

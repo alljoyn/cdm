@@ -29,13 +29,15 @@ namespace services {
  */
 class CurrentPowerInterface : public CdmInterface {
   public:
+
+
     /**
-     * Constructor of CurrentPower
+     * Constructor of CurrentPowerInterface
      */
     CurrentPowerInterface() {}
 
     /**
-     * Destructor of CurrentPower
+     * Destructor of CurrentPowerInterface
      */
     virtual ~CurrentPowerInterface() {}
 
@@ -46,14 +48,14 @@ class CurrentPowerInterface : public CdmInterface {
     const CdmInterfaceType GetInterfaceType() const { return CURRENT_POWER_INTERFACE; }
 
     /**
-     * Get Introspection Xml
-     * @return xml
+     * Get Introspection XML
+     * @return Introspection XML
      */
     virtual const qcc::String& GetIntrospectionXml() { return s_xml; }
 
     /**
      * Get Interface version
-     * @return interface version
+     * @return Interface version
      */
     virtual const uint16_t GetInterfaceVersion() const { return s_interfaceVersion; }
 

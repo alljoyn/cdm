@@ -237,19 +237,19 @@ void AlertsIntfControlleeImpl::OnGetAlertCodesDescription(const InterfaceDescrip
     if (numArgs == 1)
     {
         qcc::String lang(args[0].v_string.str);
-        AlertsInterface::AlertCodesDescription listOfDescriptions;
+        AlertsInterface::AlertCodesDescriptors listOfDescriptions;
         ErrorCode errorCode = NOT_ERROR;
         status = m_interfaceListener.OnGetAlertCodesDescription(lang, listOfDescriptions, errorCode);
         if(status == ER_OK)
         {
             int numReturned = listOfDescriptions.size();
-            AlertsInterface::AlertCodesDescription::const_iterator citer;
+            AlertsInterface::AlertCodesDescriptors::const_iterator citer;
             MsgArg *args = new MsgArg[numReturned];
             MsgArg retArgs[1];
             int i=0;
 
             for(citer = listOfDescriptions.begin(); citer != listOfDescriptions.end(); citer++, i++) {
-                status = args[i].Set("(qs)", citer->code, citer->description.c_str());
+                status = args[i].Set("(qs)", citer->alertCode, citer->description.c_str());
                 args[i].Stabilize();
             }
             status = retArgs[0].Set("a(qs)", i, args);

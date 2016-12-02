@@ -29,13 +29,15 @@ namespace services {
  */
 class EnergyUsageInterface : public CdmInterface {
   public:
+
+
     /**
-     * Constructor of EnergyUsage
+     * Constructor of EnergyUsageInterface
      */
     EnergyUsageInterface() {}
 
     /**
-     * Destructor of EnergyUsage
+     * Destructor of EnergyUsageInterface
      */
     virtual ~EnergyUsageInterface() {}
 
@@ -46,14 +48,14 @@ class EnergyUsageInterface : public CdmInterface {
     const CdmInterfaceType GetInterfaceType() const { return ENERGY_USAGE_INTERFACE; }
 
     /**
-     * Get Introspection Xml
-     * @return xml
+     * Get Introspection XML
+     * @return Introspection XML
      */
     virtual const qcc::String& GetIntrospectionXml() { return s_xml; }
 
     /**
      * Get Interface version
-     * @return interface version
+     * @return Interface version
      */
     virtual const uint16_t GetInterfaceVersion() const { return s_interfaceVersion; }
 

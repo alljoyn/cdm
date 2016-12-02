@@ -261,9 +261,9 @@ QStatus AudioVideoInputIntfControlleeImpl::CheckSupportedInputSources(const Inpu
             || citer->second.sourceType > MAX_AUDIO_VIDEO_INPUT_SOURCE_TYPE) {
             QCC_LogError(ER_FAIL, ("%s: Invaild sourceType", __func__));
             break;
-        } else if (citer->second.signalPresence != AUDIO_VIDEO_INPUT_SIGNAL_PRESENCE_UNKNOWN
-                   && citer->second.signalPresence != AUDIO_VIDEO_INPUT_SIGNAL_PRESENCE_PRESENT
-                   && citer->second.signalPresence != AUDIO_VIDEO_INPUT_SIGNAL_PRESENCE_ABSENT) {
+        } else if (citer->second.signalPresence != SIGNAL_PRESENCE_UNKNOWN
+                   && citer->second.signalPresence != SIGNAL_PRESENCE_SIGNAL_PRESENT
+                   && citer->second.signalPresence != SIGNAL_PRESENCE_SIGNAL_ABSENT) {
             QCC_LogError(ER_FAIL, ("%s: Invaild signalPresence", __func__));
             break;
         }

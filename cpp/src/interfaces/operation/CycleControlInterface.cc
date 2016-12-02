@@ -75,7 +75,7 @@ const qcc::String CycleControlInterface::s_prop_Version = "Version";
 const qcc::String CycleControlInterface::s_prop_OperationalState = "OperationalState";
 const qcc::String CycleControlInterface::s_prop_SupportedOperationalCommands = "SupportedOperationalCommands";
 const qcc::String CycleControlInterface::s_prop_SupportedOperationalStates = "SupportedOperationalStates";
-const qcc::String CycleControlInterface::s_method_ExecuteCommand = "ExecuteOperationalCommand";
+const qcc::String CycleControlInterface::s_method_ExecuteOperationalCommand = "ExecuteOperationalCommand";
 const qcc::String CycleControlInterface::OPERATIONAL_STATE_STRINGS[6] = {
         "Idle",
         "Working",

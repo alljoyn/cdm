@@ -119,8 +119,8 @@ void AudioVideoInputIntfControllerImpl::PropertiesChanged(ProxyBusObject& obj, c
                     const char* friendlyName;
                     args[i].Get("(qqyqs)", &id, &sourceType, &signalPresence, &portNumber, &friendlyName);
 
-                    inputSource.sourceType = sourceType;
-                    inputSource.signalPresence = signalPresence;
+                    inputSource.sourceType = (SourceType)sourceType;
+                    inputSource.signalPresence = (SignalPresence)signalPresence;
                     inputSource.portNumber = portNumber;
                     inputSource.friendlyName = String(friendlyName);
                     inputSources.insert(std::pair<uint16_t, AudioVideoInputInterface::InputSource>(id, inputSource));
@@ -177,8 +177,8 @@ void AudioVideoInputIntfControllerImpl::GetSupportedInputSourcesPropertyCB(QStat
         const char* friendlyName;
         entries[i].Get("(qqyqs)", &id, &sourceType, &signalPresence, &portNumber, &friendlyName);
 
-        inputSource.sourceType = sourceType;
-        inputSource.signalPresence = signalPresence;
+        inputSource.sourceType = (SourceType)sourceType;
+        inputSource.signalPresence = (SignalPresence)signalPresence;
         inputSource.portNumber = portNumber;
         inputSource.friendlyName = String(friendlyName);
         inputSources.insert(std::pair<uint16_t, AudioVideoInputInterface::InputSource>(id, inputSource));

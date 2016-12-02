@@ -38,7 +38,7 @@ QStatus WaterLevelListener::OnGetMaxLevel(uint8_t& maxLevel)
     return status;
 }
 
-QStatus WaterLevelListener::OnGetSupplySource(WaterLevelInterface::WaterLevelSupplySource& supplySource)
+QStatus WaterLevelListener::OnGetSupplySource(WaterLevelInterface::SupplySource& supplySource)
 {
     QStatus status = ER_OK;
     cout << "# WaterLevelListener::OnGetSupplySource()" << endl;
@@ -90,7 +90,7 @@ void WaterLevelCommands::InitializeProperties()
     if (m_intfControllee) {
         uint8_t maxLevel = 6;
         uint8_t currentLevel = 1;
-        WaterLevelInterface::WaterLevelSupplySource supplySource = WaterLevelInterface::WaterLevelSupplySource::SUPPLY_SOURCE_PIPE;
+        WaterLevelInterface::SupplySource supplySource = WaterLevelInterface::SupplySource::SUPPLY_SOURCE_PIPE;
         
         m_intfControllee->SetCurrentLevel(currentLevel);
         m_intfControllee->SetMaxLevel(maxLevel);
@@ -172,12 +172,12 @@ void WaterLevelCommands::OnCmdSetSupplySource(Commands* commands, std::string& c
     }
 
     uint8_t supplySource = strtol(cmd.c_str(), NULL, 10);
-    if(supplySource != WaterLevelInterface::WaterLevelSupplySource::SUPPLY_SOURCE_PIPE &&
-       supplySource != WaterLevelInterface::WaterLevelSupplySource::SUPPLY_SOURCE_TANK &&
-       supplySource != WaterLevelInterface::WaterLevelSupplySource::SUPPLY_SOURCE_NOT_SUPPORTED)
+    if(supplySource != WaterLevelInterface::SupplySource::SUPPLY_SOURCE_PIPE &&
+       supplySource != WaterLevelInterface::SupplySource::SUPPLY_SOURCE_TANK &&
+       supplySource != WaterLevelInterface::SupplySource::SUPPLY_SOURCE_NOT_SUPPORTED)
     {
         cout << "input argument is wrong" << endl;
         return;
     }
-    intfControllee->SetSupplySource((WaterLevelInterface::WaterLevelSupplySource)supplySource);
+    intfControllee->SetSupplySource((WaterLevelInterface::SupplySource)supplySource);
 }

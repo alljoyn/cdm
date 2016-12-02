@@ -30,7 +30,7 @@ namespace services {
 class {{Interface.Name}}Interface : public CdmInterface {
   public:
     {% for enum in Interface.Enums %}
-    enum {
+    enum {{enum.Name}} {
         {% for value in enum.Values %}
         {{enum.Name.upper_snake()}}_{{value.Name.upper_snake()}} = {{value.Value}},
         {% endfor %}
@@ -38,20 +38,24 @@ class {{Interface.Name}}Interface : public CdmInterface {
     {% endfor %}
 
     {% for struct in Interface.Structs %}
-    typedef struct {
+    struct {{struct.Name}} {
         {% for field in struct.Fields %}
         {{field.Type.ctype()}} {{field.Name}};
         {% endfor %}
-    } {{struct.Name}};
+
+        inline bool operator==(const {{struct.Name}}& a) {
+            return {% for field in struct.Fields %}a.{{field.Name}}=={{field.Name}}{% if not loop.last %} && {% endif %}{% endfor %};
+        }
+    };
     {% endfor %}
 
     /**
-     * Constructor of {{Interface.Name}}
+     * Constructor of {{Interface.Name}}Interface
      */
     {{Interface.Name}}Interface() {}
 
     /**
-     * Destructor of {{Interface.Name}}
+     * Destructor of {{Interface.Name}}Interface
      */
     virtual ~{{Interface.Name}}Interface() {}
 
@@ -62,14 +66,14 @@ class {{Interface.Name}}Interface : public CdmInterface {
     const CdmInterfaceType GetInterfaceType() const { return {{Interface.Name.upper_snake()}}_INTERFACE; }
 
     /**
-     * Get Introspection Xml
-     * @return xml
+     * Get Introspection XML
+     * @return Introspection XML
      */
     virtual const qcc::String& GetIntrospectionXml() { return s_xml; }
 
     /**
      * Get Interface version
-     * @return interface version
+     * @return Interface version
      */
     virtual const uint16_t GetInterfaceVersion() const { return s_interfaceVersion; }
 

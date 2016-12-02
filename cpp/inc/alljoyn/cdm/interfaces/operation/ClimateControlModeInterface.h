@@ -17,11 +17,6 @@
 #ifndef CLIMATECONTROLMODEINTERFACE_H_
 #define CLIMATECONTROLMODEINTERFACE_H_
 
-
-#include <vector>
-#include <map>
-#include <utility>
-
 #include <qcc/String.h>
 #include <alljoyn/Status.h>
 #include <alljoyn/cdm/interfaces/CdmInterface.h>
@@ -35,6 +30,24 @@ namespace services {
 class ClimateControlModeInterface : public CdmInterface {
   public:
     typedef std::vector<uint16_t> SupportedModes;
+    enum Mode {
+        MODE_OFF = 0,
+        MODE_HEAT = 1,
+        MODE_COOL = 2,
+        MODE_AUTO = 3,
+        MODE_AUXILIARY_HEAT = 4,
+        MODE_DRY = 5,
+        MODE_CONTINUOUS_DRY = 6,
+    };
+    enum OperationalState {
+        OPERATIONAL_STATE_IDLE = 0,
+        OPERATIONAL_STATE_HEATING = 1,
+        OPERATIONAL_STATE_COOLING = 2,
+        OPERATIONAL_STATE_PENDING_HEAT = 3,
+        OPERATIONAL_STATE_PENDING_COOL = 4,
+        OPERATIONAL_STATE_AUXILLIARY_HEAT = 5,
+    };
+
 
     /**
      * Constructor of ClimateControlModeInterface
@@ -48,13 +61,13 @@ class ClimateControlModeInterface : public CdmInterface {
 
     /**
      * Get Interface Type
-     * @return Interface type
+     * @return interface type
      */
     const CdmInterfaceType GetInterfaceType() const { return CLIMATE_CONTROL_MODE_INTERFACE; }
 
     /**
-     * Get Introspection Xml
-     * @return Introspection xml
+     * Get Introspection XML
+     * @return Introspection XML
      */
     virtual const qcc::String& GetIntrospectionXml() { return s_xml; }
 
@@ -65,32 +78,12 @@ class ClimateControlModeInterface : public CdmInterface {
     virtual const uint16_t GetInterfaceVersion() const { return s_interfaceVersion; }
 
     enum {
-        CLIMATE_CONTROL_MODE_OFF = 0,
-        CLIMATE_CONTROL_MODE_HEAT,
-        CLIMATE_CONTROL_MODE_COOL,
-        CLIMATE_CONTROL_MODE_AUTO,
-        CLIMATE_CONTROL_MODE_AUX_HEAT,
-        CLIMATE_CONTROL_MODE_DRY,
-        CLIMATE_CONTROL_MODE_CONT_DRY
+        MIN_CLIMATE_CONTROL_MODE = MODE_OFF,
+        MAX_CLIMATE_CONTROL_MODE = MODE_CONTINUOUS_DRY
     };
-
     enum {
-        MIN_CLIMATE_CONTROL_MODE = CLIMATE_CONTROL_MODE_OFF,
-        MAX_CLIMATE_CONTROL_MODE = CLIMATE_CONTROL_MODE_CONT_DRY
-    };
-
-    enum {
-        CLIMATE_CONTROL_OPERATIONAL_STATE_IDLE = 0,
-        CLIMATE_CONTROL_OPERATIONAL_STATE_HEATING,
-        CLIMATE_CONTROL_OPERATIONAL_STATE_COOLING,
-        CLIMATE_CONTROL_OPERATIONAL_STATE_PENDING_HEAT,
-        CLIMATE_CONTROL_OPERATIONAL_STATE_PENDING_COOL,
-        CLIMATE_CONTROL_OPERATIONAL_STATE_AUX_HEAT
-    };
-
-    enum {
-        MIN_CLIMATE_CONTROL_OPERATIONAL_STATE = CLIMATE_CONTROL_OPERATIONAL_STATE_IDLE,
-        MAX_CLIMATE_CONTROL_OPERATIONAL_STATE = CLIMATE_CONTROL_OPERATIONAL_STATE_AUX_HEAT
+        MIN_CLIMATE_CONTROL_OPERATIONAL_STATE = OPERATIONAL_STATE_IDLE,
+        MAX_CLIMATE_CONTROL_OPERATIONAL_STATE = OPERATIONAL_STATE_AUXILLIARY_HEAT
     };
 
   protected:
@@ -106,6 +99,5 @@ class ClimateControlModeInterface : public CdmInterface {
 
 } //namespace services
 } //namespace ajn
-
 
 #endif /* CLIMATECONTROLMODEINTERFACE_H_ */

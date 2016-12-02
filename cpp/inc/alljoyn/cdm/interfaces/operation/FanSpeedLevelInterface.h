@@ -29,13 +29,20 @@ namespace services {
  */
 class FanSpeedLevelInterface : public CdmInterface {
   public:
+    enum AutoMode {
+        AUTO_MODE_OFF = 0x00,
+        AUTO_MODE_ON = 0x01,
+        AUTO_MODE_NOT_SUPPORTED = 0xFF,
+    };
+
+
     /**
-     * Constructor of FanSpeedLevel
+     * Constructor of FanSpeedLevelInterface
      */
     FanSpeedLevelInterface() {}
 
     /**
-     * Destructor of FanSpeedLevel
+     * Destructor of FanSpeedLevelInterface
      */
     virtual ~FanSpeedLevelInterface() {}
 
@@ -46,14 +53,14 @@ class FanSpeedLevelInterface : public CdmInterface {
     const CdmInterfaceType GetInterfaceType() const { return FAN_SPEED_LEVEL_INTERFACE; }
 
     /**
-     * Get Introspection Xml
-     * @return xml
+     * Get Introspection XML
+     * @return Introspection XML
      */
     virtual const qcc::String& GetIntrospectionXml() { return s_xml; }
 
     /**
      * Get Interface version
-     * @return interface version
+     * @return Interface version
      */
     virtual const uint16_t GetInterfaceVersion() const { return s_interfaceVersion; }
 
