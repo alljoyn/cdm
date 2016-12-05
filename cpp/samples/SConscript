@@ -16,7 +16,7 @@ Import('cdm_env')
 
 local_env = cdm_env.Clone()
 
-local_env.Prepend(LIBS = ['alljoyn_cdm_common', 'alljoyn_cdm_util', 'alljoyn_cdm_controllee', 'alljoyn_cdm_interfaces', 'alljoyn_about' ])
+local_env.Prepend(LIBS = ['alljoyn_cdm_util', 'alljoyn_cdm_controllee', 'alljoyn_cdm_common', 'alljoyn_cdm_interfaces', 'alljoyn_about' ])
 
 if local_env['BR'] == 'on':
     # Build apps with bundled daemon support

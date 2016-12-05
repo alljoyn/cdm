@@ -20,7 +20,8 @@ for component in ('common', 'controllee', 'controller'):
     srcs += cdm_env.Glob('%s/environment/*.cc' % component)
     srcs += cdm_env.Glob('%s/input/*.cc' % component)
     srcs += cdm_env.Glob('%s/userinterfacesettings/*.cc' % component)
-    srcs += cdm_env.Glob('*.cc')
+
+srcs += cdm_env.Glob('*.cc')
 
 cdm_env.Append(CPPPATH = '.');
 
@@ -33,7 +34,6 @@ else:
 libs = []
 
 # Static library
-
 objs = cdm_env.Object(srcs)
 libs.append(cdm_env.StaticLibrary('alljoyn_cdm_interfaces', objs))
 
