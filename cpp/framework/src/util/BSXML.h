@@ -87,14 +87,6 @@ class Element {
     std::string Generate(std::string *outStr = nullptr) const;
 
     /**
-     * Return a C string representation of the Element
-     *
-     * @return   XML in form of a zero-terminated string.
-     *           Must be destroyed by the caller using "delete[]".
-     */
-    AJ_PSTR ToString() const;
-
-    /**
      * Get the element name
      *
      * @return XML element name or empty string if not set.

@@ -17,6 +17,7 @@
 #include <errno.h>
 #include <sys/stat.h>
 #include <thread>
+#include <mutex>
 #include <fstream>
 #include <vector>
 
