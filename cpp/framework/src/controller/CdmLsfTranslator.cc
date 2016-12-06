@@ -4,7 +4,12 @@
 #include <alljoyn/MsgArg.h>
 #include <alljoyn/cdm/controller/CdmLsfTranslator.h>
 #include <alljoyn/ProxyBusObject.h>
+
 #include "interfaces/controller/operation/OnOffStatusIntfController.h"
+#include "interfaces/controller/operation/BrightnessIntfController.h"
+#include "interfaces/controller/operation/ColorIntfController.h"
+#include "interfaces/controller/operation/ColorTemperatureIntfController.h"
+
 #include <alljoyn/cdm/common/LogModule.h>
 
 using namespace qcc;
@@ -12,25 +17,6 @@ using namespace std;
 
 namespace ajn {
 namespace services {
-
-////////////////////////////////////////
-//// Hack becasue i don't have the CDM16.10 interfaces right now...
-////////////////////////////////////////
-
-namespace BrightnessInterface {
-    const char * const INTERFACE_NAME = "org.alljoyn.SmartSpaces.Operation.Brightness";
-    int INTERFACE_TYPE = 1338;
-}
-
-namespace ColorInterface {
-    const char * const INTERFACE_NAME = "org.alljoyn.SmartSpaces.Operation.Color";
-    int INTERFACE_TYPE = 1337;
-}
-
-namespace ColorTemperatureInterface {
-    const char * const INTERFACE_NAME = "org.alljoyn.SmartSpaces.Operation.ColorTemperature";
-    int INTERFACE_TYPE = 1336;
-}
 
 ////////////////////////////////////////
 //// Constant strings for LSF

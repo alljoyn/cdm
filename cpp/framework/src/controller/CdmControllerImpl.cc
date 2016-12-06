@@ -233,10 +233,6 @@ void CdmControllerImpl::Announced(const char* busName, uint16_t version, Session
         return;
     }
 
-    QStatus status = ER_OK;
-    MsgArg* deviceTypeArg = NULL;
-    MsgArg* elemArg = NULL;
-    size_t elemCount = 0;
     AboutObjectDescription objectDescs(objectDescriptionArg);
 
     char* deviceID = NULL;
