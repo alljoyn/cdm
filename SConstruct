@@ -14,7 +14,7 @@
 
 import os
 
-env = SConscript('../../core/alljoyn/build_core/SConscript')
+env = SConscript('./build_core/SConscript')
 
 vars = Variables()
 vars.Add('BINDINGS', 'Bindings to build (comma separated list): cpp, java', 'cpp,java')
@@ -33,14 +33,18 @@ vars.Add(EnumVariable('UINPUT',
 vars.Update(env)
 Help(vars.GenerateHelpText(env))
 
-if env.get('ALLJOYN_DISTDIR'):
-    # normalize ALLJOYN_DISTDIR first
-    env['ALLJOYN_DISTDIR'] = env.Dir('$ALLJOYN_DISTDIR')
-    env.Append(CPPPATH = [ env.Dir('$ALLJOYN_DISTDIR/cpp/inc'),
-                           env.Dir('$ALLJOYN_DISTDIR/about/inc')])
-    env.Append(LIBPATH = [ env.Dir('$ALLJOYN_DISTDIR/cpp/lib'),
-                           env.Dir('$ALLJOYN_DISTDIR/about/lib')])
+if '' == env.subst('$ALLJOYN_DISTDIR'):
+    print 'ALLJOYN_DISTDIR variable is required'
+    if not GetOption('help'):
+        Exit(1)
+else:
+    if env.get('ALLJOYN_DISTDIR'):
+        # normalize ALLJOYN_DISTDIR first
+        env['ALLJOYN_DISTDIR'] = env.Dir('$ALLJOYN_DISTDIR')
+        env.Append(CPPPATH = [ env.Dir('$ALLJOYN_DISTDIR/cpp/inc'),
+                               env.Dir('$ALLJOYN_DISTDIR/cpp/inc/alljoyn')])
+        env.Append(LIBPATH = [ env.Dir('$ALLJOYN_DISTDIR/cpp/lib')])
 
-env['bindings'] = set([ b.strip() for b in env['BINDINGS'].split(',') ])
+    env['bindings'] = set([ b.strip() for b in env['BINDINGS'].split(',') ])
 
-env.SConscript('SConscript')
+    env.SConscript('SConscript')
