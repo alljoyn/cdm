@@ -489,13 +489,6 @@ std::string Element::Generate(std::string *outStr) const {
     return *outStr;
 }
 
-AJ_PSTR Element::ToString() const {
-    std::string tempXml = Generate();
-    AJ_PSTR xml = new char[tempXml.size() + 1];
-    strcpy(xml, tempXml.c_str());
-    return xml;
-}
-
 Element *Element::CreateChild(const std::string &elementName) {
     new Element(elementName, this, true);
     return children.back();

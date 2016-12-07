@@ -20,7 +20,7 @@ local_env.Prepend(LIBS = ['alljoyn_cdm_util', 'alljoyn_cdm_controllee', 'alljoyn
 
 if local_env['BR'] == 'on':
     # Build apps with bundled daemon support
-    local_env.Prepend(LIBS = [local_env['ajrlib']])
+    local_env.Append(LIBS = [local_env['ajrlib']])
 
 # Sample programs
 
