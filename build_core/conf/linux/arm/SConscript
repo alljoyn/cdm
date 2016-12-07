@@ -11,20 +11,31 @@
 #    WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 #    ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 #    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-
-import os
+# 
 
 Import('env')
+import os
 
-env['_ALLJOYN_CDM_'] = True
-env['OBJDIR_SERVICES_CDM'] = env['OBJDIR'] + '/services/cdm'
+# Linux specific flags
+env.Append(CPPFLAGS=['-march=armv6',
+                     '-mthumb-interwork'])
 
-cdm_env = env.Clone()
-cdm_env.Append(LIBPATH = '$DISTDIR/cdm/lib')
-cdm_env.Append(CPPPATH = '$DISTDIR/cdm/framework/inc')
-cdm_env.Append(CPPPATH = '$DISTDIR/cdm/interfaces/inc')
+# Use the OpenEmbedded cross-compilation environment
+vars = Variables()
+vars.Add('CROSS_COMPILE', 'Cross compile toolchain prefix', os.environ.get('CROSS_COMPILE'))
+vars.Update(env)
+Help(vars.GenerateHelpText(env))
 
-for b in cdm_env['bindings']:
-    if os.path.exists('%s/SConscript' % b):
-        cdm_env.VariantDir('$OBJDIR_SERVICES_CDM/%s' % b, b, duplicate = 0)
-        cdm_env.SConscript(['$OBJDIR_SERVICES_CDM/%s/SConscript' % b for b in env['bindings'] ], exports = ['cdm_env'])
+# Use common CROSS_COMPILE prefix
+if '' == env.subst('$CROSS_COMPILE'):
+   print 'CROSS_COMPILE variable is required for Linux/ARM builds'
+   if not GetOption('help'):
+      Exit(1)
+
+env['CC']   = env['CROSS_COMPILE'] + 'gcc'
+env['CXX']  = env['CROSS_COMPILE'] + 'g++'
+env['LINK'] = env['CROSS_COMPILE'] + 'gcc'
+
+
+
+
