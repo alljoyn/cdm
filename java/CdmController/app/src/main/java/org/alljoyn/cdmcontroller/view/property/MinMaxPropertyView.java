@@ -28,6 +28,7 @@ import android.widget.TextView;
 import org.alljoyn.bus.BusException;
 import org.alljoyn.bus.Variant;
 import org.alljoyn.cdmcontroller.R;
+import org.alljoyn.cdmcontroller.logic.Device;
 import org.alljoyn.cdmcontroller.view.PropertyView;
 import org.alljoyn.cdmcontroller.view.custom.MinMaxSeekBar;
 import org.alljoyn.cdmcontroller.util.CdmUtil;
@@ -36,10 +37,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public class MinMaxPropertyView extends PropertyView {
-    private Method minGetter;
-    private Method maxGetter;
-    private Method stepGetter;
-
     private TextView nameView;
     private TextView valueView;
     private TextView minView;
@@ -47,8 +44,6 @@ public class MinMaxPropertyView extends PropertyView {
     private MinMaxSeekBar seekBar;
     private TextView stepView;
     private TextView unitView;
-    private Button submitBtn;
-
     private String minName;
     private String maxName;
     private String stepName;
@@ -56,29 +51,13 @@ public class MinMaxPropertyView extends PropertyView {
     private double max;
     private double step;
 
-    public MinMaxPropertyView(Context context, Object obj, String valuePropertyName, String unit, String minPropertyName, String maxPropertyName, String stepPropertyName) {
-        super(context, obj, valuePropertyName, unit);
+    public MinMaxPropertyView(Context context, Device device, String objPath,
+                              String interfaceName, String valuePropertyName, String unit,
+                              String minPropertyName, String maxPropertyName, String stepPropertyName) {
+        super(context, device, objPath, interfaceName, valuePropertyName, unit);
         this.minName = minPropertyName;
         this.maxName = maxPropertyName;
         this.stepName = stepPropertyName;
-        try {
-            if (minPropertyName == null || minPropertyName.isEmpty())
-                this.minGetter = null;
-            else
-                this.minGetter = obj.getClass().getDeclaredMethod("get" + minPropertyName);
-
-            if (maxPropertyName == null || maxPropertyName.isEmpty())
-                this.maxGetter = null;
-            else
-                this.maxGetter = obj.getClass().getDeclaredMethod("get" + maxPropertyName);
-
-            if (stepPropertyName == null || stepPropertyName.isEmpty())
-                this.stepGetter = null;
-            else
-                this.stepGetter = obj.getClass().getDeclaredMethod("get" + stepPropertyName);
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        }
     }
 
     public String[] getNames() {
@@ -109,13 +88,13 @@ public class MinMaxPropertyView extends PropertyView {
         this.seekBar.setOnSeekBarChangeListener(new MinMaxSeekBar.OnMinMaxSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, double progress) {
-                Object obj = CdmUtil.parseParam(MinMaxPropertyView.this.valueGetter.getReturnType(), progress);
+                Object obj = CdmUtil.parseParam(MinMaxPropertyView.this.propertyType, progress);
                 MinMaxPropertyView.this.setValueView(obj);
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar, double progress) {
-                Object obj = CdmUtil.parseParam(MinMaxPropertyView.this.valueGetter.getReturnType(), progress);
+                Object obj = CdmUtil.parseParam(MinMaxPropertyView.this.propertyType, progress);
                 MinMaxPropertyView.this.setProperty(obj);
             }
         });
@@ -125,7 +104,7 @@ public class MinMaxPropertyView extends PropertyView {
     public void onPropertiesChangedSignal(String name, Variant value) {
         Object obj = null;
         try {
-            obj = value.getObject(this.valueGetter.getReturnType());
+            obj = value.getObject(this.propertyType);
         } catch (BusException e) {
             e.printStackTrace();
             return;
@@ -186,16 +165,7 @@ public class MinMaxPropertyView extends PropertyView {
         new AsyncTask<Void, Void, Object>() {
             @Override
             protected Object doInBackground(Void... params) {
-                Object returnObj = null;
-                try {
-                    if (MinMaxPropertyView.this.minGetter != null)
-                        returnObj = minGetter.invoke(MinMaxPropertyView.this.busObject);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                }
-                return returnObj;
+                return device.getProperty(MinMaxPropertyView.this.objPath, MinMaxPropertyView.this.interfaceName, MinMaxPropertyView.this.minName);
             }
 
             @Override
@@ -207,16 +177,7 @@ public class MinMaxPropertyView extends PropertyView {
         new AsyncTask<Void, Void, Object>() {
             @Override
             protected Object doInBackground(Void... params) {
-                Object returnObj = null;
-                try {
-                    if (MinMaxPropertyView.this.maxGetter != null)
-                        returnObj = maxGetter.invoke(MinMaxPropertyView.this.busObject);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                }
-                return returnObj;
+                return device.getProperty(MinMaxPropertyView.this.objPath, MinMaxPropertyView.this.interfaceName, MinMaxPropertyView.this.maxName);
             }
 
             @Override
@@ -228,16 +189,7 @@ public class MinMaxPropertyView extends PropertyView {
         new AsyncTask<Void, Void, Object>() {
             @Override
             protected Object doInBackground(Void... params) {
-                Object returnObj = null;
-                try {
-                    if (MinMaxPropertyView.this.stepGetter != null)
-                        returnObj = stepGetter.invoke(MinMaxPropertyView.this.busObject);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                }
-                return returnObj;
+                return device.getProperty(MinMaxPropertyView.this.objPath, MinMaxPropertyView.this.interfaceName, MinMaxPropertyView.this.stepName);
             }
 
             @Override

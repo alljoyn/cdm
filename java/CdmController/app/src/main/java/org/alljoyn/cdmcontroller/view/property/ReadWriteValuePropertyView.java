@@ -28,6 +28,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import org.alljoyn.cdmcontroller.R;
+import org.alljoyn.cdmcontroller.logic.Device;
 import org.alljoyn.cdmcontroller.util.CdmUtil;
 import org.alljoyn.cdmcontroller.view.PropertyView;
 
@@ -41,13 +42,13 @@ public class ReadWriteValuePropertyView extends PropertyView {
 
     boolean isSigned = true;
 
-    public ReadWriteValuePropertyView(Context context, Object obj, String propertyName, String unit, boolean isSigned) {
-        super(context, obj, propertyName, unit);
+    public ReadWriteValuePropertyView(Context context, Device device, String objPath, String interfaceName, String propertyName, String unit, boolean isSigned) {
+        super(context, device, objPath, interfaceName, propertyName, unit);
         this.isSigned = isSigned;
     }
 
-    public ReadWriteValuePropertyView(Context context, Object obj, String propertyName, String unit) {
-        this(context, obj, propertyName, unit, true);
+    public ReadWriteValuePropertyView(Context context, Device device, String objPath, String interfaceName, String propertyName, String unit) {
+        this(context, device, objPath, interfaceName, propertyName, unit, true);
     }
 
     public void initView() {
@@ -63,9 +64,9 @@ public class ReadWriteValuePropertyView extends PropertyView {
         this.submitBtn = (Button) view.findViewById(R.id.submit);
         Log.d(TAG, "1: valueView is " + this.valueView.toString());
 
-        if (this.valueGetter.getReturnType().isPrimitive()) {
+        if (propertyType.isPrimitive()) {
             int flag = InputType.TYPE_CLASS_NUMBER;
-            if (this.valueGetter.getReturnType() == Double.TYPE)
+            if (propertyType == Double.TYPE)
                 flag |= InputType.TYPE_NUMBER_FLAG_DECIMAL;
             if (isSigned)
                 flag |= InputType.TYPE_NUMBER_FLAG_SIGNED;

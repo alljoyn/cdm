@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto" >
+
+    <item
+        android:id="@+id/action_preset"
+        android:icon="@drawable/settings"
+        android:title="Presets"
+        app:showAsAction="ifRoom">
+
+        <menu>
+            <item
+                android:id="@+id/save_preset"
+                android:title="Save Preset"/>
+            <item
+                android:id="@+id/apply_preset"
+                android:title="Apply Preset"/>
+            <item
+                android:id="@+id/delete_preset"
+                android:title="Delete Preset"/>
+        </menu>
+
+    </item>
+
+    <item android:id="@+id/action_settings"
+          android:title="Settings"
+          app:showAsAction="never"/>
+
+</menu>

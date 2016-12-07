@@ -23,49 +23,43 @@ import android.widget.Toast;
 
 import org.alljoyn.bus.BusException;
 import org.alljoyn.bus.Variant;
-import org.alljoyn.cdmcontroller.util.CdmUtil;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import org.alljoyn.cdmcontroller.logic.Device;
 
 public abstract class PropertyView extends LinearLayout {
-    protected Method valueGetter = null;
-    protected Method valueSetter = null;
+    protected Device device = null;
 
-    protected Object busObject = null;
-
+    protected String objPath = null;
+    protected String interfaceName = null;
     protected String name = null;
     protected String unit = null;
 
     protected Object currentValue = null;
+    protected Class<?> propertyType = null;
+    protected Class<?>[] propertyParameterTypes = null;
 
-    public PropertyView(Context context, Object obj, String propertyName, String unit) {
+    public PropertyView(Context context, Device obj, String objPath, String interfaceName, String propertyName, String unit) {
         super(context);
-        try {
-            this.valueGetter = obj.getClass().getDeclaredMethod("get" + propertyName);
-        } catch (NoSuchMethodException e) {
-            this.valueGetter = null;
-        }
-
-        try {
-            this.valueSetter = obj.getClass().getDeclaredMethod("set" + propertyName, this.valueGetter.getReturnType());
-        } catch (NoSuchMethodException e) {
-            this.valueSetter = null;
-        }
-
+        this.device = obj;
+        this.objPath = objPath;
+        this.interfaceName = interfaceName;
         this.name = propertyName;
-        this.busObject = obj;
         this.unit = unit;
+        this.propertyType = this.device.getPropertyType(this.objPath, this.interfaceName, this.name);
+        this.propertyParameterTypes = this.device.getPropertyParameterTypes(this.objPath, this.interfaceName, this.name);
     }
 
     public String[] getNames() { return new String[]{this.name}; }
+
+    public String getName() { return this.name; }
+
+    public Object getCurrentValue() { return this.currentValue; }
 
     public void onPropertiesChangedSignal(String name, Variant value) {
         if (!name.equals(this.name))
             return;
 
         try {
-            this.currentValue = value.getObject(this.valueGetter.getReturnType());
+            this.currentValue = value.getObject(propertyType);
             this.setValueView(this.currentValue);
         } catch (BusException e) {
             e.printStackTrace();
@@ -85,19 +79,8 @@ public abstract class PropertyView extends LinearLayout {
         AsyncTask<Object, Void, Boolean> excuteSet = new AsyncTask<Object, Void, Boolean>() {
             @Override
             protected Boolean doInBackground(Object... params) {
-                try {
-                    if (PropertyView.this.valueSetter != null) {
-                        Object param = CdmUtil.parseParam(PropertyView.this.valueGetter.getReturnType(), params[0]);
-                        valueSetter.invoke(PropertyView.this.busObject, param);
-                    } else
-                        return false;
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                    return false;
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                    return false;
-                }
+                Device device = PropertyView.this.device;
+                device.setProperty(PropertyView.this.objPath, PropertyView.this.interfaceName, PropertyView.this.name, params[0]);
                 PropertyView.this.currentValue = params[0];
                 return true;
             }
@@ -118,23 +101,14 @@ public abstract class PropertyView extends LinearLayout {
         AsyncTask<Void, Void, Object> excuteGet = new AsyncTask<Void, Void, Object>() {
             @Override
             protected Object doInBackground(Void... params) {
-                Object returnObj = null;
-                try {
-                    if (PropertyView.this.valueGetter != null) {
-                        returnObj = valueGetter.invoke(PropertyView.this.busObject);
-                        PropertyView.this.currentValue = returnObj;
-                    }
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                }
+                Device device = PropertyView.this.device;
+                Object returnObj = device.getProperty(PropertyView.this.objPath, PropertyView.this.interfaceName, PropertyView.this.name);
+                PropertyView.this.currentValue = returnObj;
                 return returnObj;
             }
 
             @Override
             protected void onPostExecute(Object o) {
-                String strResult;
                 if (o != null) {
                     PropertyView.this.setValueView(o);
                 } else {

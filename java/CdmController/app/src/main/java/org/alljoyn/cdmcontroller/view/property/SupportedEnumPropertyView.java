@@ -29,6 +29,7 @@ import android.widget.TextView;
 
 import org.alljoyn.bus.BusException;
 import org.alljoyn.bus.Variant;
+import org.alljoyn.cdmcontroller.logic.Device;
 import org.alljoyn.cdmcontroller.view.PropertyView;
 import org.alljoyn.smartspaces.EnumBase;
 import org.alljoyn.cdmcontroller.R;
@@ -40,26 +41,18 @@ import java.lang.reflect.Method;
 public class SupportedEnumPropertyView<T extends EnumBase<T>> extends PropertyView {
     private static final String TAG = "CDM_ReadWriteProperty";
 
-    private Method supportedGetter = null;
     private String supportedName;
-
     private TextView nameView;
+
     protected Spinner valuesView;
-
     protected Class<T> clazz;
-
     protected ArrayAdapter<T> valuesAdapter;
     protected AdapterView.OnItemSelectedListener listener = null;
 
-    public SupportedEnumPropertyView(Context context, Object obj, String propertyName, String supportedEnumPropertyName, Class<T> clazz) {
-        super(context, obj, propertyName, null);
+    public SupportedEnumPropertyView(Context context, Device device, String objPath, String interfaceName, String propertyName, String supportedEnumPropertyName, Class<T> clazz) {
+        super(context, device, objPath, interfaceName, propertyName, null);
         this.supportedName = supportedEnumPropertyName;
         this.clazz = clazz;
-        try {
-            this.supportedGetter = obj.getClass().getMethod("get" + supportedEnumPropertyName);
-        } catch (NoSuchMethodException e) {
-            this.supportedGetter = null;
-        }
     }
 
     public String[] getNames() {
@@ -88,7 +81,7 @@ public class SupportedEnumPropertyView<T extends EnumBase<T>> extends PropertyVi
     public void onPropertiesChangedSignal(String name, Variant value) {
         Object obj = null;
         try {
-            obj = value.getObject(this.valueGetter.getReturnType());
+            obj = value.getObject(this.propertyType);
         } catch (BusException e) {
             e.printStackTrace();
             return;
@@ -140,24 +133,10 @@ public class SupportedEnumPropertyView<T extends EnumBase<T>> extends PropertyVi
     public void getProperty() {
         super.getProperty();
 
-        AsyncTask<Void, Void, Object> execute = new AsyncTask<Void, Void, Object>() {
-
+        new AsyncTask<Void, Void, Object>() {
             @Override
             protected Object doInBackground(Void... voids) {
-                Object returnObj = null;
-                try {
-                    if (SupportedEnumPropertyView.this.supportedGetter != null) {
-                        Class<?>[] paramTypes = SupportedEnumPropertyView.this.supportedGetter.getParameterTypes();
-                        Object[] params = new Object[paramTypes.length];
-                        int idx = 0;
-                        returnObj = supportedGetter.invoke(SupportedEnumPropertyView.this.busObject);
-                    }
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                }
-                return returnObj;
+                return device.getProperty(SupportedEnumPropertyView.this.objPath, SupportedEnumPropertyView.this.interfaceName, SupportedEnumPropertyView.this.supportedName);
             }
 
             @Override

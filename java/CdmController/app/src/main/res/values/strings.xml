@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">CdmController</string>
-
+    <string name="app_name_spaces">CDM Controller</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 </resources>

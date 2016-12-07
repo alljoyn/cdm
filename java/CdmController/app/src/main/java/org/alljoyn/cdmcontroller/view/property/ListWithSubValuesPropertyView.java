@@ -26,6 +26,7 @@ import android.widget.TextView;
 import org.alljoyn.bus.BusException;
 import org.alljoyn.bus.Variant;
 import org.alljoyn.cdmcontroller.R;
+import org.alljoyn.cdmcontroller.logic.Device;
 import org.alljoyn.cdmcontroller.util.CdmUtil;
 import org.alljoyn.cdmcontroller.view.PropertyView;
 
@@ -45,14 +46,14 @@ public class ListWithSubValuesPropertyView extends PropertyView {
     private SupportedSubValue[] supportedSubValues;
     private String paramName;
 
-    public ListWithSubValuesPropertyView(Context context, Object obj, String propertyName, String paramName, String unit, String... supportedNames) {
-        super(context, obj, propertyName, unit);
+    public ListWithSubValuesPropertyView(Context context, Device device, String objPath, String interfaceName, String propertyName, String paramName, String unit, String... supportedNames) {
+        super(context, device, objPath, interfaceName, propertyName, unit);
 
         supportedSubValues = new SupportedSubValue[supportedNames.length];
         int idx = 0;
         for (String supportedName : supportedNames)
         {
-            supportedSubValues[idx] = new SupportedSubValue(obj, supportedName, idx, this);
+            supportedSubValues[idx] = new SupportedSubValue(device, supportedName, idx, this);
             idx++;
         }
         this.paramName = paramName;
@@ -91,10 +92,11 @@ public class ListWithSubValuesPropertyView extends PropertyView {
                 subValueViews[i][iInItem].setText("Value");
         }
     }
+
     public void onPropertiesChangedSignal(String name, Variant value) {
         Object obj = null;
         try {
-            obj = value.getObject(this.valueGetter.getReturnType());
+            obj = value.getObject(this.propertyType);
         } catch (BusException e) {
             e.printStackTrace();
             return;
@@ -193,34 +195,28 @@ public class ListWithSubValuesPropertyView extends PropertyView {
     }
 
     private class SupportedSubValue {
-        private Method supportedGetter = null;
         private String supportedName = null;
-        public String getSupportedName()
-        {
-            return supportedName;
-        }
+        private Device device;
         private int id;
-
         private ArrayList<Object> values;
         private ListWithSubValuesPropertyView parent;
 
-        public SupportedSubValue(Object obj, String supportedName, int id, ListWithSubValuesPropertyView parent) {
-            try {
-                this.supportedGetter = obj.getClass().getMethod("get" + supportedName);
-            } catch (NoSuchMethodException e) {
-                this.supportedGetter = null;
-            }
+        public SupportedSubValue(Device device, String supportedName, int id, ListWithSubValuesPropertyView parent) {
             this.supportedName = supportedName;
+            this.device = device;
             this.id = id;
             this.parent = parent;
             values = new ArrayList<Object>();
         }
 
+        public String getSupportedName() {
+            return supportedName;
+        }
+
         public boolean onPropertiesChangedSignal(String name, Variant value) {
             Object obj = null;
             try {
-                //or valueGetter need to check
-                obj = value.getObject(this.supportedGetter.getReturnType());
+                obj = value.getObject(ListWithSubValuesPropertyView.this.propertyType);
             } catch (BusException e) {
                 e.printStackTrace();
                 return false;
@@ -234,27 +230,22 @@ public class ListWithSubValuesPropertyView extends PropertyView {
         }
 
         public void getSupportedSubValuesProperty() {
-
-            AsyncTask<Void, Void, Object> execute = new AsyncTask<Void, Void, Object>() {
+            new AsyncTask<Void, Void, Object>() {
                 @Override
                 protected Object doInBackground(Void... voids) {
                     Object returnObj = null;
-                    try {
-                        if (supportedGetter != null) {
-                            Class<?>[] paramTypes = supportedGetter.getParameterTypes();
-                            Object[] params = new Object[paramTypes.length];
-                            int idx = 0;
-                            for (Class<?> clazz : paramTypes) {
-                                params[idx] = CdmUtil.parseParam(clazz, params[idx]);
-                                idx++;
-                            }
-                            returnObj = supportedGetter.invoke(ListWithSubValuesPropertyView.this.busObject, params);
-                        }
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    } catch (InvocationTargetException e) {
-                        e.printStackTrace();
+                    Class<?>[] paramTypes = ListWithSubValuesPropertyView.this.propertyParameterTypes;
+                    Object[] params = new Object[paramTypes.length];
+                    int idx = 0;
+                    for (Class<?> clazz : paramTypes) {
+                        params[idx] = CdmUtil.parseParam(clazz, params[idx]);
+                        idx++;
                     }
+                    returnObj = device.getProperty(
+                            ListWithSubValuesPropertyView.this.objPath,
+                            ListWithSubValuesPropertyView.this.interfaceName,
+                            SupportedSubValue.this.supportedName,
+                            params);
                     return returnObj;
                 }
 
@@ -277,7 +268,7 @@ public class ListWithSubValuesPropertyView extends PropertyView {
         }
 
         public Object getSupportedValue(int i) {
-            if ((values == null) || (values.isEmpty()) || (values.size()< i))
+            if ((values == null) || (values.isEmpty()) || (values.size()<= i))
                 return null;
             else
                 return values.get(i);

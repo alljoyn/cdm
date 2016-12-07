@@ -17,14 +17,16 @@
 package org.alljoyn.cdmcontroller.view.method;
 
 import android.content.Context;
+
+import org.alljoyn.cdmcontroller.logic.Device;
 import org.alljoyn.cdmcontroller.view.property.OnMethodResultListener;
 import java.util.ArrayList;
 
 public class MethodResultEventView extends MethodView {
     private ArrayList<OnMethodResultListener> onResultListener = null;
 
-    public MethodResultEventView(Context context, Object obj, String methodName, String... paramNames) {
-        super(context, obj, methodName, paramNames);
+    public MethodResultEventView(Context context, Device device, String objPath, String interfaceName, String methodName, String... paramNames) {
+        super(context, device, objPath, interfaceName, methodName, paramNames);
     }
 
     @Override

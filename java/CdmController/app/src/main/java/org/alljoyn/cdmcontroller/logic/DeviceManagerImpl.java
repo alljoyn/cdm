@@ -32,6 +32,7 @@ import org.alljoyn.bus.Status;
 import org.alljoyn.bus.Variant;
 import org.alljoyn.cdmcontroller.util.CdmUtil;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -244,8 +245,32 @@ public class DeviceManagerImpl extends DeviceManager {
     }
 
     @Override
+    public void addDevice(Device device){
+        this.deviceMap.put(device.getId(), device);
+    }
+
+    @Override
     public Collection<Device> getDevices() {
-        return this.deviceMap.values();
+        Collection<Device> devices = new ArrayList<>();
+
+        for(Device device : deviceMap.values()) {
+            if(!device.canAddChildren()){
+                devices.add(device);
+            }
+        }
+        return devices;
+    }
+
+    @Override
+    public Collection<Device> getDeviceGroups() {
+        Collection<Device> deviceGroups = new ArrayList<>();
+
+        for(Device device : deviceMap.values()) {
+            if(device.canAddChildren()){
+                deviceGroups.add(device);
+            }
+        }
+        return deviceGroups;
     }
 
     @Override

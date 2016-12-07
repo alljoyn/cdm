@@ -33,19 +33,17 @@ import org.alljoyn.bus.BusException;
 import org.alljoyn.bus.Variant;
 import org.alljoyn.bus.annotation.Position;
 import org.alljoyn.cdmcontroller.R;
+import org.alljoyn.cdmcontroller.logic.Device;
 import org.alljoyn.cdmcontroller.util.CdmUtil;
 import org.alljoyn.cdmcontroller.view.PropertyView;
 import org.alljoyn.smartspaces.EnumBase;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 public class SupportedVendorValuesAndEnumPropertyView<T extends EnumBase<T>> extends PropertyView
         implements OnMethodResultListener{
     private static final String TAG = "CDM_ReadProperty";
-
-    private Method supportedGetter = null;
 
     private TextView nameView;
     private Spinner valuesView;
@@ -58,7 +56,6 @@ public class SupportedVendorValuesAndEnumPropertyView<T extends EnumBase<T>> ext
     private ArrayAdapter<Item<Object>> valuesAdapter;
     private SpinnerInteractionListener listener = null;
 
-    private Method supportedEnumGetter = null;
     private Class<T> enumClazz = null;
 
     private String supportedEnumName = null;
@@ -116,33 +113,25 @@ public class SupportedVendorValuesAndEnumPropertyView<T extends EnumBase<T>> ext
         }
     }
 
-    public SupportedVendorValuesAndEnumPropertyView(Context context, Object obj, String propertyName, String unit, int positionName, int positionValue, String supportedEnumPropertyName, Class<T> clazz, String SupportedListMethodName, Object... parameters) {
-        super(context, obj, propertyName, unit);
+    public SupportedVendorValuesAndEnumPropertyView(Context context, Device device, String objPath,
+                                                    String interfaceName, String propertyName, String unit,
+                                                    int positionName, int positionValue, String supportedEnumPropertyName,
+                                                    Class<T> clazz, String SupportedListMethodName, Object... parameters) {
+        super(context, device, objPath, interfaceName, propertyName, unit);
 
         params = parameters;
 
         this.positionName = positionName;
         this.positionValue = positionValue;
-
-        this.supportedGetter = null;
-        SupportedListMethodName = SupportedListMethodName.toUpperCase();
-        for (Method method : obj.getClass().getDeclaredMethods()) {
-            if (method.getName().toUpperCase().equals(SupportedListMethodName)) {
-                this.supportedGetter = method;
-                break;
-            }
-        }
         this.enumClazz = clazz;
-        try {
-            this.supportedEnumGetter = obj.getClass().getMethod("get" + supportedEnumPropertyName);
-        } catch (NoSuchMethodException e) {
-            this.supportedEnumGetter = null;
-        }
         this.supportedEnumName = supportedEnumPropertyName;
     }
 
-    public SupportedVendorValuesAndEnumPropertyView(Context context, Object obj, String propertyName, String unit, String supportedEnumPropertyName, Class<T> clazz, String SupportedListMethodName, Object... parameters) {
-        this(context, obj, propertyName, unit, -1, -1, supportedEnumPropertyName, clazz, SupportedListMethodName, parameters);
+    public SupportedVendorValuesAndEnumPropertyView(Context context, Device device, String objPath,
+                                                    String interfaceName, String propertyName, String unit,
+                                                    String supportedEnumPropertyName, Class<T> clazz, String SupportedListMethodName,
+                                                    Object... parameters) {
+        this(context, device, objPath, interfaceName, propertyName, unit, -1, -1, supportedEnumPropertyName, clazz, SupportedListMethodName, parameters);
     }
 
     public String[] getNames() {
@@ -175,7 +164,7 @@ public class SupportedVendorValuesAndEnumPropertyView<T extends EnumBase<T>> ext
     public void onPropertiesChangedSignal(String name, Variant value) {
         Object obj = null;
         try {
-            obj = value.getObject(this.valueGetter.getReturnType());
+            obj = value.getObject(this.propertyType);
         } catch (BusException e) {
             e.printStackTrace();
             return;
@@ -280,25 +269,22 @@ public class SupportedVendorValuesAndEnumPropertyView<T extends EnumBase<T>> ext
 
     @Override
     public void getProperty() {
-        AsyncTask<Void, Void, Object> execute = new AsyncTask<Void, Void, Object>() {
+        new AsyncTask<Void, Void, Object>() {
             @Override
             protected Object doInBackground(Void... voids) {
                 Object returnObj = null;
                 try {
-                    if (SupportedVendorValuesAndEnumPropertyView.this.supportedGetter != null) {
-                        Class<?>[] paramTypes = SupportedVendorValuesAndEnumPropertyView.this.supportedGetter.getParameterTypes();
-                        Object[] params = new Object[paramTypes.length];
-                        int idx = 0;
-                        for (Class<?> clazz : paramTypes) {
-                            SupportedVendorValuesAndEnumPropertyView.this.params[idx] = CdmUtil.parseParam(clazz, SupportedVendorValuesAndEnumPropertyView.this.params[idx]);
-                            idx++;
-                        }
-                        returnObj = SupportedVendorValuesAndEnumPropertyView.this.supportedGetter.invoke(SupportedVendorValuesAndEnumPropertyView.this.busObject, SupportedVendorValuesAndEnumPropertyView.this.params);
+                    Class<?>[] paramTypes = SupportedVendorValuesAndEnumPropertyView.this.propertyParameterTypes;
+                    int idx = 0;
+                    for (Class<?> clazz : paramTypes) {
+                        SupportedVendorValuesAndEnumPropertyView.this.params[idx] = CdmUtil.parseParam(clazz, SupportedVendorValuesAndEnumPropertyView.this.params[idx]);
+                        idx++;
                     }
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
+                    returnObj = device.getProperty(
+                            SupportedVendorValuesAndEnumPropertyView.this.objPath,
+                            SupportedVendorValuesAndEnumPropertyView.this.interfaceName,
+                            SupportedVendorValuesAndEnumPropertyView.this.name,
+                            SupportedVendorValuesAndEnumPropertyView.this.params);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -311,20 +297,13 @@ public class SupportedVendorValuesAndEnumPropertyView<T extends EnumBase<T>> ext
             }
         }.execute();
 
-        AsyncTask<Void, Void, Object> executeEnum = new AsyncTask<Void, Void, Object>() {
+        new AsyncTask<Void, Void, Object>() {
             @Override
             protected Object doInBackground(Void... voids) {
-                Object returnObj = null;
-                try {
-                    if (SupportedVendorValuesAndEnumPropertyView.this.supportedEnumGetter != null) {
-                        returnObj = supportedEnumGetter.invoke(SupportedVendorValuesAndEnumPropertyView.this.busObject);
-                    }
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                }
-                return returnObj;
+                return device.getProperty(
+                        SupportedVendorValuesAndEnumPropertyView.this.objPath,
+                        SupportedVendorValuesAndEnumPropertyView.this.interfaceName,
+                        SupportedVendorValuesAndEnumPropertyView.this.supportedEnumName);
             }
 
             @Override
@@ -332,12 +311,12 @@ public class SupportedVendorValuesAndEnumPropertyView<T extends EnumBase<T>> ext
                 setSupportedEnumListView(o);
             }
         }.execute();
+
         super.getProperty();
     }
 
     private void warning(String msg) {
         Toast.makeText(this.getContext(), msg, Toast.LENGTH_SHORT).show();
     }
-
 
 }
