@@ -64,7 +64,7 @@ public abstract class InterfaceActivity extends Activity implements BusObject {
     private IntentFilter filter = new IntentFilter();
 
     private UUID deviceId = null;
-    private String objPath = null;
+    protected String objPath = null;
     private String intfName = null;
 
     protected Object intf;
@@ -187,7 +187,7 @@ public abstract class InterfaceActivity extends Activity implements BusObject {
 
         Status status = Status.FAIL;
         status = DeviceManager.getInstance().getDevice(this.deviceId).registerSignal(this);
-        status = DeviceManager.getInstance().getDevice(this.deviceId).registerPropertiesChangedSignal(this.propertiesChangedListener);
+        status = DeviceManager.getInstance().getDevice(this.deviceId).registerPropertiesChangedSignal(this.objPath, this.intfName, this.propertiesChangedListener);
 
         LinearLayout propertyView = (LinearLayout) findViewById(R.id.property_body);
         LinearLayout methodView = (LinearLayout) findViewById(R.id.method_body);

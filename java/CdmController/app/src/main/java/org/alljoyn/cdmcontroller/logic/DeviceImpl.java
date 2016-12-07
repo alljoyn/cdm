@@ -33,8 +33,14 @@ import org.alljoyn.bus.SessionOpts;
 import org.alljoyn.bus.Status;
 import org.alljoyn.bus.Variant;
 import org.alljoyn.cdmcontroller.util.CdmUtil;
+import org.alljoyn.cdmcontroller.view.PropertyView;
+import org.alljoyn.cdmcontroller.view.method.MethodView;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -51,9 +57,8 @@ public class DeviceImpl implements Device {
     private AboutObjectDescription[] aboutObjectDescriptions = null;
     private Map<String, Variant> aboutData = null;
     Mutable.IntegerValue sessionId = null;
-    private ProxyBusObject proxyBusObject;
-    private String interfaceName;
-    private String objPath;
+    private Map<String, Map<String, ProxyBusObject>> proxyBusObjects;
+    private Map<String, Map<String, Object>> interfaceBusObjects;
 
     public DeviceImpl(Context context, BusAttachment bus, UUID deviceId, String busName, int version, short port, AboutObjectDescription[] aboutObjectDescriptions, Map<String, Variant> aboutData) {
         this.context = context;
@@ -64,6 +69,8 @@ public class DeviceImpl implements Device {
         this.port = port;
         this.aboutObjectDescriptions = aboutObjectDescriptions;
         this.aboutData = aboutData;
+        this.proxyBusObjects = new HashMap<>();
+        this.interfaceBusObjects = new HashMap<>();
     }
 
     public String getName() {
@@ -125,6 +132,11 @@ public class DeviceImpl implements Device {
 
     @Override
     public Object getInterface(String objPath, String intfName) {
+        Object proxyBusObjectIntf = getFromMap(this.interfaceBusObjects, objPath, intfName);
+        if(proxyBusObjectIntf != null) {
+            return proxyBusObjectIntf;
+        }
+
         String pkg = intfName.substring(0, intfName.lastIndexOf('.'));
         String name = intfName.substring(intfName.lastIndexOf('.') + 1);
         Class<?> clazz = null;
@@ -141,12 +153,29 @@ public class DeviceImpl implements Device {
                 return null;
         }
 
-        this.interfaceName = intfName;
-        this.objPath = objPath;
-        this.proxyBusObject = this.bus.getProxyBusObject(this.busName, objPath,
+        ProxyBusObject proxyBusObject = this.bus.getProxyBusObject(this.busName, objPath,
                 sessionId.value, new Class<?>[]{clazz});
+        addToMap(this.proxyBusObjects, objPath, intfName, proxyBusObject);
+        proxyBusObjectIntf = proxyBusObject.getInterface(clazz);
+        addToMap(this.interfaceBusObjects, objPath, intfName, proxyBusObjectIntf);
+        return proxyBusObjectIntf;
+    }
 
-        return proxyBusObject.getInterface(clazz);
+    private <T> void addToMap(Map<String, Map<String, T>> map, String objPath, String intfName, T value) {
+        Map<String, T> innerMap = map.get(objPath);
+        if (innerMap == null) {
+            innerMap = new HashMap<>();
+            map.put(objPath, innerMap);
+        }
+        innerMap.put(intfName, value);
+    }
+
+    private <T> T getFromMap(Map<String, Map<String, T>> map, String objPath, String intfName) {
+        Map<String, T> innerMap = map.get(objPath);
+        if (innerMap == null) {
+            return null;
+        }
+        return innerMap.get(intfName);
     }
 
     @Override
@@ -155,19 +184,147 @@ public class DeviceImpl implements Device {
     }
 
     @Override
-    public Status registerPropertiesChangedSignal(PropertiesChangedListener listener) {
-        return this.proxyBusObject.registerPropertiesChangedListener(this.interfaceName, new String[]{}, listener);
-    }
-
-    @Override
-    public void unregisterPropertiesChangedSignal(PropertiesChangedListener listener) {
-        this.proxyBusObject.unregisterPropertiesChangedListener(this.interfaceName, listener);
-    }
-
-
-    @Override
     public void unregisterSignal(BusObject obj) {
         this.bus.unregisterSignalHandlers(obj);
+    }
+
+    @Override
+    public Status registerPropertiesChangedSignal(String objPath, String interfaceName, PropertiesChangedListener listener) {
+        ProxyBusObject proxyBusObject = getFromMap(this.proxyBusObjects, objPath, interfaceName);
+        if(proxyBusObject == null) {
+            getInterface(objPath, interfaceName);
+            proxyBusObject = getFromMap(this.proxyBusObjects, objPath, interfaceName);
+        }
+        return proxyBusObject.registerPropertiesChangedListener(interfaceName, new String[]{}, listener);
+    }
+
+    @Override
+    public void unregisterPropertiesChangedSignal(String objPath, String interfaceName, PropertiesChangedListener listener) {
+        ProxyBusObject proxyBusObject = getFromMap(this.proxyBusObjects, objPath, interfaceName);
+        if(proxyBusObject == null) {
+            getInterface(objPath, interfaceName);
+            proxyBusObject = getFromMap(this.proxyBusObjects, objPath, interfaceName);
+        }
+        proxyBusObject.unregisterPropertiesChangedListener(interfaceName, listener);
+    }
+
+    @Override
+    public boolean hasInterface(String interfaceName) {
+        for(AboutObjectDescription aboutObjectDescription: aboutObjectDescriptions) {
+            for(String intf : aboutObjectDescription.interfaces) {
+                if(intf.equals(interfaceName)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public Object getProperty(String objPath, String interfaceName, String propertyName, Object... params) {
+        if(objPath != null) {
+            Object intf = getInterface(objPath, interfaceName);
+            try {
+                Method valueGetter = intf.getClass().getDeclaredMethod("get" + propertyName);
+                return valueGetter.invoke(intf, params);
+            } catch (NoSuchMethodException e) {
+                Log.d(TAG, "Method does not exist: " + e.getMessage());
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public Class<?> getPropertyType(String objPath, String interfaceName, String propertyName) {
+        if(objPath != null) {
+            Object intf = getInterface(objPath, interfaceName);
+            try {
+                Method valueGetter = intf.getClass().getDeclaredMethod("get" + propertyName);
+                return valueGetter.getReturnType();
+            } catch (NoSuchMethodException e) {
+                Log.d(TAG, "Method does not exist: " + e.getMessage());
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public Class<?>[] getPropertyParameterTypes(String objPath, String interfaceName, String propertyName) {
+        if(objPath != null) {
+            Object intf = getInterface(objPath, interfaceName);
+            try {
+                Method valueGetter = intf.getClass().getDeclaredMethod("get" + propertyName);
+                return valueGetter.getParameterTypes();
+            } catch (NoSuchMethodException e) {
+                Log.d(TAG, "Method does not exist: " + e.getMessage());
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public void setProperty(String objPath, String interfaceName, String propertyName, Object value) {
+        if(objPath != null) {
+            Object intf = getInterface(objPath, interfaceName);
+            try {
+                Method valueGetter = intf.getClass().getDeclaredMethod("get" + propertyName);
+                Method valueSetter = intf.getClass().getDeclaredMethod("set" + propertyName, valueGetter.getReturnType());
+                Object param = CdmUtil.parseParam(valueGetter.getReturnType(), value);
+                valueSetter.invoke(intf, param);
+            } catch (NoSuchMethodException e) {
+                Log.d(TAG, "Method does not exist: " + e.getMessage());
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public Object invokeMethod(String objPath, String interfaceName, String methodName, Object... params) {
+        if(objPath != null) {
+            try {
+                Method method = getMethod(objPath, interfaceName, methodName);
+                return method.invoke(getInterface(objPath, interfaceName), params);
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public Class<?>[] getMethodParameterTypes(String objPath, String interfaceName, String methodName) {
+        if(objPath != null) {
+            Method method = getMethod(objPath, interfaceName, methodName);
+            return method.getParameterTypes();
+        }
+        return null;
+    }
+
+    private Method getMethod(String objPath, String interfaceName, String methodName) {
+        if(objPath != null) {
+            Object intf = getInterface(objPath, interfaceName);
+            String methodNameUpper = methodName.toUpperCase();
+            for (Method method : intf.getClass().getDeclaredMethods()) {
+                if (method.getName().toUpperCase().equals(methodNameUpper)) {
+                    return method;
+                }
+            }
+        }
+
+        return null;
     }
 
     protected Mutable.IntegerValue joinSession() {
@@ -193,5 +350,18 @@ public class DeviceImpl implements Device {
         Intent intent = new Intent(MessageType.ON_DEVICE_REMOVED);
         intent.putExtra(IntentKeys.DEVICE_ID, this.id);
         this.context.sendBroadcast(intent);
+    }
+
+    @Override
+    public boolean canAddChildren() {
+        return false;
+    }
+
+    @Override
+    public void applyPreset(String objPath, String interfaceName, Preset preset) {
+        Map<String, Object> propertyValues = preset.getMap();
+        for (String key : propertyValues.keySet()) {
+            this.setProperty(objPath, interfaceName, key, propertyValues.get(key));
+        }
     }
 }

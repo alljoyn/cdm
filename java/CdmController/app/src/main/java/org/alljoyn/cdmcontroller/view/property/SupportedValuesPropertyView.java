@@ -32,18 +32,17 @@ import org.alljoyn.bus.BusException;
 import org.alljoyn.bus.Variant;
 import org.alljoyn.bus.annotation.Position;
 import org.alljoyn.cdmcontroller.R;
+import org.alljoyn.cdmcontroller.logic.Device;
 import org.alljoyn.cdmcontroller.util.CdmUtil;
 import org.alljoyn.cdmcontroller.view.PropertyView;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.concurrent.Executor;
 
 public class SupportedValuesPropertyView extends PropertyView {
     private static final String TAG = "CDM_ReadWriteProperty";
 
-    private Method supportedGetter = null;
     private String supportedName = null;
 
     private TextView nameView;
@@ -78,39 +77,34 @@ public class SupportedValuesPropertyView extends PropertyView {
         }
     }
 
-    public SupportedValuesPropertyView(Context context, Object obj, String propertyName, String unit, int position, String supportedListPropertyName) {
-        super(context, obj, propertyName, unit);
+    public SupportedValuesPropertyView(Context context, Device device, String objPath,
+                                       String interfaceName, String propertyName, String unit,
+                                       int position, String supportedListPropertyName) {
+        super(context, device, objPath, interfaceName, propertyName, unit);
         this.supportedName = supportedListPropertyName;
         this.position = position;
-        try {
-            this.supportedGetter = obj.getClass().getMethod("get" + supportedListPropertyName);
-        } catch (NoSuchMethodException e) {
-            this.supportedGetter = null;
-        }
     }
 
-    public SupportedValuesPropertyView(Context context, Object obj, String propertyName, String unit, String SupportedListPropertyName) {
-        this(context, obj, propertyName, unit, -1, SupportedListPropertyName);
+    public SupportedValuesPropertyView(Context context, Device device, String objPath,
+                                       String interfaceName, String propertyName, String unit,
+                                       String SupportedListPropertyName) {
+        this(context, device, objPath, interfaceName, propertyName, unit, -1, SupportedListPropertyName);
     }
 
-    public SupportedValuesPropertyView(Context context, Object obj, String propertyName, String unit, int position, String SupportedListMethodName, Object... parameters) {
-        super(context, obj, propertyName, unit);
+    public SupportedValuesPropertyView(Context context, Device device, String objPath,
+                                       String interfaceName, String propertyName, String unit,
+                                       int position, String SupportedListMethodName, Object... parameters) {
+        super(context, device, objPath, interfaceName, propertyName, unit);
 
         params = parameters;
 
         this.position = position;
-
-        this.supportedGetter = null;
-        for (Method method : obj.getClass().getDeclaredMethods()) {
-            if (method.getName().equals(SupportedListMethodName)) {
-                this.supportedGetter = method;
-                break;
-            }
-        }
     }
 
-    public SupportedValuesPropertyView(Context context, Object obj, String propertyName, String unit, String SupportedListMethodName, Object... parameters) {
-        this(context, obj, propertyName, unit, -1, SupportedListMethodName, parameters);
+    public SupportedValuesPropertyView(Context context, Device device, String objPath,
+                                       String interfaceName, String propertyName, String unit,
+                                       String SupportedListMethodName, Object... parameters) {
+        this(context, device, objPath, interfaceName, propertyName, unit, -1, SupportedListMethodName, parameters);
     }
 
     public String[] getNames() {
@@ -147,7 +141,7 @@ public class SupportedValuesPropertyView extends PropertyView {
     public void onPropertiesChangedSignal(String name, Variant value) {
         Object obj = null;
         try {
-            obj = value.getObject(this.valueGetter.getReturnType());
+            obj = value.getObject(this.propertyType);
         } catch (BusException e) {
             e.printStackTrace();
             return;
@@ -193,26 +187,21 @@ public class SupportedValuesPropertyView extends PropertyView {
 
     @Override
     public void getProperty() {
-        AsyncTask<Void, Void, Object> execute = new AsyncTask<Void, Void, Object>() {
+        new AsyncTask<Void, Void, Object>() {
             @Override
             protected Object doInBackground(Void... voids) {
                 Object returnObj = null;
-                try {
-                    if (SupportedValuesPropertyView.this.supportedGetter != null) {
-                        Class<?>[] paramTypes = SupportedValuesPropertyView.this.supportedGetter.getParameterTypes();
-                        Object[] params = new Object[paramTypes.length];
-                        int idx = 0;
-                        for (Class<?> clazz : paramTypes) {
-                            SupportedValuesPropertyView.this.params[idx] = CdmUtil.parseParam(clazz, SupportedValuesPropertyView.this.params[idx]);
-                            idx++;
-                        }
-                        returnObj = supportedGetter.invoke(SupportedValuesPropertyView.this.busObject, SupportedValuesPropertyView.this.params);
-                    }
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
+                Class<?>[] paramTypes = SupportedValuesPropertyView.this.propertyParameterTypes;
+                int idx = 0;
+                for (Class<?> clazz : paramTypes) {
+                    SupportedValuesPropertyView.this.params[idx] = CdmUtil.parseParam(clazz, SupportedValuesPropertyView.this.params[idx]);
+                    idx++;
                 }
+                returnObj = device.getProperty(
+                        SupportedValuesPropertyView.this.objPath,
+                        SupportedValuesPropertyView.this.interfaceName,
+                        SupportedValuesPropertyView.this.supportedName,
+                        SupportedValuesPropertyView.this.params);
                 return returnObj;
             }
 
@@ -221,6 +210,7 @@ public class SupportedValuesPropertyView extends PropertyView {
                 setSupportedListView(o);
             }
         }.execute();
+
         super.getProperty();
     }
 }

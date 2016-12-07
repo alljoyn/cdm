@@ -39,7 +39,11 @@ public abstract class DeviceManager {
 
     public abstract Device getDevice(UUID id);
 
+    public abstract void addDevice(Device device);
+
     public abstract Collection<Device> getDevices();
+
+    public abstract Collection<Device> getDeviceGroups();
 
     public abstract void registerBusObject(BusObject busObject, String objPath);
 

@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.alljoyn.cdmcontroller.R;
+import org.alljoyn.cdmcontroller.logic.Device;
 import org.alljoyn.cdmcontroller.util.CdmUtil;
 import org.alljoyn.cdmcontroller.view.PropertyView;
 
@@ -32,8 +33,8 @@ public class ReadOnlyValuePropertyView extends PropertyView {
     private TextView valueViewExt;
     private TextView unitView;
 
-    public ReadOnlyValuePropertyView(Context context, Object obj, String propertyName, String unit) {
-        super(context, obj, propertyName, unit);
+    public ReadOnlyValuePropertyView(Context context, Device device, String objPath, String interfaceName, String propertyName, String unit) {
+        super(context, device, objPath, interfaceName, propertyName, unit);
     }
 
     public void initView() {

@@ -23,14 +23,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.alljoyn.cdmcontroller.R;
+import org.alljoyn.cdmcontroller.logic.Device;
 import org.alljoyn.cdmcontroller.view.PropertyView;
 import org.alljoyn.cdmcontroller.view.custom.ToggleButton;
 
 public class ReadWriteBoolPropertyView extends PropertyView {
     private static final String TAG = "CDM_ReadWriteProperty";
 
-    public ReadWriteBoolPropertyView(Context context, Object obj, String propertyName) {
-        super(context, obj, propertyName, null);
+    public ReadWriteBoolPropertyView(Context context, Device device, String objPath, String interfaceName, String propertyName) {
+        super(context, device, objPath, interfaceName, propertyName, null);
     }
 
     private TextView nameView;

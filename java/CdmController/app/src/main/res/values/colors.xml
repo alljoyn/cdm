@@ -18,4 +18,7 @@
     <color name="allseen_green">#008576</color>
     <color name="allseen_light_green">#84DDB5</color>
     <color name="allseen_teal">#00C0C1</color>
+    <color name="colorPrimary">@color/allseen_green</color>
+    <color name="colorAccent">@color/allseen_teal</color>
+    <color name="white">#ffffffff</color>
 </resources>

@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.alljoyn.cdmcontroller.logic.Device;
 import org.alljoyn.cdmcontroller.view.PropertyView;
 import org.alljoyn.smartspaces.EnumBase;
 import org.alljoyn.cdmcontroller.R;
@@ -36,8 +37,8 @@ public class ReadOnlyEnumPropertyView<T extends EnumBase<?>> extends PropertyVie
 
     private Class<T> clazz;
 
-    public ReadOnlyEnumPropertyView(Context context, Object obj, String propertyName, Class<T> clazz) {
-        super(context, obj, propertyName, null);
+    public ReadOnlyEnumPropertyView(Context context, Device device, String objPath, String interfaceName, String propertyName, Class<T> clazz) {
+        super(context, device, objPath, interfaceName, propertyName, null);
         this.clazz = clazz;
     }
 

@@ -26,6 +26,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import org.alljoyn.cdmcontroller.logic.Device;
 import org.alljoyn.cdmcontroller.view.PropertyView;
 import org.alljoyn.smartspaces.EnumBase;
 import org.alljoyn.cdmcontroller.R;
@@ -43,8 +44,8 @@ public class ReadWriteEnumPropertyView<T extends EnumBase<?>> extends PropertyVi
 
     private AdapterView.OnItemSelectedListener listener = null;
 
-    public ReadWriteEnumPropertyView(Context context, Object obj, String propertyName, Class<T> clazz) {
-        super(context, obj, propertyName, null);
+    public ReadWriteEnumPropertyView(Context context, Device device, String objPath, String interfaceName, String propertyName, Class<T> clazz) {
+        super(context, device, objPath, interfaceName, propertyName, null);
         this.clazz = clazz;
     }
 

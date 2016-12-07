@@ -19,6 +19,7 @@ package org.alljoyn.cdmcontroller.view.method;
 import android.content.Context;
 import android.view.View;
 
+import org.alljoyn.cdmcontroller.logic.Device;
 import org.alljoyn.cdmcontroller.view.custom.ParamSupportedEnumDialog;
 import org.alljoyn.smartspaces.EnumBase;
 
@@ -27,9 +28,9 @@ public class MethodSupportedParamEnumView<T extends EnumBase<T>> extends MethodV
     private String[] supportedParamNames;
     private Class<T>[] clazzes;
 
-    public MethodSupportedParamEnumView(Context context, Object obj, String methodName, String[] supportedParamNames, Class<T>[] clazzes,
+    public MethodSupportedParamEnumView(Context context, Device device, String objPath, String interfaceName, String methodName, String[] supportedParamNames, Class<T>[] clazzes,
                                         String... paramNames) {
-        super(context, obj, methodName, paramNames);
+        super(context, device, objPath, interfaceName, methodName, paramNames);
 
         this.supportedParamNames = supportedParamNames;
         this.clazzes = clazzes;
@@ -38,7 +39,7 @@ public class MethodSupportedParamEnumView<T extends EnumBase<T>> extends MethodV
     protected void invokeMethod() {
         if (paramNames != null) {
             ParamSupportedEnumDialog mDialog = new ParamSupportedEnumDialog(getContext(),
-                    busObject, method.getName(), method.getParameterTypes(),
+                    device, method.getName(), method.getParameterTypes(),
                     paramNames, supportedParamNames, clazzes, new ParamSupportedEnumDialog.OnOkClickListener() {
                 @Override
                 public void onOkClick(Object[] params) {

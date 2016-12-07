@@ -32,6 +32,7 @@ import android.widget.Toast;
 import org.alljoyn.bus.BusException;
 import org.alljoyn.bus.Variant;
 import org.alljoyn.cdmcontroller.R;
+import org.alljoyn.cdmcontroller.logic.Device;
 import org.alljoyn.cdmcontroller.util.CdmUtil;
 import org.alljoyn.cdmcontroller.view.PropertyView;
 import org.alljoyn.smartspaces.EnumBase;
@@ -69,8 +70,10 @@ public class ReadOnlySupportedEnumPropertyView<T extends EnumBase<T>> extends Su
         }
     }
 
-    public ReadOnlySupportedEnumPropertyView(Context context, Object obj, String propertyName, String supportedEnumPropertyName, Class<T> clazz) {
-        super(context, obj, propertyName, supportedEnumPropertyName, clazz);
+    public ReadOnlySupportedEnumPropertyView(Context context, Device device, String objPath,
+                                             String interfaceName, String propertyName, String supportedEnumPropertyName,
+                                             Class<T> clazz) {
+        super(context, device, objPath, interfaceName, propertyName, supportedEnumPropertyName, clazz);
     }
 
     int positionC = 0;

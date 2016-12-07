@@ -786,7 +786,6 @@ class Property(object):
         else:
             return 'this, this.intf, "%s", null' % self.Name
 
-
 class Mutator(object):
     def __init__(self, name, interface, prop, prop_signature, default_value):
         self.Name = name

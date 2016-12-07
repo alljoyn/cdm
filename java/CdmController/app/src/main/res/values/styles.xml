@@ -1,8 +1,9 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="android:Theme.Light">
-        <!-- Customize your theme here. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="windowNoTitle">true</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
     <style name="navmenu_text_title" parent="@android:style/TextAppearance">
         <item name="android:textColor">@color/dark_gray</item>
@@ -19,6 +20,11 @@
         <item name="android:textColor">@color/gray</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">16sp</item>
+    </style>
+    <style name="interface_name_header" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">20sp</item>
     </style>
     <style name="button_text" parent="@android:style/TextAppearance">
         <item name="android:textColor">@color/gray</item>

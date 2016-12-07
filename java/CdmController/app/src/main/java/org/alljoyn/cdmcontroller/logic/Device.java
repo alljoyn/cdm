@@ -26,10 +26,13 @@ import org.alljoyn.cdmcontroller.R;
 import org.alljoyn.cdmcontroller.util.CdmUtil;
 import org.alljoyn.smartspaces.EnumBase;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.UUID;
 
 public interface Device {
+
     class DeviceTypeDescription {
         @Position(0)
         @Signature("u")
@@ -39,6 +42,7 @@ public interface Device {
         @Signature("o")
         public String objectPath;
     }
+
     static enum DeviceType implements EnumBase<Integer> {
         ROOT(0),
         OTHER(1),
@@ -103,8 +107,21 @@ public interface Device {
     public Object getInterface(String objPath, String intfName);
 
     public Status registerSignal(BusObject obj);
-    public Status registerPropertiesChangedSignal(PropertiesChangedListener listener);
+    public Status registerPropertiesChangedSignal(String objPath, String interfaceName, PropertiesChangedListener listener);
 
     public void unregisterSignal(BusObject obj);
-    public void unregisterPropertiesChangedSignal(PropertiesChangedListener listener);
+    public void unregisterPropertiesChangedSignal(String objPath, String interfaceName, PropertiesChangedListener listener);
+
+    public boolean hasInterface(String interfaceName);
+
+    public Object getProperty(String objPath, String interfaceName, String propertyName, Object... params);
+    public Class<?> getPropertyType(String objPath, String interfaceName, String propertyName);
+    public Class<?>[] getPropertyParameterTypes(String objPath, String interfaceName, String propertyName);
+    public void setProperty(String objPath, String interfaceName, String propertyName, Object value);
+    public Object invokeMethod(String objPath, String interfaceName, String methodName, Object... params);
+    public Class<?>[] getMethodParameterTypes(String objPath, String interfaceName, String methodName);
+
+    public boolean canAddChildren();
+
+    public void applyPreset(String objPath, String interfaceName, Preset preset);
 }

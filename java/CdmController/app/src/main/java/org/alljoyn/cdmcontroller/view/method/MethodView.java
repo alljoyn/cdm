@@ -18,7 +18,6 @@ package org.alljoyn.cdmcontroller.view.method;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,41 +26,36 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.alljoyn.cdmcontroller.R;
+import org.alljoyn.cdmcontroller.logic.Device;
 import org.alljoyn.cdmcontroller.view.custom.ParamDialog;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public class MethodView extends LinearLayout {
     private static final String TAG = "CDM_Method";
 
-    private static final int PARAM_RESULT = 1;
-
     protected Method method = null;
 
-    protected Object busObject = null;
+    protected Device device = null;
 
     private TextView nameView;
     protected ViewGroup resultLayout;
     protected TextView paramView;
     private TextView resultView;
     private Button submitBtn;
-    private Object[] params;
     protected String[] paramNames = null;
-    private int position = -1;
+    private String objPath;
+    private String interfaceName;
+    private String methodName;
 
-    public MethodView(Context context, Object obj, String methodName, String... paramNames) {
+    public MethodView(Context context, Device obj, String objPath, String interfaceName, String methodName, String... paramNames) {
         super(context);
-        this.busObject = obj;
         this.method = null;
+        this.device = obj;
+        this.objPath = objPath;
+        this.interfaceName = interfaceName;
+        this.methodName = methodName;
         this.paramNames = paramNames;
-        methodName = methodName.toUpperCase();
-        for (Method method : obj.getClass().getDeclaredMethods()) {
-            if (method.getName().toUpperCase().equals(methodName)) {
-                this.method = method;
-                break;
-            }
-        }
         initView();
     }
 
@@ -86,22 +80,14 @@ public class MethodView extends LinearLayout {
             }
         });
 
-        this.nameView.setText(this.method.getName());
+        this.nameView.setText(this.methodName);
     }
 
     protected void asyncMethodCall(Object[] params) {
-        AsyncTask<Object, Void, Object> excuteMethod = new AsyncTask<Object, Void, Object>() {
+        new AsyncTask<Object, Void, Object>() {
             @Override
             protected Object doInBackground(Object... params) {
-                Object result = null;
-                try {
-                    result = MethodView.this.method.invoke(MethodView.this.busObject, params);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                }
-                return result;
+                return MethodView.this.device.invokeMethod(MethodView.this.objPath, MethodView.this.interfaceName, MethodView.this.methodName, params);
             }
 
             @Override
@@ -129,7 +115,8 @@ public class MethodView extends LinearLayout {
 
     protected void invokeMethod() {
         if (paramNames != null) {
-            ParamDialog mDialog = new ParamDialog(getContext(), this.method.getName(), this.method.getParameterTypes(), this.paramNames, new ParamDialog.OnOkClickListener() {
+            Class<?>[] parameterTypes = this.device.getMethodParameterTypes(this.objPath, this.interfaceName, this.methodName);
+            ParamDialog mDialog = new ParamDialog(getContext(), this.methodName, parameterTypes, this.paramNames, new ParamDialog.OnOkClickListener() {
                 @Override
                 public void onOkClick(Object[] params) {
                     MethodView.this.resultLayout.setVisibility(View.VISIBLE);
