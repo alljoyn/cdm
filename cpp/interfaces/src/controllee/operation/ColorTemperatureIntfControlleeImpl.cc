@@ -232,8 +232,6 @@ QStatus ColorTemperatureIntfControllee::Impl::OnSetProperty(const String& propNa
             return ER_BUS_NO_SUCH_PROPERTY;
         }
 
-        QStatus status;
-
         double value;
         {
             CdmMsgCvt<double> converter;
@@ -243,6 +241,7 @@ QStatus ColorTemperatureIntfControllee::Impl::OnSetProperty(const String& propNa
         if (value < 0.0)
             return ER_BUS_PROPERTY_VALUE_NOT_SET;
 
+        QStatus status;
         status = m_ColorTemperatureModelInterface->SetTemperature(value);
         if (status != ER_OK) {
             QCC_LogError(status, ("%s: failed to set property value", __func__));
@@ -257,15 +256,11 @@ QStatus ColorTemperatureIntfControllee::Impl::OnSetProperty(const String& propNa
             return ER_BUS_NO_SUCH_PROPERTY;
         }
 
-        QStatus status;
-
         return ER_BUS_PROPERTY_VALUE_NOT_SET;
     } else    if (!(s_prop_MaxTemperature.compare(propName))) {
         if (msgarg.Signature() != "d") {
             return ER_BUS_NO_SUCH_PROPERTY;
         }
-
-        QStatus status;
 
         return ER_BUS_PROPERTY_VALUE_NOT_SET;
     } else {

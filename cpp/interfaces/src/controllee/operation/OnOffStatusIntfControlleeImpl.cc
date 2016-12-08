@@ -206,8 +206,6 @@ QStatus OnOffStatusIntfControllee::Impl::OnSetProperty(const String& propName, M
             return ER_BUS_NO_SUCH_PROPERTY;
         }
 
-        QStatus status;
-
         return ER_BUS_PROPERTY_VALUE_NOT_SET;
     } else {
         return ER_BUS_NO_SUCH_PROPERTY;

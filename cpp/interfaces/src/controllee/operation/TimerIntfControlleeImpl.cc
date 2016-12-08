@@ -319,15 +319,11 @@ QStatus TimerIntfControllee::Impl::OnSetProperty(const String& propName, MsgArg&
             return ER_BUS_NO_SUCH_PROPERTY;
         }
 
-        QStatus status;
-
         return ER_BUS_PROPERTY_VALUE_NOT_SET;
     } else    if (!(s_prop_TargetTimeToStart.compare(propName))) {
         if (msgarg.Signature() != "i") {
             return ER_BUS_NO_SUCH_PROPERTY;
         }
-
-        QStatus status;
 
         return ER_BUS_PROPERTY_VALUE_NOT_SET;
     } else    if (!(s_prop_TargetTimeToStop.compare(propName))) {
@@ -335,15 +331,11 @@ QStatus TimerIntfControllee::Impl::OnSetProperty(const String& propName, MsgArg&
             return ER_BUS_NO_SUCH_PROPERTY;
         }
 
-        QStatus status;
-
         return ER_BUS_PROPERTY_VALUE_NOT_SET;
     } else    if (!(s_prop_EstimatedTimeToEnd.compare(propName))) {
         if (msgarg.Signature() != "i") {
             return ER_BUS_NO_SUCH_PROPERTY;
         }
-
-        QStatus status;
 
         return ER_BUS_PROPERTY_VALUE_NOT_SET;
     } else    if (!(s_prop_RunningTime.compare(propName))) {
@@ -351,15 +343,11 @@ QStatus TimerIntfControllee::Impl::OnSetProperty(const String& propName, MsgArg&
             return ER_BUS_NO_SUCH_PROPERTY;
         }
 
-        QStatus status;
-
         return ER_BUS_PROPERTY_VALUE_NOT_SET;
     } else    if (!(s_prop_TargetDuration.compare(propName))) {
         if (msgarg.Signature() != "i") {
             return ER_BUS_NO_SUCH_PROPERTY;
         }
-
-        QStatus status;
 
         return ER_BUS_PROPERTY_VALUE_NOT_SET;
     } else {

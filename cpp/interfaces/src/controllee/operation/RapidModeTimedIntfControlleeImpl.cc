@@ -219,14 +219,13 @@ QStatus RapidModeTimedIntfControllee::Impl::OnSetProperty(const String& propName
             return ER_BUS_NO_SUCH_PROPERTY;
         }
 
-        QStatus status;
-
         uint16_t value;
         {
             CdmMsgCvt<uint16_t> converter;
             converter.get(msgarg, value);
         }
 
+        QStatus status;
         status = m_RapidModeTimedModelInterface->SetRapidModeMinutesRemaining(value);
         if (status != ER_OK) {
             QCC_LogError(status, ("%s: failed to set property value", __func__));
@@ -240,8 +239,6 @@ QStatus RapidModeTimedIntfControllee::Impl::OnSetProperty(const String& propName
         if (msgarg.Signature() != "q") {
             return ER_BUS_NO_SUCH_PROPERTY;
         }
-
-        QStatus status;
 
         return ER_BUS_PROPERTY_VALUE_NOT_SET;
     } else {

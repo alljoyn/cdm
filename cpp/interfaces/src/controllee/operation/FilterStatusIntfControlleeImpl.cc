@@ -320,15 +320,11 @@ QStatus FilterStatusIntfControllee::Impl::OnSetProperty(const String& propName, 
             return ER_BUS_NO_SUCH_PROPERTY;
         }
 
-        QStatus status;
-
         return ER_BUS_PROPERTY_VALUE_NOT_SET;
     } else    if (!(s_prop_IsCleanable.compare(propName))) {
         if (msgarg.Signature() != "b") {
             return ER_BUS_NO_SUCH_PROPERTY;
         }
-
-        QStatus status;
 
         return ER_BUS_PROPERTY_VALUE_NOT_SET;
     } else    if (!(s_prop_OrderPercentage.compare(propName))) {
@@ -336,15 +332,11 @@ QStatus FilterStatusIntfControllee::Impl::OnSetProperty(const String& propName, 
             return ER_BUS_NO_SUCH_PROPERTY;
         }
 
-        QStatus status;
-
         return ER_BUS_PROPERTY_VALUE_NOT_SET;
     } else    if (!(s_prop_Manufacturer.compare(propName))) {
         if (msgarg.Signature() != "s") {
             return ER_BUS_NO_SUCH_PROPERTY;
         }
-
-        QStatus status;
 
         return ER_BUS_PROPERTY_VALUE_NOT_SET;
     } else    if (!(s_prop_PartNumber.compare(propName))) {
@@ -352,23 +344,17 @@ QStatus FilterStatusIntfControllee::Impl::OnSetProperty(const String& propName, 
             return ER_BUS_NO_SUCH_PROPERTY;
         }
 
-        QStatus status;
-
         return ER_BUS_PROPERTY_VALUE_NOT_SET;
     } else    if (!(s_prop_Url.compare(propName))) {
         if (msgarg.Signature() != "s") {
             return ER_BUS_NO_SUCH_PROPERTY;
         }
 
-        QStatus status;
-
         return ER_BUS_PROPERTY_VALUE_NOT_SET;
     } else    if (!(s_prop_LifeRemaining.compare(propName))) {
         if (msgarg.Signature() != "y") {
             return ER_BUS_NO_SUCH_PROPERTY;
         }
-
-        QStatus status;
 
         return ER_BUS_PROPERTY_VALUE_NOT_SET;
     } else {

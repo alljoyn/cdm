@@ -256,14 +256,13 @@ QStatus ClimateControlModeIntfControllee::Impl::OnSetProperty(const String& prop
             return ER_BUS_NO_SUCH_PROPERTY;
         }
 
-        QStatus status;
-
         ClimateControlModeInterface::Mode value;
         {
             CdmMsgCvt<ClimateControlModeInterface::Mode> converter;
             converter.get(msgarg, value);
         }
 
+        QStatus status;
         status = m_ClimateControlModeModelInterface->SetMode(value);
         if (status != ER_OK) {
             QCC_LogError(status, ("%s: failed to set property value", __func__));
@@ -278,15 +277,11 @@ QStatus ClimateControlModeIntfControllee::Impl::OnSetProperty(const String& prop
             return ER_BUS_NO_SUCH_PROPERTY;
         }
 
-        QStatus status;
-
         return ER_BUS_PROPERTY_VALUE_NOT_SET;
     } else    if (!(s_prop_OperationalState.compare(propName))) {
         if (msgarg.Signature() != "q") {
             return ER_BUS_NO_SUCH_PROPERTY;
         }
-
-        QStatus status;
 
         return ER_BUS_PROPERTY_VALUE_NOT_SET;
     } else {

@@ -256,15 +256,11 @@ QStatus SoilLevelIntfControllee::Impl::OnSetProperty(const String& propName, Msg
             return ER_BUS_NO_SUCH_PROPERTY;
         }
 
-        QStatus status;
-
         return ER_BUS_PROPERTY_VALUE_NOT_SET;
     } else    if (!(s_prop_TargetLevel.compare(propName))) {
         if (msgarg.Signature() != "y") {
             return ER_BUS_NO_SUCH_PROPERTY;
         }
-
-        QStatus status;
 
         uint8_t value;
         {
@@ -272,6 +268,7 @@ QStatus SoilLevelIntfControllee::Impl::OnSetProperty(const String& propName, Msg
             converter.get(msgarg, value);
         }
 
+        QStatus status;
         status = m_SoilLevelModelInterface->SetTargetLevel(value);
         if (status != ER_OK) {
             QCC_LogError(status, ("%s: failed to set property value", __func__));
@@ -285,8 +282,6 @@ QStatus SoilLevelIntfControllee::Impl::OnSetProperty(const String& propName, Msg
         if (msgarg.Signature() != "ay") {
             return ER_BUS_NO_SUCH_PROPERTY;
         }
-
-        QStatus status;
 
         return ER_BUS_PROPERTY_VALUE_NOT_SET;
     } else {

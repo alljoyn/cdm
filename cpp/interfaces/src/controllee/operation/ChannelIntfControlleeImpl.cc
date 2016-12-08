@@ -254,14 +254,13 @@ QStatus ChannelIntfControllee::Impl::OnSetProperty(const String& propName, MsgAr
             return ER_BUS_NO_SUCH_PROPERTY;
         }
 
-        QStatus status;
-
         qcc::String value;
         {
             CdmMsgCvt<qcc::String> converter;
             converter.get(msgarg, value);
         }
 
+        QStatus status;
         status = m_ChannelModelInterface->SetChannelId(value);
         if (status != ER_OK) {
             QCC_LogError(status, ("%s: failed to set property value", __func__));
@@ -275,8 +274,6 @@ QStatus ChannelIntfControllee::Impl::OnSetProperty(const String& propName, MsgAr
         if (msgarg.Signature() != "q") {
             return ER_BUS_NO_SUCH_PROPERTY;
         }
-
-        QStatus status;
 
         return ER_BUS_PROPERTY_VALUE_NOT_SET;
     } else {

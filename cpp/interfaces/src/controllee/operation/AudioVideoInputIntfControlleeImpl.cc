@@ -231,14 +231,13 @@ QStatus AudioVideoInputIntfControllee::Impl::OnSetProperty(const String& propNam
             return ER_BUS_NO_SUCH_PROPERTY;
         }
 
-        QStatus status;
-
         AudioVideoInputInterface::SourceType value;
         {
             CdmMsgCvt<AudioVideoInputInterface::SourceType> converter;
             converter.get(msgarg, value);
         }
 
+        QStatus status;
         status = m_AudioVideoInputModelInterface->SetInputSourceId(value);
         if (status != ER_OK) {
             QCC_LogError(status, ("%s: failed to set property value", __func__));
@@ -252,8 +251,6 @@ QStatus AudioVideoInputIntfControllee::Impl::OnSetProperty(const String& propNam
         if (msgarg.Signature() != "a(qqyqs)") {
             return ER_BUS_NO_SUCH_PROPERTY;
         }
-
-        QStatus status;
 
         return ER_BUS_PROPERTY_VALUE_NOT_SET;
     } else {

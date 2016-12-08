@@ -245,8 +245,6 @@ QStatus {{Interface.Name}}IntfControllee::Impl::OnSetProperty(const String& prop
             return ER_BUS_NO_SUCH_PROPERTY;
         }
 
-        QStatus status;
-
         {% if property.Writable %}
         {{property.Type.ctype()}} value;
 {{ macros.getMsgArg("msgarg", "value", property.Type)|indent(2 * 4, True) }}
@@ -260,21 +258,22 @@ QStatus {{Interface.Name}}IntfControllee::Impl::OnSetProperty(const String& prop
         if (value < {{property.Min}})
             return ER_BUS_PROPERTY_VALUE_NOT_SET;
         {% endif %}
-        {% if property.MaxFromProperty != None %}
 
+        QStatus status;
+        {% if property.MaxFromProperty != None %}
         {{Interface.PropLUT[property.MaxFromProperty].Type.ctype()}} maxValue;
         status = m_{{Interface.Name}}ModelInterface->Get{{property.MaxFromProperty}}(maxValue);
         if (value > maxValue)
             return ER_BUS_PROPERTY_VALUE_NOT_SET;
+
         {% endif %}
         {% if property.MinFromProperty != None %}
-
         {{Interface.PropLUT[property.MinFromProperty].Type.ctype()}} minValue;
         status = m_{{Interface.Name}}ModelInterface->Get{{property.MinFromProperty}}(minValue);
         if (value < minValue)
             return ER_BUS_PROPERTY_VALUE_NOT_SET;
+        
         {% endif %}
-
         status = m_{{Interface.Name}}ModelInterface->Set{{property.Name}}(value);
         if (status != ER_OK) {
             QCC_LogError(status, ("%s: failed to set property value", __func__));
