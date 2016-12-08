@@ -231,8 +231,6 @@ QStatus ColorIntfControllee::Impl::OnSetProperty(const String& propName, MsgArg&
             return ER_BUS_NO_SUCH_PROPERTY;
         }
 
-        QStatus status;
-
         double value;
         {
             CdmMsgCvt<double> converter;
@@ -245,6 +243,7 @@ QStatus ColorIntfControllee::Impl::OnSetProperty(const String& propName, MsgArg&
         if (value < 0.0)
             return ER_BUS_PROPERTY_VALUE_NOT_SET;
 
+        QStatus status;
         status = m_ColorModelInterface->SetHue(value);
         if (status != ER_OK) {
             QCC_LogError(status, ("%s: failed to set property value", __func__));
@@ -259,8 +258,6 @@ QStatus ColorIntfControllee::Impl::OnSetProperty(const String& propName, MsgArg&
             return ER_BUS_NO_SUCH_PROPERTY;
         }
 
-        QStatus status;
-
         double value;
         {
             CdmMsgCvt<double> converter;
@@ -273,6 +270,7 @@ QStatus ColorIntfControllee::Impl::OnSetProperty(const String& propName, MsgArg&
         if (value < 0.0)
             return ER_BUS_PROPERTY_VALUE_NOT_SET;
 
+        QStatus status;
         status = m_ColorModelInterface->SetSaturation(value);
         if (status != ER_OK) {
             QCC_LogError(status, ("%s: failed to set property value", __func__));

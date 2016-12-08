@@ -244,15 +244,11 @@ QStatus SpinSpeedLevelIntfControllee::Impl::OnSetProperty(const String& propName
             return ER_BUS_NO_SUCH_PROPERTY;
         }
 
-        QStatus status;
-
         return ER_BUS_PROPERTY_VALUE_NOT_SET;
     } else    if (!(s_prop_TargetLevel.compare(propName))) {
         if (msgarg.Signature() != "y") {
             return ER_BUS_NO_SUCH_PROPERTY;
         }
-
-        QStatus status;
 
         uint8_t value;
         {
@@ -260,6 +256,7 @@ QStatus SpinSpeedLevelIntfControllee::Impl::OnSetProperty(const String& propName
             converter.get(msgarg, value);
         }
 
+        QStatus status;
         status = m_SpinSpeedLevelModelInterface->SetTargetLevel(value);
         if (status != ER_OK) {
             QCC_LogError(status, ("%s: failed to set property value", __func__));
@@ -273,8 +270,6 @@ QStatus SpinSpeedLevelIntfControllee::Impl::OnSetProperty(const String& propName
         if (msgarg.Signature() != "ay") {
             return ER_BUS_NO_SUCH_PROPERTY;
         }
-
-        QStatus status;
 
         return ER_BUS_PROPERTY_VALUE_NOT_SET;
     } else {

@@ -231,15 +231,11 @@ QStatus BatteryStatusIntfControllee::Impl::OnSetProperty(const String& propName,
             return ER_BUS_NO_SUCH_PROPERTY;
         }
 
-        QStatus status;
-
         return ER_BUS_PROPERTY_VALUE_NOT_SET;
     } else    if (!(s_prop_IsCharging.compare(propName))) {
         if (msgarg.Signature() != "b") {
             return ER_BUS_NO_SUCH_PROPERTY;
         }
-
-        QStatus status;
 
         return ER_BUS_PROPERTY_VALUE_NOT_SET;
     } else {

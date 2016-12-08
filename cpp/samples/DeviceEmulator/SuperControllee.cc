@@ -157,7 +157,7 @@ QStatus SuperControllee::CreateInterfaces()
     QStatus status = ER_OK;
     const Config::ObjectVec& objects = m_config.GetObjects();
 
-    for (const auto& obj : m_config.GetObjects())
+    for (const auto& obj : objects)
     {
         for (const auto& iface : obj.interfaces)
         {

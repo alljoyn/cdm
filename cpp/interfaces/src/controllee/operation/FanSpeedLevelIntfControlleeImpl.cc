@@ -244,14 +244,13 @@ QStatus FanSpeedLevelIntfControllee::Impl::OnSetProperty(const String& propName,
             return ER_BUS_NO_SUCH_PROPERTY;
         }
 
-        QStatus status;
-
         uint8_t value;
         {
             CdmMsgCvt<uint8_t> converter;
             converter.get(msgarg, value);
         }
 
+        QStatus status;
         status = m_FanSpeedLevelModelInterface->SetFanSpeedLevel(value);
         if (status != ER_OK) {
             QCC_LogError(status, ("%s: failed to set property value", __func__));
@@ -266,15 +265,11 @@ QStatus FanSpeedLevelIntfControllee::Impl::OnSetProperty(const String& propName,
             return ER_BUS_NO_SUCH_PROPERTY;
         }
 
-        QStatus status;
-
         return ER_BUS_PROPERTY_VALUE_NOT_SET;
     } else    if (!(s_prop_AutoMode.compare(propName))) {
         if (msgarg.Signature() != "y") {
             return ER_BUS_NO_SUCH_PROPERTY;
         }
-
-        QStatus status;
 
         FanSpeedLevelInterface::AutoMode value;
         {
@@ -282,6 +277,7 @@ QStatus FanSpeedLevelIntfControllee::Impl::OnSetProperty(const String& propName,
             converter.get(msgarg, value);
         }
 
+        QStatus status;
         status = m_FanSpeedLevelModelInterface->SetAutoMode(value);
         if (status != ER_OK) {
             QCC_LogError(status, ("%s: failed to set property value", __func__));

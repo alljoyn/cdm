@@ -306,14 +306,13 @@ QStatus TargetHumidityIntfControllee::Impl::OnSetProperty(const String& propName
             return ER_BUS_NO_SUCH_PROPERTY;
         }
 
-        QStatus status;
-
         uint8_t value;
         {
             CdmMsgCvt<uint8_t> converter;
             converter.get(msgarg, value);
         }
 
+        QStatus status;
         status = m_TargetHumidityModelInterface->SetTargetValue(value);
         if (status != ER_OK) {
             QCC_LogError(status, ("%s: failed to set property value", __func__));
@@ -328,15 +327,11 @@ QStatus TargetHumidityIntfControllee::Impl::OnSetProperty(const String& propName
             return ER_BUS_NO_SUCH_PROPERTY;
         }
 
-        QStatus status;
-
         return ER_BUS_PROPERTY_VALUE_NOT_SET;
     } else    if (!(s_prop_MaxValue.compare(propName))) {
         if (msgarg.Signature() != "y") {
             return ER_BUS_NO_SUCH_PROPERTY;
         }
-
-        QStatus status;
 
         return ER_BUS_PROPERTY_VALUE_NOT_SET;
     } else    if (!(s_prop_StepValue.compare(propName))) {
@@ -344,15 +339,11 @@ QStatus TargetHumidityIntfControllee::Impl::OnSetProperty(const String& propName
             return ER_BUS_NO_SUCH_PROPERTY;
         }
 
-        QStatus status;
-
         return ER_BUS_PROPERTY_VALUE_NOT_SET;
     } else    if (!(s_prop_SelectableHumidityLevels.compare(propName))) {
         if (msgarg.Signature() != "ay") {
             return ER_BUS_NO_SUCH_PROPERTY;
         }
-
-        QStatus status;
 
         return ER_BUS_PROPERTY_VALUE_NOT_SET;
     } else {

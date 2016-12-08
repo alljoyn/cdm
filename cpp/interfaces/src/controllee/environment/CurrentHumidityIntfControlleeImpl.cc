@@ -231,15 +231,11 @@ QStatus CurrentHumidityIntfControllee::Impl::OnSetProperty(const String& propNam
             return ER_BUS_NO_SUCH_PROPERTY;
         }
 
-        QStatus status;
-
         return ER_BUS_PROPERTY_VALUE_NOT_SET;
     } else    if (!(s_prop_MaxValue.compare(propName))) {
         if (msgarg.Signature() != "y") {
             return ER_BUS_NO_SUCH_PROPERTY;
         }
-
-        QStatus status;
 
         return ER_BUS_PROPERTY_VALUE_NOT_SET;
     } else {

@@ -65,8 +65,6 @@ QStatus CdmAboutData::CreateFromXml(const qcc::String& aboutDataXml)
 {
     qcc::String  deviceDescriptionOpen ="<" + DEVICE_TYPE_DESCRIPTION + ">";
     qcc::String  deviceDescriptionClose ="</" + DEVICE_TYPE_DESCRIPTION + ">";
-    size_t deviceBegin = aboutDataXml.find(deviceDescriptionOpen);
-    size_t deviceEnd = aboutDataXml.find( deviceDescriptionClose ) + deviceDescriptionClose.length();
 
     QStatus status = AboutData::CreateFromXml(aboutDataXml);
     if (status != ER_OK) {

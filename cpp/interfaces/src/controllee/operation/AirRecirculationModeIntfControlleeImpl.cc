@@ -206,14 +206,13 @@ QStatus AirRecirculationModeIntfControllee::Impl::OnSetProperty(const String& pr
             return ER_BUS_NO_SUCH_PROPERTY;
         }
 
-        QStatus status;
-
         bool value;
         {
             CdmMsgCvt<bool> converter;
             converter.get(msgarg, value);
         }
 
+        QStatus status;
         status = m_AirRecirculationModeModelInterface->SetIsRecirculating(value);
         if (status != ER_OK) {
             QCC_LogError(status, ("%s: failed to set property value", __func__));

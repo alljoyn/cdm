@@ -256,23 +256,17 @@ QStatus WaterLevelIntfControllee::Impl::OnSetProperty(const String& propName, Ms
             return ER_BUS_NO_SUCH_PROPERTY;
         }
 
-        QStatus status;
-
         return ER_BUS_PROPERTY_VALUE_NOT_SET;
     } else    if (!(s_prop_CurrentLevel.compare(propName))) {
         if (msgarg.Signature() != "y") {
             return ER_BUS_NO_SUCH_PROPERTY;
         }
 
-        QStatus status;
-
         return ER_BUS_PROPERTY_VALUE_NOT_SET;
     } else    if (!(s_prop_MaxLevel.compare(propName))) {
         if (msgarg.Signature() != "y") {
             return ER_BUS_NO_SUCH_PROPERTY;
         }
-
-        QStatus status;
 
         return ER_BUS_PROPERTY_VALUE_NOT_SET;
     } else {

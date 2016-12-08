@@ -206,14 +206,13 @@ QStatus RapidModeIntfControllee::Impl::OnSetProperty(const String& propName, Msg
             return ER_BUS_NO_SUCH_PROPERTY;
         }
 
-        QStatus status;
-
         bool value;
         {
             CdmMsgCvt<bool> converter;
             converter.get(msgarg, value);
         }
 
+        QStatus status;
         status = m_RapidModeModelInterface->SetRapidMode(value);
         if (status != ER_OK) {
             QCC_LogError(status, ("%s: failed to set property value", __func__));

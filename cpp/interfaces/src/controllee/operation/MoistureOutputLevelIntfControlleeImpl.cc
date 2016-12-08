@@ -256,14 +256,13 @@ QStatus MoistureOutputLevelIntfControllee::Impl::OnSetProperty(const String& pro
             return ER_BUS_NO_SUCH_PROPERTY;
         }
 
-        QStatus status;
-
         uint8_t value;
         {
             CdmMsgCvt<uint8_t> converter;
             converter.get(msgarg, value);
         }
 
+        QStatus status;
         status = m_MoistureOutputLevelModelInterface->SetMoistureOutputLevel(value);
         if (status != ER_OK) {
             QCC_LogError(status, ("%s: failed to set property value", __func__));
@@ -278,15 +277,11 @@ QStatus MoistureOutputLevelIntfControllee::Impl::OnSetProperty(const String& pro
             return ER_BUS_NO_SUCH_PROPERTY;
         }
 
-        QStatus status;
-
         return ER_BUS_PROPERTY_VALUE_NOT_SET;
     } else    if (!(s_prop_AutoMode.compare(propName))) {
         if (msgarg.Signature() != "y") {
             return ER_BUS_NO_SUCH_PROPERTY;
         }
-
-        QStatus status;
 
         MoistureOutputLevelInterface::AutoMode value;
         {
@@ -294,6 +289,7 @@ QStatus MoistureOutputLevelIntfControllee::Impl::OnSetProperty(const String& pro
             converter.get(msgarg, value);
         }
 
+        QStatus status;
         status = m_MoistureOutputLevelModelInterface->SetAutoMode(value);
         if (status != ER_OK) {
             QCC_LogError(status, ("%s: failed to set property value", __func__));
