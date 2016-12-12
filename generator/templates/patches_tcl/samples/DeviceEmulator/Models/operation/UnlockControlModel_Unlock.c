@@ -1,13 +1,8 @@
     bool value = false;
 
-    FILE* fp = HAL_WriteProperty(s_objPath, "LockedStatus", "IsLocked");
-
-    if (!fp) {
-        return AJ_ERR_FAILURE;
-    }
-
-    HAL_Encode_Int(fp, value);
-    fclose(fp);
+    Element* elem = HAL_Encode_Bool(value, NULL);
+    HAL_WritePropertyElem(s_objPath, "LockedStatus", "IsLocked", elem);
+    BSXML_FreeElement(elem);
 
     UnlockControlModel* model = (UnlockControlModel*)context;
     Cdm_LockedStatus_EmitIsLockedChanged(model->busAttachment, s_objPath, value);

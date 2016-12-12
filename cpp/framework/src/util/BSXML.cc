@@ -455,7 +455,7 @@ std::string Element::Generate(std::string *outStr) const {
         outStr->push_back(' ');
         outStr->append(ait->first);
         outStr->append("=\"");
-        outStr->append(ait->second);
+        outStr->append(EscapeXml(ait->second));
         outStr->push_back('"');
         ait++;
     }

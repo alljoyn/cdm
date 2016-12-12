@@ -118,7 +118,7 @@ struct Serializer<qcc::String>
     {
         auto* scalar = new Element("scalar", parent, true);
         scalar->AddAttribute("type", "string");
-        scalar->AddAttribute("value", Element::EscapeXml(std::string(value.c_str())));
+        scalar->AddAttribute("value", std::string(value.c_str()));
         return scalar;
     }
 
@@ -132,8 +132,7 @@ struct Serializer<qcc::String>
 
             if (type == "string")
             {
-                auto s = Element::UnescapeXml(value);
-                return s.c_str();
+                return value.c_str();
             }
         }
 

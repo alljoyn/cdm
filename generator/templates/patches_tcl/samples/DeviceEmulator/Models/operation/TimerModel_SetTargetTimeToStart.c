@@ -1,9 +1,4 @@
-    FILE* fp = HAL_WriteProperty("/cdm/emulated", "Timer", "SetTargetTimeToStart");
-
-    if (!fp) {
-        return AJ_ERR_FAILURE;
-    }
-
-    HAL_Encode_Int(fp, targetTimeToStart);
-    fclose(fp);
+    Element* elem = HAL_Encode_Int(targetTimeToStart, NULL);
+    HAL_WritePropertyElem(objPath, "Timer", "SetTargetTimeToStart", elem);
+    BSXML_FreeElement(elem);
     return AJ_OK;

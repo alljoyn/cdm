@@ -40,10 +40,10 @@ FreeFields_{{type.ajtypeInterfaceName()}}_{{type.ajtypeStructName()}}(&{{name}})
 {% endmacro -%}
 
 
-{% macro halDecode(type, var) %}
+{% macro halDecode(type, var, elem) %}
 {% if type.ajtypeIsArray() %}
-{{type.tclHalEncoder(decode = True)}}(fp, &{{var}});
+{{type.tclHalEncoder(decode = True)}}({{elem}}, &{{var}});
 {% else %}
-{{var}} = {{type.tclHalEncoder(decode = True)}}(fp);
+{{var}} = {{type.tclHalEncoder(decode = True)}}({{elem}});
 {%- endif -%}
 {% endmacro -%}

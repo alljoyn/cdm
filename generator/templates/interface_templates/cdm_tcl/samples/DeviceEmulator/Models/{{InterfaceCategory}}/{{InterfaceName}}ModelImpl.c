@@ -21,122 +21,112 @@
 
 #include "{{Interface.Name}}ModelImpl.h"
 #include "../../../Utils/HAL.h"
-
 {% include ("patch/" ~ Interface.Name ~ "Model_header.c") ignore missing with context %}
-
 {% for struc in Interface.Structs %}
 
 
 
-static int HAL_Encode_{{Interface.Name}}_{{struc.Name}}(FILE* fp, {{Interface.Name}}_{{struc.Name}} value) UNUSED_OK;
+static Element* HAL_Encode_{{Interface.Name}}_{{struc.Name}}({{Interface.Name}}_{{struc.Name}} value, Element* parent) UNUSED_OK;
 
-static int HAL_Encode_{{Interface.Name}}_{{struc.Name}}(FILE* fp, {{Interface.Name}}_{{struc.Name}} value)
+static Element* HAL_Encode_{{Interface.Name}}_{{struc.Name}}({{Interface.Name}}_{{struc.Name}} value, Element* parent)
 {
-    HAL_Encode_OpenStruct(fp);
+    Element* struc = BSXML_NewElement("struct", parent);
 {% for field in struc.Fields %}
-    {{field.Type.tclHalEncoder()}}(fp, value.{{field.Name}});
-{% endfor %}
-    HAL_Encode_CloseStruct(fp);
-    return AJ_OK;
-}
-
-
-
-static int HAL_Decode_{{Interface.Name}}_{{struc.Name}}(FILE* fp, {{Interface.Name}}_{{struc.Name}}* value) UNUSED_OK;
-
-static int HAL_Decode_{{Interface.Name}}_{{struc.Name}}(FILE* fp, {{Interface.Name}}_{{struc.Name}}* value)
-{
-    HAL_Decode_OpenStruct(fp);
-{% for field in struc.Fields %}
-    {{ tcl_macros.halDecode(field.Type, "value->"~field.Name) }}
-{% endfor %}
-    HAL_Decode_CloseStruct(fp);
-    return AJ_OK;
-}
-
-
-
-static int HAL_Encode_Array_{{Interface.Name}}_{{struc.Name}}(FILE* fp, Array_{{Interface.Name}}_{{struc.Name}} value) UNUSED_OK;
-
-static int HAL_Encode_Array_{{Interface.Name}}_{{struc.Name}}(FILE* fp, Array_{{Interface.Name}}_{{struc.Name}} value)
-{
-    HAL_Encode_OpenArray(fp);
-    for (size_t i = 0; i < value.numElems; ++i) {
-        HAL_Encode_{{Interface.Name}}_{{struc.Name}}(fp, value.elems[i]);
+    {
+        Element* field = BSXML_NewElement("field", struc);
+        BSXML_AddAttribute(field, "name", "{{field.Name}}");
+        BSXML_AddChild(field, {{field.Type.tclHalEncoder()}}(value.{{field.Name}}, field));
     }
-    HAL_Encode_CloseArray(fp);
-    return AJ_OK;
+{% endfor %}
+    return struc;
 }
 
 
-static int HAL_Decode_Array_{{Interface.Name}}_{{struc.Name}}(FILE* fp, Array_{{Interface.Name}}_{{struc.Name}}* value) UNUSED_OK;
 
-static int HAL_Decode_Array_{{Interface.Name}}_{{struc.Name}}(FILE* fp, Array_{{Interface.Name}}_{{struc.Name}}* value)
+static void HAL_Decode_{{Interface.Name}}_{{struc.Name}}(Element* elem, {{Interface.Name}}_{{struc.Name}}* value) UNUSED_OK;
+
+static void HAL_Decode_{{Interface.Name}}_{{struc.Name}}(Element* elem, {{Interface.Name}}_{{struc.Name}}* value)
+{
+    if (strcmp(elem->name, "struct") == 0 && elem->numChildren == {{struc.Fields|length}}) {
+{% for field in struc.Fields %}
+        {{ tcl_macros.halDecode(field.Type, "value->"~field.Name, "elem->children["~loop.index0~"]") }}
+{% endfor %}
+    }
+}
+
+
+
+static Element* HAL_Encode_Array_{{Interface.Name}}_{{struc.Name}}(Array_{{Interface.Name}}_{{struc.Name}} value, Element* parent) UNUSED_OK;
+
+static Element* HAL_Encode_Array_{{Interface.Name}}_{{struc.Name}}(Array_{{Interface.Name}}_{{struc.Name}} value, Element* parent)
+{
+    Element* array = BSXML_NewElement("array", parent);
+    for (size_t i = 0; i < value.numElems; ++i) {
+        BSXML_AddChild(array, HAL_Encode_{{Interface.Name}}_{{struc.Name}}(value.elems[i], array));
+    }
+    return array;
+}
+
+
+static void HAL_Decode_Array_{{Interface.Name}}_{{struc.Name}}(Element* elem, Array_{{Interface.Name}}_{{struc.Name}}* value) UNUSED_OK;
+
+static void HAL_Decode_Array_{{Interface.Name}}_{{struc.Name}}(Element* elem, Array_{{Interface.Name}}_{{struc.Name}}* value)
 {
     InitArray_{{Interface.Name}}_{{struc.Name}}(value, 0);
 
-    HAL_Decode_OpenArray(fp);
-    for (;;) {
-        if (HAL_Decode_TestCloseArray(fp)) {
-            break;
+    if (strcmp(elem->name, "array") == 0) {
+        for (size_t i = 0; i < value->numElems; ++i) {
+            size_t j = ExtendArray_{{Interface.Name}}_{{struc.Name}}(value, 1);
+            HAL_Decode_{{Interface.Name}}_{{struc.Name}}(elem->children[i], &value->elems[j]);
         }
-        size_t i = ExtendArray_{{Interface.Name}}_{{struc.Name}}(value, 1);
-        HAL_Decode_{{Interface.Name}}_{{struc.Name}}(fp, &value->elems[i]);
     }
-    return AJ_OK;
 }
 {% endfor %}
 {% for enum in Interface.Enums %}
 
 
-static int HAL_Encode_{{Interface.Name}}_{{enum.Name}}(FILE* fp, {{Interface.Name}}_{{enum.Name}} value) UNUSED_OK;
+static Element* HAL_Encode_{{Interface.Name}}_{{enum.Name}}({{Interface.Name}}_{{enum.Name}} value, Element* parent) UNUSED_OK;
 
-static int HAL_Encode_{{Interface.Name}}_{{enum.Name}}(FILE* fp, {{Interface.Name}}_{{enum.Name}} value)
+static Element* HAL_Encode_{{Interface.Name}}_{{enum.Name}}({{Interface.Name}}_{{enum.Name}} value, Element* parent)
 {
-    HAL_Encode_Int(fp, value);
-    return AJ_OK;
+    return HAL_Encode_Int(value, parent);
 }
 
 
 
-static int HAL_Decode_{{Interface.Name}}_{{enum.Name}}(FILE* fp, {{Interface.Name}}_{{enum.Name}}* value) UNUSED_OK;
+static void HAL_Decode_{{Interface.Name}}_{{enum.Name}}(Element* elem, {{Interface.Name}}_{{enum.Name}}* value) UNUSED_OK;
 
-static int HAL_Decode_{{Interface.Name}}_{{enum.Name}}(FILE* fp, {{Interface.Name}}_{{enum.Name}}* value)
+static void HAL_Decode_{{Interface.Name}}_{{enum.Name}}(Element* elem, {{Interface.Name}}_{{enum.Name}}* value)
 {
-    *value = ({{Interface.Name}}_{{enum.Name}})(int)HAL_Decode_Int(fp);
-    return AJ_OK;
+    *value = ({{Interface.Name}}_{{enum.Name}})(int)HAL_Decode_Int(elem);
 }
 
 
 
-static int HAL_Encode_Array_{{Interface.Name}}_{{enum.Name}}(FILE* fp, Array_{{Interface.Name}}_{{enum.Name}} value) UNUSED_OK;
+static Element* HAL_Encode_Array_{{Interface.Name}}_{{enum.Name}}(Array_{{Interface.Name}}_{{enum.Name}} value, Element* parent) UNUSED_OK;
 
-static int HAL_Encode_Array_{{Interface.Name}}_{{enum.Name}}(FILE* fp, Array_{{Interface.Name}}_{{enum.Name}} value)
+static Element* HAL_Encode_Array_{{Interface.Name}}_{{enum.Name}}(Array_{{Interface.Name}}_{{enum.Name}} value, Element* parent)
 {
-    HAL_Encode_OpenArray(fp);
+    Element* array = BSXML_NewElement("array", parent);
     for (size_t i = 0; i < value.numElems; ++i) {
-        HAL_Encode_Int(fp, value.elems[i]);
+        BSXML_AddChild(array, HAL_Encode_Int(value.elems[i], array));
     }
-    HAL_Encode_CloseArray(fp);
-    return AJ_OK;
+    return array;
 }
 
 
-static int HAL_Decode_Array_{{Interface.Name}}_{{enum.Name}}(FILE* fp, Array_{{Interface.Name}}_{{enum.Name}}* value) UNUSED_OK;
+static void HAL_Decode_Array_{{Interface.Name}}_{{enum.Name}}(Element* elem, Array_{{Interface.Name}}_{{enum.Name}}* value) UNUSED_OK;
 
-static int HAL_Decode_Array_{{Interface.Name}}_{{enum.Name}}(FILE* fp, Array_{{Interface.Name}}_{{enum.Name}}* value)
+static void HAL_Decode_Array_{{Interface.Name}}_{{enum.Name}}(Element* elem, Array_{{Interface.Name}}_{{enum.Name}}* value)
 {
     InitArray_{{Interface.Name}}_{{enum.Name}}(value, 0);
 
-    HAL_Decode_OpenArray(fp);
-    for (;;) {
-        if (HAL_Decode_TestCloseArray(fp)) {
-            break;
+    if (strcmp(elem->name, "array") == 0) {
+        for (size_t i = 0; i < value->numElems; ++i) {
+            size_t j = ExtendArray_{{Interface.Name}}_{{enum.Name}}(value, 1);
+            value->elems[j] = ({{Interface.Name}}_{{enum.Name}})(int)HAL_Decode_Int(elem->children[i]);
         }
-        size_t i = ExtendArray_{{Interface.Name}}_{{enum.Name}}(value, 1);
-        value->elems[i] = ({{Interface.Name}}_{{enum.Name}})(int)HAL_Decode_Int(fp);
     }
-    return AJ_OK;
 }
 {% endfor %}
 
@@ -153,30 +143,17 @@ static AJ_Status Get{{property.Name}}(void *context, const char *objPath, {{prop
 {
     AJ_Status result = AJ_OK;
 
-    FILE* fp = HAL_ReadProperty("/cdm/emulated", "{{Interface.Name}}", "{{property.Name}}");
+    Element* elem = HAL_ReadProperty("/cdm/emulated", "{{Interface.Name}}", "{{property.Name}}");
 
-    if (!fp) {
-        fp = HAL_WriteProperty("/cdm/emulated", "{{Interface.Name}}", "{{property.Name}}");
-
-        if (!fp) {
-            return AJ_ERR_FAILURE;
-        }
-
-        {{halC}} const value = {{halI}};
-        {{property.Type.tclHalEncoder()}}(fp, value);
-        fclose(fp);
-    }
-
-    fp = HAL_ReadProperty("/cdm/emulated", "{{Interface.Name}}", "{{property.Name}}");
-
-    if (!fp) {
+    if (!elem) {
         return AJ_ERR_FAILURE;
     }
 
     {{halC}} value;
-    {{tcl_macros.halDecode(property.Type, "value")}}
+    {{tcl_macros.halDecode(property.Type, "value", "elem")}}
     *out = {{tcl_macros.castTo(property.Type)}}value;
-    fclose(fp);
+
+    BSXML_FreeElement(elem);
     return result;
 }
 {% endif %}
@@ -189,9 +166,10 @@ static AJ_Status Set{{property.Name}}(void *context, const char *objPath, {{prop
     AJ_Status result = AJ_OK;
     {{halC}} value = input;
 
-    FILE* fp = HAL_WriteProperty("/cdm/emulated", "{{Interface.Name}}", "{{property.Name}}");
-    {{hal}}(fp, value);
-    fclose(fp);
+    Element* elem = {{hal}}(value, NULL);
+    HAL_WritePropertyElem("/cdm/emulated", "{{Interface.Name}}", "{{property.Name}}", elem);
+    BSXML_FreeElement(elem);
+
     return result;
 }
 {% endif %}
