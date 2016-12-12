@@ -146,7 +146,7 @@ void {{Interface.ClassName}}::slotClick{{method.Name}}()
     {{arg.Type.cpptype()}} {{arg.Name.camel_case()}} {};
     {% endfor %}
 
-    {% include ("patch/" ~ Interface.ClassName ~ "::slotClick" ~ method.Name ~ ".cpp") ignore missing with context %}
+    {% include ("patch/" ~ Interface.ClassName ~ "-slotClick" ~ method.Name ~ ".cpp") ignore missing with context %}
 
     QStatus status = controller->{{method.Name}}({% for arg in method.input_args() %}{{arg.Name.camel_case()}}, {% endfor %}NULL);
     if (status != ER_OK)

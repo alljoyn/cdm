@@ -122,7 +122,8 @@ QStatus {{Interface.Name}}Model::{{method.Name}}(
 {%- for arg in method.output_args() %}{{comma()}}{{arg.Type.cpptype()}}& arg_{{arg.Name}}{% endfor %}{{comma()-}}
     ErrorCode& error, CdmControllee& controllee)
 {
-    {% include ["patch/" ~ Interface.Name ~ "Model::" ~ method.Name ~ ".cc", "patch/TODO.cc"] ignore missing with context %}
+    {# Note that '::' is not allowed in files on Windows #}
+    {% include ["patch/" ~ Interface.Name ~ "Model-" ~ method.Name ~ ".cc", "patch/TODO.cc"] ignore missing with context %}
 }
 {% endfor %}
 

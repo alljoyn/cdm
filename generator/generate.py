@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # Copyright AllSeen Alliance. All rights reserved.
 #
 # Permission to use, copy, modify, and/or distribute this software for any
@@ -107,7 +107,7 @@ class Generator(object):
         global CurrentRelativePath
 
         def file_checker(fname):
-            not_hidden = not (fname.startswith('.') or fname.endswith('~'))
+            not_hidden = not (os.path.basename(fname).startswith('.') or fname.endswith('~'))
 
             def do_check(valid_matches, chosen):
                 return any([match in chosen for match in valid_matches])
@@ -188,16 +188,17 @@ class Generator(object):
                     result_dir  = os.path.dirname(result_path)
                     print "    -> " + result_path
 
-                    try:
-                        if not os.path.exists(result_dir):
-                            os.makedirs(result_dir)
-                    except OSError:
-                        print "ERROR creating path:", result_dir
+                    if not self.cmd_args.dryrun:
+                        try:
+                            if not os.path.exists(result_dir):
+                                os.makedirs(result_dir)
+                        except OSError:
+                            print "ERROR creating path:", result_dir
 
-                    try:
-                        open(result_path, "w").write(render_result)
-                    except OSError:
-                        print "ERROR writing file:", result_path
+                        try:
+                            open(result_path, "w").write(render_result)
+                        except OSError:
+                            print "ERROR writing file:", result_path
 
 
 class InterfaceCodeGenerator(Generator):
@@ -240,12 +241,13 @@ def main():
     argument_parser.add_argument('--components', nargs='*', default=["all"], help="The components to generate (controller, controllee or all")
     argument_parser.add_argument('--sample', action='store_true', required=False, help='Generate sample programs using the device emulator xml file')
     argument_parser.add_argument('--patches', required=False, default="", help='Path to the root for patch templates')
-    
+    argument_parser.add_argument('--dryrun', action='store_true', required=False, default=False, help='Path to the root for patch templates')
     args = argument_parser.parse_args()
 
     generator = SampleAppGenerator(args) if args.sample else InterfaceCodeGenerator(args)
 
     try:
+        print "Running Generator..."
         generator.generate()
     except KeyboardInterrupt:
         print "main, KeyboardInterrupt"
