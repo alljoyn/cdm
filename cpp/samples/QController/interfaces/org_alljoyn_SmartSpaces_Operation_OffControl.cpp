@@ -88,7 +88,7 @@ void org_alljoyn_SmartSpaces_Operation_OffControl::slotClickSwitchOff()
 
 
 
-void org_alljoyn_SmartSpaces_Operation_OffControl::slotOnResponseMethodSwitchOff(QStatus status)
+void org_alljoyn_SmartSpaces_Operation_OffControl::slotOnResponseMethodSwitchOff(QStatus status, const QString& errorName)
 {
     if (status == ER_OK)
     {
@@ -96,6 +96,6 @@ void org_alljoyn_SmartSpaces_Operation_OffControl::slotOnResponseMethodSwitchOff
     }
     else
     {
-        qWarning() << "Received an error from method SwitchOff, status = " << QCC_StatusText(status);
+        qWarning() << "Received an error from method SwitchOff, error = " << errorName;
     }
 }

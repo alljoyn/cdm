@@ -306,7 +306,7 @@ org_alljoyn_SmartSpaces_Operation_Alerts::showAlerts(const vector<AlertsInterfac
 
 
 
-void org_alljoyn_SmartSpaces_Operation_Alerts::slotOnResponseMethodGetAlertCodesDescription(std::vector<AlertsInterface::AlertCodesDescriptor> description, QStatus status)
+void org_alljoyn_SmartSpaces_Operation_Alerts::slotOnResponseMethodGetAlertCodesDescription(std::vector<AlertsInterface::AlertCodesDescriptor> description, QStatus status, const QString& errorName)
 {
     if (status == ER_OK)
     {
@@ -315,13 +315,13 @@ void org_alljoyn_SmartSpaces_Operation_Alerts::slotOnResponseMethodGetAlertCodes
     }
     else
     {
-        qWarning() << "Received an error from method GetAlertCodesDescription, status = " << QCC_StatusText(status);
+        qWarning() << "Received an error from method GetAlertCodesDescription, error = " << errorName;
     }
 }
 
 
 
-void org_alljoyn_SmartSpaces_Operation_Alerts::slotOnResponseMethodAcknowledgeAlert(QStatus status)
+void org_alljoyn_SmartSpaces_Operation_Alerts::slotOnResponseMethodAcknowledgeAlert(QStatus status, const QString& errorName)
 {
     if (status == ER_OK)
     {
@@ -329,13 +329,13 @@ void org_alljoyn_SmartSpaces_Operation_Alerts::slotOnResponseMethodAcknowledgeAl
     }
     else
     {
-        qWarning() << "Received an error from method AcknowledgeAlert, status = " << QCC_StatusText(status);
+        qWarning() << "Received an error from method AcknowledgeAlert, error = " << errorName;
     }
 }
 
 
 
-void org_alljoyn_SmartSpaces_Operation_Alerts::slotOnResponseMethodAcknowledgeAllAlerts(QStatus status)
+void org_alljoyn_SmartSpaces_Operation_Alerts::slotOnResponseMethodAcknowledgeAllAlerts(QStatus status, const QString& errorName)
 {
     if (status == ER_OK)
     {
@@ -343,6 +343,6 @@ void org_alljoyn_SmartSpaces_Operation_Alerts::slotOnResponseMethodAcknowledgeAl
     }
     else
     {
-        qWarning() << "Received an error from method AcknowledgeAllAlerts, status = " << QCC_StatusText(status);
+        qWarning() << "Received an error from method AcknowledgeAllAlerts, error = " << errorName;
     }
 }

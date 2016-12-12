@@ -4,6 +4,8 @@
 #include <qcc/Log.h>
 #include <QCoreApplication>
 
+extern bool QControllerDebugLog;
+
 AJLogHandler *AJLogHandler::s_handler = NULL;
 
 AJLogHandler::AJLogHandler(QObject *parent) : QObject(parent)
@@ -15,7 +17,13 @@ AJLogHandler::AJLogHandler(QObject *parent) : QObject(parent)
             qCritical() << "Failed to initialize alljoyn! " << status;
             return;
         }
-        QCC_RegisterOutputCallback(ajCallback, NULL);
+
+        if (!QControllerDebugLog)
+        {
+            // Sometimes we want the debugging log on stdout.
+            QCC_RegisterOutputCallback(ajCallback, NULL);
+        }
+
         //QCC_SetDebugLevel("ALL", 1);
         s_handler = this;
     }

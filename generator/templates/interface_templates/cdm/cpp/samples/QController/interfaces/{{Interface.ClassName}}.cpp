@@ -204,7 +204,7 @@ void {{Interface.ClassName}}::slotSet{{property.Name}}()
 
 
 
-void {{Interface.ClassName}}::slotOnResponseMethod{{method.Name}}(QStatus status)
+void {{Interface.ClassName}}::slotOnResponseMethod{{method.Name}}(QStatus status, const QString& errorName)
 {
     if (status == ER_OK)
     {
@@ -212,7 +212,7 @@ void {{Interface.ClassName}}::slotOnResponseMethod{{method.Name}}(QStatus status
     }
     else
     {
-        qWarning() << "Received an error from method {{method.Name}}, status = " << QCC_StatusText(status);
+        qWarning() << "Received an error from method {{method.Name}}, error = " << errorName;
     }
 }
 {% endfor %}

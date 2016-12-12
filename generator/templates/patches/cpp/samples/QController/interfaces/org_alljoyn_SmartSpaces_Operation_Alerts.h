@@ -48,9 +48,9 @@ private slots:
 
     void slotOnResponseGetAlerts(QStatus status, std::vector<AlertsInterface::AlertRecord> value);
     void slotOnAlertsChanged(std::vector<AlertsInterface::AlertRecord> value);
-    void slotOnResponseMethodGetAlertCodesDescription(std::vector<AlertsInterface::AlertCodesDescriptor> description, QStatus status);
-    void slotOnResponseMethodAcknowledgeAlert(QStatus status);
-    void slotOnResponseMethodAcknowledgeAllAlerts(QStatus status);
+    void slotOnResponseMethodGetAlertCodesDescription(std::vector<AlertsInterface::AlertCodesDescriptor> description, QStatus status, const QString& errorName);
+    void slotOnResponseMethodAcknowledgeAlert(QStatus status, const QString& errorName);
+    void slotOnResponseMethodAcknowledgeAllAlerts(QStatus status, const QString& errorName);
 
 public:
     // ajn::services::AlertsIntfControllerListener
@@ -83,21 +83,21 @@ public:
         {
             qWarning() << __FUNCTION__;
             QMetaObject::invokeMethod(m_widget, "slotOnResponseMethodGetAlertCodesDescription", Qt::QueuedConnection,
-                              Q_ARG(std::vector<AlertsInterface::AlertCodesDescriptor>, description), Q_ARG(QStatus, status)
+                              Q_ARG(std::vector<AlertsInterface::AlertCodesDescriptor>, description), Q_ARG(QStatus, status), Q_ARG(QString, QString(errorName))
                               );
         }
         virtual void OnResponseAcknowledgeAlert(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage) override
         {
             qWarning() << __FUNCTION__;
             QMetaObject::invokeMethod(m_widget, "slotOnResponseMethodAcknowledgeAlert", Qt::QueuedConnection,
-                              Q_ARG(QStatus, status)
+                              Q_ARG(QStatus, status), Q_ARG(QString, QString(errorName))
                               );
         }
         virtual void OnResponseAcknowledgeAllAlerts(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage) override
         {
             qWarning() << __FUNCTION__;
             QMetaObject::invokeMethod(m_widget, "slotOnResponseMethodAcknowledgeAllAlerts", Qt::QueuedConnection,
-                              Q_ARG(QStatus, status)
+                              Q_ARG(QStatus, status), Q_ARG(QString, QString(errorName))
                               );
         }
     };

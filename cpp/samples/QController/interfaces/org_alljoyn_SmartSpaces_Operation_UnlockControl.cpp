@@ -88,7 +88,7 @@ void org_alljoyn_SmartSpaces_Operation_UnlockControl::slotClickUnlock()
 
 
 
-void org_alljoyn_SmartSpaces_Operation_UnlockControl::slotOnResponseMethodUnlock(QStatus status)
+void org_alljoyn_SmartSpaces_Operation_UnlockControl::slotOnResponseMethodUnlock(QStatus status, const QString& errorName)
 {
     if (status == ER_OK)
     {
@@ -96,6 +96,6 @@ void org_alljoyn_SmartSpaces_Operation_UnlockControl::slotOnResponseMethodUnlock
     }
     else
     {
-        qWarning() << "Received an error from method Unlock, status = " << QCC_StatusText(status);
+        qWarning() << "Received an error from method Unlock, error = " << errorName;
     }
 }

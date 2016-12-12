@@ -302,7 +302,7 @@ static AJ_Status {{Interface.Name}}_OnSetProperty(AJ_BusAttachment* busAttachmen
 
 
 
-static AJ_Status {{Interface.Name}}_OnMethodHandler(AJ_BusAttachment* busAttachment, AJ_Message* msg, AJ_Message* replyMsg, const char* objPath, uint8_t memberIndex)
+static AJ_Status {{Interface.Name}}_OnMethodHandler(AJ_BusAttachment* busAttachment, AJ_Message* msg, const char* objPath, uint8_t memberIndex)
 {
     AJ_Status status = AJ_ERR_INVALID;
 {% for method in Interface.Methods %}
@@ -329,18 +329,23 @@ static AJ_Status {{Interface.Name}}_OnMethodHandler(AJ_BusAttachment* busAttachm
 {%- for arg in method.input_args() %}, {{arg.Name.snake()}}{% endfor %}
 {%- for arg in method.output_args() %}, &{{arg.Name.snake()}}{% endfor %});
 
+        {# Be careful that the method might emit a signal. We must be careful to start the
+           next message after a signal has been sent. #}
+        AJ_Message reply;
+        AJ_MarshalReplyMsg(msg, &reply);
+
 {% if method.output_args() %}
         if (status == AJ_OK) {
 {% for arg in method.output_args() %}
-            status |= AJ_MarshalArgs(replyMsg, "{{arg.Type.signature}}", {{tcl_macros.unpackArgs(arg.Type, arg.Name.snake())}});
+            status |= AJ_MarshalArgs(&reply, "{{arg.Type.signature}}", {{tcl_macros.unpackArgs(arg.Type, arg.Name.snake())}});
 {% endfor %}
             if (status == AJ_OK) {
-                status = AJ_DeliverMsg(replyMsg);
+                status = AJ_DeliverMsg(&reply);
             }
         }
 {% else %}
         if (status == AJ_OK) {
-            status = AJ_DeliverMsg(replyMsg);
+            status = AJ_DeliverMsg(&reply);
         }
 {% endif %}
 

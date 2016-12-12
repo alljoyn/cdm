@@ -1,7 +1,15 @@
 #include "qcontroller.h"
 #include <QApplication>
+#include <QCommandLineParser>
 
 #include <interfaces/common/operation/AlertsInterface.h>
+#include <iostream>
+
+using namespace std;
+
+// Global command line options
+bool QControllerDebugLog = false;
+
 
 Q_DECLARE_METATYPE(Ref<ajn::services::DeviceInfo>)
 Q_DECLARE_METATYPE(QStatus)
@@ -45,6 +53,16 @@ int main(int argc, char *argv[])
     qRegisterMetaType<std::vector<ajn::services::AlertsInterface::AlertCodesDescriptor>>("std::vector<AlertsInterface::AlertCodesDescriptor>");
 
     QApplication a(argc, argv);
+
+    QCommandLineParser argParser;
+
+    argParser.addOptions({
+        {"D", "Show debugging messages on stdout, not in the GUI"}
+        });
+
+    argParser.process(a.arguments());
+
+    QControllerDebugLog = argParser.isSet("D");
 
     if (a.styleSheet().isEmpty())
     {

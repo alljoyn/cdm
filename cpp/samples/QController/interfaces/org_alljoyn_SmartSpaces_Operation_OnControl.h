@@ -43,7 +43,7 @@ public:
 private slots:
     void slotClickSwitchOn();
 
-    void slotOnResponseMethodSwitchOn(QStatus status);
+    void slotOnResponseMethodSwitchOn(QStatus status, const QString& errorName);
 
 public:
     // ajn::services::OnControlIntfControllerListener
@@ -61,7 +61,7 @@ public:
         {
             qWarning() << __FUNCTION__;
             QMetaObject::invokeMethod(m_widget, "slotOnResponseMethodSwitchOn", Qt::QueuedConnection,
-                              Q_ARG(QStatus, status)
+                              Q_ARG(QStatus, status), Q_ARG(QString, QString(errorName))
                               );
         }
     };

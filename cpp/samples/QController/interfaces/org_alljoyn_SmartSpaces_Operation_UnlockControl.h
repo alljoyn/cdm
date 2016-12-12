@@ -43,7 +43,7 @@ public:
 private slots:
     void slotClickUnlock();
 
-    void slotOnResponseMethodUnlock(QStatus status);
+    void slotOnResponseMethodUnlock(QStatus status, const QString& errorName);
 
 public:
     // ajn::services::UnlockControlIntfControllerListener
@@ -61,7 +61,7 @@ public:
         {
             qWarning() << __FUNCTION__;
             QMetaObject::invokeMethod(m_widget, "slotOnResponseMethodUnlock", Qt::QueuedConnection,
-                              Q_ARG(QStatus, status)
+                              Q_ARG(QStatus, status), Q_ARG(QString, QString(errorName))
                               );
         }
     };

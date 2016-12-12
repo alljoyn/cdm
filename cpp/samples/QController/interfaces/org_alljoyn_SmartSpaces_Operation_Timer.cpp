@@ -264,7 +264,7 @@ void org_alljoyn_SmartSpaces_Operation_Timer::slotOnTargetDurationChanged(const 
 
 
 
-void org_alljoyn_SmartSpaces_Operation_Timer::slotOnResponseMethodSetTargetTimeToStart(QStatus status)
+void org_alljoyn_SmartSpaces_Operation_Timer::slotOnResponseMethodSetTargetTimeToStart(QStatus status, const QString& errorName)
 {
     if (status == ER_OK)
     {
@@ -272,13 +272,13 @@ void org_alljoyn_SmartSpaces_Operation_Timer::slotOnResponseMethodSetTargetTimeT
     }
     else
     {
-        qWarning() << "Received an error from method SetTargetTimeToStart, status = " << QCC_StatusText(status);
+        qWarning() << "Received an error from method SetTargetTimeToStart, error = " << errorName;
     }
 }
 
 
 
-void org_alljoyn_SmartSpaces_Operation_Timer::slotOnResponseMethodSetTargetTimeToStop(QStatus status)
+void org_alljoyn_SmartSpaces_Operation_Timer::slotOnResponseMethodSetTargetTimeToStop(QStatus status, const QString& errorName)
 {
     if (status == ER_OK)
     {
@@ -286,6 +286,6 @@ void org_alljoyn_SmartSpaces_Operation_Timer::slotOnResponseMethodSetTargetTimeT
     }
     else
     {
-        qWarning() << "Received an error from method SetTargetTimeToStop, status = " << QCC_StatusText(status);
+        qWarning() << "Received an error from method SetTargetTimeToStop, error = " << errorName;
     }
 }

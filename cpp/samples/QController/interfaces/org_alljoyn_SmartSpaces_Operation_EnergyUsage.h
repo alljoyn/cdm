@@ -49,7 +49,7 @@ private slots:
     void slotOnPrecisionChanged(const double value);
     void slotOnResponseGetUpdateMinTime(QStatus status, const uint16_t value);
     void slotOnUpdateMinTimeChanged(const uint16_t value);
-    void slotOnResponseMethodResetCumulativeEnergy(QStatus status);
+    void slotOnResponseMethodResetCumulativeEnergy(QStatus status, const QString& errorName);
 
 public:
     // ajn::services::EnergyUsageIntfControllerListener
@@ -112,7 +112,7 @@ public:
         {
             qWarning() << __FUNCTION__;
             QMetaObject::invokeMethod(m_widget, "slotOnResponseMethodResetCumulativeEnergy", Qt::QueuedConnection,
-                              Q_ARG(QStatus, status)
+                              Q_ARG(QStatus, status), Q_ARG(QString, QString(errorName))
                               );
         }
     };

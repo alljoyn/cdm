@@ -56,8 +56,8 @@ private slots:
     void slotOnRunningTimeChanged(const int32_t value);
     void slotOnResponseGetTargetDuration(QStatus status, const int32_t value);
     void slotOnTargetDurationChanged(const int32_t value);
-    void slotOnResponseMethodSetTargetTimeToStart(QStatus status);
-    void slotOnResponseMethodSetTargetTimeToStop(QStatus status);
+    void slotOnResponseMethodSetTargetTimeToStart(QStatus status, const QString& errorName);
+    void slotOnResponseMethodSetTargetTimeToStop(QStatus status, const QString& errorName);
 
 public:
     // ajn::services::TimerIntfControllerListener
@@ -165,14 +165,14 @@ public:
         {
             qWarning() << __FUNCTION__;
             QMetaObject::invokeMethod(m_widget, "slotOnResponseMethodSetTargetTimeToStart", Qt::QueuedConnection,
-                              Q_ARG(QStatus, status)
+                              Q_ARG(QStatus, status), Q_ARG(QString, QString(errorName))
                               );
         }
         virtual void OnResponseSetTargetTimeToStop(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage) override
         {
             qWarning() << __FUNCTION__;
             QMetaObject::invokeMethod(m_widget, "slotOnResponseMethodSetTargetTimeToStop", Qt::QueuedConnection,
-                              Q_ARG(QStatus, status)
+                              Q_ARG(QStatus, status), Q_ARG(QString, QString(errorName))
                               );
         }
     };

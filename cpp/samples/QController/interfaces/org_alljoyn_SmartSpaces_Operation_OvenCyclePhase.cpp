@@ -174,7 +174,7 @@ void org_alljoyn_SmartSpaces_Operation_OvenCyclePhase::slotOnSupportedCyclePhase
 
 
 
-void org_alljoyn_SmartSpaces_Operation_OvenCyclePhase::slotOnResponseMethodGetVendorPhasesDescription(QStatus status)
+void org_alljoyn_SmartSpaces_Operation_OvenCyclePhase::slotOnResponseMethodGetVendorPhasesDescription(QStatus status, const QString& errorName)
 {
     if (status == ER_OK)
     {
@@ -182,6 +182,6 @@ void org_alljoyn_SmartSpaces_Operation_OvenCyclePhase::slotOnResponseMethodGetVe
     }
     else
     {
-        qWarning() << "Received an error from method GetVendorPhasesDescription, status = " << QCC_StatusText(status);
+        qWarning() << "Received an error from method GetVendorPhasesDescription, error = " << errorName;
     }
 }

@@ -49,7 +49,7 @@ private slots:
     void slotOnSupportedOperationalStatesChanged(const std::vector<CycleControlInterface::OperationalState>& value);
     void slotOnResponseGetSupportedOperationalCommands(QStatus status, const std::vector<CycleControlInterface::OperationalCommands>& value);
     void slotOnSupportedOperationalCommandsChanged(const std::vector<CycleControlInterface::OperationalCommands>& value);
-    void slotOnResponseMethodExecuteOperationalCommand(QStatus status);
+    void slotOnResponseMethodExecuteOperationalCommand(QStatus status, const QString& errorName);
 
 public:
     // ajn::services::CycleControlIntfControllerListener
@@ -112,7 +112,7 @@ public:
         {
             qWarning() << __FUNCTION__;
             QMetaObject::invokeMethod(m_widget, "slotOnResponseMethodExecuteOperationalCommand", Qt::QueuedConnection,
-                              Q_ARG(QStatus, status)
+                              Q_ARG(QStatus, status), Q_ARG(QString, QString(errorName))
                               );
         }
     };

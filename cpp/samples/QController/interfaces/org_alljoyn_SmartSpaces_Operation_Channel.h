@@ -49,7 +49,7 @@ private slots:
     void slotSetChannelId();
     void slotOnResponseGetTotalNumberOfChannels(QStatus status, const uint16_t value);
     void slotOnTotalNumberOfChannelsChanged(const uint16_t value);
-    void slotOnResponseMethodGetChannelList(QStatus status);
+    void slotOnResponseMethodGetChannelList(QStatus status, const QString& errorName);
     void slotOnSignalChannelListChanged();
 
 public:
@@ -105,7 +105,7 @@ public:
         {
             qWarning() << __FUNCTION__;
             QMetaObject::invokeMethod(m_widget, "slotOnResponseMethodGetChannelList", Qt::QueuedConnection,
-                              Q_ARG(QStatus, status)
+                              Q_ARG(QStatus, status), Q_ARG(QString, QString(errorName))
                               );
         }
         virtual void OnChannelListChanged(const qcc::String& objectPath) override

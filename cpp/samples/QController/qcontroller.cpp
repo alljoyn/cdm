@@ -18,7 +18,7 @@ QController::QController(QWidget *parent) :
     QMainWindow(parent)
 {
     setObjectName("QController");
-    resize(640, 480);
+    resize(800, 600);
 
     QSplitter* centralWidget = new QSplitter(Qt::Vertical, this);
 

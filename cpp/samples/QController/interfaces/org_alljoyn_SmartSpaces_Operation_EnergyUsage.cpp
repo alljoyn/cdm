@@ -166,7 +166,7 @@ void org_alljoyn_SmartSpaces_Operation_EnergyUsage::slotOnUpdateMinTimeChanged(c
 
 
 
-void org_alljoyn_SmartSpaces_Operation_EnergyUsage::slotOnResponseMethodResetCumulativeEnergy(QStatus status)
+void org_alljoyn_SmartSpaces_Operation_EnergyUsage::slotOnResponseMethodResetCumulativeEnergy(QStatus status, const QString& errorName)
 {
     if (status == ER_OK)
     {
@@ -174,6 +174,6 @@ void org_alljoyn_SmartSpaces_Operation_EnergyUsage::slotOnResponseMethodResetCum
     }
     else
     {
-        qWarning() << "Received an error from method ResetCumulativeEnergy, status = " << QCC_StatusText(status);
+        qWarning() << "Received an error from method ResetCumulativeEnergy, error = " << errorName;
     }
 }

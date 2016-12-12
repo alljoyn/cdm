@@ -47,7 +47,7 @@ private slots:
     void slotOnCyclePhaseChanged(const uint8_t value);
     void slotOnResponseGetSupportedCyclePhases(QStatus status, const std::vector<uint8_t>& value);
     void slotOnSupportedCyclePhasesChanged(const std::vector<uint8_t>& value);
-    void slotOnResponseMethodGetVendorPhasesDescription(QStatus status);
+    void slotOnResponseMethodGetVendorPhasesDescription(QStatus status, const QString& errorName);
 
 public:
     // ajn::services::RobotCleaningCyclePhaseIntfControllerListener
@@ -95,7 +95,7 @@ public:
         {
             qWarning() << __FUNCTION__;
             QMetaObject::invokeMethod(m_widget, "slotOnResponseMethodGetVendorPhasesDescription", Qt::QueuedConnection,
-                              Q_ARG(QStatus, status)
+                              Q_ARG(QStatus, status), Q_ARG(QString, QString(errorName))
                               );
         }
     };

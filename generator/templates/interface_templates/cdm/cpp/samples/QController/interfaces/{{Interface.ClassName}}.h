@@ -54,7 +54,7 @@ private slots:
 {% endif %}
 {% endfor %}
 {% for method in Interface.Methods %}
-    void slotOnResponseMethod{{method.Name}}(QStatus status);
+    void slotOnResponseMethod{{method.Name}}(QStatus status, const QString& errorName);
 {% endfor %}
 {% for signal in Interface.Signals %}
     void slotOnSignal{{signal.Name}}();
@@ -103,7 +103,7 @@ public:
         {
             qWarning() << __FUNCTION__;
             QMetaObject::invokeMethod(m_widget, "slotOnResponseMethod{{method.Name}}", Qt::QueuedConnection,
-                              Q_ARG(QStatus, status)
+                              Q_ARG(QStatus, status), Q_ARG(QString, QString(errorName))
                               );
         }
 {% endfor %}

@@ -4,7 +4,8 @@
 #include <QAbstractItemModel>
 #include <QAbstractItemView>
 #include <QtDebug>
-#include <mutex>
+
+#include "qcTypes.h"
 
 class CommonControllerNode : public QObject {
     Q_OBJECT
@@ -16,8 +17,6 @@ public:
     virtual CommonControllerNode *child(int row) const = 0;
     virtual QString name() const = 0;
 
-    typedef std::recursive_mutex Mutex;
-    typedef std::lock_guard<Mutex> LockGuard;
 };
 
 class CommonControllerChildlessNode : public CommonControllerNode {

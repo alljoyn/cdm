@@ -204,7 +204,7 @@ void org_alljoyn_SmartSpaces_Operation_Channel::slotOnTotalNumberOfChannelsChang
 
 
 
-void org_alljoyn_SmartSpaces_Operation_Channel::slotOnResponseMethodGetChannelList(QStatus status)
+void org_alljoyn_SmartSpaces_Operation_Channel::slotOnResponseMethodGetChannelList(QStatus status, const QString& errorName)
 {
     if (status == ER_OK)
     {
@@ -212,7 +212,7 @@ void org_alljoyn_SmartSpaces_Operation_Channel::slotOnResponseMethodGetChannelLi
     }
     else
     {
-        qWarning() << "Received an error from method GetChannelList, status = " << QCC_StatusText(status);
+        qWarning() << "Received an error from method GetChannelList, error = " << errorName;
     }
 }
 

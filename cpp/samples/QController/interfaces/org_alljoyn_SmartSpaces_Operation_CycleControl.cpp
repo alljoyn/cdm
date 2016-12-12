@@ -167,7 +167,7 @@ void org_alljoyn_SmartSpaces_Operation_CycleControl::slotOnSupportedOperationalC
 
 
 
-void org_alljoyn_SmartSpaces_Operation_CycleControl::slotOnResponseMethodExecuteOperationalCommand(QStatus status)
+void org_alljoyn_SmartSpaces_Operation_CycleControl::slotOnResponseMethodExecuteOperationalCommand(QStatus status, const QString& errorName)
 {
     if (status == ER_OK)
     {
@@ -175,6 +175,6 @@ void org_alljoyn_SmartSpaces_Operation_CycleControl::slotOnResponseMethodExecute
     }
     else
     {
-        qWarning() << "Received an error from method ExecuteOperationalCommand, status = " << QCC_StatusText(status);
+        qWarning() << "Received an error from method ExecuteOperationalCommand, error = " << errorName;
     }
 }
