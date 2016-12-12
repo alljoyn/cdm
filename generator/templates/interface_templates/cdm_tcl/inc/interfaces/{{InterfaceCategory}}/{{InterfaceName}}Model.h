@@ -18,12 +18,15 @@
 #define {{Interface.Name.upper()}}MODEL_H_
 
 #include <ajtcl/aj_status.h>
+#include <ajtcl/aj_bus.h>
+#include <ajtcl/cdm/interfaces/{{Interface.Category}}/{{Interface.Name}}Interface.h>
 
 /**
  * {{Interface.Name}} interface model
  */
 typedef struct {
 {% for property in Interface.UserProperties %}
+{% if property.Readable %}
 
     /**
      * Get {{property.Name}}
@@ -32,6 +35,7 @@ typedef struct {
      * @param[out] numValues if the type is an array, set the number of elements here.
      */
     AJ_Status (*Get{{property.Name}})(void *context, const char *objPath, {{property.Type.tcltype()}}* value);
+{% endif %}
 {% if property.Writable %}
 
      /**
@@ -39,7 +43,7 @@ typedef struct {
      * @param[in] value The {{property.Name.add_spaces_lower()}} to set
      * @return ER_OK on success
      */
-    AJ_Status (*Set{{property.Name}})(void *context, const char *objPath, const {{property.Type.tcltype()}} value);
+    AJ_Status (*Set{{property.Name}})(void *context, const char *objPath, {{property.Type.tcltype()}} value);
 {% endif %}
 {% endfor %}
 {% for method in Interface.Methods %}
@@ -57,6 +61,8 @@ typedef struct {
 {%- for a in method.input_args() %}, {{a.Type.tcltype()}} {{a.Name}}{% endfor %}
 {%- for a in method.output_args() %}, {{a.Type.tcltype()}}* {{a.Name}}{% endfor %});
 {% endfor %}
+
+    AJ_BusAttachment* busAttachment;
 
 } {{Interface.Name}}Model;
 

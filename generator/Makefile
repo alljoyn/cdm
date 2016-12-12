@@ -6,8 +6,8 @@ THIN      = $(AJ_ROOT)/services/cdm_tcl/
 ifeq ($(which),tcl)
 INSTALL_DIR = $(THIN)/
 TEMPLATES   = $(CDM)/generator/templates/interface_templates/cdm_tcl/
-PATCHES     = ""
-GENERATE_TARGETS = generate_tcl
+PATCHES     = templates/patches_tcl/
+GENERATE_TARGETS = generate_tcl generate_tcl_samples
 INSTALL_TARGETS  = install_tcl
 else
 INSTALL_DIR = $(CDM)/cpp
@@ -100,6 +100,10 @@ generate_samples:
 generate_tcl:
 	@for x in $(XML_PATHS); do \
             ./generate.py --patches $(PATCHES) --components=tcl $(TEMPLATES) $$x || exit 1;\
+	done
+
+generate_tcl_samples:
+	@for x in $(XML_PATHS); do \
             ./generate.py --patches $(PATCHES) --components=samples $(TEMPLATES) $$x || exit 1;\
 	done
 
@@ -115,7 +119,7 @@ install_samples:
 	(cd $(OUTPUT); find samples -type f|cpio -dump $(INSTALL_DIR))
 
 install_tcl:
-	(cd $(OUTPUT); find inc src -type f|cpio -dump $(INSTALL_DIR))
+	(cd $(OUTPUT); find inc src samples -type f|cpio -dump $(INSTALL_DIR))
 
 install_factory:
 	cp ControllerFactory.cc $(INSTALL_DIR)/interfaces/src

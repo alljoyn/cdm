@@ -19,6 +19,8 @@
 
 #include <ajtcl/aj_status.h>
 #include <ajtcl/aj_bus.h>
+#include <ajtcl/cdm/CdmControllee.h>
+#include <ajtcl/cdm/utils/CDM_Array.h>
 
 #define {{Interface.Name.upper_snake()}} "{{Interface.FullName}}"
 
@@ -46,18 +48,34 @@ typedef enum {
     {{Interface.Name.upper()}}_{{enum.Name.upper_snake()}}_{{value.Name.upper_snake()}} = {{value.Value}}{% if not loop.last %},{% endif %}
 
 {% endfor %}
-} {{Interface.Name}}{{enum.Name}};
+} {{Interface.Name}}_{{enum.Name}};
 
 
 typedef struct {
-    {{Interface.Name}}{{enum.Name}}* elems;
+    {{Interface.Name}}_{{enum.Name}}* elems;
     size_t numElems;
-} Array_{{Interface.Name}}{{enum.Name}};
+} Array_{{Interface.Name}}_{{enum.Name}};
+
 
 /**
- *  Free an array of {{Interface.Name}}{{enum.Name}}.
+ *  Initialise an array of {{enum.Name}}.
  */
-extern void FreeArray_{{Interface.Name}}{{enum.Name}}(Array_{{Interface.Name}}{{enum.Name}}* value);
+extern void InitArray_{{Interface.Name}}_{{enum.Name}}(Array_{{Interface.Name}}_{{enum.Name}}* value, size_t numElems);
+
+/**
+ *  Copy an array of {{enum.Name}}.
+ */
+extern void CopyArray_{{Interface.Name}}_{{enum.Name}}(Array_{{Interface.Name}}_{{enum.Name}}* value, Array_{{Interface.Name}}_{{enum.Name}}* copy);
+
+/**
+ *  Free an array of {{enum.Name}}.
+ */
+extern void FreeArray_{{Interface.Name}}_{{enum.Name}}(Array_{{Interface.Name}}_{{enum.Name}}* value);
+
+/**
+ *  Extend an array of {{enum.Name}}.
+ */
+extern size_t ExtendArray_{{Interface.Name}}_{{enum.Name}}(Array_{{Interface.Name}}_{{enum.Name}}* value, size_t numElems);
 {% endfor %}
 
 {% for struc in Interface.Structs %}
@@ -67,23 +85,38 @@ typedef struct {
 {% for field in struc.Fields %}
     {{field.Type.tcltype()}} {{field.Name}};
 {% endfor %}
-} {{struc.Name}};
+} {{Interface.Name}}_{{struc.Name}};
 
 
 typedef struct {
-    {{struc.Name}}* elems;
+    {{Interface.Name}}_{{struc.Name}}* elems;
     size_t numElems;
-} Array_{{struc.Name}};
+} Array_{{Interface.Name}}_{{struc.Name}};
 
 /**
  *  Free the fields in the {{struc.Name}} but not the struct itself.
  */
-extern void FreeFields_{{struc.Name}}({{struc.Name}}* value);
+extern void FreeFields_{{Interface.Name}}_{{struc.Name}}({{Interface.Name}}_{{struc.Name}}* value);
 
 /**
  *  Free an array of {{struc.Name}}.
  */
-extern void FreeArray_{{struc.Name}}(Array_{{struc.Name}}* value);
+extern void FreeArray_{{Interface.Name}}_{{struc.Name}}(Array_{{Interface.Name}}_{{struc.Name}}* value);
+
+/**
+ *  Initialise an array of {{struc.Name}}.
+ */
+extern void InitArray_{{Interface.Name}}_{{struc.Name}}(Array_{{Interface.Name}}_{{struc.Name}}* value, size_t numElems);
+
+/**
+ *  Copy an array of {{struc.Name}}.
+ */
+extern void CopyArray_{{Interface.Name}}_{{struc.Name}}(Array_{{Interface.Name}}_{{struc.Name}}* value, Array_{{Interface.Name}}_{{struc.Name}}* copy);
+
+/**
+ *  Extend an array of {{struc.Name}}.
+ */
+extern size_t ExtendArray_{{Interface.Name}}_{{struc.Name}}(Array_{{Interface.Name}}_{{struc.Name}}* value, size_t numElems);
 {% endfor %}
 
 

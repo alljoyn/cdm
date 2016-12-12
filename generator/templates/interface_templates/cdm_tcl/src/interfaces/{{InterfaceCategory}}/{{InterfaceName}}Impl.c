@@ -16,6 +16,7 @@
  ******************************************************************************/
 
 #include <stdlib.h>
+#include <string.h>
 #include <ajtcl/alljoyn.h>
 #include <ajtcl/cdm/CdmControllee.h>
 #include <ajtcl/cdm/CdmInterfaceCommon.h>
@@ -43,35 +44,82 @@ const char* const intfDescOperation{{Interface.Name}}[] = {
 
 
 
-void FreeFields_{{struc.Name}}({{struc.Name}}* value)
+void FreeFields_{{Interface.Name}}_{{struc.Name}}({{Interface.Name}}_{{struc.Name}}* value)
 {
 {% for field in struc.Fields %}
-{% if field.Type.ajtypeIsString() %}
-    free(value->{{field.Name}});
-{% endif %}
-{% if field.Type.ajtypeStructName() %}
-    FreeFields_{{field.Type.ajtypeStructName()}}(&value->{{field.Name}});
-    free(value->{{field.Name}});
-{% endif %}
+    {{tcl_macros.freeType(field.Type, "value->"~field.Name)}}
 {% endfor %}
 }
 
 
-void FreeArray_{{struc.Name}}(Array_{{struc.Name}}* value)
+void InitArray_{{Interface.Name}}_{{struc.Name}}(Array_{{Interface.Name}}_{{struc.Name}}* value, size_t numElems)
+{
+    Init_Array((CDM_Array*)value, sizeof({{Interface.Name}}_{{struc.Name}}), numElems);
+}
+
+
+// Note: this only allows fields that are char*, not any other kind of pointer
+void CopyArray_{{Interface.Name}}_{{struc.Name}}(Array_{{Interface.Name}}_{{struc.Name}}* value, Array_{{Interface.Name}}_{{struc.Name}}* copy)
+{
+    if (value->elems) {
+        copy->elems = malloc(value->numElems * sizeof({{Interface.Name}}_{{struc.Name}}));
+        for (size_t i = 0; i < value->numElems; ++i) {
+{% for field in struc.Fields %}
+{% if field.Type.ajtypeIsString() %}
+            copy->elems[i].{{field.Name}} = strdup(value->elems[i].{{field.Name}});
+{% else %}
+            copy->elems[i].{{field.Name}} = value->elems[i].{{field.Name}};
+{% endif %}
+{% endfor %}
+        }
+    } else {
+        copy->elems = NULL;
+    }
+
+    copy->numElems = value->numElems;
+
+}
+
+
+void FreeArray_{{Interface.Name}}_{{struc.Name}}(Array_{{Interface.Name}}_{{struc.Name}}* value)
 {
     for (size_t i = 0; i < value->numElems; ++i) {
-        FreeFields_{{struc.Name}}(&value->elems[i]);
+        FreeFields_{{Interface.Name}}_{{struc.Name}}(&value->elems[i]);
     }
     free(value->elems);
 }
-{% endfor %}
 
+
+size_t ExtendArray_{{Interface.Name}}_{{struc.Name}}(Array_{{Interface.Name}}_{{struc.Name}}* value, size_t numElems)
+{
+    return Extend_Array((CDM_Array*)value, sizeof({{Interface.Name}}_{{struc.Name}}), numElems);
+}
+{% endfor %}
 {% for enum in Interface.Enums %}
 
 
-void FreeArray_{{Interface.Name}}{{enum.Name}}(Array_{{Interface.Name}}{{enum.Name}}* value)
+void InitArray_{{Interface.Name}}_{{enum.Name}}(Array_{{Interface.Name}}_{{enum.Name}}* value, size_t numElems)
 {
-    free(value->elems);
+    Init_Array((CDM_Array*)value, sizeof({{Interface.Name}}_{{enum.Name}}), numElems);
+}
+
+
+void CopyArray_{{Interface.Name}}_{{enum.Name}}(Array_{{Interface.Name}}_{{enum.Name}}* value, Array_{{Interface.Name}}_{{enum.Name}}* copy)
+{
+    Copy_Array((CDM_Array*)value, sizeof({{Interface.Name}}_{{enum.Name}}), (CDM_Array*)copy);
+}
+
+
+void FreeArray_{{Interface.Name}}_{{enum.Name}}(Array_{{Interface.Name}}_{{enum.Name}}* value)
+{
+    free((void*)value->elems);
+    value->elems = 0;
+}
+
+
+size_t ExtendArray_{{Interface.Name}}_{{enum.Name}}(Array_{{Interface.Name}}_{{enum.Name}}* value, size_t numElems)
+{
+    return Extend_Array((CDM_Array*)value, sizeof({{Interface.Name}}_{{enum.Name}}), numElems);
 }
 {% endfor %}
 
@@ -80,7 +128,7 @@ void FreeArray_{{Interface.Name}}{{enum.Name}}(Array_{{Interface.Name}}{{enum.Na
 
 
 
-static AJ_Status {{Interface.Name}}_Get{{p.Name}}(const char* objPath, {{p.Type.tcltype()}}* out)
+static AJ_Status {{Interface.Name}}_Get{{p.Name}}(AJ_BusAttachment* busAttachment, const char* objPath, {{p.Type.tcltype()}}* out)
 {
     if (!objPath || !out) {
         return AJ_ERR_INVALID;
@@ -94,6 +142,7 @@ static AJ_Status {{Interface.Name}}_Get{{p.Name}}(const char* objPath, {{p.Type.
         return AJ_ERR_NULL;
     }
 
+    model->busAttachment = busAttachment;
     return model->Get{{p.Name}}(model, objPath, out);
 }
 {% endif %}
@@ -101,7 +150,7 @@ static AJ_Status {{Interface.Name}}_Get{{p.Name}}(const char* objPath, {{p.Type.
 
 
 
-static AJ_Status {{Interface.Name}}_Set{{p.Name}}(const char* objPath, {{p.Type.tcltype()}} value)
+static AJ_Status {{Interface.Name}}_Set{{p.Name}}(AJ_BusAttachment* busAttachment, const char* objPath, {{p.Type.tcltype()}} value)
 {
     if (!objPath) {
         return AJ_ERR_INVALID;
@@ -115,17 +164,44 @@ static AJ_Status {{Interface.Name}}_Set{{p.Name}}(const char* objPath, {{p.Type.
         return AJ_ERR_NULL;
     }
 
+    model->busAttachment = busAttachment;
     return model->Set{{p.Name}}(model, objPath, value);
 }
 {% endif %}
-
 {% if p.EmitsChangedSignal %}
+{% if p.Type.ajtypeStructName() %}
+{% set name = p.Type.ajtypeStructName() %} 
+{% for struc in Interface.Structs %}
+{%   if struc.Name == name %}
+
+
+
+static AJ_Status Marshal{{p.Name}}(AJ_Message* msg, void* structure, const char* structSignature)
+{
+    {{Interface.Name}}_{{name}}* value = ({{Interface.Name}}_{{name}}*)structure;
+    {# This assumes that fields in structs are only scalars or strings #}
+{% for field in struc.Fields %}
+    AJ_MarshalArgs(msg, "{{field.Type.tclMarshalSig()}}", value->{{field.Name}});
+{% endfor %}
+    return AJ_OK;
+}
+{%   endif %}
+{% endfor %}
+{% endif %}
 
 
 
 AJ_Status Cdm_{{Interface.Name}}_Emit{{p.Name}}Changed(AJ_BusAttachment *bus, const char *objPath, {{p.Type.tcltype()}} newValue)
 {
-    return EmitPropertyChanged(bus, objPath, INTERFACE_NAME, "{{p.Name}}", "{{p.Type.signature}}", {{tcl_macros.unpackArgs(p.Type, "newValue")}});
+{% if p.Type.ajtypeIsArray() %}
+{%   if p.Type.ajtypeStructName() %}
+    return EmitPropertyChanged(bus, objPath, INTERFACE_NAME, "{{p.Name}}", "{{p.Type.signature}}", newValue.elems, newValue.numElems, sizeof(*newValue.elems), Marshal{{p.Name}});
+{%   else %}
+    return EmitPropertyChanged(bus, objPath, INTERFACE_NAME, "{{p.Name}}", "{{p.Type.signature}}", newValue.elems, newValue.numElems);
+{%   endif %}
+{% else %}
+    return EmitPropertyChanged(bus, objPath, INTERFACE_NAME, "{{p.Name}}", "{{p.Type.signature}}", newValue);
+{% endif %}
 }
 {% endif %}
 {% endfor %}
@@ -133,7 +209,7 @@ AJ_Status Cdm_{{Interface.Name}}_Emit{{p.Name}}Changed(AJ_BusAttachment *bus, co
 {% for method in Interface.Methods %}
 
 
-static AJ_Status Cdm_{{Interface.Name}}_Call{{method.Name}}(const char *objPath
+static AJ_Status Cdm_{{Interface.Name}}_Call{{method.Name}}(AJ_BusAttachment* busAttachment, const char *objPath
 {%- for a in method.input_args() %}, {{a.Type.tcltype()}} {{a.Name}}{% endfor %}
 {%- for a in method.output_args() %}, {{a.Type.tcltype()}}* {{a.Name}}{% endfor %})
 {
@@ -149,8 +225,9 @@ static AJ_Status Cdm_{{Interface.Name}}_Call{{method.Name}}(const char *objPath
         return AJ_ERR_NULL;
     }
 
+    model->busAttachment = busAttachment;
     return model->Method{{method.Name}}(model, objPath 
-{%- for a in method.input_args() %}, {{a.Name}}{% endfor %}
+{%- for a in method.input_args() %}, {{tcl_macros.castTo(a.Type)}}{{a.Name}}{% endfor %}
 {%- for a in method.output_args() %}, {{a.Name}}{% endfor %});
 }
 {% endfor %}
@@ -160,7 +237,7 @@ static AJ_Status Cdm_{{Interface.Name}}_Call{{method.Name}}(const char *objPath
 //
 // Handler functions
 //
-static AJ_Status {{Interface.Name}}_OnGetProperty(AJ_Message* replyMsg, const char* objPath, uint8_t memberIndex)
+static AJ_Status {{Interface.Name}}_OnGetProperty(AJ_BusAttachment* busAttachment, AJ_Message* replyMsg, const char* objPath, uint8_t memberIndex)
 {
     AJ_Status status = AJ_ERR_INVALID;
 
@@ -174,7 +251,7 @@ static AJ_Status {{Interface.Name}}_OnGetProperty(AJ_Message* replyMsg, const ch
         case {{Interface.Name.upper()}}_PROP_{{p.Name.upper_snake()}}:
         {
             {{p.Type.tcltype()}} {{p.Name.snake()}};
-            status = {{Interface.Name}}_Get{{p.Name}}(objPath, &{{p.Name.snake()}});
+            status = {{Interface.Name}}_Get{{p.Name}}(busAttachment, objPath, &{{p.Name.snake()}});
             if (status == AJ_OK) {
                 status = AJ_MarshalArgs(replyMsg, "{{p.Type.signature}}", {{tcl_macros.unpackArgs(p.Type, p.Name.snake())}});
                 if (status == AJ_OK) {
@@ -206,10 +283,13 @@ static AJ_Status {{Interface.Name}}_OnSetProperty(AJ_BusAttachment* busAttachmen
 
         case {{Interface.Name.upper()}}_PROP_{{p.Name.upper_snake()}}:
         {
-            {{p.Type.tcltype()}} {{p.Name.snake()}};
+            {{p.Type.tcltype(enumByName = False)}} {{p.Name.snake()}};
             status = AJ_UnmarshalArgs(msg, "{{p.Type.signature}}", &{{p.Name.snake()}});
             if (status == AJ_OK) {
-                status = {{Interface.Name}}_Set{{p.Name}}(objPath, {{p.Name.snake()}});
+                status = {{Interface.Name}}_Set{{p.Name}}(busAttachment, objPath, {{tcl_macros.castTo(p.Type)}}{{p.Name.snake()}});
+                if (status == AJ_OK) {
+                    status= Cdm_{{Interface.Name}}_Emit{{p.Name}}Changed(busAttachment, objPath, {{p.Name.snake()}});
+                }
             }
             break;
         }
@@ -222,12 +302,14 @@ static AJ_Status {{Interface.Name}}_OnSetProperty(AJ_BusAttachment* busAttachmen
 
 
 
-static AJ_Status {{Interface.Name}}_OnMethodHandler(AJ_Message* msg, AJ_Message* replyMsg, const char* objPath, uint8_t memberIndex)
+static AJ_Status {{Interface.Name}}_OnMethodHandler(AJ_BusAttachment* busAttachment, AJ_Message* msg, AJ_Message* replyMsg, const char* objPath, uint8_t memberIndex)
 {
     AJ_Status status = AJ_ERR_INVALID;
+{% for method in Interface.Methods %}
+{% if loop.first %}
 
     switch (memberIndex) {
-{% for method in Interface.Methods %}
+{% endif %}
 
     case {{Interface.Name.upper()}}_METHOD_{{method.Name.upper_snake()}}:
     {
@@ -243,7 +325,7 @@ static AJ_Status {{Interface.Name}}_OnMethodHandler(AJ_Message* msg, AJ_Message*
         {{arg.Type.tcltype()}} {{arg.Name.snake()}};
 {% endfor %}
 
-        status = Cdm_{{Interface.Name}}_Call{{method.Name}}(objPath
+        status = Cdm_{{Interface.Name}}_Call{{method.Name}}(busAttachment, objPath
 {%- for arg in method.input_args() %}, {{arg.Name.snake()}}{% endfor %}
 {%- for arg in method.output_args() %}, &{{arg.Name.snake()}}{% endfor %});
 
@@ -267,8 +349,10 @@ static AJ_Status {{Interface.Name}}_OnMethodHandler(AJ_Message* msg, AJ_Message*
 {% endfor %}
         break;
     }
-{% endfor %}
+{% if loop.last %}
     }
+{% endif %}
+{% endfor %}
 
     return status;
 }

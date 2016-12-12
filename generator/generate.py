@@ -61,9 +61,9 @@ class PatchLoader(jinja2.BaseLoader):
         if template.startswith("patch/") and self.patchespath:
             base = template[6:]
             path = os.path.join(self.patchespath, CurrentRelativePath, base)
-            # print "looking for patch:", path
+            #print "looking for patch:", path
             if not os.path.exists(path):
-                # print "patch not found:", path
+                #print "patch not found:", path
                 raise jinja2.TemplateNotFound(template)
             mtime = os.path.getmtime(path)
             with file(path) as f:

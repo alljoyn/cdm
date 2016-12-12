@@ -97,7 +97,7 @@ class AJType(object):
     }
 
     TCLTypeMap = {
-        's': 'char*',
+        's': 'char const*',
         'b': 'bool',
         'y': 'uint8_t',
         'n': 'int16_t',
@@ -107,12 +107,13 @@ class AJType(object):
         'x': 'int64_t',
         't': 'uint64_t',
         'd': 'double',
-        'o': 'char*',  # Object Path
+        'o': 'char const*',  # Object Path
     }
 
+    # These are in the name of Array_% for predefined C array types.
     TCLArrayMap = {
         's': 'string',
-        'b': 'bool',
+        'b': 'Bool',
         'y': 'uint8',
         'n': 'int16',
         'q': 'uint16',
@@ -122,6 +123,21 @@ class AJType(object):
         't': 'uint64',
         'd': 'double',
         'o': 'string',
+    }
+
+    # These are in the name of HAL encoders and decoders.
+    TCLHalMap = {
+        's': 'String',
+        'b': 'Int',
+        'y': 'UInt',
+        'n': 'Int',
+        'q': 'UInt',
+        'i': 'Int',
+        'u': 'UInt',
+        'x': 'Int',
+        't': 'UInt',
+        'd': 'Double',
+        'o': 'String',
     }
 
     AJTypeIdMap = {
@@ -207,6 +223,7 @@ class AJType(object):
     def __init__(self, signature, parent = None):
         self.annotated_type = None
         self.signature = signature
+        self.sigoverride = None
         self.parent = parent
 
     def ajtypeid(self):
@@ -214,6 +231,10 @@ class AJType(object):
 
     def ajtype(self):
         return _padded_tag_replacement(self.AJTypeVarMap.get(self.signature, "unknown"), "Type")
+
+    def ajtypeInterfaceName(self):
+        interface = interface_of(self)
+        return interface.Name
 
 
     def ajtypeIsArray(self):
@@ -252,8 +273,15 @@ class AJType(object):
         return False
 
 
-    def ajtypeIsStruct(self, name):
+    def ajtypeIsStruct(self, name = None):
         # See if the name in [Name] is a struct in this interface
+        if name == None:
+            # like cpptype
+            ajtype = self.annotated_type if self.annotated_type else self.signature
+
+            if ajtype.startswith('[') and ajtype.endswith(']'):
+                name = ajtype[1:-1]
+
         interface = interface_of(self)
         for stru in interface.Structs:
             if stru.Name == name:
@@ -261,15 +289,25 @@ class AJType(object):
         return False
 
 
-    def ajtypeStructName(self):
+    def ajtypeStructName(self, withIface = False, withArray = False):
         # See if this type is a struct or array of struct
         # Return the Name if so, otherwise None
+        isArray = False
         ajtype = self.annotated_type if self.annotated_type else self.signature
+
         if ajtype.startswith('a'):
             ajtype = ajtype[1:]
+            isArray = True
+
         if ajtype.startswith('[') and ajtype.endswith(']'):
             ajtype = ajtype[1:-1]
             if self.ajtypeIsStruct(ajtype):
+                if withIface:
+                    # For tcl
+                    interface = interface_of(self)
+                    ajtype = str(interface.Name) + "_" + ajtype
+                if withArray:
+                    ajtype = "Array_" + ajtype
                 return ajtype
         return None
 
@@ -297,7 +335,7 @@ class AJType(object):
         return sig
 
 
-    def tcltype(self):
+    def tcltype(self, enumByName = True):
         ajtype = self.annotated_type if self.annotated_type else self.signature
         ctype  = None
         array  = False
@@ -308,14 +346,13 @@ class AJType(object):
 
         if ajtype.startswith('[') and ajtype.endswith(']'):
             ajtype = ajtype[1:-1]
-            interface = interface_of(self)
-            if interface:
-                if self.ajtypeIsEnum(ajtype):
-                    # Write an enum as e.g. AlertsSeverity
-                    ctype = str(interface.Name) + ajtype
-                elif self.ajtypeIsStruct(ajtype):
-                    # Write a struct without the interface name as e.g. AlertCodesDescriptor
-                    ctype = ajtype
+            if self.ajtypeIsEnum(ajtype) and not enumByName:
+                # in OnSet functions we need the ctype for the signature
+                ctype = self.TCLTypeMap.get(self.signature, "/* TODO:%{} */".format(ajtype))
+            else:
+                interface = interface_of(self)
+                if interface:
+                    ctype = str(interface.Name) + "_" + ajtype
 
         if ctype == None:
             if array:
@@ -329,25 +366,48 @@ class AJType(object):
         return ctype
 
 
-    def tclArrayBase(self):
-        # Return the base of the array type or free function for structs and enums or None.
-        # At the moment we include the interface name in the enum but not in the struct, probably
-        # for no good reason.  The names are expected to be in camel case.
-        ajtype = self.annotated_type if self.annotated_type else self.signature
+    def tclMarshalSig(self):
+        # Use the signature but allow overrides
+        if self.sigoverride:
+            return self.sigoverride
+        return self.signature
 
-        if ajtype.startswith("a"):
-            ajtype = ajtype[1:]
 
-        if ajtype.startswith('[') and ajtype.endswith(']'):
-            ajtype = ajtype[1:-1]
-            interface = interface_of(self)
-            if interface:
-                if self.ajtypeIsEnum(ajtype):
-                    # Write an enum as e.g. AlertsSeverity
-                    ajtype = str(interface.Name) + ajtype
-                return ajtype
+    def tclArrayDescr(self):
+        # Return a description of the array type for use in code e.g. Array_Alerts_AlertRecord
+        # The names are expected to be in camel case. This also handles "as" for Array_string etc.
+        name = self.annotated_type if self.annotated_type else self.signature
+
+        if name.startswith("a"):
+            name = name[1:]
+            if name.startswith('[') and name.endswith(']'):
+                name = name[1:-1]
+                interface = interface_of(self)
+                if interface:
+                    name = str(interface.Name) + "_" + name
+            else:
+                name = self.TCLArrayMap.get(name, "/* TODO:%{} */".format(name))
+            return "Array_" + name
 
         return None
+
+
+    def tclHalEncoder(self, decode = False):
+        if decode:
+            prefix = "HAL_Decode_"
+        else:
+            prefix = "HAL_Encode_"
+
+        if self.ajtypeIsEnum(): return prefix + "Int"
+
+        # Arrays are represented by "Array_%" where % is from TCLArrayMap
+        if self.ajtypeIsArray():
+            return prefix + self.tclArrayDescr()
+
+        if self.ajtypeStructName():
+            return prefix + self.ajtypeStructName(withIface = True, withArray = True)
+
+        return prefix + self.TCLHalMap.get(self.signature, "/* TODO:%{} */".format(self.signature))
 
 
 
@@ -526,6 +586,13 @@ class InterfaceStruct(object):
     def add_field(self, name, ajtype, interface):
         self.Fields.append(InterfaceStruct.StructField(AJType(ajtype, self), name))
 
+    def set_field_sig(self, field, field_sig):
+        # Set a type signature override
+        print "Field", field, "overriding sig", field_sig
+        for f in self.Fields:
+            if f.Name == field:
+                f.Type.sigoverride = field_sig
+
     def resolve_signature(self):
         # Join the signatures of the fields and wrap them in ()
         interface = interface_of(self)
@@ -581,6 +648,11 @@ class Interface(object):
             self.Structs.append(struct)
         struct.add_field(field, field_type, self)
 
+    def set_field_sig(self, struct_name, field, field_sig):
+        for s in self.Structs:
+            if s.Name == struct_name:
+                s.set_field_sig(field, field_sig)
+
     def add_enum_value(self, enum_name, enumerator, value):
         enum = None
         for e in self.Enums:
@@ -606,6 +678,9 @@ class Interface(object):
 
             re.compile(r'org\.alljoyn\.Bus\.Enum\.(\w*)\.Value\.([\w/-]*)'):
                 lambda m: self.add_enum_value(m.group(1), m.group(2), value),
+
+            re.compile(r'org\.twobulls\.Bus\.Struct\.(\w*)\.Field\.(\w*).Sig'):
+                lambda m: self.set_field_sig(m.group(1), m.group(2), value),
         }
 
         handled = False
@@ -839,6 +914,7 @@ class Property(object):
             return 'this, this.intf, "%s", %s.%s.class' % (self.Name, interface.Name, self.enum_name())
         else:
             return 'this, this.intf, "%s", null' % self.Name
+
 
 class Mutator(object):
     def __init__(self, name, interface, prop, prop_signature, default_value):

@@ -1,14 +1,45 @@
 {%- macro freeType(type, name) %}
 {% if type.ajtypeIsString() %}
-free({{name}});
+free((void*){{name}});
 {% elif type.ajtypeIsArrayOfName() %}
-FreeArray_{{type.tclArrayBase()}}(&{{name}});
+Free{{type.tclArrayDescr()}}(&{{name}});
 {% elif type.ajtypeStructName() %}
 {# name must not be the pointer #}
-FreeFields_{{type.ajtypeStructName()}}(&{{name}});
+FreeFields_{{type.ajtypeInterfaceName()}}_{{type.ajtypeStructName()}}(&{{name}});
 {% endif %}
 {% endmacro %}
 
 {%- macro unpackArgs(type, name) %}
 {%- if type.ajtypeIsArrayOfName() %}{{name}}.elems, {{name}}.numElems{% else %}{{name}}{% endif -%}
+{% endmacro -%}
+
+{%- macro halCType(type) %}
+{%-   if type.ajtypeIsEnum() %}int
+{%- elif type.ajtypeStructName() %}{{type.ajtypeStructName(withIface = True, withArray = True)}}
+{%- elif type.signature == "b" %}int64_t
+{%- elif type.signature == "y" %}uint64_t
+{%- elif type.signature == "n" %}int64_t
+{%- elif type.signature == "q" %}uint64_t
+{%- elif type.signature == "i" %}int64_t
+{%- elif type.signature == "u" %}uint64_t
+{%- elif type.signature == "x" %}int64_t
+{%- elif type.signature == "t" %}uint64_t
+{%- elif type.signature == "d" %}double
+{%- elif type.signature == "s" %}char const*
+{%- elif type.signature == "o" %}char const*
+{%- else %}{{type.tcltype()}}
+{%- endif %}
+{% endmacro -%}
+
+{%- macro castTo(type) %}
+{%-   if type.ajtypeIsEnum() %}({{type.tcltype()}})(int){% endif %}
+{% endmacro -%}
+
+
+{% macro halDecode(type, var) %}
+{% if type.ajtypeIsArray() %}
+{{type.tclHalEncoder(decode = True)}}(fp, &{{var}});
+{% else %}
+{{var}} = {{type.tclHalEncoder(decode = True)}}(fp);
+{%- endif -%}
 {% endmacro -%}
