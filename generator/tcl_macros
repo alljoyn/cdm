@@ -1,0 +1,14 @@
+{%- macro freeType(type, name) %}
+{% if type.ajtypeIsString() %}
+free({{name}});
+{% elif type.ajtypeIsArrayOfName() %}
+FreeArray_{{type.tclArrayBase()}}(&{{name}});
+{% elif type.ajtypeStructName() %}
+{# name must not be the pointer #}
+FreeFields_{{type.ajtypeStructName()}}(&{{name}});
+{% endif %}
+{% endmacro %}
+
+{%- macro unpackArgs(type, name) %}
+{%- if type.ajtypeIsArrayOfName() %}{{name}}.elems, {{name}}.numElems{% else %}{{name}}{% endif -%}
+{% endmacro -%}

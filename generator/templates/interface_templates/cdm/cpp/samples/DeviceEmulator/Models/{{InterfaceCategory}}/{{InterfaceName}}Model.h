@@ -33,7 +33,7 @@ class {{Interface.Name}}Model : public virtual {{Interface.Name}}IntfControlleeM
      * Get {{property.Name}}
      * @return current {{property.Name.add_spaces_lower()}}
      */
-    QStatus Get{{property.Name}}({{property.Type.ctype()}}& out) const override;
+    QStatus Get{{property.Name}}({{property.Type.cpptype()}}& out) const override;
     {% if property.Writable %}
 
      /**
@@ -41,7 +41,7 @@ class {{Interface.Name}}Model : public virtual {{Interface.Name}}IntfControlleeM
      * @param[in] value The {{property.Name.add_spaces_lower()}} to set
      * @return ER_OK on success
      */
-    QStatus Set{{property.Name}}(const {{property.Type.ctype_arg()}} value) override;
+    QStatus Set{{property.Name}}(const {{property.Type.cpptype_arg()}} value) override;
     {% endif %}
     {% endfor %}
 
@@ -53,8 +53,8 @@ class {{Interface.Name}}Model : public virtual {{Interface.Name}}IntfControlleeM
      */
 {% set comma = joiner(", ") %}
     QStatus {{method.Name}}(
-{%- for arg in method.input_args() %}{{comma()}}{{arg.Type.ctype_arg()}} arg_{{arg.Name}}{% endfor %}
-{%- for arg in method.output_args() %}{{comma()}}{{arg.Type.ctype()}}& arg_{{arg.Name}}{% endfor %}{{comma()-}}
+{%- for arg in method.input_args() %}{{comma()}}{{arg.Type.cpptype_arg()}} arg_{{arg.Name}}{% endfor %}
+{%- for arg in method.output_args() %}{{comma()}}{{arg.Type.cpptype()}}& arg_{{arg.Name}}{% endfor %}{{comma()-}}
     ErrorCode& error, CdmControllee& controllee) override;
     {% endfor %}
 

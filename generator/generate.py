@@ -23,6 +23,9 @@ except ImportError as e:
     print e
     print "Please run pip install jinja2"
     sys.exit(1)
+except BaseException:
+    sys.exit(1)
+
 import xml_parser as xml
 import argparse
 
@@ -33,7 +36,7 @@ CurrentRelativePath = ""
 class LocalLoader(jinja2.BaseLoader):
 
     def __init__(self):
-        self.files = ["macros"]
+        self.files = ["macros", "tcl_macros"]
 
     def get_source(self, environment, template):
         # "patch/foo" maps to somewhere in the patches tree according to the template relative path
@@ -75,15 +78,17 @@ class Generator(object):
         self.cmd_args = args
 
         self._binding_checks_metadata = (
-                (('all', 'cpp'), ('.cc', '.cpp', '.h')),
-                (('all', 'java'), ('.java',))
+                (('all', 'cpp'),  ('cpp',  ['.cc', '.cpp', '.h'])),
+                (('all', 'java'), ('java', ['.java'])),
+                (('all', 'tcl'), ('tcl', ['.c', '.h']))
             )
 
         self._component_checks_metadata = (
-                (('all', 'controller'), ('controller',)),
-                (('all', 'controllee'), ('controllee',)),
-                (('all', 'common'), ('common',)),
-                (('all', 'samples'), ('samples',))
+                (('all', 'controller'), ('/', ['controller'])),
+                (('all', 'controllee'), ('/', ['controllee'])),
+                (('all', 'common'),     ('/', ['common'])),
+                (('all', 'samples'),    ('/', ['samples'])),
+                (('all', 'tcl'),        ('/', ['cdm_tcl']))
             )
 
     def get_parser(self):
@@ -108,7 +113,8 @@ class Generator(object):
                 return any([match in chosen for match in valid_matches])
 
             def file_is_check(searches):
-                return any([search in fname for search in searches])
+                required, sub_checks = searches
+                return any([(required in fname and sub_check in fname) for sub_check in sub_checks])
 
             def build_check_pair(elem, search, chosen):
                 return do_check(elem, chosen), file_is_check(search)
@@ -122,7 +128,6 @@ class Generator(object):
             binding_checks = build_checks(self.cmd_args.bindings, self._binding_checks_metadata)
             component_checks = build_checks(self.cmd_args.components, self._component_checks_metadata)
             is_valid = not_hidden and validate_checks(binding_checks) and validate_checks(component_checks)
-
             return is_valid
 
         # print 'Running %s' % type(self).__name__
@@ -234,12 +239,17 @@ def main():
     argument_parser.add_argument('--bindings', nargs='*', default=["all"], help="The bindings to generate")
     argument_parser.add_argument('--components', nargs='*', default=["all"], help="The components to generate (controller, controllee or all")
     argument_parser.add_argument('--sample', action='store_true', required=False, help='Generate sample programs using the device emulator xml file')
-    argument_parser.add_argument('--patches', required=False, help='Path to the root for patch templates')
+    argument_parser.add_argument('--patches', required=False, default="", help='Path to the root for patch templates')
     
     args = argument_parser.parse_args()
 
     generator = SampleAppGenerator(args) if args.sample else InterfaceCodeGenerator(args)
-    generator.generate()
+
+    try:
+        generator.generate()
+    except KeyboardInterrupt:
+        print "main, KeyboardInterrupt"
+        sys.exit(1)
 
 if __name__ == '__main__':
     main()

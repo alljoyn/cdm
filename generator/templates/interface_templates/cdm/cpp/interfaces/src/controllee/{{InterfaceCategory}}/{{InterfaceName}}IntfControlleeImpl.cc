@@ -94,7 +94,7 @@ class {{Interface.Name}}IntfControllee::Impl :
      * @param[in] newValue new value of {{property.Name.add_spaces_lower()}}
      * @return ER_OK on success
      */
-    QStatus Emit{{property.Name}}Changed(const {{property.Type.ctype_arg()}} newValue);
+    QStatus Emit{{property.Name}}Changed(const {{property.Type.cpptype_arg()}} newValue);
     {% endif %}
     {% endfor %}
     {% for method in Interface.Methods %}
@@ -148,7 +148,7 @@ const qcc::String& {{Interface.Name}}IntfControllee::GetInterfaceName() const
 {% for property in Interface.UserProperties %}
 {% if property.EmitsChangedSignal %}
 
-QStatus {{Interface.Name}}IntfControllee::Emit{{property.Name}}Changed(const {{property.Type.ctype_arg()}} newValue)
+QStatus {{Interface.Name}}IntfControllee::Emit{{property.Name}}Changed(const {{property.Type.cpptype_arg()}} newValue)
 {
     return (m_impl == nullptr) ? ER_FAIL : m_impl->Emit{{property.Name}}Changed(newValue);
 }
@@ -222,7 +222,7 @@ QStatus {{Interface.Name}}IntfControllee::Impl::OnGetProperty(const String& prop
     } else {
         {% for property in Interface.UserProperties %}
         if (!(s_prop_{{property.Name}}.compare(propName))) {
-            {{property.Type.ctype()}} value;
+            {{property.Type.cpptype()}} value;
             auto status = m_{{Interface.Name}}ModelInterface->Get{{property.Name}}(value);
             if (status != ER_OK) {
                 QCC_LogError(status, ("%s: failed to get actual property value from application. use previous value.", __func__));
@@ -245,8 +245,10 @@ QStatus {{Interface.Name}}IntfControllee::Impl::OnSetProperty(const String& prop
             return ER_BUS_NO_SUCH_PROPERTY;
         }
 
+        QStatus status;
+
         {% if property.Writable %}
-        {{property.Type.ctype()}} value;
+        {{property.Type.cpptype()}} value;
 {{ macros.getMsgArg("msgarg", "value", property.Type)|indent(2 * 4, True) }}
         {% if property.Max != None %}
 
@@ -258,22 +260,21 @@ QStatus {{Interface.Name}}IntfControllee::Impl::OnSetProperty(const String& prop
         if (value < {{property.Min}})
             return ER_BUS_PROPERTY_VALUE_NOT_SET;
         {% endif %}
-
-        QStatus status;
         {% if property.MaxFromProperty != None %}
-        {{Interface.PropLUT[property.MaxFromProperty].Type.ctype()}} maxValue;
+
+        {{Interface.PropLUT[property.MaxFromProperty].Type.cpptype()}} maxValue;
         status = m_{{Interface.Name}}ModelInterface->Get{{property.MaxFromProperty}}(maxValue);
         if (value > maxValue)
             return ER_BUS_PROPERTY_VALUE_NOT_SET;
-
         {% endif %}
         {% if property.MinFromProperty != None %}
-        {{Interface.PropLUT[property.MinFromProperty].Type.ctype()}} minValue;
+
+        {{Interface.PropLUT[property.MinFromProperty].Type.cpptype()}} minValue;
         status = m_{{Interface.Name}}ModelInterface->Get{{property.MinFromProperty}}(minValue);
         if (value < minValue)
             return ER_BUS_PROPERTY_VALUE_NOT_SET;
-        
         {% endif %}
+
         status = m_{{Interface.Name}}ModelInterface->Set{{property.Name}}(value);
         if (status != ER_OK) {
             QCC_LogError(status, ("%s: failed to set property value", __func__));
@@ -315,7 +316,7 @@ void {{Interface.Name}}IntfControllee::Impl::OnMethodHandler(const InterfaceDesc
 
 {% for property in Interface.UserProperties %}
 {% if property.EmitsChangedSignal %}
-QStatus {{Interface.Name}}IntfControllee::Impl::Emit{{property.Name}}Changed(const {{property.Type.ctype_arg()}} newValue)
+QStatus {{Interface.Name}}IntfControllee::Impl::Emit{{property.Name}}Changed(const {{property.Type.cpptype_arg()}} newValue)
 {
     QStatus status = ER_OK;
 
@@ -336,12 +337,12 @@ void {{Interface.Name}}IntfControllee::Impl::On{{method.Name}}(const InterfaceDe
     msg->GetArgs(numArgs, args);
 
 {% for arg in method.Args %}
-    {{arg.Type.ctype()}} arg_{{arg.Name}};
+    {{arg.Type.cpptype()}} arg_{{arg.Name}};
 {% endfor %}
 {% for arg in method.input_args() %}
 
     {
-        CdmMsgCvt<{{arg.Type.ctype()}}> cvt;
+        CdmMsgCvt<{{arg.Type.cpptype()}}> cvt;
         cvt.get(args[{{loop.index0}}], arg_{{arg.Name}});
     }
 {% endfor %}
@@ -356,7 +357,7 @@ void {{Interface.Name}}IntfControllee::Impl::On{{method.Name}}(const InterfaceDe
 {% for arg in method.output_args() %}
     // TODO this only allows one output arg
     MsgArg reply;
-    CdmMsgCvt<{{arg.Type.ctype()}}> replyCvt;
+    CdmMsgCvt<{{arg.Type.cpptype()}}> replyCvt;
     replyCvt.set(reply, arg_{{arg.Name}});
 {% endfor %}
 

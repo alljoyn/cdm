@@ -52,7 +52,7 @@
 
 - (instancetype)initWithDevice:(Device *)device andController:(ajn::services::CdmController *)cdmController;
 {% for property in Interface.UserProperties if property.Selector %}
-- (void) set{{property.Selector.Name}}:(const {{property.Selector.Property.Type.ctype_arg()}}){{property.Selector.Name.camel_case()}};
+- (void) set{{property.Selector.Name}}:(const {{property.Selector.Property.Type.cpptype_arg()}}){{property.Selector.Name.camel_case()}};
 {% endfor %}
 
 @end

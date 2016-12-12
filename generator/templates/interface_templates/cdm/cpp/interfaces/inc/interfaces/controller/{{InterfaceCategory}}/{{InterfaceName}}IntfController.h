@@ -82,7 +82,7 @@ class {{Interface.Name}}IntfController : public {{Interface.Name}}Interface {
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus Set{{property.Name}}(const {{property.Type.ctype_arg()}} value, void* context = NULL);
+    virtual QStatus Set{{property.Name}}(const {{property.Type.cpptype_arg()}} value, void* context = NULL);
     {% endif %}
     {% endfor %}
     {% for method in Interface.Methods %}
@@ -100,7 +100,7 @@ class {{Interface.Name}}IntfController : public {{Interface.Name}}Interface {
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus {{method.Name}}({% for arg in method.input_args() %}const {{arg.Type.ctype_arg()}} {{arg.Name.camel_case()}}, {% endfor %}void* context = NULL);
+    virtual QStatus {{method.Name}}({% for arg in method.input_args() %}const {{arg.Type.cpptype_arg()}} {{arg.Name.camel_case()}}, {% endfor %}void* context = NULL);
     {% endfor %}
 
   private:

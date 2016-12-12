@@ -56,7 +56,7 @@ class {{Interface.Name}}IntfControlleeModel : public virtual InterfaceControllee
      * Get {{property.Name}}
      * @return current {{property.Name.add_spaces_lower()}}
      */
-    virtual QStatus Get{{property.Name}}({{property.Type.ctype()}}& out) const = 0;
+    virtual QStatus Get{{property.Name}}({{property.Type.cpptype()}}& out) const = 0;
     {% if property.Writable %}
 
      /**
@@ -64,7 +64,7 @@ class {{Interface.Name}}IntfControlleeModel : public virtual InterfaceControllee
      * @param[in] value The {{property.Name.add_spaces_lower()}} to set
      * @return ER_OK on success
      */
-    virtual QStatus Set{{property.Name}}(const {{property.Type.ctype_arg()}} value) = 0;
+    virtual QStatus Set{{property.Name}}(const {{property.Type.cpptype_arg()}} value) = 0;
     {% endif %}
     {% endfor %}
 
@@ -76,8 +76,8 @@ class {{Interface.Name}}IntfControlleeModel : public virtual InterfaceControllee
      */
 {% set comma = joiner(", ") %}
     virtual QStatus {{method.Name}}(
-{%- for arg in method.input_args() %}{{comma()}}{{arg.Type.ctype_arg()}} arg_{{arg.Name}}{% endfor %}
-{%- for arg in method.output_args() %}{{comma()}}{{arg.Type.ctype()}}& arg_{{arg.Name}}{% endfor %}{{comma()-}}
+{%- for arg in method.input_args() %}{{comma()}}{{arg.Type.cpptype_arg()}} arg_{{arg.Name}}{% endfor %}
+{%- for arg in method.output_args() %}{{comma()}}{{arg.Type.cpptype()}}& arg_{{arg.Name}}{% endfor %}{{comma()-}}
 ErrorCode& error, CdmControllee& controllee) = 0;
     {% endfor %}
 };

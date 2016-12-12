@@ -1,13 +1,23 @@
 
-ROOT      = /Users/anthonyshipman/Documents/AllJoyn/
-IFACES    = $(ROOT)/alljoyn_interfaces/interfaces/
+IFACES    = $(AJ_ROOT)/alljoyn_interfaces/interfaces/
+CDM       = $(AJ_ROOT)/services/cdm/
+THIN      = $(AJ_ROOT)/services/cdm_tcl/
 
-CDM       = $(ROOT)/services/cdm/
-TEMPLATES = $(CDM)/generator/templates/interface_templates/cdm/cpp/
+ifeq ($(which),tcl)
+INSTALL_DIR = $(THIN)/
+TEMPLATES   = $(CDM)/generator/templates/interface_templates/cdm_tcl/
+PATCHES     = ""
+GENERATE_TARGETS = generate_tcl
+INSTALL_TARGETS  = install_tcl
+else
+INSTALL_DIR = $(CDM)/cpp
+TEMPLATES   = $(CDM)/generator/templates/interface_templates/cdm/cpp/
+PATCHES     = templates/patches/cpp
+GENERATE_TARGETS = generate_common generate_controllee generate_controller generate_samples generate_factory
+INSTALL_TARGETS  = install_common install_controllee install_controller install_samples install_factory
+endif
+
 OUTPUT    = ./output
-
-INSTALL_DIR = $(CDM)/
-
 
 XML_FILES = \
     org.alljoyn.SmartSpaces.Operation/AirRecirculationMode-v1.xml \
@@ -65,41 +75,50 @@ all:
 	@ echo "Will process:"
 	@ for x in $(XML_FILES); do echo $$x; done
 
-generate: generate_common generate_controllee generate_controller generate_samples generate_factory
+generate: $(GENERATE_TARGETS)
 
 generate_common:
 	@for x in $(XML_PATHS); do \
-            ./generate.py --patches templates/patches/cpp --components=common $(TEMPLATES) $$x ;\
+            ./generate.py --patches $(PATCHES) --components=common $(TEMPLATES) $$x || exit 1;\
 	done
 
 generate_controllee:
 	@for x in $(XML_PATHS); do \
-            ./generate.py --patches templates/patches/cpp --components=controllee $(TEMPLATES) $$x ;\
+            ./generate.py --patches $(PATCHES) --components=controllee $(TEMPLATES) $$x || exit 1;\
 	done
 
 generate_controller:
 	@for x in $(XML_PATHS); do \
-            ./generate.py --patches templates/patches/cpp --components=controller $(TEMPLATES) $$x ;\
+            ./generate.py --patches $(PATCHES) --components=controller $(TEMPLATES) $$x || exit 1;\
 	done
 
 generate_samples:
 	@for x in $(XML_PATHS); do \
-            ./generate.py --patches templates/patches/cpp --components=samples $(TEMPLATES) $$x ;\
+            ./generate.py --patches $(PATCHES) --components=samples $(TEMPLATES) $$x || exit 1;\
+	done
+
+generate_tcl:
+	@for x in $(XML_PATHS); do \
+            ./generate.py --patches $(PATCHES) --components=tcl $(TEMPLATES) $$x || exit 1;\
+            ./generate.py --patches $(PATCHES) --components=samples $(TEMPLATES) $$x || exit 1;\
 	done
 
 generate_factory:
 	@./genFactory.py $(XML_PATHS)
 
-install: install_interfaces install_samples install_factory
+install: $(INSTALL_TARGETS)
 
 install_interfaces:
-	(cd $(OUTPUT); find interfaces -type f|cpio -dump $(CDM)/cpp)
+	(cd $(OUTPUT); find interfaces -type f|cpio -dump $(INSTALL_DIR))
 
 install_samples:
-	(cd $(OUTPUT); find samples -type f|cpio -dump $(CDM)/cpp)
+	(cd $(OUTPUT); find samples -type f|cpio -dump $(INSTALL_DIR))
+
+install_tcl:
+	(cd $(OUTPUT); find inc src -type f|cpio -dump $(INSTALL_DIR))
 
 install_factory:
-	cp ControllerFactory.cc $(CDM)/cpp/interfaces/src
+	cp ControllerFactory.cc $(INSTALL_DIR)/interfaces/src
 
 clean:
 	$(RM) -rf $(OUTPUT)

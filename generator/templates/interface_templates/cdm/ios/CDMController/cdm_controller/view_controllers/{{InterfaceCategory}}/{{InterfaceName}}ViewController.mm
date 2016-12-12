@@ -44,7 +44,7 @@ typedef NS_ENUM(NSInteger, PICKER_TAG) {
 
 {% for property in Interface.UserProperties if property.Selector %}
 @property (nonatomic, strong) UIPickerView *{{property.Name.camel_case()}}Picker;
-@property {{property.Selector.Property.Type.ctype()}} *selectorValuesFor{{property.Name}};
+@property {{property.Selector.Property.Type.cpptype()}} *selectorValuesFor{{property.Name}};
 {% endfor %}
 
 @end
@@ -182,11 +182,11 @@ typedef NS_ENUM(NSInteger, PICKER_TAG) {
     {% if property.Writable %}
     if([property isEqualToString:@"{{property.Name}}"]){
         {% if property.is_bool() %}
-        _{{Interface.Name.camel_case()}}IntfController->Set{{property.Name}}(({{property.Type.ctype_arg()}})[value boolValue]);
+        _{{Interface.Name.camel_case()}}IntfController->Set{{property.Name}}(({{property.Type.cpptype_arg()}})[value boolValue]);
         {% elif property.is_string() %}
-        _{{Interface.Name.camel_case()}}IntfController->Set{{property.Name}}({{property.Type.ctype()}}([value cStringUsingEncoding:NSUTF8StringEncoding]));
+        _{{Interface.Name.camel_case()}}IntfController->Set{{property.Name}}({{property.Type.cpptype()}}([value cStringUsingEncoding:NSUTF8StringEncoding]));
         {% else %}
-        _{{Interface.Name.camel_case()}}IntfController->Set{{property.Name}}(({{property.Type.ctype_arg()}})[value longLongValue]);
+        _{{Interface.Name.camel_case()}}IntfController->Set{{property.Name}}(({{property.Type.cpptype_arg()}})[value longLongValue]);
         {% endif %}
     }
     {% endif %}
@@ -213,11 +213,11 @@ typedef NS_ENUM(NSInteger, PICKER_TAG) {
                                                               NSLog(@"Executing %@ from the view controller", methodName);
                                                               {% for arg in method.input_args() %}
                                                               {% if arg.Type.is_bool() %}
-                                                              {{arg.Type.ctype()}} {{arg.Name.camel_case()}}Command = ({{arg.Type.ctype()}})[alertController.textFields[{{loop.index0}}].text boolValue];
+                                                              {{arg.Type.cpptype()}} {{arg.Name.camel_case()}}Command = ({{arg.Type.cpptype()}})[alertController.textFields[{{loop.index0}}].text boolValue];
                                                               {% elif arg.Type.is_string() %}
-                                                              {{arg.Type.ctype()}} {{arg.Name.camel_case()}}Command = ({{arg.Type.ctype()}})[alertController.textFields[{{loop.index0}}].text cStringUsingEncoding:NSUTF8StringEncoding];
+                                                              {{arg.Type.cpptype()}} {{arg.Name.camel_case()}}Command = ({{arg.Type.cpptype()}})[alertController.textFields[{{loop.index0}}].text cStringUsingEncoding:NSUTF8StringEncoding];
                                                               {% else %}
-                                                              {{arg.Type.ctype()}} {{arg.Name.camel_case()}}Command = ({{arg.Type.ctype()}})[alertController.textFields[{{loop.index0}}].text longLongValue];
+                                                              {{arg.Type.cpptype()}} {{arg.Name.camel_case()}}Command = ({{arg.Type.cpptype()}})[alertController.textFields[{{loop.index0}}].text longLongValue];
                                                               {% endif %}
                                                               {% endfor %}
                                                               _{{Interface.Name.camel_case()}}IntfController->{{method.Name}}({% for arg in method.input_args() %}{{arg.Name.camel_case()}}Command{% if not loop.last %},{% endif %}{% endfor %});
@@ -238,13 +238,13 @@ typedef NS_ENUM(NSInteger, PICKER_TAG) {
 {% endif %}
 
 {% for property in Interface.UserProperties if property.Selector %}
-- (void) set{{property.Selector.Name}}:(const {{property.Selector.Property.Type.ctype_arg()}}){{property.Selector.Name.camel_case()}}
+- (void) set{{property.Selector.Name}}:(const {{property.Selector.Property.Type.cpptype_arg()}}){{property.Selector.Name.camel_case()}}
 {
     if(self.self.selectorValuesFor{{property.Name}}) {
         delete _selectorValuesFor{{property.Name}};
     }
 
-    self.selectorValuesFor{{property.Name}} = new {{property.Selector.Property.Type.ctype()}}({{property.Selector.Name.camel_case()}});
+    self.selectorValuesFor{{property.Name}} = new {{property.Selector.Property.Type.cpptype()}}({{property.Selector.Name.camel_case()}});
 }
 {% endfor %}
 
@@ -276,7 +276,7 @@ typedef NS_ENUM(NSInteger, PICKER_TAG) {
         {% for property in Interface.UserProperties if property.Selector %}
         case {{property.Name.upper_snake()}}_PICKER_TAG:
         {
-            {{property.Type.ctype()}} {{property.Name.camel_case()}} = self.selectorValuesFor{{property.Name}}->at(row);
+            {{property.Type.cpptype()}} {{property.Name.camel_case()}} = self.selectorValuesFor{{property.Name}}->at(row);
             return [NSString stringWithFormat:@"%{{property.Type.objc_format_str()}}", {{property.Name.camel_case()}}];
         }
         {% endfor %}
@@ -291,7 +291,7 @@ typedef NS_ENUM(NSInteger, PICKER_TAG) {
         {% for property in Interface.UserProperties if property.Selector %}
         case {{property.Name.upper_snake()}}_PICKER_TAG:
         {
-            {{property.Type.ctype()}} {{property.Name.camel_case()}} = self.selectorValuesFor{{property.Name}}->at(row);
+            {{property.Type.cpptype()}} {{property.Name.camel_case()}} = self.selectorValuesFor{{property.Name}}->at(row);
             _{{Interface.Name.camel_case()}}IntfController->Set{{property.Name}}({{property.Name.camel_case()}});
             [self.{{property.Name.camel_case()}}Cell.value resignFirstResponder];
             break;

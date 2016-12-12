@@ -75,13 +75,14 @@ class Symbol(object):
 
 
 def _padded_tag_replacement(value, prefix=""):
-    func_name = inspect.stack()[1][3]
-    full_name = prefix + "." + func_name if prefix else func_name
-    return "{0: <{1}}".format(value, len(full_name) + 4)
+    return value
+    #func_name = inspect.stack()[1][3]
+    #full_name = prefix + "." + func_name if prefix else func_name
+    #return "{0: <{1}}".format(value, len(full_name) + 4)
 
 
 class AJType(object):
-    CTypeMap = {
+    CppTypeMap = {
         's': 'qcc::String',
         'b': 'bool',
         'y': 'uint8_t',
@@ -93,6 +94,34 @@ class AJType(object):
         't': 'uint64_t',
         'd': 'double',
         'o': 'qcc::String',  # Object Path
+    }
+
+    TCLTypeMap = {
+        's': 'char*',
+        'b': 'bool',
+        'y': 'uint8_t',
+        'n': 'int16_t',
+        'q': 'uint16_t',
+        'i': 'int32_t',
+        'u': 'uint32_t',
+        'x': 'int64_t',
+        't': 'uint64_t',
+        'd': 'double',
+        'o': 'char*',  # Object Path
+    }
+
+    TCLArrayMap = {
+        's': 'string',
+        'b': 'bool',
+        'y': 'uint8',
+        'n': 'int16',
+        'q': 'uint16',
+        'i': 'int32',
+        'u': 'uint32',
+        'x': 'int64',
+        't': 'uint64',
+        'd': 'double',
+        'o': 'string',
     }
 
     AJTypeIdMap = {
@@ -186,35 +215,30 @@ class AJType(object):
     def ajtype(self):
         return _padded_tag_replacement(self.AJTypeVarMap.get(self.signature, "unknown"), "Type")
 
-    def ajtypeIsVectorOfStruct(self):
-        # the annotated type is e.g. a[PlugInInfo] but the name must not be an enum
-        if self.annotated_type:
-            m = re.match("a\[(\w+)\]$", self.annotated_type)
-            if m != None:
-                name = m.group(1)
-                return not self.ajtypeIsEnum(name)
-        return False
 
-    def ajtypeVectorOfStructName(self):
-        # Get the T out of a[T] in the annotated type
-        if self.annotated_type:
-            m = re.match("a\[(\w+)\]$", self.annotated_type)
-            if m != None:
-                name = m.group(1)
-                if not self.ajtypeIsEnum(name):
-                    return name
+    def ajtypeIsArray(self):
+        # See if the name is 'a' followed by any signature. If so then return the signature
+        ajtype = self.annotated_type if self.annotated_type else self.signature
+        if ajtype.startswith('a'):
+            return ajtype[1:]
         return None
 
-    def ajtypeVectorOfStructSig(self):
-        # Get the (oub) out of a(oub)
-        m = re.match("a(\(\w+\))$", self.signature)
-        if m != None:
-            return m.group(1)
+
+    def ajtypeIsArrayOfName(self):
+        # See if the type is 'a' followed by a struct or enum name. If so then return the name.
+        ajtype = self.annotated_type if self.annotated_type else self.signature
+        if ajtype.startswith('a'):
+            ajtype = ajtype[1:]
+            if ajtype.startswith('[') and ajtype.endswith(']'):
+                ajtype = ajtype[1:-1]
+                return ajtype
+        return None
+
 
     def ajtypeIsEnum(self, name = None):
         # See if the name in [Name] is an enum in this interface
         if name == None:
-            # like ctype
+            # like cpptype
             ajtype = self.annotated_type if self.annotated_type else self.signature
 
             if ajtype.startswith('[') and ajtype.endswith(']'):
@@ -227,6 +251,7 @@ class AJType(object):
                     return True
         return False
 
+
     def ajtypeIsStruct(self, name):
         # See if the name in [Name] is a struct in this interface
         interface = interface_of(self)
@@ -235,55 +260,23 @@ class AJType(object):
                 return True
         return False
 
+
+    def ajtypeStructName(self):
+        # See if this type is a struct or array of struct
+        # Return the Name if so, otherwise None
+        ajtype = self.annotated_type if self.annotated_type else self.signature
+        if ajtype.startswith('a'):
+            ajtype = ajtype[1:]
+        if ajtype.startswith('[') and ajtype.endswith(']'):
+            ajtype = ajtype[1:-1]
+            if self.ajtypeIsStruct(ajtype):
+                return ajtype
+        return None
+
+
     def ajtypeIsString(self):
         return self.signature == 's' or self.signature == 'o'
 
-    def ajtypeVectorOfStructFieldGets(self):
-        # Given the interface, find the expression to pass the field go a MsgArg. We expect
-        # that they are in the correct order in the XML for serialisation.
-        # The fields must be scalar types except for strings. For strings we append a .c_str().
-        names = []
-        interface = interface_of(self)
-
-        struc = self.ajtypeVectorOfStructName()
-        # print "struct name", struc
-        if struc:
-            for s in interface.Structs:
-                if s.Name == struc:
-                    for field in s.Fields:
-                        type = field[0]
-                        name = field[1]
-                        if type.ajtypeIsString():
-                            name += ".c_str()"
-                        names.append(name);
-        if not names:
-            names.append("TODO")
-        # print "names", names
-        return names
-
-    def ajtypeVectorOfStructFieldSets(self):
-        # Like ajtypeVectorOfStructFieldGets, find the struct and return info for setters.
-        # We return an array of pairs of (name, ctype). The ctype for a string must be a char*
-        names = []
-        interface = interface_of(self)
-        struc = self.ajtypeVectorOfStructName()
-        # print "struct name", struc
-        if struc:
-            for s in interface.Structs:
-                if s.Name == struc:
-                    for field in s.Fields:
-                        type = field[0]
-                        name = field[1]
-                        ctype = type.ctype();
-                        if type.ajtypeIsString():
-                            ctype = "char*";
-                        pair = (name, type)
-                        names.append(pair);
-        if not names:
-            pair = ("TODO", "TODO")
-            names.append(pair)
-        # print "names", names
-        return names
 
     def ajtype_primitive(self):
         sig = self.signature
@@ -304,7 +297,61 @@ class AJType(object):
         return sig
 
 
-    def ctype(self, arg=False):
+    def tcltype(self):
+        ajtype = self.annotated_type if self.annotated_type else self.signature
+        ctype  = None
+        array  = False
+
+        if ajtype.startswith("a"):
+            array = True
+            ajtype = ajtype[1:]
+
+        if ajtype.startswith('[') and ajtype.endswith(']'):
+            ajtype = ajtype[1:-1]
+            interface = interface_of(self)
+            if interface:
+                if self.ajtypeIsEnum(ajtype):
+                    # Write an enum as e.g. AlertsSeverity
+                    ctype = str(interface.Name) + ajtype
+                elif self.ajtypeIsStruct(ajtype):
+                    # Write a struct without the interface name as e.g. AlertCodesDescriptor
+                    ctype = ajtype
+
+        if ctype == None:
+            if array:
+                ctype = self.TCLArrayMap.get(ajtype, "/* TODO:%{} */".format(ajtype))
+            else:
+                ctype = self.TCLTypeMap.get(ajtype, "/* TODO:%{} */".format(ajtype))
+
+        if array:
+            ctype = "Array_" + ctype
+
+        return ctype
+
+
+    def tclArrayBase(self):
+        # Return the base of the array type or free function for structs and enums or None.
+        # At the moment we include the interface name in the enum but not in the struct, probably
+        # for no good reason.  The names are expected to be in camel case.
+        ajtype = self.annotated_type if self.annotated_type else self.signature
+
+        if ajtype.startswith("a"):
+            ajtype = ajtype[1:]
+
+        if ajtype.startswith('[') and ajtype.endswith(']'):
+            ajtype = ajtype[1:-1]
+            interface = interface_of(self)
+            if interface:
+                if self.ajtypeIsEnum(ajtype):
+                    # Write an enum as e.g. AlertsSeverity
+                    ajtype = str(interface.Name) + ajtype
+                return ajtype
+
+        return None
+
+
+
+    def cpptype(self, arg=False):
         template = None
 
         ajtype = self.annotated_type if self.annotated_type else self.signature
@@ -314,23 +361,23 @@ class AJType(object):
             ajtype = ajtype[1:]
 
         if ajtype.startswith('[') and ajtype.endswith(']'):
-            ctype = ajtype[1:-1]
+            cpptype = ajtype[1:-1]
             interface = interface_of(self)
-            if interface and (self.ajtypeIsEnum(ctype) or self.ajtypeIsStruct(ctype)):
-                ctype = "%sInterface::%s" % (interface.Name, ctype)
+            if interface and (self.ajtypeIsEnum(cpptype) or self.ajtypeIsStruct(cpptype)):
+                cpptype = "%sInterface::%s" % (interface.Name, cpptype)
         else:
-            ctype = self.CTypeMap.get(ajtype, "/* TODO:%{} */".format(ajtype))
+            cpptype = self.CppTypeMap.get(ajtype, "/* TODO:%{} */".format(ajtype))
 
         if template:
-            return template + "<" + ctype + ">" + ("&" if arg else "")
+            return template + "<" + cpptype + ">" + ("&" if arg else "")
 
-        if arg and ctype == "qcc::String":
-            return ctype + "&"
+        if arg and cpptype == "qcc::String":
+            return cpptype + "&"
 
-        return ctype
+        return cpptype
 
-    def ctype_arg(self):
-        return self.ctype(arg=True)
+    def cpptype_arg(self):
+        return self.cpptype(arg=True)
 
     def msgType(self):
         # This is the type that an arg to MsgArg.Get/Set must be.
@@ -340,21 +387,21 @@ class AJType(object):
             return "ERROR_ARRAY";
 
         if ajtype.startswith('[') and ajtype.endswith(']'):
-            ctype = ajtype[1:-1]
+            cpptype = ajtype[1:-1]
             interface = interface_of(self)
 
-            if interface and self.ajtypeIsStruct(ctype):
+            if interface and self.ajtypeIsStruct(cpptype):
                 return "ERROR_STRUCT";
 
-            if interface and self.ajtypeIsEnum(ctype):
-                ctype = "int32_t"
+            if interface and self.ajtypeIsEnum(cpptype):
+                cpptype = "int32_t"
 
         elif self.ajtypeIsString():
-            ctype = "const char*"
+            cpptype = "const char*"
         else:
-            ctype = self.CTypeMap.get(ajtype, "/* TODO:%{} */".format(ajtype))
+            cpptype = self.CppTypeMap.get(ajtype, "/* TODO:%{} */".format(ajtype))
 
-        return ctype
+        return cpptype
 
     def toMsgArg(self, expr):
         # Patch the expression to assign to the type from msgtype()
@@ -365,7 +412,7 @@ class AJType(object):
     def fromMsgArg(self, expr):
         # For going from msgType() to the carrier type
         if self.ajtypeIsEnum():
-            return "static_cast<%s>(%s)" % (self.ctype(), expr)
+            return "static_cast<%s>(%s)" % (self.cpptype(), expr)
         return expr
 
 
@@ -637,6 +684,7 @@ class Property(object):
         self.EmitsChangedSignal = False
         self.Const = False
         self.Writable = "write" in self.Access
+        self.Readable = "read" in self.Access
         self.Annotations = []
         self.Min = None
         self.Max = None
@@ -645,6 +693,12 @@ class Property(object):
         self.Units = None
         self.parent = None
         self.Selector = None
+
+    def tcl_access_char(self):
+        return {
+            'read': '>',
+            'readwrite': '='
+        }.get(self.Access, 'TODO')
 
     def emit_changed(self):
         return _padded_tag_replacement(self.EmitsChangedSignal)

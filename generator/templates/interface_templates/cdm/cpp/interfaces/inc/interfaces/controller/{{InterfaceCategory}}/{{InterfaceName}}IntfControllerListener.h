@@ -55,7 +55,7 @@ class {{Interface.Name}}IntfControllerListener : public InterfaceControllerListe
      {% endif %}
      * @param[in] context the context that is passed from application
      */
-    virtual void OnResponseGet{{property.Name}}(QStatus status, const qcc::String& objectPath, const {{property.Type.ctype_arg()}} value, void* context) {}
+    virtual void OnResponseGet{{property.Name}}(QStatus status, const qcc::String& objectPath, const {{property.Type.cpptype_arg()}} value, void* context) {}
 
     /**
      * Handler for {{property.Name}} property changed
@@ -65,7 +65,7 @@ class {{Interface.Name}}IntfControllerListener : public InterfaceControllerListe
      *                  ({{property.doc["en"]}})
      {% endif %}
      */
-    virtual void On{{property.Name}}Changed(const qcc::String& objectPath, const {{property.Type.ctype_arg()}} value) {}
+    virtual void On{{property.Name}}Changed(const qcc::String& objectPath, const {{property.Type.cpptype_arg()}} value) {}
     {% if property.Writable %}
 
     /**
@@ -94,7 +94,7 @@ class {{Interface.Name}}IntfControllerListener : public InterfaceControllerListe
      * @param[in] errorName the detail errorName is passed when the method call is failed
      * @param[in] errorMessage the errorMessage that describes the error
      */
-    virtual void OnResponse{{method.Name}}(QStatus status, const qcc::String& objectPath, {% for arg in method.output_args() %}const {{arg.Type.ctype_arg()}} {{arg.Name.camel_case()}}, {% endfor %}void* context, const char* errorName, const char* errorMessage) {}
+    virtual void OnResponse{{method.Name}}(QStatus status, const qcc::String& objectPath, {% for arg in method.output_args() %}const {{arg.Type.cpptype_arg()}} {{arg.Name.camel_case()}}, {% endfor %}void* context, const char* errorName, const char* errorMessage) {}
     {% endfor %}
     {% for signal in Interface.Signals %}
 

@@ -71,7 +71,7 @@ class {{Interface.Name}}IntfControllee final : public CdmControlleeInterface
      * @param[in] newValue new value of {{property.Name.add_spaces_lower()}}
      * @return ER_OK on success
      */
-    QStatus Emit{{property.Name}}Changed(const {{property.Type.ctype_arg()}} newValue);
+    QStatus Emit{{property.Name}}Changed(const {{property.Type.cpptype_arg()}} newValue);
     {% endif %}
     {% endfor %}
     {% for signal in Interface.Signals %}

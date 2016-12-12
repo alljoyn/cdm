@@ -45,7 +45,7 @@ class {{Interface.Name}}Interface : public CdmInterface {
     {% for struct in Interface.Structs %}
     struct {{struct.Name}} {
         {% for field in struct.Fields %}
-        {{field.Type.ctype()}} {{field.Name}};
+        {{field.Type.cpptype()}} {{field.Name}};
         {% endfor %}
 
         inline bool operator==(const {{struct.Name}}& a) {

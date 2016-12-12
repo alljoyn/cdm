@@ -143,7 +143,7 @@ void {{Interface.ClassName}}::slotClick{{method.Name}}()
     qWarning() << __FUNCTION__;
 
     {% for arg in method.input_args() %}
-    {{arg.Type.ctype()}} {{arg.Name.camel_case()}} {};
+    {{arg.Type.cpptype()}} {{arg.Name.camel_case()}} {};
     {% endfor %}
 
     {% include ("patch/" ~ Interface.ClassName ~ "::slotClick" ~ method.Name ~ ".cpp") ignore missing with context %}
@@ -159,13 +159,13 @@ void {{Interface.ClassName}}::slotClick{{method.Name}}()
 
 
 
-void {{Interface.ClassName}}::slotOnResponseGet{{property.Name}}(QStatus status, const {{property.Type.ctype_arg()}} value)
+void {{Interface.ClassName}}::slotOnResponseGet{{property.Name}}(QStatus status, const {{property.Type.cpptype_arg()}} value)
 {
     qWarning() << __FUNCTION__;
     edit_{{property.Name}}->setText(QStringFrom(value));
 }
 
-void {{Interface.ClassName}}::slotOn{{property.Name}}Changed(const {{property.Type.ctype_arg()}} value)
+void {{Interface.ClassName}}::slotOn{{property.Name}}Changed(const {{property.Type.cpptype_arg()}} value)
 {
     qWarning() << __FUNCTION__;
     edit_{{property.Name}}->setText(QStringFrom(value));
@@ -183,7 +183,7 @@ void {{Interface.ClassName}}::slotSet{{property.Name}}()
 
     bool ok = false;
     QString str = edit_{{property.Name}}->text();
-    {{property.Type.ctype()}} value = QStringTo<{{property.Type.ctype()}}>(str, &ok);
+    {{property.Type.cpptype()}} value = QStringTo<{{property.Type.cpptype()}}>(str, &ok);
     if (ok)
     {
         QStatus status = controller->Set{{property.Name}}(value);
@@ -194,7 +194,7 @@ void {{Interface.ClassName}}::slotSet{{property.Name}}()
     }
     else
     {
-        qWarning() << __FUNCTION__ << "Failed to convert '" << str << "' to {{property.Type.ctype()}}";
+        qWarning() << __FUNCTION__ << "Failed to convert '" << str << "' to {{property.Type.cpptype()}}";
     }
 }
 

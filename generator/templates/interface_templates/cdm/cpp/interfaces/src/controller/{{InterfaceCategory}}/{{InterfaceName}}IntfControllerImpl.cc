@@ -60,12 +60,12 @@ class {{Interface.Name}}IntfController::Impl : public InterfaceController
 {% for property in Interface.UserProperties %}
     QStatus Get{{property.Name}}(void* context);
 {% if property.Writable %}
-    QStatus Set{{property.Name}}(const {{property.Type.ctype_arg()}} value, void* context);
+    QStatus Set{{property.Name}}(const {{property.Type.cpptype_arg()}} value, void* context);
 {% endif %}
 {% endfor %}
 
 {% for method in Interface.Methods %}
-    virtual QStatus {{method.Name}}({% for arg in method.input_args() %}const {{arg.Type.ctype_arg()}} {{arg.Name.camel_case()}}, {% endfor %}void* context);
+    virtual QStatus {{method.Name}}({% for arg in method.input_args() %}const {{arg.Type.cpptype_arg()}} {{arg.Name.camel_case()}}, {% endfor %}void* context);
 {% endfor %}
 
     void PropertiesChanged(ProxyBusObject& obj, const char* ifaceName, const MsgArg& changed, const MsgArg& invalidated, void* context);
@@ -137,7 +137,7 @@ QStatus {{Interface.Name}}IntfController::Impl::Get{{property.Name}}(void* conte
 }
 {% if property.Writable %}
 
-QStatus {{Interface.Name}}IntfController::Impl::Set{{property.Name}}(const {{property.Type.ctype_arg()}} value, void* context)
+QStatus {{Interface.Name}}IntfController::Impl::Set{{property.Name}}(const {{property.Type.cpptype_arg()}} value, void* context)
 {
     MsgArg arg;
 {{ macros.setMsgArg("arg", "value", property.Type)|indent(1 * 4, True)  }}
@@ -154,7 +154,7 @@ QStatus {{Interface.Name}}IntfController::Impl::Set{{property.Name}}(const {{pro
 
 {% set comma = joiner(", ") %}
 QStatus {{Interface.Name}}IntfController::Impl::{{method.Name}}(
-{%- for arg in method.input_args() %}{{comma()}}const {{arg.Type.ctype_arg()}} {{arg.Name.camel_case()}}{% endfor %}
+{%- for arg in method.input_args() %}{{comma()}}const {{arg.Type.cpptype_arg()}} {{arg.Name.camel_case()}}{% endfor %}
 {{comma()}}void* context)
 {
     // Method call
@@ -192,7 +192,7 @@ void {{Interface.Name}}IntfController::Impl::PropertiesChanged(ProxyBusObject& o
         String propNameStr(propName);
 
         {%+ for property in Interface.UserProperties %}if (s_prop_{{property.Name}} == propNameStr) {
-            {{property.Type.ctype()}} val;
+            {{property.Type.cpptype()}} val;
 {{ macros.getMsgArg("(*propValue)", "val", property.Type)|indent(3 * 4, True) }}
             m_interfaceListener->On{{property.Name}}Changed(obj.GetPath(), val);
         } else {% endfor %}{
@@ -209,10 +209,10 @@ void {{Interface.Name}}IntfController::Impl::PropertiesChanged(ProxyBusObject& o
 void {{Interface.Name}}IntfController::Impl::Get{{property.Name}}PropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context)
 {
     if (obj) {
-        {{property.Type.ctype()}} val;
+        {{property.Type.cpptype()}} val;
 {{ macros.getMsgArg("value", "val", property.Type)|indent(2 * 4, True) }}
         if (_QCC_DbgPrintCheck(DBG_GEN_MESSAGE, QCC_MODULE)) {
-            auto s = CdmMsgCvt<{{property.Type.ctype()}}>().str(value);
+            auto s = CdmMsgCvt<{{property.Type.cpptype()}}>().str(value);
             QCC_DbgPrintf(("%s: received property %s=%s", __func__, "{{property.Name}}", s.c_str()));
         }
         m_interfaceListener->OnResponseGet{{property.Name}}(status, obj->GetPath(), val, context);
@@ -244,13 +244,13 @@ void {{Interface.Name}}IntfController::Impl::{{method.Name}}ReplyHandler(Message
     const MsgArg* args = 0;
 
 {% for arg in method.output_args() %}
-    {{arg.Type.ctype()}} arg_{{arg.Name}};
+    {{arg.Type.cpptype()}} arg_{{arg.Name}};
 {% endfor %}
 
     if (message->GetType() == MESSAGE_METHOD_RET) {
         message->GetArgs(numArgs, args);
 {% for arg in method.output_args() %}
-        CdmMsgCvt<{{arg.Type.ctype()}}> cvt_{{arg.Name}};
+        CdmMsgCvt<{{arg.Type.cpptype()}}> cvt_{{arg.Name}};
         cvt_{{arg.Name}}.get(args[{{loop.index0}}], arg_{{arg.Name}});
 
         if (_QCC_DbgPrintCheck(DBG_GEN_MESSAGE, QCC_MODULE)) {
@@ -336,7 +336,7 @@ QStatus {{Interface.Name}}IntfController::Get{{property.Name}}(void* context)
 
 
 
-QStatus {{Interface.Name}}IntfController::Set{{property.Name}}(const {{property.Type.ctype_arg()}} value, void* context)
+QStatus {{Interface.Name}}IntfController::Set{{property.Name}}(const {{property.Type.cpptype_arg()}} value, void* context)
 {
     return m_impl->Set{{property.Name}}(value, context);
 }
@@ -347,7 +347,7 @@ QStatus {{Interface.Name}}IntfController::Set{{property.Name}}(const {{property.
 
 
 QStatus {{Interface.Name}}IntfController::{{method.Name}}(
-{%- for arg in method.input_args() %}const {{arg.Type.ctype_arg()}} {{arg.Name.camel_case()}}, {% endfor %}void* context)
+{%- for arg in method.input_args() %}const {{arg.Type.cpptype_arg()}} {{arg.Name.camel_case()}}, {% endfor %}void* context)
 {
     return m_impl->{{method.Name}}({%- for arg in method.input_args() %}{{arg.Name.camel_case()}}, {% endfor %}context);
 }

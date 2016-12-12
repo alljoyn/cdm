@@ -29,14 +29,14 @@
 }
 
 {% for property in Interface.UserProperties %}
-void {{Interface.Name}}Listener::Update{{property.Name}}(const {{property.Type.ctype_arg()}} value)
+void {{Interface.Name}}Listener::Update{{property.Name}}(const {{property.Type.cpptype_arg()}} value)
 {
     {% if property.is_selector() %}
     [viewController set{{property.Name}}:value];
     {% else %}
     {% if property.Type.is_array() %}
     NSString *valueArrayAsString = @"";
-    {{property.Type.ctype()}}::const_iterator it = value.begin();
+    {{property.Type.cpptype()}}::const_iterator it = value.begin();
     while(it != value.end()) {
         valueArrayAsString = [valueArrayAsString stringByAppendingString:[NSString stringWithFormat:@"%{{property.Type.objc_format_str()}},", {% if property.is_bool() %}[CDMUtil boolToNSString:*it]{% else %}*it{% endif %}]];
         ++it;
@@ -55,13 +55,13 @@ void {{Interface.Name}}Listener::Update{{property.Name}}(const {{property.Type.c
     {% endif %}
 }
 
-void {{Interface.Name}}Listener::OnResponseGet{{property.Name}}(QStatus status, const qcc::String& objectPath, const {{property.Type.ctype_arg()}} value, void* context)
+void {{Interface.Name}}Listener::OnResponseGet{{property.Name}}(QStatus status, const qcc::String& objectPath, const {{property.Type.cpptype_arg()}} value, void* context)
 {
     Update{{property.Name}}(value);
 }
 
 {% if property.EmitsChangedSignal %}
-void {{Interface.Name}}Listener::On{{property.Name}}Changed(const qcc::String& objectPath, const {{property.Type.ctype_arg()}} value)
+void {{Interface.Name}}Listener::On{{property.Name}}Changed(const qcc::String& objectPath, const {{property.Type.cpptype_arg()}} value)
 {
     Update{{property.Name}}(value);
 }
@@ -80,14 +80,14 @@ void {{Interface.Name}}Listener::OnResponseSet{{property.Name}}(QStatus status, 
 
 {% endfor %}
 {% for method in Interface.Methods %}
-void {{Interface.Name}}Listener::OnResponse{{method.Name}}(QStatus status, const qcc::String& objectPath, {% for arg in method.output_args() %}const {{arg.Type.ctype_arg()}} {{arg.Name.camel_case()}}, {% endfor %}void* context, const char* errorName, const char* errorMessage)
+void {{Interface.Name}}Listener::OnResponse{{method.Name}}(QStatus status, const qcc::String& objectPath, {% for arg in method.output_args() %}const {{arg.Type.cpptype_arg()}} {{arg.Name.camel_case()}}, {% endfor %}void* context, const char* errorName, const char* errorMessage)
 {
     {% if method.output_args() %}
     if(status == ER_OK) {
         {% if method.output_arg().Type.is_array() %}
         NSLog(@"{{method.Name}} succeeded");
         NSString *builtArgResponseStr = @"";
-        {{method.output_arg().Type.ctype()}}::const_iterator it;
+        {{method.output_arg().Type.cpptype()}}::const_iterator it;
         for(it = {{method.output_arg().Name}}.begin(); it != {{method.output_arg().Name}}.end(); ++it) {
             NSString *line = @""; // TODO: Replace with string representation of object
             builtArgResponseStr = [builtArgResponseStr stringByAppendingString:line];

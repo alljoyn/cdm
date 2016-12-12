@@ -51,7 +51,7 @@ struct Serializer<{{Interface.Name}}Interface::{{struc.Name}}>
 {% for field in struc.Fields %}
         {
             SerializerField sfield;
-            Serializer<{{field[0].ctype()}}> ser;
+            Serializer<{{field[0].cpptype()}}> ser;
             sfield.name = "{{field[1]}}";
             sfield.elem = ser.put(nullptr, value.{{field.Name}});
             sfields.push_back(sfield);
@@ -77,7 +77,7 @@ struct Serializer<{{Interface.Name}}Interface::{{struc.Name}}>
             {
                 throw SerializerError();
             }
-            Serializer<{{field[0].ctype()}}> ser;
+            Serializer<{{field[0].cpptype()}}> ser;
             result.{{field.Name}} = ser.get(sfield.elem);
         }
 {% endfor %}
@@ -102,13 +102,13 @@ namespace emulator {
 {}
 {% for property in Interface.UserProperties %}
 
-QStatus {{Interface.Name}}Model::Get{{property.Name}}({{property.Type.ctype()}}& out) const
+QStatus {{Interface.Name}}Model::Get{{property.Name}}({{property.Type.cpptype()}}& out) const
 {
     return HAL::ReadProperty(m_busPath, "{{Interface.FullName}}", "{{property.Name}}", out);
 }
 {% if property.Writable %}
 
-QStatus {{Interface.Name}}Model::Set{{property.Name}}(const {{property.Type.ctype_arg()}} value)
+QStatus {{Interface.Name}}Model::Set{{property.Name}}(const {{property.Type.cpptype_arg()}} value)
 {
     return HAL::WriteProperty(m_busPath, "{{Interface.FullName}}", "{{property.Name}}", value);
 }
@@ -118,8 +118,8 @@ QStatus {{Interface.Name}}Model::Set{{property.Name}}(const {{property.Type.ctyp
 
 {% set comma = joiner(", ") %}
 QStatus {{Interface.Name}}Model::{{method.Name}}(
-{%- for arg in method.input_args() %}{{comma()}}{{arg.Type.ctype_arg()}} arg_{{arg.Name}}{% endfor %}
-{%- for arg in method.output_args() %}{{comma()}}{{arg.Type.ctype()}}& arg_{{arg.Name}}{% endfor %}{{comma()-}}
+{%- for arg in method.input_args() %}{{comma()}}{{arg.Type.cpptype_arg()}} arg_{{arg.Name}}{% endfor %}
+{%- for arg in method.output_args() %}{{comma()}}{{arg.Type.cpptype()}}& arg_{{arg.Name}}{% endfor %}{{comma()-}}
     ErrorCode& error, CdmControllee& controllee)
 {
     {% include ["patch/" ~ Interface.Name ~ "Model::" ~ method.Name ~ ".cc", "patch/TODO.cc"] ignore missing with context %}

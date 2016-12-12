@@ -46,8 +46,8 @@ private slots:
 {% endfor %}
 
 {% for property in Interface.UserProperties %}
-    void slotOnResponseGet{{property.Name}}(QStatus status, const {{property.Type.ctype_arg()}} value);
-    void slotOn{{property.Name}}Changed(const {{property.Type.ctype_arg()}} value);
+    void slotOnResponseGet{{property.Name}}(QStatus status, const {{property.Type.cpptype_arg()}} value);
+    void slotOn{{property.Name}}Changed(const {{property.Type.cpptype_arg()}} value);
 {% if property.Writable %}
     void slotOnResponseSet{{property.Name}}(QStatus status);
     void slotSet{{property.Name}}();
@@ -73,19 +73,19 @@ public:
         }
 
 {% for property in Interface.UserProperties %}
-        virtual void OnResponseGet{{property.Name}}(QStatus status, const qcc::String& objectPath, const {{property.Type.ctype_arg()}} value, void* context) override
+        virtual void OnResponseGet{{property.Name}}(QStatus status, const qcc::String& objectPath, const {{property.Type.cpptype_arg()}} value, void* context) override
         {
             qWarning() << __FUNCTION__;
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGet{{property.Name}}", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
-                              Q_ARG({{property.Type.ctype()}}, value)
+                              Q_ARG({{property.Type.cpptype()}}, value)
                               );
         }
-        virtual void On{{property.Name}}Changed(const qcc::String& objectPath, const {{property.Type.ctype_arg()}} value) override
+        virtual void On{{property.Name}}Changed(const qcc::String& objectPath, const {{property.Type.cpptype_arg()}} value) override
         {
             qWarning() << __FUNCTION__;
             QMetaObject::invokeMethod(m_widget, "slotOn{{property.Name}}Changed", Qt::QueuedConnection,
-                              Q_ARG({{property.Type.ctype()}}, value)
+                              Q_ARG({{property.Type.cpptype()}}, value)
                               );
         }
 {% if property.Writable %}
@@ -99,7 +99,7 @@ public:
 {% endif %}
 {% endfor %}
 {% for method in Interface.Methods %}
-        virtual void OnResponse{{method.Name}}(QStatus status, const qcc::String& objectPath, {% for arg in method.output_args() %}const {{arg.Type.ctype_arg()}} {{arg.Name.camel_case()}}, {% endfor %}void* context, const char* errorName, const char* errorMessage) override
+        virtual void OnResponse{{method.Name}}(QStatus status, const qcc::String& objectPath, {% for arg in method.output_args() %}const {{arg.Type.cpptype_arg()}} {{arg.Name.camel_case()}}, {% endfor %}void* context, const char* errorName, const char* errorMessage) override
         {
             qWarning() << __FUNCTION__;
             QMetaObject::invokeMethod(m_widget, "slotOnResponseMethod{{method.Name}}", Qt::QueuedConnection,
