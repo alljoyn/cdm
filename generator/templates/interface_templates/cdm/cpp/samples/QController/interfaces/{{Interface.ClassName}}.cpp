@@ -212,7 +212,7 @@ void {{Interface.ClassName}}::slotOnResponseMethod{{method.Name}}(QStatus status
     }
     else
     {
-        qWarning() << "Received an error from method {{method.Name}}, status = " << status;
+        qWarning() << "Received an error from method {{method.Name}}, status = " << QCC_StatusText(status);
     }
 }
 {% endfor %}

@@ -7,14 +7,14 @@ ifeq ($(which),tcl)
 INSTALL_DIR = $(THIN)/
 TEMPLATES   = $(CDM)/generator/templates/interface_templates/cdm_tcl/
 PATCHES     = templates/patches_tcl/
-GENERATE_TARGETS = generate_tcl generate_tcl_samples
-INSTALL_TARGETS  = install_tcl
+GENERATE_TARGETS = generate_tcl generate_tcl_samples generate_tcl_factory
+INSTALL_TARGETS  = install_tcl install_tcl_samples install_tcl_factory
 else
 INSTALL_DIR = $(CDM)/cpp
 TEMPLATES   = $(CDM)/generator/templates/interface_templates/cdm/cpp/
 PATCHES     = templates/patches/cpp
 GENERATE_TARGETS = generate_common generate_controllee generate_controller generate_samples generate_factory
-INSTALL_TARGETS  = install_common install_controllee install_controller install_samples install_factory
+INSTALL_TARGETS  = install_interfaces install_samples install_factory
 endif
 
 OUTPUT    = ./output
@@ -110,6 +110,9 @@ generate_tcl_samples:
 generate_factory:
 	@./genFactory.py $(XML_PATHS)
 
+generate_tcl_factory:
+	@./genFactory.py --binding=c $(XML_PATHS)
+
 install: $(INSTALL_TARGETS)
 
 install_interfaces:
@@ -119,10 +122,16 @@ install_samples:
 	(cd $(OUTPUT); find samples -type f|cpio -dump $(INSTALL_DIR))
 
 install_tcl:
-	(cd $(OUTPUT); find inc src samples -type f|cpio -dump $(INSTALL_DIR))
+	(cd $(OUTPUT); find inc src -type f|cpio -dump $(INSTALL_DIR))
+
+install_tcl_samples:
+	(cd $(OUTPUT); find samples -type f|cpio -dump $(INSTALL_DIR))
 
 install_factory:
 	cp ControllerFactory.cc $(INSTALL_DIR)/interfaces/src
+
+install_tcl_factory:
+	cp InterfaceFactory.c $(INSTALL_DIR)/samples/DeviceEmulator
 
 clean:
 	$(RM) -rf $(OUTPUT)

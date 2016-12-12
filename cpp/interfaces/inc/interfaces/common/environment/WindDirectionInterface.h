@@ -92,7 +92,7 @@ struct CdmMsgCvt<WindDirectionInterface::AutoMode>
 {
     void get(const MsgArg& msgarg, WindDirectionInterface::AutoMode& value)
     {
-        int32_t v;
+        int32_t v = 0;
         msgarg.Get("i", &v);
         value = static_cast<WindDirectionInterface::AutoMode>(v);
     }
@@ -106,7 +106,7 @@ struct CdmMsgCvt<WindDirectionInterface::AutoMode>
     std::string str(const MsgArg& msgarg)
     {
         std::ostringstream strm;
-        int32_t value;
+        int32_t value = 0;
         msgarg.Get("i", &value);
         strm << value;
         return strm.str();
@@ -118,8 +118,8 @@ struct CdmMsgCvt<std::vector<WindDirectionInterface::AutoMode>>
 {
     void get(const MsgArg& msgarg, std::vector<WindDirectionInterface::AutoMode>& value)
     {
-        int32_t* v;
-        size_t l;
+        int32_t* v = 0;
+        size_t l = 0;
 
         msgarg.Get("ai", &l, &v);
         value.resize(l);
@@ -147,8 +147,8 @@ struct CdmMsgCvt<std::vector<WindDirectionInterface::AutoMode>>
     std::string str(const MsgArg& msgarg)
     {
         std::ostringstream strm;
-        int32_t* v;
-        size_t l;
+        int32_t* v = 0;
+        size_t l = 0;
         msgarg.Get("ai", &l, &v);
         for (size_t i = 0; i < l; ++i)
         {

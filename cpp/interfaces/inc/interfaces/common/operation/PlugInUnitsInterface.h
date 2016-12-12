@@ -89,9 +89,9 @@ struct CdmMsgCvt<PlugInUnitsInterface::PlugInInfo>
 {
     void get(const MsgArg& msgarg, PlugInUnitsInterface::PlugInInfo& value)
     {
-        const char* objectPath;
-        uint32_t deviceId;
-        bool pluggedIn;
+        const char* objectPath{};
+        uint32_t deviceId{};
+        bool pluggedIn{};
         msgarg.Get("(oub)", &objectPath, &deviceId, &pluggedIn);
         value.objectPath = objectPath;
         value.deviceId = deviceId;
@@ -127,17 +127,17 @@ struct CdmMsgCvt<std::vector<PlugInUnitsInterface::PlugInInfo>>
 {
     void get(const MsgArg& msgarg, std::vector<PlugInUnitsInterface::PlugInInfo>& value)
     {
-        MsgArg* elems;
-        size_t  num;
+        MsgArg* elems = 0;
+        size_t  num = 0;
 
         msgarg.Get("a(oub)", &num, &elems);
         value.resize(num);
 
         for (size_t i = 0; i < num; ++i)
         {
-            const char* objectPath;
-            uint32_t deviceId;
-            bool pluggedIn;
+            const char* objectPath{};
+            uint32_t deviceId{};
+            bool pluggedIn{};
             elems[i].Get("(oub)", &objectPath, &deviceId, &pluggedIn);
             value[i].objectPath = objectPath;
             value[i].deviceId = deviceId;

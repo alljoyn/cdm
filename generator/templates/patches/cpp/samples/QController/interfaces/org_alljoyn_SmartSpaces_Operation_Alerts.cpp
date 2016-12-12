@@ -315,7 +315,7 @@ void org_alljoyn_SmartSpaces_Operation_Alerts::slotOnResponseMethodGetAlertCodes
     }
     else
     {
-        qWarning() << "Received an error from method GetAlertCodesDescription, status = " << status;
+        qWarning() << "Received an error from method GetAlertCodesDescription, status = " << QCC_StatusText(status);
     }
 }
 
@@ -329,7 +329,7 @@ void org_alljoyn_SmartSpaces_Operation_Alerts::slotOnResponseMethodAcknowledgeAl
     }
     else
     {
-        qWarning() << "Received an error from method AcknowledgeAlert, status = " << status;
+        qWarning() << "Received an error from method AcknowledgeAlert, status = " << QCC_StatusText(status);
     }
 }
 
@@ -343,6 +343,6 @@ void org_alljoyn_SmartSpaces_Operation_Alerts::slotOnResponseMethodAcknowledgeAl
     }
     else
     {
-        qWarning() << "Received an error from method AcknowledgeAllAlerts, status = " << status;
+        qWarning() << "Received an error from method AcknowledgeAllAlerts, status = " << QCC_StatusText(status);
     }
 }

@@ -108,7 +108,7 @@ struct CdmMsgCvt<{{Interface.Name}}Interface::{{enum.Name}}>
 {
     void get(const MsgArg& msgarg, {{Interface.Name}}Interface::{{enum.Name}}& value)
     {
-        int32_t v;
+        int32_t v = 0;
         msgarg.Get("i", &v);
         value = static_cast<{{Interface.Name}}Interface::{{enum.Name}}>(v);
     }
@@ -122,7 +122,7 @@ struct CdmMsgCvt<{{Interface.Name}}Interface::{{enum.Name}}>
     std::string str(const MsgArg& msgarg)
     {
         std::ostringstream strm;
-        int32_t value;
+        int32_t value = 0;
         msgarg.Get("i", &value);
         strm << value;
         return strm.str();
@@ -134,8 +134,8 @@ struct CdmMsgCvt<std::vector<{{Interface.Name}}Interface::{{enum.Name}}>>
 {
     void get(const MsgArg& msgarg, std::vector<{{Interface.Name}}Interface::{{enum.Name}}>& value)
     {
-        int32_t* v;
-        size_t l;
+        int32_t* v = 0;
+        size_t l = 0;
 
         msgarg.Get("ai", &l, &v);
         value.resize(l);
@@ -163,8 +163,8 @@ struct CdmMsgCvt<std::vector<{{Interface.Name}}Interface::{{enum.Name}}>>
     std::string str(const MsgArg& msgarg)
     {
         std::ostringstream strm;
-        int32_t* v;
-        size_t l;
+        int32_t* v = 0;
+        size_t l = 0;
         msgarg.Get("ai", &l, &v);
         for (size_t i = 0; i < l; ++i)
         {
@@ -184,7 +184,7 @@ struct CdmMsgCvt<{{Interface.Name}}Interface::{{struc.Name}}>
     {
 {# We can not Get directly into fields that are QString #}
 {% for field in struc.Fields %}
-        {{field.Type.msgType()}} {{field.Name}};
+        {{field.Type.msgType()}} {{field.Name}}{};
 {% endfor %}
         msgarg.Get("{{struc.resolve_signature()}}"
 {%- for field in struc.Fields %}
@@ -228,8 +228,8 @@ struct CdmMsgCvt<std::vector<{{Interface.Name}}Interface::{{struc.Name}}>>
 {
     void get(const MsgArg& msgarg, std::vector<{{Interface.Name}}Interface::{{struc.Name}}>& value)
     {
-        MsgArg* elems;
-        size_t  num;
+        MsgArg* elems = 0;
+        size_t  num = 0;
 
         msgarg.Get("a{{struc.resolve_signature()}}", &num, &elems);
         value.resize(num);
@@ -238,7 +238,7 @@ struct CdmMsgCvt<std::vector<{{Interface.Name}}Interface::{{struc.Name}}>>
         {
 {# We can not Get directly into fields that are QString #}
 {% for field in struc.Fields %}
-            {{field.Type.msgType()}} {{field.Name}};
+            {{field.Type.msgType()}} {{field.Name}}{};
 {% endfor %}
             elems[i].Get("{{struc.resolve_signature()}}"
 {%- for field in struc.Fields %}

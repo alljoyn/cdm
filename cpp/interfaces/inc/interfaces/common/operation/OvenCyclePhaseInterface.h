@@ -91,9 +91,9 @@ struct CdmMsgCvt<OvenCyclePhaseInterface::CyclePhaseDescriptor>
 {
     void get(const MsgArg& msgarg, OvenCyclePhaseInterface::CyclePhaseDescriptor& value)
     {
-        uint8_t phase;
-        const char* name;
-        const char* description;
+        uint8_t phase{};
+        const char* name{};
+        const char* description{};
         msgarg.Get("(yss)", &phase, &name, &description);
         value.phase = phase;
         value.name = name;
@@ -129,17 +129,17 @@ struct CdmMsgCvt<std::vector<OvenCyclePhaseInterface::CyclePhaseDescriptor>>
 {
     void get(const MsgArg& msgarg, std::vector<OvenCyclePhaseInterface::CyclePhaseDescriptor>& value)
     {
-        MsgArg* elems;
-        size_t  num;
+        MsgArg* elems = 0;
+        size_t  num = 0;
 
         msgarg.Get("a(yss)", &num, &elems);
         value.resize(num);
 
         for (size_t i = 0; i < num; ++i)
         {
-            uint8_t phase;
-            const char* name;
-            const char* description;
+            uint8_t phase{};
+            const char* name{};
+            const char* description{};
             elems[i].Get("(yss)", &phase, &name, &description);
             value[i].phase = phase;
             value[i].name = name;

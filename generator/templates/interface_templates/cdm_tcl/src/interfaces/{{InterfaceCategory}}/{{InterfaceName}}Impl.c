@@ -27,7 +27,7 @@
 #define INTERFACE_VERSION {{Interface.Version}}
 #define INTERFACE_NAME {{Interface.Name.upper_snake()}}
 
-const char* const intfDescOperation{{Interface.Name}}[] = {
+const char* const intfDesc{{Interface.Category.capitalize()}}{{Interface.Name}}[] = {
     "${{Interface.FullName}}",
     {% for p in Interface.Properties %}
     "@{{p.Name}}{{p.tcl_access_char()}}{{p.Type.signature}}",
@@ -359,7 +359,7 @@ static AJ_Status {{Interface.Name}}_OnMethodHandler(AJ_BusAttachment* busAttachm
 
 
 
-const InterfaceHandler intfHandlerOperation{{Interface.Name}} = {
+const InterfaceHandler intfHandler{{Interface.Category.capitalize()}}{{Interface.Name}} = {
     {{Interface.Name}}_OnGetProperty,
     {{Interface.Name}}_OnSetProperty,
     {{Interface.Name}}_OnMethodHandler

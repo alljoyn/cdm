@@ -31,6 +31,10 @@ FreeFields_{{type.ajtypeInterfaceName()}}_{{type.ajtypeStructName()}}(&{{name}})
 {%- endif %}
 {% endmacro -%}
 
+{%- macro halInit(type) %}
+{%-   if type.ajtypeIsString() %}""{%- else %}{0}{% endif %}
+{% endmacro -%}
+
 {%- macro castTo(type) %}
 {%-   if type.ajtypeIsEnum() %}({{type.tcltype()}})(int){% endif %}
 {% endmacro -%}

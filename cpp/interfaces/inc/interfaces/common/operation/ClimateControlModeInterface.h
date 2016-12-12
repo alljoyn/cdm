@@ -102,7 +102,7 @@ struct CdmMsgCvt<ClimateControlModeInterface::Mode>
 {
     void get(const MsgArg& msgarg, ClimateControlModeInterface::Mode& value)
     {
-        int32_t v;
+        int32_t v = 0;
         msgarg.Get("i", &v);
         value = static_cast<ClimateControlModeInterface::Mode>(v);
     }
@@ -116,7 +116,7 @@ struct CdmMsgCvt<ClimateControlModeInterface::Mode>
     std::string str(const MsgArg& msgarg)
     {
         std::ostringstream strm;
-        int32_t value;
+        int32_t value = 0;
         msgarg.Get("i", &value);
         strm << value;
         return strm.str();
@@ -128,8 +128,8 @@ struct CdmMsgCvt<std::vector<ClimateControlModeInterface::Mode>>
 {
     void get(const MsgArg& msgarg, std::vector<ClimateControlModeInterface::Mode>& value)
     {
-        int32_t* v;
-        size_t l;
+        int32_t* v = 0;
+        size_t l = 0;
 
         msgarg.Get("ai", &l, &v);
         value.resize(l);
@@ -157,8 +157,8 @@ struct CdmMsgCvt<std::vector<ClimateControlModeInterface::Mode>>
     std::string str(const MsgArg& msgarg)
     {
         std::ostringstream strm;
-        int32_t* v;
-        size_t l;
+        int32_t* v = 0;
+        size_t l = 0;
         msgarg.Get("ai", &l, &v);
         for (size_t i = 0; i < l; ++i)
         {
@@ -175,7 +175,7 @@ struct CdmMsgCvt<ClimateControlModeInterface::OperationalState>
 {
     void get(const MsgArg& msgarg, ClimateControlModeInterface::OperationalState& value)
     {
-        int32_t v;
+        int32_t v = 0;
         msgarg.Get("i", &v);
         value = static_cast<ClimateControlModeInterface::OperationalState>(v);
     }
@@ -189,7 +189,7 @@ struct CdmMsgCvt<ClimateControlModeInterface::OperationalState>
     std::string str(const MsgArg& msgarg)
     {
         std::ostringstream strm;
-        int32_t value;
+        int32_t value = 0;
         msgarg.Get("i", &value);
         strm << value;
         return strm.str();
@@ -201,8 +201,8 @@ struct CdmMsgCvt<std::vector<ClimateControlModeInterface::OperationalState>>
 {
     void get(const MsgArg& msgarg, std::vector<ClimateControlModeInterface::OperationalState>& value)
     {
-        int32_t* v;
-        size_t l;
+        int32_t* v = 0;
+        size_t l = 0;
 
         msgarg.Get("ai", &l, &v);
         value.resize(l);
@@ -230,8 +230,8 @@ struct CdmMsgCvt<std::vector<ClimateControlModeInterface::OperationalState>>
     std::string str(const MsgArg& msgarg)
     {
         std::ostringstream strm;
-        int32_t* v;
-        size_t l;
+        int32_t* v = 0;
+        size_t l = 0;
         msgarg.Get("ai", &l, &v);
         for (size_t i = 0; i < l; ++i)
         {

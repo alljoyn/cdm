@@ -144,6 +144,7 @@ static int HAL_Decode_Array_{{Interface.Name}}_{{enum.Name}}(FILE* fp, Array_{{I
 
 {% for property in Interface.UserProperties %}
 {% set halC = tcl_macros.halCType(property.Type) %}
+{% set halI = tcl_macros.halInit(property.Type) %}
 {% set hal = property.Type.tclHalEncoder() %}
 {% if property.Readable %}
 
@@ -151,7 +152,6 @@ static int HAL_Decode_Array_{{Interface.Name}}_{{enum.Name}}(FILE* fp, Array_{{I
 static AJ_Status Get{{property.Name}}(void *context, const char *objPath, {{property.Type.tcltype()}} *out)
 {
     AJ_Status result = AJ_OK;
-    {{halC}} value = {0};
 
     FILE* fp = HAL_ReadProperty("/cdm/emulated", "{{Interface.Name}}", "{{property.Name}}");
 
@@ -162,6 +162,7 @@ static AJ_Status Get{{property.Name}}(void *context, const char *objPath, {{prop
             return AJ_ERR_FAILURE;
         }
 
+        {{halC}} const value = {{halI}};
         {{property.Type.tclHalEncoder()}}(fp, value);
         fclose(fp);
     }
@@ -172,6 +173,7 @@ static AJ_Status Get{{property.Name}}(void *context, const char *objPath, {{prop
         return AJ_ERR_FAILURE;
     }
 
+    {{halC}} value;
     {{tcl_macros.halDecode(property.Type, "value")}}
     *out = {{tcl_macros.castTo(property.Type)}}value;
     fclose(fp);

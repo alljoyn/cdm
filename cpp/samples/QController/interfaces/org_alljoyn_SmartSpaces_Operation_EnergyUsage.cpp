@@ -174,6 +174,6 @@ void org_alljoyn_SmartSpaces_Operation_EnergyUsage::slotOnResponseMethodResetCum
     }
     else
     {
-        qWarning() << "Received an error from method ResetCumulativeEnergy, status = " << status;
+        qWarning() << "Received an error from method ResetCumulativeEnergy, status = " << QCC_StatusText(status);
     }
 }

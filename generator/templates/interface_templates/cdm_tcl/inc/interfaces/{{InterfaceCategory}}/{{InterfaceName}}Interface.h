@@ -120,8 +120,8 @@ extern size_t ExtendArray_{{Interface.Name}}_{{struc.Name}}(Array_{{Interface.Na
 {% endfor %}
 
 
-extern const char* const intfDescOperation{{Interface.Name}}[{{Interface.Name.upper()}}_MEMBER_COUNT + 2];
-extern const InterfaceHandler intfHandlerOperation{{Interface.Name}};
+extern const char* const intfDesc{{Interface.Category.capitalize()}}{{Interface.Name}}[{{Interface.Name.upper()}}_MEMBER_COUNT + 2];
+extern const InterfaceHandler intfHandler{{Interface.Category.capitalize()}}{{Interface.Name}};
 
 {% for property in Interface.UserProperties %}
 {% if property.EmitsChangedSignal %}

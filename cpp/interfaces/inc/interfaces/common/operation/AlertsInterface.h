@@ -107,7 +107,7 @@ struct CdmMsgCvt<AlertsInterface::Severity>
 {
     void get(const MsgArg& msgarg, AlertsInterface::Severity& value)
     {
-        int32_t v;
+        int32_t v = 0;
         msgarg.Get("i", &v);
         value = static_cast<AlertsInterface::Severity>(v);
     }
@@ -121,7 +121,7 @@ struct CdmMsgCvt<AlertsInterface::Severity>
     std::string str(const MsgArg& msgarg)
     {
         std::ostringstream strm;
-        int32_t value;
+        int32_t value = 0;
         msgarg.Get("i", &value);
         strm << value;
         return strm.str();
@@ -133,8 +133,8 @@ struct CdmMsgCvt<std::vector<AlertsInterface::Severity>>
 {
     void get(const MsgArg& msgarg, std::vector<AlertsInterface::Severity>& value)
     {
-        int32_t* v;
-        size_t l;
+        int32_t* v = 0;
+        size_t l = 0;
 
         msgarg.Get("ai", &l, &v);
         value.resize(l);
@@ -162,8 +162,8 @@ struct CdmMsgCvt<std::vector<AlertsInterface::Severity>>
     std::string str(const MsgArg& msgarg)
     {
         std::ostringstream strm;
-        int32_t* v;
-        size_t l;
+        int32_t* v = 0;
+        size_t l = 0;
         msgarg.Get("ai", &l, &v);
         for (size_t i = 0; i < l; ++i)
         {
@@ -179,9 +179,9 @@ struct CdmMsgCvt<AlertsInterface::AlertRecord>
 {
     void get(const MsgArg& msgarg, AlertsInterface::AlertRecord& value)
     {
-        int32_t severity;
-        uint16_t alertCode;
-        bool needAcknowledgement;
+        int32_t severity{};
+        uint16_t alertCode{};
+        bool needAcknowledgement{};
         msgarg.Get("(iqb)", &severity, &alertCode, &needAcknowledgement);
         value.severity = static_cast<AlertsInterface::Severity>(severity);
         value.alertCode = alertCode;
@@ -217,17 +217,17 @@ struct CdmMsgCvt<std::vector<AlertsInterface::AlertRecord>>
 {
     void get(const MsgArg& msgarg, std::vector<AlertsInterface::AlertRecord>& value)
     {
-        MsgArg* elems;
-        size_t  num;
+        MsgArg* elems = 0;
+        size_t  num = 0;
 
         msgarg.Get("a(iqb)", &num, &elems);
         value.resize(num);
 
         for (size_t i = 0; i < num; ++i)
         {
-            int32_t severity;
-            uint16_t alertCode;
-            bool needAcknowledgement;
+            int32_t severity{};
+            uint16_t alertCode{};
+            bool needAcknowledgement{};
             elems[i].Get("(iqb)", &severity, &alertCode, &needAcknowledgement);
             value[i].severity = static_cast<AlertsInterface::Severity>(severity);
             value[i].alertCode = alertCode;
@@ -279,8 +279,8 @@ struct CdmMsgCvt<AlertsInterface::AlertCodesDescriptor>
 {
     void get(const MsgArg& msgarg, AlertsInterface::AlertCodesDescriptor& value)
     {
-        uint16_t alertCode;
-        const char* description;
+        uint16_t alertCode{};
+        const char* description{};
         msgarg.Get("(qs)", &alertCode, &description);
         value.alertCode = alertCode;
         value.description = description;
@@ -312,16 +312,16 @@ struct CdmMsgCvt<std::vector<AlertsInterface::AlertCodesDescriptor>>
 {
     void get(const MsgArg& msgarg, std::vector<AlertsInterface::AlertCodesDescriptor>& value)
     {
-        MsgArg* elems;
-        size_t  num;
+        MsgArg* elems = 0;
+        size_t  num = 0;
 
         msgarg.Get("a(qs)", &num, &elems);
         value.resize(num);
 
         for (size_t i = 0; i < num; ++i)
         {
-            uint16_t alertCode;
-            const char* description;
+            uint16_t alertCode{};
+            const char* description{};
             elems[i].Get("(qs)", &alertCode, &description);
             value[i].alertCode = alertCode;
             value[i].description = description;

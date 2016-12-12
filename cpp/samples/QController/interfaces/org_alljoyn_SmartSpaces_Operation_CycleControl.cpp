@@ -175,6 +175,6 @@ void org_alljoyn_SmartSpaces_Operation_CycleControl::slotOnResponseMethodExecute
     }
     else
     {
-        qWarning() << "Received an error from method ExecuteOperationalCommand, status = " << status;
+        qWarning() << "Received an error from method ExecuteOperationalCommand, status = " << QCC_StatusText(status);
     }
 }

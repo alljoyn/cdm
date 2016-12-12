@@ -92,9 +92,9 @@ struct CdmMsgCvt<ChannelInterface::ChannelInfoRecord>
 {
     void get(const MsgArg& msgarg, ChannelInterface::ChannelInfoRecord& value)
     {
-        const char* channelID;
-        const char* channelNumber;
-        const char* channelName;
+        const char* channelID{};
+        const char* channelNumber{};
+        const char* channelName{};
         msgarg.Get("(sss)", &channelID, &channelNumber, &channelName);
         value.channelID = channelID;
         value.channelNumber = channelNumber;
@@ -130,17 +130,17 @@ struct CdmMsgCvt<std::vector<ChannelInterface::ChannelInfoRecord>>
 {
     void get(const MsgArg& msgarg, std::vector<ChannelInterface::ChannelInfoRecord>& value)
     {
-        MsgArg* elems;
-        size_t  num;
+        MsgArg* elems = 0;
+        size_t  num = 0;
 
         msgarg.Get("a(sss)", &num, &elems);
         value.resize(num);
 
         for (size_t i = 0; i < num; ++i)
         {
-            const char* channelID;
-            const char* channelNumber;
-            const char* channelName;
+            const char* channelID{};
+            const char* channelNumber{};
+            const char* channelName{};
             elems[i].Get("(sss)", &channelID, &channelNumber, &channelName);
             value[i].channelID = channelID;
             value[i].channelNumber = channelNumber;

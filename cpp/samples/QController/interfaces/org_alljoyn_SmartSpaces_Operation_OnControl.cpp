@@ -96,6 +96,6 @@ void org_alljoyn_SmartSpaces_Operation_OnControl::slotOnResponseMethodSwitchOn(Q
     }
     else
     {
-        qWarning() << "Received an error from method SwitchOn, status = " << status;
+        qWarning() << "Received an error from method SwitchOn, status = " << QCC_StatusText(status);
     }
 }

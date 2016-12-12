@@ -34,14 +34,17 @@ class Symbol(object):
     def __str__(self):
         return self.string
 
+    def capitalize(self):
+        return self.string.capitalize()
+
     def upper(self):
         return self.string.upper()
 
-    def split_camel_case(self, seperator):
+    def split_camel_case(self, separator):
         s = ""
         for c in self.string:
             if c in string.ascii_uppercase and s and s[-1] not in (string.ascii_uppercase + string.digits + "_"):
-                s = s + seperator + c
+                s = s + separator + c
             else:
                 s = s + c
         return s.lower()

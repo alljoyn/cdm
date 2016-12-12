@@ -272,7 +272,7 @@ void org_alljoyn_SmartSpaces_Operation_Timer::slotOnResponseMethodSetTargetTimeT
     }
     else
     {
-        qWarning() << "Received an error from method SetTargetTimeToStart, status = " << status;
+        qWarning() << "Received an error from method SetTargetTimeToStart, status = " << QCC_StatusText(status);
     }
 }
 
@@ -286,6 +286,6 @@ void org_alljoyn_SmartSpaces_Operation_Timer::slotOnResponseMethodSetTargetTimeT
     }
     else
     {
-        qWarning() << "Received an error from method SetTargetTimeToStop, status = " << status;
+        qWarning() << "Received an error from method SetTargetTimeToStop, status = " << QCC_StatusText(status);
     }
 }

@@ -119,7 +119,7 @@ struct CdmMsgCvt<AudioVideoInputInterface::SourceType>
 {
     void get(const MsgArg& msgarg, AudioVideoInputInterface::SourceType& value)
     {
-        int32_t v;
+        int32_t v = 0;
         msgarg.Get("i", &v);
         value = static_cast<AudioVideoInputInterface::SourceType>(v);
     }
@@ -133,7 +133,7 @@ struct CdmMsgCvt<AudioVideoInputInterface::SourceType>
     std::string str(const MsgArg& msgarg)
     {
         std::ostringstream strm;
-        int32_t value;
+        int32_t value = 0;
         msgarg.Get("i", &value);
         strm << value;
         return strm.str();
@@ -145,8 +145,8 @@ struct CdmMsgCvt<std::vector<AudioVideoInputInterface::SourceType>>
 {
     void get(const MsgArg& msgarg, std::vector<AudioVideoInputInterface::SourceType>& value)
     {
-        int32_t* v;
-        size_t l;
+        int32_t* v = 0;
+        size_t l = 0;
 
         msgarg.Get("ai", &l, &v);
         value.resize(l);
@@ -174,8 +174,8 @@ struct CdmMsgCvt<std::vector<AudioVideoInputInterface::SourceType>>
     std::string str(const MsgArg& msgarg)
     {
         std::ostringstream strm;
-        int32_t* v;
-        size_t l;
+        int32_t* v = 0;
+        size_t l = 0;
         msgarg.Get("ai", &l, &v);
         for (size_t i = 0; i < l; ++i)
         {
@@ -192,7 +192,7 @@ struct CdmMsgCvt<AudioVideoInputInterface::SignalPresence>
 {
     void get(const MsgArg& msgarg, AudioVideoInputInterface::SignalPresence& value)
     {
-        int32_t v;
+        int32_t v = 0;
         msgarg.Get("i", &v);
         value = static_cast<AudioVideoInputInterface::SignalPresence>(v);
     }
@@ -206,7 +206,7 @@ struct CdmMsgCvt<AudioVideoInputInterface::SignalPresence>
     std::string str(const MsgArg& msgarg)
     {
         std::ostringstream strm;
-        int32_t value;
+        int32_t value = 0;
         msgarg.Get("i", &value);
         strm << value;
         return strm.str();
@@ -218,8 +218,8 @@ struct CdmMsgCvt<std::vector<AudioVideoInputInterface::SignalPresence>>
 {
     void get(const MsgArg& msgarg, std::vector<AudioVideoInputInterface::SignalPresence>& value)
     {
-        int32_t* v;
-        size_t l;
+        int32_t* v = 0;
+        size_t l = 0;
 
         msgarg.Get("ai", &l, &v);
         value.resize(l);
@@ -247,8 +247,8 @@ struct CdmMsgCvt<std::vector<AudioVideoInputInterface::SignalPresence>>
     std::string str(const MsgArg& msgarg)
     {
         std::ostringstream strm;
-        int32_t* v;
-        size_t l;
+        int32_t* v = 0;
+        size_t l = 0;
         msgarg.Get("ai", &l, &v);
         for (size_t i = 0; i < l; ++i)
         {
@@ -264,11 +264,11 @@ struct CdmMsgCvt<AudioVideoInputInterface::InputSource>
 {
     void get(const MsgArg& msgarg, AudioVideoInputInterface::InputSource& value)
     {
-        uint16_t id;
-        int32_t sourceType;
-        int32_t signalPresence;
-        uint16_t portNumber;
-        const char* friendlyName;
+        uint16_t id{};
+        int32_t sourceType{};
+        int32_t signalPresence{};
+        uint16_t portNumber{};
+        const char* friendlyName{};
         msgarg.Get("(qqiqs)", &id, &sourceType, &signalPresence, &portNumber, &friendlyName);
         value.id = id;
         value.sourceType = static_cast<AudioVideoInputInterface::SourceType>(sourceType);
@@ -312,19 +312,19 @@ struct CdmMsgCvt<std::vector<AudioVideoInputInterface::InputSource>>
 {
     void get(const MsgArg& msgarg, std::vector<AudioVideoInputInterface::InputSource>& value)
     {
-        MsgArg* elems;
-        size_t  num;
+        MsgArg* elems = 0;
+        size_t  num = 0;
 
         msgarg.Get("a(qqiqs)", &num, &elems);
         value.resize(num);
 
         for (size_t i = 0; i < num; ++i)
         {
-            uint16_t id;
-            int32_t sourceType;
-            int32_t signalPresence;
-            uint16_t portNumber;
-            const char* friendlyName;
+            uint16_t id{};
+            int32_t sourceType{};
+            int32_t signalPresence{};
+            uint16_t portNumber{};
+            const char* friendlyName{};
             elems[i].Get("(qqiqs)", &id, &sourceType, &signalPresence, &portNumber, &friendlyName);
             value[i].id = id;
             value[i].sourceType = static_cast<AudioVideoInputInterface::SourceType>(sourceType);

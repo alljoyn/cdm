@@ -6,4 +6,4 @@
 
     HAL_Encode_Double(fp, 0);
     fclose(fp);
-
+    return AJ_OK;

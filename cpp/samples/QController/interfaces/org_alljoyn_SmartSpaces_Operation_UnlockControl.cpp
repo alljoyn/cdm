@@ -96,6 +96,6 @@ void org_alljoyn_SmartSpaces_Operation_UnlockControl::slotOnResponseMethodUnlock
     }
     else
     {
-        qWarning() << "Received an error from method Unlock, status = " << status;
+        qWarning() << "Received an error from method Unlock, status = " << QCC_StatusText(status);
     }
 }

@@ -182,6 +182,6 @@ void org_alljoyn_SmartSpaces_Operation_OvenCyclePhase::slotOnResponseMethodGetVe
     }
     else
     {
-        qWarning() << "Received an error from method GetVendorPhasesDescription, status = " << status;
+        qWarning() << "Received an error from method GetVendorPhasesDescription, status = " << QCC_StatusText(status);
     }
 }

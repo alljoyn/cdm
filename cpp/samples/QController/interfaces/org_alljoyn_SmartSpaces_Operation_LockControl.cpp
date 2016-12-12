@@ -96,6 +96,6 @@ void org_alljoyn_SmartSpaces_Operation_LockControl::slotOnResponseMethodLock(QSt
     }
     else
     {
-        qWarning() << "Received an error from method Lock, status = " << status;
+        qWarning() << "Received an error from method Lock, status = " << QCC_StatusText(status);
     }
 }

@@ -212,7 +212,7 @@ void org_alljoyn_SmartSpaces_Operation_Channel::slotOnResponseMethodGetChannelLi
     }
     else
     {
-        qWarning() << "Received an error from method GetChannelList, status = " << status;
+        qWarning() << "Received an error from method GetChannelList, status = " << QCC_StatusText(status);
     }
 }
 
