@@ -14,18 +14,13 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <memory.h>
-
 #include "InterfaceFactory.h"
-#include "../Utils/HAL.h"
 
 INCLUDE_MARKER
 
-void initHAL()
+AJ_Status createInterface(const char* objPath, const char* ifaceName)
 {
-    // Register all encoders and decoders
-REGISTER_MARKER
+CREATE_MARKER
+    return AJ_ERR_INVALID;
 }
 
