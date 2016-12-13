@@ -57,20 +57,7 @@ org_alljoyn_SmartSpaces_Environment_CurrentHumidity::org_alljoyn_SmartSpaces_Env
         controller = iface->CreateInterface<CurrentHumidityIntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-            // Get current values
-            status = controller->GetCurrentValue();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get CurrentValue" << QCC_StatusText(status);
-            }
-            status = controller->GetMaxValue();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get MaxValue" << QCC_StatusText(status);
-            }
+            fetchProperties();
         }
         else
         {
@@ -86,6 +73,31 @@ org_alljoyn_SmartSpaces_Environment_CurrentHumidity::org_alljoyn_SmartSpaces_Env
 org_alljoyn_SmartSpaces_Environment_CurrentHumidity::~org_alljoyn_SmartSpaces_Environment_CurrentHumidity()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void org_alljoyn_SmartSpaces_Environment_CurrentHumidity::fetchProperties()
+{
+    // Get current values
+    QStatus status;
+
+    if (controller)
+    {
+        qWarning() << "org_alljoyn_SmartSpaces_Environment_CurrentHumidity getting properties";
+
+        status = controller->GetCurrentValue();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get CurrentValue" << QCC_StatusText(status);
+        }
+
+        status = controller->GetMaxValue();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get MaxValue" << QCC_StatusText(status);
+        }
+    }
 }
 
 

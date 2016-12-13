@@ -58,20 +58,7 @@ org_alljoyn_SmartSpaces_Operation_RapidModeTimed::org_alljoyn_SmartSpaces_Operat
         controller = iface->CreateInterface<RapidModeTimedIntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-            // Get current values
-            status = controller->GetRapidModeMinutesRemaining();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get RapidModeMinutesRemaining" << QCC_StatusText(status);
-            }
-            status = controller->GetMaxSetMinutes();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get MaxSetMinutes" << QCC_StatusText(status);
-            }
+            fetchProperties();
         }
         else
         {
@@ -87,6 +74,31 @@ org_alljoyn_SmartSpaces_Operation_RapidModeTimed::org_alljoyn_SmartSpaces_Operat
 org_alljoyn_SmartSpaces_Operation_RapidModeTimed::~org_alljoyn_SmartSpaces_Operation_RapidModeTimed()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void org_alljoyn_SmartSpaces_Operation_RapidModeTimed::fetchProperties()
+{
+    // Get current values
+    QStatus status;
+
+    if (controller)
+    {
+        qWarning() << "org_alljoyn_SmartSpaces_Operation_RapidModeTimed getting properties";
+
+        status = controller->GetRapidModeMinutesRemaining();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get RapidModeMinutesRemaining" << QCC_StatusText(status);
+        }
+
+        status = controller->GetMaxSetMinutes();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get MaxSetMinutes" << QCC_StatusText(status);
+        }
+    }
 }
 
 

@@ -95,20 +95,7 @@ org_alljoyn_SmartSpaces_Operation_LaundryCyclePhase::org_alljoyn_SmartSpaces_Ope
         controller = iface->CreateInterface<LaundryCyclePhaseIntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-            // Get current values
-            status = controller->GetCyclePhase();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get CyclePhase" << QCC_StatusText(status);
-            }
-            status = controller->GetSupportedCyclePhases();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get SupportedCyclePhases" << QCC_StatusText(status);
-            }
+            fetchProperties();
         }
         else
         {
@@ -124,6 +111,31 @@ org_alljoyn_SmartSpaces_Operation_LaundryCyclePhase::org_alljoyn_SmartSpaces_Ope
 org_alljoyn_SmartSpaces_Operation_LaundryCyclePhase::~org_alljoyn_SmartSpaces_Operation_LaundryCyclePhase()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void org_alljoyn_SmartSpaces_Operation_LaundryCyclePhase::fetchProperties()
+{
+    // Get current values
+    QStatus status;
+
+    if (controller)
+    {
+        qWarning() << "org_alljoyn_SmartSpaces_Operation_LaundryCyclePhase getting properties";
+
+        status = controller->GetCyclePhase();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get CyclePhase" << QCC_StatusText(status);
+        }
+
+        status = controller->GetSupportedCyclePhases();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get SupportedCyclePhases" << QCC_StatusText(status);
+        }
+    }
 }
 
 

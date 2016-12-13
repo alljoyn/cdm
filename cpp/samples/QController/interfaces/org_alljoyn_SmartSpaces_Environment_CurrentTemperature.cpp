@@ -63,25 +63,7 @@ org_alljoyn_SmartSpaces_Environment_CurrentTemperature::org_alljoyn_SmartSpaces_
         controller = iface->CreateInterface<CurrentTemperatureIntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-            // Get current values
-            status = controller->GetCurrentValue();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get CurrentValue" << QCC_StatusText(status);
-            }
-            status = controller->GetPrecision();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get Precision" << QCC_StatusText(status);
-            }
-            status = controller->GetUpdateMinTime();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get UpdateMinTime" << QCC_StatusText(status);
-            }
+            fetchProperties();
         }
         else
         {
@@ -97,6 +79,37 @@ org_alljoyn_SmartSpaces_Environment_CurrentTemperature::org_alljoyn_SmartSpaces_
 org_alljoyn_SmartSpaces_Environment_CurrentTemperature::~org_alljoyn_SmartSpaces_Environment_CurrentTemperature()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void org_alljoyn_SmartSpaces_Environment_CurrentTemperature::fetchProperties()
+{
+    // Get current values
+    QStatus status;
+
+    if (controller)
+    {
+        qWarning() << "org_alljoyn_SmartSpaces_Environment_CurrentTemperature getting properties";
+
+        status = controller->GetCurrentValue();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get CurrentValue" << QCC_StatusText(status);
+        }
+
+        status = controller->GetPrecision();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get Precision" << QCC_StatusText(status);
+        }
+
+        status = controller->GetUpdateMinTime();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get UpdateMinTime" << QCC_StatusText(status);
+        }
+    }
 }
 
 

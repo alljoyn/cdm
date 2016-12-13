@@ -57,20 +57,7 @@ org_alljoyn_SmartSpaces_Operation_BatteryStatus::org_alljoyn_SmartSpaces_Operati
         controller = iface->CreateInterface<BatteryStatusIntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-            // Get current values
-            status = controller->GetCurrentValue();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get CurrentValue" << QCC_StatusText(status);
-            }
-            status = controller->GetIsCharging();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get IsCharging" << QCC_StatusText(status);
-            }
+            fetchProperties();
         }
         else
         {
@@ -86,6 +73,31 @@ org_alljoyn_SmartSpaces_Operation_BatteryStatus::org_alljoyn_SmartSpaces_Operati
 org_alljoyn_SmartSpaces_Operation_BatteryStatus::~org_alljoyn_SmartSpaces_Operation_BatteryStatus()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void org_alljoyn_SmartSpaces_Operation_BatteryStatus::fetchProperties()
+{
+    // Get current values
+    QStatus status;
+
+    if (controller)
+    {
+        qWarning() << "org_alljoyn_SmartSpaces_Operation_BatteryStatus getting properties";
+
+        status = controller->GetCurrentValue();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get CurrentValue" << QCC_StatusText(status);
+        }
+
+        status = controller->GetIsCharging();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get IsCharging" << QCC_StatusText(status);
+        }
+    }
 }
 
 

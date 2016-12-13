@@ -80,6 +80,14 @@ private:
 
 
     QLineEdit* edit_PlugInUnits;
+
+    void    fetchProperties();
+
+protected:
+    virtual void showEvent(QShowEvent *event) override
+    {
+        fetchProperties();
+    }
 };
 
 }

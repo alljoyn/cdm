@@ -52,15 +52,7 @@ org_alljoyn_SmartSpaces_Operation_ResourceSaving::org_alljoyn_SmartSpaces_Operat
         controller = iface->CreateInterface<ResourceSavingIntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-            // Get current values
-            status = controller->GetResourceSavingMode();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get ResourceSavingMode" << QCC_StatusText(status);
-            }
+            fetchProperties();
         }
         else
         {
@@ -76,6 +68,25 @@ org_alljoyn_SmartSpaces_Operation_ResourceSaving::org_alljoyn_SmartSpaces_Operat
 org_alljoyn_SmartSpaces_Operation_ResourceSaving::~org_alljoyn_SmartSpaces_Operation_ResourceSaving()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void org_alljoyn_SmartSpaces_Operation_ResourceSaving::fetchProperties()
+{
+    // Get current values
+    QStatus status;
+
+    if (controller)
+    {
+        qWarning() << "org_alljoyn_SmartSpaces_Operation_ResourceSaving getting properties";
+
+        status = controller->GetResourceSavingMode();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get ResourceSavingMode" << QCC_StatusText(status);
+        }
+    }
 }
 
 

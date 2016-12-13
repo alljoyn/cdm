@@ -125,6 +125,14 @@ private:
     QLineEdit* edit_MaxLevel;
     QLineEdit* edit_TargetLevel;
     QLineEdit* edit_SelectableTemperatureLevels;
+
+    void    fetchProperties();
+
+protected:
+    virtual void showEvent(QShowEvent *event) override
+    {
+        fetchProperties();
+    }
 };
 
 }

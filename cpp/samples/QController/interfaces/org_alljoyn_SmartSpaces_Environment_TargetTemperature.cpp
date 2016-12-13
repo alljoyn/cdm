@@ -70,30 +70,7 @@ org_alljoyn_SmartSpaces_Environment_TargetTemperature::org_alljoyn_SmartSpaces_E
         controller = iface->CreateInterface<TargetTemperatureIntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-            // Get current values
-            status = controller->GetTargetValue();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get TargetValue" << QCC_StatusText(status);
-            }
-            status = controller->GetMinValue();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get MinValue" << QCC_StatusText(status);
-            }
-            status = controller->GetMaxValue();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get MaxValue" << QCC_StatusText(status);
-            }
-            status = controller->GetStepValue();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get StepValue" << QCC_StatusText(status);
-            }
+            fetchProperties();
         }
         else
         {
@@ -109,6 +86,43 @@ org_alljoyn_SmartSpaces_Environment_TargetTemperature::org_alljoyn_SmartSpaces_E
 org_alljoyn_SmartSpaces_Environment_TargetTemperature::~org_alljoyn_SmartSpaces_Environment_TargetTemperature()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void org_alljoyn_SmartSpaces_Environment_TargetTemperature::fetchProperties()
+{
+    // Get current values
+    QStatus status;
+
+    if (controller)
+    {
+        qWarning() << "org_alljoyn_SmartSpaces_Environment_TargetTemperature getting properties";
+
+        status = controller->GetTargetValue();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get TargetValue" << QCC_StatusText(status);
+        }
+
+        status = controller->GetMinValue();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get MinValue" << QCC_StatusText(status);
+        }
+
+        status = controller->GetMaxValue();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get MaxValue" << QCC_StatusText(status);
+        }
+
+        status = controller->GetStepValue();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get StepValue" << QCC_StatusText(status);
+        }
+    }
 }
 
 

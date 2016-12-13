@@ -206,6 +206,14 @@ private:
     QLineEdit* edit_VerticalDirection;
     QLineEdit* edit_VerticalMax;
     QLineEdit* edit_VerticalAutoMode;
+
+    void    fetchProperties();
+
+protected:
+    virtual void showEvent(QShowEvent *event) override
+    {
+        fetchProperties();
+    }
 };
 
 }

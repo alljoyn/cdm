@@ -124,15 +124,7 @@ org_alljoyn_Input_Hid::org_alljoyn_Input_Hid(CommonControllerInterface *iface)
         controller = iface->CreateInterface<HidIntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-            // Get current values
-            status = controller->GetSupportedEvents();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get SupportedEvents" << QCC_StatusText(status);
-            }
+            fetchProperties();
         }
         else
         {
@@ -148,6 +140,25 @@ org_alljoyn_Input_Hid::org_alljoyn_Input_Hid(CommonControllerInterface *iface)
 org_alljoyn_Input_Hid::~org_alljoyn_Input_Hid()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void org_alljoyn_Input_Hid::fetchProperties()
+{
+    // Get current values
+    QStatus status;
+
+    if (controller)
+    {
+        qWarning() << "org_alljoyn_Input_Hid getting properties";
+
+        status = controller->GetSupportedEvents();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get SupportedEvents" << QCC_StatusText(status);
+        }
+    }
 }
 
 

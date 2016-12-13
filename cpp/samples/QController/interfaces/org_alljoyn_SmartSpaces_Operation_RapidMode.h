@@ -89,6 +89,14 @@ private:
 
 
     QLineEdit* edit_RapidMode;
+
+    void    fetchProperties();
+
+protected:
+    virtual void showEvent(QShowEvent *event) override
+    {
+        fetchProperties();
+    }
 };
 
 }

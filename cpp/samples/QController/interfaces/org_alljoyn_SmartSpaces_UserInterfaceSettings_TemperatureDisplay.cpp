@@ -58,20 +58,7 @@ org_alljoyn_SmartSpaces_UserInterfaceSettings_TemperatureDisplay::org_alljoyn_Sm
         controller = iface->CreateInterface<TemperatureDisplayIntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-            // Get current values
-            status = controller->GetDisplayTemperatureUnit();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get DisplayTemperatureUnit" << QCC_StatusText(status);
-            }
-            status = controller->GetSupportedDisplayTemperatureUnits();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get SupportedDisplayTemperatureUnits" << QCC_StatusText(status);
-            }
+            fetchProperties();
         }
         else
         {
@@ -87,6 +74,31 @@ org_alljoyn_SmartSpaces_UserInterfaceSettings_TemperatureDisplay::org_alljoyn_Sm
 org_alljoyn_SmartSpaces_UserInterfaceSettings_TemperatureDisplay::~org_alljoyn_SmartSpaces_UserInterfaceSettings_TemperatureDisplay()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void org_alljoyn_SmartSpaces_UserInterfaceSettings_TemperatureDisplay::fetchProperties()
+{
+    // Get current values
+    QStatus status;
+
+    if (controller)
+    {
+        qWarning() << "org_alljoyn_SmartSpaces_UserInterfaceSettings_TemperatureDisplay getting properties";
+
+        status = controller->GetDisplayTemperatureUnit();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get DisplayTemperatureUnit" << QCC_StatusText(status);
+        }
+
+        status = controller->GetSupportedDisplayTemperatureUnits();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get SupportedDisplayTemperatureUnits" << QCC_StatusText(status);
+        }
+    }
 }
 
 

@@ -116,6 +116,14 @@ private:
     QLineEdit* edit_CurrentValue;
     QLineEdit* edit_Precision;
     QLineEdit* edit_UpdateMinTime;
+
+    void    fetchProperties();
+
+protected:
+    virtual void showEvent(QShowEvent *event) override
+    {
+        fetchProperties();
+    }
 };
 
 }

@@ -51,15 +51,7 @@ org_alljoyn_SmartSpaces_Operation_RemoteControllability::org_alljoyn_SmartSpaces
         controller = iface->CreateInterface<RemoteControllabilityIntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-            // Get current values
-            status = controller->GetIsControllable();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get IsControllable" << QCC_StatusText(status);
-            }
+            fetchProperties();
         }
         else
         {
@@ -75,6 +67,25 @@ org_alljoyn_SmartSpaces_Operation_RemoteControllability::org_alljoyn_SmartSpaces
 org_alljoyn_SmartSpaces_Operation_RemoteControllability::~org_alljoyn_SmartSpaces_Operation_RemoteControllability()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void org_alljoyn_SmartSpaces_Operation_RemoteControllability::fetchProperties()
+{
+    // Get current values
+    QStatus status;
+
+    if (controller)
+    {
+        qWarning() << "org_alljoyn_SmartSpaces_Operation_RemoteControllability getting properties";
+
+        status = controller->GetIsControllable();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get IsControllable" << QCC_StatusText(status);
+        }
+    }
 }
 
 

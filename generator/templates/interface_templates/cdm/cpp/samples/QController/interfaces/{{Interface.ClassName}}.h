@@ -126,6 +126,14 @@ private:
     {% for property in Interface.UserProperties %}
     QLineEdit* edit_{{property.Name}};
     {% endfor %}
+
+    void    fetchProperties();
+
+protected:
+    virtual void showEvent(QShowEvent *event) override
+    {
+        fetchProperties();
+    }
 };
 
 }

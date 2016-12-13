@@ -52,15 +52,7 @@ org_alljoyn_SmartSpaces_Operation_RapidMode::org_alljoyn_SmartSpaces_Operation_R
         controller = iface->CreateInterface<RapidModeIntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-            // Get current values
-            status = controller->GetRapidMode();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get RapidMode" << QCC_StatusText(status);
-            }
+            fetchProperties();
         }
         else
         {
@@ -76,6 +68,25 @@ org_alljoyn_SmartSpaces_Operation_RapidMode::org_alljoyn_SmartSpaces_Operation_R
 org_alljoyn_SmartSpaces_Operation_RapidMode::~org_alljoyn_SmartSpaces_Operation_RapidMode()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void org_alljoyn_SmartSpaces_Operation_RapidMode::fetchProperties()
+{
+    // Get current values
+    QStatus status;
+
+    if (controller)
+    {
+        qWarning() << "org_alljoyn_SmartSpaces_Operation_RapidMode getting properties";
+
+        status = controller->GetRapidMode();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get RapidMode" << QCC_StatusText(status);
+        }
+    }
 }
 
 

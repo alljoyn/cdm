@@ -108,6 +108,14 @@ private:
 
     QLineEdit* edit_CyclePhase;
     QLineEdit* edit_SupportedCyclePhases;
+
+    void    fetchProperties();
+
+protected:
+    virtual void showEvent(QShowEvent *event) override
+    {
+        fetchProperties();
+    }
 };
 
 }

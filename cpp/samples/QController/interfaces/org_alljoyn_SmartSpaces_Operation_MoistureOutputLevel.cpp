@@ -65,25 +65,7 @@ org_alljoyn_SmartSpaces_Operation_MoistureOutputLevel::org_alljoyn_SmartSpaces_O
         controller = iface->CreateInterface<MoistureOutputLevelIntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-            // Get current values
-            status = controller->GetMoistureOutputLevel();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get MoistureOutputLevel" << QCC_StatusText(status);
-            }
-            status = controller->GetMaxMoistureOutputLevel();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get MaxMoistureOutputLevel" << QCC_StatusText(status);
-            }
-            status = controller->GetAutoMode();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get AutoMode" << QCC_StatusText(status);
-            }
+            fetchProperties();
         }
         else
         {
@@ -99,6 +81,37 @@ org_alljoyn_SmartSpaces_Operation_MoistureOutputLevel::org_alljoyn_SmartSpaces_O
 org_alljoyn_SmartSpaces_Operation_MoistureOutputLevel::~org_alljoyn_SmartSpaces_Operation_MoistureOutputLevel()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void org_alljoyn_SmartSpaces_Operation_MoistureOutputLevel::fetchProperties()
+{
+    // Get current values
+    QStatus status;
+
+    if (controller)
+    {
+        qWarning() << "org_alljoyn_SmartSpaces_Operation_MoistureOutputLevel getting properties";
+
+        status = controller->GetMoistureOutputLevel();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get MoistureOutputLevel" << QCC_StatusText(status);
+        }
+
+        status = controller->GetMaxMoistureOutputLevel();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get MaxMoistureOutputLevel" << QCC_StatusText(status);
+        }
+
+        status = controller->GetAutoMode();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get AutoMode" << QCC_StatusText(status);
+        }
+    }
 }
 
 

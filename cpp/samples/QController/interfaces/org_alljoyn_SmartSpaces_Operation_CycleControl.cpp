@@ -68,25 +68,7 @@ org_alljoyn_SmartSpaces_Operation_CycleControl::org_alljoyn_SmartSpaces_Operatio
         controller = iface->CreateInterface<CycleControlIntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-            // Get current values
-            status = controller->GetOperationalState();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get OperationalState" << QCC_StatusText(status);
-            }
-            status = controller->GetSupportedOperationalStates();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get SupportedOperationalStates" << QCC_StatusText(status);
-            }
-            status = controller->GetSupportedOperationalCommands();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get SupportedOperationalCommands" << QCC_StatusText(status);
-            }
+            fetchProperties();
         }
         else
         {
@@ -102,6 +84,37 @@ org_alljoyn_SmartSpaces_Operation_CycleControl::org_alljoyn_SmartSpaces_Operatio
 org_alljoyn_SmartSpaces_Operation_CycleControl::~org_alljoyn_SmartSpaces_Operation_CycleControl()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void org_alljoyn_SmartSpaces_Operation_CycleControl::fetchProperties()
+{
+    // Get current values
+    QStatus status;
+
+    if (controller)
+    {
+        qWarning() << "org_alljoyn_SmartSpaces_Operation_CycleControl getting properties";
+
+        status = controller->GetOperationalState();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get OperationalState" << QCC_StatusText(status);
+        }
+
+        status = controller->GetSupportedOperationalStates();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get SupportedOperationalStates" << QCC_StatusText(status);
+        }
+
+        status = controller->GetSupportedOperationalCommands();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get SupportedOperationalCommands" << QCC_StatusText(status);
+        }
+    }
 }
 
 

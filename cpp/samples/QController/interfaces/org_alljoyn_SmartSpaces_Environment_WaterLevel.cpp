@@ -63,25 +63,7 @@ org_alljoyn_SmartSpaces_Environment_WaterLevel::org_alljoyn_SmartSpaces_Environm
         controller = iface->CreateInterface<WaterLevelIntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-            // Get current values
-            status = controller->GetSupplySource();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get SupplySource" << QCC_StatusText(status);
-            }
-            status = controller->GetCurrentLevel();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get CurrentLevel" << QCC_StatusText(status);
-            }
-            status = controller->GetMaxLevel();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get MaxLevel" << QCC_StatusText(status);
-            }
+            fetchProperties();
         }
         else
         {
@@ -97,6 +79,37 @@ org_alljoyn_SmartSpaces_Environment_WaterLevel::org_alljoyn_SmartSpaces_Environm
 org_alljoyn_SmartSpaces_Environment_WaterLevel::~org_alljoyn_SmartSpaces_Environment_WaterLevel()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void org_alljoyn_SmartSpaces_Environment_WaterLevel::fetchProperties()
+{
+    // Get current values
+    QStatus status;
+
+    if (controller)
+    {
+        qWarning() << "org_alljoyn_SmartSpaces_Environment_WaterLevel getting properties";
+
+        status = controller->GetSupplySource();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get SupplySource" << QCC_StatusText(status);
+        }
+
+        status = controller->GetCurrentLevel();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get CurrentLevel" << QCC_StatusText(status);
+        }
+
+        status = controller->GetMaxLevel();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get MaxLevel" << QCC_StatusText(status);
+        }
+    }
 }
 
 

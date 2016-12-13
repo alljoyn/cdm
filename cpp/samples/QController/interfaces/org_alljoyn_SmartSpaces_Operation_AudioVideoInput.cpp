@@ -95,20 +95,7 @@ org_alljoyn_SmartSpaces_Operation_AudioVideoInput::org_alljoyn_SmartSpaces_Opera
         controller = iface->CreateInterface<AudioVideoInputIntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-            // Get current values
-            status = controller->GetInputSourceId();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get InputSourceId" << QCC_StatusText(status);
-            }
-            status = controller->GetSupportedInputSources();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get SupportedInputSources" << QCC_StatusText(status);
-            }
+            fetchProperties();
         }
         else
         {
@@ -124,6 +111,31 @@ org_alljoyn_SmartSpaces_Operation_AudioVideoInput::org_alljoyn_SmartSpaces_Opera
 org_alljoyn_SmartSpaces_Operation_AudioVideoInput::~org_alljoyn_SmartSpaces_Operation_AudioVideoInput()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void org_alljoyn_SmartSpaces_Operation_AudioVideoInput::fetchProperties()
+{
+    // Get current values
+    QStatus status;
+
+    if (controller)
+    {
+        qWarning() << "org_alljoyn_SmartSpaces_Operation_AudioVideoInput getting properties";
+
+        status = controller->GetInputSourceId();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get InputSourceId" << QCC_StatusText(status);
+        }
+
+        status = controller->GetSupportedInputSources();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get SupportedInputSources" << QCC_StatusText(status);
+        }
+    }
 }
 
 

@@ -116,6 +116,14 @@ private:
     QLineEdit* edit_NumberOfHeatingZones;
     QLineEdit* edit_MaxHeatingLevels;
     QLineEdit* edit_HeatingLevels;
+
+    void    fetchProperties();
+
+protected:
+    virtual void showEvent(QShowEvent *event) override
+    {
+        fetchProperties();
+    }
 };
 
 }

@@ -89,6 +89,14 @@ private:
 
 
     QLineEdit* edit_Brightness;
+
+    void    fetchProperties();
+
+protected:
+    virtual void showEvent(QShowEvent *event) override
+    {
+        fetchProperties();
+    }
 };
 
 }

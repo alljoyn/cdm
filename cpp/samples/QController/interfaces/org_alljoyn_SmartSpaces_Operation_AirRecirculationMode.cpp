@@ -52,15 +52,7 @@ org_alljoyn_SmartSpaces_Operation_AirRecirculationMode::org_alljoyn_SmartSpaces_
         controller = iface->CreateInterface<AirRecirculationModeIntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-            // Get current values
-            status = controller->GetIsRecirculating();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get IsRecirculating" << QCC_StatusText(status);
-            }
+            fetchProperties();
         }
         else
         {
@@ -76,6 +68,25 @@ org_alljoyn_SmartSpaces_Operation_AirRecirculationMode::org_alljoyn_SmartSpaces_
 org_alljoyn_SmartSpaces_Operation_AirRecirculationMode::~org_alljoyn_SmartSpaces_Operation_AirRecirculationMode()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void org_alljoyn_SmartSpaces_Operation_AirRecirculationMode::fetchProperties()
+{
+    // Get current values
+    QStatus status;
+
+    if (controller)
+    {
+        qWarning() << "org_alljoyn_SmartSpaces_Operation_AirRecirculationMode getting properties";
+
+        status = controller->GetIsRecirculating();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get IsRecirculating" << QCC_StatusText(status);
+        }
+    }
 }
 
 

@@ -142,18 +142,16 @@ static void HAL_Decode_Array_{{Interface.Name}}_{{enum.Name}}(Element* elem, Arr
 static AJ_Status Get{{property.Name}}(void *context, const char *objPath, {{property.Type.tcltype()}} *out)
 {
     AJ_Status result = AJ_OK;
+    {{halC}} value = {{halI}};
 
-    Element* elem = HAL_ReadProperty("/cdm/emulated", "{{Interface.Name}}", "{{property.Name}}");
+    Element* elem = HAL_ReadProperty("/cdm/emulated", "{{Interface.FullName}}", "{{property.Name}}");
 
-    if (!elem) {
-        return AJ_ERR_FAILURE;
+    if (elem) {
+        {{tcl_macros.halDecode(property.Type, "value", "elem")}}
+        BSXML_FreeElement(elem);
     }
 
-    {{halC}} value;
-    {{tcl_macros.halDecode(property.Type, "value", "elem")}}
     *out = {{tcl_macros.castTo(property.Type)}}value;
-
-    BSXML_FreeElement(elem);
     return result;
 }
 {% endif %}
@@ -167,7 +165,7 @@ static AJ_Status Set{{property.Name}}(void *context, const char *objPath, {{prop
     {{halC}} value = input;
 
     Element* elem = {{hal}}(value, NULL);
-    HAL_WritePropertyElem("/cdm/emulated", "{{Interface.Name}}", "{{property.Name}}", elem);
+    HAL_WritePropertyElem("/cdm/emulated", "{{Interface.FullName}}", "{{property.Name}}", elem);
     BSXML_FreeElement(elem);
 
     return result;

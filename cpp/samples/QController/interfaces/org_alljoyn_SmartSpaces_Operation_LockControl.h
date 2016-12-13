@@ -72,6 +72,14 @@ private:
 
     QPushButton* button_Lock;
 
+
+    void    fetchProperties();
+
+protected:
+    virtual void showEvent(QShowEvent *event) override
+    {
+        fetchProperties();
+    }
 };
 
 }

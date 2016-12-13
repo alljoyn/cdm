@@ -107,6 +107,14 @@ private:
 
     QLineEdit* edit_Mode;
     QLineEdit* edit_SupportedModes;
+
+    void    fetchProperties();
+
+protected:
+    virtual void showEvent(QShowEvent *event) override
+    {
+        fetchProperties();
+    }
 };
 
 }

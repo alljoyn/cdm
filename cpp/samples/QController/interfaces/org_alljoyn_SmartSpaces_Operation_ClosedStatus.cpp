@@ -51,15 +51,7 @@ org_alljoyn_SmartSpaces_Operation_ClosedStatus::org_alljoyn_SmartSpaces_Operatio
         controller = iface->CreateInterface<ClosedStatusIntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-            // Get current values
-            status = controller->GetIsClosed();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get IsClosed" << QCC_StatusText(status);
-            }
+            fetchProperties();
         }
         else
         {
@@ -75,6 +67,25 @@ org_alljoyn_SmartSpaces_Operation_ClosedStatus::org_alljoyn_SmartSpaces_Operatio
 org_alljoyn_SmartSpaces_Operation_ClosedStatus::~org_alljoyn_SmartSpaces_Operation_ClosedStatus()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void org_alljoyn_SmartSpaces_Operation_ClosedStatus::fetchProperties()
+{
+    // Get current values
+    QStatus status;
+
+    if (controller)
+    {
+        qWarning() << "org_alljoyn_SmartSpaces_Operation_ClosedStatus getting properties";
+
+        status = controller->GetIsClosed();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get IsClosed" << QCC_StatusText(status);
+        }
+    }
 }
 
 

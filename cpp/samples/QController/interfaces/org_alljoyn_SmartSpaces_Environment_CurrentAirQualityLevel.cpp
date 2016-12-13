@@ -63,25 +63,7 @@ org_alljoyn_SmartSpaces_Environment_CurrentAirQualityLevel::org_alljoyn_SmartSpa
         controller = iface->CreateInterface<CurrentAirQualityLevelIntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-            // Get current values
-            status = controller->GetContaminantType();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get ContaminantType" << QCC_StatusText(status);
-            }
-            status = controller->GetCurrentLevel();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get CurrentLevel" << QCC_StatusText(status);
-            }
-            status = controller->GetMaxLevel();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get MaxLevel" << QCC_StatusText(status);
-            }
+            fetchProperties();
         }
         else
         {
@@ -97,6 +79,37 @@ org_alljoyn_SmartSpaces_Environment_CurrentAirQualityLevel::org_alljoyn_SmartSpa
 org_alljoyn_SmartSpaces_Environment_CurrentAirQualityLevel::~org_alljoyn_SmartSpaces_Environment_CurrentAirQualityLevel()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void org_alljoyn_SmartSpaces_Environment_CurrentAirQualityLevel::fetchProperties()
+{
+    // Get current values
+    QStatus status;
+
+    if (controller)
+    {
+        qWarning() << "org_alljoyn_SmartSpaces_Environment_CurrentAirQualityLevel getting properties";
+
+        status = controller->GetContaminantType();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get ContaminantType" << QCC_StatusText(status);
+        }
+
+        status = controller->GetCurrentLevel();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get CurrentLevel" << QCC_StatusText(status);
+        }
+
+        status = controller->GetMaxLevel();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get MaxLevel" << QCC_StatusText(status);
+        }
+    }
 }
 
 

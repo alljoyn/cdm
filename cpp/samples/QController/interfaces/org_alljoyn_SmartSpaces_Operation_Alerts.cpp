@@ -163,11 +163,7 @@ org_alljoyn_SmartSpaces_Operation_Alerts::org_alljoyn_SmartSpaces_Operation_Aler
                 qWarning() << __FUNCTION__ << " Failed to get AlertCodesDescription" << QCC_StatusText(status);
             }
 
-            status = controller->GetAlerts();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get Alerts" << QCC_StatusText(status);
-            }
+            fetchProperties();
         }
         else
         {
@@ -183,6 +179,23 @@ org_alljoyn_SmartSpaces_Operation_Alerts::org_alljoyn_SmartSpaces_Operation_Aler
 org_alljoyn_SmartSpaces_Operation_Alerts::~org_alljoyn_SmartSpaces_Operation_Alerts()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void org_alljoyn_SmartSpaces_Operation_Alerts::fetchProperties()
+{
+    // Get current values
+    if (controller)
+    {
+        qWarning() << __FUNCTION__ << " Getting properties";
+
+        auto status = controller->GetAlertCodesDescription(DefaultLanguageTag);
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get AlertCodesDescription" << QCC_StatusText(status);
+        }
+    }
 }
 
 

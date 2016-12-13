@@ -107,6 +107,14 @@ private:
 
     QLineEdit* edit_InputSourceId;
     QLineEdit* edit_SupportedInputSources;
+
+    void    fetchProperties();
+
+protected:
+    virtual void showEvent(QShowEvent *event) override
+    {
+        fetchProperties();
+    }
 };
 
 }

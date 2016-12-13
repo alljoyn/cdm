@@ -9,15 +9,15 @@ TEMPLATES   = $(CDM)/generator/templates/interface_templates/cdm_tcl/
 PATCHES     = templates/patches_tcl/
 GENERATE_TARGETS = generate_tcl generate_tcl_samples generate_tcl_factory
 INSTALL_TARGETS  = install_tcl install_tcl_samples install_tcl_factory
+OUTPUT    = ./output_tcl
 else
 INSTALL_DIR = $(CDM)/cpp
 TEMPLATES   = $(CDM)/generator/templates/interface_templates/cdm/cpp/
 PATCHES     = templates/patches/cpp
 GENERATE_TARGETS = generate_common generate_controllee generate_controller generate_samples generate_factory
 INSTALL_TARGETS  = install_interfaces install_samples install_factory
-endif
-
 OUTPUT    = ./output
+endif
 
 XML_FILES = \
     org.alljoyn.SmartSpaces.Operation/AirRecirculationMode-v1.xml \
@@ -83,32 +83,32 @@ generate: $(GENERATE_TARGETS)
 
 generate_common:
 	@for x in $(XML_PATHS); do \
-            ./generate.py --patches $(PATCHES) --components=common $(TEMPLATES) $$x || exit 1;\
+            ./generate.py --output_dir $(OUTPUT) --patches $(PATCHES) --components=common $(TEMPLATES) $$x || exit 1;\
 	done
 
 generate_controllee:
 	@for x in $(XML_PATHS); do \
-            ./generate.py --patches $(PATCHES) --components=controllee $(TEMPLATES) $$x || exit 1;\
+            ./generate.py --output_dir $(OUTPUT) --patches $(PATCHES) --components=controllee $(TEMPLATES) $$x || exit 1;\
 	done
 
 generate_controller:
 	@for x in $(XML_PATHS); do \
-            ./generate.py --patches $(PATCHES) --components=controller $(TEMPLATES) $$x || exit 1;\
+            ./generate.py --output_dir $(OUTPUT) --patches $(PATCHES) --components=controller $(TEMPLATES) $$x || exit 1;\
 	done
 
 generate_samples:
 	@for x in $(XML_PATHS); do \
-            ./generate.py --patches $(PATCHES) --components=samples $(TEMPLATES) $$x || exit 1;\
+            ./generate.py --output_dir $(OUTPUT) --patches $(PATCHES) --components=samples $(TEMPLATES) $$x || exit 1;\
 	done
 
 generate_tcl:
 	@for x in $(XML_PATHS); do \
-            ./generate.py --patches $(PATCHES) --components=tcl $(TEMPLATES) $$x || exit 1;\
+            ./generate.py --output_dir $(OUTPUT) --patches $(PATCHES) --components=tcl $(TEMPLATES) $$x || exit 1;\
 	done
 
 generate_tcl_samples:
 	@for x in $(XML_PATHS); do \
-            ./generate.py --patches $(PATCHES) --components=samples $(TEMPLATES) $$x || exit 1;\
+            ./generate.py --output_dir $(OUTPUT) --patches $(PATCHES) --components=samples $(TEMPLATES) $$x || exit 1;\
 	done
 
 generate_factory:

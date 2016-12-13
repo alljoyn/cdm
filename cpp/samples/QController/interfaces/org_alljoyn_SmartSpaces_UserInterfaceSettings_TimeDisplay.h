@@ -107,6 +107,14 @@ private:
 
     QLineEdit* edit_DisplayTimeFormat;
     QLineEdit* edit_SupportedDisplayTimeFormats;
+
+    void    fetchProperties();
+
+protected:
+    virtual void showEvent(QShowEvent *event) override
+    {
+        fetchProperties();
+    }
 };
 
 }

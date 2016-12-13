@@ -63,25 +63,7 @@ org_alljoyn_SmartSpaces_Operation_HeatingZone::org_alljoyn_SmartSpaces_Operation
         controller = iface->CreateInterface<HeatingZoneIntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-            // Get current values
-            status = controller->GetNumberOfHeatingZones();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get NumberOfHeatingZones" << QCC_StatusText(status);
-            }
-            status = controller->GetMaxHeatingLevels();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get MaxHeatingLevels" << QCC_StatusText(status);
-            }
-            status = controller->GetHeatingLevels();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get HeatingLevels" << QCC_StatusText(status);
-            }
+            fetchProperties();
         }
         else
         {
@@ -97,6 +79,37 @@ org_alljoyn_SmartSpaces_Operation_HeatingZone::org_alljoyn_SmartSpaces_Operation
 org_alljoyn_SmartSpaces_Operation_HeatingZone::~org_alljoyn_SmartSpaces_Operation_HeatingZone()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void org_alljoyn_SmartSpaces_Operation_HeatingZone::fetchProperties()
+{
+    // Get current values
+    QStatus status;
+
+    if (controller)
+    {
+        qWarning() << "org_alljoyn_SmartSpaces_Operation_HeatingZone getting properties";
+
+        status = controller->GetNumberOfHeatingZones();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get NumberOfHeatingZones" << QCC_StatusText(status);
+        }
+
+        status = controller->GetMaxHeatingLevels();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get MaxHeatingLevels" << QCC_StatusText(status);
+        }
+
+        status = controller->GetHeatingLevels();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get HeatingLevels" << QCC_StatusText(status);
+        }
+    }
 }
 
 

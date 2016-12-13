@@ -96,20 +96,7 @@ org_alljoyn_SmartSpaces_Operation_Channel::org_alljoyn_SmartSpaces_Operation_Cha
         controller = iface->CreateInterface<ChannelIntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-            // Get current values
-            status = controller->GetChannelId();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get ChannelId" << QCC_StatusText(status);
-            }
-            status = controller->GetTotalNumberOfChannels();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get TotalNumberOfChannels" << QCC_StatusText(status);
-            }
+            fetchProperties();
         }
         else
         {
@@ -125,6 +112,31 @@ org_alljoyn_SmartSpaces_Operation_Channel::org_alljoyn_SmartSpaces_Operation_Cha
 org_alljoyn_SmartSpaces_Operation_Channel::~org_alljoyn_SmartSpaces_Operation_Channel()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void org_alljoyn_SmartSpaces_Operation_Channel::fetchProperties()
+{
+    // Get current values
+    QStatus status;
+
+    if (controller)
+    {
+        qWarning() << "org_alljoyn_SmartSpaces_Operation_Channel getting properties";
+
+        status = controller->GetChannelId();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get ChannelId" << QCC_StatusText(status);
+        }
+
+        status = controller->GetTotalNumberOfChannels();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get TotalNumberOfChannels" << QCC_StatusText(status);
+        }
+    }
 }
 
 

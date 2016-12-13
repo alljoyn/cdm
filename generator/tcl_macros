@@ -16,7 +16,7 @@ FreeFields_{{type.ajtypeInterfaceName()}}_{{type.ajtypeStructName()}}(&{{name}})
 {%- macro halCType(type) %}
 {%-   if type.ajtypeIsEnum() %}int
 {%- elif type.ajtypeStructName() %}{{type.ajtypeStructName(withIface = True, withArray = True)}}
-{%- elif type.signature == "b" %}int64_t
+{%- elif type.signature == "b" %}bool
 {%- elif type.signature == "y" %}uint64_t
 {%- elif type.signature == "n" %}int64_t
 {%- elif type.signature == "q" %}uint64_t

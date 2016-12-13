@@ -85,40 +85,7 @@ org_alljoyn_SmartSpaces_Environment_WindDirection::org_alljoyn_SmartSpaces_Envir
         controller = iface->CreateInterface<WindDirectionIntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-            // Get current values
-            status = controller->GetHorizontalDirection();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get HorizontalDirection" << QCC_StatusText(status);
-            }
-            status = controller->GetHorizontalMax();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get HorizontalMax" << QCC_StatusText(status);
-            }
-            status = controller->GetHorizontalAutoMode();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get HorizontalAutoMode" << QCC_StatusText(status);
-            }
-            status = controller->GetVerticalDirection();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get VerticalDirection" << QCC_StatusText(status);
-            }
-            status = controller->GetVerticalMax();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get VerticalMax" << QCC_StatusText(status);
-            }
-            status = controller->GetVerticalAutoMode();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get VerticalAutoMode" << QCC_StatusText(status);
-            }
+            fetchProperties();
         }
         else
         {
@@ -134,6 +101,55 @@ org_alljoyn_SmartSpaces_Environment_WindDirection::org_alljoyn_SmartSpaces_Envir
 org_alljoyn_SmartSpaces_Environment_WindDirection::~org_alljoyn_SmartSpaces_Environment_WindDirection()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void org_alljoyn_SmartSpaces_Environment_WindDirection::fetchProperties()
+{
+    // Get current values
+    QStatus status;
+
+    if (controller)
+    {
+        qWarning() << "org_alljoyn_SmartSpaces_Environment_WindDirection getting properties";
+
+        status = controller->GetHorizontalDirection();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get HorizontalDirection" << QCC_StatusText(status);
+        }
+
+        status = controller->GetHorizontalMax();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get HorizontalMax" << QCC_StatusText(status);
+        }
+
+        status = controller->GetHorizontalAutoMode();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get HorizontalAutoMode" << QCC_StatusText(status);
+        }
+
+        status = controller->GetVerticalDirection();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get VerticalDirection" << QCC_StatusText(status);
+        }
+
+        status = controller->GetVerticalMax();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get VerticalMax" << QCC_StatusText(status);
+        }
+
+        status = controller->GetVerticalAutoMode();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get VerticalAutoMode" << QCC_StatusText(status);
+        }
+    }
 }
 
 

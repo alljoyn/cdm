@@ -59,20 +59,7 @@ org_alljoyn_SmartSpaces_Operation_Color::org_alljoyn_SmartSpaces_Operation_Color
         controller = iface->CreateInterface<ColorIntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-            // Get current values
-            status = controller->GetHue();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get Hue" << QCC_StatusText(status);
-            }
-            status = controller->GetSaturation();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get Saturation" << QCC_StatusText(status);
-            }
+            fetchProperties();
         }
         else
         {
@@ -88,6 +75,31 @@ org_alljoyn_SmartSpaces_Operation_Color::org_alljoyn_SmartSpaces_Operation_Color
 org_alljoyn_SmartSpaces_Operation_Color::~org_alljoyn_SmartSpaces_Operation_Color()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void org_alljoyn_SmartSpaces_Operation_Color::fetchProperties()
+{
+    // Get current values
+    QStatus status;
+
+    if (controller)
+    {
+        qWarning() << "org_alljoyn_SmartSpaces_Operation_Color getting properties";
+
+        status = controller->GetHue();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get Hue" << QCC_StatusText(status);
+        }
+
+        status = controller->GetSaturation();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get Saturation" << QCC_StatusText(status);
+        }
+    }
 }
 
 

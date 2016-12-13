@@ -52,15 +52,7 @@ org_alljoyn_SmartSpaces_Operation_RepeatMode::org_alljoyn_SmartSpaces_Operation_
         controller = iface->CreateInterface<RepeatModeIntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-            // Get current values
-            status = controller->GetRepeatMode();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get RepeatMode" << QCC_StatusText(status);
-            }
+            fetchProperties();
         }
         else
         {
@@ -76,6 +68,25 @@ org_alljoyn_SmartSpaces_Operation_RepeatMode::org_alljoyn_SmartSpaces_Operation_
 org_alljoyn_SmartSpaces_Operation_RepeatMode::~org_alljoyn_SmartSpaces_Operation_RepeatMode()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void org_alljoyn_SmartSpaces_Operation_RepeatMode::fetchProperties()
+{
+    // Get current values
+    QStatus status;
+
+    if (controller)
+    {
+        qWarning() << "org_alljoyn_SmartSpaces_Operation_RepeatMode getting properties";
+
+        status = controller->GetRepeatMode();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get RepeatMode" << QCC_StatusText(status);
+        }
+    }
 }
 
 

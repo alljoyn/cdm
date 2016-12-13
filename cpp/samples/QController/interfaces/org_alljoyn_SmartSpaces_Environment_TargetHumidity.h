@@ -161,6 +161,14 @@ private:
     QLineEdit* edit_MaxValue;
     QLineEdit* edit_StepValue;
     QLineEdit* edit_SelectableHumidityLevels;
+
+    void    fetchProperties();
+
+protected:
+    virtual void showEvent(QShowEvent *event) override
+    {
+        fetchProperties();
+    }
 };
 
 }

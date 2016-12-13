@@ -50,10 +50,7 @@ org_alljoyn_SmartSpaces_Operation_LockControl::org_alljoyn_SmartSpaces_Operation
         controller = iface->CreateInterface<LockControlIntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-            // Get current values
+            fetchProperties();
         }
         else
         {
@@ -69,6 +66,19 @@ org_alljoyn_SmartSpaces_Operation_LockControl::org_alljoyn_SmartSpaces_Operation
 org_alljoyn_SmartSpaces_Operation_LockControl::~org_alljoyn_SmartSpaces_Operation_LockControl()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void org_alljoyn_SmartSpaces_Operation_LockControl::fetchProperties()
+{
+    // Get current values
+    QStatus status;
+
+    if (controller)
+    {
+        qWarning() << "org_alljoyn_SmartSpaces_Operation_LockControl getting properties";
+    }
 }
 
 

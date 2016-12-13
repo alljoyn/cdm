@@ -134,6 +134,14 @@ private:
     QLineEdit* edit_MoistureOutputLevel;
     QLineEdit* edit_MaxMoistureOutputLevel;
     QLineEdit* edit_AutoMode;
+
+    void    fetchProperties();
+
+protected:
+    virtual void showEvent(QShowEvent *event) override
+    {
+        fetchProperties();
+    }
 };
 
 }

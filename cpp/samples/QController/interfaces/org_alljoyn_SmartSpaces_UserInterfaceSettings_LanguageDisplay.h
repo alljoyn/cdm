@@ -107,6 +107,14 @@ private:
 
     QLineEdit* edit_DisplayLanguage;
     QLineEdit* edit_SupportedDisplayLanguages;
+
+    void    fetchProperties();
+
+protected:
+    virtual void showEvent(QShowEvent *event) override
+    {
+        fetchProperties();
+    }
 };
 
 }

@@ -98,6 +98,14 @@ private:
 
     QLineEdit* edit_CurrentValue;
     QLineEdit* edit_MaxValue;
+
+    void    fetchProperties();
+
+protected:
+    virtual void showEvent(QShowEvent *event) override
+    {
+        fetchProperties();
+    }
 };
 
 }

@@ -90,6 +90,14 @@ private:
     QPushButton* button_InjectEvents;
 
     QLineEdit* edit_SupportedEvents;
+
+    void    fetchProperties();
+
+protected:
+    virtual void showEvent(QShowEvent *event) override
+    {
+        fetchProperties();
+    }
 };
 
 }

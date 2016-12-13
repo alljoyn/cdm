@@ -107,6 +107,14 @@ private:
 
     QLineEdit* edit_DisplayTemperatureUnit;
     QLineEdit* edit_SupportedDisplayTemperatureUnits;
+
+    void    fetchProperties();
+
+protected:
+    virtual void showEvent(QShowEvent *event) override
+    {
+        fetchProperties();
+    }
 };
 
 }

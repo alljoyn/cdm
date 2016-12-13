@@ -80,6 +80,14 @@ private:
 
 
     QLineEdit* edit_IsLocked;
+
+    void    fetchProperties();
+
+protected:
+    virtual void showEvent(QShowEvent *event) override
+    {
+        fetchProperties();
+    }
 };
 
 }

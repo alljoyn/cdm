@@ -134,6 +134,14 @@ private:
     QLineEdit* edit_Volume;
     QLineEdit* edit_MaxVolume;
     QLineEdit* edit_Mute;
+
+    void    fetchProperties();
+
+protected:
+    virtual void showEvent(QShowEvent *event) override
+    {
+        fetchProperties();
+    }
 };
 
 }

@@ -65,25 +65,7 @@ org_alljoyn_SmartSpaces_Operation_FanSpeedLevel::org_alljoyn_SmartSpaces_Operati
         controller = iface->CreateInterface<FanSpeedLevelIntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-            // Get current values
-            status = controller->GetFanSpeedLevel();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get FanSpeedLevel" << QCC_StatusText(status);
-            }
-            status = controller->GetMaxFanSpeedLevel();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get MaxFanSpeedLevel" << QCC_StatusText(status);
-            }
-            status = controller->GetAutoMode();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get AutoMode" << QCC_StatusText(status);
-            }
+            fetchProperties();
         }
         else
         {
@@ -99,6 +81,37 @@ org_alljoyn_SmartSpaces_Operation_FanSpeedLevel::org_alljoyn_SmartSpaces_Operati
 org_alljoyn_SmartSpaces_Operation_FanSpeedLevel::~org_alljoyn_SmartSpaces_Operation_FanSpeedLevel()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void org_alljoyn_SmartSpaces_Operation_FanSpeedLevel::fetchProperties()
+{
+    // Get current values
+    QStatus status;
+
+    if (controller)
+    {
+        qWarning() << "org_alljoyn_SmartSpaces_Operation_FanSpeedLevel getting properties";
+
+        status = controller->GetFanSpeedLevel();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get FanSpeedLevel" << QCC_StatusText(status);
+        }
+
+        status = controller->GetMaxFanSpeedLevel();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get MaxFanSpeedLevel" << QCC_StatusText(status);
+        }
+
+        status = controller->GetAutoMode();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get AutoMode" << QCC_StatusText(status);
+        }
+    }
 }
 
 

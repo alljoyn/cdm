@@ -64,25 +64,7 @@ org_alljoyn_SmartSpaces_Operation_ColorTemperature::org_alljoyn_SmartSpaces_Oper
         controller = iface->CreateInterface<ColorTemperatureIntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-            // Get current values
-            status = controller->GetTemperature();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get Temperature" << QCC_StatusText(status);
-            }
-            status = controller->GetMinTemperature();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get MinTemperature" << QCC_StatusText(status);
-            }
-            status = controller->GetMaxTemperature();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get MaxTemperature" << QCC_StatusText(status);
-            }
+            fetchProperties();
         }
         else
         {
@@ -98,6 +80,37 @@ org_alljoyn_SmartSpaces_Operation_ColorTemperature::org_alljoyn_SmartSpaces_Oper
 org_alljoyn_SmartSpaces_Operation_ColorTemperature::~org_alljoyn_SmartSpaces_Operation_ColorTemperature()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void org_alljoyn_SmartSpaces_Operation_ColorTemperature::fetchProperties()
+{
+    // Get current values
+    QStatus status;
+
+    if (controller)
+    {
+        qWarning() << "org_alljoyn_SmartSpaces_Operation_ColorTemperature getting properties";
+
+        status = controller->GetTemperature();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get Temperature" << QCC_StatusText(status);
+        }
+
+        status = controller->GetMinTemperature();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get MinTemperature" << QCC_StatusText(status);
+        }
+
+        status = controller->GetMaxTemperature();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get MaxTemperature" << QCC_StatusText(status);
+        }
+    }
 }
 
 

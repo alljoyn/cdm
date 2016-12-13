@@ -131,7 +131,7 @@ class AJType(object):
     # These are in the name of HAL encoders and decoders.
     TCLHalMap = {
         's': 'String',
-        'b': 'Int',
+        'b': 'Bool',
         'y': 'UInt',
         'n': 'Int',
         'q': 'UInt',

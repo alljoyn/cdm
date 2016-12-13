@@ -143,6 +143,14 @@ private:
     QLineEdit* edit_MinValue;
     QLineEdit* edit_MaxValue;
     QLineEdit* edit_StepValue;
+
+    void    fetchProperties();
+
+protected:
+    virtual void showEvent(QShowEvent *event) override
+    {
+        fetchProperties();
+    }
 };
 
 }

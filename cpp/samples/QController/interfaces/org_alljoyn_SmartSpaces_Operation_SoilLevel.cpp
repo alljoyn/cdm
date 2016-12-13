@@ -64,25 +64,7 @@ org_alljoyn_SmartSpaces_Operation_SoilLevel::org_alljoyn_SmartSpaces_Operation_S
         controller = iface->CreateInterface<SoilLevelIntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-            // Get current values
-            status = controller->GetMaxLevel();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get MaxLevel" << QCC_StatusText(status);
-            }
-            status = controller->GetTargetLevel();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get TargetLevel" << QCC_StatusText(status);
-            }
-            status = controller->GetSelectableLevels();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get SelectableLevels" << QCC_StatusText(status);
-            }
+            fetchProperties();
         }
         else
         {
@@ -98,6 +80,37 @@ org_alljoyn_SmartSpaces_Operation_SoilLevel::org_alljoyn_SmartSpaces_Operation_S
 org_alljoyn_SmartSpaces_Operation_SoilLevel::~org_alljoyn_SmartSpaces_Operation_SoilLevel()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void org_alljoyn_SmartSpaces_Operation_SoilLevel::fetchProperties()
+{
+    // Get current values
+    QStatus status;
+
+    if (controller)
+    {
+        qWarning() << "org_alljoyn_SmartSpaces_Operation_SoilLevel getting properties";
+
+        status = controller->GetMaxLevel();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get MaxLevel" << QCC_StatusText(status);
+        }
+
+        status = controller->GetTargetLevel();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get TargetLevel" << QCC_StatusText(status);
+        }
+
+        status = controller->GetSelectableLevels();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get SelectableLevels" << QCC_StatusText(status);
+        }
+    }
 }
 
 

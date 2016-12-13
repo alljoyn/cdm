@@ -51,15 +51,7 @@ org_alljoyn_SmartSpaces_Operation_OnOffStatus::org_alljoyn_SmartSpaces_Operation
         controller = iface->CreateInterface<OnOffStatusIntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-            // Get current values
-            status = controller->GetIsOn();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get IsOn" << QCC_StatusText(status);
-            }
+            fetchProperties();
         }
         else
         {
@@ -75,6 +67,25 @@ org_alljoyn_SmartSpaces_Operation_OnOffStatus::org_alljoyn_SmartSpaces_Operation
 org_alljoyn_SmartSpaces_Operation_OnOffStatus::~org_alljoyn_SmartSpaces_Operation_OnOffStatus()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void org_alljoyn_SmartSpaces_Operation_OnOffStatus::fetchProperties()
+{
+    // Get current values
+    QStatus status;
+
+    if (controller)
+    {
+        qWarning() << "org_alljoyn_SmartSpaces_Operation_OnOffStatus getting properties";
+
+        status = controller->GetIsOn();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get IsOn" << QCC_StatusText(status);
+        }
+    }
 }
 
 

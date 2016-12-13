@@ -236,7 +236,7 @@ def main():
     argument_parser = argparse.ArgumentParser()
     argument_parser.add_argument('template_dir', help='Path to directory with the templates to be used for code generation')
     argument_parser.add_argument('xml_files', help='Unix style pathname pattern expansion to xml files to be used for pystache rendering context')
-    argument_parser.add_argument('output_dir', nargs='?', default="output/", help='Path to directory where the generated files will be output to')
+    argument_parser.add_argument('--output_dir', nargs='?', default="output/", help='Path to directory where the generated files will be output to')
     argument_parser.add_argument('--bindings', nargs='*', default=["all"], help="The bindings to generate")
     argument_parser.add_argument('--components', nargs='*', default=["all"], help="The components to generate (controller, controllee or all")
     argument_parser.add_argument('--sample', action='store_true', required=False, help='Generate sample programs using the device emulator xml file')

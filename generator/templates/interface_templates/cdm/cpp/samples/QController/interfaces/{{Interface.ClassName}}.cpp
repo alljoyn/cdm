@@ -107,17 +107,7 @@ static const int auto_register_meta_type = qRegisterMetaType<{{Interface.ClassNa
         controller = iface->CreateInterface<{{Interface.Name}}IntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-            // Get current values
-        {% for property in Interface.UserProperties %}
-            status = controller->Get{{property.Name}}();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get {{property.Name}}" << QCC_StatusText(status);
-            }
-        {% endfor %}
+            fetchProperties();
         }
         else
         {
@@ -133,6 +123,27 @@ static const int auto_register_meta_type = qRegisterMetaType<{{Interface.ClassNa
 {{Interface.ClassName}}::~{{Interface.ClassName}}()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void {{Interface.ClassName}}::fetchProperties()
+{
+    // Get current values
+    QStatus status;
+
+    if (controller)
+    {
+        qWarning() << "{{Interface.ClassName}} getting properties";
+{% for property in Interface.UserProperties %}
+
+        status = controller->Get{{property.Name}}();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get {{property.Name}}" << QCC_StatusText(status);
+        }
+{% endfor %}
+    }
 }
 {% for method in Interface.Methods %}
 

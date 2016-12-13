@@ -50,10 +50,7 @@ org_alljoyn_SmartSpaces_Operation_OffControl::org_alljoyn_SmartSpaces_Operation_
         controller = iface->CreateInterface<OffControlIntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-            // Get current values
+            fetchProperties();
         }
         else
         {
@@ -69,6 +66,19 @@ org_alljoyn_SmartSpaces_Operation_OffControl::org_alljoyn_SmartSpaces_Operation_
 org_alljoyn_SmartSpaces_Operation_OffControl::~org_alljoyn_SmartSpaces_Operation_OffControl()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void org_alljoyn_SmartSpaces_Operation_OffControl::fetchProperties()
+{
+    // Get current values
+    QStatus status;
+
+    if (controller)
+    {
+        qWarning() << "org_alljoyn_SmartSpaces_Operation_OffControl getting properties";
+    }
 }
 
 

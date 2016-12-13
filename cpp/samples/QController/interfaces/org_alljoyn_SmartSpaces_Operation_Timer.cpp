@@ -89,40 +89,7 @@ org_alljoyn_SmartSpaces_Operation_Timer::org_alljoyn_SmartSpaces_Operation_Timer
         controller = iface->CreateInterface<TimerIntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-            // Get current values
-            status = controller->GetReferenceTimer();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get ReferenceTimer" << QCC_StatusText(status);
-            }
-            status = controller->GetTargetTimeToStart();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get TargetTimeToStart" << QCC_StatusText(status);
-            }
-            status = controller->GetTargetTimeToStop();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get TargetTimeToStop" << QCC_StatusText(status);
-            }
-            status = controller->GetEstimatedTimeToEnd();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get EstimatedTimeToEnd" << QCC_StatusText(status);
-            }
-            status = controller->GetRunningTime();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get RunningTime" << QCC_StatusText(status);
-            }
-            status = controller->GetTargetDuration();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get TargetDuration" << QCC_StatusText(status);
-            }
+            fetchProperties();
         }
         else
         {
@@ -138,6 +105,55 @@ org_alljoyn_SmartSpaces_Operation_Timer::org_alljoyn_SmartSpaces_Operation_Timer
 org_alljoyn_SmartSpaces_Operation_Timer::~org_alljoyn_SmartSpaces_Operation_Timer()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void org_alljoyn_SmartSpaces_Operation_Timer::fetchProperties()
+{
+    // Get current values
+    QStatus status;
+
+    if (controller)
+    {
+        qWarning() << "org_alljoyn_SmartSpaces_Operation_Timer getting properties";
+
+        status = controller->GetReferenceTimer();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get ReferenceTimer" << QCC_StatusText(status);
+        }
+
+        status = controller->GetTargetTimeToStart();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get TargetTimeToStart" << QCC_StatusText(status);
+        }
+
+        status = controller->GetTargetTimeToStop();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get TargetTimeToStop" << QCC_StatusText(status);
+        }
+
+        status = controller->GetEstimatedTimeToEnd();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get EstimatedTimeToEnd" << QCC_StatusText(status);
+        }
+
+        status = controller->GetRunningTime();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get RunningTime" << QCC_StatusText(status);
+        }
+
+        status = controller->GetTargetDuration();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get TargetDuration" << QCC_StatusText(status);
+        }
+    }
 }
 
 

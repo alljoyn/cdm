@@ -50,10 +50,7 @@ org_alljoyn_SmartSpaces_Operation_OnControl::org_alljoyn_SmartSpaces_Operation_O
         controller = iface->CreateInterface<OnControlIntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-            // Get current values
+            fetchProperties();
         }
         else
         {
@@ -69,6 +66,19 @@ org_alljoyn_SmartSpaces_Operation_OnControl::org_alljoyn_SmartSpaces_Operation_O
 org_alljoyn_SmartSpaces_Operation_OnControl::~org_alljoyn_SmartSpaces_Operation_OnControl()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void org_alljoyn_SmartSpaces_Operation_OnControl::fetchProperties()
+{
+    // Get current values
+    QStatus status;
+
+    if (controller)
+    {
+        qWarning() << "org_alljoyn_SmartSpaces_Operation_OnControl getting properties";
+    }
 }
 
 

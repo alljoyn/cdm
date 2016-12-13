@@ -87,45 +87,7 @@ org_alljoyn_SmartSpaces_Operation_FilterStatus::org_alljoyn_SmartSpaces_Operatio
         controller = iface->CreateInterface<FilterStatusIntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-            // Get current values
-            status = controller->GetExpectedLifeInDays();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get ExpectedLifeInDays" << QCC_StatusText(status);
-            }
-            status = controller->GetIsCleanable();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get IsCleanable" << QCC_StatusText(status);
-            }
-            status = controller->GetOrderPercentage();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get OrderPercentage" << QCC_StatusText(status);
-            }
-            status = controller->GetManufacturer();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get Manufacturer" << QCC_StatusText(status);
-            }
-            status = controller->GetPartNumber();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get PartNumber" << QCC_StatusText(status);
-            }
-            status = controller->GetUrl();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get Url" << QCC_StatusText(status);
-            }
-            status = controller->GetLifeRemaining();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get LifeRemaining" << QCC_StatusText(status);
-            }
+            fetchProperties();
         }
         else
         {
@@ -141,6 +103,61 @@ org_alljoyn_SmartSpaces_Operation_FilterStatus::org_alljoyn_SmartSpaces_Operatio
 org_alljoyn_SmartSpaces_Operation_FilterStatus::~org_alljoyn_SmartSpaces_Operation_FilterStatus()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void org_alljoyn_SmartSpaces_Operation_FilterStatus::fetchProperties()
+{
+    // Get current values
+    QStatus status;
+
+    if (controller)
+    {
+        qWarning() << "org_alljoyn_SmartSpaces_Operation_FilterStatus getting properties";
+
+        status = controller->GetExpectedLifeInDays();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get ExpectedLifeInDays" << QCC_StatusText(status);
+        }
+
+        status = controller->GetIsCleanable();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get IsCleanable" << QCC_StatusText(status);
+        }
+
+        status = controller->GetOrderPercentage();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get OrderPercentage" << QCC_StatusText(status);
+        }
+
+        status = controller->GetManufacturer();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get Manufacturer" << QCC_StatusText(status);
+        }
+
+        status = controller->GetPartNumber();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get PartNumber" << QCC_StatusText(status);
+        }
+
+        status = controller->GetUrl();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get Url" << QCC_StatusText(status);
+        }
+
+        status = controller->GetLifeRemaining();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get LifeRemaining" << QCC_StatusText(status);
+        }
+    }
 }
 
 

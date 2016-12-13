@@ -89,6 +89,14 @@ private:
 
 
     QLineEdit* edit_RepeatMode;
+
+    void    fetchProperties();
+
+protected:
+    virtual void showEvent(QShowEvent *event) override
+    {
+        fetchProperties();
+    }
 };
 
 }

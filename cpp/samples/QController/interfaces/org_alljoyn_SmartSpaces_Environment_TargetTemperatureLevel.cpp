@@ -64,25 +64,7 @@ org_alljoyn_SmartSpaces_Environment_TargetTemperatureLevel::org_alljoyn_SmartSpa
         controller = iface->CreateInterface<TargetTemperatureLevelIntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-            // Get current values
-            status = controller->GetMaxLevel();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get MaxLevel" << QCC_StatusText(status);
-            }
-            status = controller->GetTargetLevel();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get TargetLevel" << QCC_StatusText(status);
-            }
-            status = controller->GetSelectableTemperatureLevels();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get SelectableTemperatureLevels" << QCC_StatusText(status);
-            }
+            fetchProperties();
         }
         else
         {
@@ -98,6 +80,37 @@ org_alljoyn_SmartSpaces_Environment_TargetTemperatureLevel::org_alljoyn_SmartSpa
 org_alljoyn_SmartSpaces_Environment_TargetTemperatureLevel::~org_alljoyn_SmartSpaces_Environment_TargetTemperatureLevel()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void org_alljoyn_SmartSpaces_Environment_TargetTemperatureLevel::fetchProperties()
+{
+    // Get current values
+    QStatus status;
+
+    if (controller)
+    {
+        qWarning() << "org_alljoyn_SmartSpaces_Environment_TargetTemperatureLevel getting properties";
+
+        status = controller->GetMaxLevel();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get MaxLevel" << QCC_StatusText(status);
+        }
+
+        status = controller->GetTargetLevel();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get TargetLevel" << QCC_StatusText(status);
+        }
+
+        status = controller->GetSelectableTemperatureLevels();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get SelectableTemperatureLevels" << QCC_StatusText(status);
+        }
+    }
 }
 
 

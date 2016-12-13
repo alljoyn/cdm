@@ -52,15 +52,7 @@ org_alljoyn_SmartSpaces_Operation_Brightness::org_alljoyn_SmartSpaces_Operation_
         controller = iface->CreateInterface<BrightnessIntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-            // Get current values
-            status = controller->GetBrightness();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get Brightness" << QCC_StatusText(status);
-            }
+            fetchProperties();
         }
         else
         {
@@ -76,6 +68,25 @@ org_alljoyn_SmartSpaces_Operation_Brightness::org_alljoyn_SmartSpaces_Operation_
 org_alljoyn_SmartSpaces_Operation_Brightness::~org_alljoyn_SmartSpaces_Operation_Brightness()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void org_alljoyn_SmartSpaces_Operation_Brightness::fetchProperties()
+{
+    // Get current values
+    QStatus status;
+
+    if (controller)
+    {
+        qWarning() << "org_alljoyn_SmartSpaces_Operation_Brightness getting properties";
+
+        status = controller->GetBrightness();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get Brightness" << QCC_StatusText(status);
+        }
+    }
 }
 
 

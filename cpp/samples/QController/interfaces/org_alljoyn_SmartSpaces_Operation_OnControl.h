@@ -72,6 +72,14 @@ private:
 
     QPushButton* button_SwitchOn;
 
+
+    void    fetchProperties();
+
+protected:
+    virtual void showEvent(QShowEvent *event) override
+    {
+        fetchProperties();
+    }
 };
 
 }

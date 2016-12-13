@@ -51,15 +51,7 @@ org_alljoyn_SmartSpaces_Operation_LockedStatus::org_alljoyn_SmartSpaces_Operatio
         controller = iface->CreateInterface<LockedStatusIntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-            // Get current values
-            status = controller->GetIsLocked();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get IsLocked" << QCC_StatusText(status);
-            }
+            fetchProperties();
         }
         else
         {
@@ -75,6 +67,25 @@ org_alljoyn_SmartSpaces_Operation_LockedStatus::org_alljoyn_SmartSpaces_Operatio
 org_alljoyn_SmartSpaces_Operation_LockedStatus::~org_alljoyn_SmartSpaces_Operation_LockedStatus()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void org_alljoyn_SmartSpaces_Operation_LockedStatus::fetchProperties()
+{
+    // Get current values
+    QStatus status;
+
+    if (controller)
+    {
+        qWarning() << "org_alljoyn_SmartSpaces_Operation_LockedStatus getting properties";
+
+        status = controller->GetIsLocked();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get IsLocked" << QCC_StatusText(status);
+        }
+    }
 }
 
 

@@ -51,15 +51,7 @@ org_alljoyn_SmartSpaces_Operation_TriggerSensor::org_alljoyn_SmartSpaces_Operati
         controller = iface->CreateInterface<TriggerSensorIntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-            // Get current values
-            status = controller->GetCurrentlyTriggered();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get CurrentlyTriggered" << QCC_StatusText(status);
-            }
+            fetchProperties();
         }
         else
         {
@@ -75,6 +67,25 @@ org_alljoyn_SmartSpaces_Operation_TriggerSensor::org_alljoyn_SmartSpaces_Operati
 org_alljoyn_SmartSpaces_Operation_TriggerSensor::~org_alljoyn_SmartSpaces_Operation_TriggerSensor()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void org_alljoyn_SmartSpaces_Operation_TriggerSensor::fetchProperties()
+{
+    // Get current values
+    QStatus status;
+
+    if (controller)
+    {
+        qWarning() << "org_alljoyn_SmartSpaces_Operation_TriggerSensor getting properties";
+
+        status = controller->GetCurrentlyTriggered();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get CurrentlyTriggered" << QCC_StatusText(status);
+        }
+    }
 }
 
 

@@ -68,25 +68,7 @@ org_alljoyn_SmartSpaces_Operation_EnergyUsage::org_alljoyn_SmartSpaces_Operation
         controller = iface->CreateInterface<EnergyUsageIntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-            // Get current values
-            status = controller->GetCumulativeEnergy();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get CumulativeEnergy" << QCC_StatusText(status);
-            }
-            status = controller->GetPrecision();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get Precision" << QCC_StatusText(status);
-            }
-            status = controller->GetUpdateMinTime();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get UpdateMinTime" << QCC_StatusText(status);
-            }
+            fetchProperties();
         }
         else
         {
@@ -102,6 +84,37 @@ org_alljoyn_SmartSpaces_Operation_EnergyUsage::org_alljoyn_SmartSpaces_Operation
 org_alljoyn_SmartSpaces_Operation_EnergyUsage::~org_alljoyn_SmartSpaces_Operation_EnergyUsage()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void org_alljoyn_SmartSpaces_Operation_EnergyUsage::fetchProperties()
+{
+    // Get current values
+    QStatus status;
+
+    if (controller)
+    {
+        qWarning() << "org_alljoyn_SmartSpaces_Operation_EnergyUsage getting properties";
+
+        status = controller->GetCumulativeEnergy();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get CumulativeEnergy" << QCC_StatusText(status);
+        }
+
+        status = controller->GetPrecision();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get Precision" << QCC_StatusText(status);
+        }
+
+        status = controller->GetUpdateMinTime();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get UpdateMinTime" << QCC_StatusText(status);
+        }
+    }
 }
 
 

@@ -58,20 +58,7 @@ org_alljoyn_SmartSpaces_UserInterfaceSettings_TimeDisplay::org_alljoyn_SmartSpac
         controller = iface->CreateInterface<TimeDisplayIntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-            // Get current values
-            status = controller->GetDisplayTimeFormat();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get DisplayTimeFormat" << QCC_StatusText(status);
-            }
-            status = controller->GetSupportedDisplayTimeFormats();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get SupportedDisplayTimeFormats" << QCC_StatusText(status);
-            }
+            fetchProperties();
         }
         else
         {
@@ -87,6 +74,31 @@ org_alljoyn_SmartSpaces_UserInterfaceSettings_TimeDisplay::org_alljoyn_SmartSpac
 org_alljoyn_SmartSpaces_UserInterfaceSettings_TimeDisplay::~org_alljoyn_SmartSpaces_UserInterfaceSettings_TimeDisplay()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void org_alljoyn_SmartSpaces_UserInterfaceSettings_TimeDisplay::fetchProperties()
+{
+    // Get current values
+    QStatus status;
+
+    if (controller)
+    {
+        qWarning() << "org_alljoyn_SmartSpaces_UserInterfaceSettings_TimeDisplay getting properties";
+
+        status = controller->GetDisplayTimeFormat();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get DisplayTimeFormat" << QCC_StatusText(status);
+        }
+
+        status = controller->GetSupportedDisplayTimeFormats();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get SupportedDisplayTimeFormats" << QCC_StatusText(status);
+        }
+    }
 }
 
 

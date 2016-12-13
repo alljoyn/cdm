@@ -107,6 +107,14 @@ private:
 
     QLineEdit* edit_RapidModeMinutesRemaining;
     QLineEdit* edit_MaxSetMinutes;
+
+    void    fetchProperties();
+
+protected:
+    virtual void showEvent(QShowEvent *event) override
+    {
+        fetchProperties();
+    }
 };
 
 }

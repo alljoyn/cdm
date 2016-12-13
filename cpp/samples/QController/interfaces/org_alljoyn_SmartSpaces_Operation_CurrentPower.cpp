@@ -63,25 +63,7 @@ org_alljoyn_SmartSpaces_Operation_CurrentPower::org_alljoyn_SmartSpaces_Operatio
         controller = iface->CreateInterface<CurrentPowerIntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-            // Get current values
-            status = controller->GetCurrentPower();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get CurrentPower" << QCC_StatusText(status);
-            }
-            status = controller->GetPrecision();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get Precision" << QCC_StatusText(status);
-            }
-            status = controller->GetUpdateMinTime();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get UpdateMinTime" << QCC_StatusText(status);
-            }
+            fetchProperties();
         }
         else
         {
@@ -97,6 +79,37 @@ org_alljoyn_SmartSpaces_Operation_CurrentPower::org_alljoyn_SmartSpaces_Operatio
 org_alljoyn_SmartSpaces_Operation_CurrentPower::~org_alljoyn_SmartSpaces_Operation_CurrentPower()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void org_alljoyn_SmartSpaces_Operation_CurrentPower::fetchProperties()
+{
+    // Get current values
+    QStatus status;
+
+    if (controller)
+    {
+        qWarning() << "org_alljoyn_SmartSpaces_Operation_CurrentPower getting properties";
+
+        status = controller->GetCurrentPower();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get CurrentPower" << QCC_StatusText(status);
+        }
+
+        status = controller->GetPrecision();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get Precision" << QCC_StatusText(status);
+        }
+
+        status = controller->GetUpdateMinTime();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get UpdateMinTime" << QCC_StatusText(status);
+        }
+    }
 }
 
 

@@ -190,6 +190,14 @@ private:
     QLineEdit* edit_EstimatedTimeToEnd;
     QLineEdit* edit_RunningTime;
     QLineEdit* edit_TargetDuration;
+
+    void    fetchProperties();
+
+protected:
+    virtual void showEvent(QShowEvent *event) override
+    {
+        fetchProperties();
+    }
 };
 
 }

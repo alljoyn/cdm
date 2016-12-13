@@ -116,6 +116,14 @@ private:
 
     QLineEdit* edit_Hue;
     QLineEdit* edit_Saturation;
+
+    void    fetchProperties();
+
+protected:
+    virtual void showEvent(QShowEvent *event) override
+    {
+        fetchProperties();
+    }
 };
 
 }

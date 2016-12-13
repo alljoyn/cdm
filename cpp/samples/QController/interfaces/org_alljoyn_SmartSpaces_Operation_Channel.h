@@ -122,6 +122,14 @@ private:
 
     QLineEdit* edit_ChannelId;
     QLineEdit* edit_TotalNumberOfChannels;
+
+    void    fetchProperties();
+
+protected:
+    virtual void showEvent(QShowEvent *event) override
+    {
+        fetchProperties();
+    }
 };
 
 }

@@ -134,6 +134,14 @@ private:
     QLineEdit* edit_FanSpeedLevel;
     QLineEdit* edit_MaxFanSpeedLevel;
     QLineEdit* edit_AutoMode;
+
+    void    fetchProperties();
+
+protected:
+    virtual void showEvent(QShowEvent *event) override
+    {
+        fetchProperties();
+    }
 };
 
 }

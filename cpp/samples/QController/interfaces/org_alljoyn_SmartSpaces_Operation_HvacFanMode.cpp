@@ -58,20 +58,7 @@ org_alljoyn_SmartSpaces_Operation_HvacFanMode::org_alljoyn_SmartSpaces_Operation
         controller = iface->CreateInterface<HvacFanModeIntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-            // Get current values
-            status = controller->GetMode();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get Mode" << QCC_StatusText(status);
-            }
-            status = controller->GetSupportedModes();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get SupportedModes" << QCC_StatusText(status);
-            }
+            fetchProperties();
         }
         else
         {
@@ -87,6 +74,31 @@ org_alljoyn_SmartSpaces_Operation_HvacFanMode::org_alljoyn_SmartSpaces_Operation
 org_alljoyn_SmartSpaces_Operation_HvacFanMode::~org_alljoyn_SmartSpaces_Operation_HvacFanMode()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void org_alljoyn_SmartSpaces_Operation_HvacFanMode::fetchProperties()
+{
+    // Get current values
+    QStatus status;
+
+    if (controller)
+    {
+        qWarning() << "org_alljoyn_SmartSpaces_Operation_HvacFanMode getting properties";
+
+        status = controller->GetMode();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get Mode" << QCC_StatusText(status);
+        }
+
+        status = controller->GetSupportedModes();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get SupportedModes" << QCC_StatusText(status);
+        }
+    }
 }
 
 

@@ -58,20 +58,7 @@ org_alljoyn_SmartSpaces_UserInterfaceSettings_LanguageDisplay::org_alljoyn_Smart
         controller = iface->CreateInterface<LanguageDisplayIntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-            // Get current values
-            status = controller->GetDisplayLanguage();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get DisplayLanguage" << QCC_StatusText(status);
-            }
-            status = controller->GetSupportedDisplayLanguages();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get SupportedDisplayLanguages" << QCC_StatusText(status);
-            }
+            fetchProperties();
         }
         else
         {
@@ -87,6 +74,31 @@ org_alljoyn_SmartSpaces_UserInterfaceSettings_LanguageDisplay::org_alljoyn_Smart
 org_alljoyn_SmartSpaces_UserInterfaceSettings_LanguageDisplay::~org_alljoyn_SmartSpaces_UserInterfaceSettings_LanguageDisplay()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void org_alljoyn_SmartSpaces_UserInterfaceSettings_LanguageDisplay::fetchProperties()
+{
+    // Get current values
+    QStatus status;
+
+    if (controller)
+    {
+        qWarning() << "org_alljoyn_SmartSpaces_UserInterfaceSettings_LanguageDisplay getting properties";
+
+        status = controller->GetDisplayLanguage();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get DisplayLanguage" << QCC_StatusText(status);
+        }
+
+        status = controller->GetSupportedDisplayLanguages();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get SupportedDisplayLanguages" << QCC_StatusText(status);
+        }
+    }
 }
 
 

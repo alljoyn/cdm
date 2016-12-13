@@ -112,6 +112,13 @@ private:
     QWidget* alertsList;
 
     void    showAlerts(const std::vector<AlertsInterface::AlertRecord>& alerts);
+    void    fetchProperties();
+
+protected:
+    virtual void showEvent(QShowEvent *event) override
+    {
+        fetchProperties();
+    }
 };
 
 }

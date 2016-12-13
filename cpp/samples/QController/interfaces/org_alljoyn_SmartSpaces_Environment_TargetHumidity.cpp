@@ -76,35 +76,7 @@ org_alljoyn_SmartSpaces_Environment_TargetHumidity::org_alljoyn_SmartSpaces_Envi
         controller = iface->CreateInterface<TargetHumidityIntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-            // Get current values
-            status = controller->GetTargetValue();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get TargetValue" << QCC_StatusText(status);
-            }
-            status = controller->GetMinValue();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get MinValue" << QCC_StatusText(status);
-            }
-            status = controller->GetMaxValue();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get MaxValue" << QCC_StatusText(status);
-            }
-            status = controller->GetStepValue();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get StepValue" << QCC_StatusText(status);
-            }
-            status = controller->GetSelectableHumidityLevels();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get SelectableHumidityLevels" << QCC_StatusText(status);
-            }
+            fetchProperties();
         }
         else
         {
@@ -120,6 +92,49 @@ org_alljoyn_SmartSpaces_Environment_TargetHumidity::org_alljoyn_SmartSpaces_Envi
 org_alljoyn_SmartSpaces_Environment_TargetHumidity::~org_alljoyn_SmartSpaces_Environment_TargetHumidity()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void org_alljoyn_SmartSpaces_Environment_TargetHumidity::fetchProperties()
+{
+    // Get current values
+    QStatus status;
+
+    if (controller)
+    {
+        qWarning() << "org_alljoyn_SmartSpaces_Environment_TargetHumidity getting properties";
+
+        status = controller->GetTargetValue();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get TargetValue" << QCC_StatusText(status);
+        }
+
+        status = controller->GetMinValue();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get MinValue" << QCC_StatusText(status);
+        }
+
+        status = controller->GetMaxValue();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get MaxValue" << QCC_StatusText(status);
+        }
+
+        status = controller->GetStepValue();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get StepValue" << QCC_StatusText(status);
+        }
+
+        status = controller->GetSelectableHumidityLevels();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get SelectableHumidityLevels" << QCC_StatusText(status);
+        }
+    }
 }
 
 

@@ -116,6 +116,14 @@ private:
     QLineEdit* edit_ContaminantType;
     QLineEdit* edit_CurrentLevel;
     QLineEdit* edit_MaxLevel;
+
+    void    fetchProperties();
+
+protected:
+    virtual void showEvent(QShowEvent *event) override
+    {
+        fetchProperties();
+    }
 };
 
 }

@@ -188,6 +188,14 @@ private:
     QLineEdit* edit_PartNumber;
     QLineEdit* edit_Url;
     QLineEdit* edit_LifeRemaining;
+
+    void    fetchProperties();
+
+protected:
+    virtual void showEvent(QShowEvent *event) override
+    {
+        fetchProperties();
+    }
 };
 
 }

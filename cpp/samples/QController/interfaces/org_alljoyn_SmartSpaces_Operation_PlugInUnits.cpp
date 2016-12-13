@@ -84,15 +84,7 @@ org_alljoyn_SmartSpaces_Operation_PlugInUnits::org_alljoyn_SmartSpaces_Operation
         controller = iface->CreateInterface<PlugInUnitsIntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-            // Get current values
-            status = controller->GetPlugInUnits();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get PlugInUnits" << QCC_StatusText(status);
-            }
+            fetchProperties();
         }
         else
         {
@@ -108,6 +100,25 @@ org_alljoyn_SmartSpaces_Operation_PlugInUnits::org_alljoyn_SmartSpaces_Operation
 org_alljoyn_SmartSpaces_Operation_PlugInUnits::~org_alljoyn_SmartSpaces_Operation_PlugInUnits()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void org_alljoyn_SmartSpaces_Operation_PlugInUnits::fetchProperties()
+{
+    // Get current values
+    QStatus status;
+
+    if (controller)
+    {
+        qWarning() << "org_alljoyn_SmartSpaces_Operation_PlugInUnits getting properties";
+
+        status = controller->GetPlugInUnits();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get PlugInUnits" << QCC_StatusText(status);
+        }
+    }
 }
 
 

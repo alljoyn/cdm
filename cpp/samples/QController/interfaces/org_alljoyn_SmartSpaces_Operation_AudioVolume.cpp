@@ -65,25 +65,7 @@ org_alljoyn_SmartSpaces_Operation_AudioVolume::org_alljoyn_SmartSpaces_Operation
         controller = iface->CreateInterface<AudioVolumeIntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-            // Get current values
-            status = controller->GetVolume();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get Volume" << QCC_StatusText(status);
-            }
-            status = controller->GetMaxVolume();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get MaxVolume" << QCC_StatusText(status);
-            }
-            status = controller->GetMute();
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get Mute" << QCC_StatusText(status);
-            }
+            fetchProperties();
         }
         else
         {
@@ -99,6 +81,37 @@ org_alljoyn_SmartSpaces_Operation_AudioVolume::org_alljoyn_SmartSpaces_Operation
 org_alljoyn_SmartSpaces_Operation_AudioVolume::~org_alljoyn_SmartSpaces_Operation_AudioVolume()
 {
     qWarning() << __FUNCTION__;
+}
+
+
+
+void org_alljoyn_SmartSpaces_Operation_AudioVolume::fetchProperties()
+{
+    // Get current values
+    QStatus status;
+
+    if (controller)
+    {
+        qWarning() << "org_alljoyn_SmartSpaces_Operation_AudioVolume getting properties";
+
+        status = controller->GetVolume();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get Volume" << QCC_StatusText(status);
+        }
+
+        status = controller->GetMaxVolume();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get MaxVolume" << QCC_StatusText(status);
+        }
+
+        status = controller->GetMute();
+        if (status != ER_OK)
+        {
+            qWarning() << __FUNCTION__ << " Failed to get Mute" << QCC_StatusText(status);
+        }
+    }
 }
 
 
