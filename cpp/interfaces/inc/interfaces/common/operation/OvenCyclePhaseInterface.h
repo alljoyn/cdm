@@ -89,36 +89,36 @@ class OvenCyclePhaseInterface : public CdmInterface {
 template<>
 struct CdmMsgCvt<OvenCyclePhaseInterface::CyclePhaseDescriptor>
 {
-    void get(const MsgArg& msgarg, OvenCyclePhaseInterface::CyclePhaseDescriptor& value)
+    void get(const MsgArg& msgarg, OvenCyclePhaseInterface::CyclePhaseDescriptor& arg_)
     {
-        uint8_t phase{};
-        const char* name{};
-        const char* description{};
-        msgarg.Get("(yss)", &phase, &name, &description);
-        value.phase = phase;
-        value.name = name;
-        value.description = description;
+        uint8_t field_phase{};
+        const char* field_name{};
+        const char* field_description{};
+        msgarg.Get("(yss)", &field_phase, &field_name, &field_description);
+        arg_.phase = field_phase;
+        arg_.name = field_name;
+        arg_.description = field_description;
     }
 
-    void set(MsgArg& msgarg, const OvenCyclePhaseInterface::CyclePhaseDescriptor value)
+    void set(MsgArg& msgarg, const OvenCyclePhaseInterface::CyclePhaseDescriptor arg_)
     {
-        uint8_t phase = value.phase;
-        const char* name = value.name.c_str();
-        const char* description = value.description.c_str();
-        msgarg.Set("(yss)", phase, name, description);
+        uint8_t field_phase = arg_.phase;
+        const char* field_name = arg_.name.c_str();
+        const char* field_description = arg_.description.c_str();
+        msgarg.Set("(yss)", field_phase, field_name, field_description);
     }
 
     std::string str(const MsgArg& msgarg)
     {
-        OvenCyclePhaseInterface::CyclePhaseDescriptor value;
-        get(msgarg, value);
+        OvenCyclePhaseInterface::CyclePhaseDescriptor arg_;
+        get(msgarg, arg_);
 
         std::ostringstream strm;
-        strm << "phase=" << value.phase;
+        strm << "phase=" << arg_.phase;
         strm << " ";
-        strm << "name=" << value.name;
+        strm << "name=" << arg_.name;
         strm << " ";
-        strm << "description=" << value.description;
+        strm << "description=" << arg_.description;
         return strm.str();
     }
 };
@@ -127,37 +127,37 @@ struct CdmMsgCvt<OvenCyclePhaseInterface::CyclePhaseDescriptor>
 template<>
 struct CdmMsgCvt<std::vector<OvenCyclePhaseInterface::CyclePhaseDescriptor>>
 {
-    void get(const MsgArg& msgarg, std::vector<OvenCyclePhaseInterface::CyclePhaseDescriptor>& value)
+    void get(const MsgArg& msgarg, std::vector<OvenCyclePhaseInterface::CyclePhaseDescriptor>& arg_)
     {
         MsgArg* elems = 0;
         size_t  num = 0;
 
         msgarg.Get("a(yss)", &num, &elems);
-        value.resize(num);
+        arg_.resize(num);
 
         for (size_t i = 0; i < num; ++i)
         {
-            uint8_t phase{};
-            const char* name{};
-            const char* description{};
-            elems[i].Get("(yss)", &phase, &name, &description);
-            value[i].phase = phase;
-            value[i].name = name;
-            value[i].description = description;
+            uint8_t field_phase{};
+            const char* field_name{};
+            const char* field_description{};
+            elems[i].Get("(yss)", &field_phase, &field_name, &field_description);
+            arg_[i].phase = field_phase;
+            arg_[i].name = field_name;
+            arg_[i].description = field_description;
         }
     }
 
-    void set(MsgArg& msgarg, const std::vector<OvenCyclePhaseInterface::CyclePhaseDescriptor>& value)
+    void set(MsgArg& msgarg, const std::vector<OvenCyclePhaseInterface::CyclePhaseDescriptor>& arg_)
     {
-        size_t num = value.size();
+        size_t num = arg_.size();
         std::vector<MsgArg> elems(num);
 
         for (size_t i = 0; i < num; ++i)
         {
-            uint8_t phase = value[i].phase;
-            const char* name = value[i].name.c_str();
-            const char* description = value[i].description.c_str();
-            elems[i].Set("(yss)", phase, name, description);
+            uint8_t field_phase = arg_[i].phase;
+            const char* field_name = arg_[i].name.c_str();
+            const char* field_description = arg_[i].description.c_str();
+            elems[i].Set("(yss)", field_phase, field_name, field_description);
         }
 
         msgarg.Set("a(yss)", num, elems.data());

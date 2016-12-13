@@ -70,7 +70,8 @@ XML_FILES = \
     org.alljoyn.SmartSpaces.Environment/WindDirection-v1.xml \
     org.alljoyn.SmartSpaces.UserInterfaceSettings/LanguageDisplay-v1.xml \
     org.alljoyn.SmartSpaces.UserInterfaceSettings/TemperatureDisplay-v1.xml \
-    org.alljoyn.SmartSpaces.UserInterfaceSettings/TimeDisplay-v1.xml
+    org.alljoyn.SmartSpaces.UserInterfaceSettings/TimeDisplay-v1.xml \
+    org.alljoyn.Input/Hid-v1.xml
 
 XML_PATHS = $(addprefix $(IFACES),$(XML_FILES))
 

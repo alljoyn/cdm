@@ -262,46 +262,46 @@ struct CdmMsgCvt<std::vector<AudioVideoInputInterface::SignalPresence>>
 template<>
 struct CdmMsgCvt<AudioVideoInputInterface::InputSource>
 {
-    void get(const MsgArg& msgarg, AudioVideoInputInterface::InputSource& value)
+    void get(const MsgArg& msgarg, AudioVideoInputInterface::InputSource& arg_)
     {
-        uint16_t id{};
-        int32_t sourceType{};
-        int32_t signalPresence{};
-        uint16_t portNumber{};
-        const char* friendlyName{};
-        msgarg.Get("(qqiqs)", &id, &sourceType, &signalPresence, &portNumber, &friendlyName);
-        value.id = id;
-        value.sourceType = static_cast<AudioVideoInputInterface::SourceType>(sourceType);
-        value.signalPresence = static_cast<AudioVideoInputInterface::SignalPresence>(signalPresence);
-        value.portNumber = portNumber;
-        value.friendlyName = friendlyName;
+        uint16_t field_id{};
+        int32_t field_sourceType{};
+        int32_t field_signalPresence{};
+        uint16_t field_portNumber{};
+        const char* field_friendlyName{};
+        msgarg.Get("(qqiqs)", &field_id, &field_sourceType, &field_signalPresence, &field_portNumber, &field_friendlyName);
+        arg_.id = field_id;
+        arg_.sourceType = static_cast<AudioVideoInputInterface::SourceType>(field_sourceType);
+        arg_.signalPresence = static_cast<AudioVideoInputInterface::SignalPresence>(field_signalPresence);
+        arg_.portNumber = field_portNumber;
+        arg_.friendlyName = field_friendlyName;
     }
 
-    void set(MsgArg& msgarg, const AudioVideoInputInterface::InputSource value)
+    void set(MsgArg& msgarg, const AudioVideoInputInterface::InputSource arg_)
     {
-        uint16_t id = value.id;
-        int32_t sourceType = value.sourceType;
-        int32_t signalPresence = value.signalPresence;
-        uint16_t portNumber = value.portNumber;
-        const char* friendlyName = value.friendlyName.c_str();
-        msgarg.Set("(qqiqs)", id, sourceType, signalPresence, portNumber, friendlyName);
+        uint16_t field_id = arg_.id;
+        int32_t field_sourceType = arg_.sourceType;
+        int32_t field_signalPresence = arg_.signalPresence;
+        uint16_t field_portNumber = arg_.portNumber;
+        const char* field_friendlyName = arg_.friendlyName.c_str();
+        msgarg.Set("(qqiqs)", field_id, field_sourceType, field_signalPresence, field_portNumber, field_friendlyName);
     }
 
     std::string str(const MsgArg& msgarg)
     {
-        AudioVideoInputInterface::InputSource value;
-        get(msgarg, value);
+        AudioVideoInputInterface::InputSource arg_;
+        get(msgarg, arg_);
 
         std::ostringstream strm;
-        strm << "id=" << value.id;
+        strm << "id=" << arg_.id;
         strm << " ";
-        strm << "sourceType=" << value.sourceType;
+        strm << "sourceType=" << arg_.sourceType;
         strm << " ";
-        strm << "signalPresence=" << value.signalPresence;
+        strm << "signalPresence=" << arg_.signalPresence;
         strm << " ";
-        strm << "portNumber=" << value.portNumber;
+        strm << "portNumber=" << arg_.portNumber;
         strm << " ";
-        strm << "friendlyName=" << value.friendlyName;
+        strm << "friendlyName=" << arg_.friendlyName;
         return strm.str();
     }
 };
@@ -310,43 +310,43 @@ struct CdmMsgCvt<AudioVideoInputInterface::InputSource>
 template<>
 struct CdmMsgCvt<std::vector<AudioVideoInputInterface::InputSource>>
 {
-    void get(const MsgArg& msgarg, std::vector<AudioVideoInputInterface::InputSource>& value)
+    void get(const MsgArg& msgarg, std::vector<AudioVideoInputInterface::InputSource>& arg_)
     {
         MsgArg* elems = 0;
         size_t  num = 0;
 
         msgarg.Get("a(qqiqs)", &num, &elems);
-        value.resize(num);
+        arg_.resize(num);
 
         for (size_t i = 0; i < num; ++i)
         {
-            uint16_t id{};
-            int32_t sourceType{};
-            int32_t signalPresence{};
-            uint16_t portNumber{};
-            const char* friendlyName{};
-            elems[i].Get("(qqiqs)", &id, &sourceType, &signalPresence, &portNumber, &friendlyName);
-            value[i].id = id;
-            value[i].sourceType = static_cast<AudioVideoInputInterface::SourceType>(sourceType);
-            value[i].signalPresence = static_cast<AudioVideoInputInterface::SignalPresence>(signalPresence);
-            value[i].portNumber = portNumber;
-            value[i].friendlyName = friendlyName;
+            uint16_t field_id{};
+            int32_t field_sourceType{};
+            int32_t field_signalPresence{};
+            uint16_t field_portNumber{};
+            const char* field_friendlyName{};
+            elems[i].Get("(qqiqs)", &field_id, &field_sourceType, &field_signalPresence, &field_portNumber, &field_friendlyName);
+            arg_[i].id = field_id;
+            arg_[i].sourceType = static_cast<AudioVideoInputInterface::SourceType>(field_sourceType);
+            arg_[i].signalPresence = static_cast<AudioVideoInputInterface::SignalPresence>(field_signalPresence);
+            arg_[i].portNumber = field_portNumber;
+            arg_[i].friendlyName = field_friendlyName;
         }
     }
 
-    void set(MsgArg& msgarg, const std::vector<AudioVideoInputInterface::InputSource>& value)
+    void set(MsgArg& msgarg, const std::vector<AudioVideoInputInterface::InputSource>& arg_)
     {
-        size_t num = value.size();
+        size_t num = arg_.size();
         std::vector<MsgArg> elems(num);
 
         for (size_t i = 0; i < num; ++i)
         {
-            uint16_t id = value[i].id;
-            int32_t sourceType = value[i].sourceType;
-            int32_t signalPresence = value[i].signalPresence;
-            uint16_t portNumber = value[i].portNumber;
-            const char* friendlyName = value[i].friendlyName.c_str();
-            elems[i].Set("(qqiqs)", id, sourceType, signalPresence, portNumber, friendlyName);
+            uint16_t field_id = arg_[i].id;
+            int32_t field_sourceType = arg_[i].sourceType;
+            int32_t field_signalPresence = arg_[i].signalPresence;
+            uint16_t field_portNumber = arg_[i].portNumber;
+            const char* field_friendlyName = arg_[i].friendlyName.c_str();
+            elems[i].Set("(qqiqs)", field_id, field_sourceType, field_signalPresence, field_portNumber, field_friendlyName);
         }
 
         msgarg.Set("a(qqiqs)", num, elems.data());

@@ -87,36 +87,36 @@ class PlugInUnitsInterface : public CdmInterface {
 template<>
 struct CdmMsgCvt<PlugInUnitsInterface::PlugInInfo>
 {
-    void get(const MsgArg& msgarg, PlugInUnitsInterface::PlugInInfo& value)
+    void get(const MsgArg& msgarg, PlugInUnitsInterface::PlugInInfo& arg_)
     {
-        const char* objectPath{};
-        uint32_t deviceId{};
-        bool pluggedIn{};
-        msgarg.Get("(oub)", &objectPath, &deviceId, &pluggedIn);
-        value.objectPath = objectPath;
-        value.deviceId = deviceId;
-        value.pluggedIn = pluggedIn;
+        const char* field_objectPath{};
+        uint32_t field_deviceId{};
+        bool field_pluggedIn{};
+        msgarg.Get("(oub)", &field_objectPath, &field_deviceId, &field_pluggedIn);
+        arg_.objectPath = field_objectPath;
+        arg_.deviceId = field_deviceId;
+        arg_.pluggedIn = field_pluggedIn;
     }
 
-    void set(MsgArg& msgarg, const PlugInUnitsInterface::PlugInInfo value)
+    void set(MsgArg& msgarg, const PlugInUnitsInterface::PlugInInfo arg_)
     {
-        const char* objectPath = value.objectPath.c_str();
-        uint32_t deviceId = value.deviceId;
-        bool pluggedIn = value.pluggedIn;
-        msgarg.Set("(oub)", objectPath, deviceId, pluggedIn);
+        const char* field_objectPath = arg_.objectPath.c_str();
+        uint32_t field_deviceId = arg_.deviceId;
+        bool field_pluggedIn = arg_.pluggedIn;
+        msgarg.Set("(oub)", field_objectPath, field_deviceId, field_pluggedIn);
     }
 
     std::string str(const MsgArg& msgarg)
     {
-        PlugInUnitsInterface::PlugInInfo value;
-        get(msgarg, value);
+        PlugInUnitsInterface::PlugInInfo arg_;
+        get(msgarg, arg_);
 
         std::ostringstream strm;
-        strm << "objectPath=" << value.objectPath;
+        strm << "objectPath=" << arg_.objectPath;
         strm << " ";
-        strm << "deviceId=" << value.deviceId;
+        strm << "deviceId=" << arg_.deviceId;
         strm << " ";
-        strm << "pluggedIn=" << value.pluggedIn;
+        strm << "pluggedIn=" << arg_.pluggedIn;
         return strm.str();
     }
 };
@@ -125,37 +125,37 @@ struct CdmMsgCvt<PlugInUnitsInterface::PlugInInfo>
 template<>
 struct CdmMsgCvt<std::vector<PlugInUnitsInterface::PlugInInfo>>
 {
-    void get(const MsgArg& msgarg, std::vector<PlugInUnitsInterface::PlugInInfo>& value)
+    void get(const MsgArg& msgarg, std::vector<PlugInUnitsInterface::PlugInInfo>& arg_)
     {
         MsgArg* elems = 0;
         size_t  num = 0;
 
         msgarg.Get("a(oub)", &num, &elems);
-        value.resize(num);
+        arg_.resize(num);
 
         for (size_t i = 0; i < num; ++i)
         {
-            const char* objectPath{};
-            uint32_t deviceId{};
-            bool pluggedIn{};
-            elems[i].Get("(oub)", &objectPath, &deviceId, &pluggedIn);
-            value[i].objectPath = objectPath;
-            value[i].deviceId = deviceId;
-            value[i].pluggedIn = pluggedIn;
+            const char* field_objectPath{};
+            uint32_t field_deviceId{};
+            bool field_pluggedIn{};
+            elems[i].Get("(oub)", &field_objectPath, &field_deviceId, &field_pluggedIn);
+            arg_[i].objectPath = field_objectPath;
+            arg_[i].deviceId = field_deviceId;
+            arg_[i].pluggedIn = field_pluggedIn;
         }
     }
 
-    void set(MsgArg& msgarg, const std::vector<PlugInUnitsInterface::PlugInInfo>& value)
+    void set(MsgArg& msgarg, const std::vector<PlugInUnitsInterface::PlugInInfo>& arg_)
     {
-        size_t num = value.size();
+        size_t num = arg_.size();
         std::vector<MsgArg> elems(num);
 
         for (size_t i = 0; i < num; ++i)
         {
-            const char* objectPath = value[i].objectPath.c_str();
-            uint32_t deviceId = value[i].deviceId;
-            bool pluggedIn = value[i].pluggedIn;
-            elems[i].Set("(oub)", objectPath, deviceId, pluggedIn);
+            const char* field_objectPath = arg_[i].objectPath.c_str();
+            uint32_t field_deviceId = arg_[i].deviceId;
+            bool field_pluggedIn = arg_[i].pluggedIn;
+            elems[i].Set("(oub)", field_objectPath, field_deviceId, field_pluggedIn);
         }
 
         msgarg.Set("a(oub)", num, elems.data());

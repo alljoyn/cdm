@@ -180,43 +180,43 @@ struct CdmMsgCvt<std::vector<{{Interface.Name}}Interface::{{enum.Name}}>>
 template<>
 struct CdmMsgCvt<{{Interface.Name}}Interface::{{struc.Name}}>
 {
-    void get(const MsgArg& msgarg, {{Interface.Name}}Interface::{{struc.Name}}& value)
+    void get(const MsgArg& msgarg, {{Interface.Name}}Interface::{{struc.Name}}& arg_)
     {
 {# We can not Get directly into fields that are QString #}
 {% for field in struc.Fields %}
-        {{field.Type.msgType()}} {{field.Name}}{};
+        {{field.Type.msgType()}} field_{{field.Name}}{};
 {% endfor %}
         msgarg.Get("{{struc.resolve_signature()}}"
 {%- for field in struc.Fields %}
-, &{{field.Name}}
+, &field_{{field.Name}}
 {%- endfor %});
 {% for field in struc.Fields %}
-        value.{{field.Name}} = {{field.Type.fromMsgArg(field.Name)}};
+        arg_.{{field.Name}} = {{field.Type.fromMsgArg("field_"~field.Name)}};
 {% endfor %}
     }
 
-    void set(MsgArg& msgarg, const {{Interface.Name}}Interface::{{struc.Name}} value)
+    void set(MsgArg& msgarg, const {{Interface.Name}}Interface::{{struc.Name}} arg_)
     {
 {% for field in struc.Fields %}
-        {{field.Type.msgType()}} {{field.Name}} = {{field.Type.toMsgArg("value."~field.Name)}};
+        {{field.Type.msgType()}} field_{{field.Name}} = {{field.Type.toMsgArg("arg_."~field.Name)}};
 {% endfor %}
         msgarg.Set("{{struc.resolve_signature()}}"
 {%- for field in struc.Fields %}
-, {{field.Name}}
+, field_{{field.Name}}
 {%- endfor %});
     }
 
     std::string str(const MsgArg& msgarg)
     {
-        {{Interface.Name}}Interface::{{struc.Name}} value;
-        get(msgarg, value);
+        {{Interface.Name}}Interface::{{struc.Name}} arg_;
+        get(msgarg, arg_);
 
         std::ostringstream strm;
 {% for field in struc.Fields %}
 {% if not loop.first %}
         strm << " ";
 {% endif %}
-        strm << "{{field.Name}}=" << value.{{field.Name}};
+        strm << "{{field.Name}}=" << arg_.{{field.Name}};
 {% endfor %}
         return strm.str();
     }
@@ -226,43 +226,43 @@ struct CdmMsgCvt<{{Interface.Name}}Interface::{{struc.Name}}>
 template<>
 struct CdmMsgCvt<std::vector<{{Interface.Name}}Interface::{{struc.Name}}>>
 {
-    void get(const MsgArg& msgarg, std::vector<{{Interface.Name}}Interface::{{struc.Name}}>& value)
+    void get(const MsgArg& msgarg, std::vector<{{Interface.Name}}Interface::{{struc.Name}}>& arg_)
     {
         MsgArg* elems = 0;
         size_t  num = 0;
 
         msgarg.Get("a{{struc.resolve_signature()}}", &num, &elems);
-        value.resize(num);
+        arg_.resize(num);
 
         for (size_t i = 0; i < num; ++i)
         {
 {# We can not Get directly into fields that are QString #}
 {% for field in struc.Fields %}
-            {{field.Type.msgType()}} {{field.Name}}{};
+            {{field.Type.msgType()}} field_{{field.Name}}{};
 {% endfor %}
             elems[i].Get("{{struc.resolve_signature()}}"
 {%- for field in struc.Fields %}
-, &{{field.Name}}
+, &field_{{field.Name}}
 {%- endfor %});
 {% for field in struc.Fields %}
-            value[i].{{field.Name}} = {{field.Type.fromMsgArg(field.Name)}};
+            arg_[i].{{field.Name}} = {{field.Type.fromMsgArg("field_"~field.Name)}};
 {% endfor %}
         }
     }
 
-    void set(MsgArg& msgarg, const std::vector<{{Interface.Name}}Interface::{{struc.Name}}>& value)
+    void set(MsgArg& msgarg, const std::vector<{{Interface.Name}}Interface::{{struc.Name}}>& arg_)
     {
-        size_t num = value.size();
+        size_t num = arg_.size();
         std::vector<MsgArg> elems(num);
 
         for (size_t i = 0; i < num; ++i)
         {
 {% for field in struc.Fields %}
-            {{field.Type.msgType()}} {{field.Name}} = {{field.Type.toMsgArg("value[i]."~field.Name)}};
+            {{field.Type.msgType()}} field_{{field.Name}} = {{field.Type.toMsgArg("arg_[i]."~field.Name)}};
 {% endfor %}
             elems[i].Set("{{struc.resolve_signature()}}"
 {%- for field in struc.Fields %}
-, {{field.Name}}
+, field_{{field.Name}}
 {%- endfor %});
         }
 

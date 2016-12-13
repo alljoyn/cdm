@@ -177,36 +177,36 @@ struct CdmMsgCvt<std::vector<AlertsInterface::Severity>>
 template<>
 struct CdmMsgCvt<AlertsInterface::AlertRecord>
 {
-    void get(const MsgArg& msgarg, AlertsInterface::AlertRecord& value)
+    void get(const MsgArg& msgarg, AlertsInterface::AlertRecord& arg_)
     {
-        int32_t severity{};
-        uint16_t alertCode{};
-        bool needAcknowledgement{};
-        msgarg.Get("(iqb)", &severity, &alertCode, &needAcknowledgement);
-        value.severity = static_cast<AlertsInterface::Severity>(severity);
-        value.alertCode = alertCode;
-        value.needAcknowledgement = needAcknowledgement;
+        int32_t field_severity{};
+        uint16_t field_alertCode{};
+        bool field_needAcknowledgement{};
+        msgarg.Get("(iqb)", &field_severity, &field_alertCode, &field_needAcknowledgement);
+        arg_.severity = static_cast<AlertsInterface::Severity>(field_severity);
+        arg_.alertCode = field_alertCode;
+        arg_.needAcknowledgement = field_needAcknowledgement;
     }
 
-    void set(MsgArg& msgarg, const AlertsInterface::AlertRecord value)
+    void set(MsgArg& msgarg, const AlertsInterface::AlertRecord arg_)
     {
-        int32_t severity = value.severity;
-        uint16_t alertCode = value.alertCode;
-        bool needAcknowledgement = value.needAcknowledgement;
-        msgarg.Set("(iqb)", severity, alertCode, needAcknowledgement);
+        int32_t field_severity = arg_.severity;
+        uint16_t field_alertCode = arg_.alertCode;
+        bool field_needAcknowledgement = arg_.needAcknowledgement;
+        msgarg.Set("(iqb)", field_severity, field_alertCode, field_needAcknowledgement);
     }
 
     std::string str(const MsgArg& msgarg)
     {
-        AlertsInterface::AlertRecord value;
-        get(msgarg, value);
+        AlertsInterface::AlertRecord arg_;
+        get(msgarg, arg_);
 
         std::ostringstream strm;
-        strm << "severity=" << value.severity;
+        strm << "severity=" << arg_.severity;
         strm << " ";
-        strm << "alertCode=" << value.alertCode;
+        strm << "alertCode=" << arg_.alertCode;
         strm << " ";
-        strm << "needAcknowledgement=" << value.needAcknowledgement;
+        strm << "needAcknowledgement=" << arg_.needAcknowledgement;
         return strm.str();
     }
 };
@@ -215,37 +215,37 @@ struct CdmMsgCvt<AlertsInterface::AlertRecord>
 template<>
 struct CdmMsgCvt<std::vector<AlertsInterface::AlertRecord>>
 {
-    void get(const MsgArg& msgarg, std::vector<AlertsInterface::AlertRecord>& value)
+    void get(const MsgArg& msgarg, std::vector<AlertsInterface::AlertRecord>& arg_)
     {
         MsgArg* elems = 0;
         size_t  num = 0;
 
         msgarg.Get("a(iqb)", &num, &elems);
-        value.resize(num);
+        arg_.resize(num);
 
         for (size_t i = 0; i < num; ++i)
         {
-            int32_t severity{};
-            uint16_t alertCode{};
-            bool needAcknowledgement{};
-            elems[i].Get("(iqb)", &severity, &alertCode, &needAcknowledgement);
-            value[i].severity = static_cast<AlertsInterface::Severity>(severity);
-            value[i].alertCode = alertCode;
-            value[i].needAcknowledgement = needAcknowledgement;
+            int32_t field_severity{};
+            uint16_t field_alertCode{};
+            bool field_needAcknowledgement{};
+            elems[i].Get("(iqb)", &field_severity, &field_alertCode, &field_needAcknowledgement);
+            arg_[i].severity = static_cast<AlertsInterface::Severity>(field_severity);
+            arg_[i].alertCode = field_alertCode;
+            arg_[i].needAcknowledgement = field_needAcknowledgement;
         }
     }
 
-    void set(MsgArg& msgarg, const std::vector<AlertsInterface::AlertRecord>& value)
+    void set(MsgArg& msgarg, const std::vector<AlertsInterface::AlertRecord>& arg_)
     {
-        size_t num = value.size();
+        size_t num = arg_.size();
         std::vector<MsgArg> elems(num);
 
         for (size_t i = 0; i < num; ++i)
         {
-            int32_t severity = value[i].severity;
-            uint16_t alertCode = value[i].alertCode;
-            bool needAcknowledgement = value[i].needAcknowledgement;
-            elems[i].Set("(iqb)", severity, alertCode, needAcknowledgement);
+            int32_t field_severity = arg_[i].severity;
+            uint16_t field_alertCode = arg_[i].alertCode;
+            bool field_needAcknowledgement = arg_[i].needAcknowledgement;
+            elems[i].Set("(iqb)", field_severity, field_alertCode, field_needAcknowledgement);
         }
 
         msgarg.Set("a(iqb)", num, elems.data());
@@ -277,31 +277,31 @@ struct CdmMsgCvt<std::vector<AlertsInterface::AlertRecord>>
 template<>
 struct CdmMsgCvt<AlertsInterface::AlertCodesDescriptor>
 {
-    void get(const MsgArg& msgarg, AlertsInterface::AlertCodesDescriptor& value)
+    void get(const MsgArg& msgarg, AlertsInterface::AlertCodesDescriptor& arg_)
     {
-        uint16_t alertCode{};
-        const char* description{};
-        msgarg.Get("(qs)", &alertCode, &description);
-        value.alertCode = alertCode;
-        value.description = description;
+        uint16_t field_alertCode{};
+        const char* field_description{};
+        msgarg.Get("(qs)", &field_alertCode, &field_description);
+        arg_.alertCode = field_alertCode;
+        arg_.description = field_description;
     }
 
-    void set(MsgArg& msgarg, const AlertsInterface::AlertCodesDescriptor value)
+    void set(MsgArg& msgarg, const AlertsInterface::AlertCodesDescriptor arg_)
     {
-        uint16_t alertCode = value.alertCode;
-        const char* description = value.description.c_str();
-        msgarg.Set("(qs)", alertCode, description);
+        uint16_t field_alertCode = arg_.alertCode;
+        const char* field_description = arg_.description.c_str();
+        msgarg.Set("(qs)", field_alertCode, field_description);
     }
 
     std::string str(const MsgArg& msgarg)
     {
-        AlertsInterface::AlertCodesDescriptor value;
-        get(msgarg, value);
+        AlertsInterface::AlertCodesDescriptor arg_;
+        get(msgarg, arg_);
 
         std::ostringstream strm;
-        strm << "alertCode=" << value.alertCode;
+        strm << "alertCode=" << arg_.alertCode;
         strm << " ";
-        strm << "description=" << value.description;
+        strm << "description=" << arg_.description;
         return strm.str();
     }
 };
@@ -310,34 +310,34 @@ struct CdmMsgCvt<AlertsInterface::AlertCodesDescriptor>
 template<>
 struct CdmMsgCvt<std::vector<AlertsInterface::AlertCodesDescriptor>>
 {
-    void get(const MsgArg& msgarg, std::vector<AlertsInterface::AlertCodesDescriptor>& value)
+    void get(const MsgArg& msgarg, std::vector<AlertsInterface::AlertCodesDescriptor>& arg_)
     {
         MsgArg* elems = 0;
         size_t  num = 0;
 
         msgarg.Get("a(qs)", &num, &elems);
-        value.resize(num);
+        arg_.resize(num);
 
         for (size_t i = 0; i < num; ++i)
         {
-            uint16_t alertCode{};
-            const char* description{};
-            elems[i].Get("(qs)", &alertCode, &description);
-            value[i].alertCode = alertCode;
-            value[i].description = description;
+            uint16_t field_alertCode{};
+            const char* field_description{};
+            elems[i].Get("(qs)", &field_alertCode, &field_description);
+            arg_[i].alertCode = field_alertCode;
+            arg_[i].description = field_description;
         }
     }
 
-    void set(MsgArg& msgarg, const std::vector<AlertsInterface::AlertCodesDescriptor>& value)
+    void set(MsgArg& msgarg, const std::vector<AlertsInterface::AlertCodesDescriptor>& arg_)
     {
-        size_t num = value.size();
+        size_t num = arg_.size();
         std::vector<MsgArg> elems(num);
 
         for (size_t i = 0; i < num; ++i)
         {
-            uint16_t alertCode = value[i].alertCode;
-            const char* description = value[i].description.c_str();
-            elems[i].Set("(qs)", alertCode, description);
+            uint16_t field_alertCode = arg_[i].alertCode;
+            const char* field_description = arg_[i].description.c_str();
+            elems[i].Set("(qs)", field_alertCode, field_description);
         }
 
         msgarg.Set("a(qs)", num, elems.data());

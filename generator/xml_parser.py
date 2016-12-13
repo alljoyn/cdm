@@ -708,6 +708,8 @@ class Interface(object):
         elif isinstance(child, Annotation):
             self.Annotations.append(child)
             self.add_annotation(child.Name, child.Value)
+        elif isinstance(child, Description):
+            pass
         else:
             print "Unexpected: ", child
 
@@ -936,6 +938,7 @@ class Method(object):
         self.Mutators = []
         self.doc = {}
         self.parent = None
+        self.noreply = False
 
     @property
     def CodeDoc(self):
@@ -947,10 +950,18 @@ class Method(object):
     def set_doc_string(self, language, value):
         self.doc[language.lower()] = value
 
+    def set_dbus_anno(self, name, value):
+        if name == "NoReply":
+            self.noreply = value == "True"
+        else:
+            print "Unknown method DBus annotation:", name
+
     def add_annotation(self, name, value):
         regexs = {
             re.compile(r'org\.alljoyn\.Bus\.DocString\.(\w*)'):
                 lambda m: self.set_doc_string(m.group(1), value),
+            re.compile(r'org\.freedesktop\.DBus\.Method\.(\w*)'):
+                lambda m: self.set_dbus_anno(m.group(1), value),
             re.compile(r'org\.twobulls\.Method\.Mutates'):
                 lambda m: self.add_mutator(value),
         }
