@@ -80,6 +80,19 @@ static void CommandLoop(Ref<emulator::SuperControllee> supercontrollee)
 }
 
 
+void FindArg(int argc, char** argv, const std::string& arg, const std::string& defValue, std::string& out)
+{
+    for (int i=0; i<argc; ++i)
+    {
+        if (arg == argv[i])
+        {
+            out = argv[i + 1];
+            return;
+        }
+    }
+
+    out = defValue;
+}
 
 int CDECL_CALL main(int argc, char** argv)
 {
@@ -87,7 +100,7 @@ int CDECL_CALL main(int argc, char** argv)
 
     if (argc < 2)
     {
-        std::cerr << "Usage: DeviceEmulator xml-file\n";
+        std::cerr << "Usage: DeviceEmulator xml-file --state-dir <dir> --certs-dir <dir>\n";
         return 1;
     }
 
@@ -99,7 +112,12 @@ int CDECL_CALL main(int argc, char** argv)
         return 1;
     }
 
-    HAL::SetRootDir("/tmp/dev_emul");
+    std::string certs_dir;
+    std::string state_dir;
+
+    FindArg(argc, argv, "--state-dir", "emulated_device_state", state_dir);
+    FindArg(argc, argv, "--certs-dir", "device_emulator_certs", certs_dir);
+    HAL::SetRootDir(state_dir);
 
     CdmSystem system("DeviceEmulator");
 
@@ -110,7 +128,7 @@ int CDECL_CALL main(int argc, char** argv)
         return 1;
     }
 
-    auto device = mkRef<emulator::SuperControllee>(system.GetBusAttachment(), config, "device_emulator_certs/security");
+    auto device = mkRef<emulator::SuperControllee>(system.GetBusAttachment(), config, certs_dir + "/security");
 
     status = device->Start();
     if (status != ER_OK) {

@@ -43,8 +43,8 @@ QStatus MkDirPath(const string& path, char delim, int mode)
 
     for (auto& p : parts)
     {
-        piece += PathDelim;
         piece += p;
+        piece += PathDelim;
 
         int err = mkdir(piece.c_str(), 0777);
 
