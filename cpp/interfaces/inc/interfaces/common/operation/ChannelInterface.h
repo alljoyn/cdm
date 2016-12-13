@@ -90,36 +90,36 @@ class ChannelInterface : public CdmInterface {
 template<>
 struct CdmMsgCvt<ChannelInterface::ChannelInfoRecord>
 {
-    void get(const MsgArg& msgarg, ChannelInterface::ChannelInfoRecord& value)
+    void get(const MsgArg& msgarg, ChannelInterface::ChannelInfoRecord& arg_)
     {
-        const char* channelID{};
-        const char* channelNumber{};
-        const char* channelName{};
-        msgarg.Get("(sss)", &channelID, &channelNumber, &channelName);
-        value.channelID = channelID;
-        value.channelNumber = channelNumber;
-        value.channelName = channelName;
+        const char* field_channelID{};
+        const char* field_channelNumber{};
+        const char* field_channelName{};
+        msgarg.Get("(sss)", &field_channelID, &field_channelNumber, &field_channelName);
+        arg_.channelID = field_channelID;
+        arg_.channelNumber = field_channelNumber;
+        arg_.channelName = field_channelName;
     }
 
-    void set(MsgArg& msgarg, const ChannelInterface::ChannelInfoRecord value)
+    void set(MsgArg& msgarg, const ChannelInterface::ChannelInfoRecord arg_)
     {
-        const char* channelID = value.channelID.c_str();
-        const char* channelNumber = value.channelNumber.c_str();
-        const char* channelName = value.channelName.c_str();
-        msgarg.Set("(sss)", channelID, channelNumber, channelName);
+        const char* field_channelID = arg_.channelID.c_str();
+        const char* field_channelNumber = arg_.channelNumber.c_str();
+        const char* field_channelName = arg_.channelName.c_str();
+        msgarg.Set("(sss)", field_channelID, field_channelNumber, field_channelName);
     }
 
     std::string str(const MsgArg& msgarg)
     {
-        ChannelInterface::ChannelInfoRecord value;
-        get(msgarg, value);
+        ChannelInterface::ChannelInfoRecord arg_;
+        get(msgarg, arg_);
 
         std::ostringstream strm;
-        strm << "channelID=" << value.channelID;
+        strm << "channelID=" << arg_.channelID;
         strm << " ";
-        strm << "channelNumber=" << value.channelNumber;
+        strm << "channelNumber=" << arg_.channelNumber;
         strm << " ";
-        strm << "channelName=" << value.channelName;
+        strm << "channelName=" << arg_.channelName;
         return strm.str();
     }
 };
@@ -128,37 +128,37 @@ struct CdmMsgCvt<ChannelInterface::ChannelInfoRecord>
 template<>
 struct CdmMsgCvt<std::vector<ChannelInterface::ChannelInfoRecord>>
 {
-    void get(const MsgArg& msgarg, std::vector<ChannelInterface::ChannelInfoRecord>& value)
+    void get(const MsgArg& msgarg, std::vector<ChannelInterface::ChannelInfoRecord>& arg_)
     {
         MsgArg* elems = 0;
         size_t  num = 0;
 
         msgarg.Get("a(sss)", &num, &elems);
-        value.resize(num);
+        arg_.resize(num);
 
         for (size_t i = 0; i < num; ++i)
         {
-            const char* channelID{};
-            const char* channelNumber{};
-            const char* channelName{};
-            elems[i].Get("(sss)", &channelID, &channelNumber, &channelName);
-            value[i].channelID = channelID;
-            value[i].channelNumber = channelNumber;
-            value[i].channelName = channelName;
+            const char* field_channelID{};
+            const char* field_channelNumber{};
+            const char* field_channelName{};
+            elems[i].Get("(sss)", &field_channelID, &field_channelNumber, &field_channelName);
+            arg_[i].channelID = field_channelID;
+            arg_[i].channelNumber = field_channelNumber;
+            arg_[i].channelName = field_channelName;
         }
     }
 
-    void set(MsgArg& msgarg, const std::vector<ChannelInterface::ChannelInfoRecord>& value)
+    void set(MsgArg& msgarg, const std::vector<ChannelInterface::ChannelInfoRecord>& arg_)
     {
-        size_t num = value.size();
+        size_t num = arg_.size();
         std::vector<MsgArg> elems(num);
 
         for (size_t i = 0; i < num; ++i)
         {
-            const char* channelID = value[i].channelID.c_str();
-            const char* channelNumber = value[i].channelNumber.c_str();
-            const char* channelName = value[i].channelName.c_str();
-            elems[i].Set("(sss)", channelID, channelNumber, channelName);
+            const char* field_channelID = arg_[i].channelID.c_str();
+            const char* field_channelNumber = arg_[i].channelNumber.c_str();
+            const char* field_channelName = arg_[i].channelName.c_str();
+            elems[i].Set("(sss)", field_channelID, field_channelNumber, field_channelName);
         }
 
         msgarg.Set("a(sss)", num, elems.data());
