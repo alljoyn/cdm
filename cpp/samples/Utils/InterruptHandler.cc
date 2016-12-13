@@ -30,12 +30,12 @@ void handlerRouter(int interrupt) {
         std::cout<<"No handler for interrupt "<<interrupt<<"."<<std::endl;
 }
 
-bool addHandler(int interrupt, std::function<void()> handler) {
+/*bool addHandler(int interrupt, std::function<void()> handler) {
     if (signal(interrupt, handlerRouter) == SIG_ERR)
         return false;
 
     handlers[interrupt] = handler;
     return true;
-}
+}*/
 
 } // namespace InterruptHandler

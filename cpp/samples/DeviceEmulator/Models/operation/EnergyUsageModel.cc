@@ -53,7 +53,6 @@ QStatus EnergyUsageModel::GetUpdateMinTime(uint16_t& out) const
 QStatus EnergyUsageModel::ResetCumulativeEnergy(ErrorCode& error, CdmControllee& controllee)
 {
     return HAL::WriteProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.EnergyUsage", "CumulativeEnergy", 0);
-    return ER_OK;
 }
 
 } // namespace emulator

@@ -19,7 +19,7 @@
 
 namespace InterruptHandler {
 
-bool addHandler(int interrupt, std::function<void()> handler);
+//bool addHandler(int interrupt, std::function<void()> handler);
 
 } // namespace InterrupHandler
 
