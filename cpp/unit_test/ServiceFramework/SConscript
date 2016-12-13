@@ -131,7 +131,7 @@ else:
     cdm_unittest_env.Prepend(LIBS = ['gtest'])
     cdm_unittest_env.Prepend(LIBS = ['alljoyn_cdm'])
 
-    cdmtest_src = cdm_unittest_env.Glob('*.cc') + cdm_unittest_env.Glob('environment/*.cc') + cdm_unittest_env.Glob('operation/*.cc') + cdm_unittest_env.Glob('input/*.cc')
+    cdmtest_src = cdm_unittest_env.Glob('*.cc') + cdm_unittest_env.Glob('environment/*.cc') + cdm_unittest_env.Glob('operation/*.cc') + cdm_unittest_env.Glob('input/*.cc') + cdm_unittest_env.Glob('userinterfacesettings/*.cc')
     if cdm_unittest_env['BR'] != 'on':
         # need to remove DiscoveryTest.cc from sources
         cdmtest_src = [l for l in cdm_unittest_env.Glob('*.cc') if not l.path.endswith('DiscoveryTest.cc')]
