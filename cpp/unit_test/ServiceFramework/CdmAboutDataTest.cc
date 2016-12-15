@@ -1,20 +1,33 @@
 /******************************************************************************
- * Copyright AllSeen Alliance. All rights reserved.
+ *  *    Copyright (c) Open Connectivity Foundation (OCF) and AllJoyn Open
+ *    Source Project (AJOSP) Contributors and others.
  *
- *    Permission to use, copy, modify, and/or distribute this software for any
- *    purpose with or without fee is hereby granted, provided that the above
- *    copyright notice and this permission notice appear in all copies.
+ *    SPDX-License-Identifier: Apache-2.0
  *
- *    THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- *    WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- *    MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- *    ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- *    WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- *    ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ *    All rights reserved. This program and the accompanying materials are
+ *    made available under the terms of the Apache License, Version 2.0
+ *    which accompanies this distribution, and is available at
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Copyright (c) Open Connectivity Foundation and Contributors to AllSeen
+ *    Alliance. All rights reserved.
+ *
+ *    Permission to use, copy, modify, and/or distribute this software for
+ *    any purpose with or without fee is hereby granted, provided that the
+ *    above copyright notice and this permission notice appear in all
+ *    copies.
+ *
+ *     THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+ *     WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+ *     WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE
+ *     AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL
+ *     DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR
+ *     PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
+ *     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+ *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 //Code Under Test
-#include <alljoyn/cdm/CdmAboutData.h>
+#include <alljoyn/cdm/common/CdmAboutData.h>
 
 
 #include <alljoyn/version.h>
@@ -22,7 +35,7 @@
 #include <qcc/String.h>
 
 #include <map>
-#include <alljoyn/cdm/DeviceTypeDescription.h>
+#include <alljoyn/cdm/common/DeviceTypeDescription.h>
 
 namespace ajn{
 namespace services{
@@ -268,11 +281,8 @@ TEST(CdmAboutDataTest, SetDeviceTypeDescription) {
     status = aboutData.SetDeviceTypeDescription(&description);
     EXPECT_EQ(ER_OK, status);
 
-    DeviceTypeDescription*  returnedDescription = new DeviceTypeDescription();
-    status = aboutData.GetDeviceTypeDescription( &returnedDescription);
-    EXPECT_EQ(ER_OK, status);
-
-    std::multimap<DeviceType, qcc::String>::const_iterator it = returnedDescription->GetDescriptions().begin();
+    DeviceTypeDescription returnedDescription = aboutData.GetDeviceTypeDescription();
+    auto it = returnedDescription.GetDescriptions().begin();
     EXPECT_EQ(THERMOSTAT, it->first);
     EXPECT_STREQ("/Cdm/Thermostat", it->second.c_str() );
     
@@ -672,11 +682,8 @@ TEST(CdmAboutDataTest, InitUsingMsgArg)
     status = aboutDataInit.CreatefromMsgArg(aboutArg);
     EXPECT_EQ(ER_OK, status);
 
-    DeviceTypeDescription*  returnedDescription = new DeviceTypeDescription();
-    status = aboutDataInit.GetDeviceTypeDescription( &returnedDescription);
-    EXPECT_EQ(ER_OK, status);
-
-    std::multimap<DeviceType, qcc::String>::const_iterator it = returnedDescription->GetDescriptions().begin();
+    DeviceTypeDescription returnedDescription = aboutDataInit.GetDeviceTypeDescription();
+    std::multimap<DeviceType, qcc::String>::const_iterator it = returnedDescription.GetDescriptions().begin();
     EXPECT_EQ(THERMOSTAT, it->first);
     EXPECT_STREQ("/Cdm/Thermostat", it->second.c_str() );
 
@@ -863,11 +870,8 @@ TEST(CdmAboutDataTest, CreateFromXml_from_qcc_string) {
     EXPECT_EQ(ER_OK, status);
     EXPECT_STREQ("habitación del segundo piso", location);
 
-    DeviceTypeDescription*  returnedDescription = new DeviceTypeDescription();
-    status = aboutData.GetDeviceTypeDescription( &returnedDescription);
-    EXPECT_EQ(ER_OK, status);
-
-    std::multimap<DeviceType, qcc::String>::const_iterator it = returnedDescription->GetDescriptions().begin();
+    DeviceTypeDescription returnedDescription = aboutData.GetDeviceTypeDescription();
+    std::multimap<DeviceType, qcc::String>::const_iterator it = returnedDescription.GetDescriptions().begin();
     EXPECT_EQ(THERMOSTAT, it->first);
     EXPECT_STREQ("/Cdm/Thermostat", it->second.c_str() );
 }
@@ -916,11 +920,8 @@ TEST(CdmAboutDataTest, CreateFromXml_from_char_string) {
     EXPECT_EQ(ER_OK, status);
     EXPECT_STREQ("habitación del segundo piso", location);
 
-    DeviceTypeDescription*  returnedDescription = new DeviceTypeDescription();
-    status = aboutData.GetDeviceTypeDescription( &returnedDescription);
-    EXPECT_EQ(ER_OK, status);
-
-    std::multimap<DeviceType, qcc::String>::const_iterator it = returnedDescription->GetDescriptions().begin();
+    DeviceTypeDescription returnedDescription = aboutData.GetDeviceTypeDescription();
+    std::multimap<DeviceType, qcc::String>::const_iterator it = returnedDescription.GetDescriptions().begin();
     EXPECT_EQ(THERMOSTAT, it->first);
     EXPECT_STREQ("/Cdm/Thermostat", it->second.c_str() );
 }
@@ -971,11 +972,8 @@ TEST(CdmAboutDataTest, CreateFromXml_multiple_device_types) {
         EXPECT_EQ(ER_OK, status);
         EXPECT_STREQ("habitación del segundo piso", location);
 
-        DeviceTypeDescription*  returnedDescription = new DeviceTypeDescription();
-        status = aboutData.GetDeviceTypeDescription( &returnedDescription);
-        EXPECT_EQ(ER_OK, status);
-
-        std::multimap<DeviceType, qcc::String> returnedDescriptions = returnedDescription->GetDescriptions();
+        DeviceTypeDescription returnedDescription = aboutData.GetDeviceTypeDescription();
+        std::multimap<DeviceType, qcc::String> returnedDescriptions = returnedDescription.GetDescriptions();
         EXPECT_EQ(3, (int)returnedDescriptions.size());
         EXPECT_EQ(1, (int)returnedDescriptions.count(REFRIGERATOR));
         EXPECT_EQ(1, (int)returnedDescriptions.count(FREEZER));

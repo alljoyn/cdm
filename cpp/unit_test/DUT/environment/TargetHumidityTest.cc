@@ -1,30 +1,46 @@
 /******************************************************************************
- * Copyright AllSeen Alliance. All rights reserved.
+ *  *    Copyright (c) Open Connectivity Foundation (OCF) and AllJoyn Open
+ *    Source Project (AJOSP) Contributors and others.
  *
- *    Permission to use, copy, modify, and/or distribute this software for any
- *    purpose with or without fee is hereby granted, provided that the above
- *    copyright notice and this permission notice appear in all copies.
+ *    SPDX-License-Identifier: Apache-2.0
  *
- *    THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- *    WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- *    MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- *    ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- *    WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- *    ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ *    All rights reserved. This program and the accompanying materials are
+ *    made available under the terms of the Apache License, Version 2.0
+ *    which accompanies this distribution, and is available at
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Copyright (c) Open Connectivity Foundation and Contributors to AllSeen
+ *    Alliance. All rights reserved.
+ *
+ *    Permission to use, copy, modify, and/or distribute this software for
+ *    any purpose with or without fee is hereby granted, provided that the
+ *    above copyright notice and this permission notice appear in all
+ *    copies.
+ *
+ *     THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+ *     WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+ *     WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE
+ *     AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL
+ *     DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR
+ *     PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
+ *     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+ *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
 #include "CdmTest.h"
 
-#include <alljoyn/cdm/interfaces/environment/TargetHumidityIntfController.h>
-#include <alljoyn/cdm/interfaces/environment/TargetHumidityIntfControllerListener.h>
+#include <interfaces/controller/environment/TargetHumidityIntfController.h>
+#include <interfaces/controller/environment/TargetHumidityIntfControllerListener.h>
 #include <algorithm>
+
+static const uint8_t MIN_HUMIDITY = 0;
+static const uint8_t MAX_HUMIDITY = 100;
 
 class TargetHumidityListener : public TargetHumidityIntfControllerListener
 {
 public:
-    qcc::Event m_event;
-    qcc::Event m_eventSignal;
+    CdmSemaphore m_event;
+    CdmSemaphore m_eventSignal;
 
     QStatus m_status;
     qcc::String m_errorName;
@@ -34,12 +50,12 @@ public:
     uint8_t m_minValue;
     uint8_t m_maxValue;
     uint8_t m_stepValue;
-    TargetHumidityInterface::HumidityLevels m_selectableHumidityLevels;
+    std::vector<uint8_t> m_selectableHumidityLevels;
     uint8_t m_targetValueSignal;
     uint8_t m_minValueSignal;
     uint8_t m_maxValueSignal;
     uint8_t m_stepValueSignal;
-    TargetHumidityInterface::HumidityLevels m_selectableHumidityLevelsSignal;
+    std::vector<uint8_t> m_selectableHumidityLevelsSignal;
 
     virtual void OnResponseSetTargetValue(QStatus status, const qcc::String& objectPath, void* context)
     {
@@ -75,7 +91,7 @@ public:
         m_event.SetEvent();
     }
 
-    virtual void OnResponseGetSelectableHumidityLevels(QStatus status, const qcc::String& objectPath, const TargetHumidityInterface::HumidityLevels& value, void* context)
+    virtual void OnResponseGetSelectableHumidityLevels(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& value, void* context)
     {
         m_status = status;
         m_selectableHumidityLevels = value;
@@ -106,19 +122,19 @@ public:
         m_eventSignal.SetEvent();
     }
 
-    virtual void OnSelectableHumidityLevelsChanged(const qcc::String& objectPath, const TargetHumidityInterface::HumidityLevels& value)
+    virtual void OnSelectableHumidityLevelsChanged(const qcc::String& objectPath, const std::vector<uint8_t>& value)
     {
         m_selectableHumidityLevelsSignal = value;
         m_eventSignal.SetEvent();
     }
 };
 
-uint8_t getInvalidValue(TargetHumidityInterface::HumidityLevels& levels) {
-    for (int i = TargetHumidityInterface::MIN_HUMIDITY; i < TargetHumidityInterface::MAX_HUMIDITY; ++i) {
+uint8_t getInvalidValue(std::vector<uint8_t>& levels) {
+    for (int i = MIN_HUMIDITY; i < MAX_HUMIDITY; ++i) {
         if (std::find(levels.begin(), levels.end(), i) == levels.end())
             return i;
     }
-    return TargetHumidityInterface::MAX_HUMIDITY + 1;
+    return MAX_HUMIDITY + 1;
 }
 
 TEST_F(CDMTest, CDM_v1_TargetHumidity)
@@ -127,10 +143,10 @@ TEST_F(CDMTest, CDM_v1_TargetHumidity)
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
 
-        TargetHumidityListener listener;
-        CdmInterface* interface = m_controller->CreateInterface(TARGET_HUMIDITY_INTERFACE, m_interfaces[i].busName,
+        auto listener = mkRef<TargetHumidityListener>();
+        auto interface = m_controller->CreateInterface("org.alljoyn.SmartSpaces.Environment.TargetHumidity", m_interfaces[i].busName,
                                                                 qcc::String(m_interfaces[i].objectPath.c_str()), m_interfaces[i].sessionId, listener);
-        TargetHumidityIntfController* controller = static_cast<TargetHumidityIntfController*>(interface);
+        auto controller = std::dynamic_pointer_cast<TargetHumidityIntfController>(interface);
         QStatus status = ER_FAIL;
 
         TEST_LOG_1("Get initial values for all properties.");
@@ -138,175 +154,175 @@ TEST_F(CDMTest, CDM_v1_TargetHumidity)
             TEST_LOG_2("Retrieve the TargetValue property.");
             status = controller->GetTargetValue();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            EXPECT_EQ(listener.m_status, ER_OK);
-            listener.m_event.ResetEvent();
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            EXPECT_EQ(listener->m_status, ER_OK);
+            listener->m_event.ResetEvent();
 
             TEST_LOG_2("Retrieve the MinValue property.");
             status = controller->GetMinValue();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            EXPECT_EQ(listener.m_status, ER_OK);
-            listener.m_event.ResetEvent();
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            EXPECT_EQ(listener->m_status, ER_OK);
+            listener->m_event.ResetEvent();
 
             TEST_LOG_2("Retrieve the MaxValue property.");
             status = controller->GetMaxValue();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            EXPECT_EQ(listener.m_status, ER_OK);
-            listener.m_event.ResetEvent();
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            EXPECT_EQ(listener->m_status, ER_OK);
+            listener->m_event.ResetEvent();
 
             TEST_LOG_2("Retrieve the StepValue property.");
             status = controller->GetStepValue();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            EXPECT_EQ(listener.m_status, ER_OK);
-            listener.m_event.ResetEvent();
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            EXPECT_EQ(listener->m_status, ER_OK);
+            listener->m_event.ResetEvent();
 
             TEST_LOG_2("Retrieve the SelectableHumidityLevels property.");
             status = controller->GetSelectableHumidityLevels();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            EXPECT_EQ(listener.m_status, ER_OK);
-            listener.m_event.ResetEvent();
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            EXPECT_EQ(listener->m_status, ER_OK);
+            listener->m_event.ResetEvent();
         }
 
         TEST_LOG_1("Initialize all read-write properties.");
-        if (listener.m_maxValue > listener.m_minValue) {
+        if (listener->m_maxValue > listener->m_minValue) {
             TEST_LOG_2("Initialize the TargetValue property to the MinValue");
-            if (listener.m_targetValue != listener.m_minValue) {
-                uint8_t target = listener.m_minValue;
+            if (listener->m_targetValue != listener->m_minValue) {
+                uint8_t target = listener->m_minValue;
                 status =  controller->SetTargetValue(target);
                 EXPECT_EQ(status, ER_OK);
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-                EXPECT_EQ(listener.m_status, ER_OK);
-                listener.m_event.ResetEvent();
+                EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+                EXPECT_EQ(listener->m_status, ER_OK);
+                listener->m_event.ResetEvent();
 
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_eventSignal, TIMEOUT)) << "property changed signal is missing";
-                listener.m_eventSignal.ResetEvent();
-                EXPECT_EQ(listener.m_targetValueSignal, target);
+                EXPECT_EQ(true, listener->m_eventSignal.Wait(TIMEOUT)) << "property changed signal is missing";
+                listener->m_eventSignal.ResetEvent();
+                EXPECT_EQ(listener->m_targetValueSignal, target);
             }
         } else {
             TEST_LOG_2("If SelectableHumidityLevels > 1, initialize the TargetValue property to the 1st item of the SelectableHumidityLevels.");
-            if (listener.m_selectableHumidityLevels.size() > 1 && listener.m_targetValue != listener.m_selectableHumidityLevels[0]) {
-                uint8_t target = listener.m_selectableHumidityLevels[0];
+            if (listener->m_selectableHumidityLevels.size() > 1 && listener->m_targetValue != listener->m_selectableHumidityLevels[0]) {
+                uint8_t target = listener->m_selectableHumidityLevels[0];
                 status =  controller->SetTargetValue(target);
                 EXPECT_EQ(status, ER_OK);
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-                EXPECT_EQ(listener.m_status, ER_OK);
-                listener.m_event.ResetEvent();
+                EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+                EXPECT_EQ(listener->m_status, ER_OK);
+                listener->m_event.ResetEvent();
 
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_eventSignal, TIMEOUT)) << "property changed signal is missing";
-                listener.m_eventSignal.ResetEvent();
-                EXPECT_EQ(listener.m_targetValueSignal, target);
+                EXPECT_EQ(true, listener->m_eventSignal.Wait(TIMEOUT)) << "property changed signal is missing";
+                listener->m_eventSignal.ResetEvent();
+                EXPECT_EQ(listener->m_targetValueSignal, target);
             }
         }
 
         TEST_LOG_1("Set properties to valid value.");
-        if (listener.m_maxValue > listener.m_minValue) {
+        if (listener->m_maxValue > listener->m_minValue) {
             TEST_LOG_2("Set the TargetValue property to the MaxValue.");
-            uint8_t target = listener.m_maxValue;
+            uint8_t target = listener->m_maxValue;
             status =  controller->SetTargetValue(target);
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            EXPECT_EQ(listener.m_status, ER_OK);
-            listener.m_event.ResetEvent();
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            EXPECT_EQ(listener->m_status, ER_OK);
+            listener->m_event.ResetEvent();
 
             TEST_LOG_3("Wait the PropertiesChanged signal for the TargetValue property.");
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_eventSignal, TIMEOUT)) << "property changed signal is missing";
-            listener.m_eventSignal.ResetEvent();
-            EXPECT_EQ(listener.m_targetValueSignal, target);
+            EXPECT_EQ(true, listener->m_eventSignal.Wait(TIMEOUT)) << "property changed signal is missing";
+            listener->m_eventSignal.ResetEvent();
+            EXPECT_EQ(listener->m_targetValueSignal, target);
 
             TEST_LOG_3("Get the TargetValue property.");
             status =  controller->GetTargetValue();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            listener.m_event.ResetEvent();
-            EXPECT_EQ(listener.m_status, ER_OK);
-            EXPECT_EQ(listener.m_targetValue, target);
-        } else if (listener.m_selectableHumidityLevels.size() > 1) {
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            listener->m_event.ResetEvent();
+            EXPECT_EQ(listener->m_status, ER_OK);
+            EXPECT_EQ(listener->m_targetValue, target);
+        } else if (listener->m_selectableHumidityLevels.size() > 1) {
             TEST_LOG_2("If SelectableHumidityLevels > 1, Set the TargetValue property to the 2nd item of the SelectableHumidityLevels.");
-            uint8_t target = listener.m_selectableHumidityLevels[1];
+            uint8_t target = listener->m_selectableHumidityLevels[1];
             status =  controller->SetTargetValue(target);
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            EXPECT_EQ(listener.m_status, ER_OK);
-            listener.m_event.ResetEvent();
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            EXPECT_EQ(listener->m_status, ER_OK);
+            listener->m_event.ResetEvent();
 
             TEST_LOG_3("Wait the PropertiesChanged signal for the TargetValue property.");
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_eventSignal, TIMEOUT)) << "property changed signal is missing";
-            listener.m_eventSignal.ResetEvent();
-            EXPECT_EQ(listener.m_targetValueSignal, target);
+            EXPECT_EQ(true, listener->m_eventSignal.Wait(TIMEOUT)) << "property changed signal is missing";
+            listener->m_eventSignal.ResetEvent();
+            EXPECT_EQ(listener->m_targetValueSignal, target);
 
             TEST_LOG_3("Get the TargetValue property.");
             status =  controller->GetTargetValue();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            listener.m_event.ResetEvent();
-            EXPECT_EQ(listener.m_status, ER_OK);
-            EXPECT_EQ(listener.m_targetValue, target);
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            listener->m_event.ResetEvent();
+            EXPECT_EQ(listener->m_status, ER_OK);
+            EXPECT_EQ(listener->m_targetValue, target);
         }
 
         TEST_LOG_1("Set properties to invalid value.");
-        if (listener.m_maxValue > listener.m_minValue) {
-            TEST_LOG_2("If MinValue > " << (int)TargetHumidityInterface::MIN_HUMIDITY << ", Set the TargetValue property to the 0.");
-            if (listener.m_minValue > TargetHumidityInterface::MIN_HUMIDITY) {
-                status =  controller->SetTargetValue(TargetHumidityInterface::MIN_HUMIDITY);
+        if (listener->m_maxValue > listener->m_minValue) {
+            TEST_LOG_2("If MinValue > " << (int)MIN_HUMIDITY << ", Set the TargetValue property to the 0.");
+            if (listener->m_minValue > MIN_HUMIDITY) {
+                status =  controller->SetTargetValue(MIN_HUMIDITY);
                 EXPECT_EQ(status, ER_OK);
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-                EXPECT_EQ(listener.m_status, ER_OK);
-                listener.m_event.ResetEvent();
+                EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+                EXPECT_EQ(listener->m_status, ER_OK);
+                listener->m_event.ResetEvent();
 
                 TEST_LOG_3("Wait the PropertiesChanged signal for the TargetValue property.");
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_eventSignal, TIMEOUT)) << "property changed signal is missing";
-                listener.m_eventSignal.ResetEvent();
-                EXPECT_EQ(listener.m_targetValueSignal, listener.m_minValue);
+                EXPECT_EQ(true, listener->m_eventSignal.Wait(TIMEOUT)) << "property changed signal is missing";
+                listener->m_eventSignal.ResetEvent();
+                EXPECT_EQ(listener->m_targetValueSignal, listener->m_minValue);
 
                 TEST_LOG_3("Get the TargetValue property.");
                 status =  controller->GetTargetValue();
                 EXPECT_EQ(status, ER_OK);
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-                listener.m_event.ResetEvent();
-                EXPECT_EQ(listener.m_status, ER_OK);
-                EXPECT_EQ(listener.m_targetValue, listener.m_minValue);
+                EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+                listener->m_event.ResetEvent();
+                EXPECT_EQ(listener->m_status, ER_OK);
+                EXPECT_EQ(listener->m_targetValue, listener->m_minValue);
             }
 
-            TEST_LOG_2("Set the TargetValue property to invalid Value(" << (int)TargetHumidityInterface::MAX_HUMIDITY + 1 << ").");
-            status =  controller->SetTargetValue(TargetHumidityInterface::MAX_HUMIDITY + 1);
+            TEST_LOG_2("Set the TargetValue property to invalid Value(" << (int)MAX_HUMIDITY + 1 << ").");
+            status =  controller->SetTargetValue(MAX_HUMIDITY + 1);
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            EXPECT_EQ(listener.m_status, ER_OK);
-            listener.m_event.ResetEvent();
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            EXPECT_EQ(listener->m_status, ER_OK);
+            listener->m_event.ResetEvent();
 
             TEST_LOG_3("Wait the PropertiesChanged signal for the TargetValue property.");
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_eventSignal, TIMEOUT)) << "property changed signal is missing";
-            listener.m_eventSignal.ResetEvent();
-            EXPECT_DOUBLE_EQ(listener.m_targetValueSignal, listener.m_maxValue);
+            EXPECT_EQ(ER_OK, listener->m_eventSignal.Wait(TIMEOUT)) << "property changed signal is missing";
+            listener->m_eventSignal.ResetEvent();
+            EXPECT_DOUBLE_EQ(listener->m_targetValueSignal, listener->m_maxValue);
 
             TEST_LOG_3("Get the TargetValue property.");
             status =  controller->GetTargetValue();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            listener.m_event.ResetEvent();
-            EXPECT_EQ(listener.m_status, ER_OK);
-            EXPECT_EQ(listener.m_targetValue, listener.m_maxValue);
-        } else if (listener.m_selectableHumidityLevels.size() > 0) {
-            uint8_t prevValue = listener.m_targetValue;
-            uint8_t targetValue = getInvalidValue(listener.m_selectableHumidityLevels);
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            listener->m_event.ResetEvent();
+            EXPECT_EQ(listener->m_status, ER_OK);
+            EXPECT_EQ(listener->m_targetValue, listener->m_maxValue);
+        } else if (listener->m_selectableHumidityLevels.size() > 0) {
+            uint8_t prevValue = listener->m_targetValue;
+            uint8_t targetValue = getInvalidValue(listener->m_selectableHumidityLevels);
             TEST_LOG_2("Set the TargetValue property to invalid Value(" << (int)targetValue << ").");
             status =  controller->SetTargetValue(targetValue);
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            EXPECT_NE(listener.m_status, ER_OK);
-            listener.m_event.ResetEvent();
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            EXPECT_NE(listener->m_status, ER_OK);
+            listener->m_event.ResetEvent();
 
             TEST_LOG_3("Get the TargetValue property.");
             status =  controller->GetTargetValue();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            listener.m_event.ResetEvent();
-            EXPECT_EQ(listener.m_status, ER_OK);
-            EXPECT_EQ(listener.m_targetValue, prevValue);
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            listener->m_event.ResetEvent();
+            EXPECT_EQ(listener->m_status, ER_OK);
+            EXPECT_EQ(listener->m_targetValue, prevValue);
         }
     }
 }
