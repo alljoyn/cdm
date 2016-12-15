@@ -1,26 +1,40 @@
 /******************************************************************************
- * Copyright AllSeen Alliance. All rights reserved.
+ *  * Copyright (c) Open Connectivity Foundation (OCF) and AllJoyn Open
+ *    Source Project (AJOSP) Contributors and others.
  *
- *    Permission to use, copy, modify, and/or distribute this software for any
- *    purpose with or without fee is hereby granted, provided that the above
- *    copyright notice and this permission notice appear in all copies.
+ *    SPDX-License-Identifier: Apache-2.0
  *
- *    THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- *    WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- *    MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- *    ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- *    WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- *    ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ *    All rights reserved. This program and the accompanying materials are
+ *    made available under the terms of the Apache License, Version 2.0
+ *    which accompanies this distribution, and is available at
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Copyright (c) Open Connectivity Foundation and Contributors to AllSeen
+ *    Alliance. All rights reserved.
+ *
+ *    Permission to use, copy, modify, and/or distribute this software for
+ *    any purpose with or without fee is hereby granted, provided that the
+ *    above copyright notice and this permission notice appear in all
+ *    copies.
+ *
+ *     THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+ *     WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+ *     WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE
+ *     AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL
+ *     DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR
+ *     PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
+ *     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+ *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
 #ifndef CDMTEST_H_
 #define CDMTEST_H_
 
-#include <alljoyn/cdm/CdmController.h>
-#include <alljoyn/cdm/DeviceListener.h>
-#include <qcc/Event.h>
+#include <alljoyn/cdm/controller/CdmController.h>
+#include <alljoyn/cdm/common/DeviceListener.h>
 #include <gtest/gtest.h>
+
+#include "CdmSemaphore.h"
 
 #include <iostream>
 #include <vector>
@@ -129,7 +143,7 @@ public:
 
     virtual void OnDeviceAdded(const char* busname, SessionPort port, const CdmAboutData& data, const AboutObjectDescription& description);
     virtual void OnDeviceRemoved(const char* busname);
-    virtual void OnDeviceSessionJoined(const DeviceInfoPtr& info);
+    virtual void OnDeviceSessionJoined(const Ref<DeviceInfo> info);
     virtual void OnDeviceSessionLost(SessionId sessionId);
 
     void WaitForControllee(CdmInterfaceType type = (CdmInterfaceType)-1);
@@ -138,7 +152,7 @@ protected:
     BusAttachment* m_bus;
     qcc::String m_interfaceNameForTest;
     std::vector<InterfaceInfo> m_interfaces;
-    qcc::Event eventOnDeviceAdded;
+    CdmSemaphore eventOnDeviceAdded;
     int LOG_NO;
 };
 
