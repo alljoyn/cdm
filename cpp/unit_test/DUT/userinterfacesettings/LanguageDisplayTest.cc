@@ -17,14 +17,14 @@
 #include "CdmTest.h"
 #include <algorithm>
 
-#include <alljoyn/cdm/interfaces/userinterfacesettings/LanguageDisplayIntfController.h>
-#include <alljoyn/cdm/interfaces/userinterfacesettings/LanguageDisplayIntfControllerListener.h>
+#include <interfaces/controller/userinterfacesettings/LanguageDisplayIntfController.h>
+#include <interfaces/controller/userinterfacesettings/LanguageDisplayIntfControllerListener.h>
 
 class LanguageDisplayListener : public LanguageDisplayIntfControllerListener
 {
 public:
-    qcc::Event m_event;
-    qcc::Event m_eventSignal;
+    CdmSemaphore m_event;
+    CdmSemaphore m_eventSignal;
     QStatus m_status;
 
     qcc::String m_displayLanguage;
@@ -90,10 +90,10 @@ TEST_F(CDMTest, CDM_v1_LanguageDisplay)
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
 
-        LanguageDisplayListener listener;
-        CdmInterface* interface = m_controller->CreateInterface(LANGUAGE_DISPLAY_INTERFACE, m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()),
+        auto listener = mkRef<LanguageDisplayListener>();
+        auto interface = m_controller->CreateInterface("org.alljoyn.SmartSpaces.UserInterfaceSettings.LanguageDisplay", m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()),
                                                                 m_interfaces[i].sessionId, listener);
-        LanguageDisplayIntfController* controller = static_cast<LanguageDisplayIntfController*>(interface);
+        auto controller = std::dynamic_pointer_cast<LanguageDisplayIntfController>(interface);
         QStatus status = ER_FAIL;
 
         TEST_LOG_1("Get initial values for all properties.");
@@ -101,32 +101,32 @@ TEST_F(CDMTest, CDM_v1_LanguageDisplay)
             TEST_LOG_2("Retrieve the DisplayLanguage property.");
             status = controller->GetDisplayLanguage();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            listener.m_event.ResetEvent();
-            EXPECT_EQ(listener.m_status, ER_OK);
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            listener->m_event.ResetEvent();
+            EXPECT_EQ(listener->m_status, ER_OK);
 
             TEST_LOG_2("Retrieve SupportedDisplayLanguages property.");
             status = controller->GetSupportedDisplayLanguages();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            listener.m_event.ResetEvent();
-            EXPECT_EQ(listener.m_status, ER_OK);
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            listener->m_event.ResetEvent();
+            EXPECT_EQ(listener->m_status, ER_OK);
         }
 
-        const qcc::String initDisplayLanguage = listener.m_supportedDisplayLanguages[0];
+        const qcc::String initDisplayLanguage = listener->m_supportedDisplayLanguages[0];
         TEST_LOG_1("Initialize all read-write properties.");
         {
             TEST_LOG_2("Set the DisplayLanguage property to the 1st item of the SupportedDisplayLanguages.");
-            if (listener.m_displayLanguage != initDisplayLanguage) {
+            if (listener->m_displayLanguage != initDisplayLanguage) {
                 status = controller->SetDisplayLanguage(initDisplayLanguage);
                 EXPECT_EQ(status, ER_OK);
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-                listener.m_event.ResetEvent();
-                EXPECT_EQ(listener.m_status, ER_OK);
+                EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+                listener->m_event.ResetEvent();
+                EXPECT_EQ(listener->m_status, ER_OK);
 
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_eventSignal, TIMEOUT)) << "property changed signal is missing";
-                listener.m_eventSignal.ResetEvent();
-                EXPECT_EQ(listener.m_displayLanguageSignal, initDisplayLanguage);
+                EXPECT_EQ(true, listener->m_eventSignal.Wait(TIMEOUT)) << "property changed signal is missing";
+                listener->m_eventSignal.ResetEvent();
+                EXPECT_EQ(listener->m_displayLanguageSignal, initDisplayLanguage);
             }
         }
 
@@ -138,44 +138,44 @@ TEST_F(CDMTest, CDM_v1_LanguageDisplay)
             {
                 status = controller->SetDisplayLanguage(unsupportedDisplayLanguage);
                 EXPECT_EQ(status, ER_OK);
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-                listener.m_event.ResetEvent();
-                EXPECT_NE(listener.m_status, ER_OK);
+                EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+                listener->m_event.ResetEvent();
+                EXPECT_NE(listener->m_status, ER_OK);
 
                 TEST_LOG_2("Get the DisplayLanguage property.");
                 status = controller->GetDisplayLanguage();
                 EXPECT_EQ(status, ER_OK);
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-                listener.m_event.ResetEvent();
-                EXPECT_EQ(listener.m_status, ER_OK);
-                EXPECT_EQ(listener.m_displayLanguage, initDisplayLanguage);
+                EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+                listener->m_event.ResetEvent();
+                EXPECT_EQ(listener->m_status, ER_OK);
+                EXPECT_EQ(listener->m_displayLanguage, initDisplayLanguage);
             }
         }
 
         TEST_LOG_1("Set properties to valid value.");
         {
             TEST_LOG_2("If SupportedDisplayLanguages > 1, set the DisplayLanguage property to the 2nd item of the SupportedDisplayLanguages.");
-            if (listener.m_supportedDisplayLanguages.size() > 1) {
-                const qcc::String validDisplayLanguage = listener.m_supportedDisplayLanguages[1];
+            if (listener->m_supportedDisplayLanguages.size() > 1) {
+                const qcc::String validDisplayLanguage = listener->m_supportedDisplayLanguages[1];
                 status = controller->SetDisplayLanguage(validDisplayLanguage);
 
                 EXPECT_EQ(status, ER_OK);
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-                listener.m_event.ResetEvent();
-                EXPECT_EQ(listener.m_status, ER_OK);
+                EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+                listener->m_event.ResetEvent();
+                EXPECT_EQ(listener->m_status, ER_OK);
 
                 TEST_LOG_3("Wait the PropertiesChanged signal for the TargetLevel property.");
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_eventSignal, TIMEOUT)) << "property changed signal is missing";
-                listener.m_eventSignal.ResetEvent();
-                EXPECT_EQ(listener.m_displayLanguageSignal, validDisplayLanguage);
+                EXPECT_EQ(true, listener->m_eventSignal.Wait(TIMEOUT)) << "property changed signal is missing";
+                listener->m_eventSignal.ResetEvent();
+                EXPECT_EQ(listener->m_displayLanguageSignal, validDisplayLanguage);
 
                 TEST_LOG_3("Get the DisplayLanguage property.");
                 status = controller->GetDisplayLanguage();
                 EXPECT_EQ(status, ER_OK);
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-                listener.m_event.ResetEvent();
-                EXPECT_EQ(listener.m_status, ER_OK);
-                EXPECT_EQ(listener.m_displayLanguage, validDisplayLanguage);
+                EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+                listener->m_event.ResetEvent();
+                EXPECT_EQ(listener->m_status, ER_OK);
+                EXPECT_EQ(listener->m_displayLanguage, validDisplayLanguage);
             }
         }
     }

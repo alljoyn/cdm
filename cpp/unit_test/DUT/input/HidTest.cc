@@ -16,20 +16,22 @@
 
 #include "CdmTest.h"
 
-#include <alljoyn/cdm/interfaces/input/HidIntfController.h>
-#include <alljoyn/cdm/interfaces/input/HidIntfControllerListener.h>
+#include <interfaces/controller/input/HidIntfController.h>
+#include <interfaces/controller/input/HidIntfControllerListener.h>
 
 class HidListener : public HidIntfControllerListener
 {
 public:
-    qcc::Event m_event;
-    qcc::Event m_eventSignal;
+    typedef std::vector<HidInterface::SupportedInputEvent> SupportedInputEvents;
+
+    CdmSemaphore m_event;
+    CdmSemaphore m_eventSignal;
     QStatus m_status;
-    HidInterface::SupportedInputEvents m_supportedEvents;
+    SupportedInputEvents m_supportedEvents;
     qcc::String m_errorName;
     qcc::String m_errorMessage;
 
-    virtual void OnResponseGetSupportedEvents(QStatus status, const qcc::String& objectPath, const HidInterface::SupportedInputEvents& supportedEvents,
+    virtual void OnResponseGetSupportedEvents(QStatus status, const qcc::String& objectPath, const SupportedInputEvents& supportedEvents,
                                               void* context)
     {
         m_status = status;
@@ -37,7 +39,7 @@ public:
         m_event.SetEvent();
     }
 
-    virtual void OnSupportedEventsChanged(const qcc::String& objectPath, const HidInterface::SupportedInputEvents& supportedEvents)
+    virtual void OnSupportedEventsChanged(const qcc::String& objectPath, const SupportedInputEvents& supportedEvents)
     {
         m_supportedEvents = supportedEvents;
         m_eventSignal.SetEvent();
@@ -46,30 +48,33 @@ public:
 
 TEST_F(CDMTest, CDM_v1_Hid)
 {
+    typedef std::vector<HidInterface::InputEvent> InputEvents;
+
     WaitForControllee (HID_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
-        HidListener listener;
-        CdmInterface* interface = m_controller->CreateInterface(HID_INTERFACE, m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()),
+
+        auto listener = mkRef<HidListener>();
+        auto interface = m_controller->CreateInterface("org.alljoyn.Input.Hid", m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()),
                 m_interfaces[i].sessionId, listener);
-        HidIntfController* controller = static_cast<HidIntfController*>(interface);
+        auto controller = std::dynamic_pointer_cast<HidIntfController>(interface);
         QStatus status = ER_FAIL;
 
         TEST_LOG_1("Get initial values for all properties");
         {
             status = controller->GetSupportedEvents();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            listener.m_event.ResetEvent();
-            EXPECT_EQ(listener.m_status, ER_OK);
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            listener->m_event.ResetEvent();
+            EXPECT_EQ(listener->m_status, ER_OK);
         }
 
         TEST_LOG_1("Call method");
         {
             TEST_LOG_2("If size of SupportedEvents > 1, Call the InjectEvents method with 1st item of SupportedInputEvents.");
-            if (listener.m_supportedEvents.size() > 1) {
-                HidInterface::SupportedInputEvent& firstItem = listener.m_supportedEvents[0];
-                HidInterface::InputEvents events;
+            if (listener->m_supportedEvents.size() > 1) {
+                auto& firstItem = listener->m_supportedEvents[0];
+                InputEvents events;
                 HidInterface::InputEvent event;
 
                 event.type = firstItem.type;

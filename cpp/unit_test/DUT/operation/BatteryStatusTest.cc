@@ -16,14 +16,14 @@
 
 #include "CdmTest.h"
 
-#include <alljoyn/cdm/interfaces/operation/BatteryStatusIntfController.h>
-#include <alljoyn/cdm/interfaces/operation/BatteryStatusIntfControllerListener.h>
+#include <interfaces/controller/operation/BatteryStatusIntfController.h>
+#include <interfaces/controller/operation/BatteryStatusIntfControllerListener.h>
 
 class BatteryStatusListener : public BatteryStatusIntfControllerListener
 {
 public:
-    qcc::Event m_event;
-    qcc::Event m_eventSignal;
+    CdmSemaphore m_event;
+    CdmSemaphore m_eventSignal;
     QStatus m_status;
     uint8_t m_currentValue;
     bool m_isCharging;
@@ -65,10 +65,10 @@ TEST_F(CDMTest, CDM_v1_BatteryStatus)
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
 
-        BatteryStatusListener listener;
-        CdmInterface* interface = m_controller->CreateInterface(BATTERY_STATUS_INTERFACE, m_interfaces[i].busName,
+        auto listener = mkRef<BatteryStatusListener>();
+        auto interface = m_controller->CreateInterface("org.alljoyn.SmartSpaces.Operation.BatteryStatus", m_interfaces[i].busName,
                                                                 qcc::String(m_interfaces[i].objectPath.c_str()), m_interfaces[i].sessionId, listener);
-        BatteryStatusIntfController* controller = static_cast<BatteryStatusIntfController*>(interface);
+        auto controller = std::dynamic_pointer_cast<BatteryStatusIntfController>(interface);
         QStatus status = ER_FAIL;
 
         TEST_LOG_1("Get initial values for all properties.");
@@ -76,16 +76,16 @@ TEST_F(CDMTest, CDM_v1_BatteryStatus)
             TEST_LOG_2("Retrieve the CurrentValue property.");
             status = controller->GetCurrentValue();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            listener.m_event.ResetEvent();
-            EXPECT_EQ(listener.m_status, ER_OK);
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            listener->m_event.ResetEvent();
+            EXPECT_EQ(listener->m_status, ER_OK);
 
             TEST_LOG_2("Retrieve the IsCharging property.");
             status = controller->GetIsCharging();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            listener.m_event.ResetEvent();
-            EXPECT_EQ(listener.m_status, ER_OK);
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            listener->m_event.ResetEvent();
+            EXPECT_EQ(listener->m_status, ER_OK);
         }
     }
 }

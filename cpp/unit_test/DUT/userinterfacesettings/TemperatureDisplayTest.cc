@@ -17,14 +17,14 @@
 #include "CdmTest.h"
 #include <algorithm>
 
-#include <alljoyn/cdm/interfaces/userinterfacesettings/TemperatureDisplayIntfController.h>
-#include <alljoyn/cdm/interfaces/userinterfacesettings/TemperatureDisplayIntfControllerListener.h>
+#include <interfaces/controller/userinterfacesettings/TemperatureDisplayIntfController.h>
+#include <interfaces/controller/userinterfacesettings/TemperatureDisplayIntfControllerListener.h>
 
 class TemperatureDisplayListener : public TemperatureDisplayIntfControllerListener
 {
 public:
-    qcc::Event m_event;
-    qcc::Event m_eventSignal;
+    CdmSemaphore m_event;
+    CdmSemaphore m_eventSignal;
     QStatus m_status;
 
     uint8_t m_displayTemperatureUnit;
@@ -90,10 +90,10 @@ TEST_F(CDMTest, CDM_v1_TemperatureDisplay)
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
 
-        TemperatureDisplayListener listener;
-        CdmInterface* interface = m_controller->CreateInterface(TEMPERATURE_DISPLAY_INTERFACE, m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()),
+        auto listener = mkRef<TemperatureDisplayListener>();
+        auto interface = m_controller->CreateInterface("org.alljoyn.SmartSpaces.UserInterfaceSettings.TemperatureDisplay", m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()),
                                                                 m_interfaces[i].sessionId, listener);
-        TemperatureDisplayIntfController* controller = static_cast<TemperatureDisplayIntfController*>(interface);
+        auto controller = std::dynamic_pointer_cast<TemperatureDisplayIntfController>(interface);
         QStatus status = ER_FAIL;
 
         TEST_LOG_1("Get initial values for all properties.");
@@ -101,32 +101,32 @@ TEST_F(CDMTest, CDM_v1_TemperatureDisplay)
             TEST_LOG_2("Retrieve the DisplayTemperatureUnit property.");
             status = controller->GetDisplayTemperatureUnit();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            listener.m_event.ResetEvent();
-            EXPECT_EQ(listener.m_status, ER_OK);
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            listener->m_event.ResetEvent();
+            EXPECT_EQ(listener->m_status, ER_OK);
 
             TEST_LOG_2("Retrieve SupportedDisplayTemperatureUnits property.");
             status = controller->GetSupportedDisplayTemperatureUnits();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            listener.m_event.ResetEvent();
-            EXPECT_EQ(listener.m_status, ER_OK);
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            listener->m_event.ResetEvent();
+            EXPECT_EQ(listener->m_status, ER_OK);
         }
 
-        const uint8_t initDisplayTemperatureUnit = listener.m_supportedDisplayTemperatureUnits[0];
+        const uint8_t initDisplayTemperatureUnit = listener->m_supportedDisplayTemperatureUnits[0];
         TEST_LOG_1("Initialize all read-write properties.");
         {
             TEST_LOG_2("Set the DisplayTemperatureUnit property to the 1st item of the SupportedDisplayTemperatureUnits.");
-            if (listener.m_displayTemperatureUnit != initDisplayTemperatureUnit) {
+            if (listener->m_displayTemperatureUnit != initDisplayTemperatureUnit) {
                 status = controller->SetDisplayTemperatureUnit(initDisplayTemperatureUnit);
                 EXPECT_EQ(status, ER_OK);
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-                listener.m_event.ResetEvent();
-                EXPECT_EQ(listener.m_status, ER_OK);
+                EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+                listener->m_event.ResetEvent();
+                EXPECT_EQ(listener->m_status, ER_OK);
 
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_eventSignal, TIMEOUT)) << "property changed signal is missing";
-                listener.m_eventSignal.ResetEvent();
-                EXPECT_EQ(listener.m_displayTemperatureUnitSignal, initDisplayTemperatureUnit);
+                EXPECT_EQ(true, listener->m_eventSignal.Wait(TIMEOUT)) << "property changed signal is missing";
+                listener->m_eventSignal.ResetEvent();
+                EXPECT_EQ(listener->m_displayTemperatureUnitSignal, initDisplayTemperatureUnit);
             }
         }
 
@@ -134,49 +134,49 @@ TEST_F(CDMTest, CDM_v1_TemperatureDisplay)
         {
             TEST_LOG_2("Set the DisplayTemperatureUnit property to value outside SupportedDisplayTemperatureUnits.");
             uint8_t unsupportedTemperatureUnit = 0;
-            status = listener.GetUnsupportedTemperatureUnit(unsupportedTemperatureUnit);
+            status = listener->GetUnsupportedTemperatureUnit(unsupportedTemperatureUnit);
             if(status == ER_OK)
             {
                 status = controller->SetDisplayTemperatureUnit(unsupportedTemperatureUnit);
                 EXPECT_EQ(status, ER_OK);
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-                listener.m_event.ResetEvent();
-                EXPECT_NE(listener.m_status, ER_OK);
+                EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+                listener->m_event.ResetEvent();
+                EXPECT_NE(listener->m_status, ER_OK);
 
                 TEST_LOG_2("Get the DisplayTemperatureUnit property.");
                 status = controller->GetDisplayTemperatureUnit();
                 EXPECT_EQ(status, ER_OK);
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-                listener.m_event.ResetEvent();
-                EXPECT_EQ(listener.m_status, ER_OK);
-                EXPECT_EQ(listener.m_displayTemperatureUnit, initDisplayTemperatureUnit);
+                EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+                listener->m_event.ResetEvent();
+                EXPECT_EQ(listener->m_status, ER_OK);
+                EXPECT_EQ(listener->m_displayTemperatureUnit, initDisplayTemperatureUnit);
             }
         }
 
         TEST_LOG_1("Set properties to valid value.");
         {
             TEST_LOG_2("If DisplayTemperatureUnit > 1, set the TargetLevel property to the 2nd item of the SupportedDisplayTemperatureUnits.");
-            if (listener.m_supportedDisplayTemperatureUnits.size() > 1) {
-                const uint8_t validDisplayTemperatureUnit = listener.m_supportedDisplayTemperatureUnits[1];
+            if (listener->m_supportedDisplayTemperatureUnits.size() > 1) {
+                const uint8_t validDisplayTemperatureUnit = listener->m_supportedDisplayTemperatureUnits[1];
                 status = controller->SetDisplayTemperatureUnit(validDisplayTemperatureUnit);
 
                 EXPECT_EQ(status, ER_OK);
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-                listener.m_event.ResetEvent();
-                EXPECT_EQ(listener.m_status, ER_OK);
+                EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+                listener->m_event.ResetEvent();
+                EXPECT_EQ(listener->m_status, ER_OK);
 
                 TEST_LOG_3("Wait the PropertiesChanged signal for the DisplayTemperatureUnit property.");
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_eventSignal, TIMEOUT)) << "property changed signal is missing";
-                listener.m_eventSignal.ResetEvent();
-                EXPECT_EQ(listener.m_displayTemperatureUnitSignal, validDisplayTemperatureUnit);
+                EXPECT_EQ(true, listener->m_eventSignal.Wait(TIMEOUT)) << "property changed signal is missing";
+                listener->m_eventSignal.ResetEvent();
+                EXPECT_EQ(listener->m_displayTemperatureUnitSignal, validDisplayTemperatureUnit);
 
                 TEST_LOG_3("Get the DisplayTemperatureUnit property.");
                 status = controller->GetDisplayTemperatureUnit();
                 EXPECT_EQ(status, ER_OK);
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-                listener.m_event.ResetEvent();
-                EXPECT_EQ(listener.m_status, ER_OK);
-                EXPECT_EQ(listener.m_displayTemperatureUnit, validDisplayTemperatureUnit);
+                EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+                listener->m_event.ResetEvent();
+                EXPECT_EQ(listener->m_status, ER_OK);
+                EXPECT_EQ(listener->m_displayTemperatureUnit, validDisplayTemperatureUnit);
             }
         }
     }

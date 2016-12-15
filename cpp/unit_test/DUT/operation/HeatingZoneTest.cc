@@ -17,14 +17,14 @@
 #include "CdmTest.h"
 #include <algorithm>
 
-#include <alljoyn/cdm/interfaces/operation/HeatingZoneIntfController.h>
-#include <alljoyn/cdm/interfaces/operation/HeatingZoneIntfControllerListener.h>
+#include <interfaces/controller/operation/HeatingZoneIntfController.h>
+#include <interfaces/controller/operation/HeatingZoneIntfControllerListener.h>
 
 class HeatingZoneListener : public HeatingZoneIntfControllerListener
 {
 public:
-    qcc::Event m_event;
-    qcc::Event m_eventSignal;
+    CdmSemaphore m_event;
+    CdmSemaphore m_eventSignal;
     QStatus m_status;
 
     uint8_t m_numberOfHeatingZones;
@@ -80,10 +80,10 @@ TEST_F(CDMTest, CDM_v1_HeatingZone)
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
 
-        HeatingZoneListener listener;
-        CdmInterface* interface = m_controller->CreateInterface(HEATING_ZONE_INTERFACE, m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()),
+        auto listener = mkRef<HeatingZoneListener>();
+        auto interface = m_controller->CreateInterface("org.alljoyn.SmartSpaces.Operation.HeatingZone", m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()),
                                                                 m_interfaces[i].sessionId, listener);
-        HeatingZoneIntfController* controller = static_cast<HeatingZoneIntfController*>(interface);
+        auto controller = std::dynamic_pointer_cast<HeatingZoneIntfController>(interface);
         QStatus status = ER_FAIL;
 
         TEST_LOG_1("Get initial values for all properties.");
@@ -91,23 +91,23 @@ TEST_F(CDMTest, CDM_v1_HeatingZone)
             TEST_LOG_2("Retrieve the NumberOfHeatingZones property.");
             status = controller->GetNumberOfHeatingZones();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            listener.m_event.ResetEvent();
-            EXPECT_EQ(listener.m_status, ER_OK);
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            listener->m_event.ResetEvent();
+            EXPECT_EQ(listener->m_status, ER_OK);
 
             TEST_LOG_2("Retrieve the MaxHeatingLevels property.");
             status = controller->GetMaxHeatingLevels();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            listener.m_event.ResetEvent();
-            EXPECT_EQ(listener.m_status, ER_OK);
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            listener->m_event.ResetEvent();
+            EXPECT_EQ(listener->m_status, ER_OK);
 
             TEST_LOG_2("Retrieve HeatingLevels property.");
             status = controller->GetHeatingLevels();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            listener.m_event.ResetEvent();
-            EXPECT_EQ(listener.m_status, ER_OK);
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            listener->m_event.ResetEvent();
+            EXPECT_EQ(listener->m_status, ER_OK);
         }
     }
 }

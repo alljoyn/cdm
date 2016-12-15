@@ -16,14 +16,14 @@
 
 #include "CdmTest.h"
 
-#include <alljoyn/cdm/interfaces/operation/RemoteControllabilityIntfController.h>
-#include <alljoyn/cdm/interfaces/operation/RemoteControllabilityIntfControllerListener.h>
+#include <interfaces/controller/operation/RemoteControllabilityIntfController.h>
+#include <interfaces/controller/operation/RemoteControllabilityIntfControllerListener.h>
 
 class RemoteControllabilityListener : public RemoteControllabilityIntfControllerListener
 {
 public:
-    qcc::Event m_event;
-    qcc::Event m_eventSignal;
+    CdmSemaphore m_event;
+    CdmSemaphore m_eventSignal;
     QStatus m_status;
     bool m_isControllable;
     bool m_isControllableSignal;
@@ -51,10 +51,10 @@ TEST_F(CDMTest, CDM_v1_RemoteControllability)
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
 
-        RemoteControllabilityListener listener;
-        CdmInterface* interface = m_controller->CreateInterface(REMOTE_CONTROLLABILITY_INTERFACE, m_interfaces[i].busName,
+        auto listener = mkRef<RemoteControllabilityListener>();
+        auto interface = m_controller->CreateInterface("org.alljoyn.SmartSpaces.Operation.RemoteControllability", m_interfaces[i].busName,
                                                                 qcc::String(m_interfaces[i].objectPath.c_str()), m_interfaces[i].sessionId, listener);
-        RemoteControllabilityIntfController* controller = static_cast<RemoteControllabilityIntfController*>(interface);
+        auto controller = std::dynamic_pointer_cast<RemoteControllabilityIntfController>(interface);
         QStatus status = ER_FAIL;
 
         TEST_LOG_1("Get initial values for all properties.");
@@ -62,9 +62,9 @@ TEST_F(CDMTest, CDM_v1_RemoteControllability)
             TEST_LOG_2("Retrieve the IsControllable property.");
             status = controller->GetIsControllable();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            listener.m_event.ResetEvent();
-            EXPECT_EQ(listener.m_status, ER_OK);
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            listener->m_event.ResetEvent();
+            EXPECT_EQ(listener->m_status, ER_OK);
         }
     }
 }

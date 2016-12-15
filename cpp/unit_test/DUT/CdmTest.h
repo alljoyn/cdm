@@ -17,10 +17,11 @@
 #ifndef CDMTEST_H_
 #define CDMTEST_H_
 
-#include <alljoyn/cdm/CdmController.h>
-#include <alljoyn/cdm/DeviceListener.h>
-#include <qcc/Event.h>
+#include <alljoyn/cdm/controller/CdmController.h>
+#include <alljoyn/cdm/common/DeviceListener.h>
 #include <gtest/gtest.h>
+
+#include "CdmSemaphore.h"
 
 #include <iostream>
 #include <vector>
@@ -129,7 +130,7 @@ public:
 
     virtual void OnDeviceAdded(const char* busname, SessionPort port, const CdmAboutData& data, const AboutObjectDescription& description);
     virtual void OnDeviceRemoved(const char* busname);
-    virtual void OnDeviceSessionJoined(const DeviceInfoPtr& info);
+    virtual void OnDeviceSessionJoined(const Ref<DeviceInfo> info);
     virtual void OnDeviceSessionLost(SessionId sessionId);
 
     void WaitForControllee(CdmInterfaceType type = (CdmInterfaceType)-1);
@@ -138,7 +139,7 @@ protected:
     BusAttachment* m_bus;
     qcc::String m_interfaceNameForTest;
     std::vector<InterfaceInfo> m_interfaces;
-    qcc::Event eventOnDeviceAdded;
+    CdmSemaphore eventOnDeviceAdded;
     int LOG_NO;
 };
 

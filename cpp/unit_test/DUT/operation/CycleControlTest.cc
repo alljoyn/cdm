@@ -17,69 +17,82 @@
 #include "CdmTest.h"
 #include <algorithm>
 #include <iostream>
-#include <alljoyn/cdm/interfaces/operation/CycleControlIntfController.h>
-#include <alljoyn/cdm/interfaces/operation/CycleControlIntfControllerListener.h>
+#include <interfaces/controller/operation/CycleControlIntfController.h>
+#include <interfaces/controller/operation/CycleControlIntfControllerListener.h>
 
 using namespace std;
 class CycleControlListener : public CycleControlIntfControllerListener
 {
 public:
-    qcc::Event m_event;
-    qcc::Event m_eventSignal;
+    CdmSemaphore m_event;
+    CdmSemaphore m_eventSignal;
     QStatus m_status;
 
 
     CycleControlInterface::OperationalState m_operationalState;
     CycleControlInterface::OperationalState m_operationalStateSignal;
 
-    CycleControlInterface::SupportedOperationalStates m_supportedOperationalStates;
-    CycleControlInterface::SupportedOperationalStates m_supportedOperationalStatesSignal;
+    std::vector<CycleControlInterface::OperationalState> m_supportedOperationalStates;
+    std::vector<CycleControlInterface::OperationalState> m_supportedOperationalStatesSignal;
 
-    CycleControlInterface::SupportedOperationalCommands m_supportedOperationalCommands;
-    CycleControlInterface::SupportedOperationalCommands m_supportedOperationalCommandsSignal;
+    std::vector<CycleControlInterface::OperationalCommands> m_supportedOperationalCommands;
+    std::vector<CycleControlInterface::OperationalCommands> m_supportedOperationalCommandsSignal;
 
-    CycleControlInterface::SupportedOperationalCommands m_unSupportedOperationalCommands;
+    std::vector<CycleControlInterface::OperationalCommands> m_unSupportedOperationalCommands;
 
     qcc::String m_errorName;
     qcc::String m_errorMessage;
 
     std::vector<uint8_t> m_selectableLevels;
     std::vector<uint8_t> m_selectableLevelsSignal;
-    virtual void GetOperationalStatePropertyCallback(QStatus status, const qcc::String& objectPath, const CycleControlInterface::OperationalState& currentState, void* context)
+
+    virtual void OnResponseGetOperationalState(QStatus status, const qcc::String& objectPath, const CycleControlInterface::OperationalState currentState, void* context) override
     {
         m_status = status;
         m_operationalState = currentState;
         m_event.SetEvent();
 
     }
-    virtual void GetSupportedStatesPropertyCallbalck(QStatus status, const qcc::String& objectPath, const CycleControlInterface::SupportedOperationalStates& states, void* context)
+
+
+    virtual void OnResponseGetSupportedOperationalStates(QStatus status, const qcc::String& objectPath, const std::vector<CycleControlInterface::OperationalState>& states, void* context) override
     {
         m_status = status;
         m_supportedOperationalStates = states;
         m_event.SetEvent();
     }
-    virtual void GetSupportedCommandsPropertyCallbalck(QStatus status, const qcc::String& objectPath, const CycleControlInterface::SupportedOperationalCommands& commands, void* context)
+
+
+    virtual void OnResponseGetSupportedOperationalCommands(QStatus status, const qcc::String& objectPath, const std::vector<CycleControlInterface::OperationalCommands>& commands, void* context) override
     {
         m_status = status;
         m_supportedOperationalCommands = commands;
         m_event.SetEvent();
     }
-    virtual void OperationalStatePropertyChanged(const qcc::String& objectPath, const CycleControlInterface::OperationalState& currentState)
+
+
+    virtual void OnOperationalStateChanged(const qcc::String& objectPath, const CycleControlInterface::OperationalState currentState) override
     {
         m_operationalStateSignal = currentState;
         m_eventSignal.SetEvent();
     }
-    virtual void SupportedOperationalStatesProperyChanged(const qcc::String& objectPath, const CycleControlInterface::SupportedOperationalStates& states)
+
+
+    virtual void OnSupportedOperationalStatesChanged(const qcc::String& objectPath, const std::vector<CycleControlInterface::OperationalState>& states) override
     {
         m_supportedOperationalStatesSignal = states;
         m_eventSignal.SetEvent();
     }
-    virtual void SupportedOperationalCommandsProperyChanged(const qcc::String& objectPath, const CycleControlInterface::SupportedOperationalCommands& commands)
+
+
+    virtual void OnSupportedOperationalCommandsChanged(const qcc::String& objectPath, const std::vector<CycleControlInterface::OperationalCommands>& commands) override
     {
         m_supportedOperationalCommandsSignal = commands;
         m_eventSignal.SetEvent();
     }
-    virtual void OnExecuteCommandRespose(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage)
+
+
+    virtual void OnResponseExecuteOperationalCommand(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage) override
     {
         m_status = status;
         if (status != ER_OK) {
@@ -92,31 +105,32 @@ public:
         }
         m_event.SetEvent();
     }
+
+
     void GenerateUsupportedCommandsList()
     {
-        CycleControlInterface::OperationalCommands command = CycleControlInterface::OperationalCommands::OPERATIONAL_COMMAND_START;
-        CycleControlInterface::SupportedOperationalCommands::iterator it;
+        CycleControlInterface::OperationalCommands command = CycleControlInterface::OPERATIONAL_COMMANDS_START;
 
+        auto it = std::find(m_supportedOperationalCommands.begin(),m_supportedOperationalCommands.end(),command);
+        if(it == m_supportedOperationalCommands.end())
+        {
+            m_unSupportedOperationalCommands.push_back(command);
+        }
+
+        command = CycleControlInterface::OPERATIONAL_COMMANDS_STOP;
         it = std::find(m_supportedOperationalCommands.begin(),m_supportedOperationalCommands.end(),command);
         if(it == m_supportedOperationalCommands.end())
         {
             m_unSupportedOperationalCommands.push_back(command);
         }
 
-        command = CycleControlInterface::OperationalCommands::OPERATIONAL_COMMAND_STOP;
+        command = CycleControlInterface::OPERATIONAL_COMMANDS_PAUSE;
         it = std::find(m_supportedOperationalCommands.begin(),m_supportedOperationalCommands.end(),command);
         if(it == m_supportedOperationalCommands.end())
         {
             m_unSupportedOperationalCommands.push_back(command);
         }
-
-        command = CycleControlInterface::OperationalCommands::OPERATIONAL_COMMAND_PAUSE;
-        it = std::find(m_supportedOperationalCommands.begin(),m_supportedOperationalCommands.end(),command);
-        if(it == m_supportedOperationalCommands.end())
-        {
-            m_unSupportedOperationalCommands.push_back(command);
-        }
-        command = CycleControlInterface::OperationalCommands::OPERATIONAL_COMMAND_RESUME;
+        command = CycleControlInterface::OPERATIONAL_COMMANDS_RESUME;
         it = std::find(m_supportedOperationalCommands.begin(),m_supportedOperationalCommands.end(),command);
 
         if(it == m_supportedOperationalCommands.end())
@@ -126,16 +140,18 @@ public:
     }
 };
 
+
+
 TEST_F(CDMTest, CDM_v1_CycleControl)
 {
     WaitForControllee(CYCLE_CONTROL_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
 
-        CycleControlListener listener;
-        CdmInterface* interface = m_controller->CreateInterface(CYCLE_CONTROL_INTERFACE, m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()),
+        auto listener = mkRef<CycleControlListener>();
+        auto interface = m_controller->CreateInterface("org.alljoyn.SmartSpaces.Operation.CycleControl", m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()),
                                                                 m_interfaces[i].sessionId, listener);
-        CycleControlIntfController* controller = static_cast<CycleControlIntfController*>(interface);
+        auto controller = std::dynamic_pointer_cast<CycleControlIntfController>(interface);
         QStatus status = ER_FAIL;
 
         TEST_LOG_1("Get initial values for all properties.");
@@ -143,53 +159,53 @@ TEST_F(CDMTest, CDM_v1_CycleControl)
             TEST_LOG_2("Retrieve the OperationalState property.");
             status = controller->GetOperationalState();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            listener.m_event.ResetEvent();
-            EXPECT_EQ(listener.m_status, ER_OK);
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            listener->m_event.ResetEvent();
+            EXPECT_EQ(listener->m_status, ER_OK);
 
             TEST_LOG_2("Retrieve the SupportedOperationalStates property.");
             status = controller->GetSupportedOperationalStates();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            listener.m_event.ResetEvent();
-            EXPECT_EQ(listener.m_status, ER_OK);
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            listener->m_event.ResetEvent();
+            EXPECT_EQ(listener->m_status, ER_OK);
 
             TEST_LOG_2("Retrieve SupportedCommands property.");
             status = controller->GetSupportedOperationalCommands();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            listener.m_event.ResetEvent();
-            EXPECT_EQ(listener.m_status, ER_OK);
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            listener->m_event.ResetEvent();
+            EXPECT_EQ(listener->m_status, ER_OK);
         }
 
         TEST_LOG_1("Call ExecuteCommand method with invalid param.");
         {
             TEST_LOG_2("Generate list of unsupported commands");
-            listener.GenerateUsupportedCommandsList();
+            listener->GenerateUsupportedCommandsList();
             TEST_LOG_2("If size of unsupported commands list > 0, call ExecuteCommand method with 1st item of unsupported command list.");
-            if(listener.m_unSupportedOperationalCommands.size() > 0)
+            if(listener->m_unSupportedOperationalCommands.size() > 0)
             {
-                const CycleControlInterface::OperationalCommands invalidCommand = listener.m_unSupportedOperationalCommands[0];
-                status = controller->ExecuteCommand(invalidCommand);
+                const CycleControlInterface::OperationalCommands invalidCommand = listener->m_unSupportedOperationalCommands[0];
+                status = controller->ExecuteOperationalCommand(invalidCommand);
                 EXPECT_EQ(status, ER_OK);
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-                listener.m_event.ResetEvent();
-                EXPECT_NE(listener.m_status, ER_OK);
-                EXPECT_STREQ(listener.m_errorName.c_str(), CdmInterface::GetInterfaceErrorName(INVALID_VALUE).c_str());
+                EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+                listener->m_event.ResetEvent();
+                EXPECT_NE(listener->m_status, ER_OK);
+                EXPECT_STREQ(listener->m_errorName.c_str(), CdmInterface::GetInterfaceErrorName(INVALID_VALUE).c_str());
             }
         }
 
         TEST_LOG_1("Call ExecuteCommand method with valid param.");
         {
             TEST_LOG_2("If size of supported commands list > 0, call ExecuteCommand method with 1st item of supported command list.");
-            if(listener.m_supportedOperationalCommands.size() > 0)
+            if(listener->m_supportedOperationalCommands.size() > 0)
             {
-                const CycleControlInterface::OperationalCommands validCommand = listener.m_supportedOperationalCommands[0];
-                status = controller->ExecuteCommand(validCommand);
+                const CycleControlInterface::OperationalCommands validCommand = listener->m_supportedOperationalCommands[0];
+                status = controller->ExecuteOperationalCommand(validCommand);
                 EXPECT_EQ(status, ER_OK);
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-                listener.m_event.ResetEvent();
-                EXPECT_EQ(listener.m_status, ER_OK);
+                EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+                listener->m_event.ResetEvent();
+                EXPECT_EQ(listener->m_status, ER_OK);
             }
         }
     }

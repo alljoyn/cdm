@@ -16,14 +16,14 @@
 
 #include "CdmTest.h"
 
-#include <alljoyn/cdm/interfaces/operation/AudioVolumeIntfController.h>
-#include <alljoyn/cdm/interfaces/operation/AudioVolumeIntfControllerListener.h>
+#include <interfaces/controller/operation/AudioVolumeIntfController.h>
+#include <interfaces/controller/operation/AudioVolumeIntfControllerListener.h>
 
 class AudioVolumeListener : public AudioVolumeIntfControllerListener
 {
 public:
-    qcc::Event m_event;
-    qcc::Event m_eventSignal;
+    CdmSemaphore m_event;
+    CdmSemaphore m_eventSignal;
     QStatus m_status;
     uint8_t m_volume;
     uint8_t m_maxVolume;
@@ -92,10 +92,10 @@ TEST_F(CDMTest, CDM_v1_AudioVolume)
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
 
-        AudioVolumeListener listener;
-        CdmInterface* interface = m_controller->CreateInterface(AUDIO_VOLUME_INTERFACE, m_interfaces[i].busName,
+        auto listener = mkRef<AudioVolumeListener>();
+        auto interface = m_controller->CreateInterface("org.alljoyn.SmartSpaces.Operation.AudioVolume", m_interfaces[i].busName,
                                                                 qcc::String(m_interfaces[i].objectPath.c_str()), m_interfaces[i].sessionId, listener);
-        AudioVolumeIntfController* controller = static_cast<AudioVolumeIntfController*>(interface);
+        auto controller = std::dynamic_pointer_cast<AudioVolumeIntfController>(interface);
         QStatus status = ER_FAIL;
 
         TEST_LOG_1("Get initial values for all properties");
@@ -103,23 +103,23 @@ TEST_F(CDMTest, CDM_v1_AudioVolume)
             TEST_LOG_2("Retieve the Volume property.");
             status = controller->GetVolume();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            listener.m_event.ResetEvent();
-            EXPECT_EQ(listener.m_status, ER_OK);
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            listener->m_event.ResetEvent();
+            EXPECT_EQ(listener->m_status, ER_OK);
 
             TEST_LOG_2("Retieve the MaxVolume property.");
             status = controller->GetMaxVolume();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            listener.m_event.ResetEvent();
-            EXPECT_EQ(listener.m_status, ER_OK);
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            listener->m_event.ResetEvent();
+            EXPECT_EQ(listener->m_status, ER_OK);
 
             TEST_LOG_2("Retieve the Mute property.");
             status = controller->GetMute();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            listener.m_event.ResetEvent();
-            EXPECT_EQ(listener.m_status, ER_OK);
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            listener->m_event.ResetEvent();
+            EXPECT_EQ(listener->m_status, ER_OK);
         }
 
         const uint8_t initVolume = 0;
@@ -127,29 +127,29 @@ TEST_F(CDMTest, CDM_v1_AudioVolume)
         TEST_LOG_1("Initialize all read-write properties.");
         {
             TEST_LOG_2("Initialize the Volume property to 0.");
-            if (listener.m_volume != initVolume) {
+            if (listener->m_volume != initVolume) {
                 status = controller->SetVolume(initVolume);
                 EXPECT_EQ(status, ER_OK);
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-                listener.m_event.ResetEvent();
-                EXPECT_EQ(listener.m_status, ER_OK);
+                EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+                listener->m_event.ResetEvent();
+                EXPECT_EQ(listener->m_status, ER_OK);
 
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_eventSignal, TIMEOUT));
-                listener.m_eventSignal.ResetEvent();
-                EXPECT_EQ(listener.m_volumeSignal, initVolume);
+                EXPECT_EQ(true, listener->m_eventSignal.Wait(TIMEOUT));
+                listener->m_eventSignal.ResetEvent();
+                EXPECT_EQ(listener->m_volumeSignal, initVolume);
             }
 
             TEST_LOG_2("Initialize the Mute property to false.");
-            if (listener.m_mute != initMute) {
+            if (listener->m_mute != initMute) {
                 status = controller->SetMute(initMute);
                 EXPECT_EQ(status, ER_OK);
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-                listener.m_event.ResetEvent();
-                EXPECT_EQ(listener.m_status, ER_OK);
+                EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+                listener->m_event.ResetEvent();
+                EXPECT_EQ(listener->m_status, ER_OK);
 
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_eventSignal, TIMEOUT));
-                listener.m_eventSignal.ResetEvent();
-                EXPECT_EQ(listener.m_muteSignal, initMute);
+                EXPECT_EQ(true, listener->m_eventSignal.Wait(TIMEOUT));
+                listener->m_eventSignal.ResetEvent();
+                EXPECT_EQ(listener->m_muteSignal, initMute);
             }
         }
 
@@ -160,22 +160,22 @@ TEST_F(CDMTest, CDM_v1_AudioVolume)
                 const uint8_t validValue = 1;
                 status = controller->SetVolume(validValue);
                 EXPECT_EQ(status, ER_OK);
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-                listener.m_event.ResetEvent();
-                EXPECT_EQ(listener.m_status, ER_OK);
+                EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+                listener->m_event.ResetEvent();
+                EXPECT_EQ(listener->m_status, ER_OK);
 
                 TEST_LOG_3("Wait the PropertiesChanged signal for the Volume property.");
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_eventSignal, TIMEOUT));
-                listener.m_eventSignal.ResetEvent();
-                EXPECT_EQ(listener.m_volumeSignal, validValue);
+                EXPECT_EQ(true, listener->m_eventSignal.Wait(TIMEOUT));
+                listener->m_eventSignal.ResetEvent();
+                EXPECT_EQ(listener->m_volumeSignal, validValue);
 
                 TEST_LOG_3("Get the Volume property.");
                 status = controller->GetVolume();
                 EXPECT_EQ(status, ER_OK);
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-                listener.m_event.ResetEvent();
-                EXPECT_EQ(listener.m_status, ER_OK);
-                EXPECT_EQ(listener.m_volume, validValue);
+                EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+                listener->m_event.ResetEvent();
+                EXPECT_EQ(listener->m_status, ER_OK);
+                EXPECT_EQ(listener->m_volume, validValue);
             }
 
             TEST_LOG_2("Set the Mute property to true.");
@@ -183,48 +183,48 @@ TEST_F(CDMTest, CDM_v1_AudioVolume)
                 const bool validMute = true;
                 status = controller->SetMute(validMute);
                 EXPECT_EQ(status, ER_OK);
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-                listener.m_event.ResetEvent();
-                EXPECT_EQ(listener.m_status, ER_OK);
+                EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+                listener->m_event.ResetEvent();
+                EXPECT_EQ(listener->m_status, ER_OK);
 
                 TEST_LOG_3("Wait the PropertiesChanged signal for the Mute property.");
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_eventSignal, TIMEOUT));
-                listener.m_eventSignal.ResetEvent();
-                EXPECT_EQ(listener.m_muteSignal, validMute);
+                EXPECT_EQ(true, listener->m_eventSignal.Wait(TIMEOUT));
+                listener->m_eventSignal.ResetEvent();
+                EXPECT_EQ(listener->m_muteSignal, validMute);
 
                 TEST_LOG_3("Get the Mute property.");
                 status = controller->GetMute();
                 EXPECT_EQ(status, ER_OK);
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-                listener.m_event.ResetEvent();
-                EXPECT_EQ(listener.m_status, ER_OK);
-                EXPECT_EQ(listener.m_mute, validMute);
+                EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+                listener->m_event.ResetEvent();
+                EXPECT_EQ(listener->m_status, ER_OK);
+                EXPECT_EQ(listener->m_mute, validMute);
             }
         }
 
         TEST_LOG_1("Set properties to invalid value.");
         {
             TEST_LOG_2("If MaxVolume != UINT8_MAX, Set the Volume property to MaxVolume + 1.");
-            if (listener.m_maxVolume != UINT8_MAX) {
-                const uint16_t invalidVolume = listener.m_maxVolume + 1;
+            if (listener->m_maxVolume != UINT8_MAX) {
+                const uint16_t invalidVolume = listener->m_maxVolume + 1;
                 status = controller->SetVolume(invalidVolume);
                 EXPECT_EQ(status, ER_OK);
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-                listener.m_event.ResetEvent();
-                EXPECT_EQ(listener.m_status, ER_OK);
+                EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+                listener->m_event.ResetEvent();
+                EXPECT_EQ(listener->m_status, ER_OK);
 
                 TEST_LOG_3("Wait the PropertiesChanged signal for the Volume property.");
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_eventSignal, TIMEOUT));
-                listener.m_eventSignal.ResetEvent();
-                EXPECT_EQ(listener.m_volumeSignal, listener.m_maxVolume);
+                EXPECT_EQ(true, listener->m_eventSignal.Wait(TIMEOUT));
+                listener->m_eventSignal.ResetEvent();
+                EXPECT_EQ(listener->m_volumeSignal, listener->m_maxVolume);
 
                 TEST_LOG_3("Get the Volume property.");
                 status = controller->GetVolume();
                 EXPECT_EQ(status, ER_OK);
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-                listener.m_event.ResetEvent();
-                EXPECT_EQ(listener.m_status, ER_OK);
-                EXPECT_EQ(listener.m_volume, listener.m_maxVolume);
+                EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+                listener->m_event.ResetEvent();
+                EXPECT_EQ(listener->m_status, ER_OK);
+                EXPECT_EQ(listener->m_volume, listener->m_maxVolume);
             }
         }
     }

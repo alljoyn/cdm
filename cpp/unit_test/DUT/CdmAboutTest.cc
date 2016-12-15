@@ -15,8 +15,8 @@
  ******************************************************************************/
 
 #include "CdmTest.h"
-#include <alljoyn/cdm/CdmAboutData.h>
-#include <alljoyn/cdm/DeviceTypeDescription.h>
+#include <alljoyn/cdm/common/CdmAboutData.h>
+#include <alljoyn/cdm/common/DeviceTypeDescription.h>
 #include <algorithm>
 
 const static std::map<DeviceType, std::vector<std::vector<qcc::String> > > defaultInterfacesForDeviceType = {
@@ -118,8 +118,6 @@ TEST_F(CDMTest, CDM_v1_CdmAbout)
         TEST_LOG_2("Check existence of Mandatory fields");
         TEST_LOG_3("Location field");
         EXPECT_EQ(aboutData.GetLocation(&location), ER_OK);
-        TEST_LOG_3("DeviceTypeDescription field");
-        ASSERT_EQ(aboutData.GetDeviceTypeDescription(&deviceTypeDescription), ER_OK);
     }
 
     TEST_LOG_1("Check existence of Minimum required interfaces of DeviceType");

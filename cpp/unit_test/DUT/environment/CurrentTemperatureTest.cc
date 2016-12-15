@@ -16,15 +16,15 @@
 
 #include "CdmTest.h"
 
-#include <alljoyn/cdm/interfaces/environment/CurrentTemperatureIntfController.h>
-#include <alljoyn/cdm/interfaces/environment/CurrentTemperatureIntfControllerListener.h>
+#include <interfaces/controller/environment/CurrentTemperatureIntfController.h>
+#include <interfaces/controller/environment/CurrentTemperatureIntfControllerListener.h>
 
 
 class CurrentTemperatureListener : public CurrentTemperatureIntfControllerListener
 {
 public:
-    qcc::Event m_event;
-    qcc::Event m_eventSignal;
+    CdmSemaphore m_event;
+    CdmSemaphore m_eventSignal;
 
     QStatus m_status;
     qcc::String m_errorName;
@@ -66,10 +66,11 @@ TEST_F(CDMTest, CDM_v1_CurrentTemperature)
     WaitForControllee(CURRENT_TEMPERATURE_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
-        CurrentTemperatureListener listener;
-        CdmInterface* interface = m_controller->CreateInterface(CURRENT_TEMPERATURE_INTERFACE, m_interfaces[i].busName,
+
+        auto listener = mkRef<CurrentTemperatureListener>();
+        auto interface = m_controller->CreateInterface("org.alljoyn.SmartSpaces.Environment.CurrentTemperature", m_interfaces[i].busName,
                                                                 qcc::String(m_interfaces[i].objectPath.c_str()), m_interfaces[i].sessionId, listener);
-        CurrentTemperatureIntfController* controller = static_cast<CurrentTemperatureIntfController*>(interface);
+        auto controller = std::dynamic_pointer_cast<CurrentTemperatureIntfController>(interface);
         QStatus status = ER_FAIL;
 
         TEST_LOG_1("Get initial values for all properties");
@@ -77,23 +78,23 @@ TEST_F(CDMTest, CDM_v1_CurrentTemperature)
             TEST_LOG_2("Retrieve the CurrentValue property.");
             status = controller->GetCurrentValue();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            EXPECT_EQ(listener.m_status, ER_OK);
-            listener.m_event.ResetEvent();
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            EXPECT_EQ(listener->m_status, ER_OK);
+            listener->m_event.ResetEvent();
 
             TEST_LOG_2("Retrieve the Precision property.");
             status = controller->GetPrecision();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            EXPECT_EQ(listener.m_status, ER_OK);
-            listener.m_event.ResetEvent();
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            EXPECT_EQ(listener->m_status, ER_OK);
+            listener->m_event.ResetEvent();
 
             TEST_LOG_2("Retrieve the UpdateMinTime property.");
             status = controller->GetUpdateMinTime();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            EXPECT_EQ(listener.m_status, ER_OK);
-            listener.m_event.ResetEvent();
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            EXPECT_EQ(listener->m_status, ER_OK);
+            listener->m_event.ResetEvent();
         }
     }
 }

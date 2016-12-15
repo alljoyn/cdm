@@ -16,13 +16,13 @@
 
 #include "CdmTest.h"
 
-#include <alljoyn/cdm/interfaces/operation/OffControlIntfController.h>
-#include <alljoyn/cdm/interfaces/operation/OffControlIntfControllerListener.h>
+#include <interfaces/controller/operation/OffControlIntfController.h>
+#include <interfaces/controller/operation/OffControlIntfControllerListener.h>
 
 class OffControlListener : public OffControlIntfControllerListener
 {
 public:
-    qcc::Event m_event;
+    CdmSemaphore m_event;
     QStatus m_status;
     qcc::String m_errorName;
     qcc::String m_errorMessage;
@@ -47,10 +47,11 @@ TEST_F(CDMTest, CDM_v1_OffControl)
     WaitForControllee (OFF_CONTROL_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
-        OffControlListener listener;
-        CdmInterface* interface = m_controller->CreateInterface(OFF_CONTROL_INTERFACE, m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()),
+
+        auto listener = mkRef<OffControlListener>();
+        auto interface = m_controller->CreateInterface("org.alljoyn.SmartSpaces.Operation.OffControl", m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()),
                                                                 m_interfaces[i].sessionId, listener);
-        OffControlIntfController* controller = static_cast<OffControlIntfController*>(interface);
+        auto controller = std::dynamic_pointer_cast<OffControlIntfController>(interface);
         QStatus status = ER_FAIL;
 
         TEST_LOG_1("Call method");
@@ -59,9 +60,9 @@ TEST_F(CDMTest, CDM_v1_OffControl)
             {
                 status = controller->SwitchOff();
                 EXPECT_EQ(status, ER_OK);
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-                listener.m_event.ResetEvent();
-                EXPECT_EQ(listener.m_status, ER_OK);
+                EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+                listener->m_event.ResetEvent();
+                EXPECT_EQ(listener->m_status, ER_OK);
             }
         }
     }

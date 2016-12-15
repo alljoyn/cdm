@@ -16,24 +16,27 @@
 
 #include "CdmTest.h"
 
-#include <alljoyn/cdm/interfaces/operation/RobotCleaningCyclePhaseIntfController.h>
-#include <alljoyn/cdm/interfaces/operation/RobotCleaningCyclePhaseIntfControllerListener.h>
+#include <interfaces/controller/operation/RobotCleaningCyclePhaseIntfController.h>
+#include <interfaces/controller/operation/RobotCleaningCyclePhaseIntfControllerListener.h>
 
 class RobotCleaningCyclePhaseListener : public RobotCleaningCyclePhaseIntfControllerListener
 {
 public:
-    qcc::Event m_event;
-    qcc::Event m_eventSignal;
+    typedef std::vector<uint8_t> SupportedCyclePhases;
+    typedef std::vector<RobotCleaningCyclePhaseInterface::CyclePhaseDescriptor> CyclePhaseDescriptors;
+
+    CdmSemaphore m_event;
+    CdmSemaphore m_eventSignal;
     QStatus m_status;
     uint8_t m_cyclePhase;
-    RobotCleaningCyclePhaseInterface::SupportedCyclePhases m_supportedCyclePhases;
+    SupportedCyclePhases m_supportedCyclePhases;
     uint8_t m_cyclePhaseSignal;
-    RobotCleaningCyclePhaseInterface::SupportedCyclePhases m_supportedCyclePhasesSignal;
-    RobotCleaningCyclePhaseInterface::CyclePhaseDescriptors m_phasesDescriptions;
+    SupportedCyclePhases m_supportedCyclePhasesSignal;
+    CyclePhaseDescriptors m_phasesDescriptions;
     qcc::String m_errorName;
     qcc::String m_errorMessage;
 
-    virtual void OnResponseGetCyclePhase(QStatus status, const qcc::String& objectPath, const uint8_t cyclePhase, void* context)
+    virtual void OnResponseGetCyclePhase(QStatus status, const qcc::String& objectPath, const uint8_t cyclePhase, void* context) override
     {
         m_errorName = "";
         m_errorMessage = "";
@@ -43,8 +46,9 @@ public:
         m_event.SetEvent();
     }
 
+
     virtual void OnResponseGetSupportedCyclePhases(QStatus status, const qcc::String& objectPath,
-                                                   const RobotCleaningCyclePhaseInterface::SupportedCyclePhases& supportedCyclePhases, void* context)
+                                                   const SupportedCyclePhases& supportedCyclePhases, void* context) override
     {
         m_errorName = "";
         m_errorMessage = "";
@@ -54,9 +58,10 @@ public:
         m_event.SetEvent();
     }
 
+
     virtual void OnResponseGetVendorPhasesDescription(QStatus status, const qcc::String& objectPath,
-                                                      const RobotCleaningCyclePhaseInterface::CyclePhaseDescriptors& phasesDescription, void* context,
-                                                      const char* errorName, const char* errorMessage)
+                                                      const CyclePhaseDescriptors& phasesDescription, void* context,
+                                                      const char* errorName, const char* errorMessage) override
     {
         if (status != ER_OK) {
             if (errorName) {
@@ -71,14 +76,16 @@ public:
         m_event.SetEvent();
     }
 
-    virtual void OnCyclePhaseChanged(const qcc::String& objectPath, const uint8_t cyclePhase)
+
+    virtual void OnCyclePhaseChanged(const qcc::String& objectPath, const uint8_t cyclePhase) override
     {
         m_cyclePhaseSignal = cyclePhase;
         m_eventSignal.SetEvent();
     }
 
+
     virtual void OnSupportedCyclePhasesChanged(const qcc::String& objectPath,
-                                               const RobotCleaningCyclePhaseInterface::SupportedCyclePhases& supportedCyclePhases)
+                                               const SupportedCyclePhases& supportedCyclePhases) override
     {
         m_supportedCyclePhasesSignal = supportedCyclePhases;
         m_eventSignal.SetEvent();
@@ -91,10 +98,10 @@ TEST_F(CDMTest, CDM_v1_RobotCleaningCyclePhase)
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
 
-        RobotCleaningCyclePhaseListener listener;
-        CdmInterface* interface = m_controller->CreateInterface(ROBOT_CLEANING_CYCLE_PHASE_INTERFACE, m_interfaces[i].busName,
+        auto listener = mkRef<RobotCleaningCyclePhaseListener>();
+        auto interface = m_controller->CreateInterface("org.alljoyn.SmartSpaces.Operation.RobotCleaningCyclePhase", m_interfaces[i].busName,
                                                                 qcc::String(m_interfaces[i].objectPath.c_str()), m_interfaces[i].sessionId, listener);
-        RobotCleaningCyclePhaseIntfController* controller = static_cast<RobotCleaningCyclePhaseIntfController*>(interface);
+        auto controller = std::dynamic_pointer_cast<RobotCleaningCyclePhaseIntfController>(interface);
         QStatus status = ER_FAIL;
 
         TEST_LOG_1("Get initial values for all properties.");
@@ -102,16 +109,16 @@ TEST_F(CDMTest, CDM_v1_RobotCleaningCyclePhase)
             TEST_LOG_2("Retrieve the CyclePhase property.");
             status = controller->GetCyclePhase();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            listener.m_event.ResetEvent();
-            EXPECT_EQ(listener.m_status, ER_OK);
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            listener->m_event.ResetEvent();
+            EXPECT_EQ(listener->m_status, ER_OK);
 
             TEST_LOG_2("Retrieve the SupportedCyclePhases property.");
             status = controller->GetSupportedCyclePhases();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            listener.m_event.ResetEvent();
-            EXPECT_EQ(listener.m_status, ER_OK);
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            listener->m_event.ResetEvent();
+            EXPECT_EQ(listener->m_status, ER_OK);
         }
 
         TEST_LOG_1("Call method with invalid param.");
@@ -120,10 +127,10 @@ TEST_F(CDMTest, CDM_v1_RobotCleaningCyclePhase)
             qcc::String invalidLang = "Invalid_lang";
             status = controller->GetVendorPhasesDescription(invalidLang);
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            listener.m_event.ResetEvent();
-            EXPECT_NE(listener.m_status, ER_OK);
-            EXPECT_STREQ(listener.m_errorName.c_str(), CdmInterface::GetInterfaceErrorName(LANGUAGE_NOT_SUPPORTED).c_str());
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            listener->m_event.ResetEvent();
+            EXPECT_NE(listener->m_status, ER_OK);
+            EXPECT_STREQ(listener->m_errorName.c_str(), CdmInterface::GetInterfaceErrorName(LANGUAGE_NOT_SUPPORTED).c_str());
         }
 
         TEST_LOG_1("Call method with valid param.");
@@ -132,9 +139,9 @@ TEST_F(CDMTest, CDM_v1_RobotCleaningCyclePhase)
             qcc::String validLang = "en";
             status = controller->GetVendorPhasesDescription(validLang);
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            listener.m_event.ResetEvent();
-            EXPECT_EQ(listener.m_status, ER_OK);
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            listener->m_event.ResetEvent();
+            EXPECT_EQ(listener->m_status, ER_OK);
         }
     }
 }

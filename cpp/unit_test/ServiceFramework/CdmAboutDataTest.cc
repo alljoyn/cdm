@@ -14,7 +14,7 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 //Code Under Test
-#include <alljoyn/cdm/CdmAboutData.h>
+#include <alljoyn/cdm/common/CdmAboutData.h>
 
 
 #include <alljoyn/version.h>
@@ -22,7 +22,7 @@
 #include <qcc/String.h>
 
 #include <map>
-#include <alljoyn/cdm/DeviceTypeDescription.h>
+#include <alljoyn/cdm/common/DeviceTypeDescription.h>
 
 namespace ajn{
 namespace services{
@@ -268,11 +268,8 @@ TEST(CdmAboutDataTest, SetDeviceTypeDescription) {
     status = aboutData.SetDeviceTypeDescription(&description);
     EXPECT_EQ(ER_OK, status);
 
-    DeviceTypeDescription*  returnedDescription = new DeviceTypeDescription();
-    status = aboutData.GetDeviceTypeDescription( &returnedDescription);
-    EXPECT_EQ(ER_OK, status);
-
-    std::multimap<DeviceType, qcc::String>::const_iterator it = returnedDescription->GetDescriptions().begin();
+    DeviceTypeDescription returnedDescription = aboutData.GetDeviceTypeDescription();
+    auto it = returnedDescription.GetDescriptions().begin();
     EXPECT_EQ(THERMOSTAT, it->first);
     EXPECT_STREQ("/Cdm/Thermostat", it->second.c_str() );
     
@@ -672,11 +669,8 @@ TEST(CdmAboutDataTest, InitUsingMsgArg)
     status = aboutDataInit.CreatefromMsgArg(aboutArg);
     EXPECT_EQ(ER_OK, status);
 
-    DeviceTypeDescription*  returnedDescription = new DeviceTypeDescription();
-    status = aboutDataInit.GetDeviceTypeDescription( &returnedDescription);
-    EXPECT_EQ(ER_OK, status);
-
-    std::multimap<DeviceType, qcc::String>::const_iterator it = returnedDescription->GetDescriptions().begin();
+    DeviceTypeDescription returnedDescription = aboutDataInit.GetDeviceTypeDescription();
+    std::multimap<DeviceType, qcc::String>::const_iterator it = returnedDescription.GetDescriptions().begin();
     EXPECT_EQ(THERMOSTAT, it->first);
     EXPECT_STREQ("/Cdm/Thermostat", it->second.c_str() );
 
@@ -863,11 +857,8 @@ TEST(CdmAboutDataTest, CreateFromXml_from_qcc_string) {
     EXPECT_EQ(ER_OK, status);
     EXPECT_STREQ("habitación del segundo piso", location);
 
-    DeviceTypeDescription*  returnedDescription = new DeviceTypeDescription();
-    status = aboutData.GetDeviceTypeDescription( &returnedDescription);
-    EXPECT_EQ(ER_OK, status);
-
-    std::multimap<DeviceType, qcc::String>::const_iterator it = returnedDescription->GetDescriptions().begin();
+    DeviceTypeDescription returnedDescription = aboutData.GetDeviceTypeDescription();
+    std::multimap<DeviceType, qcc::String>::const_iterator it = returnedDescription.GetDescriptions().begin();
     EXPECT_EQ(THERMOSTAT, it->first);
     EXPECT_STREQ("/Cdm/Thermostat", it->second.c_str() );
 }
@@ -916,11 +907,8 @@ TEST(CdmAboutDataTest, CreateFromXml_from_char_string) {
     EXPECT_EQ(ER_OK, status);
     EXPECT_STREQ("habitación del segundo piso", location);
 
-    DeviceTypeDescription*  returnedDescription = new DeviceTypeDescription();
-    status = aboutData.GetDeviceTypeDescription( &returnedDescription);
-    EXPECT_EQ(ER_OK, status);
-
-    std::multimap<DeviceType, qcc::String>::const_iterator it = returnedDescription->GetDescriptions().begin();
+    DeviceTypeDescription returnedDescription = aboutData.GetDeviceTypeDescription();
+    std::multimap<DeviceType, qcc::String>::const_iterator it = returnedDescription.GetDescriptions().begin();
     EXPECT_EQ(THERMOSTAT, it->first);
     EXPECT_STREQ("/Cdm/Thermostat", it->second.c_str() );
 }
@@ -971,11 +959,8 @@ TEST(CdmAboutDataTest, CreateFromXml_multiple_device_types) {
         EXPECT_EQ(ER_OK, status);
         EXPECT_STREQ("habitación del segundo piso", location);
 
-        DeviceTypeDescription*  returnedDescription = new DeviceTypeDescription();
-        status = aboutData.GetDeviceTypeDescription( &returnedDescription);
-        EXPECT_EQ(ER_OK, status);
-
-        std::multimap<DeviceType, qcc::String> returnedDescriptions = returnedDescription->GetDescriptions();
+        DeviceTypeDescription returnedDescription = aboutData.GetDeviceTypeDescription();
+        std::multimap<DeviceType, qcc::String> returnedDescriptions = returnedDescription.GetDescriptions();
         EXPECT_EQ(3, (int)returnedDescriptions.size());
         EXPECT_EQ(1, (int)returnedDescriptions.count(REFRIGERATOR));
         EXPECT_EQ(1, (int)returnedDescriptions.count(FREEZER));

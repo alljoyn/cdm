@@ -17,14 +17,14 @@
 #include "CdmTest.h"
 #include <algorithm>
 
-#include <alljoyn/cdm/interfaces/operation/SoilLevelIntfController.h>
-#include <alljoyn/cdm/interfaces/operation/SoilLevelIntfControllerListener.h>
+#include <interfaces/controller/operation/SoilLevelIntfController.h>
+#include <interfaces/controller/operation/SoilLevelIntfControllerListener.h>
 
 class SoilLevelListener : public SoilLevelIntfControllerListener
 {
 public:
-    qcc::Event m_event;
-    qcc::Event m_eventSignal;
+    CdmSemaphore m_event;
+    CdmSemaphore m_eventSignal;
     QStatus m_status;
 
     uint8_t m_maxLevel;
@@ -105,10 +105,10 @@ TEST_F(CDMTest, CDM_v1_SoilLevel)
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
 
-        SoilLevelListener listener;
-        CdmInterface* interface = m_controller->CreateInterface(SOIL_LEVEL_INTERFACE, m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()),
+        auto listener = mkRef<SoilLevelListener>();
+        auto interface = m_controller->CreateInterface("org.alljoyn.SmartSpaces.Operation.SoilLevel", m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()),
                                                                 m_interfaces[i].sessionId, listener);
-        SoilLevelIntfController* controller = static_cast<SoilLevelIntfController*>(interface);
+        auto controller = std::dynamic_pointer_cast<SoilLevelIntfController>(interface);
         QStatus status = ER_FAIL;
 
         TEST_LOG_1("Get initial values for all properties.");
@@ -116,104 +116,104 @@ TEST_F(CDMTest, CDM_v1_SoilLevel)
             TEST_LOG_2("Retrieve the MaxLevel property.");
             status = controller->GetMaxLevel();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            listener.m_event.ResetEvent();
-            EXPECT_EQ(listener.m_status, ER_OK);
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            listener->m_event.ResetEvent();
+            EXPECT_EQ(listener->m_status, ER_OK);
 
             TEST_LOG_2("Retrieve the TargetLevel property.");
             status = controller->GetTargetLevel();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            listener.m_event.ResetEvent();
-            EXPECT_EQ(listener.m_status, ER_OK);
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            listener->m_event.ResetEvent();
+            EXPECT_EQ(listener->m_status, ER_OK);
 
             TEST_LOG_2("Retrieve SelectableLevels property.");
             status = controller->GetSelectableLevels();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            listener.m_event.ResetEvent();
-            EXPECT_EQ(listener.m_status, ER_OK);
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            listener->m_event.ResetEvent();
+            EXPECT_EQ(listener->m_status, ER_OK);
         }
 
-        const uint8_t initTargetLevel = listener.m_selectableLevels[0];
+        const uint8_t initTargetLevel = listener->m_selectableLevels[0];
         TEST_LOG_1("Initialize all read-write properties.");
         {
             TEST_LOG_2("Set the TargetLevel property to the 1st item of the selectableLevels.");
-            if (listener.m_targetLevel != initTargetLevel) {
+            if (listener->m_targetLevel != initTargetLevel) {
                 status = controller->SetTargetLevel(initTargetLevel);
                 EXPECT_EQ(status, ER_OK);
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-                listener.m_event.ResetEvent();
-                EXPECT_EQ(listener.m_status, ER_OK);
+                EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+                listener->m_event.ResetEvent();
+                EXPECT_EQ(listener->m_status, ER_OK);
 
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_eventSignal, TIMEOUT)) << "property changed signal is missing";
-                listener.m_eventSignal.ResetEvent();
-                EXPECT_EQ(listener.m_targetLevelSignal, initTargetLevel);
+                EXPECT_EQ(true, listener->m_eventSignal.Wait(TIMEOUT)) << "property changed signal is missing";
+                listener->m_eventSignal.ResetEvent();
+                EXPECT_EQ(listener->m_targetLevelSignal, initTargetLevel);
             }
         }
 
         TEST_LOG_1("Set properties to invalid value.");
         {
             TEST_LOG_2("Set the TargetLevel property to MaxLevel + 1.");
-            status = controller->SetTargetLevel(listener.m_maxLevel + 1);
+            status = controller->SetTargetLevel(listener->m_maxLevel + 1);
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            listener.m_event.ResetEvent();
-            EXPECT_NE(listener.m_status, ER_OK);
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            listener->m_event.ResetEvent();
+            EXPECT_NE(listener->m_status, ER_OK);
 
             TEST_LOG_2("Get the TargetLevel property.");
             status = controller->GetTargetLevel();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            listener.m_event.ResetEvent();
-            EXPECT_EQ(listener.m_status, ER_OK);
-            EXPECT_EQ(listener.m_targetLevel, initTargetLevel);
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            listener->m_event.ResetEvent();
+            EXPECT_EQ(listener->m_status, ER_OK);
+            EXPECT_EQ(listener->m_targetLevel, initTargetLevel);
 
             TEST_LOG_2("Set the TargetLevel property to value outside SelectableLevels.");
             uint8_t unselectableLevel = 0;
-            status = listener.GetUnselectableLevel(unselectableLevel);
+            status = listener->GetUnselectableLevel(unselectableLevel);
             if(status == ER_OK)
             {
                 status = controller->SetTargetLevel(unselectableLevel);
                 EXPECT_EQ(status, ER_OK);
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-                listener.m_event.ResetEvent();
-                EXPECT_NE(listener.m_status, ER_OK);
+                EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+                listener->m_event.ResetEvent();
+                EXPECT_NE(listener->m_status, ER_OK);
 
                 TEST_LOG_2("Get the TargetLevel property.");
                 status = controller->GetTargetLevel();
                 EXPECT_EQ(status, ER_OK);
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-                listener.m_event.ResetEvent();
-                EXPECT_EQ(listener.m_status, ER_OK);
-                EXPECT_EQ(listener.m_targetLevel, initTargetLevel);
+                EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+                listener->m_event.ResetEvent();
+                EXPECT_EQ(listener->m_status, ER_OK);
+                EXPECT_EQ(listener->m_targetLevel, initTargetLevel);
             }
         }
 
         TEST_LOG_1("Set properties to valid value.");
         {
             TEST_LOG_2("If SelectableLevels > 1, set the TargetLevel property to the 2nd item of the SelectableLevels.");
-            if (listener.m_selectableLevels.size() > 1) {
-                const uint8_t validTargetLevel = listener.m_selectableLevels[1];
+            if (listener->m_selectableLevels.size() > 1) {
+                const uint8_t validTargetLevel = listener->m_selectableLevels[1];
                 status = controller->SetTargetLevel(validTargetLevel);
 
                 EXPECT_EQ(status, ER_OK);
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-                listener.m_event.ResetEvent();
-                EXPECT_EQ(listener.m_status, ER_OK);
+                EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+                listener->m_event.ResetEvent();
+                EXPECT_EQ(listener->m_status, ER_OK);
 
                 TEST_LOG_3("Wait the PropertiesChanged signal for the TargetLevel property.");
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_eventSignal, TIMEOUT)) << "property changed signal is missing";
-                listener.m_eventSignal.ResetEvent();
-                EXPECT_EQ(listener.m_targetLevelSignal, validTargetLevel);
+                EXPECT_EQ(true, listener->m_eventSignal.Wait(TIMEOUT)) << "property changed signal is missing";
+                listener->m_eventSignal.ResetEvent();
+                EXPECT_EQ(listener->m_targetLevelSignal, validTargetLevel);
 
                 TEST_LOG_3("Get the TargetLevel property.");
                 status = controller->GetTargetLevel();
                 EXPECT_EQ(status, ER_OK);
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-                listener.m_event.ResetEvent();
-                EXPECT_EQ(listener.m_status, ER_OK);
-                EXPECT_EQ(listener.m_targetLevel, validTargetLevel);
+                EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+                listener->m_event.ResetEvent();
+                EXPECT_EQ(listener->m_status, ER_OK);
+                EXPECT_EQ(listener->m_targetLevel, validTargetLevel);
             }
         }
     }

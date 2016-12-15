@@ -16,14 +16,14 @@
 
 #include "CdmTest.h"
 
-#include <alljoyn/cdm/interfaces/operation/EnergyUsageIntfController.h>
-#include <alljoyn/cdm/interfaces/operation/EnergyUsageIntfControllerListener.h>
+#include <interfaces/controller/operation/EnergyUsageIntfController.h>
+#include <interfaces/controller/operation/EnergyUsageIntfControllerListener.h>
 
 class EnergyUsageListener : public EnergyUsageIntfControllerListener
 {
 public:
-    qcc::Event m_event;
-    qcc::Event m_eventSignal;
+    CdmSemaphore m_event;
+    CdmSemaphore m_eventSignal;
     QStatus m_status;
     double m_cumulativeEnergy;
     double m_precision;
@@ -93,10 +93,11 @@ TEST_F(CDMTest, CDM_v1_EnergyUsage)
     WaitForControllee(ENERGY_USAGE_INTERFACE);
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
-        EnergyUsageListener listener;
-        CdmInterface* interface = m_controller->CreateInterface(ENERGY_USAGE_INTERFACE, m_interfaces[i].busName,
+
+        auto listener = mkRef<EnergyUsageListener>();
+        auto interface = m_controller->CreateInterface("org.alljoyn.SmartSpaces.Operation.EnergyUsage", m_interfaces[i].busName,
                                                                 qcc::String(m_interfaces[i].objectPath.c_str()), m_interfaces[i].sessionId, listener);
-        EnergyUsageIntfController* controller = static_cast<EnergyUsageIntfController*>(interface);
+        auto controller = std::dynamic_pointer_cast<EnergyUsageIntfController>(interface);
         QStatus status = ER_FAIL;
 
         TEST_LOG_1("Get initial values for all properties");
@@ -104,23 +105,23 @@ TEST_F(CDMTest, CDM_v1_EnergyUsage)
             TEST_LOG_2("Retrieve the CumulativeEnergy property.");
             status = controller->GetCumulativeEnergy();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            listener.m_event.ResetEvent();
-            EXPECT_EQ(listener.m_status, ER_OK);
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            listener->m_event.ResetEvent();
+            EXPECT_EQ(listener->m_status, ER_OK);
 
             TEST_LOG_2("Retrieve the Precision property.");
             status = controller->GetPrecision();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            listener.m_event.ResetEvent();
-            EXPECT_EQ(listener.m_status, ER_OK);
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            listener->m_event.ResetEvent();
+            EXPECT_EQ(listener->m_status, ER_OK);
 
             TEST_LOG_2("Retrieve the UpdateMinTime property.");
             status = controller->GetUpdateMinTime();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            listener.m_event.ResetEvent();
-            EXPECT_EQ(listener.m_status, ER_OK);
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            listener->m_event.ResetEvent();
+            EXPECT_EQ(listener->m_status, ER_OK);
         }
 
         TEST_LOG_1("Call method");
@@ -129,25 +130,25 @@ TEST_F(CDMTest, CDM_v1_EnergyUsage)
             {
                 status = controller->ResetCumulativeEnergy();
                 EXPECT_EQ(status, ER_OK);
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-                listener.m_event.ResetEvent();
-                EXPECT_EQ(listener.m_status, ER_OK);
+                EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+                listener->m_event.ResetEvent();
+                EXPECT_EQ(listener->m_status, ER_OK);
 
                 TEST_LOG_3("CumulativeEnergy != 0.0, wait the PropertiesChanged signal for the ResetCumulativeEnergy property");
                 double cumulativeEnergy = 0.0;
-                if (listener.m_cumulativeEnergy != cumulativeEnergy) {
-                    EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_eventSignal, TIMEOUT)) << "property changed signal is missing";
-                    listener.m_eventSignal.ResetEvent();
-                    EXPECT_DOUBLE_EQ(listener.m_cumulativeEnergySignal, cumulativeEnergy);
+                if (listener->m_cumulativeEnergy != cumulativeEnergy) {
+                    EXPECT_EQ(true, listener->m_eventSignal.Wait(TIMEOUT)) << "property changed signal is missing";
+                    listener->m_eventSignal.ResetEvent();
+                    EXPECT_DOUBLE_EQ(listener->m_cumulativeEnergySignal, cumulativeEnergy);
                 }
 
                 TEST_LOG_3("Get the ResetCumulativeEnergy property");
                 status = controller->GetCumulativeEnergy();
                 EXPECT_EQ(status, ER_OK);
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-                listener.m_event.ResetEvent();
-                EXPECT_EQ(listener.m_status, ER_OK);
-                EXPECT_DOUBLE_EQ(listener.m_cumulativeEnergy, cumulativeEnergy);
+                EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+                listener->m_event.ResetEvent();
+                EXPECT_EQ(listener->m_status, ER_OK);
+                EXPECT_DOUBLE_EQ(listener->m_cumulativeEnergy, cumulativeEnergy);
             }
         }
     }

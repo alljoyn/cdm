@@ -16,14 +16,14 @@
 
 #include "CdmTest.h"
 
-#include <alljoyn/cdm/interfaces/operation/OnOffStatusIntfController.h>
-#include <alljoyn/cdm/interfaces/operation/OnOffStatusIntfControllerListener.h>
+#include <interfaces/controller/operation/OnOffStatusIntfController.h>
+#include <interfaces/controller/operation/OnOffStatusIntfControllerListener.h>
 
 class OnOffStatusListener : public OnOffStatusIntfControllerListener
 {
 public:
-    qcc::Event m_event;
-    qcc::Event m_eventSignal;
+    CdmSemaphore m_event;
+    CdmSemaphore m_eventSignal;
     QStatus m_status;
     bool m_onOff;
     bool m_onOffSignal;
@@ -53,10 +53,10 @@ TEST_F(CDMTest, CDM_v1_OnOffStatus)
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
 
-        OnOffStatusListener listener;
-        CdmInterface* interface = m_controller->CreateInterface(ON_OFF_STATUS_INTERFACE, m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()),
+        auto listener = mkRef<OnOffStatusListener>();
+        auto interface = m_controller->CreateInterface("org.alljoyn.SmartSpaces.Operation.OnOffStatus", m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()),
                                                                 m_interfaces[i].sessionId, listener);
-        OnOffStatusIntfController* controller = static_cast<OnOffStatusIntfController*>(interface);
+        auto controller = std::dynamic_pointer_cast<OnOffStatusIntfController>(interface);
         QStatus status = ER_FAIL;
 
         TEST_LOG_1("Get initial values for all properties.");
@@ -64,9 +64,9 @@ TEST_F(CDMTest, CDM_v1_OnOffStatus)
             TEST_LOG_2("Retrieve the IsOn property.");
             status = controller->GetIsOn();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            listener.m_event.ResetEvent();
-            EXPECT_EQ(listener.m_status, ER_OK);
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            listener->m_event.ResetEvent();
+            EXPECT_EQ(listener->m_status, ER_OK);
         }
     }
 }

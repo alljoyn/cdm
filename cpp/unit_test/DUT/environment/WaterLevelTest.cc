@@ -17,14 +17,14 @@
 #include "CdmTest.h"
 #include <algorithm>
 
-#include <alljoyn/cdm/interfaces/environment/WaterLevelIntfController.h>
-#include <alljoyn/cdm/interfaces/environment/WaterLevelIntfControllerListener.h>
+#include <interfaces/controller/environment/WaterLevelIntfController.h>
+#include <interfaces/controller/environment/WaterLevelIntfControllerListener.h>
 
 class WaterLevelListener : public WaterLevelIntfControllerListener
 {
 public:
-    qcc::Event m_event;
-    qcc::Event m_eventSignal;
+    CdmSemaphore m_event;
+    CdmSemaphore m_eventSignal;
     QStatus m_status;
 
     uint8_t m_maxLevel;
@@ -80,10 +80,10 @@ TEST_F(CDMTest, CDM_v1_WaterLevel)
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
 
-        WaterLevelListener listener;
-        CdmInterface* interface = m_controller->CreateInterface(WATER_LEVEL_INTERFACE, m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()),
+        auto listener = mkRef<WaterLevelListener>();
+        auto interface = m_controller->CreateInterface("org.alljoyn.SmartSpaces.Environment.WaterLevel", m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()),
                                                                 m_interfaces[i].sessionId, listener);
-        WaterLevelIntfController* controller = static_cast<WaterLevelIntfController*>(interface);
+        auto controller = std::dynamic_pointer_cast<WaterLevelIntfController>(interface);
         QStatus status = ER_FAIL;
 
         TEST_LOG_1("Get initial values for all properties.");
@@ -91,23 +91,23 @@ TEST_F(CDMTest, CDM_v1_WaterLevel)
             TEST_LOG_2("Retrieve the MaxLevel property.");
             status = controller->GetMaxLevel();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            listener.m_event.ResetEvent();
-            EXPECT_EQ(listener.m_status, ER_OK);
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            listener->m_event.ResetEvent();
+            EXPECT_EQ(listener->m_status, ER_OK);
 
             TEST_LOG_2("Retrieve the CurrentLevel property.");
             status = controller->GetCurrentLevel();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            listener.m_event.ResetEvent();
-            EXPECT_EQ(listener.m_status, ER_OK);
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            listener->m_event.ResetEvent();
+            EXPECT_EQ(listener->m_status, ER_OK);
 
             TEST_LOG_2("Retrieve SupplySource property.");
             status = controller->GetSupplySource();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            listener.m_event.ResetEvent();
-            EXPECT_EQ(listener.m_status, ER_OK);
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            listener->m_event.ResetEvent();
+            EXPECT_EQ(listener->m_status, ER_OK);
         }
     }
 }

@@ -122,14 +122,15 @@ else:
         cdm_unittest_env.Append(CPPDEFINES = ['GTEST_HAS_CLONE=0'])
     if cdm_unittest_env['OS_CONF'] == 'windows' and cdm_unittest_env['MSVC_VERSION'] == '11.0':
         cdm_unittest_env.Append(CPPDEFINES = ['_VARIADIC_MAX=10'])
+
     # gtest library file is placed on folder above the the object files.
     #cdm_unittest_env.Append(LIBPATH = ['./'])
     #did not work in CDM gtest was placed in ObjectDirectory
-    cdm_unittest_env.Prepend(LIBPATH = ['.' , '../src'])
+    cdm_unittest_env.Prepend(LIBPATH = ['.'])
 
 
     cdm_unittest_env.Prepend(LIBS = ['gtest'])
-    cdm_unittest_env.Prepend(LIBS = ['alljoyn_cdm'])
+    cdm_unittest_env.Prepend(LIBS = ['alljoyn_cdm_util', 'alljoyn_cdm_controller', 'alljoyn_cdm_common', 'alljoyn_cdm_interfaces', 'alljoyn_about' ])
 
     cdmtest_src = cdm_unittest_env.Glob('*.cc') + cdm_unittest_env.Glob('environment/*.cc') + cdm_unittest_env.Glob('operation/*.cc') + cdm_unittest_env.Glob('input/*.cc') + cdm_unittest_env.Glob('userinterfacesettings/*.cc')
     if cdm_unittest_env['BR'] != 'on':
@@ -140,7 +141,6 @@ else:
     cdmtest_prog = cdm_unittest_env.Program('cdmDeviceTest', cdmtest_obj)
     cdm_unittest_env.Install('$TESTDIR/cdm/bin', cdmtest_prog)
 
-    cdm_unittest_env.Append(LIBPATH = [ '#' + '$OBJDIR_SERVICES_CDM/cpp/src' ])
 
 
 #######  TODO Figure out how this is supposed to work

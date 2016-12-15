@@ -16,14 +16,14 @@
 
 #include "CdmTest.h"
 
-#include <alljoyn/cdm/interfaces/operation/FilterStatusIntfController.h>
-#include <alljoyn/cdm/interfaces/operation/FilterStatusIntfControllerListener.h>
+#include <interfaces/controller/operation/FilterStatusIntfController.h>
+#include <interfaces/controller/operation/FilterStatusIntfControllerListener.h>
 
 class FilterStatusListener : public FilterStatusIntfControllerListener
 {
 public:
-    qcc::Event m_event;
-    qcc::Event m_eventSignal;
+    CdmSemaphore m_event;
+    CdmSemaphore m_eventSignal;
 
     QStatus m_status;
     qcc::String m_errorName;
@@ -117,10 +117,10 @@ TEST_F(CDMTest, CDM_v1_FilterStatus)
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
 
-        FilterStatusListener listener;
-        CdmInterface* interface = m_controller->CreateInterface(FILTER_STATUS_INTERFACE, m_interfaces[i].busName,
+        auto listener = mkRef<FilterStatusListener>();
+        auto interface = m_controller->CreateInterface("org.alljoyn.SmartSpaces.Operation.FilterStatus", m_interfaces[i].busName,
                                                                 qcc::String(m_interfaces[i].objectPath.c_str()), m_interfaces[i].sessionId, listener);
-        FilterStatusIntfController* controller = static_cast<FilterStatusIntfController*>(interface);
+        auto controller = std::dynamic_pointer_cast<FilterStatusIntfController>(interface);
         QStatus status = ER_FAIL;
 
         TEST_LOG_1("Get initial values for all properties.");
@@ -128,51 +128,51 @@ TEST_F(CDMTest, CDM_v1_FilterStatus)
             TEST_LOG_2("Retrieve the ExpectedLifeInDays property.");
             status = controller->GetExpectedLifeInDays();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            EXPECT_EQ(listener.m_status, ER_OK);
-            listener.m_event.ResetEvent();
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            EXPECT_EQ(listener->m_status, ER_OK);
+            listener->m_event.ResetEvent();
 
             TEST_LOG_2("Retrieve the IsCleanable property.");
             status = controller->GetIsCleanable();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            EXPECT_EQ(listener.m_status, ER_OK);
-            listener.m_event.ResetEvent();
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            EXPECT_EQ(listener->m_status, ER_OK);
+            listener->m_event.ResetEvent();
 
             TEST_LOG_2("Retrieve the OrderPercentage property.");
             status = controller->GetOrderPercentage();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            EXPECT_EQ(listener.m_status, ER_OK);
-            listener.m_event.ResetEvent();
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            EXPECT_EQ(listener->m_status, ER_OK);
+            listener->m_event.ResetEvent();
 
             TEST_LOG_2("Retrieve the Manufacturer property.");
             status = controller->GetManufacturer();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            EXPECT_EQ(listener.m_status, ER_OK);
-            listener.m_event.ResetEvent();
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            EXPECT_EQ(listener->m_status, ER_OK);
+            listener->m_event.ResetEvent();
 
             TEST_LOG_2("Retrieve the PartNumber property.");
             status = controller->GetPartNumber();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            EXPECT_EQ(listener.m_status, ER_OK);
-            listener.m_event.ResetEvent();
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            EXPECT_EQ(listener->m_status, ER_OK);
+            listener->m_event.ResetEvent();
 
             TEST_LOG_2("Retrieve the Url property.");
             status = controller->GetUrl();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            EXPECT_EQ(listener.m_status, ER_OK);
-            listener.m_event.ResetEvent();
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            EXPECT_EQ(listener->m_status, ER_OK);
+            listener->m_event.ResetEvent();
 
             TEST_LOG_2("Retrieve the LifeRemaining property.");
             status = controller->GetLifeRemaining();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            EXPECT_EQ(listener.m_status, ER_OK);
-            listener.m_event.ResetEvent();
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            EXPECT_EQ(listener->m_status, ER_OK);
+            listener->m_event.ResetEvent();
         }
    }
 }

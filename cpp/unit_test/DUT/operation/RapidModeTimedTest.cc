@@ -16,14 +16,14 @@
 
 #include "CdmTest.h"
 
-#include <alljoyn/cdm/interfaces/operation/RapidModeTimedIntfController.h>
-#include <alljoyn/cdm/interfaces/operation/RapidModeTimedIntfControllerListener.h>
+#include <interfaces/controller/operation/RapidModeTimedIntfController.h>
+#include <interfaces/controller/operation/RapidModeTimedIntfControllerListener.h>
 
 class RapidModeTimedListener : public RapidModeTimedIntfControllerListener
 {
 public:
-    qcc::Event m_event;
-    qcc::Event m_eventSignal;
+    CdmSemaphore m_event;
+    CdmSemaphore m_eventSignal;
 
     QStatus m_status;
     qcc::String m_errorName;
@@ -66,10 +66,10 @@ TEST_F(CDMTest, CDM_v1_RapidModeTimed)
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
 
-        RapidModeTimedListener listener;
-        CdmInterface* interface = m_controller->CreateInterface(RAPID_MODE_TIMED_INTERFACE, m_interfaces[i].busName,
+        auto listener = mkRef<RapidModeTimedListener>();
+        auto interface = m_controller->CreateInterface("org.alljoyn.SmartSpaces.Operation.RapidModeTimed", m_interfaces[i].busName,
                                                                 qcc::String(m_interfaces[i].objectPath.c_str()), m_interfaces[i].sessionId, listener);
-        RapidModeTimedIntfController* controller = static_cast<RapidModeTimedIntfController*>(interface);
+        auto controller = std::dynamic_pointer_cast<RapidModeTimedIntfController>(interface);
         QStatus status = ER_FAIL;
 
         TEST_LOG_1("Get initial values for all properties");
@@ -77,80 +77,80 @@ TEST_F(CDMTest, CDM_v1_RapidModeTimed)
             TEST_LOG_2("Retieve the RapidModeMinutesRemaining property.");
             status = controller->GetRapidModeMinutesRemaining();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            listener.m_event.ResetEvent();
-            EXPECT_EQ(listener.m_status, ER_OK);
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            listener->m_event.ResetEvent();
+            EXPECT_EQ(listener->m_status, ER_OK);
 
             TEST_LOG_2("Retieve the MaxSetMinutes property.");
             status = controller->GetMaxSetMinutes();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            listener.m_event.ResetEvent();
-            EXPECT_EQ(listener.m_status, ER_OK);
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            listener->m_event.ResetEvent();
+            EXPECT_EQ(listener->m_status, ER_OK);
         }
 
         const uint16_t initValue = 0;
         TEST_LOG_1("Initialize all read-write properties.");
         {
             TEST_LOG_2("Initialize the RapidModeMinutesRemaining property to 0.");
-            if (listener.m_rapidModeMinutesRemaining != initValue) {
+            if (listener->m_rapidModeMinutesRemaining != initValue) {
                 status = controller->SetRapidModeMinutesRemaining(initValue);
                 EXPECT_EQ(status, ER_OK);
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-                listener.m_event.ResetEvent();
-                EXPECT_EQ(listener.m_status, ER_OK);
+                EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+                listener->m_event.ResetEvent();
+                EXPECT_EQ(listener->m_status, ER_OK);
 
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_eventSignal, TIMEOUT));
-                listener.m_eventSignal.ResetEvent();
-                EXPECT_EQ(listener.m_rapidModeMinutesRemainingSignal, initValue);
+                EXPECT_EQ(true, listener->m_eventSignal.Wait(TIMEOUT));
+                listener->m_eventSignal.ResetEvent();
+                EXPECT_EQ(listener->m_rapidModeMinutesRemainingSignal, initValue);
             }
         }
 
         TEST_LOG_1("Set properties to invalid value.");
         {
             TEST_LOG_2("If MaxSetMinutes != UINT16_MAX, Set the RapidModeMinutesRemaining property to MaxSetMinutes + 1.");
-            if (listener.m_maxSetMinutes != UINT16_MAX) {
-                const uint32_t invalidValue = listener.m_maxSetMinutes + 1;
+            if (listener->m_maxSetMinutes != UINT16_MAX) {
+                const uint32_t invalidValue = listener->m_maxSetMinutes + 1;
                 status = controller->SetRapidModeMinutesRemaining(invalidValue);
                 EXPECT_EQ(status, ER_OK);
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-                listener.m_event.ResetEvent();
-                EXPECT_NE(listener.m_status, ER_OK);
+                EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+                listener->m_event.ResetEvent();
+                EXPECT_NE(listener->m_status, ER_OK);
 
                 TEST_LOG_3("Get the RapidModeMinutesRemaining property.");
                 status = controller->GetRapidModeMinutesRemaining();
                 EXPECT_EQ(status, ER_OK);
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-                listener.m_event.ResetEvent();
-                EXPECT_EQ(listener.m_status, ER_OK);
-                EXPECT_EQ(listener.m_rapidModeMinutesRemaining, initValue);
+                EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+                listener->m_event.ResetEvent();
+                EXPECT_EQ(listener->m_status, ER_OK);
+                EXPECT_EQ(listener->m_rapidModeMinutesRemaining, initValue);
             }
         }
 
         TEST_LOG_1("Set properties to valid value.");
         {
             TEST_LOG_2("If MaxSetMinutes >= 1, Set the RapidModeMinutesRemaining property to value 1.");
-            if (listener.m_maxSetMinutes >= 1)
+            if (listener->m_maxSetMinutes >= 1)
             {
                 const uint16_t validValue = 1;
                 status = controller->SetRapidModeMinutesRemaining(validValue);
                 EXPECT_EQ(status, ER_OK);
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-                listener.m_event.ResetEvent();
-                EXPECT_EQ(listener.m_status, ER_OK);
+                EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+                listener->m_event.ResetEvent();
+                EXPECT_EQ(listener->m_status, ER_OK);
 
                 TEST_LOG_3("Wait the PropertiesChanged signal for the RapidModeMinutesRemaining property.");
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_eventSignal, TIMEOUT));
-                listener.m_eventSignal.ResetEvent();
-                EXPECT_EQ(listener.m_rapidModeMinutesRemainingSignal, validValue);
+                EXPECT_EQ(true, listener->m_eventSignal.Wait(TIMEOUT));
+                listener->m_eventSignal.ResetEvent();
+                EXPECT_EQ(listener->m_rapidModeMinutesRemainingSignal, validValue);
 
                 TEST_LOG_3("Get the RapidModeMinutesRemaining property.");
                 status = controller->GetRapidModeMinutesRemaining();
                 EXPECT_EQ(status, ER_OK);
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-                listener.m_event.ResetEvent();
-                EXPECT_EQ(listener.m_status, ER_OK);
-                EXPECT_EQ(listener.m_rapidModeMinutesRemaining, validValue);
+                EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+                listener->m_event.ResetEvent();
+                EXPECT_EQ(listener->m_status, ER_OK);
+                EXPECT_EQ(listener->m_rapidModeMinutesRemaining, validValue);
             }
         }
     }

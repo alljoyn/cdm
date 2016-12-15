@@ -116,10 +116,10 @@ void CDMTest::WaitForControllee(CdmInterfaceType type)
     TEST_LOG_1("The test device listens for an About announcement from the application on the DUT.");
     if (type == (CdmInterfaceType) -1) {
         m_interfaceNameForTest = ALL_CDM_INTERFACE;
-        ASSERT_EQ(qcc::Event::Wait(eventOnDeviceAdded, TIMEOUT), ER_OK)<< "Controllee device not found";
+        ASSERT_TRUE(eventOnDeviceAdded.Wait(TIMEOUT)) << "Controllee device not found";
     } else {
         m_interfaceNameForTest = CdmInterface::GetInterfaceName(type);
-        ASSERT_EQ(qcc::Event::Wait(eventOnDeviceAdded, TIMEOUT), ER_OK)<< "Controllee device not found";
+        ASSERT_TRUE(eventOnDeviceAdded.Wait(TIMEOUT)) << "Controllee device not found";
         std::string name = m_interfaceNameForTest.c_str();
         TEST_LOG_1("After receiving an About announcement from the application, the test device joins\n"
             "   a session with the application at the port specified in the received About announcement\n"
@@ -153,15 +153,17 @@ void CDMTest::OnDeviceAdded(const char* busname, SessionPort port, const CdmAbou
         delete[] interfaces;
     }
     delete[] paths;
-    if (isFound)
+
+    if (isFound) {
         eventOnDeviceAdded.SetEvent();
+    }
 }
 
 void CDMTest::OnDeviceRemoved(const char* busname)
 {
 }
 
-void CDMTest::OnDeviceSessionJoined(const DeviceInfoPtr& info)
+void CDMTest::OnDeviceSessionJoined(const Ref<DeviceInfo> info)
 {
 }
 

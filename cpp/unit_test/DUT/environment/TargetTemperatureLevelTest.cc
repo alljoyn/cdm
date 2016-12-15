@@ -17,14 +17,14 @@
 #include "CdmTest.h"
 #include <algorithm>
 
-#include <alljoyn/cdm/interfaces/environment/TargetTemperatureLevelIntfController.h>
-#include <alljoyn/cdm/interfaces/environment/TargetTemperatureLevelIntfControllerListener.h>
+#include <interfaces/controller/environment/TargetTemperatureLevelIntfController.h>
+#include <interfaces/controller/environment/TargetTemperatureLevelIntfControllerListener.h>
 
 class TargetTemperatureLevelListener : public TargetTemperatureLevelIntfControllerListener
 {
 public:
-    qcc::Event m_event;
-    qcc::Event m_eventSignal;
+    CdmSemaphore m_event;
+    CdmSemaphore m_eventSignal;
 
     QStatus m_status;
     qcc::String m_errorName;
@@ -32,10 +32,10 @@ public:
 
     uint8_t m_targetLevel;
     uint8_t m_maxLevel;
-    TargetTemperatureLevelInterface::TemperatureLevels m_selectableTemperatureLevels;
+    std::vector<uint8_t> m_selectableTemperatureLevels;
     uint8_t m_targetLevelSignal;
     uint8_t m_maxLevelSignal;
-    TargetTemperatureLevelInterface::TemperatureLevels m_selectableTemperatureLevelsSignal;
+    std::vector<uint8_t> m_selectableTemperatureLevelsSignal;
 
     virtual void OnResponseSetTargetLevel(QStatus status, const qcc::String& objectPath, void* context)
     {
@@ -57,7 +57,7 @@ public:
         m_event.SetEvent();
     }
 
-    virtual void OnResponseGetSelectableTemperatureLevels(QStatus status, const qcc::String& objectPath, const TargetTemperatureLevelInterface::TemperatureLevels& value, void* context)
+    virtual void OnResponseGetSelectableTemperatureLevels(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& value, void* context)
     {
         m_status = status;
         m_selectableTemperatureLevels = value;
@@ -76,7 +76,7 @@ public:
         m_eventSignal.SetEvent();
     }
 
-    virtual void OnSelectableTemperatureLevelsChanged(const qcc::String& objectPath, const TargetTemperatureLevelInterface::TemperatureLevels& value)
+    virtual void OnSelectableTemperatureLevelsChanged(const qcc::String& objectPath, const std::vector<uint8_t>& value)
     {
         m_selectableTemperatureLevelsSignal = value;
         m_eventSignal.SetEvent();
@@ -104,10 +104,10 @@ TEST_F(CDMTest, CDM_v1_TargetTemperatureLevel)
     for (size_t i = 0; i < m_interfaces.size(); i++) {
         TEST_LOG_OBJECT_PATH(m_interfaces[i].objectPath);
 
-        TargetTemperatureLevelListener listener;
-        CdmInterface* interface = m_controller->CreateInterface(TARGET_TEMPERATURE_LEVEL_INTERFACE, m_interfaces[i].busName,
+        auto listener = mkRef<TargetTemperatureLevelListener>();
+        auto interface = m_controller->CreateInterface("org.alljoyn.SmartSpaces.Environment.TargetTemperatureLevel", m_interfaces[i].busName,
                                                                 qcc::String(m_interfaces[i].objectPath.c_str()), m_interfaces[i].sessionId, listener);
-        TargetTemperatureLevelIntfController* controller = static_cast<TargetTemperatureLevelIntfController*>(interface);
+        auto controller = std::dynamic_pointer_cast<TargetTemperatureLevelIntfController>(interface);
         QStatus status = ER_FAIL;
 
         TEST_LOG_1("Get initial values for all properties.");
@@ -115,67 +115,67 @@ TEST_F(CDMTest, CDM_v1_TargetTemperatureLevel)
             TEST_LOG_2("Retrieve the TargetLevel property.");
             status = controller->GetTargetLevel();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            EXPECT_EQ(listener.m_status, ER_OK);
-            listener.m_event.ResetEvent();
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            EXPECT_EQ(listener->m_status, ER_OK);
+            listener->m_event.ResetEvent();
 
             TEST_LOG_2("Retrieve the MaxLevel property.");
             status = controller->GetMaxLevel();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            EXPECT_EQ(listener.m_status, ER_OK);
-            listener.m_event.ResetEvent();
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            EXPECT_EQ(listener->m_status, ER_OK);
+            listener->m_event.ResetEvent();
 
             TEST_LOG_2("Retrieve the SelectableTemperatureLevels property.");
             status = controller->GetSelectableTemperatureLevels();
             EXPECT_EQ(status, ER_OK);
-            EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-            EXPECT_EQ(listener.m_status, ER_OK);
-            listener.m_event.ResetEvent();
+            EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+            EXPECT_EQ(listener->m_status, ER_OK);
+            listener->m_event.ResetEvent();
         }
 
-        uint8_t target = listener.m_targetLevel;
-        if (listener.m_selectableTemperatureLevelsSignal.size() > 0) {
+        uint8_t target = listener->m_targetLevel;
+        if (listener->m_selectableTemperatureLevelsSignal.size() > 0) {
             TEST_LOG_1("Initialize all read-write properties.");
             {
                 TEST_LOG_2("Initialize the TargetLevel property to the 1st item of SelectableTemperatureLevels.");
-                if (listener.m_targetLevel != listener.m_selectableTemperatureLevels[0]) {
-                    target = listener.m_selectableTemperatureLevels[0];
+                if (listener->m_targetLevel != listener->m_selectableTemperatureLevels[0]) {
+                    target = listener->m_selectableTemperatureLevels[0];
                     status =  controller->SetTargetLevel(target);
                     EXPECT_EQ(status, ER_OK);
-                    EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-                    EXPECT_EQ(listener.m_status, ER_OK);
-                    listener.m_event.ResetEvent();
+                    EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+                    EXPECT_EQ(listener->m_status, ER_OK);
+                    listener->m_event.ResetEvent();
 
-                    EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_eventSignal, TIMEOUT)) << "property changed signal is missing";
-                    listener.m_eventSignal.ResetEvent();
-                    EXPECT_EQ(listener.m_targetLevelSignal, listener.m_selectableTemperatureLevels[0]);
+                    EXPECT_EQ(true, listener->m_eventSignal.Wait(TIMEOUT)) << "property changed signal is missing";
+                    listener->m_eventSignal.ResetEvent();
+                    EXPECT_EQ(listener->m_targetLevelSignal, listener->m_selectableTemperatureLevels[0]);
                 }
             }
 
-            if (listener.m_selectableTemperatureLevelsSignal.size() > 1) {
+            if (listener->m_selectableTemperatureLevelsSignal.size() > 1) {
                 TEST_LOG_1("Set properties to valid value.");
                 {
                     TEST_LOG_2("Set the TargetLevel property to the 2nd item of SelectableTemperatureLevels.");
-                    target = listener.m_selectableTemperatureLevels[1];
+                    target = listener->m_selectableTemperatureLevels[1];
                     status =  controller->SetTargetLevel(target);
                     EXPECT_EQ(status, ER_OK);
-                    EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-                    EXPECT_EQ(listener.m_status, ER_OK);
-                    listener.m_event.ResetEvent();
+                    EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+                    EXPECT_EQ(listener->m_status, ER_OK);
+                    listener->m_event.ResetEvent();
 
                     TEST_LOG_3("Wait the PropertiesChanged signal for the TargetLevel property.");
-                    EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_eventSignal, TIMEOUT)) << "property changed signal is missing";
-                    listener.m_eventSignal.ResetEvent();
-                    EXPECT_EQ(listener.m_targetLevelSignal, target);
+                    EXPECT_EQ(true, listener->m_eventSignal.Wait(TIMEOUT)) << "property changed signal is missing";
+                    listener->m_eventSignal.ResetEvent();
+                    EXPECT_EQ(listener->m_targetLevelSignal, target);
 
                     TEST_LOG_3("Get the TargetLevel property.");
                     status =  controller->GetTargetLevel();
                     EXPECT_EQ(status, ER_OK);
-                    EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-                    listener.m_event.ResetEvent();
-                    EXPECT_EQ(listener.m_status, ER_OK);
-                    EXPECT_EQ(listener.m_targetLevel, target);
+                    EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+                    listener->m_event.ResetEvent();
+                    EXPECT_EQ(listener->m_status, ER_OK);
+                    EXPECT_EQ(listener->m_targetLevel, target);
                 }
             }
         }
@@ -184,23 +184,23 @@ TEST_F(CDMTest, CDM_v1_TargetTemperatureLevel)
         {
             TEST_LOG_2("Set the TargetLevel property to value outside SelectableLevels.");
             uint8_t unselectableLevel = 0;
-            status = listener.GetUnselectableLevel(unselectableLevel);
+            status = listener->GetUnselectableLevel(unselectableLevel);
             if(status == ER_OK)
             {
                 status = controller->SetTargetLevel(unselectableLevel);
                 EXPECT_EQ(status, ER_OK);
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-                listener.m_event.ResetEvent();
-                EXPECT_NE(listener.m_status, ER_OK);
-                listener.m_event.ResetEvent();
+                EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+                listener->m_event.ResetEvent();
+                EXPECT_NE(listener->m_status, ER_OK);
+                listener->m_event.ResetEvent();
 
                 TEST_LOG_2("Get the TargetLevel property.");
                 status = controller->GetTargetLevel();
                 EXPECT_EQ(status, ER_OK);
-                EXPECT_EQ(ER_OK, qcc::Event::Wait(listener.m_event, TIMEOUT));
-                listener.m_event.ResetEvent();
-                EXPECT_EQ(listener.m_status, ER_OK);
-                EXPECT_EQ(listener.m_targetLevel, target);
+                EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
+                listener->m_event.ResetEvent();
+                EXPECT_EQ(listener->m_status, ER_OK);
+                EXPECT_EQ(listener->m_targetLevel, target);
             }
         }
     }
