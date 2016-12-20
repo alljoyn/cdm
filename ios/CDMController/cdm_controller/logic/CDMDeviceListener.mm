@@ -3,7 +3,7 @@
 //  CDMController
 //
 //  Created by Jayden Ivanovic on 26/08/2016.
-//  Copyright © 2016 AllSeen Alliance. All rights reserved.
+//  Copyright (c) Connectivity Foundation and AllJoyn Open Source Project Contributors and others.
 //
 
 #include "CDMDeviceListener.h"
