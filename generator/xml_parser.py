@@ -394,6 +394,8 @@ class AJType(object):
 
         return None
 
+    def tclTypeName(self):
+        return self.TCLHalMap.get(self.signature)
 
     def tclHalEncoder(self, decode = False):
         if decode:
@@ -401,7 +403,8 @@ class AJType(object):
         else:
             prefix = "HAL_Encode_"
 
-        if self.ajtypeIsEnum(): return prefix + "Int"
+        if self.ajtypeIsEnum():
+            return prefix + "Int"
 
         # Arrays are represented by "Array_%" where % is from TCLArrayMap
         if self.ajtypeIsArray():
@@ -770,9 +773,11 @@ class Property(object):
         self.Max = None
         self.MaxFromProperty = None
         self.MinFromProperty = None
+        self.StepFromProperty = None
         self.Units = None
         self.parent = None
         self.Selector = None
+        self.Clamp = False
 
     def tcl_access_char(self):
         return {
@@ -812,8 +817,14 @@ class Property(object):
     def set_min_from_property(self, value):
         self.MinFromProperty = value
 
+    def set_step_from_property(self, value):
+        self.StepFromProperty = value
+
     def set_units(self, units): 
         self.Units = units
+
+    def set_clamp(self, value):
+        self.Clamp = True if value == "true" else False
 
     def add_annotation(self, name, value):
         regexs = {
@@ -826,23 +837,29 @@ class Property(object):
             re.compile(r'org\.alljoyn\.Bus\.Type\.Name'):
                 lambda m: self.Type.set_annotated_type(value),
 
-            re.compile(r'org\.alljoyn\.Bus\.Type\.Min'): 
-                lambda m: self.set_min(value), 
- 
-            re.compile(r'org\.alljoyn\.Bus\.Type\.Max'): 
-                lambda m: self.set_max(value), 
+            re.compile(r'org\.alljoyn\.Bus\.Type\.Min'):
+                lambda m: self.set_min(value),
+
+            re.compile(r'org\.alljoyn\.Bus\.Type\.Max'):
+                lambda m: self.set_max(value),
 
             re.compile(r'org\.alljoyn\.Bus\.Type\.Units'):
-                lambda m: self.set_units(value), 
+                lambda m: self.set_units(value),
 
             re.compile(r'org\.twobulls\.Property\.Selector'):
                 lambda m: self.add_selector(value),
 
-            re.compile(r'org\.twobulls\.Property\.MaxValueFromProperty'):
+            re.compile(r'org\.twobulls\.Property\.Max'):
                 lambda m: self.set_max_from_property(value),
 
-            re.compile(r'org\.twobulls\.Property\.MinValueFromProperty'):
+            re.compile(r'org\.twobulls\.Property\.Min'):
                 lambda m: self.set_min_from_property(value),
+
+            re.compile(r'org\.twobulls\.Property\.Step'):
+                lambda m: self.set_step_from_property(value),
+
+            re.compile(r'org\.twobulls\.Property\.Clamp'):
+                lambda m: self.set_clamp(value),
         }
 
         handled = False

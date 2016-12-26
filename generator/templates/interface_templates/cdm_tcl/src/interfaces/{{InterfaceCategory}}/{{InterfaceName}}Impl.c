@@ -1,18 +1,31 @@
 {% import "tcl_macros" as tcl_macros with context %}
 /******************************************************************************
- * Copyright AllSeen Alliance. All rights reserved.
+ * Copyright (c) 2016 Open Connectivity Foundation (OCF) and AllJoyn Open
+ *    Source Project (AJOSP) Contributors and others.
  *
- *    Permission to use, copy, modify, and/or distribute this software for any
- *    purpose with or without fee is hereby granted, provided that the above
- *    copyright notice and this permission notice appear in all copies.
+ *    SPDX-License-Identifier: Apache-2.0
  *
- *    THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- *    WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- *    MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- *    ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- *    WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- *    ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ *    All rights reserved. This program and the accompanying materials are
+ *    made available under the terms of the Apache License, Version 2.0
+ *    which accompanies this distribution, and is available at
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Copyright 2016 Open Connectivity Foundation and Contributors to
+ *    AllSeen Alliance. All rights reserved.
+ *
+ *    Permission to use, copy, modify, and/or distribute this software for
+ *    any purpose with or without fee is hereby granted, provided that the
+ *    above copyright notice and this permission notice appear in all
+ *    copies.
+ *
+ *     THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+ *     WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+ *     WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE
+ *     AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL
+ *     DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR
+ *     PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
+ *     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+ *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
 #include <stdlib.h>
@@ -21,6 +34,7 @@
 #include <ajtcl/cdm/CdmControllee.h>
 #include <ajtcl/cdm/CdmInterfaceCommon.h>
 #include <ajtcl/cdm/utils/Cdm_Array.h>
+#include <ajtcl/cdm/interfaces/CdmInterfaceValidation.h>
 #include <ajtcl/cdm/interfaces/{{InterfaceCategory}}/{{Interface.Name}}Interface.h>
 #include <ajtcl/cdm/interfaces/{{InterfaceCategory}}/{{Interface.Name}}Model.h>
 
@@ -58,7 +72,7 @@ void InitArray_{{Interface.Name}}_{{struc.Name}}(Array_{{Interface.Name}}_{{stru
 }
 
 
-// Note: this only allows fields that are char*, not any other kind of pointer
+/* Note: this only allows fields that are char*, not any other kind of pointer */
 void CopyArray_{{Interface.Name}}_{{struc.Name}}(Array_{{Interface.Name}}_{{struc.Name}}* value, Array_{{Interface.Name}}_{{struc.Name}}* copy)
 {
     if (value->elems) {
@@ -148,10 +162,50 @@ static AJ_Status {{Interface.Name}}_Get{{p.Name}}(AJ_BusAttachment* busAttachmen
 {% endif %}
 {% if p.Writable %}
 
+static AJ_Status {{p.Name}}_ValueValid({{Interface.Name}}Model* model, {{p.Type.tcltype()}} value)
+{
+    return AJ_OK;
+}
 
+{% if p.Clamp %}
+static AJ_Status clamp{{p.Name}}({{Interface.Name}}Model* model, const char* objPath, {{p.Type.tcltype()}} value, {{p.Type.tcltype()}} *out)
+{
+    AJ_Status status;
+    {% if p.Min != None %}
+    {{p.Type.tcltype()}} minValue; = {{p.Min}};
+    {% endif %}
+    {% if p.MinFromProperty != None %}
+    {{p.Type.tcltype()}} minValue;
+    status = model->Get{{p.MinFromProperty}}(model, objPath, &minValue);
+    if (status != AJ_OK)
+        return status;
+    {% endif %}
+
+    {% if p.Max != None %}
+    {{p.Type.tcltype()}} maxValue; = {{p.Max}};{% endif %}
+    {% if p.MaxFromProperty != None %}
+    {{p.Type.tcltype()}} maxValue;
+    status = model->Get{{p.MaxFromProperty}}(model, objPath, &maxValue);
+    if (status != AJ_OK)
+        return status;
+    {% endif %}
+
+    {% if p.StepFromProperty != None %}
+    {{p.Type.tcltype()}} stepValue;
+    status = model->Get{{p.StepFromProperty}}(model, objPath, &stepValue);
+    if (status != AJ_OK)
+        return status;
+    {% endif %}
+
+    *out = clamp{{p.Type.tclTypeName()}}(value, minValue, maxValue, stepValue);
+    return AJ_OK;
+}
+{% endif %}
 
 static AJ_Status {{Interface.Name}}_Set{{p.Name}}(AJ_BusAttachment* busAttachment, const char* objPath, {{p.Type.tcltype()}} value)
 {
+    AJ_Status status;
+
     if (!objPath) {
         return AJ_ERR_INVALID;
     }
@@ -163,6 +217,16 @@ static AJ_Status {{Interface.Name}}_Set{{p.Name}}(AJ_BusAttachment* busAttachmen
     if (!model->Set{{p.Name}}) {
         return AJ_ERR_NULL;
     }
+
+    {% if p.Clamp %}
+    status = clamp{{p.Name}}(model, objPath, value, &value);
+    if (status != AJ_OK)
+        return status;
+    {% endif %}
+
+    status = {{p.Name}}_ValueValid(model, value);
+    if (status != AJ_OK)
+        return status;
 
     model->busAttachment = busAttachment;
     return model->Set{{p.Name}}(model, objPath, value);
@@ -234,9 +298,9 @@ static AJ_Status Cdm_{{Interface.Name}}_Call{{method.Name}}(AJ_BusAttachment* bu
 
 
 
-//
-// Handler functions
-//
+/*
+   Handler functions
+*/
 static AJ_Status {{Interface.Name}}_OnGetProperty(AJ_BusAttachment* busAttachment, AJ_Message* replyMsg, const char* objPath, uint8_t memberIndex)
 {
     AJ_Status status = AJ_ERR_INVALID;
