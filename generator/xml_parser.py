@@ -454,17 +454,22 @@ class AJType(object):
         ajtype = self.annotated_type if self.annotated_type else self.signature
 
         if ajtype.startswith("a"):
-            return "ERROR_ARRAY";
+            return "ERROR_ARRAY"
 
         if ajtype.startswith('[') and ajtype.endswith(']'):
             cpptype = ajtype[1:-1]
             interface = interface_of(self)
 
             if interface and self.ajtypeIsStruct(cpptype):
-                return "ERROR_STRUCT";
+                return "ERROR_STRUCT"
 
             if interface and self.ajtypeIsEnum(cpptype):
-                cpptype = "int32_t"
+                for annotation in interface.Annotations:
+                    if annotation.Name.find("org.twobulls.Bus.Struct") != -1:
+                        if annotation.Name.lower().find(cpptype.lower()) != -1:
+                            if annotation.Name.find(".Sig") != -1:
+                                cpptype = self.cpp_signature_type(annotation.Value)
+
 
         elif self.ajtypeIsString():
             cpptype = "const char*"
