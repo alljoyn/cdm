@@ -1,3 +1,8 @@
+#ifdef _MSC_VER
+#if _MSC_VER < 1900
+#define __func__ __FUNCTION__
+#endif
+#endif
 
 #include <qcc/Debug.h>
 #include <alljoyn/ProxyBusObject.h>

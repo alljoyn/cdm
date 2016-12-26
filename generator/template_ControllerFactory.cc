@@ -14,6 +14,12 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
+#ifdef _MSC_VER
+#if _MSC_VER < 1900
+#define __func__ __FUNCTION__
+#endif
+#endif
+
 #include <qcc/Debug.h>
 
 #include <alljoyn/Status.h>

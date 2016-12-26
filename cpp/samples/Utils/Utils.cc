@@ -20,6 +20,8 @@
 #include <cctype>
 
 #if defined(QCC_OS_GROUP_WINDOWS)
+#include <direct.h>
+#define mkdir(path, mode) _mkdir(path)
 #else
 #include <sys/utsname.h>
 #endif

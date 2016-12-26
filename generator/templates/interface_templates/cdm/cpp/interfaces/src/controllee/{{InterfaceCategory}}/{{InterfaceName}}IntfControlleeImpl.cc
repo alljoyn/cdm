@@ -176,17 +176,17 @@ QStatus {{Interface.Name}}IntfControllee::Emit{{signal.Name}}()
     QStatus status = interface->Init();
     if (status != ER_OK) {
         QCC_LogError(status, ("%s: could not initialize interface", __func__));
-        goto ERROR;
+        goto ERROR_CLEANUP;
     }
 
     status = cdmBusObject.RegisterInterface(interface);
     if (status != ER_OK) {
-        goto ERROR;
+        goto ERROR_CLEANUP;
     }
 
     return interface;
 
-ERROR:
+ERROR_CLEANUP:
     delete interface;
     return nullptr;
 }
@@ -383,7 +383,7 @@ QStatus {{Interface.Name}}IntfControllee::Impl::Emit{{signal.Name}}()
 {
     {# TODO: Seems like this GetMember might want to be in the init function like for the method calls? #}
     const InterfaceDescription::Member* member = GetInterfaceDescription()->GetMember(s_signal_{{signal.Name}}.c_str());
-    assert(member);
+    QCC_ASSERT(member);
     {% if signal.Sessionless %}
     return m_busObject.Signal(NULL, 0, *member, NULL, 0, 0, ALLJOYN_FLAG_SESSIONLESS);
     {% else %}

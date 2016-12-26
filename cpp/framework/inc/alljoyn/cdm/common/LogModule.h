@@ -18,6 +18,12 @@
 #ifndef LOGMODULE_H_
 #define LOGMODULE_H_
 
+#ifdef _MSC_VER
+#if _MSC_VER < 1900
+#define __func__ __FUNCTION__
+#endif
+#endif
+
 #include <qcc/Debug.h>
 #include <qcc/platform.h>
 

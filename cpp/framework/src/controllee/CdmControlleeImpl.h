@@ -27,6 +27,18 @@
 #include <alljoyn/cdm/common/CdmInterface.h>
 #include <alljoyn/cdm/common/CdmInterfaceTypes.h>
 
+#ifdef _MSC_VER
+    #if _MSC_VER < 1900
+        typedef std::atomic<bool> AtomicBool;
+        #define __func__ __FUNCTION__
+    #else
+        typedef std::atomic_bool AtomicBool;
+    #endif
+#else
+    typedef std::atomic_bool AtomicBool;
+#endif
+
+
 namespace ajn {
 
 namespace services {
@@ -45,6 +57,7 @@ class CdmControllee;
 class CdmControlleeImpl {
   public:
     CdmControlleeImpl(BusAttachment& bus, CdmControllee& outer);
+    CdmControlleeImpl(const std::atomic_bool &m_isStarted);
 
     ~CdmControlleeImpl();
 
@@ -70,7 +83,7 @@ class CdmControlleeImpl {
     std::map<qcc::String, Ref<CdmBusObject>> m_cdmBusObjectsMap;
     std::map<std::pair<qcc::String, qcc::String>, Ref<CdmControlleeInterface>> m_interfaces;
     CdmBusListener* m_cdmBusListener;
-    std::atomic_bool m_isStarted;
+    AtomicBool m_isStarted;
 };
 
 }

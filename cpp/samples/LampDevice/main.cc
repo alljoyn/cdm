@@ -26,16 +26,7 @@
 
 namespace cdm = ajn::services;
 
-int main() {
-#if 0
-    const std::string initial_state =
-        "/cdm/lamp:Brightness:Brightness=0.900000\n"
-            "/cdm/lamp:Color:Hue=180.0\n"
-            "/cdm/lamp:Color:Saturation=0.9\n"
-            "/cdm/lamp:OnOffStatus:IsOn=0";
-
-    HAL::init("Lamp.state", initial_state);
-#endif
+int CDECL_CALL main() {
 
     cdm::CdmSystem system("Lamp");
 
