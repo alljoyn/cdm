@@ -1,77 +1,780 @@
 <DeviceEmulator name="IntegratedDevice">
     <AboutData>
-      <AppId><!-- Runtime Generated --></AppId>
-      <DefaultLanguage>en</DefaultLanguage>
-      <DeviceName>My Device Name</DeviceName>
-      <DeviceName lang = 'es'>Nombre de mi dispositivo</DeviceName>
-      <DeviceId><!-- Runtime Generated --></DeviceId>
-      <AppName>My Application Name</AppName>
-      <AppName lang = 'es'>Mi Nombre de la aplicación</AppName>
-      <Manufacturer>Company</Manufacturer>
-      <ModelNumber>Wxfy388i</ModelNumber>
-      <Description>This device can do anything</Description>
-      <DateOfManufacture>2014-01-08</DateOfManufacture>
-      <SoftwareVersion>1.0.0</SoftwareVersion>
-      <HardwareVersion>1.0.0</HardwareVersion>
-      <SupportUrl>www.example.com</SupportUrl>
-      <UserDefinedTag>Can only accept strings anything other than strings must be done using the AboutData Class SetField method</UserDefinedTag>
-      <CountryOfProduction>Australia</CountryOfProduction>
-      <CorporateBrand>Brand1</CorporateBrand>
-      <ProductBrand>Brand2</ProductBrand>
-      <Location>Kitchen</Location>
-      <DeviceTypeDescription>
-        <TypeDescription>
-          <device_type>1</device_type>
-          <object_path>/Cdm/Other</object_path>
-        </TypeDescription>
-      </DeviceTypeDescription>
+        <AppId><!-- Runtime Generated --></AppId>
+        <DefaultLanguage>en</DefaultLanguage>
+        <DeviceName>My Device Name</DeviceName>
+        <DeviceName lang = 'es'>Nombre de mi dispositivo</DeviceName>
+        <DeviceId><!-- Runtime Generated --></DeviceId>
+        <AppName>My Application Name</AppName>
+        <AppName lang = 'es'>Mi Nombre de la aplicación</AppName>
+        <Manufacturer>Company</Manufacturer>
+        <ModelNumber>Wxfy388i</ModelNumber>
+        <Description>This device can do anything</Description>
+        <DateOfManufacture>2014-01-08</DateOfManufacture>
+        <SoftwareVersion>1.0.0</SoftwareVersion>
+        <HardwareVersion>1.0.0</HardwareVersion>
+        <SupportUrl>www.example.com</SupportUrl>
+        <UserDefinedTag>Can only accept strings anything other than strings must be done using the AboutData Class SetField method</UserDefinedTag>
+        <CountryOfProduction>Australia</CountryOfProduction>
+        <CorporateBrand>Brand1</CorporateBrand>
+        <ProductBrand>Brand2</ProductBrand>
+        <Location>Kitchen</Location>
+        <DeviceTypeDescription>
+            <TypeDescription>
+                <device_type>1</device_type>
+                <object_path>/Cdm/Other</object_path>
+            </TypeDescription>
+        </DeviceTypeDescription>
     </AboutData>
     <InterfaceList>
-      <Object path='/Cdm/Other'>
-        <Interface name='org.alljoyn.Input.Hid'/>
-        <Interface name='org.alljoyn.SmartSpaces.Operation.AirRecirculationMode'/>
-        <Interface name='org.alljoyn.SmartSpaces.Operation.AudioVideoInput'/>
-        <Interface name='org.alljoyn.SmartSpaces.Operation.AudioVolume'/>
-        <Interface name='org.alljoyn.SmartSpaces.Operation.BatteryStatus'/>
-        <Interface name='org.alljoyn.SmartSpaces.Operation.Channel'/>
-        <Interface name='org.alljoyn.SmartSpaces.Operation.ClimateControlMode'/>
-        <Interface name='org.alljoyn.SmartSpaces.Operation.CurrentPower'/>
-        <Interface name='org.alljoyn.SmartSpaces.Operation.EnergyUsage'/>
-        <Interface name='org.alljoyn.SmartSpaces.Operation.FanSpeedLevel'/>
-        <Interface name='org.alljoyn.SmartSpaces.Operation.OnControl'/>
-        <Interface name='org.alljoyn.SmartSpaces.Operation.OffControl'/>
-        <Interface name='org.alljoyn.SmartSpaces.Operation.OnOffStatus'/>
-        <Interface name='org.alljoyn.SmartSpaces.Operation.RepeatMode'/>
-        <Interface name='org.alljoyn.SmartSpaces.Operation.ResourceSaving'/>
-        <Interface name='org.alljoyn.SmartSpaces.Operation.RobotCleaningCyclePhase'/>
-        <Interface name='org.alljoyn.SmartSpaces.Operation.ClosedStatus'/>
-        <Interface name='org.alljoyn.SmartSpaces.Operation.RapidMode'/>
-        <Interface name='org.alljoyn.SmartSpaces.Operation.RemoteControllability'/>
-        <Interface name='org.alljoyn.SmartSpaces.Operation.DishWashingCyclePhase'/>
-        <Interface name='org.alljoyn.SmartSpaces.Operation.LaundryCyclePhase'/>
-        <Interface name='org.alljoyn.SmartSpaces.Operation.OvenCyclePhase'/>
-        <Interface name='org.alljoyn.SmartSpaces.Operation.SoilLevel'/>
-        <Interface name='org.alljoyn.SmartSpaces.Operation.SpinSpeedLevel'/>
-        <Interface name='org.alljoyn.SmartSpaces.Operation.HeatingZone'/>
-        <Interface name='org.alljoyn.SmartSpaces.Operation.Timer'/>
-        <Interface name='org.alljoyn.SmartSpaces.Operation.CycleControl'/>
-        <Interface name='org.alljoyn.SmartSpaces.Operation.MoistureOutputLevel'/>
-        <Interface name='org.alljoyn.SmartSpaces.Operation.FilterStatus'/>
-        <Interface name='org.alljoyn.SmartSpaces.Operation.HvacFanMode'/>
-        <Interface name='org.alljoyn.SmartSpaces.Operation.PlugInUnits'/>
-        <Interface name='org.alljoyn.SmartSpaces.Operation.RapidModeTimed'/>
-        <Interface name='org.alljoyn.SmartSpaces.Environment.WaterLevel'/>
-        <Interface name='org.alljoyn.SmartSpaces.Environment.CurrentTemperature'/>
-        <Interface name='org.alljoyn.SmartSpaces.Environment.TargetTemperature'/>
-        <Interface name='org.alljoyn.SmartSpaces.Environment.WindDirection'/>
-        <Interface name='org.alljoyn.SmartSpaces.Environment.CurrentAirQuality'/>
-        <Interface name='org.alljoyn.SmartSpaces.Environment.CurrentAirQualityLevel'/>
-        <Interface name='org.alljoyn.SmartSpaces.Environment.CurrentHumidity'/>
-        <Interface name='org.alljoyn.SmartSpaces.Environment.TargetHumidity'/>
-        <Interface name='org.alljoyn.SmartSpaces.Environment.TargetTemperatureLevel'/>
-        <Interface name='org.alljoyn.SmartSpaces.UserInterfaceSettings.TimeDisplay'/>
-        <Interface name='org.alljoyn.SmartSpaces.UserInterfaceSettings.TemperatureDisplay'/>
-        <Interface name='org.alljoyn.SmartSpaces.UserInterfaceSettings.LanguageDisplay'/>
-      </Object>
+        <Object path='/Cdm/Other'>
+            <!-- org.alljoyn.Input -->
+            <Interface name='org.alljoyn.Input.Hid'>
+                <Property name='SupportedEvents' mode='default'>
+                    <array>
+                        <struct>
+                            <field name='type'>
+                                <scalar type='unsigned' value='1'/>
+                            </field>
+                            <field name='code'>
+                                <scalar type='unsigned' value='2'/>
+                            </field>
+                            <field name='min'>
+                                <scalar type='signed' value='4'/>
+                            </field>
+                            <field name='max'>
+                                <scalar type='signed' value='10'/>
+                            </field>
+                        </struct>
+                        <struct>
+                            <field name='type'>
+                                <scalar type='unsigned' value='2'/>
+                            </field>
+                            <field name='code'>
+                                <scalar type='unsigned' value='4'/>
+                            </field>
+                            <field name='min'>
+                                <scalar type='signed' value='3'/>
+                            </field>
+                            <field name='max'>
+                                <scalar type='signed' value='10'/>
+                            </field>
+                        </struct>
+                        <struct>
+                            <field name='type'>
+                                <scalar type='unsigned' value='4'/>
+                            </field>
+                            <field name='code'>
+                                <scalar type='unsigned' value='5'/>
+                            </field>
+                            <field name='min'>
+                                <scalar type='signed' value='4'/>
+                            </field>
+                            <field name='max'>
+                                <scalar type='signed' value='20'/>
+                            </field>
+                        </struct>
+                    </array>
+                </Property>
+            </Interface>
+
+            <!-- org.alljoyn.SmartSpaces.Environment -->
+            <Interface name='org.alljoyn.SmartSpaces.Environment.CurrentAirQuality'>
+                <Property name='ContaminantType' mode='default'>
+                    <scalar type='unsigned' value='0'/>
+                </Property>
+                <Property name='CurrentValue' mode='default'>
+                    <scalar type='double' value='15.0'/>
+                </Property>
+                <Property name='MinValue' mode='default'>
+                    <scalar type='double' value='10.0'/>
+                </Property>
+                <Property name='MaxValue' mode='default'>
+                    <scalar type='double' value='30.0'/>
+                </Property>
+                <Property name='Precision' mode='default'>
+                    <scalar type='double' value='5.0'/>
+                </Property>
+                <Property name='UpdateMinTime' mode='default'>
+                    <scalar type='unsigned' value='1'/>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Environment.CurrentAirQualityLevel'>
+                <Property name='ContaminantType' mode='default'>
+                    <scalar type='unsigned' value='0'/>
+                </Property>
+                <Property name='CurrentLevel' mode='default'>
+                    <scalar type='unsigned' value='15'/>
+                </Property>
+                <Property name='MaxLevel' mode='default'>
+                    <scalar type='unsigned' value='30'/>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Environment.CurrentHumidity'>
+                <Property name='CurrentValue' mode='default'>
+                    <scalar type='unsigned' value='0'/>
+                </Property>
+                <Property name='MaxValue' mode='default'>
+                    <scalar type='unsigned' value='100'/>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Environment.CurrentTemperature'>
+                <Property name='CurrentValue' mode='default'>
+                    <scalar type='double' value='3.0'/>
+                </Property>
+                <Property name='Precision' mode='default'>
+                    <scalar type='double' value='0.5'/>
+                </Property>
+                <Property name='UpdateMinTime' mode='default'>
+                    <scalar type='unsigned' value='1'/>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Environment.TargetHumidity'>
+                <Property name='TargetValue' mode='default'>
+                    <scalar type='unsigned' value='40'/>
+                </Property>
+                <Property name='MinValue' mode='default'>
+                    <scalar type='unsigned' value='10'/>
+                </Property>
+                <Property name='MaxValue' mode='default'>
+                    <scalar type='unsigned' value='70'/>
+                </Property>
+                <Property name='StepValue' mode='default'>
+                    <scalar type='unsigned' value='5'/>
+                </Property>
+                <Property name='SelectableHumidityLevels' mode='default'>
+                    <array>
+                        <scalar type='unsigned' value='10'/>
+                        <scalar type='unsigned' value='15'/>
+                        <scalar type='unsigned' value='20'/>
+                        <scalar type='unsigned' value='25'/>
+                        <scalar type='unsigned' value='30'/>
+                        <scalar type='unsigned' value='35'/>
+                        <scalar type='unsigned' value='40'/>
+                        <scalar type='unsigned' value='45'/>
+                        <scalar type='unsigned' value='50'/>
+                        <scalar type='unsigned' value='55'/>
+                        <scalar type='unsigned' value='60'/>
+                        <scalar type='unsigned' value='65'/>
+                        <scalar type='unsigned' value='70'/>
+                    </array>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Environment.TargetTemperature'>
+                <Property name='TargetValue' mode='default'>
+                    <scalar type='double' value='4.0'/>
+                </Property>
+                <Property name='MinValue' mode='default'>
+                    <scalar type='double' value='1.0'/>
+                </Property>
+                <Property name='MaxValue' mode='default'>
+                    <scalar type='double' value='7.0'/>
+                </Property>
+                <Property name='StepValue' mode='default'>
+                    <scalar type='double' value='0.5'/>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Environment.TargetTemperatureLevel'>
+                <Property name='MaxLevel' mode='default'>
+                    <scalar type='unsigned' value='70'/>
+                </Property>
+                <Property name='TargetLevel' mode='default'>
+                    <scalar type='unsigned' value='40'/>
+                </Property>
+                <Property name='SelectableTemperatureLevels' mode='default'>
+                    <array>
+                        <scalar type='unsigned' value='10'/>
+                        <scalar type='unsigned' value='15'/>
+                        <scalar type='unsigned' value='20'/>
+                        <scalar type='unsigned' value='25'/>
+                        <scalar type='unsigned' value='30'/>
+                        <scalar type='unsigned' value='35'/>
+                        <scalar type='unsigned' value='40'/>
+                        <scalar type='unsigned' value='45'/>
+                        <scalar type='unsigned' value='50'/>
+                        <scalar type='unsigned' value='55'/>
+                        <scalar type='unsigned' value='60'/>
+                        <scalar type='unsigned' value='65'/>
+                        <scalar type='unsigned' value='70'/>
+                    </array>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Environment.WaterLevel'>
+                <Property name='SupplySource' mode='default'>
+                    <scalar type='unsigned' value='1'/>
+                </Property>
+                <Property name='CurrentLevel' mode='default'>
+                    <scalar type='unsigned' value='6'/>
+                </Property>
+                <Property name='MaxLevel' mode='default'>
+                    <scalar type='unsigned' value='10'/>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Environment.WindDirection'>
+                <Property name='HorizontalDirection' mode='default'>
+                    <scalar type='unsigned' value='2'/>
+                </Property>
+                <Property name='HorizontalMax' mode='default'>
+                    <scalar type='unsigned' value='3'/>
+                </Property>
+                <Property name='HorizontalAutoMode' mode='default'>
+                    <scalar type='unsigned' value='0'/>
+                </Property>
+                <Property name='VerticalDirection' mode='default'>
+                    <scalar type='unsigned' value='1'/>
+                </Property>
+                <Property name='VerticalMax' mode='default'>
+                    <scalar type='unsigned' value='5'/>
+                </Property>
+                <Property name='VerticalAutoMode' mode='default'>
+                    <scalar type='unsigned' value='1'/>
+                </Property>
+            </Interface>
+            
+            <!-- org.alljoyn.SmartSpaces.Operation -->
+            <Interface name='org.alljoyn.SmartSpaces.Operation.AirRecirculationMode'>
+                <Property name='IsRecirculating' mode='default'>
+                    <scalar type='bool' value='true'/>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.Alerts'>
+                <Property name='Alerts' mode='default'>
+                    <array>
+                        <struct>
+                            <field name='severity'>
+                                <scalar type='unsigned' value='0'/>
+                            </field>
+                            <field name='alertCode'>
+                                <scalar type='unsigned' value='1'/>
+                            </field>
+                            <field name='needAcknowledgement'>
+                                <scalar type='bool' value='true'/>
+                            </field>
+                        </struct>
+                        <struct>
+                            <field name='severity'>
+                                <scalar type='unsigned' value='1'/>
+                            </field>
+                            <field name='alertCode'>
+                                <scalar type='unsigned' value='2'/>
+                            </field>
+                            <field name='needAcknowledgement'>
+                                <scalar type='bool' value='true'/>
+                            </field>
+                        </struct>
+                        <struct>
+                            <field name='severity'>
+                                <scalar type='unsigned' value='2'/>
+                            </field>
+                            <field name='alertCode'>
+                                <scalar type='unsigned' value='3'/>
+                            </field>
+                            <field name='needAcknowledgement'>
+                                <scalar type='bool' value='false'/>
+                            </field>
+                        </struct>
+                        <struct>
+                            <field name='severity'>
+                                <scalar type='unsigned' value='0'/>
+                            </field>
+                            <field name='alertCode'>
+                                <scalar type='unsigned' value='4'/>
+                            </field>
+                            <field name='needAcknowledgement'>
+                                <scalar type='bool' value='true'/>
+                            </field>
+                        </struct>
+                        <struct>
+                            <field name='severity'>
+                                <scalar type='unsigned' value='1'/>
+                            </field>
+                            <field name='alertCode'>
+                                <scalar type='unsigned' value='5'/>
+                            </field>
+                            <field name='needAcknowledgement'>
+                                <scalar type='bool' value='true'/>
+                            </field>
+                        </struct>
+                        <struct>
+                            <field name='severity'>
+                                <scalar type='unsigned' value='2'/>
+                            </field>
+                            <field name='alertCode'>
+                                <scalar type='unsigned' value='6'/>
+                            </field>
+                            <field name='needAcknowledgement'>
+                                <scalar type='bool' value='true'/>
+                            </field>
+                        </struct>
+                        <struct>
+                            <field name='severity'>
+                                <scalar type='unsigned' value='0'/>
+                            </field>
+                            <field name='alertCode'>
+                                <scalar type='unsigned' value='7'/>
+                            </field>
+                            <field name='needAcknowledgement'>
+                                <scalar type='bool' value='false'/>
+                            </field>
+                        </struct>
+                    </array>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.AudioVideoInput'>
+                <Property name='InputSourceId' mode='default'>
+                    <scalar type='unsigned' value='8080'/>
+                </Property>
+                <Property name='SupportedInputSources' mode='default'>
+                    <array>
+                        <struct>
+                            <field name='id'>
+                                <scalar type='unsigned' value='8080'/>
+                            </field>
+                            <field name='sourceType'>
+                                <scalar type='unsigned' value='8'/>
+                            </field>
+                            <field name='signalPresence'>
+                                <scalar type='unsigned' value='2'/>
+                            </field>
+                            <field name='portNumber'>
+                                <scalar type='unsigned' value='1'/>
+                            </field>
+                            <field name='friendlyName'>
+                                <scalar type='string' value='HDMI1'/>
+                            </field>
+                        </struct>
+                        <struct>
+                            <field name='id'>
+                                <scalar type='unsigned' value='8000'/>
+                            </field>
+                            <field name='sourceType'>
+                                <scalar type='unsigned' value='1'/>
+                            </field>
+                            <field name='signalPresence'>
+                                <scalar type='unsigned' value='1'/>
+                            </field>
+                            <field name='portNumber'>
+                                <scalar type='unsigned' value='1'/>
+                            </field>
+                            <field name='friendlyName'>
+                                <scalar type='string' value='TUNER'/>
+                            </field>
+                        </struct>
+                    </array>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.AudioVolume'>
+                <Property name='Volume' mode='default'>
+                    <scalar type='unsigned' value='10'/>
+                </Property>
+                <Property name='MaxVolume' mode='default'>
+                    <scalar type='unsigned' value='100'/>
+                </Property>
+                <Property name='Mute' mode='default'>
+                    <scalar type='bool' value='false'/>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.BatteryStatus'>
+                <Property name='CurrentValue' mode='default'>
+                    <scalar type='unsigned' value='70'/>
+                </Property>
+                <Property name='IsCharging' mode='default'>
+                    <scalar type='bool' value='true'/>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.Brightness'>
+                <Property name='Brightness' mode='default'>
+                    <scalar type='double' value='0.8'/>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.Channel'>
+                <Property name='ChannelId' mode='default'>
+                    <scalar type='string' value='a'/>
+                </Property>
+                <Property name='TotalNumberOfChannels' mode='default'>
+                    <scalar type='unsigned' value='2'/>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.ClimateControlMode'>
+                <Property name='Mode' mode='default'>
+                    <scalar type='unsigned' value='2'/>
+                </Property>
+                <Property name='SupportedModes' mode='default'>
+                    <array>
+                        <scalar type='unsigned' value='0'/>
+                        <scalar type='unsigned' value='1'/>
+                        <scalar type='unsigned' value='2'/>
+                        <scalar type='unsigned' value='3'/>
+                        <scalar type='unsigned' value='4'/>
+                        <scalar type='unsigned' value='5'/>
+                    </array>
+                </Property>
+                <Property name='OperationalState' mode='default'>
+                    <scalar type='unsigned' value='2'/>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.ClosedStatus'>
+                <Property name='IsClosed' mode='default'>
+                    <scalar type='bool' value='true'/>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.Color'>
+                <Property name='Hue' mode='default'>
+                    <scalar type='double' value='15.0'/>
+                </Property>
+                <Property name='Saturation' mode='default'>
+                    <scalar type='double' value='0.0'/>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.ColorTemperature'>
+                <Property name='Temperature' mode='default'>
+                    <scalar type='double' value='3000.0'/>
+                </Property>
+                <Property name='MinTemperature' mode='default'>
+                    <scalar type='double' value='3000.0'/>
+                </Property>
+                <Property name='MaxTemperature' mode='default'>
+                    <scalar type='double' value='6000.0'/>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.CurrentPower'>
+                <Property name='CurrentPower' mode='default'>
+                    <scalar type='double' value='10.0'/>
+                </Property>
+                <Property name='Precision' mode='default'>
+                    <scalar type='double' value='5.0'/>
+                </Property>
+                <Property name='UpdateMinTime' mode='default'>
+                    <scalar type='unsigned' value='1'/>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.CycleControl'>
+                <Property name='OperationalState' mode='default'>
+                    <scalar type='unsigned' value='1'/>
+                </Property>
+                <Property name='SupportedOperationalStates' mode='default'>
+                    <array>
+                        <scalar type='unsigned' value='0'/>
+                        <scalar type='unsigned' value='1'/>
+                        <scalar type='unsigned' value='2'/>
+                        <scalar type='unsigned' value='3'/>
+                        <scalar type='unsigned' value='4'/>
+                        <scalar type='unsigned' value='5'/>
+                    </array>
+                </Property>
+                <Property name='SupportedOperationalCommands' mode='default'>
+                    <array>
+                        <scalar type='unsigned' value='0'/>
+                        <scalar type='unsigned' value='1'/>
+                        <scalar type='unsigned' value='2'/>
+                        <scalar type='unsigned' value='3'/>
+                    </array>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.DishWashingCyclePhase'>
+                <Property name='CyclePhase' mode='default'>
+                    <scalar type='unsigned' value='1'/>
+                </Property>
+                <Property name='SupportedCyclePhases' mode='default'>
+                    <array>
+                        <scalar type='unsigned' value='1'/>
+                        <scalar type='unsigned' value='2'/>
+                        <scalar type='unsigned' value='3'/>
+                    </array>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.EnergyUsage'>
+                <Property name='CumulativeEnergy' mode='default'>
+                    <scalar type='double' value='70.0'/>
+                </Property>
+                <Property name='Precision' mode='default'>
+                    <scalar type='double' value='5.0'/>
+                </Property>
+                <Property name='UpdateMinTime' mode='default'>
+                    <scalar type='unsigned' value='1'/>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.FanSpeedLevel'>
+                <Property name='FanSpeedLevel' mode='default'>
+                    <scalar type='unsigned' value='3'/>
+                </Property>
+                <Property name='MaxFanSpeedLevel' mode='default'>
+                    <scalar type='unsigned' value='10'/>
+                </Property>
+                <Property name='AutoMode' mode='default'>
+                    <scalar type='unsigned' value='1'/>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.FilterStatus'>
+                <Property name='ExpectedLifeInDays' mode='default'>
+                    <scalar type='unsigned' value='30'/>
+                </Property>
+                <Property name='IsCleanable' mode='default'>
+                    <scalar type='bool' value='true'/>
+                </Property>
+                <Property name='OrderPercentage' mode='default'>
+                    <scalar type='unsigned' value='10'/>
+                </Property>
+                <Property name='Manufacturer' mode='default'>
+                    <scalar type='string' value='CDM'/>
+                </Property>
+                <Property name='PartNumber' mode='default'>
+                    <scalar type='string' value='A1'/>
+                </Property>
+                <Property name='Url' mode='default'>
+                    <scalar type='string' value='http://www.myfilterstatus.com/filter'/>
+                </Property>
+                <Property name='LifeRemaining' mode='default'>
+                    <scalar type='unsigned' value='100'/>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.HeatingZone'>
+                <Property name='NumberOfHeatingZones' mode='default'>
+                    <scalar type='unsigned' value='4'/>
+                </Property>
+                <Property name='MaxHeatingLevels' mode='default'>
+                    <array>
+                        <scalar type='unsigned' value='10'/>
+                        <scalar type='unsigned' value='10'/>
+                        <scalar type='unsigned' value='10'/>
+                        <scalar type='unsigned' value='10'/>
+                    </array>
+                </Property>
+                <Property name='HeatingLevels' mode='default'>
+                    <array>
+                        <scalar type='unsigned' value='2'/>
+                        <scalar type='unsigned' value='4'/>
+                        <scalar type='unsigned' value='6'/>
+                        <scalar type='unsigned' value='8'/>
+                    </array>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.HvacFanMode'>
+                <Property name='Mode' mode='default'>
+                    <scalar type='unsigned' value='2'/>
+                </Property>
+                <Property name='SupportedModes' mode='default'>
+                    <array>
+                        <scalar type='unsigned' value='0'/>
+                        <scalar type='unsigned' value='1'/>
+                        <scalar type='unsigned' value='2'/>
+                    </array>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.LaundryCyclePhase'>
+                <Property name='CyclePhase' mode='default'>
+                    <scalar type='unsigned' value='1'/>
+                </Property>
+                <Property name='SupportedCyclePhases' mode='default'>
+                    <array>
+                        <scalar type='unsigned' value='1'/>
+                        <scalar type='unsigned' value='2'/>
+                        <scalar type='unsigned' value='3'/>
+                    </array>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.LockControl'/>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.LockedStatus'>
+                <Property name='IsLocked' mode='default'>
+                    <scalar type='bool' value='false'/>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.MoistureOutputLevel'>
+                <Property name='MoistureOutputLevel' mode='default'>
+                    <scalar type='unsigned' value='5'/>
+                </Property>
+                <Property name='MaxMoistureOutputLevel' mode='default'>
+                    <scalar type='unsigned' value='10'/>
+                </Property>
+                <Property name='AutoMode' mode='default'>
+                    <scalar type='unsigned' value='1'/>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.OffControl'/>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.OnControl'/>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.OnOffStatus'>
+                <Property name='IsOn' mode='default'>
+                    <scalar type='bool' value='true'/>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.OvenCyclePhase'>
+                <Property name='CyclePhase' mode='default'>
+                    <scalar type='unsigned' value='1'/>
+                </Property>
+                <Property name='SupportedCyclePhases' mode='default'>
+                    <array>
+                        <scalar type='unsigned' value='1'/>
+                        <scalar type='unsigned' value='2'/>
+                        <scalar type='unsigned' value='3'/>
+                    </array>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.PlugInUnits'>
+                <Property name='PlugInUnits' mode='default'>
+                    <array>
+                        <struct>
+                            <field name='objectPath'>
+                                <scalar type='string' value='/Cdm/Other'/>
+                            </field>
+                            <field name='deviceId'>
+                                <scalar type='unsigned' value='1'/>
+                            </field>
+                            <field name='pluggedIn'>
+                                <scalar type='bool' value='false'/>
+                            </field>
+                        </struct>
+                        <struct>
+                            <field name='objectPath'>
+                                <scalar type='string' value='/Cdm/Other'/>
+                            </field>
+                            <field name='deviceId'>
+                                <scalar type='unsigned' value='2'/>
+                            </field>
+                            <field name='pluggedIn'>
+                                <scalar type='bool' value='true'/>
+                            </field>
+                        </struct>
+                    </array>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.RapidMode'>
+                <Property name='RapidMode' mode='default'>
+                    <scalar type='bool' value='true'/>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.RapidModeTimed'>
+                <Property name='RapidModeMinutesRemaining' mode='default'>
+                    <scalar type='unsigned' value='15'/>
+                </Property>
+                <Property name='MaxSetMinutes' mode='default'>
+                    <scalar type='unsigned' value='30'/>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.RemoteControllability'>
+                <Property name='IsControllable' mode='default'>
+                    <scalar type='bool' value='true'/>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.RepeatMode'>
+                <Property name='RepeatMode' mode='default'>
+                    <scalar type='bool' value='true'/>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.ResourceSaving'>
+                <Property name='ResourceSavingMode' mode='default'>
+                    <scalar type='bool' value='true'/>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.RobotCleaningCyclePhase'>
+                <Property name='CyclePhase' mode='default'>
+                    <scalar type='unsigned' value='1'/>
+                </Property>
+                <Property name='SupportedCyclePhases' mode='default'>
+                    <array>
+                        <scalar type='unsigned' value='1'/>
+                        <scalar type='unsigned' value='2'/>
+                    </array>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.SoilLevel'>
+                <Property name='MaxLevel' mode='default'>
+                    <scalar type='unsigned' value='5'/>
+                </Property>
+                <Property name='TargetLevel' mode='default'>
+                    <scalar type='unsigned' value='3'/>
+                </Property>
+                <Property name='SelectableLevels' mode='default'>
+                    <array>
+                        <scalar type='unsigned' value='0'/>
+                        <scalar type='unsigned' value='1'/>
+                        <scalar type='unsigned' value='2'/>
+                        <scalar type='unsigned' value='3'/>
+                        <scalar type='unsigned' value='4'/>
+                        <scalar type='unsigned' value='5'/>
+                    </array>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.SpinSpeedLevel'>
+                <Property name='MaxLevel' mode='default'>
+                    <scalar type='unsigned' value='5'/>
+                </Property>
+                <Property name='TargetLevel' mode='default'>
+                    <scalar type='unsigned' value='1'/>
+                </Property>
+                <Property name='SelectableLevels' mode='default'>
+                    <array>
+                        <scalar type='unsigned' value='0'/>
+                        <scalar type='unsigned' value='1'/>
+                        <scalar type='unsigned' value='2'/>
+                        <scalar type='unsigned' value='3'/>
+                        <scalar type='unsigned' value='4'/>
+                        <scalar type='unsigned' value='5'/>
+                    </array>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.Timer'>
+                <Property name='ReferenceTimer' mode='default'>
+                    <scalar type='signed' value='0'/>
+                </Property>
+                <Property name='TargetTimeToStart' mode='default'>
+                    <scalar type='signed' value='15'/>
+                </Property>
+                <Property name='TargetTimeToStop' mode='default'>
+                    <scalar type='signed' value='45'/>
+                </Property>
+                <Property name='EstimatedTimeToEnd' mode='default'>
+                    <scalar type='signed' value='45'/>
+                </Property>
+                <Property name='RunningTime' mode='default'>
+                    <scalar type='signed' value='0'/>
+                </Property>
+                <Property name='TargetDuration' mode='default'>
+                    <scalar type='signed' value='45'/>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.TriggerSensor'>
+                <Property name='CurrentlyTriggered' mode='default'>
+                    <scalar type='bool' value='false'/>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.UnlockControl'/>
+            
+            <!-- org.alljoyn.SmartSpaces.UserInterfaceSettings -->
+            <Interface name='org.alljoyn.SmartSpaces.UserInterfaceSettings.LanguageDisplay'>
+                <Property name='DisplayLanguage' mode='default'>
+                    <scalar type='string' value='en'/>
+                </Property>
+                <Property name='SupportedDisplayLanguages' mode='default'>
+                    <array>
+                        <scalar type='string' value='en'/>
+                        <scalar type='string' value='es'/>
+                        <scalar type='string' value='fr'/>
+                    </array>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.UserInterfaceSettings.TemperatureDisplay'>
+                <Property name='DisplayTemperatureUnit' mode='default'>
+                    <scalar type='unsigned' value='0'/>
+                </Property>
+                <Property name='SupportedDisplayTemperatureUnits' mode='default'>
+                    <array>
+                        <scalar type='unsigned' value='0'/>
+                        <scalar type='unsigned' value='1'/>
+                        <scalar type='unsigned' value='2'/>
+                    </array>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.UserInterfaceSettings.TimeDisplay'>
+                <Property name='DisplayTimeFormat' mode='default'>
+                    <scalar type='unsigned' value='0'/>
+                </Property>
+                <Property name='SupportedDisplayTimeFormats' mode='default'>
+                    <array>
+                        <scalar type='unsigned' value='0'/>
+                        <scalar type='unsigned' value='1'/>
+                    </array>
+                </Property>
+            </Interface>
+        </Object>
     </InterfaceList>
 </DeviceEmulator>

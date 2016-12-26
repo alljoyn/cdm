@@ -33,7 +33,7 @@ public interface OnOffStatus {
     public short getVersion();
 
     @BusProperty(annotation=BusProperty.ANNOTATE_EMIT_CHANGED_SIGNAL, signature="b")
-    public boolean getOnOff();
+    public boolean getIsOn();
 
     public enum Status implements EnumBase<Boolean> {
         Off(false),

@@ -28,14 +28,14 @@ struct Serializer<{{Interface.Name}}Interface::{{enum.Name}}>
 {
     Element* put(Element* parent, {{Interface.Name}}Interface::{{enum.Name}} value)
     {
-        Serializer<int32_t> ser;
+        Serializer<{{enum.enum_type().cpp_signature_type()}}> ser;
         return ser.put(parent, value);
     }
 
 
     {{Interface.Name}}Interface::{{enum.Name}} get(Element* element)
     {
-        Serializer<int32_t> ser;
+        Serializer<{{enum.enum_type().cpp_signature_type()}}> ser;
         return static_cast<{{Interface.Name}}Interface::{{enum.Name}}>(ser.get(element));
     }
 };

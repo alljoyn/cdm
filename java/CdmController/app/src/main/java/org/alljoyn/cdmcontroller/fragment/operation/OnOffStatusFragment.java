@@ -37,8 +37,8 @@ public class OnOffStatusFragment extends InterfaceFragment {
 
     @Override
     protected void generatePropertyView(CustomView properties, CustomView methods) {
-        View onOffView = new ReadOnlyValuePropertyView(getActivity(), this.device, this.objPath, INTERFACE_NAME, "OnOff", null);
-        properties.addView(onOffView);
+        View isOnView = new ReadOnlyValuePropertyView(getActivity(), this.device, this.objPath, INTERFACE_NAME, "IsOn", null);
+        properties.addView(isOnView);
 
     }
 

@@ -3,7 +3,7 @@
 
     if (status == ER_OK)
     {
-        auto iface = controllee.GetInterface<LockedStatusIntfControllee>("alerts", "org.alljoyn.SmartSpaces.Operation.LockedStatus");
+        auto iface = controllee.GetInterface<LockedStatusIntfControllee>(m_busPath, "org.alljoyn.SmartSpaces.Operation.LockedStatus");
         iface->EmitIsLockedChanged(value);
     }
 

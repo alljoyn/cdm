@@ -49,7 +49,8 @@ public interface CycleControl {
         Working((byte)0x01),
         ReadyToStart((byte)0x02),
         DelayedStart((byte)0x03),
-        Paused((byte)0x04);
+        Paused((byte)0x04),
+        EndOfCycle((byte)0x05);
 
         private byte value;
 

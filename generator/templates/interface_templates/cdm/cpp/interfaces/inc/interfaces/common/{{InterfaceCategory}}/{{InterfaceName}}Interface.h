@@ -108,22 +108,22 @@ struct CdmMsgCvt<{{Interface.Name}}Interface::{{enum.Name}}>
 {
     void get(const MsgArg& msgarg, {{Interface.Name}}Interface::{{enum.Name}}& value)
     {
-        int32_t v = 0;
-        msgarg.Get("i", &v);
+        {{enum.enum_type().cpp_signature_type()}} v = 0;
+        msgarg.Get("{{enum.enum_type().signature}}", &v);
         value = static_cast<{{Interface.Name}}Interface::{{enum.Name}}>(v);
     }
 
     void set(MsgArg& msgarg, {{Interface.Name}}Interface::{{enum.Name}} value)
     {
-        int32_t v = static_cast<int32_t>(value);
-        msgarg.Set("i", v);
+        {{enum.enum_type().cpp_signature_type()}} v = static_cast<{{enum.enum_type().cpp_signature_type()}}>(value);
+        msgarg.Set("{{enum.enum_type().signature}}", v);
     }
 
     std::string str(const MsgArg& msgarg)
     {
         std::ostringstream strm;
-        int32_t value = 0;
-        msgarg.Get("i", &value);
+        {{enum.enum_type().cpp_signature_type()}} value = 0;
+        msgarg.Get("{{enum.enum_type().signature}}", &value);
         strm << value;
         return strm.str();
     }
@@ -134,10 +134,10 @@ struct CdmMsgCvt<std::vector<{{Interface.Name}}Interface::{{enum.Name}}>>
 {
     void get(const MsgArg& msgarg, std::vector<{{Interface.Name}}Interface::{{enum.Name}}>& value)
     {
-        int32_t* v = 0;
+        {{enum.enum_type().cpp_signature_type()}}* v = 0;
         size_t l = 0;
 
-        msgarg.Get("ai", &l, &v);
+        msgarg.Get("a{{enum.enum_type().signature}}", &l, &v);
         value.resize(l);
 
         for (size_t i = 0; i < l; ++i)
@@ -149,23 +149,23 @@ struct CdmMsgCvt<std::vector<{{Interface.Name}}Interface::{{enum.Name}}>>
     void set(MsgArg& msgarg, const std::vector<{{Interface.Name}}Interface::{{enum.Name}}>& value)
     {
         size_t l = value.size();
-        std::vector<int32_t> ints(l);
+        std::vector<{{enum.enum_type().cpp_signature_type()}}> ints(l);
 
         for (size_t i = 0; i < l; ++i)
         {
-            ints[i] = static_cast<int32_t>(value[i]);
+            ints[i] = static_cast<{{enum.enum_type().cpp_signature_type()}}>(value[i]);
         }
 
-        msgarg.Set("ai", ints.size(), ints.data());
+        msgarg.Set("a{{enum.enum_type().signature}}", ints.size(), ints.data());
         msgarg.Stabilize();
     }
 
     std::string str(const MsgArg& msgarg)
     {
         std::ostringstream strm;
-        int32_t* v = 0;
+        {{enum.enum_type().cpp_signature_type()}}* v = 0;
         size_t l = 0;
-        msgarg.Get("ai", &l, &v);
+        msgarg.Get("a{{enum.enum_type().signature}}", &l, &v);
         for (size_t i = 0; i < l; ++i)
         {
             strm << v[i] << "\n";

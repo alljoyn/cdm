@@ -230,7 +230,11 @@ public class DeviceImpl implements Device {
             } catch (NoSuchMethodException e) {
                 Log.d(TAG, "Method does not exist: " + e.getMessage());
             } catch (InvocationTargetException e) {
-                e.printStackTrace();
+                Throwable currentException = e;
+                while(currentException.getMessage() == null) {
+                    currentException = currentException.getCause();
+                }
+                Log.d(TAG, "Method returned error: " + currentException.getMessage());
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }

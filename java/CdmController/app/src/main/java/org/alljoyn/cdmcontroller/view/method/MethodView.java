@@ -70,6 +70,7 @@ public class MethodView extends LinearLayout {
         this.nameView = (TextView) view.findViewById(R.id.property_name);
         this.paramView = (TextView) view.findViewById(R.id.params);
         this.resultView = (TextView) view.findViewById(R.id.result);
+        this.resultView.setText("No result");
 
         this.submitBtn = (Button) view.findViewById(R.id.submit);
 
@@ -109,7 +110,7 @@ public class MethodView extends LinearLayout {
             this.resultView.setText(strResult);
         }
         else {
-            this.resultView.setText("No result  ");
+            this.resultView.setText("No result");
         }
     }
 

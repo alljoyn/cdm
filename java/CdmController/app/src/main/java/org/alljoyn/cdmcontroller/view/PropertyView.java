@@ -112,7 +112,11 @@ public abstract class PropertyView extends LinearLayout {
                 if (o != null) {
                     PropertyView.this.setValueView(o);
                 } else {
-                    PropertyView.this.setValueView(PropertyView.this.currentValue);
+                    Object currentValue = PropertyView.this.currentValue;
+                    if (currentValue == null) {
+                        currentValue = "Undefined";
+                    }
+                    PropertyView.this.setValueView(currentValue);
                     Toast.makeText(PropertyView.this.getContext(), "Get " + PropertyView.this.name + " Property is failed", Toast.LENGTH_SHORT).show();
                 }
 

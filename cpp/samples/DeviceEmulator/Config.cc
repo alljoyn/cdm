@@ -138,12 +138,12 @@ Config::Impl::ParseXml()
                                     if (cs.size() == 1)
                                     {
                                         prObj.initialState = cs[0]->Generate();
-                                        cout << "The initial state for " << objPath << " : " << ifObj.name << " is: " << prObj.initialState << "\n";
+                                        cout << "The initial state for " << objPath << ":" << ifObj.name << ":" << prObj.name << " is: " << prObj.initialState << "\n";
                                     }
                                     else
                                     if (cs.size() > 1)
                                     {
-                                        cerr << "The initial state is confused for " << objPath << " : " << ifObj.name << "\n";
+                                        cerr << "The initial state is confused for " << objPath << ":" << ifObj.name << ":" << prObj.name << "\n";
                                     }
 
                                     if (mode == "default")

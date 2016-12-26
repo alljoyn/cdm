@@ -445,6 +445,10 @@ class AJType(object):
     def cpptype_arg(self):
         return self.cpptype(arg=True)
 
+    def cpp_signature_type(self, signatureToSearch=None):
+        ajtype = signatureToSearch if signatureToSearch else self.signature
+        return self.CppTypeMap.get(ajtype, "/* TODO:%{} */".format(ajtype))
+
     def msgType(self):
         # This is the type that an arg to MsgArg.Get/Set must be.
         ajtype = self.annotated_type if self.annotated_type else self.signature
@@ -577,6 +581,13 @@ class InterfaceEnum(object):
                 for annotation in method_arg.Annotations:
                     if annotation.Value == name:
                         return method_arg.Type
+
+        # Internal code gen use to gain type signature of enums contained in structs.
+        for annotation in interface.Annotations:
+            if (annotation.Name.find("org.twobulls.Bus.Struct") != -1):
+                if (annotation.Name.lower().find(self.Name.string.lower()) != -1):
+                    if (annotation.Name.find(".Sig") != -1):
+                        return AJType(annotation.Value, self)
 
         return AJType('i', self)
 

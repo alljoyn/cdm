@@ -84,7 +84,7 @@ class Generator(object):
             )
 
         self._component_checks_metadata = (
-                (('all', 'controller'), ('/', ['controller'])),
+                (('all', 'controller'), ('/', ['controller', 'smartspaces'])),
                 (('all', 'controllee'), ('/', ['controllee'])),
                 (('all', 'common'),     ('/', ['common'])),
                 (('all', 'samples'),    ('/', ['samples'])),
