@@ -66,7 +66,17 @@ public interface Device {
         COOKTOP(19, R.drawable.icon_cooktop),
         FOOD_PROBE(20),
         TELEVISION(21, R.drawable.icon_tv),
-        SET_TOP_BOX(22, R.drawable.icon_set_top_box);
+        SET_TOP_BOX(22, R.drawable.icon_set_top_box),
+        LAMP(23),
+        LOCK(24),
+        SWITCH(25),
+        DOOR_SENSOR(26),
+        WINDOW_SENSOR(27),
+        MOTION_SENSOR(28),
+        POWER_OUTLET(29),
+        SMOKE_DETECTOR(30),
+        SPEAKER(31),
+        WATER_SENSOR(32);
 
         private int value;
         private int icon;
