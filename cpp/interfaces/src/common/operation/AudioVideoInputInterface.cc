@@ -77,7 +77,7 @@ const qcc::String AudioVideoInputInterface::s_xml =
 "        </property>"
 "        <property name='InputSourceId' type='q' access='readwrite'>"
 "            <annotation name='org.alljoyn.Bus.DocString.En' value='Activated input source id.'/>"
-"            <!-- <annotation name='org.alljoyn.Bus.Type.Name' value='[SourceType]'/> -->"
+"            <!--<annotation name='org.alljoyn.Bus.Type.Name' value='[SourceType]'/>-->"
 "            <annotation name='org.freedesktop.DBus.Property.EmitsChangedSignal' value='true'/>"
 "        </property>"
 "        <property name='SupportedInputSources' type='a(qqyqs)' access='read'>"

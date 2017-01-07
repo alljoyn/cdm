@@ -49,7 +49,7 @@ class AudioVideoInputIntfControllerListener : public InterfaceControllerListener
      *                  (Activated input source id.)
      * @param[in] context the context that is passed from application
      */
-    virtual void OnResponseGetInputSourceId(QStatus status, const qcc::String& objectPath, const AudioVideoInputInterface::SourceType value, void* context) {}
+    virtual void OnResponseGetInputSourceId(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context) {}
 
     /**
      * Handler for InputSourceId property changed
@@ -57,7 +57,7 @@ class AudioVideoInputIntfControllerListener : public InterfaceControllerListener
      * @param[in] value The value of InputSourceId
      *                  (Activated input source id.)
      */
-    virtual void OnInputSourceIdChanged(const qcc::String& objectPath, const AudioVideoInputInterface::SourceType value) {}
+    virtual void OnInputSourceIdChanged(const qcc::String& objectPath, const uint16_t value) {}
 
     /**
      * Callback handler for SetInputSourceId completion

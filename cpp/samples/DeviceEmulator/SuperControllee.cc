@@ -19,6 +19,16 @@ using namespace std;
 
 #include <alljoyn/cdm/controllee/CdmBusObject.h>
 
+#include <interfaces/controllee/input/HidIntfControllee.h>
+#include <interfaces/controllee/environment/CurrentAirQualityIntfControllee.h>
+#include <interfaces/controllee/environment/CurrentAirQualityLevelIntfControllee.h>
+#include <interfaces/controllee/environment/CurrentHumidityIntfControllee.h>
+#include <interfaces/controllee/environment/CurrentTemperatureIntfControllee.h>
+#include <interfaces/controllee/environment/TargetHumidityIntfControllee.h>
+#include <interfaces/controllee/environment/TargetTemperatureIntfControllee.h>
+#include <interfaces/controllee/environment/TargetTemperatureLevelIntfControllee.h>
+#include <interfaces/controllee/environment/WaterLevelIntfControllee.h>
+#include <interfaces/controllee/environment/WindDirectionIntfControllee.h>
 #include <interfaces/controllee/operation/AirRecirculationModeIntfControllee.h>
 #include <interfaces/controllee/operation/AlertsIntfControllee.h>
 #include <interfaces/controllee/operation/AudioVideoInputIntfControllee.h>
@@ -58,17 +68,20 @@ using namespace std;
 #include <interfaces/controllee/operation/TimerIntfControllee.h>
 #include <interfaces/controllee/operation/TriggerSensorIntfControllee.h>
 #include <interfaces/controllee/operation/UnlockControlIntfControllee.h>
+#include <interfaces/controllee/userinterfacesettings/LanguageDisplayIntfControllee.h>
+#include <interfaces/controllee/userinterfacesettings/TemperatureDisplayIntfControllee.h>
+#include <interfaces/controllee/userinterfacesettings/TimeDisplayIntfControllee.h>
 
-#include <interfaces/controllee/environment/CurrentAirQualityIntfControllee.h>
-#include <interfaces/controllee/environment/CurrentAirQualityLevelIntfControllee.h>
-#include <interfaces/controllee/environment/CurrentHumidityIntfControllee.h>
-#include <interfaces/controllee/environment/CurrentTemperatureIntfControllee.h>
-#include <interfaces/controllee/environment/TargetHumidityIntfControllee.h>
-#include <interfaces/controllee/environment/TargetTemperatureIntfControllee.h>
-#include <interfaces/controllee/environment/TargetTemperatureLevelIntfControllee.h>
-#include <interfaces/controllee/environment/WaterLevelIntfControllee.h>
-#include <interfaces/controllee/environment/WindDirectionIntfControllee.h>
-
+#include "Models/input/HidModel.h"
+#include "Models/environment/CurrentAirQualityModel.h"
+#include "Models/environment/CurrentAirQualityLevelModel.h"
+#include "Models/environment/CurrentHumidityModel.h"
+#include "Models/environment/CurrentTemperatureModel.h"
+#include "Models/environment/TargetHumidityModel.h"
+#include "Models/environment/TargetTemperatureModel.h"
+#include "Models/environment/TargetTemperatureLevelModel.h"
+#include "Models/environment/WaterLevelModel.h"
+#include "Models/environment/WindDirectionModel.h"
 #include "Models/operation/AirRecirculationModeModel.h"
 #include "Models/operation/AlertsModel.h"
 #include "Models/operation/AudioVideoInputModel.h"
@@ -108,16 +121,9 @@ using namespace std;
 #include "Models/operation/TimerModel.h"
 #include "Models/operation/TriggerSensorModel.h"
 #include "Models/operation/UnlockControlModel.h"
-
-#include "Models/environment/CurrentAirQualityModel.h"
-#include "Models/environment/CurrentAirQualityLevelModel.h"
-#include "Models/environment/CurrentHumidityModel.h"
-#include "Models/environment/CurrentTemperatureModel.h"
-#include "Models/environment/TargetHumidityModel.h"
-#include "Models/environment/TargetTemperatureModel.h"
-#include "Models/environment/TargetTemperatureLevelModel.h"
-#include "Models/environment/WaterLevelModel.h"
-#include "Models/environment/WindDirectionModel.h"
+#include "Models/userinterfacesettings/LanguageDisplayModel.h"
+#include "Models/userinterfacesettings/TemperatureDisplayModel.h"
+#include "Models/userinterfacesettings/TimeDisplayModel.h"
 
 #include "SuperControllee.h"
 #include "../Utils/HAL.h"
@@ -163,6 +169,56 @@ QStatus SuperControllee::CreateInterfaces()
         {
             auto& name = iface.name;
 
+            if (name == "org.alljoyn.Input.Hid")
+            {
+                status = mkInterface<HidIntfControllee, HidModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Environment.CurrentAirQuality")
+            {
+                status = mkInterface<CurrentAirQualityIntfControllee, CurrentAirQualityModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Environment.CurrentAirQualityLevel")
+            {
+                status = mkInterface<CurrentAirQualityLevelIntfControllee, CurrentAirQualityLevelModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Environment.CurrentHumidity")
+            {
+                status = mkInterface<CurrentHumidityIntfControllee, CurrentHumidityModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Environment.CurrentTemperature")
+            {
+                status = mkInterface<CurrentTemperatureIntfControllee, CurrentTemperatureModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Environment.TargetHumidity")
+            {
+                status = mkInterface<TargetHumidityIntfControllee, TargetHumidityModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Environment.TargetTemperature")
+            {
+                status = mkInterface<TargetTemperatureIntfControllee, TargetTemperatureModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Environment.TargetTemperatureLevel")
+            {
+                status = mkInterface<TargetTemperatureLevelIntfControllee, TargetTemperatureLevelModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Environment.WaterLevel")
+            {
+                status = mkInterface<WaterLevelIntfControllee, WaterLevelModel>(obj.path);
+            }
+            else
+            if (name == "org.alljoyn.SmartSpaces.Environment.WindDirection")
+            {
+                status = mkInterface<WindDirectionIntfControllee, WindDirectionModel>(obj.path);
+            }
+            else
             if (name == "org.alljoyn.SmartSpaces.Operation.AirRecirculationMode")
             {
                 status = mkInterface<AirRecirculationModeIntfControllee, AirRecirculationModeModel>(obj.path);
@@ -358,49 +414,19 @@ QStatus SuperControllee::CreateInterfaces()
                 status = mkInterface<UnlockControlIntfControllee, UnlockControlModel>(obj.path);
             }
             else
-            if (name == "org.alljoyn.SmartSpaces.Environment.CurrentAirQuality")
+            if (name == "org.alljoyn.SmartSpaces.UserInterfaceSettings.LanguageDisplay")
             {
-                status = mkInterface<CurrentAirQualityIntfControllee, CurrentAirQualityModel>(obj.path);
+                status = mkInterface<LanguageDisplayIntfControllee, LanguageDisplayModel>(obj.path);
             }
             else
-            if (name == "org.alljoyn.SmartSpaces.Environment.CurrentAirQualityLevel")
+            if (name == "org.alljoyn.SmartSpaces.UserInterfaceSettings.TemperatureDisplay")
             {
-                status = mkInterface<CurrentAirQualityLevelIntfControllee, CurrentAirQualityLevelModel>(obj.path);
+                status = mkInterface<TemperatureDisplayIntfControllee, TemperatureDisplayModel>(obj.path);
             }
             else
-            if (name == "org.alljoyn.SmartSpaces.Environment.CurrentHumidity")
+            if (name == "org.alljoyn.SmartSpaces.UserInterfaceSettings.TimeDisplay")
             {
-                status = mkInterface<CurrentHumidityIntfControllee, CurrentHumidityModel>(obj.path);
-            }
-            else
-            if (name == "org.alljoyn.SmartSpaces.Environment.CurrentTemperature")
-            {
-                status = mkInterface<CurrentTemperatureIntfControllee, CurrentTemperatureModel>(obj.path);
-            }
-            else
-            if (name == "org.alljoyn.SmartSpaces.Environment.TargetHumidity")
-            {
-                status = mkInterface<TargetHumidityIntfControllee, TargetHumidityModel>(obj.path);
-            }
-            else
-            if (name == "org.alljoyn.SmartSpaces.Environment.TargetTemperature")
-            {
-                status = mkInterface<TargetTemperatureIntfControllee, TargetTemperatureModel>(obj.path);
-            }
-            else
-            if (name == "org.alljoyn.SmartSpaces.Environment.TargetTemperatureLevel")
-            {
-                status = mkInterface<TargetTemperatureLevelIntfControllee, TargetTemperatureLevelModel>(obj.path);
-            }
-            else
-            if (name == "org.alljoyn.SmartSpaces.Environment.WaterLevel")
-            {
-                status = mkInterface<WaterLevelIntfControllee, WaterLevelModel>(obj.path);
-            }
-            else
-            if (name == "org.alljoyn.SmartSpaces.Environment.WindDirection")
-            {
-                status = mkInterface<WindDirectionIntfControllee, WindDirectionModel>(obj.path);
+                status = mkInterface<TimeDisplayIntfControllee, TimeDisplayModel>(obj.path);
             }
             else
             {

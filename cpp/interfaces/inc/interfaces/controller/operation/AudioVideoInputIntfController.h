@@ -77,7 +77,7 @@ class AudioVideoInputIntfController : public AudioVideoInputInterface {
      * @param[in] context the context that is passed to the callback handler
      * @return ER_OK on success
      */
-    virtual QStatus SetInputSourceId(const AudioVideoInputInterface::SourceType value, void* context = NULL);
+    virtual QStatus SetInputSourceId(const uint16_t value, void* context = NULL);
 
     /**
      * Get SupportedInputSources property
