@@ -26,7 +26,6 @@
  *     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-
 #include "org_alljoyn_SmartSpaces_UserInterfaceSettings_TemperatureDisplay.h"
 #include "QStringConversion.h"
 #include <QDebug>
@@ -42,6 +41,7 @@ using namespace CDMQtWidgets;
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_UserInterfaceSettings_TemperatureDisplay*>();
 
 
+
 org_alljoyn_SmartSpaces_UserInterfaceSettings_TemperatureDisplay::org_alljoyn_SmartSpaces_UserInterfaceSettings_TemperatureDisplay(CommonControllerInterface *iface)
   : controller(NULL),
     m_listener(mkRef<Listener>(this))
@@ -53,17 +53,19 @@ org_alljoyn_SmartSpaces_UserInterfaceSettings_TemperatureDisplay::org_alljoyn_Sm
 
 
     layout->addWidget(new QLabel("DisplayTemperatureUnit"));
-    // Create line edit for DisplayTemperatureUnit
+    // Create the editing widget for DisplayTemperatureUnit
     edit_DisplayTemperatureUnit = new QLineEdit();
     edit_DisplayTemperatureUnit->setToolTip("The unit being used to display temperature (0=C, 1=F, 2 =K)");
     edit_DisplayTemperatureUnit->setReadOnly(false);
     QObject::connect(edit_DisplayTemperatureUnit, SIGNAL(returnPressed()), this, SLOT(slotSetDisplayTemperatureUnit()));
+
     layout->addWidget(edit_DisplayTemperatureUnit);
     layout->addWidget(new QLabel("SupportedDisplayTemperatureUnits"));
-    // Create line edit for SupportedDisplayTemperatureUnits
+    // Create the editing widget for SupportedDisplayTemperatureUnits
     edit_SupportedDisplayTemperatureUnits = new QLineEdit();
     edit_SupportedDisplayTemperatureUnits->setToolTip("List of supported temperature units");
     edit_SupportedDisplayTemperatureUnits->setReadOnly(true);
+
     layout->addWidget(edit_SupportedDisplayTemperatureUnits);
 
     if (iface)
@@ -98,18 +100,18 @@ void org_alljoyn_SmartSpaces_UserInterfaceSettings_TemperatureDisplay::fetchProp
 
     if (controller)
     {
-        qWarning() << "org_alljoyn_SmartSpaces_UserInterfaceSettings_TemperatureDisplay getting properties";
+        qWarning() << "TemperatureDisplay getting properties";
 
         status = controller->GetDisplayTemperatureUnit();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get DisplayTemperatureUnit" << QCC_StatusText(status);
+            qWarning() << "TemperatureDisplay::fetchProperties Failed to get DisplayTemperatureUnit" << QCC_StatusText(status);
         }
 
         status = controller->GetSupportedDisplayTemperatureUnits();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get SupportedDisplayTemperatureUnits" << QCC_StatusText(status);
+            qWarning() << "TemperatureDisplay::fetchProperties Failed to get SupportedDisplayTemperatureUnits" << QCC_StatusText(status);
         }
     }
 }
@@ -118,54 +120,75 @@ void org_alljoyn_SmartSpaces_UserInterfaceSettings_TemperatureDisplay::fetchProp
 
 void org_alljoyn_SmartSpaces_UserInterfaceSettings_TemperatureDisplay::slotOnResponseGetDisplayTemperatureUnit(QStatus status, const uint8_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "TemperatureDisplay::slotOnResponseGetDisplayTemperatureUnit";
+
     edit_DisplayTemperatureUnit->setText(QStringFrom(value));
 }
+
+
 
 void org_alljoyn_SmartSpaces_UserInterfaceSettings_TemperatureDisplay::slotOnDisplayTemperatureUnitChanged(const uint8_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "TemperatureDisplay::slotOnDisplayTemperatureUnitChanged";
+
     edit_DisplayTemperatureUnit->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_UserInterfaceSettings_TemperatureDisplay::slotOnResponseSetDisplayTemperatureUnit(QStatus status)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "TemperatureDisplay::slotOnResponseSetDisplayTemperatureUnit";
+
+    if (status != ER_OK)
+    {
+        qWarning() << "TemperatureDisplay::slotOnResponseSetDisplayTemperatureUnit Failed to set DisplayTemperatureUnit" << QCC_StatusText(status);
+    }
 }
+
+
 
 void org_alljoyn_SmartSpaces_UserInterfaceSettings_TemperatureDisplay::slotSetDisplayTemperatureUnit()
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "TemperatureDisplay::slotSetDisplayTemperatureUnit";
 
     bool ok = false;
+    uint8_t value;
     QString str = edit_DisplayTemperatureUnit->text();
-    uint8_t value = QStringTo<uint8_t>(str, &ok);
+    value = QStringTo<uint8_t>(str, &ok);
+    if (!ok)
+    {
+        qWarning() << "TemperatureDisplay::slotSetDisplayTemperatureUnit Failed to convert '" << str << "' to uint8_t";
+    }
+
     if (ok)
     {
         QStatus status = controller->SetDisplayTemperatureUnit(value);
+
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get DisplayTemperatureUnit" << QCC_StatusText(status);
+            qWarning() << "TemperatureDisplay::slotSetDisplayTemperatureUnit Failed to get DisplayTemperatureUnit" << QCC_StatusText(status);
         }
     }
-    else
-    {
-        qWarning() << __FUNCTION__ << "Failed to convert '" << str << "' to uint8_t";
-    }
 }
-
 
 
 
 void org_alljoyn_SmartSpaces_UserInterfaceSettings_TemperatureDisplay::slotOnResponseGetSupportedDisplayTemperatureUnits(QStatus status, const std::vector<uint8_t>& value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "TemperatureDisplay::slotOnResponseGetSupportedDisplayTemperatureUnits";
+
     edit_SupportedDisplayTemperatureUnits->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_UserInterfaceSettings_TemperatureDisplay::slotOnSupportedDisplayTemperatureUnitsChanged(const std::vector<uint8_t>& value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "TemperatureDisplay::slotOnSupportedDisplayTemperatureUnitsChanged";
+
     edit_SupportedDisplayTemperatureUnits->setText(QStringFrom(value));
 }
+
+
 

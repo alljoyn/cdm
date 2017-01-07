@@ -26,7 +26,6 @@
  *     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-
 #include "org_alljoyn_SmartSpaces_Operation_LockedStatus.h"
 #include "QStringConversion.h"
 #include <QDebug>
@@ -42,6 +41,7 @@ using namespace CDMQtWidgets;
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_LockedStatus*>();
 
 
+
 org_alljoyn_SmartSpaces_Operation_LockedStatus::org_alljoyn_SmartSpaces_Operation_LockedStatus(CommonControllerInterface *iface)
   : controller(NULL),
     m_listener(mkRef<Listener>(this))
@@ -53,10 +53,10 @@ org_alljoyn_SmartSpaces_Operation_LockedStatus::org_alljoyn_SmartSpaces_Operatio
 
 
     layout->addWidget(new QLabel("IsLocked"));
-    // Create line edit for IsLocked
-    edit_IsLocked = new QLineEdit();
-    edit_IsLocked->setToolTip("The status of the locking mechanism.");
-    edit_IsLocked->setReadOnly(true);
+    // Create the editing widget for IsLocked
+    edit_IsLocked = new QCheckBox();
+    edit_IsLocked->setEnabled(false);
+
     layout->addWidget(edit_IsLocked);
 
     if (iface)
@@ -91,12 +91,12 @@ void org_alljoyn_SmartSpaces_Operation_LockedStatus::fetchProperties()
 
     if (controller)
     {
-        qWarning() << "org_alljoyn_SmartSpaces_Operation_LockedStatus getting properties";
+        qWarning() << "LockedStatus getting properties";
 
         status = controller->GetIsLocked();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get IsLocked" << QCC_StatusText(status);
+            qWarning() << "LockedStatus::fetchProperties Failed to get IsLocked" << QCC_StatusText(status);
         }
     }
 }
@@ -105,13 +105,19 @@ void org_alljoyn_SmartSpaces_Operation_LockedStatus::fetchProperties()
 
 void org_alljoyn_SmartSpaces_Operation_LockedStatus::slotOnResponseGetIsLocked(QStatus status, const bool value)
 {
-    qWarning() << __FUNCTION__;
-    edit_IsLocked->setText(QStringFrom(value));
+    qWarning() << "LockedStatus::slotOnResponseGetIsLocked";
+
+    edit_IsLocked->setChecked(value);
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_LockedStatus::slotOnIsLockedChanged(const bool value)
 {
-    qWarning() << __FUNCTION__;
-    edit_IsLocked->setText(QStringFrom(value));
+    qWarning() << "LockedStatus::slotOnIsLockedChanged";
+
+    edit_IsLocked->setChecked(value);
 }
+
+
 

@@ -26,7 +26,6 @@
  *     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-
 #include "org_alljoyn_SmartSpaces_Operation_HvacFanMode.h"
 #include "QStringConversion.h"
 #include <QDebug>
@@ -41,6 +40,12 @@ using namespace CDMQtWidgets;
 
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_HvacFanMode*>();
 
+Q_DECLARE_METATYPE(ajn::services::HvacFanModeInterface::Mode);
+Q_DECLARE_METATYPE(std::vector<ajn::services::HvacFanModeInterface::Mode>);
+static const int auto_register_enum_Mode = qRegisterMetaType<ajn::services::HvacFanModeInterface::Mode>("HvacFanModeInterface::Mode");
+static const int auto_register_enum_v_Mode = qRegisterMetaType<std::vector<ajn::services::HvacFanModeInterface::Mode>>("std::vector<HvacFanModeInterface::Mode>");
+
+
 
 org_alljoyn_SmartSpaces_Operation_HvacFanMode::org_alljoyn_SmartSpaces_Operation_HvacFanMode(CommonControllerInterface *iface)
   : controller(NULL),
@@ -53,17 +58,22 @@ org_alljoyn_SmartSpaces_Operation_HvacFanMode::org_alljoyn_SmartSpaces_Operation
 
 
     layout->addWidget(new QLabel("Mode"));
-    // Create line edit for Mode
-    edit_Mode = new QLineEdit();
-    edit_Mode->setToolTip("Current mode of device.");
-    edit_Mode->setReadOnly(false);
-    QObject::connect(edit_Mode, SIGNAL(returnPressed()), this, SLOT(slotSetMode()));
+    // Create the editing widget for Mode
+    edit_Mode = new QComboBox();
+    edit_Mode->setEditable(false);
+    edit_Mode->addItem("Auto");
+    edit_Mode->addItem("Circulation");
+    edit_Mode->addItem("Continuous");
+    edit_Mode->setEnabled(true);
+    QObject::connect(edit_Mode, SIGNAL(currentTextChanged(const QString &)), this, SLOT(slotSetMode()));
+
     layout->addWidget(edit_Mode);
     layout->addWidget(new QLabel("SupportedModes"));
-    // Create line edit for SupportedModes
+    // Create the editing widget for SupportedModes
     edit_SupportedModes = new QLineEdit();
     edit_SupportedModes->setToolTip("Array of supported modes.");
     edit_SupportedModes->setReadOnly(true);
+
     layout->addWidget(edit_SupportedModes);
 
     if (iface)
@@ -98,18 +108,18 @@ void org_alljoyn_SmartSpaces_Operation_HvacFanMode::fetchProperties()
 
     if (controller)
     {
-        qWarning() << "org_alljoyn_SmartSpaces_Operation_HvacFanMode getting properties";
+        qWarning() << "HvacFanMode getting properties";
 
         status = controller->GetMode();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get Mode" << QCC_StatusText(status);
+            qWarning() << "HvacFanMode::fetchProperties Failed to get Mode" << QCC_StatusText(status);
         }
 
         status = controller->GetSupportedModes();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get SupportedModes" << QCC_StatusText(status);
+            qWarning() << "HvacFanMode::fetchProperties Failed to get SupportedModes" << QCC_StatusText(status);
         }
     }
 }
@@ -118,54 +128,126 @@ void org_alljoyn_SmartSpaces_Operation_HvacFanMode::fetchProperties()
 
 void org_alljoyn_SmartSpaces_Operation_HvacFanMode::slotOnResponseGetMode(QStatus status, const HvacFanModeInterface::Mode value)
 {
-    qWarning() << __FUNCTION__;
-    edit_Mode->setText(QStringFrom(value));
+    qWarning() << "HvacFanMode::slotOnResponseGetMode";
+
+    switch (value)
+    {
+    case HvacFanModeInterface::MODE_AUTO:
+        edit_Mode->setCurrentText("Auto");
+        break;
+
+    case HvacFanModeInterface::MODE_CIRCULATION:
+        edit_Mode->setCurrentText("Circulation");
+        break;
+
+    case HvacFanModeInterface::MODE_CONTINUOUS:
+        edit_Mode->setCurrentText("Continuous");
+        break;
+
+    default:
+        edit_Mode->setCurrentText("");
+        break;
+    }
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_HvacFanMode::slotOnModeChanged(const HvacFanModeInterface::Mode value)
 {
-    qWarning() << __FUNCTION__;
-    edit_Mode->setText(QStringFrom(value));
+    qWarning() << "HvacFanMode::slotOnModeChanged";
+
+    switch (value)
+    {
+    case HvacFanModeInterface::MODE_AUTO:
+        edit_Mode->setCurrentText("Auto");
+        break;
+
+    case HvacFanModeInterface::MODE_CIRCULATION:
+        edit_Mode->setCurrentText("Circulation");
+        break;
+
+    case HvacFanModeInterface::MODE_CONTINUOUS:
+        edit_Mode->setCurrentText("Continuous");
+        break;
+
+    default:
+        edit_Mode->setCurrentText("");
+        break;
+    }
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_HvacFanMode::slotOnResponseSetMode(QStatus status)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "HvacFanMode::slotOnResponseSetMode";
+
+    if (status != ER_OK)
+    {
+        qWarning() << "HvacFanMode::slotOnResponseSetMode Failed to set Mode" << QCC_StatusText(status);
+    }
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_HvacFanMode::slotSetMode()
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "HvacFanMode::slotSetMode";
 
     bool ok = false;
-    QString str = edit_Mode->text();
-    HvacFanModeInterface::Mode value = QStringTo<HvacFanModeInterface::Mode>(str, &ok);
+    HvacFanModeInterface::Mode value;
+    QString str = edit_Mode->currentText();
+    if (str == "Auto")
+    {
+        value = HvacFanModeInterface::MODE_AUTO;
+        ok = true;
+    }
+    else
+    if (str == "Circulation")
+    {
+        value = HvacFanModeInterface::MODE_CIRCULATION;
+        ok = true;
+    }
+    else
+    if (str == "Continuous")
+    {
+        value = HvacFanModeInterface::MODE_CONTINUOUS;
+        ok = true;
+    }
+    else
+    if (!str.isEmpty())
+    {
+        qWarning() << "HvacFanMode::slotSetMode Failed to convert '" << str.constData() << "' to HvacFanModeInterface::Mode";
+    }
+
     if (ok)
     {
         QStatus status = controller->SetMode(value);
+
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get Mode" << QCC_StatusText(status);
+            qWarning() << "HvacFanMode::slotSetMode Failed to get Mode" << QCC_StatusText(status);
         }
     }
-    else
-    {
-        qWarning() << __FUNCTION__ << "Failed to convert '" << str << "' to HvacFanModeInterface::Mode";
-    }
 }
-
 
 
 
 void org_alljoyn_SmartSpaces_Operation_HvacFanMode::slotOnResponseGetSupportedModes(QStatus status, const std::vector<HvacFanModeInterface::Mode>& value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "HvacFanMode::slotOnResponseGetSupportedModes";
+
     edit_SupportedModes->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Operation_HvacFanMode::slotOnSupportedModesChanged(const std::vector<HvacFanModeInterface::Mode>& value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "HvacFanMode::slotOnSupportedModesChanged";
+
     edit_SupportedModes->setText(QStringFrom(value));
 }
+
+
 

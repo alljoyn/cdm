@@ -26,7 +26,6 @@
  *     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-
 #include "org_alljoyn_SmartSpaces_Operation_AudioVolume.h"
 #include "QStringConversion.h"
 #include <QDebug>
@@ -42,6 +41,7 @@ using namespace CDMQtWidgets;
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_AudioVolume*>();
 
 
+
 org_alljoyn_SmartSpaces_Operation_AudioVolume::org_alljoyn_SmartSpaces_Operation_AudioVolume(CommonControllerInterface *iface)
   : controller(NULL),
     m_listener(mkRef<Listener>(this))
@@ -53,24 +53,26 @@ org_alljoyn_SmartSpaces_Operation_AudioVolume::org_alljoyn_SmartSpaces_Operation
 
 
     layout->addWidget(new QLabel("Volume"));
-    // Create line edit for Volume
+    // Create the editing widget for Volume
     edit_Volume = new QLineEdit();
     edit_Volume->setToolTip("Speaker volume index of the device.");
     edit_Volume->setReadOnly(false);
     QObject::connect(edit_Volume, SIGNAL(returnPressed()), this, SLOT(slotSetVolume()));
+
     layout->addWidget(edit_Volume);
     layout->addWidget(new QLabel("MaxVolume"));
-    // Create line edit for MaxVolume
+    // Create the editing widget for MaxVolume
     edit_MaxVolume = new QLineEdit();
     edit_MaxVolume->setToolTip("Maximum value allowed for Volume.");
     edit_MaxVolume->setReadOnly(true);
+
     layout->addWidget(edit_MaxVolume);
     layout->addWidget(new QLabel("Mute"));
-    // Create line edit for Mute
-    edit_Mute = new QLineEdit();
-    edit_Mute->setToolTip("If true, state of volume is muted.");
-    edit_Mute->setReadOnly(false);
-    QObject::connect(edit_Mute, SIGNAL(returnPressed()), this, SLOT(slotSetMute()));
+    // Create the editing widget for Mute
+    edit_Mute = new QCheckBox();
+    edit_Mute->setEnabled(true);
+    QObject::connect(edit_Mute, SIGNAL(stateChanged(int)), this, SLOT(slotSetMute()));
+
     layout->addWidget(edit_Mute);
 
     if (iface)
@@ -105,24 +107,24 @@ void org_alljoyn_SmartSpaces_Operation_AudioVolume::fetchProperties()
 
     if (controller)
     {
-        qWarning() << "org_alljoyn_SmartSpaces_Operation_AudioVolume getting properties";
+        qWarning() << "AudioVolume getting properties";
 
         status = controller->GetVolume();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get Volume" << QCC_StatusText(status);
+            qWarning() << "AudioVolume::fetchProperties Failed to get Volume" << QCC_StatusText(status);
         }
 
         status = controller->GetMaxVolume();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get MaxVolume" << QCC_StatusText(status);
+            qWarning() << "AudioVolume::fetchProperties Failed to get MaxVolume" << QCC_StatusText(status);
         }
 
         status = controller->GetMute();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get Mute" << QCC_StatusText(status);
+            qWarning() << "AudioVolume::fetchProperties Failed to get Mute" << QCC_StatusText(status);
         }
     }
 }
@@ -131,95 +133,127 @@ void org_alljoyn_SmartSpaces_Operation_AudioVolume::fetchProperties()
 
 void org_alljoyn_SmartSpaces_Operation_AudioVolume::slotOnResponseGetVolume(QStatus status, const uint8_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "AudioVolume::slotOnResponseGetVolume";
+
     edit_Volume->setText(QStringFrom(value));
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_AudioVolume::slotOnVolumeChanged(const uint8_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "AudioVolume::slotOnVolumeChanged";
+
     edit_Volume->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Operation_AudioVolume::slotOnResponseSetVolume(QStatus status)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "AudioVolume::slotOnResponseSetVolume";
+
+    if (status != ER_OK)
+    {
+        qWarning() << "AudioVolume::slotOnResponseSetVolume Failed to set Volume" << QCC_StatusText(status);
+    }
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_AudioVolume::slotSetVolume()
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "AudioVolume::slotSetVolume";
 
     bool ok = false;
+    uint8_t value;
     QString str = edit_Volume->text();
-    uint8_t value = QStringTo<uint8_t>(str, &ok);
+    value = QStringTo<uint8_t>(str, &ok);
+    if (!ok)
+    {
+        qWarning() << "AudioVolume::slotSetVolume Failed to convert '" << str << "' to uint8_t";
+    }
+
     if (ok)
     {
         QStatus status = controller->SetVolume(value);
+
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get Volume" << QCC_StatusText(status);
+            qWarning() << "AudioVolume::slotSetVolume Failed to get Volume" << QCC_StatusText(status);
         }
     }
-    else
-    {
-        qWarning() << __FUNCTION__ << "Failed to convert '" << str << "' to uint8_t";
-    }
 }
-
 
 
 
 void org_alljoyn_SmartSpaces_Operation_AudioVolume::slotOnResponseGetMaxVolume(QStatus status, const uint8_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "AudioVolume::slotOnResponseGetMaxVolume";
+
     edit_MaxVolume->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Operation_AudioVolume::slotOnMaxVolumeChanged(const uint8_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "AudioVolume::slotOnMaxVolumeChanged";
+
     edit_MaxVolume->setText(QStringFrom(value));
 }
+
+
 
 
 
 
 void org_alljoyn_SmartSpaces_Operation_AudioVolume::slotOnResponseGetMute(QStatus status, const bool value)
 {
-    qWarning() << __FUNCTION__;
-    edit_Mute->setText(QStringFrom(value));
+    qWarning() << "AudioVolume::slotOnResponseGetMute";
+
+    edit_Mute->setChecked(value);
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_AudioVolume::slotOnMuteChanged(const bool value)
 {
-    qWarning() << __FUNCTION__;
-    edit_Mute->setText(QStringFrom(value));
+    qWarning() << "AudioVolume::slotOnMuteChanged";
+
+    edit_Mute->setChecked(value);
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_AudioVolume::slotOnResponseSetMute(QStatus status)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "AudioVolume::slotOnResponseSetMute";
+
+    if (status != ER_OK)
+    {
+        qWarning() << "AudioVolume::slotOnResponseSetMute Failed to set Mute" << QCC_StatusText(status);
+    }
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_AudioVolume::slotSetMute()
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "AudioVolume::slotSetMute";
 
     bool ok = false;
-    QString str = edit_Mute->text();
-    bool value = QStringTo<bool>(str, &ok);
+    bool value;
+    value = edit_Mute->isChecked();
+    ok = true;
+
     if (ok)
     {
         QStatus status = controller->SetMute(value);
+
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get Mute" << QCC_StatusText(status);
+            qWarning() << "AudioVolume::slotSetMute Failed to get Mute" << QCC_StatusText(status);
         }
     }
-    else
-    {
-        qWarning() << __FUNCTION__ << "Failed to convert '" << str << "' to bool";
-    }
 }
-

@@ -31,6 +31,8 @@
 #define org_alljoyn_SmartSpaces_Environment_WindDirection_H_
 
 #include <QWidget>
+#include <QCheckBox>
+#include <QComboBox>
 #include <QLineEdit>
 #include <QVBoxLayout>
 #include <QPushButton>
@@ -41,6 +43,7 @@
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
+
 
 namespace CDMQtWidgets
 {
@@ -90,7 +93,7 @@ public:
 
         virtual void OnResponseGetHorizontalDirection(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "WindDirection::OnResponseGetHorizontalDirection";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetHorizontalDirection", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(uint16_t, value)
@@ -98,21 +101,21 @@ public:
         }
         virtual void OnHorizontalDirectionChanged(const qcc::String& objectPath, const uint16_t value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "WindDirection::OnHorizontalDirectionChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnHorizontalDirectionChanged", Qt::QueuedConnection,
                               Q_ARG(uint16_t, value)
                               );
         }
         virtual void OnResponseSetHorizontalDirection(QStatus status, const qcc::String& objectPath, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "WindDirection::OnResponseSetHorizontalDirection";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseSetHorizontalDirection", Qt::QueuedConnection,
                               Q_ARG(QStatus, status)
                               );
         }
         virtual void OnResponseGetHorizontalMax(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "WindDirection::OnResponseGetHorizontalMax";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetHorizontalMax", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(uint16_t, value)
@@ -120,14 +123,14 @@ public:
         }
         virtual void OnHorizontalMaxChanged(const qcc::String& objectPath, const uint16_t value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "WindDirection::OnHorizontalMaxChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnHorizontalMaxChanged", Qt::QueuedConnection,
                               Q_ARG(uint16_t, value)
                               );
         }
         virtual void OnResponseGetHorizontalAutoMode(QStatus status, const qcc::String& objectPath, const WindDirectionInterface::AutoMode value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "WindDirection::OnResponseGetHorizontalAutoMode";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetHorizontalAutoMode", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(WindDirectionInterface::AutoMode, value)
@@ -135,21 +138,21 @@ public:
         }
         virtual void OnHorizontalAutoModeChanged(const qcc::String& objectPath, const WindDirectionInterface::AutoMode value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "WindDirection::OnHorizontalAutoModeChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnHorizontalAutoModeChanged", Qt::QueuedConnection,
                               Q_ARG(WindDirectionInterface::AutoMode, value)
                               );
         }
         virtual void OnResponseSetHorizontalAutoMode(QStatus status, const qcc::String& objectPath, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "WindDirection::OnResponseSetHorizontalAutoMode";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseSetHorizontalAutoMode", Qt::QueuedConnection,
                               Q_ARG(QStatus, status)
                               );
         }
         virtual void OnResponseGetVerticalDirection(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "WindDirection::OnResponseGetVerticalDirection";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetVerticalDirection", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(uint16_t, value)
@@ -157,21 +160,21 @@ public:
         }
         virtual void OnVerticalDirectionChanged(const qcc::String& objectPath, const uint16_t value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "WindDirection::OnVerticalDirectionChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnVerticalDirectionChanged", Qt::QueuedConnection,
                               Q_ARG(uint16_t, value)
                               );
         }
         virtual void OnResponseSetVerticalDirection(QStatus status, const qcc::String& objectPath, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "WindDirection::OnResponseSetVerticalDirection";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseSetVerticalDirection", Qt::QueuedConnection,
                               Q_ARG(QStatus, status)
                               );
         }
         virtual void OnResponseGetVerticalMax(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "WindDirection::OnResponseGetVerticalMax";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetVerticalMax", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(uint16_t, value)
@@ -179,14 +182,14 @@ public:
         }
         virtual void OnVerticalMaxChanged(const qcc::String& objectPath, const uint16_t value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "WindDirection::OnVerticalMaxChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnVerticalMaxChanged", Qt::QueuedConnection,
                               Q_ARG(uint16_t, value)
                               );
         }
         virtual void OnResponseGetVerticalAutoMode(QStatus status, const qcc::String& objectPath, const WindDirectionInterface::AutoMode value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "WindDirection::OnResponseGetVerticalAutoMode";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetVerticalAutoMode", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(WindDirectionInterface::AutoMode, value)
@@ -194,14 +197,14 @@ public:
         }
         virtual void OnVerticalAutoModeChanged(const qcc::String& objectPath, const WindDirectionInterface::AutoMode value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "WindDirection::OnVerticalAutoModeChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnVerticalAutoModeChanged", Qt::QueuedConnection,
                               Q_ARG(WindDirectionInterface::AutoMode, value)
                               );
         }
         virtual void OnResponseSetVerticalAutoMode(QStatus status, const qcc::String& objectPath, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "WindDirection::OnResponseSetVerticalAutoMode";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseSetVerticalAutoMode", Qt::QueuedConnection,
                               Q_ARG(QStatus, status)
                               );
@@ -215,10 +218,10 @@ private:
 
     QLineEdit* edit_HorizontalDirection;
     QLineEdit* edit_HorizontalMax;
-    QLineEdit* edit_HorizontalAutoMode;
+    QComboBox* edit_HorizontalAutoMode;
     QLineEdit* edit_VerticalDirection;
     QLineEdit* edit_VerticalMax;
-    QLineEdit* edit_VerticalAutoMode;
+    QComboBox* edit_VerticalAutoMode;
 
     void    fetchProperties();
 

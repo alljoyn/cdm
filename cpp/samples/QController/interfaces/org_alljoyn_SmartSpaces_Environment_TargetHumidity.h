@@ -31,6 +31,8 @@
 #define org_alljoyn_SmartSpaces_Environment_TargetHumidity_H_
 
 #include <QWidget>
+#include <QCheckBox>
+#include <QComboBox>
 #include <QLineEdit>
 #include <QVBoxLayout>
 #include <QPushButton>
@@ -41,6 +43,7 @@
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
+
 
 namespace CDMQtWidgets
 {
@@ -82,7 +85,7 @@ public:
 
         virtual void OnResponseGetTargetValue(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "TargetHumidity::OnResponseGetTargetValue";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetTargetValue", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(uint8_t, value)
@@ -90,21 +93,21 @@ public:
         }
         virtual void OnTargetValueChanged(const qcc::String& objectPath, const uint8_t value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "TargetHumidity::OnTargetValueChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnTargetValueChanged", Qt::QueuedConnection,
                               Q_ARG(uint8_t, value)
                               );
         }
         virtual void OnResponseSetTargetValue(QStatus status, const qcc::String& objectPath, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "TargetHumidity::OnResponseSetTargetValue";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseSetTargetValue", Qt::QueuedConnection,
                               Q_ARG(QStatus, status)
                               );
         }
         virtual void OnResponseGetMinValue(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "TargetHumidity::OnResponseGetMinValue";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetMinValue", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(uint8_t, value)
@@ -112,14 +115,14 @@ public:
         }
         virtual void OnMinValueChanged(const qcc::String& objectPath, const uint8_t value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "TargetHumidity::OnMinValueChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnMinValueChanged", Qt::QueuedConnection,
                               Q_ARG(uint8_t, value)
                               );
         }
         virtual void OnResponseGetMaxValue(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "TargetHumidity::OnResponseGetMaxValue";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetMaxValue", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(uint8_t, value)
@@ -127,14 +130,14 @@ public:
         }
         virtual void OnMaxValueChanged(const qcc::String& objectPath, const uint8_t value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "TargetHumidity::OnMaxValueChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnMaxValueChanged", Qt::QueuedConnection,
                               Q_ARG(uint8_t, value)
                               );
         }
         virtual void OnResponseGetStepValue(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "TargetHumidity::OnResponseGetStepValue";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetStepValue", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(uint8_t, value)
@@ -142,14 +145,14 @@ public:
         }
         virtual void OnStepValueChanged(const qcc::String& objectPath, const uint8_t value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "TargetHumidity::OnStepValueChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnStepValueChanged", Qt::QueuedConnection,
                               Q_ARG(uint8_t, value)
                               );
         }
         virtual void OnResponseGetSelectableHumidityLevels(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "TargetHumidity::OnResponseGetSelectableHumidityLevels";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetSelectableHumidityLevels", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(std::vector<uint8_t>, value)
@@ -157,7 +160,7 @@ public:
         }
         virtual void OnSelectableHumidityLevelsChanged(const qcc::String& objectPath, const std::vector<uint8_t>& value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "TargetHumidity::OnSelectableHumidityLevelsChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnSelectableHumidityLevelsChanged", Qt::QueuedConnection,
                               Q_ARG(std::vector<uint8_t>, value)
                               );

@@ -26,7 +26,6 @@
  *     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-
 #include "org_alljoyn_SmartSpaces_Operation_Brightness.h"
 #include "QStringConversion.h"
 #include <QDebug>
@@ -42,6 +41,7 @@ using namespace CDMQtWidgets;
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_Brightness*>();
 
 
+
 org_alljoyn_SmartSpaces_Operation_Brightness::org_alljoyn_SmartSpaces_Operation_Brightness(CommonControllerInterface *iface)
   : controller(NULL),
     m_listener(mkRef<Listener>(this))
@@ -53,11 +53,12 @@ org_alljoyn_SmartSpaces_Operation_Brightness::org_alljoyn_SmartSpaces_Operation_
 
 
     layout->addWidget(new QLabel("Brightness"));
-    // Create line edit for Brightness
+    // Create the editing widget for Brightness
     edit_Brightness = new QLineEdit();
     edit_Brightness->setToolTip("Brightness of the device.");
     edit_Brightness->setReadOnly(false);
     QObject::connect(edit_Brightness, SIGNAL(returnPressed()), this, SLOT(slotSetBrightness()));
+
     layout->addWidget(edit_Brightness);
 
     if (iface)
@@ -92,12 +93,12 @@ void org_alljoyn_SmartSpaces_Operation_Brightness::fetchProperties()
 
     if (controller)
     {
-        qWarning() << "org_alljoyn_SmartSpaces_Operation_Brightness getting properties";
+        qWarning() << "Brightness getting properties";
 
         status = controller->GetBrightness();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get Brightness" << QCC_StatusText(status);
+            qWarning() << "Brightness::fetchProperties Failed to get Brightness" << QCC_StatusText(status);
         }
     }
 }
@@ -106,39 +107,54 @@ void org_alljoyn_SmartSpaces_Operation_Brightness::fetchProperties()
 
 void org_alljoyn_SmartSpaces_Operation_Brightness::slotOnResponseGetBrightness(QStatus status, const double value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "Brightness::slotOnResponseGetBrightness";
+
     edit_Brightness->setText(QStringFrom(value));
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_Brightness::slotOnBrightnessChanged(const double value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "Brightness::slotOnBrightnessChanged";
+
     edit_Brightness->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Operation_Brightness::slotOnResponseSetBrightness(QStatus status)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "Brightness::slotOnResponseSetBrightness";
+
+    if (status != ER_OK)
+    {
+        qWarning() << "Brightness::slotOnResponseSetBrightness Failed to set Brightness" << QCC_StatusText(status);
+    }
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_Brightness::slotSetBrightness()
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "Brightness::slotSetBrightness";
 
     bool ok = false;
+    double value;
     QString str = edit_Brightness->text();
-    double value = QStringTo<double>(str, &ok);
+    value = QStringTo<double>(str, &ok);
+    if (!ok)
+    {
+        qWarning() << "Brightness::slotSetBrightness Failed to convert '" << str << "' to double";
+    }
+
     if (ok)
     {
         QStatus status = controller->SetBrightness(value);
+
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get Brightness" << QCC_StatusText(status);
+            qWarning() << "Brightness::slotSetBrightness Failed to get Brightness" << QCC_StatusText(status);
         }
     }
-    else
-    {
-        qWarning() << __FUNCTION__ << "Failed to convert '" << str << "' to double";
-    }
 }
-

@@ -26,7 +26,6 @@
  *     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-
 #include "org_alljoyn_SmartSpaces_Operation_SpinSpeedLevel.h"
 #include "QStringConversion.h"
 #include <QDebug>
@@ -42,6 +41,7 @@ using namespace CDMQtWidgets;
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_SpinSpeedLevel*>();
 
 
+
 org_alljoyn_SmartSpaces_Operation_SpinSpeedLevel::org_alljoyn_SmartSpaces_Operation_SpinSpeedLevel(CommonControllerInterface *iface)
   : controller(NULL),
     m_listener(mkRef<Listener>(this))
@@ -53,23 +53,26 @@ org_alljoyn_SmartSpaces_Operation_SpinSpeedLevel::org_alljoyn_SmartSpaces_Operat
 
 
     layout->addWidget(new QLabel("MaxLevel"));
-    // Create line edit for MaxLevel
+    // Create the editing widget for MaxLevel
     edit_MaxLevel = new QLineEdit();
     edit_MaxLevel->setToolTip("Maximum value allowed for the spin speed level setting.");
     edit_MaxLevel->setReadOnly(true);
+
     layout->addWidget(edit_MaxLevel);
     layout->addWidget(new QLabel("TargetLevel"));
-    // Create line edit for TargetLevel
+    // Create the editing widget for TargetLevel
     edit_TargetLevel = new QLineEdit();
     edit_TargetLevel->setToolTip("Target set-point value of spin speed level.");
     edit_TargetLevel->setReadOnly(false);
     QObject::connect(edit_TargetLevel, SIGNAL(returnPressed()), this, SLOT(slotSetTargetLevel()));
+
     layout->addWidget(edit_TargetLevel);
     layout->addWidget(new QLabel("SelectableLevels"));
-    // Create line edit for SelectableLevels
+    // Create the editing widget for SelectableLevels
     edit_SelectableLevels = new QLineEdit();
     edit_SelectableLevels->setToolTip("List of the values of spin speed level which can be selected.");
     edit_SelectableLevels->setReadOnly(true);
+
     layout->addWidget(edit_SelectableLevels);
 
     if (iface)
@@ -104,24 +107,24 @@ void org_alljoyn_SmartSpaces_Operation_SpinSpeedLevel::fetchProperties()
 
     if (controller)
     {
-        qWarning() << "org_alljoyn_SmartSpaces_Operation_SpinSpeedLevel getting properties";
+        qWarning() << "SpinSpeedLevel getting properties";
 
         status = controller->GetMaxLevel();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get MaxLevel" << QCC_StatusText(status);
+            qWarning() << "SpinSpeedLevel::fetchProperties Failed to get MaxLevel" << QCC_StatusText(status);
         }
 
         status = controller->GetTargetLevel();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get TargetLevel" << QCC_StatusText(status);
+            qWarning() << "SpinSpeedLevel::fetchProperties Failed to get TargetLevel" << QCC_StatusText(status);
         }
 
         status = controller->GetSelectableLevels();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get SelectableLevels" << QCC_StatusText(status);
+            qWarning() << "SpinSpeedLevel::fetchProperties Failed to get SelectableLevels" << QCC_StatusText(status);
         }
     }
 }
@@ -130,69 +133,96 @@ void org_alljoyn_SmartSpaces_Operation_SpinSpeedLevel::fetchProperties()
 
 void org_alljoyn_SmartSpaces_Operation_SpinSpeedLevel::slotOnResponseGetMaxLevel(QStatus status, const uint8_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "SpinSpeedLevel::slotOnResponseGetMaxLevel";
+
     edit_MaxLevel->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Operation_SpinSpeedLevel::slotOnMaxLevelChanged(const uint8_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "SpinSpeedLevel::slotOnMaxLevelChanged";
+
     edit_MaxLevel->setText(QStringFrom(value));
 }
+
+
 
 
 
 
 void org_alljoyn_SmartSpaces_Operation_SpinSpeedLevel::slotOnResponseGetTargetLevel(QStatus status, const uint8_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "SpinSpeedLevel::slotOnResponseGetTargetLevel";
+
     edit_TargetLevel->setText(QStringFrom(value));
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_SpinSpeedLevel::slotOnTargetLevelChanged(const uint8_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "SpinSpeedLevel::slotOnTargetLevelChanged";
+
     edit_TargetLevel->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Operation_SpinSpeedLevel::slotOnResponseSetTargetLevel(QStatus status)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "SpinSpeedLevel::slotOnResponseSetTargetLevel";
+
+    if (status != ER_OK)
+    {
+        qWarning() << "SpinSpeedLevel::slotOnResponseSetTargetLevel Failed to set TargetLevel" << QCC_StatusText(status);
+    }
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_SpinSpeedLevel::slotSetTargetLevel()
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "SpinSpeedLevel::slotSetTargetLevel";
 
     bool ok = false;
+    uint8_t value;
     QString str = edit_TargetLevel->text();
-    uint8_t value = QStringTo<uint8_t>(str, &ok);
+    value = QStringTo<uint8_t>(str, &ok);
+    if (!ok)
+    {
+        qWarning() << "SpinSpeedLevel::slotSetTargetLevel Failed to convert '" << str << "' to uint8_t";
+    }
+
     if (ok)
     {
         QStatus status = controller->SetTargetLevel(value);
+
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get TargetLevel" << QCC_StatusText(status);
+            qWarning() << "SpinSpeedLevel::slotSetTargetLevel Failed to get TargetLevel" << QCC_StatusText(status);
         }
     }
-    else
-    {
-        qWarning() << __FUNCTION__ << "Failed to convert '" << str << "' to uint8_t";
-    }
 }
-
 
 
 
 void org_alljoyn_SmartSpaces_Operation_SpinSpeedLevel::slotOnResponseGetSelectableLevels(QStatus status, const std::vector<uint8_t>& value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "SpinSpeedLevel::slotOnResponseGetSelectableLevels";
+
     edit_SelectableLevels->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Operation_SpinSpeedLevel::slotOnSelectableLevelsChanged(const std::vector<uint8_t>& value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "SpinSpeedLevel::slotOnSelectableLevelsChanged";
+
     edit_SelectableLevels->setText(QStringFrom(value));
 }
+
+
 

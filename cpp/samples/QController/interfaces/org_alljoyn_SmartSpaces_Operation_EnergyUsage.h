@@ -31,6 +31,8 @@
 #define org_alljoyn_SmartSpaces_Operation_EnergyUsage_H_
 
 #include <QWidget>
+#include <QCheckBox>
+#include <QComboBox>
 #include <QLineEdit>
 #include <QVBoxLayout>
 #include <QPushButton>
@@ -41,6 +43,7 @@
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
+
 
 namespace CDMQtWidgets
 {
@@ -78,7 +81,7 @@ public:
 
         virtual void OnResponseGetCumulativeEnergy(QStatus status, const qcc::String& objectPath, const double value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "EnergyUsage::OnResponseGetCumulativeEnergy";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetCumulativeEnergy", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(double, value)
@@ -86,14 +89,14 @@ public:
         }
         virtual void OnCumulativeEnergyChanged(const qcc::String& objectPath, const double value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "EnergyUsage::OnCumulativeEnergyChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnCumulativeEnergyChanged", Qt::QueuedConnection,
                               Q_ARG(double, value)
                               );
         }
         virtual void OnResponseGetPrecision(QStatus status, const qcc::String& objectPath, const double value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "EnergyUsage::OnResponseGetPrecision";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetPrecision", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(double, value)
@@ -101,14 +104,14 @@ public:
         }
         virtual void OnPrecisionChanged(const qcc::String& objectPath, const double value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "EnergyUsage::OnPrecisionChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnPrecisionChanged", Qt::QueuedConnection,
                               Q_ARG(double, value)
                               );
         }
         virtual void OnResponseGetUpdateMinTime(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "EnergyUsage::OnResponseGetUpdateMinTime";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetUpdateMinTime", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(uint16_t, value)
@@ -116,14 +119,14 @@ public:
         }
         virtual void OnUpdateMinTimeChanged(const qcc::String& objectPath, const uint16_t value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "EnergyUsage::OnUpdateMinTimeChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnUpdateMinTimeChanged", Qt::QueuedConnection,
                               Q_ARG(uint16_t, value)
                               );
         }
         virtual void OnResponseResetCumulativeEnergy(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "EnergyUsage::OnResponseResetCumulativeEnergy";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseMethodResetCumulativeEnergy", Qt::QueuedConnection,
                               Q_ARG(QStatus, status), Q_ARG(QString, QString(errorName))
                               );

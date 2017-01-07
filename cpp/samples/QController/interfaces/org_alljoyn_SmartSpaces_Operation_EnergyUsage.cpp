@@ -26,7 +26,6 @@
  *     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-
 #include "org_alljoyn_SmartSpaces_Operation_EnergyUsage.h"
 #include "QStringConversion.h"
 #include <QDebug>
@@ -40,6 +39,7 @@
 using namespace CDMQtWidgets;
 
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_EnergyUsage*>();
+
 
 
 org_alljoyn_SmartSpaces_Operation_EnergyUsage::org_alljoyn_SmartSpaces_Operation_EnergyUsage(CommonControllerInterface *iface)
@@ -58,22 +58,25 @@ org_alljoyn_SmartSpaces_Operation_EnergyUsage::org_alljoyn_SmartSpaces_Operation
     layout->addWidget(button_ResetCumulativeEnergy);
 
     layout->addWidget(new QLabel("CumulativeEnergy"));
-    // Create line edit for CumulativeEnergy
+    // Create the editing widget for CumulativeEnergy
     edit_CumulativeEnergy = new QLineEdit();
     edit_CumulativeEnergy->setToolTip("The cumulative energy consumption of the device");
     edit_CumulativeEnergy->setReadOnly(true);
+
     layout->addWidget(edit_CumulativeEnergy);
     layout->addWidget(new QLabel("Precision"));
-    // Create line edit for Precision
+    // Create the editing widget for Precision
     edit_Precision = new QLineEdit();
     edit_Precision->setToolTip("The precision of the CumulativeEnergy property; i.e., the value the actual energy consumption must change before CumulativeEnergy is updated");
     edit_Precision->setReadOnly(true);
+
     layout->addWidget(edit_Precision);
     layout->addWidget(new QLabel("UpdateMinTime"));
-    // Create line edit for UpdateMinTime
+    // Create the editing widget for UpdateMinTime
     edit_UpdateMinTime = new QLineEdit();
     edit_UpdateMinTime->setToolTip("The minimum time between updates of the CumulativeEnergy property");
     edit_UpdateMinTime->setReadOnly(true);
+
     layout->addWidget(edit_UpdateMinTime);
 
     if (iface)
@@ -108,24 +111,24 @@ void org_alljoyn_SmartSpaces_Operation_EnergyUsage::fetchProperties()
 
     if (controller)
     {
-        qWarning() << "org_alljoyn_SmartSpaces_Operation_EnergyUsage getting properties";
+        qWarning() << "EnergyUsage getting properties";
 
         status = controller->GetCumulativeEnergy();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get CumulativeEnergy" << QCC_StatusText(status);
+            qWarning() << "EnergyUsage::fetchProperties Failed to get CumulativeEnergy" << QCC_StatusText(status);
         }
 
         status = controller->GetPrecision();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get Precision" << QCC_StatusText(status);
+            qWarning() << "EnergyUsage::fetchProperties Failed to get Precision" << QCC_StatusText(status);
         }
 
         status = controller->GetUpdateMinTime();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get UpdateMinTime" << QCC_StatusText(status);
+            qWarning() << "EnergyUsage::fetchProperties Failed to get UpdateMinTime" << QCC_StatusText(status);
         }
     }
 }
@@ -134,14 +137,18 @@ void org_alljoyn_SmartSpaces_Operation_EnergyUsage::fetchProperties()
 
 void org_alljoyn_SmartSpaces_Operation_EnergyUsage::slotClickResetCumulativeEnergy()
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "EnergyUsage::slotClickResetCumulativeEnergy";
 
 
+    bool ok = true;
 
-    QStatus status = controller->ResetCumulativeEnergy(NULL);
-    if (status != ER_OK)
+    if (ok)
     {
-        qWarning() << __FUNCTION__ << " Failed to call ResetCumulativeEnergy" << QCC_StatusText(status);
+        QStatus status = controller->ResetCumulativeEnergy(NULL);
+        if (status != ER_OK)
+        {
+            qWarning() << "EnergyUsage::slotClick Failed to call ResetCumulativeEnergy" << QCC_StatusText(status);
+        }
     }
 }
 
@@ -149,45 +156,63 @@ void org_alljoyn_SmartSpaces_Operation_EnergyUsage::slotClickResetCumulativeEner
 
 void org_alljoyn_SmartSpaces_Operation_EnergyUsage::slotOnResponseGetCumulativeEnergy(QStatus status, const double value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "EnergyUsage::slotOnResponseGetCumulativeEnergy";
+
     edit_CumulativeEnergy->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Operation_EnergyUsage::slotOnCumulativeEnergyChanged(const double value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "EnergyUsage::slotOnCumulativeEnergyChanged";
+
     edit_CumulativeEnergy->setText(QStringFrom(value));
 }
+
+
 
 
 
 
 void org_alljoyn_SmartSpaces_Operation_EnergyUsage::slotOnResponseGetPrecision(QStatus status, const double value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "EnergyUsage::slotOnResponseGetPrecision";
+
     edit_Precision->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Operation_EnergyUsage::slotOnPrecisionChanged(const double value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "EnergyUsage::slotOnPrecisionChanged";
+
     edit_Precision->setText(QStringFrom(value));
 }
+
+
 
 
 
 
 void org_alljoyn_SmartSpaces_Operation_EnergyUsage::slotOnResponseGetUpdateMinTime(QStatus status, const uint16_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "EnergyUsage::slotOnResponseGetUpdateMinTime";
+
     edit_UpdateMinTime->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Operation_EnergyUsage::slotOnUpdateMinTimeChanged(const uint16_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "EnergyUsage::slotOnUpdateMinTimeChanged";
+
     edit_UpdateMinTime->setText(QStringFrom(value));
 }
+
+
 
 
 
@@ -196,10 +221,10 @@ void org_alljoyn_SmartSpaces_Operation_EnergyUsage::slotOnResponseMethodResetCum
 {
     if (status == ER_OK)
     {
-        qInfo() << "Received response to method ResetCumulativeEnergy";
+        qInfo() << "EnergyUsage::slotOnResponseMethodResetCumulativeEnergy";
     }
     else
     {
-        qWarning() << "Received an error from method ResetCumulativeEnergy, error = " << errorName;
+        qWarning() << "EnergyUsage::slotOnResponseMethodResetCumulativeEnergy Received error = " << errorName;
     }
 }

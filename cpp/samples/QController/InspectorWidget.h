@@ -13,7 +13,7 @@ class InspectorWidget : public QWidget
 {
     Q_OBJECT
 public:
-    InspectorWidget(QWidget* parent);
+    InspectorWidget(QWidget* parent = 0);
     ~InspectorWidget();
 
 public slots:

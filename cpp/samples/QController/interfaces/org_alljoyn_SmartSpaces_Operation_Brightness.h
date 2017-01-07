@@ -31,6 +31,8 @@
 #define org_alljoyn_SmartSpaces_Operation_Brightness_H_
 
 #include <QWidget>
+#include <QCheckBox>
+#include <QComboBox>
 #include <QLineEdit>
 #include <QVBoxLayout>
 #include <QPushButton>
@@ -41,6 +43,7 @@
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
+
 
 namespace CDMQtWidgets
 {
@@ -74,7 +77,7 @@ public:
 
         virtual void OnResponseGetBrightness(QStatus status, const qcc::String& objectPath, const double value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "Brightness::OnResponseGetBrightness";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetBrightness", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(double, value)
@@ -82,14 +85,14 @@ public:
         }
         virtual void OnBrightnessChanged(const qcc::String& objectPath, const double value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "Brightness::OnBrightnessChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnBrightnessChanged", Qt::QueuedConnection,
                               Q_ARG(double, value)
                               );
         }
         virtual void OnResponseSetBrightness(QStatus status, const qcc::String& objectPath, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "Brightness::OnResponseSetBrightness";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseSetBrightness", Qt::QueuedConnection,
                               Q_ARG(QStatus, status)
                               );

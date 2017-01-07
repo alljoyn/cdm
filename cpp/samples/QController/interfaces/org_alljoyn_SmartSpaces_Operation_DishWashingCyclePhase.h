@@ -31,6 +31,8 @@
 #define org_alljoyn_SmartSpaces_Operation_DishWashingCyclePhase_H_
 
 #include <QWidget>
+#include <QCheckBox>
+#include <QComboBox>
 #include <QLineEdit>
 #include <QVBoxLayout>
 #include <QPushButton>
@@ -41,6 +43,7 @@
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
+
 
 namespace CDMQtWidgets
 {
@@ -60,7 +63,7 @@ private slots:
     void slotOnCyclePhaseChanged(const uint8_t value);
     void slotOnResponseGetSupportedCyclePhases(QStatus status, const std::vector<uint8_t>& value);
     void slotOnSupportedCyclePhasesChanged(const std::vector<uint8_t>& value);
-    void slotOnResponseMethodGetVendorPhasesDescription(QStatus status, const QString& errorName);
+    void slotOnResponseMethodGetVendorPhasesDescription(QStatus status, const std::vector<DishWashingCyclePhaseInterface::CyclePhaseDescriptor>& phasesDescription, const QString& errorName);
 
 public:
     // ajn::services::DishWashingCyclePhaseIntfControllerListener
@@ -76,7 +79,7 @@ public:
 
         virtual void OnResponseGetCyclePhase(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "DishWashingCyclePhase::OnResponseGetCyclePhase";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetCyclePhase", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(uint8_t, value)
@@ -84,14 +87,14 @@ public:
         }
         virtual void OnCyclePhaseChanged(const qcc::String& objectPath, const uint8_t value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "DishWashingCyclePhase::OnCyclePhaseChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnCyclePhaseChanged", Qt::QueuedConnection,
                               Q_ARG(uint8_t, value)
                               );
         }
         virtual void OnResponseGetSupportedCyclePhases(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "DishWashingCyclePhase::OnResponseGetSupportedCyclePhases";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetSupportedCyclePhases", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(std::vector<uint8_t>, value)
@@ -99,16 +102,16 @@ public:
         }
         virtual void OnSupportedCyclePhasesChanged(const qcc::String& objectPath, const std::vector<uint8_t>& value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "DishWashingCyclePhase::OnSupportedCyclePhasesChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnSupportedCyclePhasesChanged", Qt::QueuedConnection,
                               Q_ARG(std::vector<uint8_t>, value)
                               );
         }
         virtual void OnResponseGetVendorPhasesDescription(QStatus status, const qcc::String& objectPath, const std::vector<DishWashingCyclePhaseInterface::CyclePhaseDescriptor>& phasesDescription, void* context, const char* errorName, const char* errorMessage) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "DishWashingCyclePhase::OnResponseGetVendorPhasesDescription";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseMethodGetVendorPhasesDescription", Qt::QueuedConnection,
-                              Q_ARG(QStatus, status), Q_ARG(QString, QString(errorName))
+                              Q_ARG(QStatus, status), Q_ARG(std::vector<DishWashingCyclePhaseInterface::CyclePhaseDescriptor>, phasesDescription), Q_ARG(QString, QString(errorName))
                               );
         }
     };

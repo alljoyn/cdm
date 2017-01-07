@@ -26,7 +26,6 @@
  *     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-
 #include "org_alljoyn_SmartSpaces_Operation_FanSpeedLevel.h"
 #include "QStringConversion.h"
 #include <QDebug>
@@ -41,6 +40,12 @@ using namespace CDMQtWidgets;
 
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_FanSpeedLevel*>();
 
+Q_DECLARE_METATYPE(ajn::services::FanSpeedLevelInterface::AutoMode);
+Q_DECLARE_METATYPE(std::vector<ajn::services::FanSpeedLevelInterface::AutoMode>);
+static const int auto_register_enum_AutoMode = qRegisterMetaType<ajn::services::FanSpeedLevelInterface::AutoMode>("FanSpeedLevelInterface::AutoMode");
+static const int auto_register_enum_v_AutoMode = qRegisterMetaType<std::vector<ajn::services::FanSpeedLevelInterface::AutoMode>>("std::vector<FanSpeedLevelInterface::AutoMode>");
+
+
 
 org_alljoyn_SmartSpaces_Operation_FanSpeedLevel::org_alljoyn_SmartSpaces_Operation_FanSpeedLevel(CommonControllerInterface *iface)
   : controller(NULL),
@@ -53,24 +58,30 @@ org_alljoyn_SmartSpaces_Operation_FanSpeedLevel::org_alljoyn_SmartSpaces_Operati
 
 
     layout->addWidget(new QLabel("FanSpeedLevel"));
-    // Create line edit for FanSpeedLevel
+    // Create the editing widget for FanSpeedLevel
     edit_FanSpeedLevel = new QLineEdit();
     edit_FanSpeedLevel->setToolTip("Fan speed level of a device. Special value: 0x00 - Fan operation is turned off and controller shall not set 0x00. Turning on/off shall be operated by a different interface (OnOff).");
     edit_FanSpeedLevel->setReadOnly(false);
     QObject::connect(edit_FanSpeedLevel, SIGNAL(returnPressed()), this, SLOT(slotSetFanSpeedLevel()));
+
     layout->addWidget(edit_FanSpeedLevel);
     layout->addWidget(new QLabel("MaxFanSpeedLevel"));
-    // Create line edit for MaxFanSpeedLevel
+    // Create the editing widget for MaxFanSpeedLevel
     edit_MaxFanSpeedLevel = new QLineEdit();
     edit_MaxFanSpeedLevel->setToolTip("Maximum level allowed for target fan speed level.");
     edit_MaxFanSpeedLevel->setReadOnly(true);
+
     layout->addWidget(edit_MaxFanSpeedLevel);
     layout->addWidget(new QLabel("AutoMode"));
-    // Create line edit for AutoMode
-    edit_AutoMode = new QLineEdit();
-    edit_AutoMode->setToolTip("Enabled/disabled state of the auto mode.");
-    edit_AutoMode->setReadOnly(false);
-    QObject::connect(edit_AutoMode, SIGNAL(returnPressed()), this, SLOT(slotSetAutoMode()));
+    // Create the editing widget for AutoMode
+    edit_AutoMode = new QComboBox();
+    edit_AutoMode->setEditable(false);
+    edit_AutoMode->addItem("Off");
+    edit_AutoMode->addItem("On");
+    edit_AutoMode->addItem("NotSupported");
+    edit_AutoMode->setEnabled(true);
+    QObject::connect(edit_AutoMode, SIGNAL(currentTextChanged(const QString &)), this, SLOT(slotSetAutoMode()));
+
     layout->addWidget(edit_AutoMode);
 
     if (iface)
@@ -105,24 +116,24 @@ void org_alljoyn_SmartSpaces_Operation_FanSpeedLevel::fetchProperties()
 
     if (controller)
     {
-        qWarning() << "org_alljoyn_SmartSpaces_Operation_FanSpeedLevel getting properties";
+        qWarning() << "FanSpeedLevel getting properties";
 
         status = controller->GetFanSpeedLevel();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get FanSpeedLevel" << QCC_StatusText(status);
+            qWarning() << "FanSpeedLevel::fetchProperties Failed to get FanSpeedLevel" << QCC_StatusText(status);
         }
 
         status = controller->GetMaxFanSpeedLevel();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get MaxFanSpeedLevel" << QCC_StatusText(status);
+            qWarning() << "FanSpeedLevel::fetchProperties Failed to get MaxFanSpeedLevel" << QCC_StatusText(status);
         }
 
         status = controller->GetAutoMode();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get AutoMode" << QCC_StatusText(status);
+            qWarning() << "FanSpeedLevel::fetchProperties Failed to get AutoMode" << QCC_StatusText(status);
         }
     }
 }
@@ -131,95 +142,182 @@ void org_alljoyn_SmartSpaces_Operation_FanSpeedLevel::fetchProperties()
 
 void org_alljoyn_SmartSpaces_Operation_FanSpeedLevel::slotOnResponseGetFanSpeedLevel(QStatus status, const uint8_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "FanSpeedLevel::slotOnResponseGetFanSpeedLevel";
+
     edit_FanSpeedLevel->setText(QStringFrom(value));
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_FanSpeedLevel::slotOnFanSpeedLevelChanged(const uint8_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "FanSpeedLevel::slotOnFanSpeedLevelChanged";
+
     edit_FanSpeedLevel->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Operation_FanSpeedLevel::slotOnResponseSetFanSpeedLevel(QStatus status)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "FanSpeedLevel::slotOnResponseSetFanSpeedLevel";
+
+    if (status != ER_OK)
+    {
+        qWarning() << "FanSpeedLevel::slotOnResponseSetFanSpeedLevel Failed to set FanSpeedLevel" << QCC_StatusText(status);
+    }
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_FanSpeedLevel::slotSetFanSpeedLevel()
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "FanSpeedLevel::slotSetFanSpeedLevel";
 
     bool ok = false;
+    uint8_t value;
     QString str = edit_FanSpeedLevel->text();
-    uint8_t value = QStringTo<uint8_t>(str, &ok);
+    value = QStringTo<uint8_t>(str, &ok);
+    if (!ok)
+    {
+        qWarning() << "FanSpeedLevel::slotSetFanSpeedLevel Failed to convert '" << str << "' to uint8_t";
+    }
+
     if (ok)
     {
         QStatus status = controller->SetFanSpeedLevel(value);
+
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get FanSpeedLevel" << QCC_StatusText(status);
+            qWarning() << "FanSpeedLevel::slotSetFanSpeedLevel Failed to get FanSpeedLevel" << QCC_StatusText(status);
         }
     }
-    else
-    {
-        qWarning() << __FUNCTION__ << "Failed to convert '" << str << "' to uint8_t";
-    }
 }
-
 
 
 
 void org_alljoyn_SmartSpaces_Operation_FanSpeedLevel::slotOnResponseGetMaxFanSpeedLevel(QStatus status, const uint8_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "FanSpeedLevel::slotOnResponseGetMaxFanSpeedLevel";
+
     edit_MaxFanSpeedLevel->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Operation_FanSpeedLevel::slotOnMaxFanSpeedLevelChanged(const uint8_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "FanSpeedLevel::slotOnMaxFanSpeedLevelChanged";
+
     edit_MaxFanSpeedLevel->setText(QStringFrom(value));
 }
+
+
 
 
 
 
 void org_alljoyn_SmartSpaces_Operation_FanSpeedLevel::slotOnResponseGetAutoMode(QStatus status, const FanSpeedLevelInterface::AutoMode value)
 {
-    qWarning() << __FUNCTION__;
-    edit_AutoMode->setText(QStringFrom(value));
+    qWarning() << "FanSpeedLevel::slotOnResponseGetAutoMode";
+
+    switch (value)
+    {
+    case FanSpeedLevelInterface::AUTO_MODE_OFF:
+        edit_AutoMode->setCurrentText("Off");
+        break;
+
+    case FanSpeedLevelInterface::AUTO_MODE_ON:
+        edit_AutoMode->setCurrentText("On");
+        break;
+
+    case FanSpeedLevelInterface::AUTO_MODE_NOT_SUPPORTED:
+        edit_AutoMode->setCurrentText("NotSupported");
+        break;
+
+    default:
+        edit_AutoMode->setCurrentText("");
+        break;
+    }
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_FanSpeedLevel::slotOnAutoModeChanged(const FanSpeedLevelInterface::AutoMode value)
 {
-    qWarning() << __FUNCTION__;
-    edit_AutoMode->setText(QStringFrom(value));
+    qWarning() << "FanSpeedLevel::slotOnAutoModeChanged";
+
+    switch (value)
+    {
+    case FanSpeedLevelInterface::AUTO_MODE_OFF:
+        edit_AutoMode->setCurrentText("Off");
+        break;
+
+    case FanSpeedLevelInterface::AUTO_MODE_ON:
+        edit_AutoMode->setCurrentText("On");
+        break;
+
+    case FanSpeedLevelInterface::AUTO_MODE_NOT_SUPPORTED:
+        edit_AutoMode->setCurrentText("NotSupported");
+        break;
+
+    default:
+        edit_AutoMode->setCurrentText("");
+        break;
+    }
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_FanSpeedLevel::slotOnResponseSetAutoMode(QStatus status)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "FanSpeedLevel::slotOnResponseSetAutoMode";
+
+    if (status != ER_OK)
+    {
+        qWarning() << "FanSpeedLevel::slotOnResponseSetAutoMode Failed to set AutoMode" << QCC_StatusText(status);
+    }
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_FanSpeedLevel::slotSetAutoMode()
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "FanSpeedLevel::slotSetAutoMode";
 
     bool ok = false;
-    QString str = edit_AutoMode->text();
-    FanSpeedLevelInterface::AutoMode value = QStringTo<FanSpeedLevelInterface::AutoMode>(str, &ok);
+    FanSpeedLevelInterface::AutoMode value;
+    QString str = edit_AutoMode->currentText();
+    if (str == "Off")
+    {
+        value = FanSpeedLevelInterface::AUTO_MODE_OFF;
+        ok = true;
+    }
+    else
+    if (str == "On")
+    {
+        value = FanSpeedLevelInterface::AUTO_MODE_ON;
+        ok = true;
+    }
+    else
+    if (str == "NotSupported")
+    {
+        value = FanSpeedLevelInterface::AUTO_MODE_NOT_SUPPORTED;
+        ok = true;
+    }
+    else
+    if (!str.isEmpty())
+    {
+        qWarning() << "FanSpeedLevel::slotSetAutoMode Failed to convert '" << str.constData() << "' to FanSpeedLevelInterface::AutoMode";
+    }
+
     if (ok)
     {
         QStatus status = controller->SetAutoMode(value);
+
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get AutoMode" << QCC_StatusText(status);
+            qWarning() << "FanSpeedLevel::slotSetAutoMode Failed to get AutoMode" << QCC_StatusText(status);
         }
     }
-    else
-    {
-        qWarning() << __FUNCTION__ << "Failed to convert '" << str << "' to FanSpeedLevelInterface::AutoMode";
-    }
 }
-

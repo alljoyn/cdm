@@ -26,7 +26,6 @@
  *     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-
 #include "org_alljoyn_SmartSpaces_Operation_ColorTemperature.h"
 #include "QStringConversion.h"
 #include <QDebug>
@@ -42,6 +41,7 @@ using namespace CDMQtWidgets;
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_ColorTemperature*>();
 
 
+
 org_alljoyn_SmartSpaces_Operation_ColorTemperature::org_alljoyn_SmartSpaces_Operation_ColorTemperature(CommonControllerInterface *iface)
   : controller(NULL),
     m_listener(mkRef<Listener>(this))
@@ -53,23 +53,26 @@ org_alljoyn_SmartSpaces_Operation_ColorTemperature::org_alljoyn_SmartSpaces_Oper
 
 
     layout->addWidget(new QLabel("Temperature"));
-    // Create line edit for Temperature
+    // Create the editing widget for Temperature
     edit_Temperature = new QLineEdit();
     edit_Temperature->setToolTip("Color temperature of the device.");
     edit_Temperature->setReadOnly(false);
     QObject::connect(edit_Temperature, SIGNAL(returnPressed()), this, SLOT(slotSetTemperature()));
+
     layout->addWidget(edit_Temperature);
     layout->addWidget(new QLabel("MinTemperature"));
-    // Create line edit for MinTemperature
+    // Create the editing widget for MinTemperature
     edit_MinTemperature = new QLineEdit();
     edit_MinTemperature->setToolTip("The minimum color temperature supported by the device.");
     edit_MinTemperature->setReadOnly(true);
+
     layout->addWidget(edit_MinTemperature);
     layout->addWidget(new QLabel("MaxTemperature"));
-    // Create line edit for MaxTemperature
+    // Create the editing widget for MaxTemperature
     edit_MaxTemperature = new QLineEdit();
     edit_MaxTemperature->setToolTip("The maximum color temperature supported by the device.");
     edit_MaxTemperature->setReadOnly(true);
+
     layout->addWidget(edit_MaxTemperature);
 
     if (iface)
@@ -104,24 +107,24 @@ void org_alljoyn_SmartSpaces_Operation_ColorTemperature::fetchProperties()
 
     if (controller)
     {
-        qWarning() << "org_alljoyn_SmartSpaces_Operation_ColorTemperature getting properties";
+        qWarning() << "ColorTemperature getting properties";
 
         status = controller->GetTemperature();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get Temperature" << QCC_StatusText(status);
+            qWarning() << "ColorTemperature::fetchProperties Failed to get Temperature" << QCC_StatusText(status);
         }
 
         status = controller->GetMinTemperature();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get MinTemperature" << QCC_StatusText(status);
+            qWarning() << "ColorTemperature::fetchProperties Failed to get MinTemperature" << QCC_StatusText(status);
         }
 
         status = controller->GetMaxTemperature();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get MaxTemperature" << QCC_StatusText(status);
+            qWarning() << "ColorTemperature::fetchProperties Failed to get MaxTemperature" << QCC_StatusText(status);
         }
     }
 }
@@ -130,69 +133,96 @@ void org_alljoyn_SmartSpaces_Operation_ColorTemperature::fetchProperties()
 
 void org_alljoyn_SmartSpaces_Operation_ColorTemperature::slotOnResponseGetTemperature(QStatus status, const double value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "ColorTemperature::slotOnResponseGetTemperature";
+
     edit_Temperature->setText(QStringFrom(value));
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_ColorTemperature::slotOnTemperatureChanged(const double value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "ColorTemperature::slotOnTemperatureChanged";
+
     edit_Temperature->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Operation_ColorTemperature::slotOnResponseSetTemperature(QStatus status)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "ColorTemperature::slotOnResponseSetTemperature";
+
+    if (status != ER_OK)
+    {
+        qWarning() << "ColorTemperature::slotOnResponseSetTemperature Failed to set Temperature" << QCC_StatusText(status);
+    }
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_ColorTemperature::slotSetTemperature()
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "ColorTemperature::slotSetTemperature";
 
     bool ok = false;
+    double value;
     QString str = edit_Temperature->text();
-    double value = QStringTo<double>(str, &ok);
+    value = QStringTo<double>(str, &ok);
+    if (!ok)
+    {
+        qWarning() << "ColorTemperature::slotSetTemperature Failed to convert '" << str << "' to double";
+    }
+
     if (ok)
     {
         QStatus status = controller->SetTemperature(value);
+
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get Temperature" << QCC_StatusText(status);
+            qWarning() << "ColorTemperature::slotSetTemperature Failed to get Temperature" << QCC_StatusText(status);
         }
     }
-    else
-    {
-        qWarning() << __FUNCTION__ << "Failed to convert '" << str << "' to double";
-    }
 }
-
 
 
 
 void org_alljoyn_SmartSpaces_Operation_ColorTemperature::slotOnResponseGetMinTemperature(QStatus status, const double value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "ColorTemperature::slotOnResponseGetMinTemperature";
+
     edit_MinTemperature->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Operation_ColorTemperature::slotOnMinTemperatureChanged(const double value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "ColorTemperature::slotOnMinTemperatureChanged";
+
     edit_MinTemperature->setText(QStringFrom(value));
 }
+
+
 
 
 
 
 void org_alljoyn_SmartSpaces_Operation_ColorTemperature::slotOnResponseGetMaxTemperature(QStatus status, const double value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "ColorTemperature::slotOnResponseGetMaxTemperature";
+
     edit_MaxTemperature->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Operation_ColorTemperature::slotOnMaxTemperatureChanged(const double value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "ColorTemperature::slotOnMaxTemperatureChanged";
+
     edit_MaxTemperature->setText(QStringFrom(value));
 }
+
+
 

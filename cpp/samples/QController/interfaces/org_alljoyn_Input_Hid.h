@@ -31,6 +31,8 @@
 #define org_alljoyn_Input_Hid_H_
 
 #include <QWidget>
+#include <QCheckBox>
+#include <QComboBox>
 #include <QLineEdit>
 #include <QVBoxLayout>
 #include <QPushButton>
@@ -41,6 +43,7 @@
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
+
 
 namespace CDMQtWidgets
 {
@@ -74,7 +77,7 @@ public:
 
         virtual void OnResponseGetSupportedEvents(QStatus status, const qcc::String& objectPath, const std::vector<HidInterface::SupportedInputEvent>& value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "Hid::OnResponseGetSupportedEvents";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetSupportedEvents", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(std::vector<HidInterface::SupportedInputEvent>, value)
@@ -82,14 +85,14 @@ public:
         }
         virtual void OnSupportedEventsChanged(const qcc::String& objectPath, const std::vector<HidInterface::SupportedInputEvent>& value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "Hid::OnSupportedEventsChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnSupportedEventsChanged", Qt::QueuedConnection,
                               Q_ARG(std::vector<HidInterface::SupportedInputEvent>, value)
                               );
         }
         virtual void OnResponseInjectEvents(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "Hid::OnResponseInjectEvents";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseMethodInjectEvents", Qt::QueuedConnection,
                               Q_ARG(QStatus, status), Q_ARG(QString, QString(errorName))
                               );

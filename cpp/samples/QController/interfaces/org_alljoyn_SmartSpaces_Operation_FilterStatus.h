@@ -31,6 +31,8 @@
 #define org_alljoyn_SmartSpaces_Operation_FilterStatus_H_
 
 #include <QWidget>
+#include <QCheckBox>
+#include <QComboBox>
 #include <QLineEdit>
 #include <QVBoxLayout>
 #include <QPushButton>
@@ -41,6 +43,7 @@
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
+
 
 namespace CDMQtWidgets
 {
@@ -84,7 +87,7 @@ public:
 
         virtual void OnResponseGetExpectedLifeInDays(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "FilterStatus::OnResponseGetExpectedLifeInDays";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetExpectedLifeInDays", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(uint16_t, value)
@@ -92,14 +95,14 @@ public:
         }
         virtual void OnExpectedLifeInDaysChanged(const qcc::String& objectPath, const uint16_t value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "FilterStatus::OnExpectedLifeInDaysChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnExpectedLifeInDaysChanged", Qt::QueuedConnection,
                               Q_ARG(uint16_t, value)
                               );
         }
         virtual void OnResponseGetIsCleanable(QStatus status, const qcc::String& objectPath, const bool value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "FilterStatus::OnResponseGetIsCleanable";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetIsCleanable", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(bool, value)
@@ -107,14 +110,14 @@ public:
         }
         virtual void OnIsCleanableChanged(const qcc::String& objectPath, const bool value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "FilterStatus::OnIsCleanableChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnIsCleanableChanged", Qt::QueuedConnection,
                               Q_ARG(bool, value)
                               );
         }
         virtual void OnResponseGetOrderPercentage(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "FilterStatus::OnResponseGetOrderPercentage";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetOrderPercentage", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(uint8_t, value)
@@ -122,14 +125,14 @@ public:
         }
         virtual void OnOrderPercentageChanged(const qcc::String& objectPath, const uint8_t value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "FilterStatus::OnOrderPercentageChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnOrderPercentageChanged", Qt::QueuedConnection,
                               Q_ARG(uint8_t, value)
                               );
         }
         virtual void OnResponseGetManufacturer(QStatus status, const qcc::String& objectPath, const qcc::String& value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "FilterStatus::OnResponseGetManufacturer";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetManufacturer", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(qcc::String, value)
@@ -137,14 +140,14 @@ public:
         }
         virtual void OnManufacturerChanged(const qcc::String& objectPath, const qcc::String& value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "FilterStatus::OnManufacturerChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnManufacturerChanged", Qt::QueuedConnection,
                               Q_ARG(qcc::String, value)
                               );
         }
         virtual void OnResponseGetPartNumber(QStatus status, const qcc::String& objectPath, const qcc::String& value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "FilterStatus::OnResponseGetPartNumber";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetPartNumber", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(qcc::String, value)
@@ -152,14 +155,14 @@ public:
         }
         virtual void OnPartNumberChanged(const qcc::String& objectPath, const qcc::String& value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "FilterStatus::OnPartNumberChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnPartNumberChanged", Qt::QueuedConnection,
                               Q_ARG(qcc::String, value)
                               );
         }
         virtual void OnResponseGetUrl(QStatus status, const qcc::String& objectPath, const qcc::String& value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "FilterStatus::OnResponseGetUrl";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetUrl", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(qcc::String, value)
@@ -167,14 +170,14 @@ public:
         }
         virtual void OnUrlChanged(const qcc::String& objectPath, const qcc::String& value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "FilterStatus::OnUrlChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnUrlChanged", Qt::QueuedConnection,
                               Q_ARG(qcc::String, value)
                               );
         }
         virtual void OnResponseGetLifeRemaining(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "FilterStatus::OnResponseGetLifeRemaining";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetLifeRemaining", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(uint8_t, value)
@@ -182,7 +185,7 @@ public:
         }
         virtual void OnLifeRemainingChanged(const qcc::String& objectPath, const uint8_t value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "FilterStatus::OnLifeRemainingChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnLifeRemainingChanged", Qt::QueuedConnection,
                               Q_ARG(uint8_t, value)
                               );
@@ -195,7 +198,7 @@ private:
 
 
     QLineEdit* edit_ExpectedLifeInDays;
-    QLineEdit* edit_IsCleanable;
+    QCheckBox* edit_IsCleanable;
     QLineEdit* edit_OrderPercentage;
     QLineEdit* edit_Manufacturer;
     QLineEdit* edit_PartNumber;

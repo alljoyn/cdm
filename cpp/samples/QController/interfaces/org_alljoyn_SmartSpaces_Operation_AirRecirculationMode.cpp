@@ -26,7 +26,6 @@
  *     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-
 #include "org_alljoyn_SmartSpaces_Operation_AirRecirculationMode.h"
 #include "QStringConversion.h"
 #include <QDebug>
@@ -42,6 +41,7 @@ using namespace CDMQtWidgets;
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_AirRecirculationMode*>();
 
 
+
 org_alljoyn_SmartSpaces_Operation_AirRecirculationMode::org_alljoyn_SmartSpaces_Operation_AirRecirculationMode(CommonControllerInterface *iface)
   : controller(NULL),
     m_listener(mkRef<Listener>(this))
@@ -53,11 +53,11 @@ org_alljoyn_SmartSpaces_Operation_AirRecirculationMode::org_alljoyn_SmartSpaces_
 
 
     layout->addWidget(new QLabel("IsRecirculating"));
-    // Create line edit for IsRecirculating
-    edit_IsRecirculating = new QLineEdit();
-    edit_IsRecirculating->setToolTip("If true, air is being recirculated");
-    edit_IsRecirculating->setReadOnly(false);
-    QObject::connect(edit_IsRecirculating, SIGNAL(returnPressed()), this, SLOT(slotSetIsRecirculating()));
+    // Create the editing widget for IsRecirculating
+    edit_IsRecirculating = new QCheckBox();
+    edit_IsRecirculating->setEnabled(true);
+    QObject::connect(edit_IsRecirculating, SIGNAL(stateChanged(int)), this, SLOT(slotSetIsRecirculating()));
+
     layout->addWidget(edit_IsRecirculating);
 
     if (iface)
@@ -92,12 +92,12 @@ void org_alljoyn_SmartSpaces_Operation_AirRecirculationMode::fetchProperties()
 
     if (controller)
     {
-        qWarning() << "org_alljoyn_SmartSpaces_Operation_AirRecirculationMode getting properties";
+        qWarning() << "AirRecirculationMode getting properties";
 
         status = controller->GetIsRecirculating();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get IsRecirculating" << QCC_StatusText(status);
+            qWarning() << "AirRecirculationMode::fetchProperties Failed to get IsRecirculating" << QCC_StatusText(status);
         }
     }
 }
@@ -106,39 +106,50 @@ void org_alljoyn_SmartSpaces_Operation_AirRecirculationMode::fetchProperties()
 
 void org_alljoyn_SmartSpaces_Operation_AirRecirculationMode::slotOnResponseGetIsRecirculating(QStatus status, const bool value)
 {
-    qWarning() << __FUNCTION__;
-    edit_IsRecirculating->setText(QStringFrom(value));
+    qWarning() << "AirRecirculationMode::slotOnResponseGetIsRecirculating";
+
+    edit_IsRecirculating->setChecked(value);
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_AirRecirculationMode::slotOnIsRecirculatingChanged(const bool value)
 {
-    qWarning() << __FUNCTION__;
-    edit_IsRecirculating->setText(QStringFrom(value));
+    qWarning() << "AirRecirculationMode::slotOnIsRecirculatingChanged";
+
+    edit_IsRecirculating->setChecked(value);
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_AirRecirculationMode::slotOnResponseSetIsRecirculating(QStatus status)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "AirRecirculationMode::slotOnResponseSetIsRecirculating";
+
+    if (status != ER_OK)
+    {
+        qWarning() << "AirRecirculationMode::slotOnResponseSetIsRecirculating Failed to set IsRecirculating" << QCC_StatusText(status);
+    }
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_AirRecirculationMode::slotSetIsRecirculating()
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "AirRecirculationMode::slotSetIsRecirculating";
 
     bool ok = false;
-    QString str = edit_IsRecirculating->text();
-    bool value = QStringTo<bool>(str, &ok);
+    bool value;
+    value = edit_IsRecirculating->isChecked();
+    ok = true;
+
     if (ok)
     {
         QStatus status = controller->SetIsRecirculating(value);
+
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get IsRecirculating" << QCC_StatusText(status);
+            qWarning() << "AirRecirculationMode::slotSetIsRecirculating Failed to get IsRecirculating" << QCC_StatusText(status);
         }
     }
-    else
-    {
-        qWarning() << __FUNCTION__ << "Failed to convert '" << str << "' to bool";
-    }
 }
-

@@ -31,6 +31,8 @@
 #define org_alljoyn_SmartSpaces_Operation_Timer_H_
 
 #include <QWidget>
+#include <QCheckBox>
+#include <QComboBox>
 #include <QLineEdit>
 #include <QVBoxLayout>
 #include <QPushButton>
@@ -41,6 +43,7 @@
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
+
 
 namespace CDMQtWidgets
 {
@@ -86,7 +89,7 @@ public:
 
         virtual void OnResponseGetReferenceTimer(QStatus status, const qcc::String& objectPath, const int32_t value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "Timer::OnResponseGetReferenceTimer";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetReferenceTimer", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(int32_t, value)
@@ -94,14 +97,14 @@ public:
         }
         virtual void OnReferenceTimerChanged(const qcc::String& objectPath, const int32_t value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "Timer::OnReferenceTimerChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnReferenceTimerChanged", Qt::QueuedConnection,
                               Q_ARG(int32_t, value)
                               );
         }
         virtual void OnResponseGetTargetTimeToStart(QStatus status, const qcc::String& objectPath, const int32_t value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "Timer::OnResponseGetTargetTimeToStart";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetTargetTimeToStart", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(int32_t, value)
@@ -109,14 +112,14 @@ public:
         }
         virtual void OnTargetTimeToStartChanged(const qcc::String& objectPath, const int32_t value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "Timer::OnTargetTimeToStartChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnTargetTimeToStartChanged", Qt::QueuedConnection,
                               Q_ARG(int32_t, value)
                               );
         }
         virtual void OnResponseGetTargetTimeToStop(QStatus status, const qcc::String& objectPath, const int32_t value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "Timer::OnResponseGetTargetTimeToStop";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetTargetTimeToStop", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(int32_t, value)
@@ -124,14 +127,14 @@ public:
         }
         virtual void OnTargetTimeToStopChanged(const qcc::String& objectPath, const int32_t value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "Timer::OnTargetTimeToStopChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnTargetTimeToStopChanged", Qt::QueuedConnection,
                               Q_ARG(int32_t, value)
                               );
         }
         virtual void OnResponseGetEstimatedTimeToEnd(QStatus status, const qcc::String& objectPath, const int32_t value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "Timer::OnResponseGetEstimatedTimeToEnd";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetEstimatedTimeToEnd", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(int32_t, value)
@@ -139,14 +142,14 @@ public:
         }
         virtual void OnEstimatedTimeToEndChanged(const qcc::String& objectPath, const int32_t value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "Timer::OnEstimatedTimeToEndChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnEstimatedTimeToEndChanged", Qt::QueuedConnection,
                               Q_ARG(int32_t, value)
                               );
         }
         virtual void OnResponseGetRunningTime(QStatus status, const qcc::String& objectPath, const int32_t value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "Timer::OnResponseGetRunningTime";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetRunningTime", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(int32_t, value)
@@ -154,14 +157,14 @@ public:
         }
         virtual void OnRunningTimeChanged(const qcc::String& objectPath, const int32_t value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "Timer::OnRunningTimeChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnRunningTimeChanged", Qt::QueuedConnection,
                               Q_ARG(int32_t, value)
                               );
         }
         virtual void OnResponseGetTargetDuration(QStatus status, const qcc::String& objectPath, const int32_t value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "Timer::OnResponseGetTargetDuration";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetTargetDuration", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(int32_t, value)
@@ -169,21 +172,21 @@ public:
         }
         virtual void OnTargetDurationChanged(const qcc::String& objectPath, const int32_t value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "Timer::OnTargetDurationChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnTargetDurationChanged", Qt::QueuedConnection,
                               Q_ARG(int32_t, value)
                               );
         }
         virtual void OnResponseSetTargetTimeToStart(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "Timer::OnResponseSetTargetTimeToStart";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseMethodSetTargetTimeToStart", Qt::QueuedConnection,
                               Q_ARG(QStatus, status), Q_ARG(QString, QString(errorName))
                               );
         }
         virtual void OnResponseSetTargetTimeToStop(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "Timer::OnResponseSetTargetTimeToStop";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseMethodSetTargetTimeToStop", Qt::QueuedConnection,
                               Q_ARG(QStatus, status), Q_ARG(QString, QString(errorName))
                               );

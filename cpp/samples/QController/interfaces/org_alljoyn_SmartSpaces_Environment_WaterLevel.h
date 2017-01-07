@@ -31,6 +31,8 @@
 #define org_alljoyn_SmartSpaces_Environment_WaterLevel_H_
 
 #include <QWidget>
+#include <QCheckBox>
+#include <QComboBox>
 #include <QLineEdit>
 #include <QVBoxLayout>
 #include <QPushButton>
@@ -41,6 +43,7 @@
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
+
 
 namespace CDMQtWidgets
 {
@@ -76,7 +79,7 @@ public:
 
         virtual void OnResponseGetSupplySource(QStatus status, const qcc::String& objectPath, const WaterLevelInterface::SupplySource value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "WaterLevel::OnResponseGetSupplySource";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetSupplySource", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(WaterLevelInterface::SupplySource, value)
@@ -84,14 +87,14 @@ public:
         }
         virtual void OnSupplySourceChanged(const qcc::String& objectPath, const WaterLevelInterface::SupplySource value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "WaterLevel::OnSupplySourceChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnSupplySourceChanged", Qt::QueuedConnection,
                               Q_ARG(WaterLevelInterface::SupplySource, value)
                               );
         }
         virtual void OnResponseGetCurrentLevel(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "WaterLevel::OnResponseGetCurrentLevel";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetCurrentLevel", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(uint8_t, value)
@@ -99,14 +102,14 @@ public:
         }
         virtual void OnCurrentLevelChanged(const qcc::String& objectPath, const uint8_t value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "WaterLevel::OnCurrentLevelChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnCurrentLevelChanged", Qt::QueuedConnection,
                               Q_ARG(uint8_t, value)
                               );
         }
         virtual void OnResponseGetMaxLevel(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "WaterLevel::OnResponseGetMaxLevel";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetMaxLevel", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(uint8_t, value)
@@ -114,7 +117,7 @@ public:
         }
         virtual void OnMaxLevelChanged(const qcc::String& objectPath, const uint8_t value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "WaterLevel::OnMaxLevelChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnMaxLevelChanged", Qt::QueuedConnection,
                               Q_ARG(uint8_t, value)
                               );
@@ -126,7 +129,7 @@ private:
     Ref<Listener> m_listener;
 
 
-    QLineEdit* edit_SupplySource;
+    QComboBox* edit_SupplySource;
     QLineEdit* edit_CurrentLevel;
     QLineEdit* edit_MaxLevel;
 

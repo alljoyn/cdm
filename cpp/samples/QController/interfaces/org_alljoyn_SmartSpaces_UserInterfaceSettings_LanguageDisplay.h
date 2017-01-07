@@ -31,6 +31,8 @@
 #define org_alljoyn_SmartSpaces_UserInterfaceSettings_LanguageDisplay_H_
 
 #include <QWidget>
+#include <QCheckBox>
+#include <QComboBox>
 #include <QLineEdit>
 #include <QVBoxLayout>
 #include <QPushButton>
@@ -41,6 +43,7 @@
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
+
 
 namespace CDMQtWidgets
 {
@@ -76,7 +79,7 @@ public:
 
         virtual void OnResponseGetDisplayLanguage(QStatus status, const qcc::String& objectPath, const qcc::String& value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "LanguageDisplay::OnResponseGetDisplayLanguage";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetDisplayLanguage", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(qcc::String, value)
@@ -84,21 +87,21 @@ public:
         }
         virtual void OnDisplayLanguageChanged(const qcc::String& objectPath, const qcc::String& value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "LanguageDisplay::OnDisplayLanguageChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnDisplayLanguageChanged", Qt::QueuedConnection,
                               Q_ARG(qcc::String, value)
                               );
         }
         virtual void OnResponseSetDisplayLanguage(QStatus status, const qcc::String& objectPath, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "LanguageDisplay::OnResponseSetDisplayLanguage";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseSetDisplayLanguage", Qt::QueuedConnection,
                               Q_ARG(QStatus, status)
                               );
         }
         virtual void OnResponseGetSupportedDisplayLanguages(QStatus status, const qcc::String& objectPath, const std::vector<qcc::String>& value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "LanguageDisplay::OnResponseGetSupportedDisplayLanguages";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetSupportedDisplayLanguages", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(std::vector<qcc::String>, value)
@@ -106,7 +109,7 @@ public:
         }
         virtual void OnSupportedDisplayLanguagesChanged(const qcc::String& objectPath, const std::vector<qcc::String>& value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "LanguageDisplay::OnSupportedDisplayLanguagesChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnSupportedDisplayLanguagesChanged", Qt::QueuedConnection,
                               Q_ARG(std::vector<qcc::String>, value)
                               );

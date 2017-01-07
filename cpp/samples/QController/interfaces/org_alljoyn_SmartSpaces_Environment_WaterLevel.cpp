@@ -26,7 +26,6 @@
  *     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-
 #include "org_alljoyn_SmartSpaces_Environment_WaterLevel.h"
 #include "QStringConversion.h"
 #include <QDebug>
@@ -41,6 +40,12 @@ using namespace CDMQtWidgets;
 
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Environment_WaterLevel*>();
 
+Q_DECLARE_METATYPE(ajn::services::WaterLevelInterface::SupplySource);
+Q_DECLARE_METATYPE(std::vector<ajn::services::WaterLevelInterface::SupplySource>);
+static const int auto_register_enum_SupplySource = qRegisterMetaType<ajn::services::WaterLevelInterface::SupplySource>("WaterLevelInterface::SupplySource");
+static const int auto_register_enum_v_SupplySource = qRegisterMetaType<std::vector<ajn::services::WaterLevelInterface::SupplySource>>("std::vector<WaterLevelInterface::SupplySource>");
+
+
 
 org_alljoyn_SmartSpaces_Environment_WaterLevel::org_alljoyn_SmartSpaces_Environment_WaterLevel(CommonControllerInterface *iface)
   : controller(NULL),
@@ -53,22 +58,27 @@ org_alljoyn_SmartSpaces_Environment_WaterLevel::org_alljoyn_SmartSpaces_Environm
 
 
     layout->addWidget(new QLabel("SupplySource"));
-    // Create line edit for SupplySource
-    edit_SupplySource = new QLineEdit();
-    edit_SupplySource->setToolTip("The supply source of water.");
-    edit_SupplySource->setReadOnly(true);
+    // Create the editing widget for SupplySource
+    edit_SupplySource = new QComboBox();
+    edit_SupplySource->setEditable(false);
+    edit_SupplySource->addItem("Tank");
+    edit_SupplySource->addItem("Pipe");
+    edit_SupplySource->setEnabled(false);
+
     layout->addWidget(edit_SupplySource);
     layout->addWidget(new QLabel("CurrentLevel"));
-    // Create line edit for CurrentLevel
+    // Create the editing widget for CurrentLevel
     edit_CurrentLevel = new QLineEdit();
     edit_CurrentLevel->setToolTip("The current level of water in the tank.");
     edit_CurrentLevel->setReadOnly(true);
+
     layout->addWidget(edit_CurrentLevel);
     layout->addWidget(new QLabel("MaxLevel"));
-    // Create line edit for MaxLevel
+    // Create the editing widget for MaxLevel
     edit_MaxLevel = new QLineEdit();
     edit_MaxLevel->setToolTip("Maximum level allowed for water level.");
     edit_MaxLevel->setReadOnly(true);
+
     layout->addWidget(edit_MaxLevel);
 
     if (iface)
@@ -103,24 +113,24 @@ void org_alljoyn_SmartSpaces_Environment_WaterLevel::fetchProperties()
 
     if (controller)
     {
-        qWarning() << "org_alljoyn_SmartSpaces_Environment_WaterLevel getting properties";
+        qWarning() << "WaterLevel getting properties";
 
         status = controller->GetSupplySource();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get SupplySource" << QCC_StatusText(status);
+            qWarning() << "WaterLevel::fetchProperties Failed to get SupplySource" << QCC_StatusText(status);
         }
 
         status = controller->GetCurrentLevel();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get CurrentLevel" << QCC_StatusText(status);
+            qWarning() << "WaterLevel::fetchProperties Failed to get CurrentLevel" << QCC_StatusText(status);
         }
 
         status = controller->GetMaxLevel();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get MaxLevel" << QCC_StatusText(status);
+            qWarning() << "WaterLevel::fetchProperties Failed to get MaxLevel" << QCC_StatusText(status);
         }
     }
 }
@@ -129,43 +139,87 @@ void org_alljoyn_SmartSpaces_Environment_WaterLevel::fetchProperties()
 
 void org_alljoyn_SmartSpaces_Environment_WaterLevel::slotOnResponseGetSupplySource(QStatus status, const WaterLevelInterface::SupplySource value)
 {
-    qWarning() << __FUNCTION__;
-    edit_SupplySource->setText(QStringFrom(value));
+    qWarning() << "WaterLevel::slotOnResponseGetSupplySource";
+
+    switch (value)
+    {
+    case WaterLevelInterface::SUPPLY_SOURCE_TANK:
+        edit_SupplySource->setCurrentText("Tank");
+        break;
+
+    case WaterLevelInterface::SUPPLY_SOURCE_PIPE:
+        edit_SupplySource->setCurrentText("Pipe");
+        break;
+
+    default:
+        edit_SupplySource->setCurrentText("");
+        break;
+    }
 }
+
+
 
 void org_alljoyn_SmartSpaces_Environment_WaterLevel::slotOnSupplySourceChanged(const WaterLevelInterface::SupplySource value)
 {
-    qWarning() << __FUNCTION__;
-    edit_SupplySource->setText(QStringFrom(value));
+    qWarning() << "WaterLevel::slotOnSupplySourceChanged";
+
+    switch (value)
+    {
+    case WaterLevelInterface::SUPPLY_SOURCE_TANK:
+        edit_SupplySource->setCurrentText("Tank");
+        break;
+
+    case WaterLevelInterface::SUPPLY_SOURCE_PIPE:
+        edit_SupplySource->setCurrentText("Pipe");
+        break;
+
+    default:
+        edit_SupplySource->setCurrentText("");
+        break;
+    }
 }
+
+
 
 
 
 
 void org_alljoyn_SmartSpaces_Environment_WaterLevel::slotOnResponseGetCurrentLevel(QStatus status, const uint8_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "WaterLevel::slotOnResponseGetCurrentLevel";
+
     edit_CurrentLevel->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Environment_WaterLevel::slotOnCurrentLevelChanged(const uint8_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "WaterLevel::slotOnCurrentLevelChanged";
+
     edit_CurrentLevel->setText(QStringFrom(value));
 }
+
+
 
 
 
 
 void org_alljoyn_SmartSpaces_Environment_WaterLevel::slotOnResponseGetMaxLevel(QStatus status, const uint8_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "WaterLevel::slotOnResponseGetMaxLevel";
+
     edit_MaxLevel->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Environment_WaterLevel::slotOnMaxLevelChanged(const uint8_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "WaterLevel::slotOnMaxLevelChanged";
+
     edit_MaxLevel->setText(QStringFrom(value));
 }
+
+
 

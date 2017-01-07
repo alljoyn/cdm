@@ -31,6 +31,8 @@
 #define org_alljoyn_SmartSpaces_Operation_UnlockControl_H_
 
 #include <QWidget>
+#include <QCheckBox>
+#include <QComboBox>
 #include <QLineEdit>
 #include <QVBoxLayout>
 #include <QPushButton>
@@ -41,6 +43,7 @@
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
+
 
 namespace CDMQtWidgets
 {
@@ -72,7 +75,7 @@ public:
 
         virtual void OnResponseUnlock(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "UnlockControl::OnResponseUnlock";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseMethodUnlock", Qt::QueuedConnection,
                               Q_ARG(QStatus, status), Q_ARG(QString, QString(errorName))
                               );

@@ -26,7 +26,6 @@
  *     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-
 #include "org_alljoyn_SmartSpaces_Operation_CurrentPower.h"
 #include "QStringConversion.h"
 #include <QDebug>
@@ -42,6 +41,7 @@ using namespace CDMQtWidgets;
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_CurrentPower*>();
 
 
+
 org_alljoyn_SmartSpaces_Operation_CurrentPower::org_alljoyn_SmartSpaces_Operation_CurrentPower(CommonControllerInterface *iface)
   : controller(NULL),
     m_listener(mkRef<Listener>(this))
@@ -53,22 +53,25 @@ org_alljoyn_SmartSpaces_Operation_CurrentPower::org_alljoyn_SmartSpaces_Operatio
 
 
     layout->addWidget(new QLabel("CurrentPower"));
-    // Create line edit for CurrentPower
+    // Create the editing widget for CurrentPower
     edit_CurrentPower = new QLineEdit();
     edit_CurrentPower->setToolTip("The instantaneous power consumption of the device ");
     edit_CurrentPower->setReadOnly(true);
+
     layout->addWidget(edit_CurrentPower);
     layout->addWidget(new QLabel("Precision"));
-    // Create line edit for Precision
+    // Create the editing widget for Precision
     edit_Precision = new QLineEdit();
     edit_Precision->setToolTip("The precision of the CurrentPower property; i.e., the value actual power consumption must change before CurrentPower is updated.");
     edit_Precision->setReadOnly(true);
+
     layout->addWidget(edit_Precision);
     layout->addWidget(new QLabel("UpdateMinTime"));
-    // Create line edit for UpdateMinTime
+    // Create the editing widget for UpdateMinTime
     edit_UpdateMinTime = new QLineEdit();
     edit_UpdateMinTime->setToolTip("The minimum time between updates of the CurrentPower");
     edit_UpdateMinTime->setReadOnly(true);
+
     layout->addWidget(edit_UpdateMinTime);
 
     if (iface)
@@ -103,24 +106,24 @@ void org_alljoyn_SmartSpaces_Operation_CurrentPower::fetchProperties()
 
     if (controller)
     {
-        qWarning() << "org_alljoyn_SmartSpaces_Operation_CurrentPower getting properties";
+        qWarning() << "CurrentPower getting properties";
 
         status = controller->GetCurrentPower();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get CurrentPower" << QCC_StatusText(status);
+            qWarning() << "CurrentPower::fetchProperties Failed to get CurrentPower" << QCC_StatusText(status);
         }
 
         status = controller->GetPrecision();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get Precision" << QCC_StatusText(status);
+            qWarning() << "CurrentPower::fetchProperties Failed to get Precision" << QCC_StatusText(status);
         }
 
         status = controller->GetUpdateMinTime();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get UpdateMinTime" << QCC_StatusText(status);
+            qWarning() << "CurrentPower::fetchProperties Failed to get UpdateMinTime" << QCC_StatusText(status);
         }
     }
 }
@@ -129,43 +132,61 @@ void org_alljoyn_SmartSpaces_Operation_CurrentPower::fetchProperties()
 
 void org_alljoyn_SmartSpaces_Operation_CurrentPower::slotOnResponseGetCurrentPower(QStatus status, const double value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "CurrentPower::slotOnResponseGetCurrentPower";
+
     edit_CurrentPower->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Operation_CurrentPower::slotOnCurrentPowerChanged(const double value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "CurrentPower::slotOnCurrentPowerChanged";
+
     edit_CurrentPower->setText(QStringFrom(value));
 }
+
+
 
 
 
 
 void org_alljoyn_SmartSpaces_Operation_CurrentPower::slotOnResponseGetPrecision(QStatus status, const double value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "CurrentPower::slotOnResponseGetPrecision";
+
     edit_Precision->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Operation_CurrentPower::slotOnPrecisionChanged(const double value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "CurrentPower::slotOnPrecisionChanged";
+
     edit_Precision->setText(QStringFrom(value));
 }
+
+
 
 
 
 
 void org_alljoyn_SmartSpaces_Operation_CurrentPower::slotOnResponseGetUpdateMinTime(QStatus status, const uint16_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "CurrentPower::slotOnResponseGetUpdateMinTime";
+
     edit_UpdateMinTime->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Operation_CurrentPower::slotOnUpdateMinTimeChanged(const uint16_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "CurrentPower::slotOnUpdateMinTimeChanged";
+
     edit_UpdateMinTime->setText(QStringFrom(value));
 }
+
+
 

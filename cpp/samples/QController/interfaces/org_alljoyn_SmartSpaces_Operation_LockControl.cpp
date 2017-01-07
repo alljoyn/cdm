@@ -26,7 +26,6 @@
  *     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-
 #include "org_alljoyn_SmartSpaces_Operation_LockControl.h"
 #include "QStringConversion.h"
 #include <QDebug>
@@ -40,6 +39,7 @@
 using namespace CDMQtWidgets;
 
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_LockControl*>();
+
 
 
 org_alljoyn_SmartSpaces_Operation_LockControl::org_alljoyn_SmartSpaces_Operation_LockControl(CommonControllerInterface *iface)
@@ -90,7 +90,7 @@ void org_alljoyn_SmartSpaces_Operation_LockControl::fetchProperties()
 
     if (controller)
     {
-        qWarning() << "org_alljoyn_SmartSpaces_Operation_LockControl getting properties";
+        qWarning() << "LockControl getting properties";
     }
 }
 
@@ -98,14 +98,18 @@ void org_alljoyn_SmartSpaces_Operation_LockControl::fetchProperties()
 
 void org_alljoyn_SmartSpaces_Operation_LockControl::slotClickLock()
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "LockControl::slotClickLock";
 
 
+    bool ok = true;
 
-    QStatus status = controller->Lock(NULL);
-    if (status != ER_OK)
+    if (ok)
     {
-        qWarning() << __FUNCTION__ << " Failed to call Lock" << QCC_StatusText(status);
+        QStatus status = controller->Lock(NULL);
+        if (status != ER_OK)
+        {
+            qWarning() << "LockControl::slotClick Failed to call Lock" << QCC_StatusText(status);
+        }
     }
 }
 
@@ -115,10 +119,10 @@ void org_alljoyn_SmartSpaces_Operation_LockControl::slotOnResponseMethodLock(QSt
 {
     if (status == ER_OK)
     {
-        qInfo() << "Received response to method Lock";
+        qInfo() << "LockControl::slotOnResponseMethodLock";
     }
     else
     {
-        qWarning() << "Received an error from method Lock, error = " << errorName;
+        qWarning() << "LockControl::slotOnResponseMethodLock Received error = " << errorName;
     }
 }

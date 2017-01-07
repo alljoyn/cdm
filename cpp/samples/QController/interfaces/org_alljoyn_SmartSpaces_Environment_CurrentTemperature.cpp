@@ -26,7 +26,6 @@
  *     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-
 #include "org_alljoyn_SmartSpaces_Environment_CurrentTemperature.h"
 #include "QStringConversion.h"
 #include <QDebug>
@@ -42,6 +41,7 @@ using namespace CDMQtWidgets;
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Environment_CurrentTemperature*>();
 
 
+
 org_alljoyn_SmartSpaces_Environment_CurrentTemperature::org_alljoyn_SmartSpaces_Environment_CurrentTemperature(CommonControllerInterface *iface)
   : controller(NULL),
     m_listener(mkRef<Listener>(this))
@@ -53,22 +53,25 @@ org_alljoyn_SmartSpaces_Environment_CurrentTemperature::org_alljoyn_SmartSpaces_
 
 
     layout->addWidget(new QLabel("CurrentValue"));
-    // Create line edit for CurrentValue
+    // Create the editing widget for CurrentValue
     edit_CurrentValue = new QLineEdit();
     edit_CurrentValue->setToolTip("Current temperature expressed in Celsius.");
     edit_CurrentValue->setReadOnly(true);
+
     layout->addWidget(edit_CurrentValue);
     layout->addWidget(new QLabel("Precision"));
-    // Create line edit for Precision
+    // Create the editing widget for Precision
     edit_Precision = new QLineEdit();
     edit_Precision->setToolTip("The precision of the CurrentValue property.");
     edit_Precision->setReadOnly(true);
+
     layout->addWidget(edit_Precision);
     layout->addWidget(new QLabel("UpdateMinTime"));
-    // Create line edit for UpdateMinTime
+    // Create the editing widget for UpdateMinTime
     edit_UpdateMinTime = new QLineEdit();
     edit_UpdateMinTime->setToolTip("The minimum time between updates of the CurrentValue property in milliseconds.");
     edit_UpdateMinTime->setReadOnly(true);
+
     layout->addWidget(edit_UpdateMinTime);
 
     if (iface)
@@ -103,24 +106,24 @@ void org_alljoyn_SmartSpaces_Environment_CurrentTemperature::fetchProperties()
 
     if (controller)
     {
-        qWarning() << "org_alljoyn_SmartSpaces_Environment_CurrentTemperature getting properties";
+        qWarning() << "CurrentTemperature getting properties";
 
         status = controller->GetCurrentValue();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get CurrentValue" << QCC_StatusText(status);
+            qWarning() << "CurrentTemperature::fetchProperties Failed to get CurrentValue" << QCC_StatusText(status);
         }
 
         status = controller->GetPrecision();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get Precision" << QCC_StatusText(status);
+            qWarning() << "CurrentTemperature::fetchProperties Failed to get Precision" << QCC_StatusText(status);
         }
 
         status = controller->GetUpdateMinTime();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get UpdateMinTime" << QCC_StatusText(status);
+            qWarning() << "CurrentTemperature::fetchProperties Failed to get UpdateMinTime" << QCC_StatusText(status);
         }
     }
 }
@@ -129,43 +132,61 @@ void org_alljoyn_SmartSpaces_Environment_CurrentTemperature::fetchProperties()
 
 void org_alljoyn_SmartSpaces_Environment_CurrentTemperature::slotOnResponseGetCurrentValue(QStatus status, const double value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "CurrentTemperature::slotOnResponseGetCurrentValue";
+
     edit_CurrentValue->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Environment_CurrentTemperature::slotOnCurrentValueChanged(const double value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "CurrentTemperature::slotOnCurrentValueChanged";
+
     edit_CurrentValue->setText(QStringFrom(value));
 }
+
+
 
 
 
 
 void org_alljoyn_SmartSpaces_Environment_CurrentTemperature::slotOnResponseGetPrecision(QStatus status, const double value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "CurrentTemperature::slotOnResponseGetPrecision";
+
     edit_Precision->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Environment_CurrentTemperature::slotOnPrecisionChanged(const double value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "CurrentTemperature::slotOnPrecisionChanged";
+
     edit_Precision->setText(QStringFrom(value));
 }
+
+
 
 
 
 
 void org_alljoyn_SmartSpaces_Environment_CurrentTemperature::slotOnResponseGetUpdateMinTime(QStatus status, const uint16_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "CurrentTemperature::slotOnResponseGetUpdateMinTime";
+
     edit_UpdateMinTime->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Environment_CurrentTemperature::slotOnUpdateMinTimeChanged(const uint16_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "CurrentTemperature::slotOnUpdateMinTimeChanged";
+
     edit_UpdateMinTime->setText(QStringFrom(value));
 }
+
+
 

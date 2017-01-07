@@ -31,6 +31,8 @@
 #define org_alljoyn_SmartSpaces_Operation_CycleControl_H_
 
 #include <QWidget>
+#include <QCheckBox>
+#include <QComboBox>
 #include <QLineEdit>
 #include <QVBoxLayout>
 #include <QPushButton>
@@ -41,6 +43,7 @@
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
+
 
 namespace CDMQtWidgets
 {
@@ -78,7 +81,7 @@ public:
 
         virtual void OnResponseGetOperationalState(QStatus status, const qcc::String& objectPath, const CycleControlInterface::OperationalState value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "CycleControl::OnResponseGetOperationalState";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetOperationalState", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(CycleControlInterface::OperationalState, value)
@@ -86,14 +89,14 @@ public:
         }
         virtual void OnOperationalStateChanged(const qcc::String& objectPath, const CycleControlInterface::OperationalState value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "CycleControl::OnOperationalStateChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnOperationalStateChanged", Qt::QueuedConnection,
                               Q_ARG(CycleControlInterface::OperationalState, value)
                               );
         }
         virtual void OnResponseGetSupportedOperationalStates(QStatus status, const qcc::String& objectPath, const std::vector<CycleControlInterface::OperationalState>& value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "CycleControl::OnResponseGetSupportedOperationalStates";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetSupportedOperationalStates", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(std::vector<CycleControlInterface::OperationalState>, value)
@@ -101,14 +104,14 @@ public:
         }
         virtual void OnSupportedOperationalStatesChanged(const qcc::String& objectPath, const std::vector<CycleControlInterface::OperationalState>& value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "CycleControl::OnSupportedOperationalStatesChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnSupportedOperationalStatesChanged", Qt::QueuedConnection,
                               Q_ARG(std::vector<CycleControlInterface::OperationalState>, value)
                               );
         }
         virtual void OnResponseGetSupportedOperationalCommands(QStatus status, const qcc::String& objectPath, const std::vector<CycleControlInterface::OperationalCommands>& value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "CycleControl::OnResponseGetSupportedOperationalCommands";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetSupportedOperationalCommands", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(std::vector<CycleControlInterface::OperationalCommands>, value)
@@ -116,14 +119,14 @@ public:
         }
         virtual void OnSupportedOperationalCommandsChanged(const qcc::String& objectPath, const std::vector<CycleControlInterface::OperationalCommands>& value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "CycleControl::OnSupportedOperationalCommandsChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnSupportedOperationalCommandsChanged", Qt::QueuedConnection,
                               Q_ARG(std::vector<CycleControlInterface::OperationalCommands>, value)
                               );
         }
         virtual void OnResponseExecuteOperationalCommand(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "CycleControl::OnResponseExecuteOperationalCommand";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseMethodExecuteOperationalCommand", Qt::QueuedConnection,
                               Q_ARG(QStatus, status), Q_ARG(QString, QString(errorName))
                               );
@@ -136,7 +139,7 @@ private:
 
     QPushButton* button_ExecuteOperationalCommand;
 
-    QLineEdit* edit_OperationalState;
+    QComboBox* edit_OperationalState;
     QLineEdit* edit_SupportedOperationalStates;
     QLineEdit* edit_SupportedOperationalCommands;
 

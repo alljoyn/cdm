@@ -26,7 +26,6 @@
  *     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-
 #include "org_alljoyn_SmartSpaces_Operation_BatteryStatus.h"
 #include "QStringConversion.h"
 #include <QDebug>
@@ -42,6 +41,7 @@ using namespace CDMQtWidgets;
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_BatteryStatus*>();
 
 
+
 org_alljoyn_SmartSpaces_Operation_BatteryStatus::org_alljoyn_SmartSpaces_Operation_BatteryStatus(CommonControllerInterface *iface)
   : controller(NULL),
     m_listener(mkRef<Listener>(this))
@@ -53,16 +53,17 @@ org_alljoyn_SmartSpaces_Operation_BatteryStatus::org_alljoyn_SmartSpaces_Operati
 
 
     layout->addWidget(new QLabel("CurrentValue"));
-    // Create line edit for CurrentValue
+    // Create the editing widget for CurrentValue
     edit_CurrentValue = new QLineEdit();
     edit_CurrentValue->setToolTip("This interface provides capability to represent remaining battery status.");
     edit_CurrentValue->setReadOnly(true);
+
     layout->addWidget(edit_CurrentValue);
     layout->addWidget(new QLabel("IsCharging"));
-    // Create line edit for IsCharging
-    edit_IsCharging = new QLineEdit();
-    edit_IsCharging->setToolTip("If true, status is charging.");
-    edit_IsCharging->setReadOnly(true);
+    // Create the editing widget for IsCharging
+    edit_IsCharging = new QCheckBox();
+    edit_IsCharging->setEnabled(false);
+
     layout->addWidget(edit_IsCharging);
 
     if (iface)
@@ -97,18 +98,18 @@ void org_alljoyn_SmartSpaces_Operation_BatteryStatus::fetchProperties()
 
     if (controller)
     {
-        qWarning() << "org_alljoyn_SmartSpaces_Operation_BatteryStatus getting properties";
+        qWarning() << "BatteryStatus getting properties";
 
         status = controller->GetCurrentValue();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get CurrentValue" << QCC_StatusText(status);
+            qWarning() << "BatteryStatus::fetchProperties Failed to get CurrentValue" << QCC_StatusText(status);
         }
 
         status = controller->GetIsCharging();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get IsCharging" << QCC_StatusText(status);
+            qWarning() << "BatteryStatus::fetchProperties Failed to get IsCharging" << QCC_StatusText(status);
         }
     }
 }
@@ -117,28 +118,40 @@ void org_alljoyn_SmartSpaces_Operation_BatteryStatus::fetchProperties()
 
 void org_alljoyn_SmartSpaces_Operation_BatteryStatus::slotOnResponseGetCurrentValue(QStatus status, const uint8_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "BatteryStatus::slotOnResponseGetCurrentValue";
+
     edit_CurrentValue->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Operation_BatteryStatus::slotOnCurrentValueChanged(const uint8_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "BatteryStatus::slotOnCurrentValueChanged";
+
     edit_CurrentValue->setText(QStringFrom(value));
 }
+
+
 
 
 
 
 void org_alljoyn_SmartSpaces_Operation_BatteryStatus::slotOnResponseGetIsCharging(QStatus status, const bool value)
 {
-    qWarning() << __FUNCTION__;
-    edit_IsCharging->setText(QStringFrom(value));
+    qWarning() << "BatteryStatus::slotOnResponseGetIsCharging";
+
+    edit_IsCharging->setChecked(value);
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_BatteryStatus::slotOnIsChargingChanged(const bool value)
 {
-    qWarning() << __FUNCTION__;
-    edit_IsCharging->setText(QStringFrom(value));
+    qWarning() << "BatteryStatus::slotOnIsChargingChanged";
+
+    edit_IsCharging->setChecked(value);
 }
+
+
 

@@ -31,6 +31,8 @@
 #define org_alljoyn_SmartSpaces_Operation_LockedStatus_H_
 
 #include <QWidget>
+#include <QCheckBox>
+#include <QComboBox>
 #include <QLineEdit>
 #include <QVBoxLayout>
 #include <QPushButton>
@@ -41,6 +43,7 @@
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
+
 
 namespace CDMQtWidgets
 {
@@ -72,7 +75,7 @@ public:
 
         virtual void OnResponseGetIsLocked(QStatus status, const qcc::String& objectPath, const bool value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "LockedStatus::OnResponseGetIsLocked";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetIsLocked", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(bool, value)
@@ -80,7 +83,7 @@ public:
         }
         virtual void OnIsLockedChanged(const qcc::String& objectPath, const bool value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "LockedStatus::OnIsLockedChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnIsLockedChanged", Qt::QueuedConnection,
                               Q_ARG(bool, value)
                               );
@@ -92,7 +95,7 @@ private:
     Ref<Listener> m_listener;
 
 
-    QLineEdit* edit_IsLocked;
+    QCheckBox* edit_IsLocked;
 
     void    fetchProperties();
 

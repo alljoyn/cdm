@@ -31,6 +31,8 @@
 #define org_alljoyn_SmartSpaces_Environment_CurrentTemperature_H_
 
 #include <QWidget>
+#include <QCheckBox>
+#include <QComboBox>
 #include <QLineEdit>
 #include <QVBoxLayout>
 #include <QPushButton>
@@ -41,6 +43,7 @@
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
+
 
 namespace CDMQtWidgets
 {
@@ -76,7 +79,7 @@ public:
 
         virtual void OnResponseGetCurrentValue(QStatus status, const qcc::String& objectPath, const double value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "CurrentTemperature::OnResponseGetCurrentValue";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetCurrentValue", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(double, value)
@@ -84,14 +87,14 @@ public:
         }
         virtual void OnCurrentValueChanged(const qcc::String& objectPath, const double value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "CurrentTemperature::OnCurrentValueChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnCurrentValueChanged", Qt::QueuedConnection,
                               Q_ARG(double, value)
                               );
         }
         virtual void OnResponseGetPrecision(QStatus status, const qcc::String& objectPath, const double value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "CurrentTemperature::OnResponseGetPrecision";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetPrecision", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(double, value)
@@ -99,14 +102,14 @@ public:
         }
         virtual void OnPrecisionChanged(const qcc::String& objectPath, const double value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "CurrentTemperature::OnPrecisionChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnPrecisionChanged", Qt::QueuedConnection,
                               Q_ARG(double, value)
                               );
         }
         virtual void OnResponseGetUpdateMinTime(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "CurrentTemperature::OnResponseGetUpdateMinTime";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetUpdateMinTime", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(uint16_t, value)
@@ -114,7 +117,7 @@ public:
         }
         virtual void OnUpdateMinTimeChanged(const qcc::String& objectPath, const uint16_t value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "CurrentTemperature::OnUpdateMinTimeChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnUpdateMinTimeChanged", Qt::QueuedConnection,
                               Q_ARG(uint16_t, value)
                               );

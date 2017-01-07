@@ -31,6 +31,8 @@
 #define {{Interface.ClassName}}_H_
 
 #include <QWidget>
+#include <QCheckBox>
+#include <QComboBox>
 #include <QLineEdit>
 #include <QVBoxLayout>
 #include <QPushButton>
@@ -41,6 +43,9 @@
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
+
+{# patch outside of the namespace so that it can include more headers #}
+{% include ("patch/" ~ Interface.ClassName ~ "-decls.h") ignore missing with context %}
 
 namespace CDMQtWidgets
 {
@@ -67,7 +72,9 @@ private slots:
 {% endif %}
 {% endfor %}
 {% for method in Interface.Methods %}
-    void slotOnResponseMethod{{method.Name}}(QStatus status, const QString& errorName);
+    void slotOnResponseMethod{{method.Name}}(QStatus status
+        {%- for arg in method.output_args() %}, const {{arg.Type.cpptype_arg()}} {{arg.Name.camel_case()}}{% endfor -%}
+        , const QString& errorName);
 {% endfor %}
 {% for signal in Interface.Signals %}
     void slotOnSignal{{signal.Name}}();
@@ -88,7 +95,7 @@ public:
 {% for property in Interface.UserProperties %}
         virtual void OnResponseGet{{property.Name}}(QStatus status, const qcc::String& objectPath, const {{property.Type.cpptype_arg()}} value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "{{Interface.Name}}::OnResponseGet{{property.Name}}";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGet{{property.Name}}", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG({{property.Type.cpptype()}}, value)
@@ -96,7 +103,7 @@ public:
         }
         virtual void On{{property.Name}}Changed(const qcc::String& objectPath, const {{property.Type.cpptype_arg()}} value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "{{Interface.Name}}::On{{property.Name}}Changed";
             QMetaObject::invokeMethod(m_widget, "slotOn{{property.Name}}Changed", Qt::QueuedConnection,
                               Q_ARG({{property.Type.cpptype()}}, value)
                               );
@@ -104,7 +111,7 @@ public:
 {% if property.Writable %}
         virtual void OnResponseSet{{property.Name}}(QStatus status, const qcc::String& objectPath, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "{{Interface.Name}}::OnResponseSet{{property.Name}}";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseSet{{property.Name}}", Qt::QueuedConnection,
                               Q_ARG(QStatus, status)
                               );
@@ -114,15 +121,16 @@ public:
 {% for method in Interface.Methods %}
         virtual void OnResponse{{method.Name}}(QStatus status, const qcc::String& objectPath, {% for arg in method.output_args() %}const {{arg.Type.cpptype_arg()}} {{arg.Name.camel_case()}}, {% endfor %}void* context, const char* errorName, const char* errorMessage) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "{{Interface.Name}}::OnResponse{{method.Name}}";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseMethod{{method.Name}}", Qt::QueuedConnection,
-                              Q_ARG(QStatus, status), Q_ARG(QString, QString(errorName))
+                              Q_ARG(QStatus, status){% for arg in method.output_args() %}, Q_ARG({{arg.Type.cpptype()}}, {{arg.Name.camel_case()}}){% endfor %}, Q_ARG(QString, QString(errorName))
                               );
         }
 {% endfor %}
 {% for signal in Interface.Signals %}
         virtual void On{{signal.Name}}(const qcc::String& objectPath) override
         {
+            qWarning() << "{{Interface.Name}}::On{{signal.Name}}";
             QMetaObject::invokeMethod(m_widget, "slotOnSignal{{signal.Name}}", Qt::QueuedConnection);
         }
 {% endfor %}
@@ -137,7 +145,13 @@ private:
     {% endfor %}
 
     {% for property in Interface.UserProperties %}
+    {% if property.Type.ajtype() == "bool" %}
+    QCheckBox* edit_{{property.Name}};
+    {% elif property.Type.ajtypeIsEnum() %}
+    QComboBox* edit_{{property.Name}};
+    {% else %}
     QLineEdit* edit_{{property.Name}};
+    {% endif %}
     {% endfor %}
 
     void    fetchProperties();

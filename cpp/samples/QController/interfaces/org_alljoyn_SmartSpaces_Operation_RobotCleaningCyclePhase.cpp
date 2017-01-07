@@ -26,7 +26,6 @@
  *     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-
 #include "org_alljoyn_SmartSpaces_Operation_RobotCleaningCyclePhase.h"
 #include "QStringConversion.h"
 #include <QDebug>
@@ -74,6 +73,12 @@ using namespace CDMQtWidgets;
 
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_RobotCleaningCyclePhase*>();
 
+Q_DECLARE_METATYPE(ajn::services::RobotCleaningCyclePhaseInterface::CyclePhaseDescriptor);
+Q_DECLARE_METATYPE(std::vector<ajn::services::RobotCleaningCyclePhaseInterface::CyclePhaseDescriptor>);
+static const int auto_register_struct_CyclePhaseDescriptor = qRegisterMetaType<ajn::services::RobotCleaningCyclePhaseInterface::CyclePhaseDescriptor>("RobotCleaningCyclePhaseInterface::CyclePhaseDescriptor");
+static const int auto_register_struct_v_CyclePhaseDescriptor = qRegisterMetaType<std::vector<ajn::services::RobotCleaningCyclePhaseInterface::CyclePhaseDescriptor>>("std::vector<RobotCleaningCyclePhaseInterface::CyclePhaseDescriptor>");
+
+
 
 org_alljoyn_SmartSpaces_Operation_RobotCleaningCyclePhase::org_alljoyn_SmartSpaces_Operation_RobotCleaningCyclePhase(CommonControllerInterface *iface)
   : controller(NULL),
@@ -91,16 +96,18 @@ org_alljoyn_SmartSpaces_Operation_RobotCleaningCyclePhase::org_alljoyn_SmartSpac
     layout->addWidget(button_GetVendorPhasesDescription);
 
     layout->addWidget(new QLabel("CyclePhase"));
-    // Create line edit for CyclePhase
+    // Create the editing widget for CyclePhase
     edit_CyclePhase = new QLineEdit();
     edit_CyclePhase->setToolTip("Current cycle phase. Range value [0x00-0x7F] is for standard phases; range value [0x80-0xFF] is for vendor-defined phases and so the meanings depend on manufacturer.");
     edit_CyclePhase->setReadOnly(true);
+
     layout->addWidget(edit_CyclePhase);
     layout->addWidget(new QLabel("SupportedCyclePhases"));
-    // Create line edit for SupportedCyclePhases
+    // Create the editing widget for SupportedCyclePhases
     edit_SupportedCyclePhases = new QLineEdit();
     edit_SupportedCyclePhases->setToolTip("List of supported cycle phases.");
     edit_SupportedCyclePhases->setReadOnly(true);
+
     layout->addWidget(edit_SupportedCyclePhases);
 
     if (iface)
@@ -135,18 +142,18 @@ void org_alljoyn_SmartSpaces_Operation_RobotCleaningCyclePhase::fetchProperties(
 
     if (controller)
     {
-        qWarning() << "org_alljoyn_SmartSpaces_Operation_RobotCleaningCyclePhase getting properties";
+        qWarning() << "RobotCleaningCyclePhase getting properties";
 
         status = controller->GetCyclePhase();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get CyclePhase" << QCC_StatusText(status);
+            qWarning() << "RobotCleaningCyclePhase::fetchProperties Failed to get CyclePhase" << QCC_StatusText(status);
         }
 
         status = controller->GetSupportedCyclePhases();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get SupportedCyclePhases" << QCC_StatusText(status);
+            qWarning() << "RobotCleaningCyclePhase::fetchProperties Failed to get SupportedCyclePhases" << QCC_StatusText(status);
         }
     }
 }
@@ -155,15 +162,19 @@ void org_alljoyn_SmartSpaces_Operation_RobotCleaningCyclePhase::fetchProperties(
 
 void org_alljoyn_SmartSpaces_Operation_RobotCleaningCyclePhase::slotClickGetVendorPhasesDescription()
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "RobotCleaningCyclePhase::slotClickGetVendorPhasesDescription";
 
     qcc::String languageTag {};
 
+    bool ok = true;
 
-    QStatus status = controller->GetVendorPhasesDescription(languageTag, NULL);
-    if (status != ER_OK)
+    if (ok)
     {
-        qWarning() << __FUNCTION__ << " Failed to call GetVendorPhasesDescription" << QCC_StatusText(status);
+        QStatus status = controller->GetVendorPhasesDescription(languageTag, NULL);
+        if (status != ER_OK)
+        {
+            qWarning() << "RobotCleaningCyclePhase::slotClick Failed to call GetVendorPhasesDescription" << QCC_StatusText(status);
+        }
     }
 }
 
@@ -171,42 +182,54 @@ void org_alljoyn_SmartSpaces_Operation_RobotCleaningCyclePhase::slotClickGetVend
 
 void org_alljoyn_SmartSpaces_Operation_RobotCleaningCyclePhase::slotOnResponseGetCyclePhase(QStatus status, const uint8_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "RobotCleaningCyclePhase::slotOnResponseGetCyclePhase";
+
     edit_CyclePhase->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Operation_RobotCleaningCyclePhase::slotOnCyclePhaseChanged(const uint8_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "RobotCleaningCyclePhase::slotOnCyclePhaseChanged";
+
     edit_CyclePhase->setText(QStringFrom(value));
 }
+
+
 
 
 
 
 void org_alljoyn_SmartSpaces_Operation_RobotCleaningCyclePhase::slotOnResponseGetSupportedCyclePhases(QStatus status, const std::vector<uint8_t>& value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "RobotCleaningCyclePhase::slotOnResponseGetSupportedCyclePhases";
+
     edit_SupportedCyclePhases->setText(QStringFrom(value));
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_RobotCleaningCyclePhase::slotOnSupportedCyclePhasesChanged(const std::vector<uint8_t>& value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "RobotCleaningCyclePhase::slotOnSupportedCyclePhasesChanged";
+
     edit_SupportedCyclePhases->setText(QStringFrom(value));
 }
 
 
 
 
-void org_alljoyn_SmartSpaces_Operation_RobotCleaningCyclePhase::slotOnResponseMethodGetVendorPhasesDescription(QStatus status, const QString& errorName)
+
+
+void org_alljoyn_SmartSpaces_Operation_RobotCleaningCyclePhase::slotOnResponseMethodGetVendorPhasesDescription(QStatus status, const std::vector<RobotCleaningCyclePhaseInterface::CyclePhaseDescriptor>& phasesDescription, const QString& errorName)
 {
     if (status == ER_OK)
     {
-        qInfo() << "Received response to method GetVendorPhasesDescription";
+        qInfo() << "RobotCleaningCyclePhase::slotOnResponseMethodGetVendorPhasesDescription";
     }
     else
     {
-        qWarning() << "Received an error from method GetVendorPhasesDescription, error = " << errorName;
+        qWarning() << "RobotCleaningCyclePhase::slotOnResponseMethodGetVendorPhasesDescription Received error = " << errorName;
     }
 }

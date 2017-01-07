@@ -31,6 +31,8 @@
 #define org_alljoyn_SmartSpaces_Operation_HeatingZone_H_
 
 #include <QWidget>
+#include <QCheckBox>
+#include <QComboBox>
 #include <QLineEdit>
 #include <QVBoxLayout>
 #include <QPushButton>
@@ -41,6 +43,7 @@
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
+
 
 namespace CDMQtWidgets
 {
@@ -76,7 +79,7 @@ public:
 
         virtual void OnResponseGetNumberOfHeatingZones(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "HeatingZone::OnResponseGetNumberOfHeatingZones";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetNumberOfHeatingZones", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(uint8_t, value)
@@ -84,14 +87,14 @@ public:
         }
         virtual void OnNumberOfHeatingZonesChanged(const qcc::String& objectPath, const uint8_t value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "HeatingZone::OnNumberOfHeatingZonesChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnNumberOfHeatingZonesChanged", Qt::QueuedConnection,
                               Q_ARG(uint8_t, value)
                               );
         }
         virtual void OnResponseGetMaxHeatingLevels(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "HeatingZone::OnResponseGetMaxHeatingLevels";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetMaxHeatingLevels", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(std::vector<uint8_t>, value)
@@ -99,14 +102,14 @@ public:
         }
         virtual void OnMaxHeatingLevelsChanged(const qcc::String& objectPath, const std::vector<uint8_t>& value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "HeatingZone::OnMaxHeatingLevelsChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnMaxHeatingLevelsChanged", Qt::QueuedConnection,
                               Q_ARG(std::vector<uint8_t>, value)
                               );
         }
         virtual void OnResponseGetHeatingLevels(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "HeatingZone::OnResponseGetHeatingLevels";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetHeatingLevels", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(std::vector<uint8_t>, value)
@@ -114,7 +117,7 @@ public:
         }
         virtual void OnHeatingLevelsChanged(const qcc::String& objectPath, const std::vector<uint8_t>& value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "HeatingZone::OnHeatingLevelsChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnHeatingLevelsChanged", Qt::QueuedConnection,
                               Q_ARG(std::vector<uint8_t>, value)
                               );

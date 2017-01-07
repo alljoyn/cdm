@@ -26,7 +26,6 @@
  *     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-
 #include "org_alljoyn_SmartSpaces_Operation_Timer.h"
 #include "QStringConversion.h"
 #include <QDebug>
@@ -40,6 +39,7 @@
 using namespace CDMQtWidgets;
 
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_Timer*>();
+
 
 
 org_alljoyn_SmartSpaces_Operation_Timer::org_alljoyn_SmartSpaces_Operation_Timer(CommonControllerInterface *iface)
@@ -61,40 +61,46 @@ org_alljoyn_SmartSpaces_Operation_Timer::org_alljoyn_SmartSpaces_Operation_Timer
     layout->addWidget(button_SetTargetTimeToStop);
 
     layout->addWidget(new QLabel("ReferenceTimer"));
-    // Create line edit for ReferenceTimer
+    // Create the editing widget for ReferenceTimer
     edit_ReferenceTimer = new QLineEdit();
     edit_ReferenceTimer->setToolTip("Time counter to be used as reference.");
     edit_ReferenceTimer->setReadOnly(true);
+
     layout->addWidget(edit_ReferenceTimer);
     layout->addWidget(new QLabel("TargetTimeToStart"));
-    // Create line edit for TargetTimeToStart
+    // Create the editing widget for TargetTimeToStart
     edit_TargetTimeToStart = new QLineEdit();
     edit_TargetTimeToStart->setToolTip("Time when the appliance is expected to start its operation.");
     edit_TargetTimeToStart->setReadOnly(true);
+
     layout->addWidget(edit_TargetTimeToStart);
     layout->addWidget(new QLabel("TargetTimeToStop"));
-    // Create line edit for TargetTimeToStop
+    // Create the editing widget for TargetTimeToStop
     edit_TargetTimeToStop = new QLineEdit();
     edit_TargetTimeToStop->setToolTip("Time when the appliance is expected to stop its operation.");
     edit_TargetTimeToStop->setReadOnly(true);
+
     layout->addWidget(edit_TargetTimeToStop);
     layout->addWidget(new QLabel("EstimatedTimeToEnd"));
-    // Create line edit for EstimatedTimeToEnd
+    // Create the editing widget for EstimatedTimeToEnd
     edit_EstimatedTimeToEnd = new QLineEdit();
     edit_EstimatedTimeToEnd->setToolTip("Time to the end of appliance operation.");
     edit_EstimatedTimeToEnd->setReadOnly(true);
+
     layout->addWidget(edit_EstimatedTimeToEnd);
     layout->addWidget(new QLabel("RunningTime"));
-    // Create line edit for RunningTime
+    // Create the editing widget for RunningTime
     edit_RunningTime = new QLineEdit();
     edit_RunningTime->setToolTip("Time of current operation.");
     edit_RunningTime->setReadOnly(true);
+
     layout->addWidget(edit_RunningTime);
     layout->addWidget(new QLabel("TargetDuration"));
-    // Create line edit for TargetDuration
+    // Create the editing widget for TargetDuration
     edit_TargetDuration = new QLineEdit();
     edit_TargetDuration->setToolTip("Time representing the target duration of the operation as per user selection.");
     edit_TargetDuration->setReadOnly(true);
+
     layout->addWidget(edit_TargetDuration);
 
     if (iface)
@@ -129,42 +135,42 @@ void org_alljoyn_SmartSpaces_Operation_Timer::fetchProperties()
 
     if (controller)
     {
-        qWarning() << "org_alljoyn_SmartSpaces_Operation_Timer getting properties";
+        qWarning() << "Timer getting properties";
 
         status = controller->GetReferenceTimer();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get ReferenceTimer" << QCC_StatusText(status);
+            qWarning() << "Timer::fetchProperties Failed to get ReferenceTimer" << QCC_StatusText(status);
         }
 
         status = controller->GetTargetTimeToStart();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get TargetTimeToStart" << QCC_StatusText(status);
+            qWarning() << "Timer::fetchProperties Failed to get TargetTimeToStart" << QCC_StatusText(status);
         }
 
         status = controller->GetTargetTimeToStop();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get TargetTimeToStop" << QCC_StatusText(status);
+            qWarning() << "Timer::fetchProperties Failed to get TargetTimeToStop" << QCC_StatusText(status);
         }
 
         status = controller->GetEstimatedTimeToEnd();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get EstimatedTimeToEnd" << QCC_StatusText(status);
+            qWarning() << "Timer::fetchProperties Failed to get EstimatedTimeToEnd" << QCC_StatusText(status);
         }
 
         status = controller->GetRunningTime();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get RunningTime" << QCC_StatusText(status);
+            qWarning() << "Timer::fetchProperties Failed to get RunningTime" << QCC_StatusText(status);
         }
 
         status = controller->GetTargetDuration();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get TargetDuration" << QCC_StatusText(status);
+            qWarning() << "Timer::fetchProperties Failed to get TargetDuration" << QCC_StatusText(status);
         }
     }
 }
@@ -173,15 +179,19 @@ void org_alljoyn_SmartSpaces_Operation_Timer::fetchProperties()
 
 void org_alljoyn_SmartSpaces_Operation_Timer::slotClickSetTargetTimeToStart()
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "Timer::slotClickSetTargetTimeToStart";
 
     int32_t targetTimeToStart {};
 
+    bool ok = true;
 
-    QStatus status = controller->SetTargetTimeToStart(targetTimeToStart, NULL);
-    if (status != ER_OK)
+    if (ok)
     {
-        qWarning() << __FUNCTION__ << " Failed to call SetTargetTimeToStart" << QCC_StatusText(status);
+        QStatus status = controller->SetTargetTimeToStart(targetTimeToStart, NULL);
+        if (status != ER_OK)
+        {
+            qWarning() << "Timer::slotClick Failed to call SetTargetTimeToStart" << QCC_StatusText(status);
+        }
     }
 }
 
@@ -189,15 +199,19 @@ void org_alljoyn_SmartSpaces_Operation_Timer::slotClickSetTargetTimeToStart()
 
 void org_alljoyn_SmartSpaces_Operation_Timer::slotClickSetTargetTimeToStop()
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "Timer::slotClickSetTargetTimeToStop";
 
     int32_t targetTimeToStop {};
 
+    bool ok = true;
 
-    QStatus status = controller->SetTargetTimeToStop(targetTimeToStop, NULL);
-    if (status != ER_OK)
+    if (ok)
     {
-        qWarning() << __FUNCTION__ << " Failed to call SetTargetTimeToStop" << QCC_StatusText(status);
+        QStatus status = controller->SetTargetTimeToStop(targetTimeToStop, NULL);
+        if (status != ER_OK)
+        {
+            qWarning() << "Timer::slotClick Failed to call SetTargetTimeToStop" << QCC_StatusText(status);
+        }
     }
 }
 
@@ -205,90 +219,126 @@ void org_alljoyn_SmartSpaces_Operation_Timer::slotClickSetTargetTimeToStop()
 
 void org_alljoyn_SmartSpaces_Operation_Timer::slotOnResponseGetReferenceTimer(QStatus status, const int32_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "Timer::slotOnResponseGetReferenceTimer";
+
     edit_ReferenceTimer->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Operation_Timer::slotOnReferenceTimerChanged(const int32_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "Timer::slotOnReferenceTimerChanged";
+
     edit_ReferenceTimer->setText(QStringFrom(value));
 }
+
+
 
 
 
 
 void org_alljoyn_SmartSpaces_Operation_Timer::slotOnResponseGetTargetTimeToStart(QStatus status, const int32_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "Timer::slotOnResponseGetTargetTimeToStart";
+
     edit_TargetTimeToStart->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Operation_Timer::slotOnTargetTimeToStartChanged(const int32_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "Timer::slotOnTargetTimeToStartChanged";
+
     edit_TargetTimeToStart->setText(QStringFrom(value));
 }
+
+
 
 
 
 
 void org_alljoyn_SmartSpaces_Operation_Timer::slotOnResponseGetTargetTimeToStop(QStatus status, const int32_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "Timer::slotOnResponseGetTargetTimeToStop";
+
     edit_TargetTimeToStop->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Operation_Timer::slotOnTargetTimeToStopChanged(const int32_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "Timer::slotOnTargetTimeToStopChanged";
+
     edit_TargetTimeToStop->setText(QStringFrom(value));
 }
+
+
 
 
 
 
 void org_alljoyn_SmartSpaces_Operation_Timer::slotOnResponseGetEstimatedTimeToEnd(QStatus status, const int32_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "Timer::slotOnResponseGetEstimatedTimeToEnd";
+
     edit_EstimatedTimeToEnd->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Operation_Timer::slotOnEstimatedTimeToEndChanged(const int32_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "Timer::slotOnEstimatedTimeToEndChanged";
+
     edit_EstimatedTimeToEnd->setText(QStringFrom(value));
 }
+
+
 
 
 
 
 void org_alljoyn_SmartSpaces_Operation_Timer::slotOnResponseGetRunningTime(QStatus status, const int32_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "Timer::slotOnResponseGetRunningTime";
+
     edit_RunningTime->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Operation_Timer::slotOnRunningTimeChanged(const int32_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "Timer::slotOnRunningTimeChanged";
+
     edit_RunningTime->setText(QStringFrom(value));
 }
+
+
 
 
 
 
 void org_alljoyn_SmartSpaces_Operation_Timer::slotOnResponseGetTargetDuration(QStatus status, const int32_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "Timer::slotOnResponseGetTargetDuration";
+
     edit_TargetDuration->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Operation_Timer::slotOnTargetDurationChanged(const int32_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "Timer::slotOnTargetDurationChanged";
+
     edit_TargetDuration->setText(QStringFrom(value));
 }
+
+
 
 
 
@@ -297,11 +347,11 @@ void org_alljoyn_SmartSpaces_Operation_Timer::slotOnResponseMethodSetTargetTimeT
 {
     if (status == ER_OK)
     {
-        qInfo() << "Received response to method SetTargetTimeToStart";
+        qInfo() << "Timer::slotOnResponseMethodSetTargetTimeToStart";
     }
     else
     {
-        qWarning() << "Received an error from method SetTargetTimeToStart, error = " << errorName;
+        qWarning() << "Timer::slotOnResponseMethodSetTargetTimeToStart Received error = " << errorName;
     }
 }
 
@@ -311,10 +361,10 @@ void org_alljoyn_SmartSpaces_Operation_Timer::slotOnResponseMethodSetTargetTimeT
 {
     if (status == ER_OK)
     {
-        qInfo() << "Received response to method SetTargetTimeToStop";
+        qInfo() << "Timer::slotOnResponseMethodSetTargetTimeToStop";
     }
     else
     {
-        qWarning() << "Received an error from method SetTargetTimeToStop, error = " << errorName;
+        qWarning() << "Timer::slotOnResponseMethodSetTargetTimeToStop Received error = " << errorName;
     }
 }

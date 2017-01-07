@@ -31,6 +31,8 @@
 #define org_alljoyn_SmartSpaces_Environment_CurrentAirQuality_H_
 
 #include <QWidget>
+#include <QCheckBox>
+#include <QComboBox>
 #include <QLineEdit>
 #include <QVBoxLayout>
 #include <QPushButton>
@@ -41,6 +43,7 @@
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
+
 
 namespace CDMQtWidgets
 {
@@ -82,7 +85,7 @@ public:
 
         virtual void OnResponseGetContaminantType(QStatus status, const qcc::String& objectPath, const CurrentAirQualityInterface::ContaminantType value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "CurrentAirQuality::OnResponseGetContaminantType";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetContaminantType", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(CurrentAirQualityInterface::ContaminantType, value)
@@ -90,14 +93,14 @@ public:
         }
         virtual void OnContaminantTypeChanged(const qcc::String& objectPath, const CurrentAirQualityInterface::ContaminantType value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "CurrentAirQuality::OnContaminantTypeChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnContaminantTypeChanged", Qt::QueuedConnection,
                               Q_ARG(CurrentAirQualityInterface::ContaminantType, value)
                               );
         }
         virtual void OnResponseGetCurrentValue(QStatus status, const qcc::String& objectPath, const double value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "CurrentAirQuality::OnResponseGetCurrentValue";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetCurrentValue", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(double, value)
@@ -105,14 +108,14 @@ public:
         }
         virtual void OnCurrentValueChanged(const qcc::String& objectPath, const double value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "CurrentAirQuality::OnCurrentValueChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnCurrentValueChanged", Qt::QueuedConnection,
                               Q_ARG(double, value)
                               );
         }
         virtual void OnResponseGetMinValue(QStatus status, const qcc::String& objectPath, const double value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "CurrentAirQuality::OnResponseGetMinValue";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetMinValue", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(double, value)
@@ -120,14 +123,14 @@ public:
         }
         virtual void OnMinValueChanged(const qcc::String& objectPath, const double value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "CurrentAirQuality::OnMinValueChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnMinValueChanged", Qt::QueuedConnection,
                               Q_ARG(double, value)
                               );
         }
         virtual void OnResponseGetMaxValue(QStatus status, const qcc::String& objectPath, const double value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "CurrentAirQuality::OnResponseGetMaxValue";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetMaxValue", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(double, value)
@@ -135,14 +138,14 @@ public:
         }
         virtual void OnMaxValueChanged(const qcc::String& objectPath, const double value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "CurrentAirQuality::OnMaxValueChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnMaxValueChanged", Qt::QueuedConnection,
                               Q_ARG(double, value)
                               );
         }
         virtual void OnResponseGetPrecision(QStatus status, const qcc::String& objectPath, const double value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "CurrentAirQuality::OnResponseGetPrecision";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetPrecision", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(double, value)
@@ -150,14 +153,14 @@ public:
         }
         virtual void OnPrecisionChanged(const qcc::String& objectPath, const double value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "CurrentAirQuality::OnPrecisionChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnPrecisionChanged", Qt::QueuedConnection,
                               Q_ARG(double, value)
                               );
         }
         virtual void OnResponseGetUpdateMinTime(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "CurrentAirQuality::OnResponseGetUpdateMinTime";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetUpdateMinTime", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(uint16_t, value)
@@ -165,7 +168,7 @@ public:
         }
         virtual void OnUpdateMinTimeChanged(const qcc::String& objectPath, const uint16_t value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "CurrentAirQuality::OnUpdateMinTimeChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnUpdateMinTimeChanged", Qt::QueuedConnection,
                               Q_ARG(uint16_t, value)
                               );
@@ -177,7 +180,7 @@ private:
     Ref<Listener> m_listener;
 
 
-    QLineEdit* edit_ContaminantType;
+    QComboBox* edit_ContaminantType;
     QLineEdit* edit_CurrentValue;
     QLineEdit* edit_MinValue;
     QLineEdit* edit_MaxValue;

@@ -26,7 +26,6 @@
  *     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-
 #include "org_alljoyn_SmartSpaces_Operation_ClosedStatus.h"
 #include "QStringConversion.h"
 #include <QDebug>
@@ -42,6 +41,7 @@ using namespace CDMQtWidgets;
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_ClosedStatus*>();
 
 
+
 org_alljoyn_SmartSpaces_Operation_ClosedStatus::org_alljoyn_SmartSpaces_Operation_ClosedStatus(CommonControllerInterface *iface)
   : controller(NULL),
     m_listener(mkRef<Listener>(this))
@@ -53,10 +53,10 @@ org_alljoyn_SmartSpaces_Operation_ClosedStatus::org_alljoyn_SmartSpaces_Operatio
 
 
     layout->addWidget(new QLabel("IsClosed"));
-    // Create line edit for IsClosed
-    edit_IsClosed = new QLineEdit();
-    edit_IsClosed->setToolTip("If true, object is closed.");
-    edit_IsClosed->setReadOnly(true);
+    // Create the editing widget for IsClosed
+    edit_IsClosed = new QCheckBox();
+    edit_IsClosed->setEnabled(false);
+
     layout->addWidget(edit_IsClosed);
 
     if (iface)
@@ -91,12 +91,12 @@ void org_alljoyn_SmartSpaces_Operation_ClosedStatus::fetchProperties()
 
     if (controller)
     {
-        qWarning() << "org_alljoyn_SmartSpaces_Operation_ClosedStatus getting properties";
+        qWarning() << "ClosedStatus getting properties";
 
         status = controller->GetIsClosed();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get IsClosed" << QCC_StatusText(status);
+            qWarning() << "ClosedStatus::fetchProperties Failed to get IsClosed" << QCC_StatusText(status);
         }
     }
 }
@@ -105,13 +105,19 @@ void org_alljoyn_SmartSpaces_Operation_ClosedStatus::fetchProperties()
 
 void org_alljoyn_SmartSpaces_Operation_ClosedStatus::slotOnResponseGetIsClosed(QStatus status, const bool value)
 {
-    qWarning() << __FUNCTION__;
-    edit_IsClosed->setText(QStringFrom(value));
+    qWarning() << "ClosedStatus::slotOnResponseGetIsClosed";
+
+    edit_IsClosed->setChecked(value);
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_ClosedStatus::slotOnIsClosedChanged(const bool value)
 {
-    qWarning() << __FUNCTION__;
-    edit_IsClosed->setText(QStringFrom(value));
+    qWarning() << "ClosedStatus::slotOnIsClosedChanged";
+
+    edit_IsClosed->setChecked(value);
 }
+
+
 

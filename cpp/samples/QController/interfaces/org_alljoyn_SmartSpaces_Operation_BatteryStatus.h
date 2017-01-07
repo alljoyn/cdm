@@ -31,6 +31,8 @@
 #define org_alljoyn_SmartSpaces_Operation_BatteryStatus_H_
 
 #include <QWidget>
+#include <QCheckBox>
+#include <QComboBox>
 #include <QLineEdit>
 #include <QVBoxLayout>
 #include <QPushButton>
@@ -41,6 +43,7 @@
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
+
 
 namespace CDMQtWidgets
 {
@@ -74,7 +77,7 @@ public:
 
         virtual void OnResponseGetCurrentValue(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "BatteryStatus::OnResponseGetCurrentValue";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetCurrentValue", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(uint8_t, value)
@@ -82,14 +85,14 @@ public:
         }
         virtual void OnCurrentValueChanged(const qcc::String& objectPath, const uint8_t value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "BatteryStatus::OnCurrentValueChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnCurrentValueChanged", Qt::QueuedConnection,
                               Q_ARG(uint8_t, value)
                               );
         }
         virtual void OnResponseGetIsCharging(QStatus status, const qcc::String& objectPath, const bool value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "BatteryStatus::OnResponseGetIsCharging";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetIsCharging", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(bool, value)
@@ -97,7 +100,7 @@ public:
         }
         virtual void OnIsChargingChanged(const qcc::String& objectPath, const bool value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "BatteryStatus::OnIsChargingChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnIsChargingChanged", Qt::QueuedConnection,
                               Q_ARG(bool, value)
                               );
@@ -110,7 +113,7 @@ private:
 
 
     QLineEdit* edit_CurrentValue;
-    QLineEdit* edit_IsCharging;
+    QCheckBox* edit_IsCharging;
 
     void    fetchProperties();
 

@@ -26,7 +26,6 @@
  *     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-
 #include "org_alljoyn_SmartSpaces_Operation_LaundryCyclePhase.h"
 #include "QStringConversion.h"
 #include <QDebug>
@@ -74,6 +73,12 @@ using namespace CDMQtWidgets;
 
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_LaundryCyclePhase*>();
 
+Q_DECLARE_METATYPE(ajn::services::LaundryCyclePhaseInterface::CyclePhaseDescriptor);
+Q_DECLARE_METATYPE(std::vector<ajn::services::LaundryCyclePhaseInterface::CyclePhaseDescriptor>);
+static const int auto_register_struct_CyclePhaseDescriptor = qRegisterMetaType<ajn::services::LaundryCyclePhaseInterface::CyclePhaseDescriptor>("LaundryCyclePhaseInterface::CyclePhaseDescriptor");
+static const int auto_register_struct_v_CyclePhaseDescriptor = qRegisterMetaType<std::vector<ajn::services::LaundryCyclePhaseInterface::CyclePhaseDescriptor>>("std::vector<LaundryCyclePhaseInterface::CyclePhaseDescriptor>");
+
+
 
 org_alljoyn_SmartSpaces_Operation_LaundryCyclePhase::org_alljoyn_SmartSpaces_Operation_LaundryCyclePhase(CommonControllerInterface *iface)
   : controller(NULL),
@@ -91,16 +96,18 @@ org_alljoyn_SmartSpaces_Operation_LaundryCyclePhase::org_alljoyn_SmartSpaces_Ope
     layout->addWidget(button_GetVendorPhasesDescription);
 
     layout->addWidget(new QLabel("CyclePhase"));
-    // Create line edit for CyclePhase
+    // Create the editing widget for CyclePhase
     edit_CyclePhase = new QLineEdit();
     edit_CyclePhase->setToolTip("Current cycle phase. Range value [0x00-0x7F] is for standard phases; range value [0x80-0xFF] is for vendor-defined phases and so the meanings depend on manufacturer.");
     edit_CyclePhase->setReadOnly(true);
+
     layout->addWidget(edit_CyclePhase);
     layout->addWidget(new QLabel("SupportedCyclePhases"));
-    // Create line edit for SupportedCyclePhases
+    // Create the editing widget for SupportedCyclePhases
     edit_SupportedCyclePhases = new QLineEdit();
     edit_SupportedCyclePhases->setToolTip("List of supported cycle phases.");
     edit_SupportedCyclePhases->setReadOnly(true);
+
     layout->addWidget(edit_SupportedCyclePhases);
 
     if (iface)
@@ -135,18 +142,18 @@ void org_alljoyn_SmartSpaces_Operation_LaundryCyclePhase::fetchProperties()
 
     if (controller)
     {
-        qWarning() << "org_alljoyn_SmartSpaces_Operation_LaundryCyclePhase getting properties";
+        qWarning() << "LaundryCyclePhase getting properties";
 
         status = controller->GetCyclePhase();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get CyclePhase" << QCC_StatusText(status);
+            qWarning() << "LaundryCyclePhase::fetchProperties Failed to get CyclePhase" << QCC_StatusText(status);
         }
 
         status = controller->GetSupportedCyclePhases();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get SupportedCyclePhases" << QCC_StatusText(status);
+            qWarning() << "LaundryCyclePhase::fetchProperties Failed to get SupportedCyclePhases" << QCC_StatusText(status);
         }
     }
 }
@@ -155,15 +162,19 @@ void org_alljoyn_SmartSpaces_Operation_LaundryCyclePhase::fetchProperties()
 
 void org_alljoyn_SmartSpaces_Operation_LaundryCyclePhase::slotClickGetVendorPhasesDescription()
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "LaundryCyclePhase::slotClickGetVendorPhasesDescription";
 
     qcc::String languageTag {};
 
+    bool ok = true;
 
-    QStatus status = controller->GetVendorPhasesDescription(languageTag, NULL);
-    if (status != ER_OK)
+    if (ok)
     {
-        qWarning() << __FUNCTION__ << " Failed to call GetVendorPhasesDescription" << QCC_StatusText(status);
+        QStatus status = controller->GetVendorPhasesDescription(languageTag, NULL);
+        if (status != ER_OK)
+        {
+            qWarning() << "LaundryCyclePhase::slotClick Failed to call GetVendorPhasesDescription" << QCC_StatusText(status);
+        }
     }
 }
 
@@ -171,42 +182,54 @@ void org_alljoyn_SmartSpaces_Operation_LaundryCyclePhase::slotClickGetVendorPhas
 
 void org_alljoyn_SmartSpaces_Operation_LaundryCyclePhase::slotOnResponseGetCyclePhase(QStatus status, const uint8_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "LaundryCyclePhase::slotOnResponseGetCyclePhase";
+
     edit_CyclePhase->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Operation_LaundryCyclePhase::slotOnCyclePhaseChanged(const uint8_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "LaundryCyclePhase::slotOnCyclePhaseChanged";
+
     edit_CyclePhase->setText(QStringFrom(value));
 }
+
+
 
 
 
 
 void org_alljoyn_SmartSpaces_Operation_LaundryCyclePhase::slotOnResponseGetSupportedCyclePhases(QStatus status, const std::vector<uint8_t>& value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "LaundryCyclePhase::slotOnResponseGetSupportedCyclePhases";
+
     edit_SupportedCyclePhases->setText(QStringFrom(value));
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_LaundryCyclePhase::slotOnSupportedCyclePhasesChanged(const std::vector<uint8_t>& value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "LaundryCyclePhase::slotOnSupportedCyclePhasesChanged";
+
     edit_SupportedCyclePhases->setText(QStringFrom(value));
 }
 
 
 
 
-void org_alljoyn_SmartSpaces_Operation_LaundryCyclePhase::slotOnResponseMethodGetVendorPhasesDescription(QStatus status, const QString& errorName)
+
+
+void org_alljoyn_SmartSpaces_Operation_LaundryCyclePhase::slotOnResponseMethodGetVendorPhasesDescription(QStatus status, const std::vector<LaundryCyclePhaseInterface::CyclePhaseDescriptor>& phasesDescription, const QString& errorName)
 {
     if (status == ER_OK)
     {
-        qInfo() << "Received response to method GetVendorPhasesDescription";
+        qInfo() << "LaundryCyclePhase::slotOnResponseMethodGetVendorPhasesDescription";
     }
     else
     {
-        qWarning() << "Received an error from method GetVendorPhasesDescription, error = " << errorName;
+        qWarning() << "LaundryCyclePhase::slotOnResponseMethodGetVendorPhasesDescription Received error = " << errorName;
     }
 }

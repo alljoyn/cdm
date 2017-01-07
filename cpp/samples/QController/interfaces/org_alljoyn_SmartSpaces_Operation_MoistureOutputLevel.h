@@ -31,6 +31,8 @@
 #define org_alljoyn_SmartSpaces_Operation_MoistureOutputLevel_H_
 
 #include <QWidget>
+#include <QCheckBox>
+#include <QComboBox>
 #include <QLineEdit>
 #include <QVBoxLayout>
 #include <QPushButton>
@@ -41,6 +43,7 @@
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
+
 
 namespace CDMQtWidgets
 {
@@ -80,7 +83,7 @@ public:
 
         virtual void OnResponseGetMoistureOutputLevel(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "MoistureOutputLevel::OnResponseGetMoistureOutputLevel";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetMoistureOutputLevel", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(uint8_t, value)
@@ -88,21 +91,21 @@ public:
         }
         virtual void OnMoistureOutputLevelChanged(const qcc::String& objectPath, const uint8_t value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "MoistureOutputLevel::OnMoistureOutputLevelChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnMoistureOutputLevelChanged", Qt::QueuedConnection,
                               Q_ARG(uint8_t, value)
                               );
         }
         virtual void OnResponseSetMoistureOutputLevel(QStatus status, const qcc::String& objectPath, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "MoistureOutputLevel::OnResponseSetMoistureOutputLevel";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseSetMoistureOutputLevel", Qt::QueuedConnection,
                               Q_ARG(QStatus, status)
                               );
         }
         virtual void OnResponseGetMaxMoistureOutputLevel(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "MoistureOutputLevel::OnResponseGetMaxMoistureOutputLevel";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetMaxMoistureOutputLevel", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(uint8_t, value)
@@ -110,14 +113,14 @@ public:
         }
         virtual void OnMaxMoistureOutputLevelChanged(const qcc::String& objectPath, const uint8_t value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "MoistureOutputLevel::OnMaxMoistureOutputLevelChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnMaxMoistureOutputLevelChanged", Qt::QueuedConnection,
                               Q_ARG(uint8_t, value)
                               );
         }
         virtual void OnResponseGetAutoMode(QStatus status, const qcc::String& objectPath, const MoistureOutputLevelInterface::AutoMode value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "MoistureOutputLevel::OnResponseGetAutoMode";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetAutoMode", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(MoistureOutputLevelInterface::AutoMode, value)
@@ -125,14 +128,14 @@ public:
         }
         virtual void OnAutoModeChanged(const qcc::String& objectPath, const MoistureOutputLevelInterface::AutoMode value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "MoistureOutputLevel::OnAutoModeChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnAutoModeChanged", Qt::QueuedConnection,
                               Q_ARG(MoistureOutputLevelInterface::AutoMode, value)
                               );
         }
         virtual void OnResponseSetAutoMode(QStatus status, const qcc::String& objectPath, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "MoistureOutputLevel::OnResponseSetAutoMode";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseSetAutoMode", Qt::QueuedConnection,
                               Q_ARG(QStatus, status)
                               );
@@ -146,7 +149,7 @@ private:
 
     QLineEdit* edit_MoistureOutputLevel;
     QLineEdit* edit_MaxMoistureOutputLevel;
-    QLineEdit* edit_AutoMode;
+    QComboBox* edit_AutoMode;
 
     void    fetchProperties();
 

@@ -26,7 +26,6 @@
  *     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-
 #include "org_alljoyn_SmartSpaces_UserInterfaceSettings_TimeDisplay.h"
 #include "QStringConversion.h"
 #include <QDebug>
@@ -42,6 +41,7 @@ using namespace CDMQtWidgets;
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_UserInterfaceSettings_TimeDisplay*>();
 
 
+
 org_alljoyn_SmartSpaces_UserInterfaceSettings_TimeDisplay::org_alljoyn_SmartSpaces_UserInterfaceSettings_TimeDisplay(CommonControllerInterface *iface)
   : controller(NULL),
     m_listener(mkRef<Listener>(this))
@@ -53,17 +53,19 @@ org_alljoyn_SmartSpaces_UserInterfaceSettings_TimeDisplay::org_alljoyn_SmartSpac
 
 
     layout->addWidget(new QLabel("DisplayTimeFormat"));
-    // Create line edit for DisplayTimeFormat
+    // Create the editing widget for DisplayTimeFormat
     edit_DisplayTimeFormat = new QLineEdit();
     edit_DisplayTimeFormat->setToolTip("The clock format which is currently used to display time (0=12-hour, 1=24-hour)");
     edit_DisplayTimeFormat->setReadOnly(false);
     QObject::connect(edit_DisplayTimeFormat, SIGNAL(returnPressed()), this, SLOT(slotSetDisplayTimeFormat()));
+
     layout->addWidget(edit_DisplayTimeFormat);
     layout->addWidget(new QLabel("SupportedDisplayTimeFormats"));
-    // Create line edit for SupportedDisplayTimeFormats
+    // Create the editing widget for SupportedDisplayTimeFormats
     edit_SupportedDisplayTimeFormats = new QLineEdit();
     edit_SupportedDisplayTimeFormats->setToolTip("List of supported clock formats");
     edit_SupportedDisplayTimeFormats->setReadOnly(true);
+
     layout->addWidget(edit_SupportedDisplayTimeFormats);
 
     if (iface)
@@ -98,18 +100,18 @@ void org_alljoyn_SmartSpaces_UserInterfaceSettings_TimeDisplay::fetchProperties(
 
     if (controller)
     {
-        qWarning() << "org_alljoyn_SmartSpaces_UserInterfaceSettings_TimeDisplay getting properties";
+        qWarning() << "TimeDisplay getting properties";
 
         status = controller->GetDisplayTimeFormat();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get DisplayTimeFormat" << QCC_StatusText(status);
+            qWarning() << "TimeDisplay::fetchProperties Failed to get DisplayTimeFormat" << QCC_StatusText(status);
         }
 
         status = controller->GetSupportedDisplayTimeFormats();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get SupportedDisplayTimeFormats" << QCC_StatusText(status);
+            qWarning() << "TimeDisplay::fetchProperties Failed to get SupportedDisplayTimeFormats" << QCC_StatusText(status);
         }
     }
 }
@@ -118,54 +120,75 @@ void org_alljoyn_SmartSpaces_UserInterfaceSettings_TimeDisplay::fetchProperties(
 
 void org_alljoyn_SmartSpaces_UserInterfaceSettings_TimeDisplay::slotOnResponseGetDisplayTimeFormat(QStatus status, const uint8_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "TimeDisplay::slotOnResponseGetDisplayTimeFormat";
+
     edit_DisplayTimeFormat->setText(QStringFrom(value));
 }
+
+
 
 void org_alljoyn_SmartSpaces_UserInterfaceSettings_TimeDisplay::slotOnDisplayTimeFormatChanged(const uint8_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "TimeDisplay::slotOnDisplayTimeFormatChanged";
+
     edit_DisplayTimeFormat->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_UserInterfaceSettings_TimeDisplay::slotOnResponseSetDisplayTimeFormat(QStatus status)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "TimeDisplay::slotOnResponseSetDisplayTimeFormat";
+
+    if (status != ER_OK)
+    {
+        qWarning() << "TimeDisplay::slotOnResponseSetDisplayTimeFormat Failed to set DisplayTimeFormat" << QCC_StatusText(status);
+    }
 }
+
+
 
 void org_alljoyn_SmartSpaces_UserInterfaceSettings_TimeDisplay::slotSetDisplayTimeFormat()
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "TimeDisplay::slotSetDisplayTimeFormat";
 
     bool ok = false;
+    uint8_t value;
     QString str = edit_DisplayTimeFormat->text();
-    uint8_t value = QStringTo<uint8_t>(str, &ok);
+    value = QStringTo<uint8_t>(str, &ok);
+    if (!ok)
+    {
+        qWarning() << "TimeDisplay::slotSetDisplayTimeFormat Failed to convert '" << str << "' to uint8_t";
+    }
+
     if (ok)
     {
         QStatus status = controller->SetDisplayTimeFormat(value);
+
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get DisplayTimeFormat" << QCC_StatusText(status);
+            qWarning() << "TimeDisplay::slotSetDisplayTimeFormat Failed to get DisplayTimeFormat" << QCC_StatusText(status);
         }
     }
-    else
-    {
-        qWarning() << __FUNCTION__ << "Failed to convert '" << str << "' to uint8_t";
-    }
 }
-
 
 
 
 void org_alljoyn_SmartSpaces_UserInterfaceSettings_TimeDisplay::slotOnResponseGetSupportedDisplayTimeFormats(QStatus status, const std::vector<uint8_t>& value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "TimeDisplay::slotOnResponseGetSupportedDisplayTimeFormats";
+
     edit_SupportedDisplayTimeFormats->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_UserInterfaceSettings_TimeDisplay::slotOnSupportedDisplayTimeFormatsChanged(const std::vector<uint8_t>& value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "TimeDisplay::slotOnSupportedDisplayTimeFormatsChanged";
+
     edit_SupportedDisplayTimeFormats->setText(QStringFrom(value));
 }
+
+
 

@@ -109,6 +109,12 @@ using namespace CDMQtWidgets;
 
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_Alerts*>();
 
+Q_DECLARE_METATYPE(std::vector<ajn::services::AlertsInterface::AlertRecord>);
+static const int auto_register_meta_type_1 = qRegisterMetaType<std::vector<ajn::services::AlertsInterface::AlertRecord>>("std::vector<AlertsInterface::AlertRecord>");
+
+Q_DECLARE_METATYPE(std::vector<ajn::services::AlertsInterface::AlertCodesDescriptor>);
+static const int auto_register_meta_type_2 = qRegisterMetaType<std::vector<ajn::services::AlertsInterface::AlertCodesDescriptor>>("std::vector<AlertsInterface::AlertCodesDescriptor>");
+
 
 org_alljoyn_SmartSpaces_Operation_Alerts::org_alljoyn_SmartSpaces_Operation_Alerts(CommonControllerInterface *iface)
   : controller(NULL),

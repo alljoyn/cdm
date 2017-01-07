@@ -26,7 +26,6 @@
  *     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-
 #include "org_alljoyn_SmartSpaces_Environment_WindDirection.h"
 #include "QStringConversion.h"
 #include <QDebug>
@@ -41,6 +40,12 @@ using namespace CDMQtWidgets;
 
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Environment_WindDirection*>();
 
+Q_DECLARE_METATYPE(ajn::services::WindDirectionInterface::AutoMode);
+Q_DECLARE_METATYPE(std::vector<ajn::services::WindDirectionInterface::AutoMode>);
+static const int auto_register_enum_AutoMode = qRegisterMetaType<ajn::services::WindDirectionInterface::AutoMode>("WindDirectionInterface::AutoMode");
+static const int auto_register_enum_v_AutoMode = qRegisterMetaType<std::vector<ajn::services::WindDirectionInterface::AutoMode>>("std::vector<WindDirectionInterface::AutoMode>");
+
+
 
 org_alljoyn_SmartSpaces_Environment_WindDirection::org_alljoyn_SmartSpaces_Environment_WindDirection(CommonControllerInterface *iface)
   : controller(NULL),
@@ -53,44 +58,54 @@ org_alljoyn_SmartSpaces_Environment_WindDirection::org_alljoyn_SmartSpaces_Envir
 
 
     layout->addWidget(new QLabel("HorizontalDirection"));
-    // Create line edit for HorizontalDirection
+    // Create the editing widget for HorizontalDirection
     edit_HorizontalDirection = new QLineEdit();
     edit_HorizontalDirection->setToolTip("Horizontal wind direction of a device.");
     edit_HorizontalDirection->setReadOnly(false);
     QObject::connect(edit_HorizontalDirection, SIGNAL(returnPressed()), this, SLOT(slotSetHorizontalDirection()));
+
     layout->addWidget(edit_HorizontalDirection);
     layout->addWidget(new QLabel("HorizontalMax"));
-    // Create line edit for HorizontalMax
+    // Create the editing widget for HorizontalMax
     edit_HorizontalMax = new QLineEdit();
     edit_HorizontalMax->setToolTip("Maximum value allowed for a target horizontal wind direction.");
     edit_HorizontalMax->setReadOnly(true);
+
     layout->addWidget(edit_HorizontalMax);
     layout->addWidget(new QLabel("HorizontalAutoMode"));
-    // Create line edit for HorizontalAutoMode
-    edit_HorizontalAutoMode = new QLineEdit();
-    edit_HorizontalAutoMode->setToolTip("Represent enabled/disabled state of the horizontal auto mode. HorizontalAutoMode is for controlling horizontal wind direction automatically.");
-    edit_HorizontalAutoMode->setReadOnly(false);
-    QObject::connect(edit_HorizontalAutoMode, SIGNAL(returnPressed()), this, SLOT(slotSetHorizontalAutoMode()));
+    // Create the editing widget for HorizontalAutoMode
+    edit_HorizontalAutoMode = new QComboBox();
+    edit_HorizontalAutoMode->setEditable(false);
+    edit_HorizontalAutoMode->addItem("Off");
+    edit_HorizontalAutoMode->addItem("On");
+    edit_HorizontalAutoMode->setEnabled(true);
+    QObject::connect(edit_HorizontalAutoMode, SIGNAL(currentTextChanged(const QString &)), this, SLOT(slotSetHorizontalAutoMode()));
+
     layout->addWidget(edit_HorizontalAutoMode);
     layout->addWidget(new QLabel("VerticalDirection"));
-    // Create line edit for VerticalDirection
+    // Create the editing widget for VerticalDirection
     edit_VerticalDirection = new QLineEdit();
     edit_VerticalDirection->setToolTip("Vertical wind direction of a device.");
     edit_VerticalDirection->setReadOnly(false);
     QObject::connect(edit_VerticalDirection, SIGNAL(returnPressed()), this, SLOT(slotSetVerticalDirection()));
+
     layout->addWidget(edit_VerticalDirection);
     layout->addWidget(new QLabel("VerticalMax"));
-    // Create line edit for VerticalMax
+    // Create the editing widget for VerticalMax
     edit_VerticalMax = new QLineEdit();
     edit_VerticalMax->setToolTip("Maximum value allowed for a target vertical wind direction.");
     edit_VerticalMax->setReadOnly(true);
+
     layout->addWidget(edit_VerticalMax);
     layout->addWidget(new QLabel("VerticalAutoMode"));
-    // Create line edit for VerticalAutoMode
-    edit_VerticalAutoMode = new QLineEdit();
-    edit_VerticalAutoMode->setToolTip("Represent enabled/disabled state of the vertical auto mode. VerticalAutoMode is for controlling vertical wind direction automatically.");
-    edit_VerticalAutoMode->setReadOnly(false);
-    QObject::connect(edit_VerticalAutoMode, SIGNAL(returnPressed()), this, SLOT(slotSetVerticalAutoMode()));
+    // Create the editing widget for VerticalAutoMode
+    edit_VerticalAutoMode = new QComboBox();
+    edit_VerticalAutoMode->setEditable(false);
+    edit_VerticalAutoMode->addItem("Off");
+    edit_VerticalAutoMode->addItem("On");
+    edit_VerticalAutoMode->setEnabled(true);
+    QObject::connect(edit_VerticalAutoMode, SIGNAL(currentTextChanged(const QString &)), this, SLOT(slotSetVerticalAutoMode()));
+
     layout->addWidget(edit_VerticalAutoMode);
 
     if (iface)
@@ -125,42 +140,42 @@ void org_alljoyn_SmartSpaces_Environment_WindDirection::fetchProperties()
 
     if (controller)
     {
-        qWarning() << "org_alljoyn_SmartSpaces_Environment_WindDirection getting properties";
+        qWarning() << "WindDirection getting properties";
 
         status = controller->GetHorizontalDirection();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get HorizontalDirection" << QCC_StatusText(status);
+            qWarning() << "WindDirection::fetchProperties Failed to get HorizontalDirection" << QCC_StatusText(status);
         }
 
         status = controller->GetHorizontalMax();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get HorizontalMax" << QCC_StatusText(status);
+            qWarning() << "WindDirection::fetchProperties Failed to get HorizontalMax" << QCC_StatusText(status);
         }
 
         status = controller->GetHorizontalAutoMode();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get HorizontalAutoMode" << QCC_StatusText(status);
+            qWarning() << "WindDirection::fetchProperties Failed to get HorizontalAutoMode" << QCC_StatusText(status);
         }
 
         status = controller->GetVerticalDirection();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get VerticalDirection" << QCC_StatusText(status);
+            qWarning() << "WindDirection::fetchProperties Failed to get VerticalDirection" << QCC_StatusText(status);
         }
 
         status = controller->GetVerticalMax();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get VerticalMax" << QCC_StatusText(status);
+            qWarning() << "WindDirection::fetchProperties Failed to get VerticalMax" << QCC_StatusText(status);
         }
 
         status = controller->GetVerticalAutoMode();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get VerticalAutoMode" << QCC_StatusText(status);
+            qWarning() << "WindDirection::fetchProperties Failed to get VerticalAutoMode" << QCC_StatusText(status);
         }
     }
 }
@@ -169,192 +184,338 @@ void org_alljoyn_SmartSpaces_Environment_WindDirection::fetchProperties()
 
 void org_alljoyn_SmartSpaces_Environment_WindDirection::slotOnResponseGetHorizontalDirection(QStatus status, const uint16_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "WindDirection::slotOnResponseGetHorizontalDirection";
+
     edit_HorizontalDirection->setText(QStringFrom(value));
 }
+
+
 
 void org_alljoyn_SmartSpaces_Environment_WindDirection::slotOnHorizontalDirectionChanged(const uint16_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "WindDirection::slotOnHorizontalDirectionChanged";
+
     edit_HorizontalDirection->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Environment_WindDirection::slotOnResponseSetHorizontalDirection(QStatus status)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "WindDirection::slotOnResponseSetHorizontalDirection";
+
+    if (status != ER_OK)
+    {
+        qWarning() << "WindDirection::slotOnResponseSetHorizontalDirection Failed to set HorizontalDirection" << QCC_StatusText(status);
+    }
 }
+
+
 
 void org_alljoyn_SmartSpaces_Environment_WindDirection::slotSetHorizontalDirection()
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "WindDirection::slotSetHorizontalDirection";
 
     bool ok = false;
+    uint16_t value;
     QString str = edit_HorizontalDirection->text();
-    uint16_t value = QStringTo<uint16_t>(str, &ok);
+    value = QStringTo<uint16_t>(str, &ok);
+    if (!ok)
+    {
+        qWarning() << "WindDirection::slotSetHorizontalDirection Failed to convert '" << str << "' to uint16_t";
+    }
+
     if (ok)
     {
         QStatus status = controller->SetHorizontalDirection(value);
+
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get HorizontalDirection" << QCC_StatusText(status);
+            qWarning() << "WindDirection::slotSetHorizontalDirection Failed to get HorizontalDirection" << QCC_StatusText(status);
         }
     }
-    else
-    {
-        qWarning() << __FUNCTION__ << "Failed to convert '" << str << "' to uint16_t";
-    }
 }
-
 
 
 
 void org_alljoyn_SmartSpaces_Environment_WindDirection::slotOnResponseGetHorizontalMax(QStatus status, const uint16_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "WindDirection::slotOnResponseGetHorizontalMax";
+
     edit_HorizontalMax->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Environment_WindDirection::slotOnHorizontalMaxChanged(const uint16_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "WindDirection::slotOnHorizontalMaxChanged";
+
     edit_HorizontalMax->setText(QStringFrom(value));
 }
+
+
 
 
 
 
 void org_alljoyn_SmartSpaces_Environment_WindDirection::slotOnResponseGetHorizontalAutoMode(QStatus status, const WindDirectionInterface::AutoMode value)
 {
-    qWarning() << __FUNCTION__;
-    edit_HorizontalAutoMode->setText(QStringFrom(value));
+    qWarning() << "WindDirection::slotOnResponseGetHorizontalAutoMode";
+
+    switch (value)
+    {
+    case WindDirectionInterface::AUTO_MODE_OFF:
+        edit_HorizontalAutoMode->setCurrentText("Off");
+        break;
+
+    case WindDirectionInterface::AUTO_MODE_ON:
+        edit_HorizontalAutoMode->setCurrentText("On");
+        break;
+
+    default:
+        edit_HorizontalAutoMode->setCurrentText("");
+        break;
+    }
 }
+
+
 
 void org_alljoyn_SmartSpaces_Environment_WindDirection::slotOnHorizontalAutoModeChanged(const WindDirectionInterface::AutoMode value)
 {
-    qWarning() << __FUNCTION__;
-    edit_HorizontalAutoMode->setText(QStringFrom(value));
+    qWarning() << "WindDirection::slotOnHorizontalAutoModeChanged";
+
+    switch (value)
+    {
+    case WindDirectionInterface::AUTO_MODE_OFF:
+        edit_HorizontalAutoMode->setCurrentText("Off");
+        break;
+
+    case WindDirectionInterface::AUTO_MODE_ON:
+        edit_HorizontalAutoMode->setCurrentText("On");
+        break;
+
+    default:
+        edit_HorizontalAutoMode->setCurrentText("");
+        break;
+    }
 }
+
+
 
 void org_alljoyn_SmartSpaces_Environment_WindDirection::slotOnResponseSetHorizontalAutoMode(QStatus status)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "WindDirection::slotOnResponseSetHorizontalAutoMode";
+
+    if (status != ER_OK)
+    {
+        qWarning() << "WindDirection::slotOnResponseSetHorizontalAutoMode Failed to set HorizontalAutoMode" << QCC_StatusText(status);
+    }
 }
+
+
 
 void org_alljoyn_SmartSpaces_Environment_WindDirection::slotSetHorizontalAutoMode()
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "WindDirection::slotSetHorizontalAutoMode";
 
     bool ok = false;
-    QString str = edit_HorizontalAutoMode->text();
-    WindDirectionInterface::AutoMode value = QStringTo<WindDirectionInterface::AutoMode>(str, &ok);
+    WindDirectionInterface::AutoMode value;
+    QString str = edit_HorizontalAutoMode->currentText();
+    if (str == "Off")
+    {
+        value = WindDirectionInterface::AUTO_MODE_OFF;
+        ok = true;
+    }
+    else
+    if (str == "On")
+    {
+        value = WindDirectionInterface::AUTO_MODE_ON;
+        ok = true;
+    }
+    else
+    if (!str.isEmpty())
+    {
+        qWarning() << "WindDirection::slotSetHorizontalAutoMode Failed to convert '" << str.constData() << "' to WindDirectionInterface::AutoMode";
+    }
+
     if (ok)
     {
         QStatus status = controller->SetHorizontalAutoMode(value);
+
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get HorizontalAutoMode" << QCC_StatusText(status);
+            qWarning() << "WindDirection::slotSetHorizontalAutoMode Failed to get HorizontalAutoMode" << QCC_StatusText(status);
         }
     }
-    else
-    {
-        qWarning() << __FUNCTION__ << "Failed to convert '" << str << "' to WindDirectionInterface::AutoMode";
-    }
 }
-
 
 
 
 void org_alljoyn_SmartSpaces_Environment_WindDirection::slotOnResponseGetVerticalDirection(QStatus status, const uint16_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "WindDirection::slotOnResponseGetVerticalDirection";
+
     edit_VerticalDirection->setText(QStringFrom(value));
 }
+
+
 
 void org_alljoyn_SmartSpaces_Environment_WindDirection::slotOnVerticalDirectionChanged(const uint16_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "WindDirection::slotOnVerticalDirectionChanged";
+
     edit_VerticalDirection->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Environment_WindDirection::slotOnResponseSetVerticalDirection(QStatus status)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "WindDirection::slotOnResponseSetVerticalDirection";
+
+    if (status != ER_OK)
+    {
+        qWarning() << "WindDirection::slotOnResponseSetVerticalDirection Failed to set VerticalDirection" << QCC_StatusText(status);
+    }
 }
+
+
 
 void org_alljoyn_SmartSpaces_Environment_WindDirection::slotSetVerticalDirection()
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "WindDirection::slotSetVerticalDirection";
 
     bool ok = false;
+    uint16_t value;
     QString str = edit_VerticalDirection->text();
-    uint16_t value = QStringTo<uint16_t>(str, &ok);
+    value = QStringTo<uint16_t>(str, &ok);
+    if (!ok)
+    {
+        qWarning() << "WindDirection::slotSetVerticalDirection Failed to convert '" << str << "' to uint16_t";
+    }
+
     if (ok)
     {
         QStatus status = controller->SetVerticalDirection(value);
+
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get VerticalDirection" << QCC_StatusText(status);
+            qWarning() << "WindDirection::slotSetVerticalDirection Failed to get VerticalDirection" << QCC_StatusText(status);
         }
     }
-    else
-    {
-        qWarning() << __FUNCTION__ << "Failed to convert '" << str << "' to uint16_t";
-    }
 }
-
 
 
 
 void org_alljoyn_SmartSpaces_Environment_WindDirection::slotOnResponseGetVerticalMax(QStatus status, const uint16_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "WindDirection::slotOnResponseGetVerticalMax";
+
     edit_VerticalMax->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Environment_WindDirection::slotOnVerticalMaxChanged(const uint16_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "WindDirection::slotOnVerticalMaxChanged";
+
     edit_VerticalMax->setText(QStringFrom(value));
 }
+
+
 
 
 
 
 void org_alljoyn_SmartSpaces_Environment_WindDirection::slotOnResponseGetVerticalAutoMode(QStatus status, const WindDirectionInterface::AutoMode value)
 {
-    qWarning() << __FUNCTION__;
-    edit_VerticalAutoMode->setText(QStringFrom(value));
+    qWarning() << "WindDirection::slotOnResponseGetVerticalAutoMode";
+
+    switch (value)
+    {
+    case WindDirectionInterface::AUTO_MODE_OFF:
+        edit_VerticalAutoMode->setCurrentText("Off");
+        break;
+
+    case WindDirectionInterface::AUTO_MODE_ON:
+        edit_VerticalAutoMode->setCurrentText("On");
+        break;
+
+    default:
+        edit_VerticalAutoMode->setCurrentText("");
+        break;
+    }
 }
+
+
 
 void org_alljoyn_SmartSpaces_Environment_WindDirection::slotOnVerticalAutoModeChanged(const WindDirectionInterface::AutoMode value)
 {
-    qWarning() << __FUNCTION__;
-    edit_VerticalAutoMode->setText(QStringFrom(value));
+    qWarning() << "WindDirection::slotOnVerticalAutoModeChanged";
+
+    switch (value)
+    {
+    case WindDirectionInterface::AUTO_MODE_OFF:
+        edit_VerticalAutoMode->setCurrentText("Off");
+        break;
+
+    case WindDirectionInterface::AUTO_MODE_ON:
+        edit_VerticalAutoMode->setCurrentText("On");
+        break;
+
+    default:
+        edit_VerticalAutoMode->setCurrentText("");
+        break;
+    }
 }
+
+
 
 void org_alljoyn_SmartSpaces_Environment_WindDirection::slotOnResponseSetVerticalAutoMode(QStatus status)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "WindDirection::slotOnResponseSetVerticalAutoMode";
+
+    if (status != ER_OK)
+    {
+        qWarning() << "WindDirection::slotOnResponseSetVerticalAutoMode Failed to set VerticalAutoMode" << QCC_StatusText(status);
+    }
 }
+
+
 
 void org_alljoyn_SmartSpaces_Environment_WindDirection::slotSetVerticalAutoMode()
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "WindDirection::slotSetVerticalAutoMode";
 
     bool ok = false;
-    QString str = edit_VerticalAutoMode->text();
-    WindDirectionInterface::AutoMode value = QStringTo<WindDirectionInterface::AutoMode>(str, &ok);
+    WindDirectionInterface::AutoMode value;
+    QString str = edit_VerticalAutoMode->currentText();
+    if (str == "Off")
+    {
+        value = WindDirectionInterface::AUTO_MODE_OFF;
+        ok = true;
+    }
+    else
+    if (str == "On")
+    {
+        value = WindDirectionInterface::AUTO_MODE_ON;
+        ok = true;
+    }
+    else
+    if (!str.isEmpty())
+    {
+        qWarning() << "WindDirection::slotSetVerticalAutoMode Failed to convert '" << str.constData() << "' to WindDirectionInterface::AutoMode";
+    }
+
     if (ok)
     {
         QStatus status = controller->SetVerticalAutoMode(value);
+
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get VerticalAutoMode" << QCC_StatusText(status);
+            qWarning() << "WindDirection::slotSetVerticalAutoMode Failed to get VerticalAutoMode" << QCC_StatusText(status);
         }
     }
-    else
-    {
-        qWarning() << __FUNCTION__ << "Failed to convert '" << str << "' to WindDirectionInterface::AutoMode";
-    }
 }
-

@@ -26,7 +26,6 @@
  *     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-
 #include "org_alljoyn_SmartSpaces_Operation_RapidModeTimed.h"
 #include "QStringConversion.h"
 #include <QDebug>
@@ -42,6 +41,7 @@ using namespace CDMQtWidgets;
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_RapidModeTimed*>();
 
 
+
 org_alljoyn_SmartSpaces_Operation_RapidModeTimed::org_alljoyn_SmartSpaces_Operation_RapidModeTimed(CommonControllerInterface *iface)
   : controller(NULL),
     m_listener(mkRef<Listener>(this))
@@ -53,17 +53,19 @@ org_alljoyn_SmartSpaces_Operation_RapidModeTimed::org_alljoyn_SmartSpaces_Operat
 
 
     layout->addWidget(new QLabel("RapidModeMinutesRemaining"));
-    // Create line edit for RapidModeMinutesRemaining
+    // Create the editing widget for RapidModeMinutesRemaining
     edit_RapidModeMinutesRemaining = new QLineEdit();
     edit_RapidModeMinutesRemaining->setToolTip("Time remaining in rapid mode. Zero indicates not in rapid mode.");
     edit_RapidModeMinutesRemaining->setReadOnly(false);
     QObject::connect(edit_RapidModeMinutesRemaining, SIGNAL(returnPressed()), this, SLOT(slotSetRapidModeMinutesRemaining()));
+
     layout->addWidget(edit_RapidModeMinutesRemaining);
     layout->addWidget(new QLabel("MaxSetMinutes"));
-    // Create line edit for MaxSetMinutes
+    // Create the editing widget for MaxSetMinutes
     edit_MaxSetMinutes = new QLineEdit();
     edit_MaxSetMinutes->setToolTip("Maximum rapid mode set time. It does not change to accomodate already in rapid mode.");
     edit_MaxSetMinutes->setReadOnly(true);
+
     layout->addWidget(edit_MaxSetMinutes);
 
     if (iface)
@@ -98,18 +100,18 @@ void org_alljoyn_SmartSpaces_Operation_RapidModeTimed::fetchProperties()
 
     if (controller)
     {
-        qWarning() << "org_alljoyn_SmartSpaces_Operation_RapidModeTimed getting properties";
+        qWarning() << "RapidModeTimed getting properties";
 
         status = controller->GetRapidModeMinutesRemaining();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get RapidModeMinutesRemaining" << QCC_StatusText(status);
+            qWarning() << "RapidModeTimed::fetchProperties Failed to get RapidModeMinutesRemaining" << QCC_StatusText(status);
         }
 
         status = controller->GetMaxSetMinutes();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get MaxSetMinutes" << QCC_StatusText(status);
+            qWarning() << "RapidModeTimed::fetchProperties Failed to get MaxSetMinutes" << QCC_StatusText(status);
         }
     }
 }
@@ -118,54 +120,75 @@ void org_alljoyn_SmartSpaces_Operation_RapidModeTimed::fetchProperties()
 
 void org_alljoyn_SmartSpaces_Operation_RapidModeTimed::slotOnResponseGetRapidModeMinutesRemaining(QStatus status, const uint16_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "RapidModeTimed::slotOnResponseGetRapidModeMinutesRemaining";
+
     edit_RapidModeMinutesRemaining->setText(QStringFrom(value));
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_RapidModeTimed::slotOnRapidModeMinutesRemainingChanged(const uint16_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "RapidModeTimed::slotOnRapidModeMinutesRemainingChanged";
+
     edit_RapidModeMinutesRemaining->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Operation_RapidModeTimed::slotOnResponseSetRapidModeMinutesRemaining(QStatus status)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "RapidModeTimed::slotOnResponseSetRapidModeMinutesRemaining";
+
+    if (status != ER_OK)
+    {
+        qWarning() << "RapidModeTimed::slotOnResponseSetRapidModeMinutesRemaining Failed to set RapidModeMinutesRemaining" << QCC_StatusText(status);
+    }
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_RapidModeTimed::slotSetRapidModeMinutesRemaining()
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "RapidModeTimed::slotSetRapidModeMinutesRemaining";
 
     bool ok = false;
+    uint16_t value;
     QString str = edit_RapidModeMinutesRemaining->text();
-    uint16_t value = QStringTo<uint16_t>(str, &ok);
+    value = QStringTo<uint16_t>(str, &ok);
+    if (!ok)
+    {
+        qWarning() << "RapidModeTimed::slotSetRapidModeMinutesRemaining Failed to convert '" << str << "' to uint16_t";
+    }
+
     if (ok)
     {
         QStatus status = controller->SetRapidModeMinutesRemaining(value);
+
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get RapidModeMinutesRemaining" << QCC_StatusText(status);
+            qWarning() << "RapidModeTimed::slotSetRapidModeMinutesRemaining Failed to get RapidModeMinutesRemaining" << QCC_StatusText(status);
         }
     }
-    else
-    {
-        qWarning() << __FUNCTION__ << "Failed to convert '" << str << "' to uint16_t";
-    }
 }
-
 
 
 
 void org_alljoyn_SmartSpaces_Operation_RapidModeTimed::slotOnResponseGetMaxSetMinutes(QStatus status, const uint16_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "RapidModeTimed::slotOnResponseGetMaxSetMinutes";
+
     edit_MaxSetMinutes->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Operation_RapidModeTimed::slotOnMaxSetMinutesChanged(const uint16_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "RapidModeTimed::slotOnMaxSetMinutesChanged";
+
     edit_MaxSetMinutes->setText(QStringFrom(value));
 }
+
+
 

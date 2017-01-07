@@ -31,6 +31,8 @@
 #define org_alljoyn_SmartSpaces_Operation_ClimateControlMode_H_
 
 #include <QWidget>
+#include <QCheckBox>
+#include <QComboBox>
 #include <QLineEdit>
 #include <QVBoxLayout>
 #include <QPushButton>
@@ -41,6 +43,7 @@
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
+
 
 namespace CDMQtWidgets
 {
@@ -78,7 +81,7 @@ public:
 
         virtual void OnResponseGetMode(QStatus status, const qcc::String& objectPath, const ClimateControlModeInterface::Mode value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "ClimateControlMode::OnResponseGetMode";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetMode", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(ClimateControlModeInterface::Mode, value)
@@ -86,21 +89,21 @@ public:
         }
         virtual void OnModeChanged(const qcc::String& objectPath, const ClimateControlModeInterface::Mode value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "ClimateControlMode::OnModeChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnModeChanged", Qt::QueuedConnection,
                               Q_ARG(ClimateControlModeInterface::Mode, value)
                               );
         }
         virtual void OnResponseSetMode(QStatus status, const qcc::String& objectPath, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "ClimateControlMode::OnResponseSetMode";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseSetMode", Qt::QueuedConnection,
                               Q_ARG(QStatus, status)
                               );
         }
         virtual void OnResponseGetSupportedModes(QStatus status, const qcc::String& objectPath, const std::vector<ClimateControlModeInterface::Mode>& value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "ClimateControlMode::OnResponseGetSupportedModes";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetSupportedModes", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(std::vector<ClimateControlModeInterface::Mode>, value)
@@ -108,14 +111,14 @@ public:
         }
         virtual void OnSupportedModesChanged(const qcc::String& objectPath, const std::vector<ClimateControlModeInterface::Mode>& value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "ClimateControlMode::OnSupportedModesChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnSupportedModesChanged", Qt::QueuedConnection,
                               Q_ARG(std::vector<ClimateControlModeInterface::Mode>, value)
                               );
         }
         virtual void OnResponseGetOperationalState(QStatus status, const qcc::String& objectPath, const ClimateControlModeInterface::OperationalState value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "ClimateControlMode::OnResponseGetOperationalState";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetOperationalState", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(ClimateControlModeInterface::OperationalState, value)
@@ -123,7 +126,7 @@ public:
         }
         virtual void OnOperationalStateChanged(const qcc::String& objectPath, const ClimateControlModeInterface::OperationalState value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "ClimateControlMode::OnOperationalStateChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnOperationalStateChanged", Qt::QueuedConnection,
                               Q_ARG(ClimateControlModeInterface::OperationalState, value)
                               );
@@ -135,9 +138,9 @@ private:
     Ref<Listener> m_listener;
 
 
-    QLineEdit* edit_Mode;
+    QComboBox* edit_Mode;
     QLineEdit* edit_SupportedModes;
-    QLineEdit* edit_OperationalState;
+    QComboBox* edit_OperationalState;
 
     void    fetchProperties();
 

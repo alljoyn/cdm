@@ -26,7 +26,6 @@
  *     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-
 #include "org_alljoyn_SmartSpaces_Operation_OnOffStatus.h"
 #include "QStringConversion.h"
 #include <QDebug>
@@ -42,6 +41,7 @@ using namespace CDMQtWidgets;
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_OnOffStatus*>();
 
 
+
 org_alljoyn_SmartSpaces_Operation_OnOffStatus::org_alljoyn_SmartSpaces_Operation_OnOffStatus(CommonControllerInterface *iface)
   : controller(NULL),
     m_listener(mkRef<Listener>(this))
@@ -53,10 +53,10 @@ org_alljoyn_SmartSpaces_Operation_OnOffStatus::org_alljoyn_SmartSpaces_Operation
 
 
     layout->addWidget(new QLabel("IsOn"));
-    // Create line edit for IsOn
-    edit_IsOn = new QLineEdit();
-    edit_IsOn->setToolTip("Current on/off state of the appliance. If true, the device is on state.");
-    edit_IsOn->setReadOnly(true);
+    // Create the editing widget for IsOn
+    edit_IsOn = new QCheckBox();
+    edit_IsOn->setEnabled(false);
+
     layout->addWidget(edit_IsOn);
 
     if (iface)
@@ -91,12 +91,12 @@ void org_alljoyn_SmartSpaces_Operation_OnOffStatus::fetchProperties()
 
     if (controller)
     {
-        qWarning() << "org_alljoyn_SmartSpaces_Operation_OnOffStatus getting properties";
+        qWarning() << "OnOffStatus getting properties";
 
         status = controller->GetIsOn();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get IsOn" << QCC_StatusText(status);
+            qWarning() << "OnOffStatus::fetchProperties Failed to get IsOn" << QCC_StatusText(status);
         }
     }
 }
@@ -105,13 +105,19 @@ void org_alljoyn_SmartSpaces_Operation_OnOffStatus::fetchProperties()
 
 void org_alljoyn_SmartSpaces_Operation_OnOffStatus::slotOnResponseGetIsOn(QStatus status, const bool value)
 {
-    qWarning() << __FUNCTION__;
-    edit_IsOn->setText(QStringFrom(value));
+    qWarning() << "OnOffStatus::slotOnResponseGetIsOn";
+
+    edit_IsOn->setChecked(value);
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_OnOffStatus::slotOnIsOnChanged(const bool value)
 {
-    qWarning() << __FUNCTION__;
-    edit_IsOn->setText(QStringFrom(value));
+    qWarning() << "OnOffStatus::slotOnIsOnChanged";
+
+    edit_IsOn->setChecked(value);
 }
+
+
 

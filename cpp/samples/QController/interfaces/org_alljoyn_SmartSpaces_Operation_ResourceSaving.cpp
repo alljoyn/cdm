@@ -26,7 +26,6 @@
  *     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-
 #include "org_alljoyn_SmartSpaces_Operation_ResourceSaving.h"
 #include "QStringConversion.h"
 #include <QDebug>
@@ -42,6 +41,7 @@ using namespace CDMQtWidgets;
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_ResourceSaving*>();
 
 
+
 org_alljoyn_SmartSpaces_Operation_ResourceSaving::org_alljoyn_SmartSpaces_Operation_ResourceSaving(CommonControllerInterface *iface)
   : controller(NULL),
     m_listener(mkRef<Listener>(this))
@@ -53,11 +53,11 @@ org_alljoyn_SmartSpaces_Operation_ResourceSaving::org_alljoyn_SmartSpaces_Operat
 
 
     layout->addWidget(new QLabel("ResourceSavingMode"));
-    // Create line edit for ResourceSavingMode
-    edit_ResourceSavingMode = new QLineEdit();
-    edit_ResourceSavingMode->setToolTip("The current resource saving mode of the device; true if device in saving mode.");
-    edit_ResourceSavingMode->setReadOnly(false);
-    QObject::connect(edit_ResourceSavingMode, SIGNAL(returnPressed()), this, SLOT(slotSetResourceSavingMode()));
+    // Create the editing widget for ResourceSavingMode
+    edit_ResourceSavingMode = new QCheckBox();
+    edit_ResourceSavingMode->setEnabled(true);
+    QObject::connect(edit_ResourceSavingMode, SIGNAL(stateChanged(int)), this, SLOT(slotSetResourceSavingMode()));
+
     layout->addWidget(edit_ResourceSavingMode);
 
     if (iface)
@@ -92,12 +92,12 @@ void org_alljoyn_SmartSpaces_Operation_ResourceSaving::fetchProperties()
 
     if (controller)
     {
-        qWarning() << "org_alljoyn_SmartSpaces_Operation_ResourceSaving getting properties";
+        qWarning() << "ResourceSaving getting properties";
 
         status = controller->GetResourceSavingMode();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get ResourceSavingMode" << QCC_StatusText(status);
+            qWarning() << "ResourceSaving::fetchProperties Failed to get ResourceSavingMode" << QCC_StatusText(status);
         }
     }
 }
@@ -106,39 +106,50 @@ void org_alljoyn_SmartSpaces_Operation_ResourceSaving::fetchProperties()
 
 void org_alljoyn_SmartSpaces_Operation_ResourceSaving::slotOnResponseGetResourceSavingMode(QStatus status, const bool value)
 {
-    qWarning() << __FUNCTION__;
-    edit_ResourceSavingMode->setText(QStringFrom(value));
+    qWarning() << "ResourceSaving::slotOnResponseGetResourceSavingMode";
+
+    edit_ResourceSavingMode->setChecked(value);
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_ResourceSaving::slotOnResourceSavingModeChanged(const bool value)
 {
-    qWarning() << __FUNCTION__;
-    edit_ResourceSavingMode->setText(QStringFrom(value));
+    qWarning() << "ResourceSaving::slotOnResourceSavingModeChanged";
+
+    edit_ResourceSavingMode->setChecked(value);
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_ResourceSaving::slotOnResponseSetResourceSavingMode(QStatus status)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "ResourceSaving::slotOnResponseSetResourceSavingMode";
+
+    if (status != ER_OK)
+    {
+        qWarning() << "ResourceSaving::slotOnResponseSetResourceSavingMode Failed to set ResourceSavingMode" << QCC_StatusText(status);
+    }
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_ResourceSaving::slotSetResourceSavingMode()
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "ResourceSaving::slotSetResourceSavingMode";
 
     bool ok = false;
-    QString str = edit_ResourceSavingMode->text();
-    bool value = QStringTo<bool>(str, &ok);
+    bool value;
+    value = edit_ResourceSavingMode->isChecked();
+    ok = true;
+
     if (ok)
     {
         QStatus status = controller->SetResourceSavingMode(value);
+
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get ResourceSavingMode" << QCC_StatusText(status);
+            qWarning() << "ResourceSaving::slotSetResourceSavingMode Failed to get ResourceSavingMode" << QCC_StatusText(status);
         }
     }
-    else
-    {
-        qWarning() << __FUNCTION__ << "Failed to convert '" << str << "' to bool";
-    }
 }
-

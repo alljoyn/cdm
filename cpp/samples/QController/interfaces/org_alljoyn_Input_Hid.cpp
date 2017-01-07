@@ -26,7 +26,6 @@
  *     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-
 #include "org_alljoyn_Input_Hid.h"
 #include "QStringConversion.h"
 #include <QDebug>
@@ -109,6 +108,17 @@ using namespace CDMQtWidgets;
 
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_Input_Hid*>();
 
+Q_DECLARE_METATYPE(ajn::services::HidInterface::InputEvent);
+Q_DECLARE_METATYPE(std::vector<ajn::services::HidInterface::InputEvent>);
+static const int auto_register_struct_InputEvent = qRegisterMetaType<ajn::services::HidInterface::InputEvent>("HidInterface::InputEvent");
+static const int auto_register_struct_v_InputEvent = qRegisterMetaType<std::vector<ajn::services::HidInterface::InputEvent>>("std::vector<HidInterface::InputEvent>");
+
+Q_DECLARE_METATYPE(ajn::services::HidInterface::SupportedInputEvent);
+Q_DECLARE_METATYPE(std::vector<ajn::services::HidInterface::SupportedInputEvent>);
+static const int auto_register_struct_SupportedInputEvent = qRegisterMetaType<ajn::services::HidInterface::SupportedInputEvent>("HidInterface::SupportedInputEvent");
+static const int auto_register_struct_v_SupportedInputEvent = qRegisterMetaType<std::vector<ajn::services::HidInterface::SupportedInputEvent>>("std::vector<HidInterface::SupportedInputEvent>");
+
+
 
 org_alljoyn_Input_Hid::org_alljoyn_Input_Hid(CommonControllerInterface *iface)
   : controller(NULL),
@@ -126,10 +136,11 @@ org_alljoyn_Input_Hid::org_alljoyn_Input_Hid(CommonControllerInterface *iface)
     layout->addWidget(button_InjectEvents);
 
     layout->addWidget(new QLabel("SupportedEvents"));
-    // Create line edit for SupportedEvents
+    // Create the editing widget for SupportedEvents
     edit_SupportedEvents = new QLineEdit();
     edit_SupportedEvents->setToolTip("List of supported input events by a device");
     edit_SupportedEvents->setReadOnly(true);
+
     layout->addWidget(edit_SupportedEvents);
 
     if (iface)
@@ -164,12 +175,12 @@ void org_alljoyn_Input_Hid::fetchProperties()
 
     if (controller)
     {
-        qWarning() << "org_alljoyn_Input_Hid getting properties";
+        qWarning() << "Hid getting properties";
 
         status = controller->GetSupportedEvents();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get SupportedEvents" << QCC_StatusText(status);
+            qWarning() << "Hid::fetchProperties Failed to get SupportedEvents" << QCC_StatusText(status);
         }
     }
 }
@@ -178,15 +189,19 @@ void org_alljoyn_Input_Hid::fetchProperties()
 
 void org_alljoyn_Input_Hid::slotClickInjectEvents()
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "Hid::slotClickInjectEvents";
 
     std::vector<HidInterface::InputEvent> inputEvents {};
 
+    bool ok = true;
 
-    QStatus status = controller->InjectEvents(inputEvents, NULL);
-    if (status != ER_OK)
+    if (ok)
     {
-        qWarning() << __FUNCTION__ << " Failed to call InjectEvents" << QCC_StatusText(status);
+        QStatus status = controller->InjectEvents(inputEvents, NULL);
+        if (status != ER_OK)
+        {
+            qWarning() << "Hid::slotClick Failed to call InjectEvents" << QCC_StatusText(status);
+        }
     }
 }
 
@@ -194,15 +209,21 @@ void org_alljoyn_Input_Hid::slotClickInjectEvents()
 
 void org_alljoyn_Input_Hid::slotOnResponseGetSupportedEvents(QStatus status, const std::vector<HidInterface::SupportedInputEvent>& value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "Hid::slotOnResponseGetSupportedEvents";
+
     edit_SupportedEvents->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_Input_Hid::slotOnSupportedEventsChanged(const std::vector<HidInterface::SupportedInputEvent>& value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "Hid::slotOnSupportedEventsChanged";
+
     edit_SupportedEvents->setText(QStringFrom(value));
 }
+
+
 
 
 
@@ -211,10 +232,10 @@ void org_alljoyn_Input_Hid::slotOnResponseMethodInjectEvents(QStatus status, con
 {
     if (status == ER_OK)
     {
-        qInfo() << "Received response to method InjectEvents";
+        qInfo() << "Hid::slotOnResponseMethodInjectEvents";
     }
     else
     {
-        qWarning() << "Received an error from method InjectEvents, error = " << errorName;
+        qWarning() << "Hid::slotOnResponseMethodInjectEvents Received error = " << errorName;
     }
 }

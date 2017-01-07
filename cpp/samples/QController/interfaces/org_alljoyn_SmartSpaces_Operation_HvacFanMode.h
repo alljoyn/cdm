@@ -31,6 +31,8 @@
 #define org_alljoyn_SmartSpaces_Operation_HvacFanMode_H_
 
 #include <QWidget>
+#include <QCheckBox>
+#include <QComboBox>
 #include <QLineEdit>
 #include <QVBoxLayout>
 #include <QPushButton>
@@ -41,6 +43,7 @@
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
+
 
 namespace CDMQtWidgets
 {
@@ -76,7 +79,7 @@ public:
 
         virtual void OnResponseGetMode(QStatus status, const qcc::String& objectPath, const HvacFanModeInterface::Mode value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "HvacFanMode::OnResponseGetMode";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetMode", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(HvacFanModeInterface::Mode, value)
@@ -84,21 +87,21 @@ public:
         }
         virtual void OnModeChanged(const qcc::String& objectPath, const HvacFanModeInterface::Mode value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "HvacFanMode::OnModeChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnModeChanged", Qt::QueuedConnection,
                               Q_ARG(HvacFanModeInterface::Mode, value)
                               );
         }
         virtual void OnResponseSetMode(QStatus status, const qcc::String& objectPath, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "HvacFanMode::OnResponseSetMode";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseSetMode", Qt::QueuedConnection,
                               Q_ARG(QStatus, status)
                               );
         }
         virtual void OnResponseGetSupportedModes(QStatus status, const qcc::String& objectPath, const std::vector<HvacFanModeInterface::Mode>& value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "HvacFanMode::OnResponseGetSupportedModes";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetSupportedModes", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(std::vector<HvacFanModeInterface::Mode>, value)
@@ -106,7 +109,7 @@ public:
         }
         virtual void OnSupportedModesChanged(const qcc::String& objectPath, const std::vector<HvacFanModeInterface::Mode>& value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "HvacFanMode::OnSupportedModesChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnSupportedModesChanged", Qt::QueuedConnection,
                               Q_ARG(std::vector<HvacFanModeInterface::Mode>, value)
                               );
@@ -118,7 +121,7 @@ private:
     Ref<Listener> m_listener;
 
 
-    QLineEdit* edit_Mode;
+    QComboBox* edit_Mode;
     QLineEdit* edit_SupportedModes;
 
     void    fetchProperties();

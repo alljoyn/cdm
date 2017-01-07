@@ -26,7 +26,6 @@
  *     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-
 #include "org_alljoyn_SmartSpaces_Operation_OnControl.h"
 #include "QStringConversion.h"
 #include <QDebug>
@@ -40,6 +39,7 @@
 using namespace CDMQtWidgets;
 
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_OnControl*>();
+
 
 
 org_alljoyn_SmartSpaces_Operation_OnControl::org_alljoyn_SmartSpaces_Operation_OnControl(CommonControllerInterface *iface)
@@ -90,7 +90,7 @@ void org_alljoyn_SmartSpaces_Operation_OnControl::fetchProperties()
 
     if (controller)
     {
-        qWarning() << "org_alljoyn_SmartSpaces_Operation_OnControl getting properties";
+        qWarning() << "OnControl getting properties";
     }
 }
 
@@ -98,14 +98,18 @@ void org_alljoyn_SmartSpaces_Operation_OnControl::fetchProperties()
 
 void org_alljoyn_SmartSpaces_Operation_OnControl::slotClickSwitchOn()
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "OnControl::slotClickSwitchOn";
 
 
+    bool ok = true;
 
-    QStatus status = controller->SwitchOn(NULL);
-    if (status != ER_OK)
+    if (ok)
     {
-        qWarning() << __FUNCTION__ << " Failed to call SwitchOn" << QCC_StatusText(status);
+        QStatus status = controller->SwitchOn(NULL);
+        if (status != ER_OK)
+        {
+            qWarning() << "OnControl::slotClick Failed to call SwitchOn" << QCC_StatusText(status);
+        }
     }
 }
 
@@ -115,10 +119,10 @@ void org_alljoyn_SmartSpaces_Operation_OnControl::slotOnResponseMethodSwitchOn(Q
 {
     if (status == ER_OK)
     {
-        qInfo() << "Received response to method SwitchOn";
+        qInfo() << "OnControl::slotOnResponseMethodSwitchOn";
     }
     else
     {
-        qWarning() << "Received an error from method SwitchOn, error = " << errorName;
+        qWarning() << "OnControl::slotOnResponseMethodSwitchOn Received error = " << errorName;
     }
 }

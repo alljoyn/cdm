@@ -26,7 +26,6 @@
  *     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-
 #include "org_alljoyn_SmartSpaces_Operation_UnlockControl.h"
 #include "QStringConversion.h"
 #include <QDebug>
@@ -40,6 +39,7 @@
 using namespace CDMQtWidgets;
 
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_UnlockControl*>();
+
 
 
 org_alljoyn_SmartSpaces_Operation_UnlockControl::org_alljoyn_SmartSpaces_Operation_UnlockControl(CommonControllerInterface *iface)
@@ -90,7 +90,7 @@ void org_alljoyn_SmartSpaces_Operation_UnlockControl::fetchProperties()
 
     if (controller)
     {
-        qWarning() << "org_alljoyn_SmartSpaces_Operation_UnlockControl getting properties";
+        qWarning() << "UnlockControl getting properties";
     }
 }
 
@@ -98,14 +98,18 @@ void org_alljoyn_SmartSpaces_Operation_UnlockControl::fetchProperties()
 
 void org_alljoyn_SmartSpaces_Operation_UnlockControl::slotClickUnlock()
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "UnlockControl::slotClickUnlock";
 
 
+    bool ok = true;
 
-    QStatus status = controller->Unlock(NULL);
-    if (status != ER_OK)
+    if (ok)
     {
-        qWarning() << __FUNCTION__ << " Failed to call Unlock" << QCC_StatusText(status);
+        QStatus status = controller->Unlock(NULL);
+        if (status != ER_OK)
+        {
+            qWarning() << "UnlockControl::slotClick Failed to call Unlock" << QCC_StatusText(status);
+        }
     }
 }
 
@@ -115,10 +119,10 @@ void org_alljoyn_SmartSpaces_Operation_UnlockControl::slotOnResponseMethodUnlock
 {
     if (status == ER_OK)
     {
-        qInfo() << "Received response to method Unlock";
+        qInfo() << "UnlockControl::slotOnResponseMethodUnlock";
     }
     else
     {
-        qWarning() << "Received an error from method Unlock, error = " << errorName;
+        qWarning() << "UnlockControl::slotOnResponseMethodUnlock Received error = " << errorName;
     }
 }

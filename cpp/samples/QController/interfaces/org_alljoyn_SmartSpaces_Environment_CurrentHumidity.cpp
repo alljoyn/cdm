@@ -26,7 +26,6 @@
  *     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-
 #include "org_alljoyn_SmartSpaces_Environment_CurrentHumidity.h"
 #include "QStringConversion.h"
 #include <QDebug>
@@ -42,6 +41,7 @@ using namespace CDMQtWidgets;
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Environment_CurrentHumidity*>();
 
 
+
 org_alljoyn_SmartSpaces_Environment_CurrentHumidity::org_alljoyn_SmartSpaces_Environment_CurrentHumidity(CommonControllerInterface *iface)
   : controller(NULL),
     m_listener(mkRef<Listener>(this))
@@ -53,16 +53,18 @@ org_alljoyn_SmartSpaces_Environment_CurrentHumidity::org_alljoyn_SmartSpaces_Env
 
 
     layout->addWidget(new QLabel("CurrentValue"));
-    // Create line edit for CurrentValue
+    // Create the editing widget for CurrentValue
     edit_CurrentValue = new QLineEdit();
     edit_CurrentValue->setToolTip("Current relative humidity value");
     edit_CurrentValue->setReadOnly(true);
+
     layout->addWidget(edit_CurrentValue);
     layout->addWidget(new QLabel("MaxValue"));
-    // Create line edit for MaxValue
+    // Create the editing widget for MaxValue
     edit_MaxValue = new QLineEdit();
     edit_MaxValue->setToolTip("Maximum value allowed for represented relative humidity");
     edit_MaxValue->setReadOnly(true);
+
     layout->addWidget(edit_MaxValue);
 
     if (iface)
@@ -97,18 +99,18 @@ void org_alljoyn_SmartSpaces_Environment_CurrentHumidity::fetchProperties()
 
     if (controller)
     {
-        qWarning() << "org_alljoyn_SmartSpaces_Environment_CurrentHumidity getting properties";
+        qWarning() << "CurrentHumidity getting properties";
 
         status = controller->GetCurrentValue();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get CurrentValue" << QCC_StatusText(status);
+            qWarning() << "CurrentHumidity::fetchProperties Failed to get CurrentValue" << QCC_StatusText(status);
         }
 
         status = controller->GetMaxValue();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get MaxValue" << QCC_StatusText(status);
+            qWarning() << "CurrentHumidity::fetchProperties Failed to get MaxValue" << QCC_StatusText(status);
         }
     }
 }
@@ -117,28 +119,40 @@ void org_alljoyn_SmartSpaces_Environment_CurrentHumidity::fetchProperties()
 
 void org_alljoyn_SmartSpaces_Environment_CurrentHumidity::slotOnResponseGetCurrentValue(QStatus status, const uint8_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "CurrentHumidity::slotOnResponseGetCurrentValue";
+
     edit_CurrentValue->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Environment_CurrentHumidity::slotOnCurrentValueChanged(const uint8_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "CurrentHumidity::slotOnCurrentValueChanged";
+
     edit_CurrentValue->setText(QStringFrom(value));
 }
+
+
 
 
 
 
 void org_alljoyn_SmartSpaces_Environment_CurrentHumidity::slotOnResponseGetMaxValue(QStatus status, const uint8_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "CurrentHumidity::slotOnResponseGetMaxValue";
+
     edit_MaxValue->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Environment_CurrentHumidity::slotOnMaxValueChanged(const uint8_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "CurrentHumidity::slotOnMaxValueChanged";
+
     edit_MaxValue->setText(QStringFrom(value));
 }
+
+
 

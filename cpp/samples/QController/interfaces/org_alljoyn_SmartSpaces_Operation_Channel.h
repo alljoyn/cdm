@@ -31,6 +31,8 @@
 #define org_alljoyn_SmartSpaces_Operation_Channel_H_
 
 #include <QWidget>
+#include <QCheckBox>
+#include <QComboBox>
 #include <QLineEdit>
 #include <QVBoxLayout>
 #include <QPushButton>
@@ -41,6 +43,53 @@
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
+
+#include <QSpinBox>
+#include <QMessageBox>
+#include <QDialog>
+
+namespace CDMQtWidgets {
+//======================================================================
+
+class org_alljoyn_SmartSpaces_Operation_Channel_GetChannelList : public QWidget
+{
+    Q_OBJECT
+public:
+    org_alljoyn_SmartSpaces_Operation_Channel_GetChannelList(QWidget* parent, uint16_t startingRecord, uint16_t numRecords);
+    ~org_alljoyn_SmartSpaces_Operation_Channel_GetChannelList();
+
+    int run();
+
+private slots:
+    void changed();
+
+public:
+    uint16_t startingRecord_;
+    uint16_t numRecords_;
+
+private:
+    QDialog* dialog_;
+    QSpinBox* startSpin_;
+    QSpinBox* numSpin_;
+};
+
+
+
+class org_alljoyn_SmartSpaces_Operation_Channel_ShowChannelList : public QWidget
+{
+    Q_OBJECT
+public:
+    org_alljoyn_SmartSpaces_Operation_Channel_ShowChannelList(QWidget* parent, const char* text);
+    ~org_alljoyn_SmartSpaces_Operation_Channel_ShowChannelList();
+
+    int run();
+
+private:
+    QMessageBox* dialog_;
+};
+
+//======================================================================
+} // of namespace CDMQtWidgets
 
 namespace CDMQtWidgets
 {
@@ -62,7 +111,7 @@ private slots:
     void slotSetChannelId();
     void slotOnResponseGetTotalNumberOfChannels(QStatus status, const uint16_t value);
     void slotOnTotalNumberOfChannelsChanged(const uint16_t value);
-    void slotOnResponseMethodGetChannelList(QStatus status, const QString& errorName);
+    void slotOnResponseMethodGetChannelList(QStatus status, const std::vector<ChannelInterface::ChannelInfoRecord>& listOfChannelInfoRecords, const QString& errorName);
     void slotOnSignalChannelListChanged();
 
 public:
@@ -79,7 +128,7 @@ public:
 
         virtual void OnResponseGetChannelId(QStatus status, const qcc::String& objectPath, const qcc::String& value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "Channel::OnResponseGetChannelId";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetChannelId", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(qcc::String, value)
@@ -87,21 +136,21 @@ public:
         }
         virtual void OnChannelIdChanged(const qcc::String& objectPath, const qcc::String& value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "Channel::OnChannelIdChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnChannelIdChanged", Qt::QueuedConnection,
                               Q_ARG(qcc::String, value)
                               );
         }
         virtual void OnResponseSetChannelId(QStatus status, const qcc::String& objectPath, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "Channel::OnResponseSetChannelId";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseSetChannelId", Qt::QueuedConnection,
                               Q_ARG(QStatus, status)
                               );
         }
         virtual void OnResponseGetTotalNumberOfChannels(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "Channel::OnResponseGetTotalNumberOfChannels";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetTotalNumberOfChannels", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(uint16_t, value)
@@ -109,20 +158,21 @@ public:
         }
         virtual void OnTotalNumberOfChannelsChanged(const qcc::String& objectPath, const uint16_t value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "Channel::OnTotalNumberOfChannelsChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnTotalNumberOfChannelsChanged", Qt::QueuedConnection,
                               Q_ARG(uint16_t, value)
                               );
         }
         virtual void OnResponseGetChannelList(QStatus status, const qcc::String& objectPath, const std::vector<ChannelInterface::ChannelInfoRecord>& listOfChannelInfoRecords, void* context, const char* errorName, const char* errorMessage) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "Channel::OnResponseGetChannelList";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseMethodGetChannelList", Qt::QueuedConnection,
-                              Q_ARG(QStatus, status), Q_ARG(QString, QString(errorName))
+                              Q_ARG(QStatus, status), Q_ARG(std::vector<ChannelInterface::ChannelInfoRecord>, listOfChannelInfoRecords), Q_ARG(QString, QString(errorName))
                               );
         }
         virtual void OnChannelListChanged(const qcc::String& objectPath) override
         {
+            qWarning() << "Channel::OnChannelListChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnSignalChannelListChanged", Qt::QueuedConnection);
         }
     };

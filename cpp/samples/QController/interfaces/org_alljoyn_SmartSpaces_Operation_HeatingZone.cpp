@@ -26,7 +26,6 @@
  *     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-
 #include "org_alljoyn_SmartSpaces_Operation_HeatingZone.h"
 #include "QStringConversion.h"
 #include <QDebug>
@@ -42,6 +41,7 @@ using namespace CDMQtWidgets;
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_HeatingZone*>();
 
 
+
 org_alljoyn_SmartSpaces_Operation_HeatingZone::org_alljoyn_SmartSpaces_Operation_HeatingZone(CommonControllerInterface *iface)
   : controller(NULL),
     m_listener(mkRef<Listener>(this))
@@ -53,22 +53,25 @@ org_alljoyn_SmartSpaces_Operation_HeatingZone::org_alljoyn_SmartSpaces_Operation
 
 
     layout->addWidget(new QLabel("NumberOfHeatingZones"));
-    // Create line edit for NumberOfHeatingZones
+    // Create the editing widget for NumberOfHeatingZones
     edit_NumberOfHeatingZones = new QLineEdit();
     edit_NumberOfHeatingZones->setToolTip("Number of heating zones.");
     edit_NumberOfHeatingZones->setReadOnly(true);
+
     layout->addWidget(edit_NumberOfHeatingZones);
     layout->addWidget(new QLabel("MaxHeatingLevels"));
-    // Create line edit for MaxHeatingLevels
+    // Create the editing widget for MaxHeatingLevels
     edit_MaxHeatingLevels = new QLineEdit();
     edit_MaxHeatingLevels->setToolTip("Max heating levels for each zone.");
     edit_MaxHeatingLevels->setReadOnly(true);
+
     layout->addWidget(edit_MaxHeatingLevels);
     layout->addWidget(new QLabel("HeatingLevels"));
-    // Create line edit for HeatingLevels
+    // Create the editing widget for HeatingLevels
     edit_HeatingLevels = new QLineEdit();
     edit_HeatingLevels->setToolTip("Current heating levels for each zone.");
     edit_HeatingLevels->setReadOnly(true);
+
     layout->addWidget(edit_HeatingLevels);
 
     if (iface)
@@ -103,24 +106,24 @@ void org_alljoyn_SmartSpaces_Operation_HeatingZone::fetchProperties()
 
     if (controller)
     {
-        qWarning() << "org_alljoyn_SmartSpaces_Operation_HeatingZone getting properties";
+        qWarning() << "HeatingZone getting properties";
 
         status = controller->GetNumberOfHeatingZones();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get NumberOfHeatingZones" << QCC_StatusText(status);
+            qWarning() << "HeatingZone::fetchProperties Failed to get NumberOfHeatingZones" << QCC_StatusText(status);
         }
 
         status = controller->GetMaxHeatingLevels();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get MaxHeatingLevels" << QCC_StatusText(status);
+            qWarning() << "HeatingZone::fetchProperties Failed to get MaxHeatingLevels" << QCC_StatusText(status);
         }
 
         status = controller->GetHeatingLevels();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get HeatingLevels" << QCC_StatusText(status);
+            qWarning() << "HeatingZone::fetchProperties Failed to get HeatingLevels" << QCC_StatusText(status);
         }
     }
 }
@@ -129,43 +132,61 @@ void org_alljoyn_SmartSpaces_Operation_HeatingZone::fetchProperties()
 
 void org_alljoyn_SmartSpaces_Operation_HeatingZone::slotOnResponseGetNumberOfHeatingZones(QStatus status, const uint8_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "HeatingZone::slotOnResponseGetNumberOfHeatingZones";
+
     edit_NumberOfHeatingZones->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Operation_HeatingZone::slotOnNumberOfHeatingZonesChanged(const uint8_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "HeatingZone::slotOnNumberOfHeatingZonesChanged";
+
     edit_NumberOfHeatingZones->setText(QStringFrom(value));
 }
+
+
 
 
 
 
 void org_alljoyn_SmartSpaces_Operation_HeatingZone::slotOnResponseGetMaxHeatingLevels(QStatus status, const std::vector<uint8_t>& value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "HeatingZone::slotOnResponseGetMaxHeatingLevels";
+
     edit_MaxHeatingLevels->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Operation_HeatingZone::slotOnMaxHeatingLevelsChanged(const std::vector<uint8_t>& value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "HeatingZone::slotOnMaxHeatingLevelsChanged";
+
     edit_MaxHeatingLevels->setText(QStringFrom(value));
 }
+
+
 
 
 
 
 void org_alljoyn_SmartSpaces_Operation_HeatingZone::slotOnResponseGetHeatingLevels(QStatus status, const std::vector<uint8_t>& value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "HeatingZone::slotOnResponseGetHeatingLevels";
+
     edit_HeatingLevels->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Operation_HeatingZone::slotOnHeatingLevelsChanged(const std::vector<uint8_t>& value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "HeatingZone::slotOnHeatingLevelsChanged";
+
     edit_HeatingLevels->setText(QStringFrom(value));
 }
+
+
 

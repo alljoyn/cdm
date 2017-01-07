@@ -26,7 +26,7 @@
  *     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-
+{% import "macros" as macros with context %}
 #include "{{Interface.ClassName}}.h"
 #include "QStringConversion.h"
 #include <QDebug>
@@ -72,13 +72,28 @@ QStringFrom<std::vector<{{Interface.Name}}Interface::{{struc.Name}}>>(const std:
 
 {% endfor %}
 
-{% include ("patch/" ~ Interface.ClassName ~ "_header.cpp") ignore missing with context %}
+{% include ("patch/" ~ Interface.ClassName ~ "-header.cpp") ignore missing with context %}
 
 using namespace CDMQtWidgets;
 
 static const int auto_register_meta_type = qRegisterMetaType<{{Interface.ClassName}}*>();
+{% for struc in Interface.Structs %}
 
-{% include ("patch/" ~ Interface.ClassName ~ "_static.cpp") ignore missing with context %}
+Q_DECLARE_METATYPE(ajn::services::{{Interface.Name}}Interface::{{struc.Name}});
+Q_DECLARE_METATYPE(std::vector<ajn::services::{{Interface.Name}}Interface::{{struc.Name}}>);
+static const int auto_register_struct_{{struc.Name}} = qRegisterMetaType<ajn::services::{{Interface.Name}}Interface::{{struc.Name}}>("{{Interface.Name}}Interface::{{struc.Name}}");
+static const int auto_register_struct_v_{{struc.Name}} = qRegisterMetaType<std::vector<ajn::services::{{Interface.Name}}Interface::{{struc.Name}}>>("std::vector<{{Interface.Name}}Interface::{{struc.Name}}>");
+{% endfor %}
+{% for enum in Interface.Enums %}
+
+Q_DECLARE_METATYPE(ajn::services::{{Interface.Name}}Interface::{{enum.Name}});
+Q_DECLARE_METATYPE(std::vector<ajn::services::{{Interface.Name}}Interface::{{enum.Name}}>);
+static const int auto_register_enum_{{enum.Name}} = qRegisterMetaType<ajn::services::{{Interface.Name}}Interface::{{enum.Name}}>("{{Interface.Name}}Interface::{{enum.Name}}");
+static const int auto_register_enum_v_{{enum.Name}} = qRegisterMetaType<std::vector<ajn::services::{{Interface.Name}}Interface::{{enum.Name}}>>("std::vector<{{Interface.Name}}Interface::{{enum.Name}}>");
+{% endfor %}
+
+
+{% include ("patch/" ~ Interface.ClassName ~ "-static.cpp") ignore missing with context %}
 
 {{Interface.ClassName}}::{{Interface.ClassName}}(CommonControllerInterface *iface)
   : controller(NULL),
@@ -101,17 +116,47 @@ static const int auto_register_meta_type = qRegisterMetaType<{{Interface.ClassNa
 
 {% for property in Interface.UserProperties %}
     layout->addWidget(new QLabel("{{property.Name}}"));
-    // Create line edit for {{property.Name}}
-    edit_{{property.Name}} = new QLineEdit();
-{% if "en" in property.doc %}
-    edit_{{property.Name}}->setToolTip("{{property.doc['en']}}");
+    // Create the editing widget for {{property.Name}}
+{% if property.Type.ajtype() == "bool" %}
+    {# ==================================== #}
+    {# Use a checkbox for bool properties #}
+    edit_{{property.Name}} = new QCheckBox();
+{% if property.Writable %}
+    edit_{{property.Name}}->setEnabled(true);
+    QObject::connect(edit_{{property.Name}}, SIGNAL(stateChanged(int)), this, SLOT(slotSet{{property.Name}}()));
+{% else %}
+    edit_{{property.Name}}->setEnabled(false);
 {% endif %}
+{% elif property.Type.ajtypeIsEnum() %}
+    {# ==================================== #}
+    {# A combo box for enums #}
+{%     set enum = property.Type.ajtypeIsEnum() %}
+    edit_{{property.Name}} = new QComboBox();
+    edit_{{property.Name}}->setEditable(false);
+{%     for item in enum.Values %}
+    edit_{{property.Name}}->addItem("{{item.Name}}");
+{%     endfor %}
+{%     if property.Writable %}
+    edit_{{property.Name}}->setEnabled(true);
+    QObject::connect(edit_{{property.Name}}, SIGNAL(currentTextChanged(const QString &)), this, SLOT(slotSet{{property.Name}}()));
+{%     else %}
+    edit_{{property.Name}}->setEnabled(false);
+{%     endif %}
+{% else %}
+    {# ==================================== #}
+    {# Default to a simple line edit widget #}
+    edit_{{property.Name}} = new QLineEdit();
+{%  if "en" in property.doc %}
+    edit_{{property.Name}}->setToolTip("{{property.doc['en']}}");
+{%  endif %}
 {% if property.Writable %}
     edit_{{property.Name}}->setReadOnly(false);
     QObject::connect(edit_{{property.Name}}, SIGNAL(returnPressed()), this, SLOT(slotSet{{property.Name}}()));
 {% else %}
     edit_{{property.Name}}->setReadOnly(true);
 {% endif %}
+{% endif %}{# end of the branch on property type to decide the widget #}
+
     layout->addWidget(edit_{{property.Name}});
 {% endfor %}
 
@@ -147,13 +192,13 @@ void {{Interface.ClassName}}::fetchProperties()
 
     if (controller)
     {
-        qWarning() << "{{Interface.ClassName}} getting properties";
+        qWarning() << "{{Interface.Name}} getting properties";
 {% for property in Interface.UserProperties %}
 
         status = controller->Get{{property.Name}}();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get {{property.Name}}" << QCC_StatusText(status);
+            qWarning() << "{{Interface.Name}}::fetchProperties Failed to get {{property.Name}}" << QCC_StatusText(status);
         }
 {% endfor %}
     }
@@ -164,18 +209,22 @@ void {{Interface.ClassName}}::fetchProperties()
 
 void {{Interface.ClassName}}::slotClick{{method.Name}}()
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "{{Interface.Name}}::slotClick{{method.Name}}";
 
     {% for arg in method.input_args() %}
     {{arg.Type.cpptype()}} {{arg.Name.camel_case()}} {};
     {% endfor %}
 
+    bool ok = true;
     {% include ("patch/" ~ Interface.ClassName ~ "-slotClick" ~ method.Name ~ ".cpp") ignore missing with context %}
 
-    QStatus status = controller->{{method.Name}}({% for arg in method.input_args() %}{{arg.Name.camel_case()}}, {% endfor %}NULL);
-    if (status != ER_OK)
+    if (ok)
     {
-        qWarning() << __FUNCTION__ << " Failed to call {{method.Name}}" << QCC_StatusText(status);
+        QStatus status = controller->{{method.Name}}({% for arg in method.input_args() %}{{arg.Name.camel_case()}}, {% endfor %}NULL);
+        if (status != ER_OK)
+        {
+            qWarning() << "{{Interface.Name}}::slotClick Failed to call {{method.Name}}" << QCC_StatusText(status);
+        }
     }
 }
 {% endfor %}
@@ -185,59 +234,133 @@ void {{Interface.ClassName}}::slotClick{{method.Name}}()
 
 void {{Interface.ClassName}}::slotOnResponseGet{{property.Name}}(QStatus status, const {{property.Type.cpptype_arg()}} value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "{{Interface.Name}}::slotOnResponseGet{{property.Name}}";
+
+{% if property.Type.ajtype() == "bool" %}
+    edit_{{property.Name}}->setChecked(value);
+{% elif property.Type.ajtypeIsEnum() %}
+{% set enum = property.Type.ajtypeIsEnum() %}
+    switch (value)
+    {
+{% for item in enum.Values %}
+    case {{Interface.Name ~ "Interface::" ~ macros.enumName(enum, item)}}:
+        edit_{{property.Name}}->setCurrentText("{{item.Name}}");
+        break;
+
+{% endfor %}
+    default:
+        edit_{{property.Name}}->setCurrentText("");
+        break;
+    }
+{% else %}
     edit_{{property.Name}}->setText(QStringFrom(value));
+{% endif %}
 }
+
+
 
 void {{Interface.ClassName}}::slotOn{{property.Name}}Changed(const {{property.Type.cpptype_arg()}} value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "{{Interface.Name}}::slotOn{{property.Name}}Changed";
+
+{% if property.Type.ajtype() == "bool" %}
+    edit_{{property.Name}}->setChecked(value);
+{% elif property.Type.ajtypeIsEnum() %}
+{% set enum = property.Type.ajtypeIsEnum() %}
+    switch (value)
+    {
+{% for item in enum.Values %}
+    case {{Interface.Name ~ "Interface::" ~ macros.enumName(enum, item)}}:
+        edit_{{property.Name}}->setCurrentText("{{item.Name}}");
+        break;
+
+{% endfor %}
+    default:
+        edit_{{property.Name}}->setCurrentText("");
+        break;
+    }
+{% else %}
     edit_{{property.Name}}->setText(QStringFrom(value));
+{% endif %}
 }
+
+
 
 {% if property.Writable %}
 void {{Interface.ClassName}}::slotOnResponseSet{{property.Name}}(QStatus status)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "{{Interface.Name}}::slotOnResponseSet{{property.Name}}";
+
+    if (status != ER_OK)
+    {
+        qWarning() << "{{Interface.Name}}::slotOnResponseSet{{property.Name}} Failed to set {{property.Name}}" << QCC_StatusText(status);
+    }
 }
+
+
 
 void {{Interface.ClassName}}::slotSet{{property.Name}}()
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "{{Interface.Name}}::slotSet{{property.Name}}";
 
     bool ok = false;
+    {{property.Type.cpptype()}} value;
+{% if property.Type.ajtype() == "bool" %}
+    value = edit_{{property.Name}}->isChecked();
+    ok = true;
+{% elif property.Type.ajtypeIsEnum() %}
+{% set enum = property.Type.ajtypeIsEnum() %}
+    QString str = edit_{{property.Name}}->currentText();
+{%     for item in enum.Values %}
+    if (str == "{{item.Name}}")
+    {
+        value = {{Interface.Name ~ "Interface::" ~ macros.enumName(enum, item)}};
+        ok = true;
+    }
+    else
+{%     endfor %}
+    if (!str.isEmpty())
+    {
+        qWarning() << "{{Interface.Name}}::slotSet{{property.Name}} Failed to convert '" << str.constData() << "' to {{property.Type.cpptype()}}";
+    }
+{% else %}
     QString str = edit_{{property.Name}}->text();
-    {{property.Type.cpptype()}} value = QStringTo<{{property.Type.cpptype()}}>(str, &ok);
+    value = QStringTo<{{property.Type.cpptype()}}>(str, &ok);
+    if (!ok)
+    {
+        qWarning() << "{{Interface.Name}}::slotSet{{property.Name}} Failed to convert '" << str << "' to {{property.Type.cpptype()}}";
+    }
+{% endif %}
+
     if (ok)
     {
         QStatus status = controller->Set{{property.Name}}(value);
+
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get {{property.Name}}" << QCC_StatusText(status);
+            qWarning() << "{{Interface.Name}}::slotSet{{property.Name}} Failed to get {{property.Name}}" << QCC_StatusText(status);
         }
     }
-    else
-    {
-        qWarning() << __FUNCTION__ << "Failed to convert '" << str << "' to {{property.Type.cpptype()}}";
-    }
 }
-
 {% endif %}
 {% endfor %}
 {% for method in Interface.Methods %}
 
 
 
-void {{Interface.ClassName}}::slotOnResponseMethod{{method.Name}}(QStatus status, const QString& errorName)
+void {{Interface.ClassName}}::slotOnResponseMethod{{method.Name}}(QStatus status
+        {%- for arg in method.output_args() %}, const {{arg.Type.cpptype_arg()}} {{arg.Name.camel_case()}}{% endfor -%}
+        , const QString& errorName)
 {
     if (status == ER_OK)
     {
-        qInfo() << "Received response to method {{method.Name}}";
+        qInfo() << "{{Interface.Name}}::slotOnResponseMethod{{method.Name}}";
     }
     else
     {
-        qWarning() << "Received an error from method {{method.Name}}, error = " << errorName;
+        qWarning() << "{{Interface.Name}}::slotOnResponseMethod{{method.Name}} Received error = " << errorName;
     }
+    {% include ("patch/" ~ Interface.ClassName ~ "-slotOnResponseMethod" ~ method.Name ~ ".cpp") ignore missing with context %}
 }
 {% endfor %}
 {% for signal in Interface.Signals %}

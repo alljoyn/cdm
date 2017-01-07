@@ -31,6 +31,8 @@
 #define org_alljoyn_SmartSpaces_Operation_AudioVolume_H_
 
 #include <QWidget>
+#include <QCheckBox>
+#include <QComboBox>
 #include <QLineEdit>
 #include <QVBoxLayout>
 #include <QPushButton>
@@ -41,6 +43,7 @@
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
+
 
 namespace CDMQtWidgets
 {
@@ -80,7 +83,7 @@ public:
 
         virtual void OnResponseGetVolume(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "AudioVolume::OnResponseGetVolume";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetVolume", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(uint8_t, value)
@@ -88,21 +91,21 @@ public:
         }
         virtual void OnVolumeChanged(const qcc::String& objectPath, const uint8_t value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "AudioVolume::OnVolumeChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnVolumeChanged", Qt::QueuedConnection,
                               Q_ARG(uint8_t, value)
                               );
         }
         virtual void OnResponseSetVolume(QStatus status, const qcc::String& objectPath, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "AudioVolume::OnResponseSetVolume";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseSetVolume", Qt::QueuedConnection,
                               Q_ARG(QStatus, status)
                               );
         }
         virtual void OnResponseGetMaxVolume(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "AudioVolume::OnResponseGetMaxVolume";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetMaxVolume", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(uint8_t, value)
@@ -110,14 +113,14 @@ public:
         }
         virtual void OnMaxVolumeChanged(const qcc::String& objectPath, const uint8_t value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "AudioVolume::OnMaxVolumeChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnMaxVolumeChanged", Qt::QueuedConnection,
                               Q_ARG(uint8_t, value)
                               );
         }
         virtual void OnResponseGetMute(QStatus status, const qcc::String& objectPath, const bool value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "AudioVolume::OnResponseGetMute";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetMute", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(bool, value)
@@ -125,14 +128,14 @@ public:
         }
         virtual void OnMuteChanged(const qcc::String& objectPath, const bool value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "AudioVolume::OnMuteChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnMuteChanged", Qt::QueuedConnection,
                               Q_ARG(bool, value)
                               );
         }
         virtual void OnResponseSetMute(QStatus status, const qcc::String& objectPath, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "AudioVolume::OnResponseSetMute";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseSetMute", Qt::QueuedConnection,
                               Q_ARG(QStatus, status)
                               );
@@ -146,7 +149,7 @@ private:
 
     QLineEdit* edit_Volume;
     QLineEdit* edit_MaxVolume;
-    QLineEdit* edit_Mute;
+    QCheckBox* edit_Mute;
 
     void    fetchProperties();
 

@@ -26,7 +26,6 @@
  *     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-
 #include "org_alljoyn_SmartSpaces_UserInterfaceSettings_LanguageDisplay.h"
 #include "QStringConversion.h"
 #include <QDebug>
@@ -42,6 +41,7 @@ using namespace CDMQtWidgets;
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_UserInterfaceSettings_LanguageDisplay*>();
 
 
+
 org_alljoyn_SmartSpaces_UserInterfaceSettings_LanguageDisplay::org_alljoyn_SmartSpaces_UserInterfaceSettings_LanguageDisplay(CommonControllerInterface *iface)
   : controller(NULL),
     m_listener(mkRef<Listener>(this))
@@ -53,17 +53,19 @@ org_alljoyn_SmartSpaces_UserInterfaceSettings_LanguageDisplay::org_alljoyn_Smart
 
 
     layout->addWidget(new QLabel("DisplayLanguage"));
-    // Create line edit for DisplayLanguage
+    // Create the editing widget for DisplayLanguage
     edit_DisplayLanguage = new QLineEdit();
     edit_DisplayLanguage->setToolTip("The RFC 5646 tag of the current language being used by the device user interface");
     edit_DisplayLanguage->setReadOnly(false);
     QObject::connect(edit_DisplayLanguage, SIGNAL(returnPressed()), this, SLOT(slotSetDisplayLanguage()));
+
     layout->addWidget(edit_DisplayLanguage);
     layout->addWidget(new QLabel("SupportedDisplayLanguages"));
-    // Create line edit for SupportedDisplayLanguages
+    // Create the editing widget for SupportedDisplayLanguages
     edit_SupportedDisplayLanguages = new QLineEdit();
     edit_SupportedDisplayLanguages->setToolTip("The list of supported languages using RFC 5646 tags");
     edit_SupportedDisplayLanguages->setReadOnly(true);
+
     layout->addWidget(edit_SupportedDisplayLanguages);
 
     if (iface)
@@ -98,18 +100,18 @@ void org_alljoyn_SmartSpaces_UserInterfaceSettings_LanguageDisplay::fetchPropert
 
     if (controller)
     {
-        qWarning() << "org_alljoyn_SmartSpaces_UserInterfaceSettings_LanguageDisplay getting properties";
+        qWarning() << "LanguageDisplay getting properties";
 
         status = controller->GetDisplayLanguage();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get DisplayLanguage" << QCC_StatusText(status);
+            qWarning() << "LanguageDisplay::fetchProperties Failed to get DisplayLanguage" << QCC_StatusText(status);
         }
 
         status = controller->GetSupportedDisplayLanguages();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get SupportedDisplayLanguages" << QCC_StatusText(status);
+            qWarning() << "LanguageDisplay::fetchProperties Failed to get SupportedDisplayLanguages" << QCC_StatusText(status);
         }
     }
 }
@@ -118,54 +120,75 @@ void org_alljoyn_SmartSpaces_UserInterfaceSettings_LanguageDisplay::fetchPropert
 
 void org_alljoyn_SmartSpaces_UserInterfaceSettings_LanguageDisplay::slotOnResponseGetDisplayLanguage(QStatus status, const qcc::String& value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "LanguageDisplay::slotOnResponseGetDisplayLanguage";
+
     edit_DisplayLanguage->setText(QStringFrom(value));
 }
+
+
 
 void org_alljoyn_SmartSpaces_UserInterfaceSettings_LanguageDisplay::slotOnDisplayLanguageChanged(const qcc::String& value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "LanguageDisplay::slotOnDisplayLanguageChanged";
+
     edit_DisplayLanguage->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_UserInterfaceSettings_LanguageDisplay::slotOnResponseSetDisplayLanguage(QStatus status)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "LanguageDisplay::slotOnResponseSetDisplayLanguage";
+
+    if (status != ER_OK)
+    {
+        qWarning() << "LanguageDisplay::slotOnResponseSetDisplayLanguage Failed to set DisplayLanguage" << QCC_StatusText(status);
+    }
 }
+
+
 
 void org_alljoyn_SmartSpaces_UserInterfaceSettings_LanguageDisplay::slotSetDisplayLanguage()
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "LanguageDisplay::slotSetDisplayLanguage";
 
     bool ok = false;
+    qcc::String value;
     QString str = edit_DisplayLanguage->text();
-    qcc::String value = QStringTo<qcc::String>(str, &ok);
+    value = QStringTo<qcc::String>(str, &ok);
+    if (!ok)
+    {
+        qWarning() << "LanguageDisplay::slotSetDisplayLanguage Failed to convert '" << str << "' to qcc::String";
+    }
+
     if (ok)
     {
         QStatus status = controller->SetDisplayLanguage(value);
+
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get DisplayLanguage" << QCC_StatusText(status);
+            qWarning() << "LanguageDisplay::slotSetDisplayLanguage Failed to get DisplayLanguage" << QCC_StatusText(status);
         }
     }
-    else
-    {
-        qWarning() << __FUNCTION__ << "Failed to convert '" << str << "' to qcc::String";
-    }
 }
-
 
 
 
 void org_alljoyn_SmartSpaces_UserInterfaceSettings_LanguageDisplay::slotOnResponseGetSupportedDisplayLanguages(QStatus status, const std::vector<qcc::String>& value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "LanguageDisplay::slotOnResponseGetSupportedDisplayLanguages";
+
     edit_SupportedDisplayLanguages->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_UserInterfaceSettings_LanguageDisplay::slotOnSupportedDisplayLanguagesChanged(const std::vector<qcc::String>& value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "LanguageDisplay::slotOnSupportedDisplayLanguagesChanged";
+
     edit_SupportedDisplayLanguages->setText(QStringFrom(value));
 }
+
+
 

@@ -31,6 +31,8 @@
 #define org_alljoyn_SmartSpaces_UserInterfaceSettings_TimeDisplay_H_
 
 #include <QWidget>
+#include <QCheckBox>
+#include <QComboBox>
 #include <QLineEdit>
 #include <QVBoxLayout>
 #include <QPushButton>
@@ -41,6 +43,7 @@
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
+
 
 namespace CDMQtWidgets
 {
@@ -76,7 +79,7 @@ public:
 
         virtual void OnResponseGetDisplayTimeFormat(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "TimeDisplay::OnResponseGetDisplayTimeFormat";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetDisplayTimeFormat", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(uint8_t, value)
@@ -84,21 +87,21 @@ public:
         }
         virtual void OnDisplayTimeFormatChanged(const qcc::String& objectPath, const uint8_t value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "TimeDisplay::OnDisplayTimeFormatChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnDisplayTimeFormatChanged", Qt::QueuedConnection,
                               Q_ARG(uint8_t, value)
                               );
         }
         virtual void OnResponseSetDisplayTimeFormat(QStatus status, const qcc::String& objectPath, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "TimeDisplay::OnResponseSetDisplayTimeFormat";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseSetDisplayTimeFormat", Qt::QueuedConnection,
                               Q_ARG(QStatus, status)
                               );
         }
         virtual void OnResponseGetSupportedDisplayTimeFormats(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "TimeDisplay::OnResponseGetSupportedDisplayTimeFormats";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetSupportedDisplayTimeFormats", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(std::vector<uint8_t>, value)
@@ -106,7 +109,7 @@ public:
         }
         virtual void OnSupportedDisplayTimeFormatsChanged(const qcc::String& objectPath, const std::vector<uint8_t>& value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "TimeDisplay::OnSupportedDisplayTimeFormatsChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnSupportedDisplayTimeFormatsChanged", Qt::QueuedConnection,
                               Q_ARG(std::vector<uint8_t>, value)
                               );

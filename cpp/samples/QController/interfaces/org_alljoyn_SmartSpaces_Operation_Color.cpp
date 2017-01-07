@@ -26,7 +26,6 @@
  *     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-
 #include "org_alljoyn_SmartSpaces_Operation_Color.h"
 #include "QStringConversion.h"
 #include <QDebug>
@@ -42,6 +41,7 @@ using namespace CDMQtWidgets;
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_Color*>();
 
 
+
 org_alljoyn_SmartSpaces_Operation_Color::org_alljoyn_SmartSpaces_Operation_Color(CommonControllerInterface *iface)
   : controller(NULL),
     m_listener(mkRef<Listener>(this))
@@ -53,18 +53,20 @@ org_alljoyn_SmartSpaces_Operation_Color::org_alljoyn_SmartSpaces_Operation_Color
 
 
     layout->addWidget(new QLabel("Hue"));
-    // Create line edit for Hue
+    // Create the editing widget for Hue
     edit_Hue = new QLineEdit();
     edit_Hue->setToolTip("Hue of the device.");
     edit_Hue->setReadOnly(false);
     QObject::connect(edit_Hue, SIGNAL(returnPressed()), this, SLOT(slotSetHue()));
+
     layout->addWidget(edit_Hue);
     layout->addWidget(new QLabel("Saturation"));
-    // Create line edit for Saturation
+    // Create the editing widget for Saturation
     edit_Saturation = new QLineEdit();
     edit_Saturation->setToolTip("Saturation of the device.");
     edit_Saturation->setReadOnly(false);
     QObject::connect(edit_Saturation, SIGNAL(returnPressed()), this, SLOT(slotSetSaturation()));
+
     layout->addWidget(edit_Saturation);
 
     if (iface)
@@ -99,18 +101,18 @@ void org_alljoyn_SmartSpaces_Operation_Color::fetchProperties()
 
     if (controller)
     {
-        qWarning() << "org_alljoyn_SmartSpaces_Operation_Color getting properties";
+        qWarning() << "Color getting properties";
 
         status = controller->GetHue();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get Hue" << QCC_StatusText(status);
+            qWarning() << "Color::fetchProperties Failed to get Hue" << QCC_StatusText(status);
         }
 
         status = controller->GetSaturation();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get Saturation" << QCC_StatusText(status);
+            qWarning() << "Color::fetchProperties Failed to get Saturation" << QCC_StatusText(status);
         }
     }
 }
@@ -119,80 +121,110 @@ void org_alljoyn_SmartSpaces_Operation_Color::fetchProperties()
 
 void org_alljoyn_SmartSpaces_Operation_Color::slotOnResponseGetHue(QStatus status, const double value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "Color::slotOnResponseGetHue";
+
     edit_Hue->setText(QStringFrom(value));
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_Color::slotOnHueChanged(const double value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "Color::slotOnHueChanged";
+
     edit_Hue->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Operation_Color::slotOnResponseSetHue(QStatus status)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "Color::slotOnResponseSetHue";
+
+    if (status != ER_OK)
+    {
+        qWarning() << "Color::slotOnResponseSetHue Failed to set Hue" << QCC_StatusText(status);
+    }
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_Color::slotSetHue()
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "Color::slotSetHue";
 
     bool ok = false;
+    double value;
     QString str = edit_Hue->text();
-    double value = QStringTo<double>(str, &ok);
+    value = QStringTo<double>(str, &ok);
+    if (!ok)
+    {
+        qWarning() << "Color::slotSetHue Failed to convert '" << str << "' to double";
+    }
+
     if (ok)
     {
         QStatus status = controller->SetHue(value);
+
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get Hue" << QCC_StatusText(status);
+            qWarning() << "Color::slotSetHue Failed to get Hue" << QCC_StatusText(status);
         }
     }
-    else
-    {
-        qWarning() << __FUNCTION__ << "Failed to convert '" << str << "' to double";
-    }
 }
-
 
 
 
 void org_alljoyn_SmartSpaces_Operation_Color::slotOnResponseGetSaturation(QStatus status, const double value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "Color::slotOnResponseGetSaturation";
+
     edit_Saturation->setText(QStringFrom(value));
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_Color::slotOnSaturationChanged(const double value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "Color::slotOnSaturationChanged";
+
     edit_Saturation->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Operation_Color::slotOnResponseSetSaturation(QStatus status)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "Color::slotOnResponseSetSaturation";
+
+    if (status != ER_OK)
+    {
+        qWarning() << "Color::slotOnResponseSetSaturation Failed to set Saturation" << QCC_StatusText(status);
+    }
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_Color::slotSetSaturation()
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "Color::slotSetSaturation";
 
     bool ok = false;
+    double value;
     QString str = edit_Saturation->text();
-    double value = QStringTo<double>(str, &ok);
+    value = QStringTo<double>(str, &ok);
+    if (!ok)
+    {
+        qWarning() << "Color::slotSetSaturation Failed to convert '" << str << "' to double";
+    }
+
     if (ok)
     {
         QStatus status = controller->SetSaturation(value);
+
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get Saturation" << QCC_StatusText(status);
+            qWarning() << "Color::slotSetSaturation Failed to get Saturation" << QCC_StatusText(status);
         }
     }
-    else
-    {
-        qWarning() << __FUNCTION__ << "Failed to convert '" << str << "' to double";
-    }
 }
-

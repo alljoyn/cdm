@@ -26,7 +26,6 @@
  *     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-
 #include "org_alljoyn_SmartSpaces_Operation_RemoteControllability.h"
 #include "QStringConversion.h"
 #include <QDebug>
@@ -42,6 +41,7 @@ using namespace CDMQtWidgets;
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_RemoteControllability*>();
 
 
+
 org_alljoyn_SmartSpaces_Operation_RemoteControllability::org_alljoyn_SmartSpaces_Operation_RemoteControllability(CommonControllerInterface *iface)
   : controller(NULL),
     m_listener(mkRef<Listener>(this))
@@ -53,10 +53,10 @@ org_alljoyn_SmartSpaces_Operation_RemoteControllability::org_alljoyn_SmartSpaces
 
 
     layout->addWidget(new QLabel("IsControllable"));
-    // Create line edit for IsControllable
-    edit_IsControllable = new QLineEdit();
-    edit_IsControllable->setToolTip("Status of remote controllability; true if remote controllability enabled.");
-    edit_IsControllable->setReadOnly(true);
+    // Create the editing widget for IsControllable
+    edit_IsControllable = new QCheckBox();
+    edit_IsControllable->setEnabled(false);
+
     layout->addWidget(edit_IsControllable);
 
     if (iface)
@@ -91,12 +91,12 @@ void org_alljoyn_SmartSpaces_Operation_RemoteControllability::fetchProperties()
 
     if (controller)
     {
-        qWarning() << "org_alljoyn_SmartSpaces_Operation_RemoteControllability getting properties";
+        qWarning() << "RemoteControllability getting properties";
 
         status = controller->GetIsControllable();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get IsControllable" << QCC_StatusText(status);
+            qWarning() << "RemoteControllability::fetchProperties Failed to get IsControllable" << QCC_StatusText(status);
         }
     }
 }
@@ -105,13 +105,19 @@ void org_alljoyn_SmartSpaces_Operation_RemoteControllability::fetchProperties()
 
 void org_alljoyn_SmartSpaces_Operation_RemoteControllability::slotOnResponseGetIsControllable(QStatus status, const bool value)
 {
-    qWarning() << __FUNCTION__;
-    edit_IsControllable->setText(QStringFrom(value));
+    qWarning() << "RemoteControllability::slotOnResponseGetIsControllable";
+
+    edit_IsControllable->setChecked(value);
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_RemoteControllability::slotOnIsControllableChanged(const bool value)
 {
-    qWarning() << __FUNCTION__;
-    edit_IsControllable->setText(QStringFrom(value));
+    qWarning() << "RemoteControllability::slotOnIsControllableChanged";
+
+    edit_IsControllable->setChecked(value);
 }
+
+
 

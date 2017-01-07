@@ -31,6 +31,8 @@
 #define org_alljoyn_SmartSpaces_Operation_FanSpeedLevel_H_
 
 #include <QWidget>
+#include <QCheckBox>
+#include <QComboBox>
 #include <QLineEdit>
 #include <QVBoxLayout>
 #include <QPushButton>
@@ -41,6 +43,7 @@
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
+
 
 namespace CDMQtWidgets
 {
@@ -80,7 +83,7 @@ public:
 
         virtual void OnResponseGetFanSpeedLevel(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "FanSpeedLevel::OnResponseGetFanSpeedLevel";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetFanSpeedLevel", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(uint8_t, value)
@@ -88,21 +91,21 @@ public:
         }
         virtual void OnFanSpeedLevelChanged(const qcc::String& objectPath, const uint8_t value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "FanSpeedLevel::OnFanSpeedLevelChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnFanSpeedLevelChanged", Qt::QueuedConnection,
                               Q_ARG(uint8_t, value)
                               );
         }
         virtual void OnResponseSetFanSpeedLevel(QStatus status, const qcc::String& objectPath, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "FanSpeedLevel::OnResponseSetFanSpeedLevel";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseSetFanSpeedLevel", Qt::QueuedConnection,
                               Q_ARG(QStatus, status)
                               );
         }
         virtual void OnResponseGetMaxFanSpeedLevel(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "FanSpeedLevel::OnResponseGetMaxFanSpeedLevel";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetMaxFanSpeedLevel", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(uint8_t, value)
@@ -110,14 +113,14 @@ public:
         }
         virtual void OnMaxFanSpeedLevelChanged(const qcc::String& objectPath, const uint8_t value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "FanSpeedLevel::OnMaxFanSpeedLevelChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnMaxFanSpeedLevelChanged", Qt::QueuedConnection,
                               Q_ARG(uint8_t, value)
                               );
         }
         virtual void OnResponseGetAutoMode(QStatus status, const qcc::String& objectPath, const FanSpeedLevelInterface::AutoMode value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "FanSpeedLevel::OnResponseGetAutoMode";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetAutoMode", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(FanSpeedLevelInterface::AutoMode, value)
@@ -125,14 +128,14 @@ public:
         }
         virtual void OnAutoModeChanged(const qcc::String& objectPath, const FanSpeedLevelInterface::AutoMode value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "FanSpeedLevel::OnAutoModeChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnAutoModeChanged", Qt::QueuedConnection,
                               Q_ARG(FanSpeedLevelInterface::AutoMode, value)
                               );
         }
         virtual void OnResponseSetAutoMode(QStatus status, const qcc::String& objectPath, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "FanSpeedLevel::OnResponseSetAutoMode";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseSetAutoMode", Qt::QueuedConnection,
                               Q_ARG(QStatus, status)
                               );
@@ -146,7 +149,7 @@ private:
 
     QLineEdit* edit_FanSpeedLevel;
     QLineEdit* edit_MaxFanSpeedLevel;
-    QLineEdit* edit_AutoMode;
+    QComboBox* edit_AutoMode;
 
     void    fetchProperties();
 

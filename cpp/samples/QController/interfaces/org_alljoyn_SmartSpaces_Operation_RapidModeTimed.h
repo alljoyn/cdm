@@ -31,6 +31,8 @@
 #define org_alljoyn_SmartSpaces_Operation_RapidModeTimed_H_
 
 #include <QWidget>
+#include <QCheckBox>
+#include <QComboBox>
 #include <QLineEdit>
 #include <QVBoxLayout>
 #include <QPushButton>
@@ -41,6 +43,7 @@
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
+
 
 namespace CDMQtWidgets
 {
@@ -76,7 +79,7 @@ public:
 
         virtual void OnResponseGetRapidModeMinutesRemaining(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "RapidModeTimed::OnResponseGetRapidModeMinutesRemaining";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetRapidModeMinutesRemaining", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(uint16_t, value)
@@ -84,21 +87,21 @@ public:
         }
         virtual void OnRapidModeMinutesRemainingChanged(const qcc::String& objectPath, const uint16_t value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "RapidModeTimed::OnRapidModeMinutesRemainingChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnRapidModeMinutesRemainingChanged", Qt::QueuedConnection,
                               Q_ARG(uint16_t, value)
                               );
         }
         virtual void OnResponseSetRapidModeMinutesRemaining(QStatus status, const qcc::String& objectPath, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "RapidModeTimed::OnResponseSetRapidModeMinutesRemaining";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseSetRapidModeMinutesRemaining", Qt::QueuedConnection,
                               Q_ARG(QStatus, status)
                               );
         }
         virtual void OnResponseGetMaxSetMinutes(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "RapidModeTimed::OnResponseGetMaxSetMinutes";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetMaxSetMinutes", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(uint16_t, value)
@@ -106,7 +109,7 @@ public:
         }
         virtual void OnMaxSetMinutesChanged(const qcc::String& objectPath, const uint16_t value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "RapidModeTimed::OnMaxSetMinutesChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnMaxSetMinutesChanged", Qt::QueuedConnection,
                               Q_ARG(uint16_t, value)
                               );

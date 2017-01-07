@@ -26,7 +26,6 @@
  *     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-
 #include "org_alljoyn_SmartSpaces_Operation_PlugInUnits.h"
 #include "QStringConversion.h"
 #include <QDebug>
@@ -74,6 +73,12 @@ using namespace CDMQtWidgets;
 
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_PlugInUnits*>();
 
+Q_DECLARE_METATYPE(ajn::services::PlugInUnitsInterface::PlugInInfo);
+Q_DECLARE_METATYPE(std::vector<ajn::services::PlugInUnitsInterface::PlugInInfo>);
+static const int auto_register_struct_PlugInInfo = qRegisterMetaType<ajn::services::PlugInUnitsInterface::PlugInInfo>("PlugInUnitsInterface::PlugInInfo");
+static const int auto_register_struct_v_PlugInInfo = qRegisterMetaType<std::vector<ajn::services::PlugInUnitsInterface::PlugInInfo>>("std::vector<PlugInUnitsInterface::PlugInInfo>");
+
+
 
 org_alljoyn_SmartSpaces_Operation_PlugInUnits::org_alljoyn_SmartSpaces_Operation_PlugInUnits(CommonControllerInterface *iface)
   : controller(NULL),
@@ -86,10 +91,11 @@ org_alljoyn_SmartSpaces_Operation_PlugInUnits::org_alljoyn_SmartSpaces_Operation
 
 
     layout->addWidget(new QLabel("PlugInUnits"));
-    // Create line edit for PlugInUnits
+    // Create the editing widget for PlugInUnits
     edit_PlugInUnits = new QLineEdit();
     edit_PlugInUnits->setToolTip("The lists of all the possible hot pluggable devices and the associated status.");
     edit_PlugInUnits->setReadOnly(true);
+
     layout->addWidget(edit_PlugInUnits);
 
     if (iface)
@@ -124,12 +130,12 @@ void org_alljoyn_SmartSpaces_Operation_PlugInUnits::fetchProperties()
 
     if (controller)
     {
-        qWarning() << "org_alljoyn_SmartSpaces_Operation_PlugInUnits getting properties";
+        qWarning() << "PlugInUnits getting properties";
 
         status = controller->GetPlugInUnits();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get PlugInUnits" << QCC_StatusText(status);
+            qWarning() << "PlugInUnits::fetchProperties Failed to get PlugInUnits" << QCC_StatusText(status);
         }
     }
 }
@@ -138,13 +144,19 @@ void org_alljoyn_SmartSpaces_Operation_PlugInUnits::fetchProperties()
 
 void org_alljoyn_SmartSpaces_Operation_PlugInUnits::slotOnResponseGetPlugInUnits(QStatus status, const std::vector<PlugInUnitsInterface::PlugInInfo>& value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "PlugInUnits::slotOnResponseGetPlugInUnits";
+
     edit_PlugInUnits->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Operation_PlugInUnits::slotOnPlugInUnitsChanged(const std::vector<PlugInUnitsInterface::PlugInInfo>& value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "PlugInUnits::slotOnPlugInUnitsChanged";
+
     edit_PlugInUnits->setText(QStringFrom(value));
 }
+
+
 

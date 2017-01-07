@@ -26,7 +26,6 @@
  *     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-
 #include "org_alljoyn_SmartSpaces_Operation_MoistureOutputLevel.h"
 #include "QStringConversion.h"
 #include <QDebug>
@@ -41,6 +40,12 @@ using namespace CDMQtWidgets;
 
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_MoistureOutputLevel*>();
 
+Q_DECLARE_METATYPE(ajn::services::MoistureOutputLevelInterface::AutoMode);
+Q_DECLARE_METATYPE(std::vector<ajn::services::MoistureOutputLevelInterface::AutoMode>);
+static const int auto_register_enum_AutoMode = qRegisterMetaType<ajn::services::MoistureOutputLevelInterface::AutoMode>("MoistureOutputLevelInterface::AutoMode");
+static const int auto_register_enum_v_AutoMode = qRegisterMetaType<std::vector<ajn::services::MoistureOutputLevelInterface::AutoMode>>("std::vector<MoistureOutputLevelInterface::AutoMode>");
+
+
 
 org_alljoyn_SmartSpaces_Operation_MoistureOutputLevel::org_alljoyn_SmartSpaces_Operation_MoistureOutputLevel(CommonControllerInterface *iface)
   : controller(NULL),
@@ -53,24 +58,29 @@ org_alljoyn_SmartSpaces_Operation_MoistureOutputLevel::org_alljoyn_SmartSpaces_O
 
 
     layout->addWidget(new QLabel("MoistureOutputLevel"));
-    // Create line edit for MoistureOutputLevel
+    // Create the editing widget for MoistureOutputLevel
     edit_MoistureOutputLevel = new QLineEdit();
     edit_MoistureOutputLevel->setToolTip("Current level of moisture output.");
     edit_MoistureOutputLevel->setReadOnly(false);
     QObject::connect(edit_MoistureOutputLevel, SIGNAL(returnPressed()), this, SLOT(slotSetMoistureOutputLevel()));
+
     layout->addWidget(edit_MoistureOutputLevel);
     layout->addWidget(new QLabel("MaxMoistureOutputLevel"));
-    // Create line edit for MaxMoistureOutputLevel
+    // Create the editing widget for MaxMoistureOutputLevel
     edit_MaxMoistureOutputLevel = new QLineEdit();
     edit_MaxMoistureOutputLevel->setToolTip("Maximum level of moisture output.");
     edit_MaxMoistureOutputLevel->setReadOnly(true);
+
     layout->addWidget(edit_MaxMoistureOutputLevel);
     layout->addWidget(new QLabel("AutoMode"));
-    // Create line edit for AutoMode
-    edit_AutoMode = new QLineEdit();
-    edit_AutoMode->setToolTip("Represent enabled/disabled state of the auto mode. The device decides the moisture output level for providing comfortable surroundings automatically.");
-    edit_AutoMode->setReadOnly(false);
-    QObject::connect(edit_AutoMode, SIGNAL(returnPressed()), this, SLOT(slotSetAutoMode()));
+    // Create the editing widget for AutoMode
+    edit_AutoMode = new QComboBox();
+    edit_AutoMode->setEditable(false);
+    edit_AutoMode->addItem("Off");
+    edit_AutoMode->addItem("On");
+    edit_AutoMode->setEnabled(true);
+    QObject::connect(edit_AutoMode, SIGNAL(currentTextChanged(const QString &)), this, SLOT(slotSetAutoMode()));
+
     layout->addWidget(edit_AutoMode);
 
     if (iface)
@@ -105,24 +115,24 @@ void org_alljoyn_SmartSpaces_Operation_MoistureOutputLevel::fetchProperties()
 
     if (controller)
     {
-        qWarning() << "org_alljoyn_SmartSpaces_Operation_MoistureOutputLevel getting properties";
+        qWarning() << "MoistureOutputLevel getting properties";
 
         status = controller->GetMoistureOutputLevel();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get MoistureOutputLevel" << QCC_StatusText(status);
+            qWarning() << "MoistureOutputLevel::fetchProperties Failed to get MoistureOutputLevel" << QCC_StatusText(status);
         }
 
         status = controller->GetMaxMoistureOutputLevel();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get MaxMoistureOutputLevel" << QCC_StatusText(status);
+            qWarning() << "MoistureOutputLevel::fetchProperties Failed to get MaxMoistureOutputLevel" << QCC_StatusText(status);
         }
 
         status = controller->GetAutoMode();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get AutoMode" << QCC_StatusText(status);
+            qWarning() << "MoistureOutputLevel::fetchProperties Failed to get AutoMode" << QCC_StatusText(status);
         }
     }
 }
@@ -131,95 +141,168 @@ void org_alljoyn_SmartSpaces_Operation_MoistureOutputLevel::fetchProperties()
 
 void org_alljoyn_SmartSpaces_Operation_MoistureOutputLevel::slotOnResponseGetMoistureOutputLevel(QStatus status, const uint8_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "MoistureOutputLevel::slotOnResponseGetMoistureOutputLevel";
+
     edit_MoistureOutputLevel->setText(QStringFrom(value));
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_MoistureOutputLevel::slotOnMoistureOutputLevelChanged(const uint8_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "MoistureOutputLevel::slotOnMoistureOutputLevelChanged";
+
     edit_MoistureOutputLevel->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Operation_MoistureOutputLevel::slotOnResponseSetMoistureOutputLevel(QStatus status)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "MoistureOutputLevel::slotOnResponseSetMoistureOutputLevel";
+
+    if (status != ER_OK)
+    {
+        qWarning() << "MoistureOutputLevel::slotOnResponseSetMoistureOutputLevel Failed to set MoistureOutputLevel" << QCC_StatusText(status);
+    }
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_MoistureOutputLevel::slotSetMoistureOutputLevel()
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "MoistureOutputLevel::slotSetMoistureOutputLevel";
 
     bool ok = false;
+    uint8_t value;
     QString str = edit_MoistureOutputLevel->text();
-    uint8_t value = QStringTo<uint8_t>(str, &ok);
+    value = QStringTo<uint8_t>(str, &ok);
+    if (!ok)
+    {
+        qWarning() << "MoistureOutputLevel::slotSetMoistureOutputLevel Failed to convert '" << str << "' to uint8_t";
+    }
+
     if (ok)
     {
         QStatus status = controller->SetMoistureOutputLevel(value);
+
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get MoistureOutputLevel" << QCC_StatusText(status);
+            qWarning() << "MoistureOutputLevel::slotSetMoistureOutputLevel Failed to get MoistureOutputLevel" << QCC_StatusText(status);
         }
     }
-    else
-    {
-        qWarning() << __FUNCTION__ << "Failed to convert '" << str << "' to uint8_t";
-    }
 }
-
 
 
 
 void org_alljoyn_SmartSpaces_Operation_MoistureOutputLevel::slotOnResponseGetMaxMoistureOutputLevel(QStatus status, const uint8_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "MoistureOutputLevel::slotOnResponseGetMaxMoistureOutputLevel";
+
     edit_MaxMoistureOutputLevel->setText(QStringFrom(value));
 }
 
+
+
 void org_alljoyn_SmartSpaces_Operation_MoistureOutputLevel::slotOnMaxMoistureOutputLevelChanged(const uint8_t value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "MoistureOutputLevel::slotOnMaxMoistureOutputLevelChanged";
+
     edit_MaxMoistureOutputLevel->setText(QStringFrom(value));
 }
+
+
 
 
 
 
 void org_alljoyn_SmartSpaces_Operation_MoistureOutputLevel::slotOnResponseGetAutoMode(QStatus status, const MoistureOutputLevelInterface::AutoMode value)
 {
-    qWarning() << __FUNCTION__;
-    edit_AutoMode->setText(QStringFrom(value));
+    qWarning() << "MoistureOutputLevel::slotOnResponseGetAutoMode";
+
+    switch (value)
+    {
+    case MoistureOutputLevelInterface::AUTO_MODE_OFF:
+        edit_AutoMode->setCurrentText("Off");
+        break;
+
+    case MoistureOutputLevelInterface::AUTO_MODE_ON:
+        edit_AutoMode->setCurrentText("On");
+        break;
+
+    default:
+        edit_AutoMode->setCurrentText("");
+        break;
+    }
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_MoistureOutputLevel::slotOnAutoModeChanged(const MoistureOutputLevelInterface::AutoMode value)
 {
-    qWarning() << __FUNCTION__;
-    edit_AutoMode->setText(QStringFrom(value));
+    qWarning() << "MoistureOutputLevel::slotOnAutoModeChanged";
+
+    switch (value)
+    {
+    case MoistureOutputLevelInterface::AUTO_MODE_OFF:
+        edit_AutoMode->setCurrentText("Off");
+        break;
+
+    case MoistureOutputLevelInterface::AUTO_MODE_ON:
+        edit_AutoMode->setCurrentText("On");
+        break;
+
+    default:
+        edit_AutoMode->setCurrentText("");
+        break;
+    }
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_MoistureOutputLevel::slotOnResponseSetAutoMode(QStatus status)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "MoistureOutputLevel::slotOnResponseSetAutoMode";
+
+    if (status != ER_OK)
+    {
+        qWarning() << "MoistureOutputLevel::slotOnResponseSetAutoMode Failed to set AutoMode" << QCC_StatusText(status);
+    }
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_MoistureOutputLevel::slotSetAutoMode()
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "MoistureOutputLevel::slotSetAutoMode";
 
     bool ok = false;
-    QString str = edit_AutoMode->text();
-    MoistureOutputLevelInterface::AutoMode value = QStringTo<MoistureOutputLevelInterface::AutoMode>(str, &ok);
+    MoistureOutputLevelInterface::AutoMode value;
+    QString str = edit_AutoMode->currentText();
+    if (str == "Off")
+    {
+        value = MoistureOutputLevelInterface::AUTO_MODE_OFF;
+        ok = true;
+    }
+    else
+    if (str == "On")
+    {
+        value = MoistureOutputLevelInterface::AUTO_MODE_ON;
+        ok = true;
+    }
+    else
+    if (!str.isEmpty())
+    {
+        qWarning() << "MoistureOutputLevel::slotSetAutoMode Failed to convert '" << str.constData() << "' to MoistureOutputLevelInterface::AutoMode";
+    }
+
     if (ok)
     {
         QStatus status = controller->SetAutoMode(value);
+
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get AutoMode" << QCC_StatusText(status);
+            qWarning() << "MoistureOutputLevel::slotSetAutoMode Failed to get AutoMode" << QCC_StatusText(status);
         }
     }
-    else
-    {
-        qWarning() << __FUNCTION__ << "Failed to convert '" << str << "' to MoistureOutputLevelInterface::AutoMode";
-    }
 }
-

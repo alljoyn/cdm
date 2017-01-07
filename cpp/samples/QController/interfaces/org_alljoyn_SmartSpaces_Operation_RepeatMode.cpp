@@ -26,7 +26,6 @@
  *     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-
 #include "org_alljoyn_SmartSpaces_Operation_RepeatMode.h"
 #include "QStringConversion.h"
 #include <QDebug>
@@ -42,6 +41,7 @@ using namespace CDMQtWidgets;
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_RepeatMode*>();
 
 
+
 org_alljoyn_SmartSpaces_Operation_RepeatMode::org_alljoyn_SmartSpaces_Operation_RepeatMode(CommonControllerInterface *iface)
   : controller(NULL),
     m_listener(mkRef<Listener>(this))
@@ -53,11 +53,11 @@ org_alljoyn_SmartSpaces_Operation_RepeatMode::org_alljoyn_SmartSpaces_Operation_
 
 
     layout->addWidget(new QLabel("RepeatMode"));
-    // Create line edit for RepeatMode
-    edit_RepeatMode = new QLineEdit();
-    edit_RepeatMode->setToolTip("True if the device works in repeat mode.");
-    edit_RepeatMode->setReadOnly(false);
-    QObject::connect(edit_RepeatMode, SIGNAL(returnPressed()), this, SLOT(slotSetRepeatMode()));
+    // Create the editing widget for RepeatMode
+    edit_RepeatMode = new QCheckBox();
+    edit_RepeatMode->setEnabled(true);
+    QObject::connect(edit_RepeatMode, SIGNAL(stateChanged(int)), this, SLOT(slotSetRepeatMode()));
+
     layout->addWidget(edit_RepeatMode);
 
     if (iface)
@@ -92,12 +92,12 @@ void org_alljoyn_SmartSpaces_Operation_RepeatMode::fetchProperties()
 
     if (controller)
     {
-        qWarning() << "org_alljoyn_SmartSpaces_Operation_RepeatMode getting properties";
+        qWarning() << "RepeatMode getting properties";
 
         status = controller->GetRepeatMode();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get RepeatMode" << QCC_StatusText(status);
+            qWarning() << "RepeatMode::fetchProperties Failed to get RepeatMode" << QCC_StatusText(status);
         }
     }
 }
@@ -106,39 +106,50 @@ void org_alljoyn_SmartSpaces_Operation_RepeatMode::fetchProperties()
 
 void org_alljoyn_SmartSpaces_Operation_RepeatMode::slotOnResponseGetRepeatMode(QStatus status, const bool value)
 {
-    qWarning() << __FUNCTION__;
-    edit_RepeatMode->setText(QStringFrom(value));
+    qWarning() << "RepeatMode::slotOnResponseGetRepeatMode";
+
+    edit_RepeatMode->setChecked(value);
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_RepeatMode::slotOnRepeatModeChanged(const bool value)
 {
-    qWarning() << __FUNCTION__;
-    edit_RepeatMode->setText(QStringFrom(value));
+    qWarning() << "RepeatMode::slotOnRepeatModeChanged";
+
+    edit_RepeatMode->setChecked(value);
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_RepeatMode::slotOnResponseSetRepeatMode(QStatus status)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "RepeatMode::slotOnResponseSetRepeatMode";
+
+    if (status != ER_OK)
+    {
+        qWarning() << "RepeatMode::slotOnResponseSetRepeatMode Failed to set RepeatMode" << QCC_StatusText(status);
+    }
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_RepeatMode::slotSetRepeatMode()
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "RepeatMode::slotSetRepeatMode";
 
     bool ok = false;
-    QString str = edit_RepeatMode->text();
-    bool value = QStringTo<bool>(str, &ok);
+    bool value;
+    value = edit_RepeatMode->isChecked();
+    ok = true;
+
     if (ok)
     {
         QStatus status = controller->SetRepeatMode(value);
+
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get RepeatMode" << QCC_StatusText(status);
+            qWarning() << "RepeatMode::slotSetRepeatMode Failed to get RepeatMode" << QCC_StatusText(status);
         }
     }
-    else
-    {
-        qWarning() << __FUNCTION__ << "Failed to convert '" << str << "' to bool";
-    }
 }
-

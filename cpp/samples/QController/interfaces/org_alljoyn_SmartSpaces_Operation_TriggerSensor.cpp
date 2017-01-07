@@ -26,7 +26,6 @@
  *     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-
 #include "org_alljoyn_SmartSpaces_Operation_TriggerSensor.h"
 #include "QStringConversion.h"
 #include <QDebug>
@@ -42,6 +41,7 @@ using namespace CDMQtWidgets;
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_TriggerSensor*>();
 
 
+
 org_alljoyn_SmartSpaces_Operation_TriggerSensor::org_alljoyn_SmartSpaces_Operation_TriggerSensor(CommonControllerInterface *iface)
   : controller(NULL),
     m_listener(mkRef<Listener>(this))
@@ -53,10 +53,10 @@ org_alljoyn_SmartSpaces_Operation_TriggerSensor::org_alljoyn_SmartSpaces_Operati
 
 
     layout->addWidget(new QLabel("CurrentlyTriggered"));
-    // Create line edit for CurrentlyTriggered
-    edit_CurrentlyTriggered = new QLineEdit();
-    edit_CurrentlyTriggered->setToolTip("The current status of the sensor's trigger.");
-    edit_CurrentlyTriggered->setReadOnly(true);
+    // Create the editing widget for CurrentlyTriggered
+    edit_CurrentlyTriggered = new QCheckBox();
+    edit_CurrentlyTriggered->setEnabled(false);
+
     layout->addWidget(edit_CurrentlyTriggered);
 
     if (iface)
@@ -91,12 +91,12 @@ void org_alljoyn_SmartSpaces_Operation_TriggerSensor::fetchProperties()
 
     if (controller)
     {
-        qWarning() << "org_alljoyn_SmartSpaces_Operation_TriggerSensor getting properties";
+        qWarning() << "TriggerSensor getting properties";
 
         status = controller->GetCurrentlyTriggered();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get CurrentlyTriggered" << QCC_StatusText(status);
+            qWarning() << "TriggerSensor::fetchProperties Failed to get CurrentlyTriggered" << QCC_StatusText(status);
         }
     }
 }
@@ -105,13 +105,19 @@ void org_alljoyn_SmartSpaces_Operation_TriggerSensor::fetchProperties()
 
 void org_alljoyn_SmartSpaces_Operation_TriggerSensor::slotOnResponseGetCurrentlyTriggered(QStatus status, const bool value)
 {
-    qWarning() << __FUNCTION__;
-    edit_CurrentlyTriggered->setText(QStringFrom(value));
+    qWarning() << "TriggerSensor::slotOnResponseGetCurrentlyTriggered";
+
+    edit_CurrentlyTriggered->setChecked(value);
 }
+
+
 
 void org_alljoyn_SmartSpaces_Operation_TriggerSensor::slotOnCurrentlyTriggeredChanged(const bool value)
 {
-    qWarning() << __FUNCTION__;
-    edit_CurrentlyTriggered->setText(QStringFrom(value));
+    qWarning() << "TriggerSensor::slotOnCurrentlyTriggeredChanged";
+
+    edit_CurrentlyTriggered->setChecked(value);
 }
+
+
 

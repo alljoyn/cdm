@@ -22,7 +22,6 @@ Q_DECLARE_METATYPE(uint64_t)
 Q_DECLARE_METATYPE(int64_t)
 Q_DECLARE_METATYPE(qcc::String)
 
-Q_DECLARE_METATYPE(std::vector<ajn::services::AlertsInterface::AlertRecord>);
 
 static const char* DefaultStyle =
 "#alertsList {\n"
@@ -48,9 +47,6 @@ int main(int argc, char *argv[])
     qRegisterMetaType<uint64_t>("uint64_t");
     qRegisterMetaType<int64_t>("int64_t");
     qRegisterMetaType<qcc::String>();
-
-    qRegisterMetaType<std::vector<ajn::services::AlertsInterface::AlertRecord>>("std::vector<AlertsInterface::AlertRecord>");
-    qRegisterMetaType<std::vector<ajn::services::AlertsInterface::AlertCodesDescriptor>>("std::vector<AlertsInterface::AlertCodesDescriptor>");
 
     QApplication a(argc, argv);
 

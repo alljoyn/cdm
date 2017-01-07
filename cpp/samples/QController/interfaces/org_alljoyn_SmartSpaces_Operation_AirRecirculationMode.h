@@ -31,6 +31,8 @@
 #define org_alljoyn_SmartSpaces_Operation_AirRecirculationMode_H_
 
 #include <QWidget>
+#include <QCheckBox>
+#include <QComboBox>
 #include <QLineEdit>
 #include <QVBoxLayout>
 #include <QPushButton>
@@ -41,6 +43,7 @@
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
+
 
 namespace CDMQtWidgets
 {
@@ -74,7 +77,7 @@ public:
 
         virtual void OnResponseGetIsRecirculating(QStatus status, const qcc::String& objectPath, const bool value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "AirRecirculationMode::OnResponseGetIsRecirculating";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetIsRecirculating", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(bool, value)
@@ -82,14 +85,14 @@ public:
         }
         virtual void OnIsRecirculatingChanged(const qcc::String& objectPath, const bool value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "AirRecirculationMode::OnIsRecirculatingChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnIsRecirculatingChanged", Qt::QueuedConnection,
                               Q_ARG(bool, value)
                               );
         }
         virtual void OnResponseSetIsRecirculating(QStatus status, const qcc::String& objectPath, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "AirRecirculationMode::OnResponseSetIsRecirculating";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseSetIsRecirculating", Qt::QueuedConnection,
                               Q_ARG(QStatus, status)
                               );
@@ -101,7 +104,7 @@ private:
     Ref<Listener> m_listener;
 
 
-    QLineEdit* edit_IsRecirculating;
+    QCheckBox* edit_IsRecirculating;
 
     void    fetchProperties();
 

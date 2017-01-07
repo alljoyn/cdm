@@ -8,6 +8,9 @@
 #include <QTableWidget>
 #include <QHeaderView>
 
+#include <iostream>
+using namespace std;
+
 #include "qcontroller.h"
 #include "commoncontrollermodel.h"
 #include "LogModel.h"
@@ -18,13 +21,13 @@ QController::QController(QWidget *parent) :
     QMainWindow(parent)
 {
     setObjectName("QController");
-    resize(800, 600);
+    resize(1000, 800);
 
     QSplitter* centralWidget = new QSplitter(Qt::Vertical, this);
 
     QSplitter* deviceWidget = new QSplitter(Qt::Horizontal, centralWidget);
 
-    QTreeView* deviceTree = new QTreeView(deviceWidget);
+    QTreeView* deviceTree = new QTreeView();
     deviceTree->setObjectName("deviceTree");
     deviceTree->setAlternatingRowColors(true);
     deviceTree->setHeaderHidden(true);
@@ -32,7 +35,13 @@ QController::QController(QWidget *parent) :
     deviceTree->setSelectionMode(QAbstractItemView::SingleSelection);
     deviceTree->setModel(new CommonControllerModel(deviceTree));
 
-    InspectorWidget* inspector = new InspectorWidget(deviceWidget);
+    InspectorWidget* inspector = new InspectorWidget();
+
+    // make the device tree a bit smaller
+    deviceWidget->addWidget(deviceTree);
+    deviceWidget->addWidget(inspector);
+    deviceWidget->setStretchFactor(0, 1);
+    deviceWidget->setStretchFactor(1, 4);
 
     QObject::connect(deviceTree->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)), inspector, SLOT(deviceSelectionChanged(const QItemSelection&, const QItemSelection&)));
 

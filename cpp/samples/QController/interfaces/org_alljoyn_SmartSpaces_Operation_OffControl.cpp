@@ -26,7 +26,6 @@
  *     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-
 #include "org_alljoyn_SmartSpaces_Operation_OffControl.h"
 #include "QStringConversion.h"
 #include <QDebug>
@@ -40,6 +39,7 @@
 using namespace CDMQtWidgets;
 
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_OffControl*>();
+
 
 
 org_alljoyn_SmartSpaces_Operation_OffControl::org_alljoyn_SmartSpaces_Operation_OffControl(CommonControllerInterface *iface)
@@ -90,7 +90,7 @@ void org_alljoyn_SmartSpaces_Operation_OffControl::fetchProperties()
 
     if (controller)
     {
-        qWarning() << "org_alljoyn_SmartSpaces_Operation_OffControl getting properties";
+        qWarning() << "OffControl getting properties";
     }
 }
 
@@ -98,14 +98,18 @@ void org_alljoyn_SmartSpaces_Operation_OffControl::fetchProperties()
 
 void org_alljoyn_SmartSpaces_Operation_OffControl::slotClickSwitchOff()
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "OffControl::slotClickSwitchOff";
 
 
+    bool ok = true;
 
-    QStatus status = controller->SwitchOff(NULL);
-    if (status != ER_OK)
+    if (ok)
     {
-        qWarning() << __FUNCTION__ << " Failed to call SwitchOff" << QCC_StatusText(status);
+        QStatus status = controller->SwitchOff(NULL);
+        if (status != ER_OK)
+        {
+            qWarning() << "OffControl::slotClick Failed to call SwitchOff" << QCC_StatusText(status);
+        }
     }
 }
 
@@ -115,10 +119,10 @@ void org_alljoyn_SmartSpaces_Operation_OffControl::slotOnResponseMethodSwitchOff
 {
     if (status == ER_OK)
     {
-        qInfo() << "Received response to method SwitchOff";
+        qInfo() << "OffControl::slotOnResponseMethodSwitchOff";
     }
     else
     {
-        qWarning() << "Received an error from method SwitchOff, error = " << errorName;
+        qWarning() << "OffControl::slotOnResponseMethodSwitchOff Received error = " << errorName;
     }
 }

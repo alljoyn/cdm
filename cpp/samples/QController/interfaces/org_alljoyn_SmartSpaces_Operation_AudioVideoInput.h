@@ -31,6 +31,8 @@
 #define org_alljoyn_SmartSpaces_Operation_AudioVideoInput_H_
 
 #include <QWidget>
+#include <QCheckBox>
+#include <QComboBox>
 #include <QLineEdit>
 #include <QVBoxLayout>
 #include <QPushButton>
@@ -41,6 +43,7 @@
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
+
 
 namespace CDMQtWidgets
 {
@@ -76,7 +79,7 @@ public:
 
         virtual void OnResponseGetInputSourceId(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "AudioVideoInput::OnResponseGetInputSourceId";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetInputSourceId", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(uint16_t, value)
@@ -84,21 +87,21 @@ public:
         }
         virtual void OnInputSourceIdChanged(const qcc::String& objectPath, const uint16_t value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "AudioVideoInput::OnInputSourceIdChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnInputSourceIdChanged", Qt::QueuedConnection,
                               Q_ARG(uint16_t, value)
                               );
         }
         virtual void OnResponseSetInputSourceId(QStatus status, const qcc::String& objectPath, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "AudioVideoInput::OnResponseSetInputSourceId";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseSetInputSourceId", Qt::QueuedConnection,
                               Q_ARG(QStatus, status)
                               );
         }
         virtual void OnResponseGetSupportedInputSources(QStatus status, const qcc::String& objectPath, const std::vector<AudioVideoInputInterface::InputSource>& value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "AudioVideoInput::OnResponseGetSupportedInputSources";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetSupportedInputSources", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(std::vector<AudioVideoInputInterface::InputSource>, value)
@@ -106,7 +109,7 @@ public:
         }
         virtual void OnSupportedInputSourcesChanged(const qcc::String& objectPath, const std::vector<AudioVideoInputInterface::InputSource>& value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "AudioVideoInput::OnSupportedInputSourcesChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnSupportedInputSourcesChanged", Qt::QueuedConnection,
                               Q_ARG(std::vector<AudioVideoInputInterface::InputSource>, value)
                               );

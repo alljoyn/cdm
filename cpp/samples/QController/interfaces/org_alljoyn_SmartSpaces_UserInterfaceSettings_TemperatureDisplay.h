@@ -31,6 +31,8 @@
 #define org_alljoyn_SmartSpaces_UserInterfaceSettings_TemperatureDisplay_H_
 
 #include <QWidget>
+#include <QCheckBox>
+#include <QComboBox>
 #include <QLineEdit>
 #include <QVBoxLayout>
 #include <QPushButton>
@@ -41,6 +43,7 @@
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
+
 
 namespace CDMQtWidgets
 {
@@ -76,7 +79,7 @@ public:
 
         virtual void OnResponseGetDisplayTemperatureUnit(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "TemperatureDisplay::OnResponseGetDisplayTemperatureUnit";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetDisplayTemperatureUnit", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(uint8_t, value)
@@ -84,21 +87,21 @@ public:
         }
         virtual void OnDisplayTemperatureUnitChanged(const qcc::String& objectPath, const uint8_t value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "TemperatureDisplay::OnDisplayTemperatureUnitChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnDisplayTemperatureUnitChanged", Qt::QueuedConnection,
                               Q_ARG(uint8_t, value)
                               );
         }
         virtual void OnResponseSetDisplayTemperatureUnit(QStatus status, const qcc::String& objectPath, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "TemperatureDisplay::OnResponseSetDisplayTemperatureUnit";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseSetDisplayTemperatureUnit", Qt::QueuedConnection,
                               Q_ARG(QStatus, status)
                               );
         }
         virtual void OnResponseGetSupportedDisplayTemperatureUnits(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "TemperatureDisplay::OnResponseGetSupportedDisplayTemperatureUnits";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetSupportedDisplayTemperatureUnits", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(std::vector<uint8_t>, value)
@@ -106,7 +109,7 @@ public:
         }
         virtual void OnSupportedDisplayTemperatureUnitsChanged(const qcc::String& objectPath, const std::vector<uint8_t>& value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "TemperatureDisplay::OnSupportedDisplayTemperatureUnitsChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnSupportedDisplayTemperatureUnitsChanged", Qt::QueuedConnection,
                               Q_ARG(std::vector<uint8_t>, value)
                               );

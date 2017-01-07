@@ -31,6 +31,8 @@
 #define org_alljoyn_SmartSpaces_Operation_PlugInUnits_H_
 
 #include <QWidget>
+#include <QCheckBox>
+#include <QComboBox>
 #include <QLineEdit>
 #include <QVBoxLayout>
 #include <QPushButton>
@@ -41,6 +43,7 @@
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
+
 
 namespace CDMQtWidgets
 {
@@ -72,7 +75,7 @@ public:
 
         virtual void OnResponseGetPlugInUnits(QStatus status, const qcc::String& objectPath, const std::vector<PlugInUnitsInterface::PlugInInfo>& value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "PlugInUnits::OnResponseGetPlugInUnits";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetPlugInUnits", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(std::vector<PlugInUnitsInterface::PlugInInfo>, value)
@@ -80,7 +83,7 @@ public:
         }
         virtual void OnPlugInUnitsChanged(const qcc::String& objectPath, const std::vector<PlugInUnitsInterface::PlugInInfo>& value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "PlugInUnits::OnPlugInUnitsChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnPlugInUnitsChanged", Qt::QueuedConnection,
                               Q_ARG(std::vector<PlugInUnitsInterface::PlugInInfo>, value)
                               );

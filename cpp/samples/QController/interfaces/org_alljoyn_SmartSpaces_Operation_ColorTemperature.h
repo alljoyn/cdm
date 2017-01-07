@@ -31,6 +31,8 @@
 #define org_alljoyn_SmartSpaces_Operation_ColorTemperature_H_
 
 #include <QWidget>
+#include <QCheckBox>
+#include <QComboBox>
 #include <QLineEdit>
 #include <QVBoxLayout>
 #include <QPushButton>
@@ -41,6 +43,7 @@
 #include "commoncontrollerimpl.h"
 
 using namespace ajn::services;
+
 
 namespace CDMQtWidgets
 {
@@ -78,7 +81,7 @@ public:
 
         virtual void OnResponseGetTemperature(QStatus status, const qcc::String& objectPath, const double value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "ColorTemperature::OnResponseGetTemperature";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetTemperature", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(double, value)
@@ -86,21 +89,21 @@ public:
         }
         virtual void OnTemperatureChanged(const qcc::String& objectPath, const double value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "ColorTemperature::OnTemperatureChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnTemperatureChanged", Qt::QueuedConnection,
                               Q_ARG(double, value)
                               );
         }
         virtual void OnResponseSetTemperature(QStatus status, const qcc::String& objectPath, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "ColorTemperature::OnResponseSetTemperature";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseSetTemperature", Qt::QueuedConnection,
                               Q_ARG(QStatus, status)
                               );
         }
         virtual void OnResponseGetMinTemperature(QStatus status, const qcc::String& objectPath, const double value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "ColorTemperature::OnResponseGetMinTemperature";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetMinTemperature", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(double, value)
@@ -108,14 +111,14 @@ public:
         }
         virtual void OnMinTemperatureChanged(const qcc::String& objectPath, const double value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "ColorTemperature::OnMinTemperatureChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnMinTemperatureChanged", Qt::QueuedConnection,
                               Q_ARG(double, value)
                               );
         }
         virtual void OnResponseGetMaxTemperature(QStatus status, const qcc::String& objectPath, const double value, void* context) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "ColorTemperature::OnResponseGetMaxTemperature";
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetMaxTemperature", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
                               Q_ARG(double, value)
@@ -123,7 +126,7 @@ public:
         }
         virtual void OnMaxTemperatureChanged(const qcc::String& objectPath, const double value) override
         {
-            qWarning() << __FUNCTION__;
+            qWarning() << "ColorTemperature::OnMaxTemperatureChanged";
             QMetaObject::invokeMethod(m_widget, "slotOnMaxTemperatureChanged", Qt::QueuedConnection,
                               Q_ARG(double, value)
                               );
