@@ -35,17 +35,18 @@ file(GLOB INTERFACE_SOURCE_FILES
     interfaces/*.h
 )
 
-set(ALLJOYN_DIST "${PROJECT_SOURCE_DIR}/../../../build/darwin/x86_64/debug/dist")
+set(ALLJOYN_DIST "/Users/Nathaniel/projects/alljoyn/core/alljoyn/build/darwin/x86_64/debug/dist")
+set(CDM_DIST "${PROJECT_SOURCE_DIR}/../../../build/darwin/x86_64/debug/dist")
 
 include_directories(SYSTEM
     ${ALLJOYN_DIST}/cpp/inc
-    ${ALLJOYN_DIST}/cdm/framework/inc
-    ${ALLJOYN_DIST}/cdm/interfaces/inc
+    ${CDM_DIST}/cdm/framework/inc
+    ${CDM_DIST}/cdm/interfaces/inc
 )
 
 link_directories(
     ${ALLJOYN_DIST}/cpp/lib
-    ${ALLJOYN_DIST}/cdm/lib
+    ${CDM_DIST}/cdm/lib
 )
 
 add_definitions(
@@ -57,8 +58,8 @@ add_definitions(
 
 add_executable(QController ${SOURCE_FILES} ${INTERFACE_SOURCE_FILES})
 target_link_libraries(QController Qt5::Widgets 
-    ${ALLJOYN_DIST}/cdm/lib/liballjoyn_cdm_common.a 
-    ${ALLJOYN_DIST}/cdm/lib/liballjoyn_cdm_controller.a 
-    ${ALLJOYN_DIST}/cdm/lib/liballjoyn_cdm_interfaces.a 
-    ${ALLJOYN_DIST}/cdm/lib/liballjoyn_cdm_util.a 
+    ${CDM_DIST}/cdm/lib/liballjoyn_cdm_common.a
+    ${CDM_DIST}/cdm/lib/liballjoyn_cdm_controller.a
+    ${CDM_DIST}/cdm/lib/liballjoyn_cdm_interfaces.a
+    ${CDM_DIST}/cdm/lib/liballjoyn_cdm_util.a
     alljoyn ajrouter)

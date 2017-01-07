@@ -1,17 +1,30 @@
 /******************************************************************************
- * Copyright AllSeen Alliance. All rights reserved.
+ * Copyright (c) 2016 Open Connectivity Foundation (OCF) and AllJoyn Open
+ *    Source Project (AJOSP) Contributors and others.
  *
- *    Permission to use, copy, modify, and/or distribute this software for any
- *    purpose with or without fee is hereby granted, provided that the above
- *    copyright notice and this permission notice appear in all copies.
+ *    SPDX-License-Identifier: Apache-2.0
  *
- *    THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- *    WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- *    MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- *    ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- *    WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- *    ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ *    All rights reserved. This program and the accompanying materials are
+ *    made available under the terms of the Apache License, Version 2.0
+ *    which accompanies this distribution, and is available at
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Copyright 2016 Open Connectivity Foundation and Contributors to
+ *    AllSeen Alliance. All rights reserved.
+ *
+ *    Permission to use, copy, modify, and/or distribute this software for
+ *    any purpose with or without fee is hereby granted, provided that the
+ *    above copyright notice and this permission notice appear in all
+ *    copies.
+ *
+ *     THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+ *     WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+ *     WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE
+ *     AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL
+ *     DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR
+ *     PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
+ *     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+ *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
 #ifndef org_alljoyn_SmartSpaces_Operation_AudioVideoInput_H_
@@ -42,8 +55,8 @@ public:
     // Slots mirror the callbacks to avoid threading issues
 private slots:
 
-    void slotOnResponseGetInputSourceId(QStatus status, const AudioVideoInputInterface::SourceType value);
-    void slotOnInputSourceIdChanged(const AudioVideoInputInterface::SourceType value);
+    void slotOnResponseGetInputSourceId(QStatus status, const uint16_t value);
+    void slotOnInputSourceIdChanged(const uint16_t value);
     void slotOnResponseSetInputSourceId(QStatus status);
     void slotSetInputSourceId();
     void slotOnResponseGetSupportedInputSources(QStatus status, const std::vector<AudioVideoInputInterface::InputSource>& value);
@@ -61,19 +74,19 @@ public:
         {
         }
 
-        virtual void OnResponseGetInputSourceId(QStatus status, const qcc::String& objectPath, const AudioVideoInputInterface::SourceType value, void* context) override
+        virtual void OnResponseGetInputSourceId(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context) override
         {
             qWarning() << __FUNCTION__;
             QMetaObject::invokeMethod(m_widget, "slotOnResponseGetInputSourceId", Qt::QueuedConnection,
                               Q_ARG(QStatus, status),
-                              Q_ARG(AudioVideoInputInterface::SourceType, value)
+                              Q_ARG(uint16_t, value)
                               );
         }
-        virtual void OnInputSourceIdChanged(const qcc::String& objectPath, const AudioVideoInputInterface::SourceType value) override
+        virtual void OnInputSourceIdChanged(const qcc::String& objectPath, const uint16_t value) override
         {
             qWarning() << __FUNCTION__;
             QMetaObject::invokeMethod(m_widget, "slotOnInputSourceIdChanged", Qt::QueuedConnection,
-                              Q_ARG(AudioVideoInputInterface::SourceType, value)
+                              Q_ARG(uint16_t, value)
                               );
         }
         virtual void OnResponseSetInputSourceId(QStatus status, const qcc::String& objectPath, void* context) override
