@@ -404,8 +404,8 @@ QStatus SuperControllee::CreateInterfaces()
             }
             else
             {
-                cerr << "Unrecognised interface name " << name << "\n";
-                status = ER_FAIL;
+                cerr << "Skipping unrecognised interface name " << name << "\n";
+                status = ER_OK;
             }
 
             if (status != ER_OK)

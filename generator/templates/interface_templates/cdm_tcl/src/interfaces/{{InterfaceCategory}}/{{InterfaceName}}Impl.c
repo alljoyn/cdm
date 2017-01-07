@@ -161,43 +161,73 @@ static AJ_Status {{Interface.Name}}_Get{{p.Name}}(AJ_BusAttachment* busAttachmen
 }
 {% endif %}
 {% if p.Writable %}
+{% if p.ValueIn or p.Type.ajtypeIsEnum() %}
 
-static AJ_Status {{p.Name}}_ValueValid({{Interface.Name}}Model* model, {{p.Type.tcltype()}} value)
+static AJ_Status Validate{{p.Name}}({{Interface.Name}}Model* model, const char* objPath, {{p.Type.tcltype()}} value)
 {
-    return AJ_OK;
-}
+    AJ_Status status{% if not p.ValueIn %} = AJ_OK{%endif%};
+    {% if p.ValueIn %}
+    {{Interface.PropLUT[p.ValueIn].Type.tcltype()}} validValues;
+    status = model->Get{{p.ValueIn}}(model, objPath, &validValues);
+    if (status != AJ_OK)
+        return status;
 
+    status = (valueIn_{{Interface.PropLUT[p.ValueIn].Type.tcltype()}}(value, &validValues) == 1) ? AJ_OK : AJ_ERR_NO_MATCH;
+
+    Free{{Interface.PropLUT[p.ValueIn].Type.tcltype()}}(&validValues);
+    {% endif %}
+    {% if p.Type.ajtypeIsEnum() %}
+    {% set enum = p.Type.ajtypeIsEnum() %}
+
+    switch (value)
+    {
+        {% for ename in enum.Values %}
+        case {{Interface.Name.upper()}}_{{enum.Name.upper_snake()}}_{{ename.Name.upper_snake()}}:
+        {% endfor %}
+            break;
+
+        default:
+            return AJ_ERR_INVALID;
+    }
+    {% endif %}
+    return status;
+}
+{% endif %}
 {% if p.Clamp %}
+
 static AJ_Status clamp{{p.Name}}({{Interface.Name}}Model* model, const char* objPath, {{p.Type.tcltype()}} value, {{p.Type.tcltype()}} *out)
 {
     AJ_Status status;
     {% if p.Min != None %}
-    {{p.Type.tcltype()}} minValue; = {{p.Min}};
+
+    {{p.Type.tcltype()}} minValue = {{p.Min}};
     {% endif %}
     {% if p.MinFromProperty != None %}
+
     {{p.Type.tcltype()}} minValue;
     status = model->Get{{p.MinFromProperty}}(model, objPath, &minValue);
     if (status != AJ_OK)
         return status;
     {% endif %}
-
     {% if p.Max != None %}
-    {{p.Type.tcltype()}} maxValue; = {{p.Max}};{% endif %}
+
+    {{p.Type.tcltype()}} maxValue = {{p.Max}};{% endif %}
     {% if p.MaxFromProperty != None %}
+
     {{p.Type.tcltype()}} maxValue;
     status = model->Get{{p.MaxFromProperty}}(model, objPath, &maxValue);
     if (status != AJ_OK)
         return status;
     {% endif %}
 
+    {{p.Type.tcltype()}} stepValue = 0;
     {% if p.StepFromProperty != None %}
-    {{p.Type.tcltype()}} stepValue;
     status = model->Get{{p.StepFromProperty}}(model, objPath, &stepValue);
     if (status != AJ_OK)
         return status;
     {% endif %}
 
-    *out = clamp{{p.Type.tclTypeName()}}(value, minValue, maxValue, stepValue);
+    *out = clamp_{{p.Type.tclTypeName()}}(value, minValue, maxValue, stepValue);
     return AJ_OK;
 }
 {% endif %}
@@ -217,19 +247,27 @@ static AJ_Status {{Interface.Name}}_Set{{p.Name}}(AJ_BusAttachment* busAttachmen
     if (!model->Set{{p.Name}}) {
         return AJ_ERR_NULL;
     }
+    {% if p.CustomCheck %}
 
+    {% include ["patch/" ~ Interface.Name ~ "_Validate" ~ p.Name ~ ".c", "patch/TODO.c"] ignore missing with context %}
+    {% else %}
     {% if p.Clamp %}
+
     status = clamp{{p.Name}}(model, objPath, value, &value);
     if (status != AJ_OK)
         return status;
     {% endif %}
+    {% if p.ValueIn or p.Type.ajtypeIsEnum() %}
 
-    status = {{p.Name}}_ValueValid(model, value);
+    status = Validate{{p.Name}}(model, objPath, value);
     if (status != AJ_OK)
         return status;
+    {% endif %}
+    {% endif %}
 
     model->busAttachment = busAttachment;
-    return model->Set{{p.Name}}(model, objPath, value);
+    status = model->Set{{p.Name}}(model, objPath, value);
+    return status;
 }
 {% endif %}
 {% if p.EmitsChangedSignal %}

@@ -13,6 +13,7 @@
  *    ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
+
 #include <map>
 
 #include <alljoyn/cdm/common/LogModule.h>
@@ -28,10 +29,9 @@ using namespace qcc;
 namespace ajn {
 namespace services {
 
-CdmBusObject::CdmBusObject(BusAttachment& busAttachment, String const& objectPath, CdmControllee& controllee) :
+CdmBusObject::CdmBusObject(BusAttachment& busAttachment, String const& objectPath) :
         BusObject(objectPath.c_str()),
-        m_busAttachment(busAttachment),
-        m_controllee(controllee)
+        m_busAttachment(busAttachment)
 {}
 
 CdmBusObject::~CdmBusObject()
@@ -40,17 +40,17 @@ CdmBusObject::~CdmBusObject()
     m_cdmInterfacesMap.clear();
 }
 
-QStatus CdmBusObject::Start()
-{
-    QStatus status = ER_OK;
-
-    return status;
-}
-
-QStatus CdmBusObject::Stop()
-{
-    return ER_OK;
-}
+//QStatus CdmBusObject::Start()
+//{
+//    QStatus status = ER_OK;
+//
+//    return status;
+//}
+//
+//QStatus CdmBusObject::Stop()
+//{
+//    return ER_OK;
+//}
 
 QStatus CdmBusObject::RegisterInterface(CdmInterface* interface)
 {
@@ -126,7 +126,7 @@ void CdmBusObject::OnMethodHandler(const InterfaceDescription::Member* member, M
 
         InterfaceReceiver* controllee = dynamic_cast<InterfaceReceiver*>(it->second);
         if (controllee) {
-            controllee->OnMethodHandler(member, msg, m_controllee);
+            controllee->OnMethodHandler(member, msg);
         } else {
             status = ER_BUS_METHOD_CALL_ABORTED;
             QCC_LogError(status, ("%s: interface object not found.", __func__));

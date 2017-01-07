@@ -28,6 +28,8 @@
 #include <interfaces/controllee/environment/TargetTemperatureIntfControllee.h>
 #include <interfaces/controllee/environment/TargetTemperatureIntfControlleeModel.h>
 
+#include "../CdmInterfaceValidation.h"
+
 
 using namespace qcc;
 using namespace std;
@@ -120,6 +122,7 @@ class TargetTemperatureIntfControllee::Impl :
      */
     Impl(BusAttachment& busAttachment, Ref<TargetTemperatureIntfControlleeModel> model, CdmBusObject& cdmBusObject);
 
+    QStatus clampTargetValue(double value, double& out);
 
     BusAttachment& m_busAttachment;
     Ref<TargetTemperatureIntfControlleeModel> m_TargetTemperatureModelInterface;
@@ -179,17 +182,17 @@ QStatus TargetTemperatureIntfControllee::EmitStepValueChanged(const double newVa
     QStatus status = interface->Init();
     if (status != ER_OK) {
         QCC_LogError(status, ("%s: could not initialize interface", __func__));
-        goto ERROR;
+        goto ERROR_CLEANUP;
     }
 
     status = cdmBusObject.RegisterInterface(interface);
     if (status != ER_OK) {
-        goto ERROR;
+        goto ERROR_CLEANUP;
     }
 
     return interface;
 
-ERROR:
+ERROR_CLEANUP:
     delete interface;
     return nullptr;
 }
@@ -280,40 +283,40 @@ QStatus TargetTemperatureIntfControllee::Impl::OnSetProperty(const String& propN
         if (msgarg.Signature() != "d") {
             return ER_BUS_NO_SUCH_PROPERTY;
         }
-
         double value;
         {
             CdmMsgCvt<double> converter;
             converter.get(msgarg, value);
         }
 
-        QStatus status;
-        status = m_TargetTemperatureModelInterface->SetTargetValue(value);
+        double validValue = value;
+
+        if (clampTargetValue(value, validValue) != ER_OK)
+            return ER_INVALID_DATA;
+
+        QStatus status = m_TargetTemperatureModelInterface->SetTargetValue(validValue);
         if (status != ER_OK) {
             QCC_LogError(status, ("%s: failed to set property value", __func__));
             return ER_BUS_PROPERTY_VALUE_NOT_SET;
         }
 
-        EmitTargetValueChanged(value);
+        EmitTargetValueChanged(validValue);
 
         return ER_OK;
     } else    if (!(s_prop_MinValue.compare(propName))) {
         if (msgarg.Signature() != "d") {
             return ER_BUS_NO_SUCH_PROPERTY;
         }
-
         return ER_BUS_PROPERTY_VALUE_NOT_SET;
     } else    if (!(s_prop_MaxValue.compare(propName))) {
         if (msgarg.Signature() != "d") {
             return ER_BUS_NO_SUCH_PROPERTY;
         }
-
         return ER_BUS_PROPERTY_VALUE_NOT_SET;
     } else    if (!(s_prop_StepValue.compare(propName))) {
         if (msgarg.Signature() != "d") {
             return ER_BUS_NO_SUCH_PROPERTY;
         }
-
         return ER_BUS_PROPERTY_VALUE_NOT_SET;
     } else {
         return ER_BUS_NO_SUCH_PROPERTY;
@@ -394,5 +397,27 @@ QStatus TargetTemperatureIntfControllee::Impl::EmitStepValueChanged(const double
 }
 
 
+QStatus TargetTemperatureIntfControllee::Impl::clampTargetValue(double value, double& out)
+{
+    QStatus status;
+
+    double minValue;
+    status = m_TargetTemperatureModelInterface->GetMinValue(minValue);
+    if (status != ER_OK)
+        return ER_BUS_PROPERTY_VALUE_NOT_SET;
+
+    double maxValue;
+    status = m_TargetTemperatureModelInterface->GetMaxValue(maxValue);
+    if (status != ER_OK)
+        return ER_BUS_PROPERTY_VALUE_NOT_SET;
+
+    double stepValue = 0;
+    status = m_TargetTemperatureModelInterface->GetStepValue(stepValue);
+    if (status != ER_OK)
+        return ER_BUS_PROPERTY_VALUE_NOT_SET;
+
+    out = clamp(value, minValue, maxValue, stepValue);
+    return ER_OK;
+}
 } //namespace services
 } //namespace ajn

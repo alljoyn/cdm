@@ -16,8 +16,8 @@ import xml.parsers.expat
 import xml.sax
 import re
 import string
-import inspect
 from collections import namedtuple
+
 
 class Symbol(object):
     """
@@ -79,9 +79,6 @@ class Symbol(object):
 
 def _padded_tag_replacement(value, prefix=""):
     return value
-    #func_name = inspect.stack()[1][3]
-    #full_name = prefix + "." + func_name if prefix else func_name
-    #return "{0: <{1}}".format(value, len(full_name) + 4)
 
 
 class AJType(object):
@@ -261,6 +258,7 @@ class AJType(object):
 
     def ajtypeIsEnum(self, name = None):
         # See if the name in [Name] is an enum in this interface
+        # If so then return the InterfaceEnum object, otherwise None
         if name == None:
             # like cpptype
             ajtype = self.annotated_type if self.annotated_type else self.signature
@@ -272,8 +270,8 @@ class AJType(object):
             interface = interface_of(self)
             for enum in interface.Enums:
                 if enum.Name == name:
-                    return True
-        return False
+                    return enum
+        return None
 
 
     def ajtypeIsStruct(self, name = None):
@@ -337,11 +335,10 @@ class AJType(object):
 
         return sig
 
-
     def tcltype(self, enumByName = True):
         ajtype = self.annotated_type if self.annotated_type else self.signature
-        ctype  = None
-        array  = False
+        ctype = None
+        array = False
 
         if ajtype.startswith("a"):
             array = True
@@ -357,7 +354,7 @@ class AJType(object):
                 if interface:
                     ctype = str(interface.Name) + "_" + ajtype
 
-        if ctype == None:
+        if ctype is None:
             if array:
                 ctype = self.TCLArrayMap.get(ajtype, "/* TODO:%{} */".format(ajtype))
             else:
@@ -395,7 +392,8 @@ class AJType(object):
         return None
 
     def tclTypeName(self):
-        return self.TCLHalMap.get(self.signature)
+        name = self.signature[1:] if self.signature.startswith("a") else self.signature
+        return self.TCLArrayMap.get(name)
 
     def tclHalEncoder(self, decode = False):
         if decode:
@@ -465,7 +463,7 @@ class AJType(object):
 
             if interface and self.ajtypeIsEnum(cpptype):
                 for annotation in interface.Annotations:
-                    if annotation.Name.find("org.twobulls.Bus.Struct") != -1:
+                    if annotation.Name.find("org.twobulls.Struct") != -1:
                         if annotation.Name.lower().find(cpptype.lower()) != -1:
                             if annotation.Name.find(".Sig") != -1:
                                 cpptype = self.cpp_signature_type(annotation.Value)
@@ -565,12 +563,14 @@ class InterfaceEnum(object):
     def __init__(self, name, parent = None):
         self.Name = Symbol(name)
         self.Values = []
+        self.InvalidValues = []
         self.parent = parent
 
     def add_value(self, enumerator, value):
         enum_value_name = str(enumerator).replace("-", "_")
         enum_value_name = filter(lambda c: c in (string.ascii_letters + string.digits + "_"), enum_value_name)
-        self.Values.append(InterfaceEnum.EnumEntry(Symbol(enum_value_name), value))
+        array = self.InvalidValues if (value == '255' and 'NotSupported' in enum_value_name) else self.Values
+        array.append(InterfaceEnum.EnumEntry(Symbol(enum_value_name), value))
 
     def enum_type(self):
         name = '['+str(self.Name)+']'
@@ -589,9 +589,9 @@ class InterfaceEnum(object):
 
         # Internal code gen use to gain type signature of enums contained in structs.
         for annotation in interface.Annotations:
-            if (annotation.Name.find("org.twobulls.Bus.Struct") != -1):
-                if (annotation.Name.lower().find(self.Name.string.lower()) != -1):
-                    if (annotation.Name.find(".Sig") != -1):
+            if annotation.Name.find("org.twobulls.Struct") != -1:
+                if annotation.Name.lower().find(self.Name.string.lower()) != -1:
+                    if annotation.Name.find(".Sig") != -1:
                         return AJType(annotation.Value, self)
 
         return AJType('i', self)
@@ -600,17 +600,23 @@ class InterfaceEnum(object):
 class InterfaceStruct(object):
     StructField = namedtuple("StructField", "Type Name")
 
-    def __init__(self, name, parent = None):
+    def __init__(self, name, parent=None):
         self.Name = name
         self.Fields = []
         self.parent = parent
+        self.Key = None
 
     def add_field(self, name, ajtype, interface):
         self.Fields.append(InterfaceStruct.StructField(AJType(ajtype, self), name))
 
+    def set_key(self, struct_key):
+        for f in self.Fields:
+            if f.Name == struct_key:
+                self.Key = f
+                break
+
     def set_field_sig(self, field, field_sig):
         # Set a type signature override
-        print "Field", field, "overriding sig", field_sig
         for f in self.Fields:
             if f.Name == field:
                 f.Type.sigoverride = field_sig
@@ -670,6 +676,11 @@ class Interface(object):
             self.Structs.append(struct)
         struct.add_field(field, field_type, self)
 
+    def set_struct_key(self, struct_name, key_field):
+        for s in self.Structs:
+            if s.Name == struct_name:
+                s.set_key(key_field)
+
     def set_field_sig(self, struct_name, field, field_sig):
         for s in self.Structs:
             if s.Name == struct_name:
@@ -701,7 +712,10 @@ class Interface(object):
             re.compile(r'org\.alljoyn\.Bus\.Enum\.(\w*)\.Value\.([\w/-]*)'):
                 lambda m: self.add_enum_value(m.group(1), m.group(2), value),
 
-            re.compile(r'org\.twobulls\.Bus\.Struct\.(\w*)\.Field\.(\w*).Sig'):
+            re.compile(r'org\.twobulls\.Struct\.(\w*)\.UniqueKey'):
+                lambda m: self.set_struct_key(m.group(1), value),
+
+            re.compile(r'org\.twobulls\.Struct\.(\w*)\.Field\.(\w*).Sig'):
                 lambda m: self.set_field_sig(m.group(1), m.group(2), value),
         }
 
@@ -790,10 +804,12 @@ class Property(object):
         self.MaxFromProperty = None
         self.MinFromProperty = None
         self.StepFromProperty = None
+        self.ValueIn = None
         self.Units = None
         self.parent = None
         self.Selector = None
         self.Clamp = False
+        self.CustomCheck = False
 
     def tcl_access_char(self):
         return {
@@ -842,6 +858,12 @@ class Property(object):
     def set_clamp(self, value):
         self.Clamp = True if value == "true" else False
 
+    def set_value_in_from_property(self, value):
+        self.ValueIn = value
+
+    def set_custom_check(self, value):
+        self.CustomCheck = True if value == "true" else False
+
     def add_annotation(self, name, value):
         regexs = {
             re.compile(r'org\.alljoyn\.Bus\.DocString\.(\w*)'):
@@ -876,6 +898,12 @@ class Property(object):
 
             re.compile(r'org\.twobulls\.Property\.Clamp'):
                 lambda m: self.set_clamp(value),
+
+            re.compile(r'org\.twobulls\.Property\.ValueIn'):
+                lambda m: self.set_value_in_from_property(value),
+
+            re.compile(r'org\.twobulls\.Property\.CustomCheck'):
+                lambda m: self.set_custom_check(value),
         }
 
         handled = False
@@ -1250,6 +1278,8 @@ class ObjectPath:
 
 class Device(Root):
     def __init__(self, name, **kwargs):
+        Root.__init__(self, **kwargs)
+
         self.Name = Symbol(name)
         self.Objects = []
         self.AboutData = None
@@ -1268,7 +1298,6 @@ class Device(Root):
                     filtered_interfaces.append(i)
 
         return filtered_interfaces
-
 
 
 class AJEmulatorXMLParser(AJXMLParser, object):
@@ -1325,6 +1354,7 @@ class AJEmulatorXMLParser(AJXMLParser, object):
 
 def make_parser():
     return xml.sax.make_parser()
+
 
 def interface_of(obj):
     if isinstance(obj, Interface):

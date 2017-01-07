@@ -27,7 +27,7 @@ namespace ajn {
 namespace services {
 
 CdmControllee::CdmControllee(BusAttachment& bus)
-  : m_impl(new CdmControlleeImpl(bus, *this))
+  : m_impl(new CdmControlleeImpl(bus))
 {
 }
 
@@ -65,6 +65,8 @@ Ref<CdmControlleeInterface> CdmControllee::GetCdmControlleeInterface(const qcc::
 {
     return m_impl->GetCdmInterface(busPath, interfaceName);
 }
+
+void ignore_unused(CdmControllee&) {};
 
 } //namespace services
 } //namespace ajn

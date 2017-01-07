@@ -72,7 +72,6 @@ class PatchLoader(jinja2.BaseLoader):
         raise jinja2.TemplateNotFound(template)
 
 
-
 class Generator(object):
     def __init__(self, args):
         self.cmd_args = args
@@ -247,7 +246,6 @@ def main():
     generator = SampleAppGenerator(args) if args.sample else InterfaceCodeGenerator(args)
 
     try:
-        print "Running Generator..."
         generator.generate()
     except KeyboardInterrupt:
         print "main, KeyboardInterrupt"

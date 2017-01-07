@@ -26,7 +26,6 @@
 
 #include <alljoyn/cdm/common/CdmTypes.h>
 #include <alljoyn/cdm/common/CdmInterfaceTypes.h>
-#include <alljoyn/cdm/controllee/CdmControllee.h>
 
 namespace ajn {
 namespace services {
@@ -42,24 +41,24 @@ class CdmBusObject : public BusObject {
     /**
      * Constructor of CdmBusObject
      */
-    CdmBusObject(BusAttachment& busAttachment, qcc::String const& objectPath, CdmControllee& controllee);
+    CdmBusObject(BusAttachment& busAttachment, qcc::String const& objectPath);
 
     /**
      * Destructor of CdmBusObject
      */
     ~CdmBusObject();
 
-    /**
-     * Start Cdm BusObject
-     * @return status
-     */
-    QStatus Start();
-
-    /**
-     * Stop Cdm BusObject
-     * @return status
-     */
-    QStatus Stop();
+//    /**
+//     * Start Cdm BusObject
+//     * @return status
+//     */
+//    QStatus Start();
+//
+//    /**
+//     * Stop Cdm BusObject
+//     * @return status
+//     */
+//    QStatus Stop();
 
     /**
      * Registers an interface with the BusObject
@@ -141,7 +140,6 @@ class CdmBusObject : public BusObject {
     QStatus AddInterfaceHandlers(CdmInterface* interface);
 
     BusAttachment& m_busAttachment;
-    CdmControllee& m_controllee;
     std::map<qcc::String, CdmInterface*> m_cdmInterfacesMap;
 };
 

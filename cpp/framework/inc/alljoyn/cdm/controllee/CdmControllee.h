@@ -84,7 +84,7 @@ class CdmControllee {
     {
         Ref<CdmBusObject> busObject = GetCdmBusObject(busPath);
         BusAttachment& bus = GetBusAttachment();
-        Ref<InterfaceType> interface = mkRef<InterfaceType>(bus, model, *busObject);
+        Ref<InterfaceType> interface = mkRef<InterfaceType>(bus, model, *busObject, *this);
         if (interface)
         {
             RegisterCdmControlleeInterface(busPath, interface->GetInterfaceName(), interface);
@@ -100,6 +100,8 @@ class CdmControllee {
 
     CdmControlleeImpl* m_impl;
 };
+
+void ignore_unused(CdmControllee&);
 
 }
 }

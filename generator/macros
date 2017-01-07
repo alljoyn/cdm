@@ -15,3 +15,7 @@
     converter.get({{msgName}}, {{valueName}});
 }
 {%- endmacro %}
+
+{% macro enumName(enum, value) -%}
+{{enum.Name.upper_snake()}}_{{value.Name.upper_snake()}}
+{%- endmacro %}
