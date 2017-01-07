@@ -262,16 +262,20 @@ public class DeviceGroupImpl implements Device
     }
 
     @Override
-    public void setProperty(String objPath, String interfaceName, String propertyName, Object value) {
+    public boolean setProperty(String objPath, String interfaceName, String propertyName, Object value) {
+        boolean successful = true;
         for(Device device : children) {
             for(AboutObjectDescription desc : device.getAboutObjectDescriptions()) {
                 for(String intf : desc.interfaces) {
                     if (intf.equals(interfaceName)) {
-                        device.setProperty(desc.path, interfaceName, propertyName, value);
+                        if (!device.setProperty(desc.path, interfaceName, propertyName, value))
+                            successful = false;
                     }
                 }
             }
         }
+
+        return successful;
     }
 
     @Override

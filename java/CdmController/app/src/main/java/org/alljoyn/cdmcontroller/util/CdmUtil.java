@@ -17,7 +17,9 @@
 package org.alljoyn.cdmcontroller.util;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.inputmethod.InputMethodManager;
 
 import org.alljoyn.smartspaces.EnumBase;
@@ -60,7 +62,7 @@ public class CdmUtil {
         }
 
         // Numeric type
-        String value = "";
+        String value;
         if (obj instanceof Boolean) {
             value = obj.equals(true) ? "1" : "0";
         } else {
@@ -78,6 +80,7 @@ public class CdmUtil {
         } else if (clazz == Byte.TYPE) {
             return Byte.parseByte(value);
         }
+
         return obj;
     }
 

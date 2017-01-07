@@ -32,6 +32,7 @@ public abstract class PropertyView extends LinearLayout {
     protected String interfaceName = null;
     protected String name = null;
     protected String unit = null;
+    protected String lastError = "";
 
     protected Object currentValue = null;
     protected Class<?> propertyType = null;
@@ -72,7 +73,7 @@ public abstract class PropertyView extends LinearLayout {
 
     protected abstract void setValueView(Object value);
 
-    public void setProperty(Object value) {
+    public void setProperty(final Object value) {
         if (value.equals(this.currentValue))
             return;
 
@@ -80,15 +81,13 @@ public abstract class PropertyView extends LinearLayout {
             @Override
             protected Boolean doInBackground(Object... params) {
                 Device device = PropertyView.this.device;
-                device.setProperty(PropertyView.this.objPath, PropertyView.this.interfaceName, PropertyView.this.name, params[0]);
-                PropertyView.this.currentValue = params[0];
-                return true;
+                return device.setProperty(PropertyView.this.objPath, PropertyView.this.interfaceName, PropertyView.this.name, params[0]);
             }
 
             @Override
             protected void onPostExecute(Boolean result) {
                 if (!result) {
-                    Toast.makeText(PropertyView.this.getContext(), "Set " + PropertyView.this.name + " Property is failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PropertyView.this.getContext(), "Set " + PropertyView.this.name + " Property has failed - Input valid for data type?", Toast.LENGTH_SHORT).show();
                     PropertyView.this.setValueView(PropertyView.this.currentValue);
                 }
             }

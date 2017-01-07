@@ -16,7 +16,9 @@
 
 package org.alljoyn.cdmcontroller.logic;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
 
@@ -274,7 +276,7 @@ public class DeviceImpl implements Device {
     }
 
     @Override
-    public void setProperty(String objPath, String interfaceName, String propertyName, Object value) {
+    public boolean setProperty(String objPath, String interfaceName, String propertyName, Object value) {
         if(objPath != null) {
             Object intf = getInterface(objPath, interfaceName);
             try {
@@ -282,6 +284,10 @@ public class DeviceImpl implements Device {
                 Method valueSetter = intf.getClass().getDeclaredMethod("set" + propertyName, valueGetter.getReturnType());
                 Object param = CdmUtil.parseParam(valueGetter.getReturnType(), value);
                 valueSetter.invoke(intf, param);
+                return true;
+            } catch (NumberFormatException e) {
+                // This should report better than just dumping the exception.
+                e.printStackTrace();
             } catch (NoSuchMethodException e) {
                 Log.d(TAG, "Method does not exist: " + e.getMessage());
             } catch (InvocationTargetException e) {
@@ -290,6 +296,7 @@ public class DeviceImpl implements Device {
                 e.printStackTrace();
             }
         }
+        return false;
     }
 
     @Override

@@ -127,7 +127,7 @@ public interface Device {
     public Object getProperty(String objPath, String interfaceName, String propertyName, Object... params);
     public Class<?> getPropertyType(String objPath, String interfaceName, String propertyName);
     public Class<?>[] getPropertyParameterTypes(String objPath, String interfaceName, String propertyName);
-    public void setProperty(String objPath, String interfaceName, String propertyName, Object value);
+    public boolean setProperty(String objPath, String interfaceName, String propertyName, Object value);
     public Object invokeMethod(String objPath, String interfaceName, String methodName, Object... params);
     public Class<?>[] getMethodParameterTypes(String objPath, String interfaceName, String methodName);
 
