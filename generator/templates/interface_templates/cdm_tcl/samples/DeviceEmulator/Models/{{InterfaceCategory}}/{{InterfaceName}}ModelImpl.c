@@ -62,7 +62,7 @@ static void HAL_Decode_{{Interface.Name}}_{{struc.Name}}(Element* elem, {{Interf
 {
     if (strcmp(elem->name, "struct") == 0 && elem->numChildren == {{struc.Fields|length}}) {
 {% for field in struc.Fields %}
-        {{ tcl_macros.halDecode(field.Type, "value->"~field.Name, "elem->children["~loop.index0~"]") }}
+        {{ tcl_macros.halDecode(field.Type, "value->"~field.Name, "elem->children["~loop.index0~"]->children[0]") }}
 {% endfor %}
     }
 }
@@ -88,7 +88,7 @@ static void HAL_Decode_Array_{{Interface.Name}}_{{struc.Name}}(Element* elem, Ar
     InitArray_{{Interface.Name}}_{{struc.Name}}(value, 0);
 
     if (strcmp(elem->name, "array") == 0) {
-        for (size_t i = 0; i < value->numElems; ++i) {
+        for (size_t i = 0; i < elem->numChildren; ++i) {
             size_t j = ExtendArray_{{Interface.Name}}_{{struc.Name}}(value, 1);
             HAL_Decode_{{Interface.Name}}_{{struc.Name}}(elem->children[i], &value->elems[j]);
         }
@@ -102,16 +102,16 @@ static Element* HAL_Encode_{{Interface.Name}}_{{enum.Name}}({{Interface.Name}}_{
 
 static Element* HAL_Encode_{{Interface.Name}}_{{enum.Name}}({{Interface.Name}}_{{enum.Name}} value, Element* parent)
 {
-    return HAL_Encode_Int(value, parent);
+    return {{enum.enum_type().tclHalEncoder()}}(value, parent);
 }
 
 
 
-static void HAL_Decode_{{Interface.Name}}_{{enum.Name}}(Element* elem, {{Interface.Name}}_{{enum.Name}}* value) UNUSED_OK;
+static void HAL_Decode_{{Interface.Name}}_{{enum.Name}}(Element* elem, {{enum.enum_type().tcltype(false)}} *value) UNUSED_OK;
 
-static void HAL_Decode_{{Interface.Name}}_{{enum.Name}}(Element* elem, {{Interface.Name}}_{{enum.Name}}* value)
+static void HAL_Decode_{{Interface.Name}}_{{enum.Name}}(Element* elem, {{enum.enum_type().tcltype(false)}} *value)
 {
-    *value = ({{Interface.Name}}_{{enum.Name}})(int)HAL_Decode_Int(elem);
+    *value = ({{enum.enum_type().tcltype(false)}}){{enum.enum_type().tclHalEncoder(decode=True)}}(elem);
 }
 
 
@@ -122,7 +122,7 @@ static Element* HAL_Encode_Array_{{Interface.Name}}_{{enum.Name}}(Array_{{Interf
 {
     Element* array = BSXML_NewElement("array", parent);
     for (size_t i = 0; i < value.numElems; ++i) {
-        BSXML_AddChild(array, HAL_Encode_Int(value.elems[i], array));
+        BSXML_AddChild(array, {{enum.enum_type().tclHalEncoder()}}(value.elems[i], array));
     }
     return array;
 }
@@ -135,9 +135,9 @@ static void HAL_Decode_Array_{{Interface.Name}}_{{enum.Name}}(Element* elem, Arr
     InitArray_{{Interface.Name}}_{{enum.Name}}(value, 0);
 
     if (strcmp(elem->name, "array") == 0) {
-        for (size_t i = 0; i < value->numElems; ++i) {
+        for (size_t i = 0; i < elem->numChildren; ++i) {
             size_t j = ExtendArray_{{Interface.Name}}_{{enum.Name}}(value, 1);
-            value->elems[j] = ({{Interface.Name}}_{{enum.Name}})(int)HAL_Decode_Int(elem->children[i]);
+            value->elems[j] = ({{enum.enum_type().tcltype(false)}}){{enum.enum_type().tclHalEncoder(decode=True)}}(elem->children[i]);
         }
     }
 }
@@ -151,8 +151,8 @@ static void HAL_Decode_Array_{{Interface.Name}}_{{enum.Name}}(Element* elem, Arr
 {% set hal = property.Type.tclHalEncoder() %}
 {% if property.Readable %}
 
-
-static AJ_Status Get{{property.Name}}(void *context, const char *objPath, {{property.Type.tcltype()}} *out)
+{% set isArray = property.Type.is_array() %}
+static AJ_Status Get{{property.Name}}(void *context, const char *objPath, {{property.Type.tcltype(isArray)}} *out)
 {
     AJ_Status result = AJ_OK;
     {{halC}} value = {{halI}};
@@ -164,7 +164,7 @@ static AJ_Status Get{{property.Name}}(void *context, const char *objPath, {{prop
         BSXML_FreeElement(elem);
     }
 
-    *out = {{tcl_macros.castTo(property.Type)}}value;
+    *out = value;
     return result;
 }
 {% endif %}
@@ -172,7 +172,7 @@ static AJ_Status Get{{property.Name}}(void *context, const char *objPath, {{prop
 
 
 
-static AJ_Status Set{{property.Name}}(void *context, const char *objPath, {{property.Type.tcltype()}} input)
+static AJ_Status Set{{property.Name}}(void *context, const char *objPath, {{property.Type.tcltype(isArray)}} input)
 {
     AJ_Status result = AJ_OK;
     {{halC}} value = input;
@@ -191,8 +191,8 @@ static AJ_Status Set{{property.Name}}(void *context, const char *objPath, {{prop
 
 
 static AJ_Status Method{{method.Name}}(void *context, const char *objPath
-{%- for a in method.input_args() %}, {{a.Type.tcltype()}} {{a.Name}}{% endfor %}
-{%- for a in method.output_args() %}, {{a.Type.tcltype()}}* {{a.Name}}{% endfor %})
+{%- for a in method.input_args() %}, {{a.Type.tcltype(a.Type.is_array())}} {{a.Name}}{% endfor %}
+{%- for a in method.output_args() %}, {{a.Type.tcltype(a.Type.is_array())}}* {{a.Name}}{% endfor %})
 {
 {% include ["patch/" ~ Interface.Name ~ "Model_" ~ method.Name ~ ".c", "patch/TODO.c"] ignore missing with context %}
 }

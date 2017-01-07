@@ -9,12 +9,8 @@ FreeFields_{{type.ajtypeInterfaceName()}}_{{type.ajtypeStructName()}}(&{{name}})
 {% endif %}
 {% endmacro %}
 
-{%- macro unpackArgs(type, name) %}
-{%- if type.ajtypeIsArrayOfName() %}{{name}}.elems, {{name}}.numElems{% else %}{{name}}{% endif -%}
-{% endmacro -%}
-
 {%- macro halCType(type) %}
-{%-   if type.ajtypeIsEnum() %}int
+{%-   if type.ajtypeIsEnum() %}{{type.tcltype(false)}}
 {%- elif type.ajtypeStructName() %}{{type.ajtypeStructName(withIface = True, withArray = True)}}
 {%- elif type.signature == "b" %}bool
 {%- elif type.signature == "y" %}uint64_t
@@ -31,6 +27,10 @@ FreeFields_{{type.ajtypeInterfaceName()}}_{{type.ajtypeStructName()}}(&{{name}})
 {%- endif %}
 {% endmacro -%}
 
+{%- macro unpackArgs(type, name) %}
+{%- if type.ajtypeIsArray() %}{{name}}.elems, sizeof({{type.ajtypeIsArray(useAnnotated=False, returnType=True).tcltype()}}) * {{name}}.numElems{% else %}{{name}}{% endif -%}
+{% endmacro -%}
+
 {%- macro halInit(type) %}
 {%-   if type.ajtypeIsString() %}""{%- else %}{0}{% endif %}
 {% endmacro -%}
@@ -38,7 +38,9 @@ FreeFields_{{type.ajtypeInterfaceName()}}_{{type.ajtypeStructName()}}(&{{name}})
 {%- macro castTo(type) %}
 {%-   if type.ajtypeIsEnum() %}({{type.tcltype()}})(int){% endif %}
 {% endmacro -%}
-
+{%- macro castToPtr(type) %}
+{%-   if type.ajtypeIsEnum() %}({{type.tcltype()}}*)(int*){% endif %}
+{% endmacro -%}
 
 {% macro halDecode(type, var, elem) %}
 {% if type.ajtypeIsArray() %}
@@ -46,4 +48,8 @@ FreeFields_{{type.ajtypeInterfaceName()}}_{{type.ajtypeStructName()}}(&{{name}})
 {% else %}
 {{var}} = {{type.tclHalEncoder(decode = True)}}({{elem}});
 {%- endif -%}
+{% endmacro -%}
+
+{%- macro unpackStructFields(structVarName, struct) %}
+{%- for field in struct.Fields %}{{structVarName}}.elems[i].{{field.Name}}{% if not loop.last %}, {% endif %}{% endfor -%}
 {% endmacro -%}

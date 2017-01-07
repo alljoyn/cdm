@@ -220,10 +220,10 @@ class AJType(object):
         'o': '@',  # Object Path
     }
 
-    def __init__(self, signature, parent = None):
+    def __init__(self, signature, parent=None, sigoverride=None):
         self.annotated_type = None
         self.signature = signature
-        self.sigoverride = None
+        self.sigoverride = sigoverride
         self.parent = parent
 
     def ajtypeid(self):
@@ -236,14 +236,12 @@ class AJType(object):
         interface = interface_of(self)
         return interface.Name
 
-
-    def ajtypeIsArray(self):
+    def ajtypeIsArray(self, useAnnotated=True, returnType=False):
         # See if the name is 'a' followed by any signature. If so then return the signature
-        ajtype = self.annotated_type if self.annotated_type else self.signature
+        ajtype = self.annotated_type if self.annotated_type and useAnnotated else self.signature
         if ajtype.startswith('a'):
-            return ajtype[1:]
+            return ajtype[1:] if not returnType else AJType(ajtype[1:], parent=self.parent, sigoverride=self.sigoverride)
         return None
-
 
     def ajtypeIsArrayOfName(self):
         # See if the type is 'a' followed by a struct or enum name. If so then return the name.
@@ -255,42 +253,46 @@ class AJType(object):
                 return ajtype
         return None
 
-
-    def ajtypeIsEnum(self, name = None):
+    def ajtypeIsEnum(self, name=None):
         # See if the name in [Name] is an enum in this interface
         # If so then return the InterfaceEnum object, otherwise None
-        if name == None:
+        if name is None:
             # like cpptype
             ajtype = self.annotated_type if self.annotated_type else self.signature
 
             if ajtype.startswith('[') and ajtype.endswith(']'):
                 name = ajtype[1:-1]
 
-        if name != None:
+        if name is not None:
             interface = interface_of(self)
             for enum in interface.Enums:
                 if enum.Name == name:
                     return enum
         return None
 
-
-    def ajtypeIsStruct(self, name = None):
+    def interfaceStruct(self, name=None):
         # See if the name in [Name] is a struct in this interface
-        if name == None:
+        if name is None:
             # like cpptype
             ajtype = self.annotated_type if self.annotated_type else self.signature
-
             if ajtype.startswith('[') and ajtype.endswith(']'):
                 name = ajtype[1:-1]
 
         interface = interface_of(self)
         for stru in interface.Structs:
-            if stru.Name == name:
-                return True
-        return False
+            if stru.Name == (name[1:-1] if name is not None and name.startswith('[') and name.endswith(']') else name):
+                return stru
+        return None
 
+    def ajtypeIsStruct(self, name=None):
+        struct = self.interfaceStruct(name)
+        return AJType(struct.resolve_signature()) if struct else None
 
-    def ajtypeStructName(self, withIface = False, withArray = False):
+    def ajtypeStructOf(self):
+        sig = self.signature
+        return sig[1:-1] if sig.startswith('(') and sig.endswith(')') else None
+
+    def ajtypeStructName(self, withIface=False, withArray=False):
         # See if this type is a struct or array of struct
         # Return the Name if so, otherwise None
         isArray = False
@@ -312,10 +314,8 @@ class AJType(object):
                 return ajtype
         return None
 
-
     def ajtypeIsString(self):
         return self.signature == 's' or self.signature == 'o'
-
 
     def ajtype_primitive(self):
         sig = self.signature
@@ -335,7 +335,7 @@ class AJType(object):
 
         return sig
 
-    def tcltype(self, enumByName = True):
+    def tcltype(self, enumByName=True):
         ajtype = self.annotated_type if self.annotated_type else self.signature
         ctype = None
         array = False
@@ -348,7 +348,7 @@ class AJType(object):
             ajtype = ajtype[1:-1]
             if self.ajtypeIsEnum(ajtype) and not enumByName:
                 # in OnSet functions we need the ctype for the signature
-                ctype = self.TCLTypeMap.get(self.signature, "/* TODO:%{} */".format(ajtype))
+                ctype = self.TCLTypeMap.get(self.sigoverride, self.TCLTypeMap.get(self.signature, "/* TODO:%{} */".format(ajtype)))
             else:
                 interface = interface_of(self)
                 if interface:
@@ -365,13 +365,11 @@ class AJType(object):
 
         return ctype
 
-
     def tclMarshalSig(self):
         # Use the signature but allow overrides
         if self.sigoverride:
             return self.sigoverride
         return self.signature
-
 
     def tclArrayDescr(self):
         # Return a description of the array type for use in code e.g. Array_Alerts_AlertRecord
@@ -395,25 +393,24 @@ class AJType(object):
         name = self.signature[1:] if self.signature.startswith("a") else self.signature
         return self.TCLArrayMap.get(name)
 
-    def tclHalEncoder(self, decode = False):
+    def tclHalEncoder(self, decode=False):
         if decode:
             prefix = "HAL_Decode_"
         else:
             prefix = "HAL_Encode_"
 
         if self.ajtypeIsEnum():
-            return prefix + "Int"
+            value = self.TCLHalMap.get(self.sigoverride, self.TCLHalMap.get(self.signature, None))
+            return prefix + (value if value else "Int")
 
         # Arrays are represented by "Array_%" where % is from TCLArrayMap
         if self.ajtypeIsArray():
             return prefix + self.tclArrayDescr()
 
         if self.ajtypeStructName():
-            return prefix + self.ajtypeStructName(withIface = True, withArray = True)
+            return prefix + self.ajtypeStructName(withIface=True, withArray=True)
 
         return prefix + self.TCLHalMap.get(self.signature, "/* TODO:%{} */".format(self.signature))
-
-
 
     def cpptype(self, arg=False):
         template = None
@@ -488,7 +485,6 @@ class AJType(object):
             return "static_cast<%s>(%s)" % (self.cpptype(), expr)
         return expr
 
-
     def javatype(self):
         array = False
 
@@ -552,6 +548,9 @@ class AJType(object):
     def is_string(self):
         ajtype = self.annotated_type if self.annotated_type else self.signature
         return ajtype == 's'
+
+    def interface(self):
+        return interface_of(self)
 
     def __str__(self):
         return self.signature

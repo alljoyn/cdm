@@ -39,6 +39,7 @@
  */
 typedef struct {
 {% for property in Interface.UserProperties %}
+{% set isArray = property.Type.is_array() %}
 {% if property.Readable %}
 
     /**
@@ -47,7 +48,7 @@ typedef struct {
      *             the type is not a scalar.
      * @param[out] numValues if the type is an array, set the number of elements here.
      */
-    AJ_Status (*Get{{property.Name}})(void *context, const char *objPath, {{property.Type.tcltype()}}* value);
+    AJ_Status (*Get{{property.Name}})(void *context, const char *objPath, {{property.Type.tcltype(isArray)}}* value);
 {% endif %}
 {% if property.Writable %}
 
@@ -56,7 +57,7 @@ typedef struct {
      * @param[in] value The {{property.Name.add_spaces_lower()}} to set
      * @return ER_OK on success
      */
-    AJ_Status (*Set{{property.Name}})(void *context, const char *objPath, {{property.Type.tcltype()}} value);
+    AJ_Status (*Set{{property.Name}})(void *context, const char *objPath, {{property.Type.tcltype(isArray)}} value);
 {% endif %}
 {% endfor %}
 {% for method in Interface.Methods %}
@@ -71,8 +72,8 @@ typedef struct {
 {% endfor %}
       */
     AJ_Status (*Method{{method.Name}})(void *context, const char *objPath
-{%- for a in method.input_args() %}, {{a.Type.tcltype()}} {{a.Name}}{% endfor %}
-{%- for a in method.output_args() %}, {{a.Type.tcltype()}}* {{a.Name}}{% endfor %});
+{%- for a in method.input_args() %}, {{a.Type.tcltype(a.Type.is_array())}} {{a.Name}}{% endfor %}
+{%- for a in method.output_args() %}, {{a.Type.tcltype(a.Type.is_array())}}* {{a.Name}}{% endfor %});
 {% endfor %}
 
     AJ_BusAttachment* busAttachment;

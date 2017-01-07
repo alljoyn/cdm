@@ -1,4 +1,3 @@
-        //blah
         uint16_t numChannels;
         if (m_ChannelModelInterface->GetTotalNumberOfChannels(numChannels) != ER_OK)
             return ER_FAIL;

@@ -142,7 +142,7 @@ size_t ExtendArray_{{Interface.Name}}_{{enum.Name}}(Array_{{Interface.Name}}_{{e
 
 
 
-static AJ_Status {{Interface.Name}}_Get{{p.Name}}(AJ_BusAttachment* busAttachment, const char* objPath, {{p.Type.tcltype()}}* out)
+static AJ_Status {{Interface.Name}}_Get{{p.Name}}(AJ_BusAttachment* busAttachment, const char* objPath, {{p.Type.tcltype(p.Type.is_array())}}* out)
 {
     if (!objPath || !out) {
         return AJ_ERR_INVALID;
@@ -165,17 +165,6 @@ static AJ_Status {{Interface.Name}}_Get{{p.Name}}(AJ_BusAttachment* busAttachmen
 
 static AJ_Status Validate{{p.Name}}({{Interface.Name}}Model* model, const char* objPath, {{p.Type.tcltype()}} value)
 {
-    AJ_Status status{% if not p.ValueIn %} = AJ_OK{%endif%};
-    {% if p.ValueIn %}
-    {{Interface.PropLUT[p.ValueIn].Type.tcltype()}} validValues;
-    status = model->Get{{p.ValueIn}}(model, objPath, &validValues);
-    if (status != AJ_OK)
-        return status;
-
-    status = (valueIn_{{Interface.PropLUT[p.ValueIn].Type.tcltype()}}(value, &validValues) == 1) ? AJ_OK : AJ_ERR_NO_MATCH;
-
-    Free{{Interface.PropLUT[p.ValueIn].Type.tcltype()}}(&validValues);
-    {% endif %}
     {% if p.Type.ajtypeIsEnum() %}
     {% set enum = p.Type.ajtypeIsEnum() %}
 
@@ -185,46 +174,56 @@ static AJ_Status Validate{{p.Name}}({{Interface.Name}}Model* model, const char* 
         case {{Interface.Name.upper()}}_{{enum.Name.upper_snake()}}_{{ename.Name.upper_snake()}}:
         {% endfor %}
             break;
-
+        {% for ename in enum.InvalidValues %}
+        case {{Interface.Name.upper()}}_{{enum.Name.upper_snake()}}_{{ename.Name.upper_snake()}}:
+        {% endfor %}
         default:
             return AJ_ERR_INVALID;
     }
     {% endif %}
+
+    {% if p.ValueIn %}
+    {{Interface.PropLUT[p.ValueIn].Type.tcltype()}} validValues;
+    if (model->Get{{p.ValueIn}}(model, objPath, &validValues) != AJ_OK)
+        return AJ_ERR_FAILURE;
+
+    AJ_Status status = (valueIn_{{Interface.PropLUT[p.ValueIn].Type.tcltype()}}(value, &validValues) == 1) ? AJ_OK : AJ_ERR_NO_MATCH;
+
+    Free{{Interface.PropLUT[p.ValueIn].Type.tcltype()}}(&validValues);
     return status;
+    {% else %}
+    return AJ_OK;
+    {% endif %}
 }
 {% endif %}
 {% if p.Clamp %}
 
 static AJ_Status clamp{{p.Name}}({{Interface.Name}}Model* model, const char* objPath, {{p.Type.tcltype()}} value, {{p.Type.tcltype()}} *out)
 {
-    AJ_Status status;
-    {% if p.Min != None %}
+    {% if p.Min != None and p.MinFromProperty == None %}
 
     {{p.Type.tcltype()}} minValue = {{p.Min}};
     {% endif %}
     {% if p.MinFromProperty != None %}
 
     {{p.Type.tcltype()}} minValue;
-    status = model->Get{{p.MinFromProperty}}(model, objPath, &minValue);
-    if (status != AJ_OK)
-        return status;
+    if (model->Get{{p.MinFromProperty}}(model, objPath, &minValue) != AJ_OK)
+        return AJ_ERR_FAILURE;
     {% endif %}
-    {% if p.Max != None %}
+    {% if p.Max != None and p.MaxFromProperty == None %}
 
     {{p.Type.tcltype()}} maxValue = {{p.Max}};{% endif %}
     {% if p.MaxFromProperty != None %}
 
     {{p.Type.tcltype()}} maxValue;
-    status = model->Get{{p.MaxFromProperty}}(model, objPath, &maxValue);
-    if (status != AJ_OK)
-        return status;
+    if (model->Get{{p.MaxFromProperty}}(model, objPath, &maxValue) != AJ_OK)
+        return AJ_ERR_FAILURE;
     {% endif %}
 
     {{p.Type.tcltype()}} stepValue = 0;
     {% if p.StepFromProperty != None %}
-    status = model->Get{{p.StepFromProperty}}(model, objPath, &stepValue);
-    if (status != AJ_OK)
-        return status;
+    if (model->Get{{p.StepFromProperty}}(model, objPath, &stepValue) != AJ_OK)
+        return AJ_ERR_FAILURE;
     {% endif %}
 
     *out = clamp_{{p.Type.tclTypeName()}}(value, minValue, maxValue, stepValue);
@@ -232,7 +231,7 @@ static AJ_Status clamp{{p.Name}}({{Interface.Name}}Model* model, const char* obj
 }
 {% endif %}
 
-static AJ_Status {{Interface.Name}}_Set{{p.Name}}(AJ_BusAttachment* busAttachment, const char* objPath, {{p.Type.tcltype()}} value)
+static AJ_Status {{Interface.Name}}_Set{{p.Name}}(AJ_BusAttachment* busAttachment, const char* objPath, {{p.Type.tcltype(p.Type.is_array())}} {%if p.Clamp %}*{%endif%}value)
 {
     AJ_Status status;
 
@@ -253,20 +252,20 @@ static AJ_Status {{Interface.Name}}_Set{{p.Name}}(AJ_BusAttachment* busAttachmen
     {% else %}
     {% if p.Clamp %}
 
-    status = clamp{{p.Name}}(model, objPath, value, &value);
+    status = clamp{{p.Name}}(model, objPath, *value, value);
     if (status != AJ_OK)
         return status;
     {% endif %}
     {% if p.ValueIn or p.Type.ajtypeIsEnum() %}
 
-    status = Validate{{p.Name}}(model, objPath, value);
+    status = Validate{{p.Name}}(model, objPath, {% if p.Clamp %}*{% endif %}value);
     if (status != AJ_OK)
         return status;
     {% endif %}
     {% endif %}
 
     model->busAttachment = busAttachment;
-    status = model->Set{{p.Name}}(model, objPath, value);
+    status = model->Set{{p.Name}}(model, objPath, {% if p.Clamp %}*{% endif %}value);
     return status;
 }
 {% endif %}
@@ -293,7 +292,7 @@ static AJ_Status Marshal{{p.Name}}(AJ_Message* msg, void* structure, const char*
 
 
 
-AJ_Status Cdm_{{Interface.Name}}_Emit{{p.Name}}Changed(AJ_BusAttachment *bus, const char *objPath, {{p.Type.tcltype()}} newValue)
+AJ_Status Cdm_{{Interface.Name}}_Emit{{p.Name}}Changed(AJ_BusAttachment *bus, const char *objPath, {{p.Type.tcltype(p.Type.is_array())}} newValue)
 {
 {% if p.Type.ajtypeIsArray() %}
 {%   if p.Type.ajtypeStructName() %}
@@ -352,10 +351,28 @@ static AJ_Status {{Interface.Name}}_OnGetProperty(AJ_BusAttachment* busAttachmen
 
         case {{Interface.Name.upper()}}_PROP_{{p.Name.upper_snake()}}:
         {
-            {{p.Type.tcltype()}} {{p.Name.snake()}};
+            {% set ajArrayType = p.Type.ajtypeIsArray() %}
+            {% set ajStructType = p.Type.ajtypeIsStruct(name=ajArrayType) %}
+            {% set isArray = ajArrayType != None %}
+            {{p.Type.tcltype(isArray)}} {{p.Name.snake()}};
+            memset(&{{p.Name.snake()}}, 0, sizeof({{p.Type.tcltype(isArray)}}));
             status = {{Interface.Name}}_Get{{p.Name}}(busAttachment, objPath, &{{p.Name.snake()}});
             if (status == AJ_OK) {
+            {% if ajArrayType != None and ajStructType != None %}
+                AJ_Arg array;
+                int i=0;
+                status |= AJ_MarshalContainer(replyMsg, &array, AJ_ARG_ARRAY);
+                for (; i<{{p.Name.snake()}}.numElems; ++i)
+                {
+                    AJ_Arg strc;
+                    status |= AJ_MarshalContainer(replyMsg, &strc, AJ_ARG_STRUCT);
+                    AJ_MarshalArgs(replyMsg, "{{ajStructType.ajtypeStructOf()}}", {{tcl_macros.unpackStructFields(p.Name.snake(), p.Type.interfaceStruct(name=ajArrayType))}});
+                    AJ_MarshalCloseContainer(replyMsg, &strc);
+                }
+                AJ_MarshalCloseContainer(replyMsg, &array);
+            {% else %}
                 status = AJ_MarshalArgs(replyMsg, "{{p.Type.signature}}", {{tcl_macros.unpackArgs(p.Type, p.Name.snake())}});
+            {% endif %}
                 if (status == AJ_OK) {
                     status = AJ_DeliverMsg(replyMsg);
                 }
@@ -372,7 +389,7 @@ static AJ_Status {{Interface.Name}}_OnGetProperty(AJ_BusAttachment* busAttachmen
 
 
 
-static AJ_Status {{Interface.Name}}_OnSetProperty(AJ_BusAttachment* busAttachment, AJ_Message* msg, const char* objPath, uint8_t memberIndex)
+static AJ_Status {{Interface.Name}}_OnSetProperty(AJ_BusAttachment* busAttachment, AJ_Message* msg, const char* objPath, uint8_t memberIndex, bool emitOnSet)
 {
     AJ_Status status = AJ_ERR_INVALID;
 
@@ -388,9 +405,13 @@ static AJ_Status {{Interface.Name}}_OnSetProperty(AJ_BusAttachment* busAttachmen
             {{p.Type.tcltype(enumByName = False)}} {{p.Name.snake()}};
             status = AJ_UnmarshalArgs(msg, "{{p.Type.signature}}", &{{p.Name.snake()}});
             if (status == AJ_OK) {
+                {% if p.Clamp %}
+                status = {{Interface.Name}}_Set{{p.Name}}(busAttachment, objPath, {{tcl_macros.castToPtr(p.Type)}}&{{p.Name.snake()}});
+                {% else %}
                 status = {{Interface.Name}}_Set{{p.Name}}(busAttachment, objPath, {{tcl_macros.castTo(p.Type)}}{{p.Name.snake()}});
-                if (status == AJ_OK) {
-                    status= Cdm_{{Interface.Name}}_Emit{{p.Name}}Changed(busAttachment, objPath, {{p.Name.snake()}});
+                {% endif %}
+                if (status == AJ_OK && emitOnSet) {
+                    status = Cdm_{{Interface.Name}}_Emit{{p.Name}}Changed(busAttachment, objPath, {{p.Name.snake()}});
                 }
             }
             break;
@@ -415,51 +436,71 @@ static AJ_Status {{Interface.Name}}_OnMethodHandler(AJ_BusAttachment* busAttachm
 
     case {{Interface.Name.upper()}}_METHOD_{{method.Name.upper_snake()}}:
     {
-{% for arg in method.input_args() %}
+        AJ_Message reply;
+    {% for arg in method.input_args() %}
         {{arg.Type.tcltype()}} {{arg.Name.snake()}};
         status = AJ_UnmarshalArgs(msg, "{{arg.Type.signature}}", &{{arg.Name.snake()}});
 
         if (status != AJ_OK) {
             return status;
         }
-{% endfor %}
-{% for arg in method.output_args() %}
+    {% endfor %}
+    {% for arg in method.output_args() %}
         {{arg.Type.tcltype()}} {{arg.Name.snake()}};
-{% endfor %}
+        memset(&{{arg.Name.snake()}}, 0, sizeof({{arg.Type.tcltype()}}));
+    {% endfor %}
 
         status = Cdm_{{Interface.Name}}_Call{{method.Name}}(busAttachment, objPath
-{%- for arg in method.input_args() %}, {{arg.Name.snake()}}{% endfor %}
-{%- for arg in method.output_args() %}, &{{arg.Name.snake()}}{% endfor %});
+    {%- for arg in method.input_args() %}, {{arg.Name.snake()}}{% endfor %}
+    {%- for arg in method.output_args() %}, &{{arg.Name.snake()}}{% endfor %});
 
         {# Be careful that the method might emit a signal. We must be careful to start the
            next message after a signal has been sent. #}
-        AJ_Message reply;
         AJ_MarshalReplyMsg(msg, &reply);
-
-{% if method.output_args() %}
+    {% if method.output_args() %}
         if (status == AJ_OK) {
-{% for arg in method.output_args() %}
+    {% for arg in method.output_args() %}
+        {% set ajArrayType = arg.Type.ajtypeIsArray() %}
+        {% if ajArrayType != None %}
+            AJ_Arg array;
+            int i=0;
+            status |= AJ_MarshalContainer(&reply, &array, AJ_ARG_ARRAY);
+            for (; i<{{arg.Name.snake()}}.numElems; ++i)
+            {
+            {% set ajStructType = arg.Type.ajtypeIsStruct(name=ajArrayType) %}
+            {% if ajStructType %}
+                AJ_Arg strc;
+                status |= AJ_MarshalContainer(&reply, &strc, AJ_ARG_STRUCT);
+                AJ_MarshalArgs(&reply, "{{ajStructType.ajtypeStructOf()}}", {{tcl_macros.unpackStructFields(arg.Name.snake(), arg.Type.interfaceStruct(name=ajArrayType))}});
+                AJ_MarshalCloseContainer(&reply, &strc);
+            {% else %}
+            SYNTAX ERROR IF THIS IS GENERATED
+            {% endif %}
+            }
+            AJ_MarshalCloseContainer(&reply, &array);
+        {% else %}
             status |= AJ_MarshalArgs(&reply, "{{arg.Type.signature}}", {{tcl_macros.unpackArgs(arg.Type, arg.Name.snake())}});
-{% endfor %}
+        {% endif %}
+    {% endfor %}
             if (status == AJ_OK) {
                 status = AJ_DeliverMsg(&reply);
             }
         }
-{% else %}
+    {% else %}
         if (status == AJ_OK) {
             status = AJ_DeliverMsg(&reply);
         }
-{% endif %}
+    {% endif %}
 
-{% for arg in method.output_args() %}
+    {% for arg in method.output_args() %}
 {{ tcl_macros.freeType(arg.Type, arg.Name.snake())|indent(2 * 4, True) }}
-{% endfor %}
+    {% endfor %}
         break;
     }
-{% if loop.last %}
+    {% if loop.last %}
     }
-{% endif %}
-{% endfor %}
+    {% endif %}
+    {% endfor %}
 
     return status;
 }

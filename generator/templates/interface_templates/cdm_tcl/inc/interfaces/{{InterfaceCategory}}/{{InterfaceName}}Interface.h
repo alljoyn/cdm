@@ -30,6 +30,8 @@
 #ifndef {{Interface.Name.upper()}}INTERFACE_H_
 #define {{Interface.Name.upper()}}INTERFACE_H_
 
+#include <stdint.h>
+
 #include <ajtcl/aj_status.h>
 #include <ajtcl/aj_bus.h>
 #include <ajtcl/cdm/CdmControllee.h>
@@ -58,14 +60,22 @@ typedef enum {
 
 typedef enum {
 {% for value in enum.Values %}
-    {{Interface.Name.upper()}}_{{enum.Name.upper_snake()}}_{{value.Name.upper_snake()}} = {{value.Value}}{% if not loop.last %},{% endif %}
+    {{Interface.Name.upper()}}_{{enum.Name.upper_snake()}}_{{value.Name.upper_snake()}} = {{value.Value}}{% if not loop.last or enum.InvalidValues %},
+    {% else %}
 
+    {% endif %}
+{% endfor %}
+{% for value in enum.InvalidValues %}
+    {{Interface.Name.upper()}}_{{enum.Name.upper_snake()}}_{{value.Name.upper_snake()}} = {{value.Value}}{% if not loop.last %},
+    {% else %}
+
+    {% endif %}
 {% endfor %}
 } {{Interface.Name}}_{{enum.Name}};
 
 
 typedef struct {
-    {{Interface.Name}}_{{enum.Name}}* elems;
+    {{enum.enum_type().tcltype(False)}}* elems;
     size_t numElems;
 } Array_{{Interface.Name}}_{{enum.Name}};
 
@@ -96,7 +106,7 @@ extern size_t ExtendArray_{{Interface.Name}}_{{enum.Name}}(Array_{{Interface.Nam
 
 typedef struct {
 {% for field in struc.Fields %}
-    {{field.Type.tcltype()}} {{field.Name}};
+    {{field.Type.tcltype(false)}} {{field.Name}};
 {% endfor %}
 } {{Interface.Name}}_{{struc.Name}};
 
@@ -144,7 +154,8 @@ extern const InterfaceHandler intfHandler{{Interface.Category.capitalize()}}{{In
  * @param[in] newValue new value of {{property.Name.add_spaces_lower()}}
  * @return ER_OK on success
  */
-AJ_Status Cdm_{{Interface.Name}}_Emit{{property.Name}}Changed(AJ_BusAttachment *bus, const char *objPath, {{property.Type.tcltype()}} newValue);
+{% set isArray = property.Type.is_array() %}
+AJ_Status Cdm_{{Interface.Name}}_Emit{{property.Name}}Changed(AJ_BusAttachment *bus, const char *objPath, {{property.Type.tcltype(isArray)}} newValue);
 {% endif %}
 {% endfor %}
 {% for signal in Interface.Signals %}
