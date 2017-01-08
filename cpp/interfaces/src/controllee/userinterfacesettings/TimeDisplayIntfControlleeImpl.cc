@@ -256,7 +256,8 @@ QStatus TimeDisplayIntfControllee::Impl::OnSetProperty(const String& propName, M
             return ER_BUS_PROPERTY_VALUE_NOT_SET;
         }
 
-        EmitDisplayTimeFormatChanged(validValue);
+        if (m_cdmControllee.EmitChangedSignalOnSetProperty())
+            EmitDisplayTimeFormatChanged(validValue);
 
         return ER_OK;
     } else    if (!(s_prop_SupportedDisplayTimeFormats.compare(propName))) {

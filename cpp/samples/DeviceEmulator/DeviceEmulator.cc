@@ -130,7 +130,7 @@ int CDECL_CALL main(int argc, char** argv)
 
     auto device = mkRef<emulator::SuperControllee>(system.GetBusAttachment(), config, certs_dir + "/security");
 
-    status = device->Start();
+    status = device->Start(true);
     if (status != ER_OK) {
         std::cerr << "Failed to start the DeviceEmulator " << QCC_StatusText(status) << "\n";
         return 1;

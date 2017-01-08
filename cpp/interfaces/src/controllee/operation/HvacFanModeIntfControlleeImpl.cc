@@ -268,7 +268,8 @@ QStatus HvacFanModeIntfControllee::Impl::OnSetProperty(const String& propName, M
             return ER_BUS_PROPERTY_VALUE_NOT_SET;
         }
 
-        EmitModeChanged(validValue);
+        if (m_cdmControllee.EmitChangedSignalOnSetProperty())
+            EmitModeChanged(validValue);
 
         return ER_OK;
     } else    if (!(s_prop_SupportedModes.compare(propName))) {

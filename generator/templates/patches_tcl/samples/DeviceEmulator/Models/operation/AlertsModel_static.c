@@ -1,5 +1,3 @@
-static const char* BusPath = "/cdm/emulated";
-
 static Array_Alerts_AlertCodesDescriptor* getAlertCodesDescriptor(void)
 {
     static Array_Alerts_AlertCodesDescriptor s_descrs;

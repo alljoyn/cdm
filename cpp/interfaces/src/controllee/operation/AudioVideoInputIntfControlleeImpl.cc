@@ -268,7 +268,8 @@ QStatus AudioVideoInputIntfControllee::Impl::OnSetProperty(const String& propNam
             return ER_BUS_PROPERTY_VALUE_NOT_SET;
         }
 
-        EmitInputSourceIdChanged(validValue);
+        if (m_cdmControllee.EmitChangedSignalOnSetProperty())
+            EmitInputSourceIdChanged(validValue);
 
         return ER_OK;
     } else    if (!(s_prop_SupportedInputSources.compare(propName))) {

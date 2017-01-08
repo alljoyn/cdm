@@ -30,7 +30,7 @@
 #include "AlertsModel.h"
 #include "../../../Utils/HAL.h"
 
-#include "Commands.h"
+//#include "Commands.h"
 #include <algorithm>
 #include <iostream>
 #include <sstream>
@@ -198,16 +198,14 @@ static std::vector<AlertsInterface::AlertCodesDescriptor> s_descriptions = {
     {3,   "stuffed" }
 };
 
-static const char* BusPath = "/CDM/Alerts";
-
-static bool AlertCommand(const std::string& key, const StringVec& args, CdmControllee& controllee)
+/*static bool AlertCommand(const std::string& key, const StringVec& args, CdmControllee& controllee)
 {
     bool ok = false;
 
     if (args.size() >= 1 && args[0] == "show")
     {
         std::vector<AlertsInterface::AlertRecord> alerts;
-        HAL::ReadProperty(BusPath, "org.alljoyn.SmartSpaces.Operation.Alerts", "Alerts", alerts);
+        HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.Alerts", "Alerts", alerts);
         ok = true;
 
         for (auto& alert : alerts)
@@ -244,7 +242,7 @@ static bool AlertCommand(const std::string& key, const StringVec& args, CdmContr
         ok = true;
 
         std::vector<AlertsInterface::AlertRecord> alerts;
-        HAL::ReadProperty(BusPath, "org.alljoyn.SmartSpaces.Operation.Alerts", "Alerts", alerts);
+        HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.Alerts", "Alerts", alerts);
 
         AlertsInterface::AlertRecord record;
 
@@ -253,9 +251,9 @@ static bool AlertCommand(const std::string& key, const StringVec& args, CdmContr
         record.needAcknowledgement = true;
 
         alerts.push_back(record);
-        HAL::WriteProperty(BusPath, "org.alljoyn.SmartSpaces.Operation.Alerts", "Alerts", alerts);
+        HAL::WriteProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.Alerts", "Alerts", alerts);
 
-        if (auto iface = controllee.GetInterface<AlertsIntfControllee>(BusPath, "org.alljoyn.SmartSpaces.Operation.Alerts"))
+        if (auto iface = controllee.GetInterface<AlertsIntfControllee>(m_busPath, "org.alljoyn.SmartSpaces.Operation.Alerts"))
         {
             iface->EmitAlertsChanged(alerts);
         }
@@ -264,7 +262,7 @@ static bool AlertCommand(const std::string& key, const StringVec& args, CdmContr
     return ok;
 }
 
-static bool s_subscribed = Commands::Instance().Subscribe("alert", AlertCommand, "alert args");
+static bool s_subscribed = Commands::Instance().Subscribe("alert", AlertCommand, "alert args");*/
 
 
 AlertsModel::AlertsModel(const std::string& busPath) :
@@ -285,26 +283,36 @@ QStatus AlertsModel::GetAlertCodesDescription(qcc::String& arg_languageTag, std:
 QStatus AlertsModel::AcknowledgeAlert(uint16_t arg_alertCode, ErrorCode& error, CdmControllee& controllee)
 {
     std::vector<AlertsInterface::AlertRecord> alerts;
-    HAL::ReadProperty(BusPath, "org.alljoyn.SmartSpaces.Operation.Alerts", "Alerts", alerts);
+    QStatus status = HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.Alerts", "Alerts", alerts);
+    if (status != ER_OK)
+        return status;
+
     alerts.erase(std::remove_if(alerts.begin(), alerts.end(),
             [arg_alertCode](const AlertsInterface::AlertRecord& record){return record.alertCode == arg_alertCode;}),
             alerts.end()
             );
-    HAL::WriteProperty(BusPath, "org.alljoyn.SmartSpaces.Operation.Alerts", "Alerts", alerts);
 
-    auto iface = controllee.GetInterface<AlertsIntfControllee>(BusPath, "org.alljoyn.SmartSpaces.Operation.Alerts");
-    iface->EmitAlertsChanged(alerts);
-    return ER_OK;
+    status = HAL::WriteProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.Alerts", "Alerts", alerts);
+
+    if (status == ER_OK && controllee.EmitChangedSignalOnSetProperty()) {
+        auto iface = controllee.GetInterface<AlertsIntfControllee>(m_busPath, "org.alljoyn.SmartSpaces.Operation.Alerts");
+        iface->EmitAlertsChanged(alerts);
+    }
+
+    return status;
 }
 
 QStatus AlertsModel::AcknowledgeAllAlerts(ErrorCode& error, CdmControllee& controllee)
 {
     std::vector<AlertsInterface::AlertRecord> empty;
-    HAL::WriteProperty(BusPath, "org.alljoyn.SmartSpaces.Operation.Alerts", "Alerts", empty);
+    QStatus status = HAL::WriteProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.Alerts", "Alerts", empty);
 
-    auto iface = controllee.GetInterface<AlertsIntfControllee>(BusPath, "org.alljoyn.SmartSpaces.Operation.Alerts");
-    iface->EmitAlertsChanged(empty);
-    return ER_OK;
+    if (status == ER_OK && controllee.EmitChangedSignalOnSetProperty()) {
+        auto iface = controllee.GetInterface<AlertsIntfControllee>(m_busPath, "org.alljoyn.SmartSpaces.Operation.Alerts");
+        iface->EmitAlertsChanged(empty);
+    }
+
+    return status;
 }
 
 } // namespace emulator

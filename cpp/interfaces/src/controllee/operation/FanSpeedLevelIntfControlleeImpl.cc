@@ -283,7 +283,8 @@ QStatus FanSpeedLevelIntfControllee::Impl::OnSetProperty(const String& propName,
             return ER_BUS_PROPERTY_VALUE_NOT_SET;
         }
 
-        EmitFanSpeedLevelChanged(validValue);
+        if (m_cdmControllee.EmitChangedSignalOnSetProperty())
+            EmitFanSpeedLevelChanged(validValue);
 
         return ER_OK;
     } else    if (!(s_prop_MaxFanSpeedLevel.compare(propName))) {
@@ -312,7 +313,8 @@ QStatus FanSpeedLevelIntfControllee::Impl::OnSetProperty(const String& propName,
             return ER_BUS_PROPERTY_VALUE_NOT_SET;
         }
 
-        EmitAutoModeChanged(validValue);
+        if (m_cdmControllee.EmitChangedSignalOnSetProperty())
+            EmitAutoModeChanged(validValue);
 
         return ER_OK;
     } else {

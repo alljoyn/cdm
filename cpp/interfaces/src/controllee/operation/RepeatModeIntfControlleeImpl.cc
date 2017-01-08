@@ -238,7 +238,8 @@ QStatus RepeatModeIntfControllee::Impl::OnSetProperty(const String& propName, Ms
             return ER_BUS_PROPERTY_VALUE_NOT_SET;
         }
 
-        EmitRepeatModeChanged(validValue);
+        if (m_cdmControllee.EmitChangedSignalOnSetProperty())
+            EmitRepeatModeChanged(validValue);
 
         return ER_OK;
     } else {

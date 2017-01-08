@@ -151,9 +151,9 @@ SuperControllee::SuperControllee(
 
 
 
-QStatus SuperControllee::Start()
+QStatus SuperControllee::Start(bool emitOnSet)
 {
-    return SetupDevice();
+    return SetupDevice(emitOnSet);
 }
 
 
@@ -470,7 +470,7 @@ QStatus SuperControllee::PreloadHAL()
 
 
 
-QStatus SuperControllee::SetupDevice()
+QStatus SuperControllee::SetupDevice(bool emitOnSet)
 {
     QStatus status = PreloadHAL();
     if (status != ER_OK)
@@ -490,7 +490,7 @@ QStatus SuperControllee::SetupDevice()
         return status;
     }
 
-    status = m_controllee.Start();
+    status = m_controllee.Start(emitOnSet);
     if (status != ER_OK)
     {
         return status;

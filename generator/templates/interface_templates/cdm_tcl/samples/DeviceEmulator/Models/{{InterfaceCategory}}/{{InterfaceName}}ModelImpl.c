@@ -157,7 +157,7 @@ static AJ_Status Get{{property.Name}}(void *context, const char *objPath, {{prop
     AJ_Status result = AJ_OK;
     {{halC}} value = {{halI}};
 
-    Element* elem = HAL_ReadProperty("/cdm/emulated", "{{Interface.FullName}}", "{{property.Name}}");
+    Element* elem = HAL_ReadProperty(objPath, "{{Interface.FullName}}", "{{property.Name}}");
 
     if (elem) {
         {{tcl_macros.halDecode(property.Type, "value", "elem")}}
@@ -178,7 +178,7 @@ static AJ_Status Set{{property.Name}}(void *context, const char *objPath, {{prop
     {{halC}} value = input;
 
     Element* elem = {{hal}}(value, NULL);
-    HAL_WritePropertyElem("/cdm/emulated", "{{Interface.FullName}}", "{{property.Name}}", elem);
+    HAL_WritePropertyElem(objPath, "{{Interface.FullName}}", "{{property.Name}}", elem);
     BSXML_FreeElement(elem);
 
     return result;

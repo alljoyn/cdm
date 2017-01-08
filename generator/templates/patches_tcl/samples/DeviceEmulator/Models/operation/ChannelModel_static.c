@@ -1,5 +1,3 @@
-static const char* BusPath = "/cdm/emulated";
-
 static Array_Channel_ChannelInfoRecord* getChannels(void)
 {
     static Array_Channel_ChannelInfoRecord s_channels;
@@ -21,8 +19,6 @@ static Array_Channel_ChannelInfoRecord* getChannels(void)
 
     return &s_channels;
 }
-
-
 
 static void CopyChannel_ChannelInfoRecord(Channel_ChannelInfoRecord* value, Channel_ChannelInfoRecord* copy)
 {

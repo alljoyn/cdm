@@ -1,1 +1,1 @@
-    return HAL::ReadProperty(BusPath, "org.alljoyn.SmartSpaces.Operation.Channel", "ChannelId", out);
+    return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.Channel", "ChannelId", out);

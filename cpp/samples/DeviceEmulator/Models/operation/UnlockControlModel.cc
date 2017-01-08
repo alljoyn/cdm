@@ -54,7 +54,7 @@ QStatus UnlockControlModel::Unlock(ErrorCode& error, CdmControllee& controllee)
     bool value = false;
     QStatus status = HAL::WriteProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.LockedStatus", "IsLocked", value);
 
-    if (status == ER_OK)
+    if (status == ER_OK && controllee.EmitChangedSignalOnSetProperty())
     {
         auto iface = controllee.GetInterface<LockedStatusIntfControllee>(m_busPath, "org.alljoyn.SmartSpaces.Operation.LockedStatus");
         iface->EmitIsLockedChanged(value);

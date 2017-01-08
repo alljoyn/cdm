@@ -57,7 +57,7 @@ class CdmControllee {
      * Start controllee
      * @return ER_OK on success
      */
-    QStatus Start();
+    QStatus Start(bool emitOnSetProperty=false);
 
     /**
      * Stop controllee
@@ -71,6 +71,8 @@ class CdmControllee {
      * @return Shared ptr to the CdmBusObject
      */
     Ref<CdmBusObject> GetCdmBusObject(const qcc::String& busPath);
+
+    bool EmitChangedSignalOnSetProperty() const;
 
     template<typename InterfaceType>
     Ref<InterfaceType> GetInterface(const qcc::String& busPath, const qcc::String& interfaceName)

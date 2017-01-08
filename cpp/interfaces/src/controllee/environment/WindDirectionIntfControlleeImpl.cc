@@ -374,7 +374,8 @@ QStatus WindDirectionIntfControllee::Impl::OnSetProperty(const String& propName,
             return ER_BUS_PROPERTY_VALUE_NOT_SET;
         }
 
-        EmitHorizontalDirectionChanged(validValue);
+        if (m_cdmControllee.EmitChangedSignalOnSetProperty())
+            EmitHorizontalDirectionChanged(validValue);
 
         return ER_OK;
     } else    if (!(s_prop_HorizontalMax.compare(propName))) {
@@ -403,7 +404,8 @@ QStatus WindDirectionIntfControllee::Impl::OnSetProperty(const String& propName,
             return ER_BUS_PROPERTY_VALUE_NOT_SET;
         }
 
-        EmitHorizontalAutoModeChanged(validValue);
+        if (m_cdmControllee.EmitChangedSignalOnSetProperty())
+            EmitHorizontalAutoModeChanged(validValue);
 
         return ER_OK;
     } else    if (!(s_prop_VerticalDirection.compare(propName))) {
@@ -427,7 +429,8 @@ QStatus WindDirectionIntfControllee::Impl::OnSetProperty(const String& propName,
             return ER_BUS_PROPERTY_VALUE_NOT_SET;
         }
 
-        EmitVerticalDirectionChanged(validValue);
+        if (m_cdmControllee.EmitChangedSignalOnSetProperty())
+            EmitVerticalDirectionChanged(validValue);
 
         return ER_OK;
     } else    if (!(s_prop_VerticalMax.compare(propName))) {
@@ -456,7 +459,8 @@ QStatus WindDirectionIntfControllee::Impl::OnSetProperty(const String& propName,
             return ER_BUS_PROPERTY_VALUE_NOT_SET;
         }
 
-        EmitVerticalAutoModeChanged(validValue);
+        if (m_cdmControllee.EmitChangedSignalOnSetProperty())
+            EmitVerticalAutoModeChanged(validValue);
 
         return ER_OK;
     } else {

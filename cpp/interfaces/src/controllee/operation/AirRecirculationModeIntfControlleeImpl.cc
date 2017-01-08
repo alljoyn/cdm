@@ -238,7 +238,8 @@ QStatus AirRecirculationModeIntfControllee::Impl::OnSetProperty(const String& pr
             return ER_BUS_PROPERTY_VALUE_NOT_SET;
         }
 
-        EmitIsRecirculatingChanged(validValue);
+        if (m_cdmControllee.EmitChangedSignalOnSetProperty())
+            EmitIsRecirculatingChanged(validValue);
 
         return ER_OK;
     } else {

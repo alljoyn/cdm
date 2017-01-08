@@ -298,7 +298,8 @@ QStatus ChannelIntfControllee::Impl::OnSetProperty(const String& propName, MsgAr
             return ER_BUS_PROPERTY_VALUE_NOT_SET;
         }
 
-        EmitChannelIdChanged(validValue);
+        if (m_cdmControllee.EmitChangedSignalOnSetProperty())
+            EmitChannelIdChanged(validValue);
 
         return ER_OK;
     } else    if (!(s_prop_TotalNumberOfChannels.compare(propName))) {

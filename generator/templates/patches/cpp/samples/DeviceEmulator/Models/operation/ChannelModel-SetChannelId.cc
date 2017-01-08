@@ -1,1 +1,1 @@
-    return HAL::WriteProperty(BusPath, "org.alljoyn.SmartSpaces.Operation.Channel", "ChannelId", value);
+    return HAL::WriteProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.Channel", "ChannelId", value);

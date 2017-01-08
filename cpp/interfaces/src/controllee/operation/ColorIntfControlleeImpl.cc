@@ -270,7 +270,8 @@ QStatus ColorIntfControllee::Impl::OnSetProperty(const String& propName, MsgArg&
             return ER_BUS_PROPERTY_VALUE_NOT_SET;
         }
 
-        EmitHueChanged(validValue);
+        if (m_cdmControllee.EmitChangedSignalOnSetProperty())
+            EmitHueChanged(validValue);
 
         return ER_OK;
     } else    if (!(s_prop_Saturation.compare(propName))) {
@@ -294,7 +295,8 @@ QStatus ColorIntfControllee::Impl::OnSetProperty(const String& propName, MsgArg&
             return ER_BUS_PROPERTY_VALUE_NOT_SET;
         }
 
-        EmitSaturationChanged(validValue);
+        if (m_cdmControllee.EmitChangedSignalOnSetProperty())
+            EmitSaturationChanged(validValue);
 
         return ER_OK;
     } else {

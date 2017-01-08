@@ -243,7 +243,8 @@ QStatus BrightnessIntfControllee::Impl::OnSetProperty(const String& propName, Ms
             return ER_BUS_PROPERTY_VALUE_NOT_SET;
         }
 
-        EmitBrightnessChanged(validValue);
+        if (m_cdmControllee.EmitChangedSignalOnSetProperty())
+            EmitBrightnessChanged(validValue);
 
         return ER_OK;
     } else {

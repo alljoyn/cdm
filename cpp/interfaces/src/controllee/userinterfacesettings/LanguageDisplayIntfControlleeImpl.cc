@@ -256,7 +256,8 @@ QStatus LanguageDisplayIntfControllee::Impl::OnSetProperty(const String& propNam
             return ER_BUS_PROPERTY_VALUE_NOT_SET;
         }
 
-        EmitDisplayLanguageChanged(validValue);
+        if (m_cdmControllee.EmitChangedSignalOnSetProperty())
+            EmitDisplayLanguageChanged(validValue);
 
         return ER_OK;
     } else    if (!(s_prop_SupportedDisplayLanguages.compare(propName))) {

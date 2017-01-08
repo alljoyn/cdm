@@ -36,14 +36,19 @@ CdmControllee::~CdmControllee()
     delete m_impl;
 }
 
-QStatus CdmControllee::Start()
+QStatus CdmControllee::Start(bool emitOnSetProperty)
 {
-    return m_impl->Start();
+    return m_impl->Start(emitOnSetProperty);
 }
 
 QStatus CdmControllee::Stop()
 {
     return m_impl->Stop();
+}
+
+bool CdmControllee::EmitChangedSignalOnSetProperty() const
+{
+    return m_impl->EmitChangedSignalOnSet();
 }
 
 Ref<CdmBusObject> CdmControllee::GetCdmBusObject(const qcc::String& busPath)

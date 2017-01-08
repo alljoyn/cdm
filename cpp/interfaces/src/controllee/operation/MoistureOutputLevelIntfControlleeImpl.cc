@@ -295,7 +295,8 @@ QStatus MoistureOutputLevelIntfControllee::Impl::OnSetProperty(const String& pro
             return ER_BUS_PROPERTY_VALUE_NOT_SET;
         }
 
-        EmitMoistureOutputLevelChanged(validValue);
+        if (m_cdmControllee.EmitChangedSignalOnSetProperty())
+            EmitMoistureOutputLevelChanged(validValue);
 
         return ER_OK;
     } else    if (!(s_prop_MaxMoistureOutputLevel.compare(propName))) {
@@ -324,7 +325,8 @@ QStatus MoistureOutputLevelIntfControllee::Impl::OnSetProperty(const String& pro
             return ER_BUS_PROPERTY_VALUE_NOT_SET;
         }
 
-        EmitAutoModeChanged(validValue);
+        if (m_cdmControllee.EmitChangedSignalOnSetProperty())
+            EmitAutoModeChanged(validValue);
 
         return ER_OK;
     } else {

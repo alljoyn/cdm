@@ -269,7 +269,8 @@ QStatus ColorTemperatureIntfControllee::Impl::OnSetProperty(const String& propNa
             return ER_BUS_PROPERTY_VALUE_NOT_SET;
         }
 
-        EmitTemperatureChanged(validValue);
+        if (m_cdmControllee.EmitChangedSignalOnSetProperty())
+            EmitTemperatureChanged(validValue);
 
         return ER_OK;
     } else    if (!(s_prop_MinTemperature.compare(propName))) {

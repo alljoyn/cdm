@@ -256,7 +256,8 @@ QStatus TemperatureDisplayIntfControllee::Impl::OnSetProperty(const String& prop
             return ER_BUS_PROPERTY_VALUE_NOT_SET;
         }
 
-        EmitDisplayTemperatureUnitChanged(validValue);
+        if (m_cdmControllee.EmitChangedSignalOnSetProperty())
+            EmitDisplayTemperatureUnitChanged(validValue);
 
         return ER_OK;
     } else    if (!(s_prop_SupportedDisplayTemperatureUnits.compare(propName))) {

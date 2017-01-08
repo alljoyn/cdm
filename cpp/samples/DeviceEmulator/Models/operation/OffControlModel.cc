@@ -54,7 +54,7 @@ QStatus OffControlModel::SwitchOff(ErrorCode& error, CdmControllee& controllee)
     bool value = false;
     QStatus status = HAL::WriteProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.OnOffStatus", "IsOn", value);
 
-    if (status == ER_OK)
+    if (status == ER_OK && controllee.EmitChangedSignalOnSetProperty())
     {
         auto iface = controllee.GetInterface<OnOffStatusIntfControllee>(m_busPath, "org.alljoyn.SmartSpaces.Operation.OnOffStatus");
         iface->EmitIsOnChanged(value);

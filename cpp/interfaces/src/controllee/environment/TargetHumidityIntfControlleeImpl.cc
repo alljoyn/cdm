@@ -362,7 +362,8 @@ QStatus TargetHumidityIntfControllee::Impl::OnSetProperty(const String& propName
             return ER_BUS_PROPERTY_VALUE_NOT_SET;
         }
 
-        EmitTargetValueChanged(validValue);
+        if (m_cdmControllee.EmitChangedSignalOnSetProperty())
+            EmitTargetValueChanged(validValue);
 
         return ER_OK;
     } else    if (!(s_prop_MinValue.compare(propName))) {

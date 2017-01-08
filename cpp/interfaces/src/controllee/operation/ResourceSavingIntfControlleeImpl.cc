@@ -238,7 +238,8 @@ QStatus ResourceSavingIntfControllee::Impl::OnSetProperty(const String& propName
             return ER_BUS_PROPERTY_VALUE_NOT_SET;
         }
 
-        EmitResourceSavingModeChanged(validValue);
+        if (m_cdmControllee.EmitChangedSignalOnSetProperty())
+            EmitResourceSavingModeChanged(validValue);
 
         return ER_OK;
     } else {

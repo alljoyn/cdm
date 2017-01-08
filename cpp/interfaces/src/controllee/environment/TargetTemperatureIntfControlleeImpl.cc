@@ -318,7 +318,8 @@ QStatus TargetTemperatureIntfControllee::Impl::OnSetProperty(const String& propN
             return ER_BUS_PROPERTY_VALUE_NOT_SET;
         }
 
-        EmitTargetValueChanged(validValue);
+        if (m_cdmControllee.EmitChangedSignalOnSetProperty())
+            EmitTargetValueChanged(validValue);
 
         return ER_OK;
     } else    if (!(s_prop_MinValue.compare(propName))) {

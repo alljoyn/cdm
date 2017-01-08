@@ -293,7 +293,8 @@ QStatus AudioVolumeIntfControllee::Impl::OnSetProperty(const String& propName, M
             return ER_BUS_PROPERTY_VALUE_NOT_SET;
         }
 
-        EmitVolumeChanged(validValue);
+        if (m_cdmControllee.EmitChangedSignalOnSetProperty())
+            EmitVolumeChanged(validValue);
 
         return ER_OK;
     } else    if (!(s_prop_MaxVolume.compare(propName))) {
@@ -319,7 +320,8 @@ QStatus AudioVolumeIntfControllee::Impl::OnSetProperty(const String& propName, M
             return ER_BUS_PROPERTY_VALUE_NOT_SET;
         }
 
-        EmitMuteChanged(validValue);
+        if (m_cdmControllee.EmitChangedSignalOnSetProperty())
+            EmitMuteChanged(validValue);
 
         return ER_OK;
     } else {

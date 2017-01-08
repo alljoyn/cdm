@@ -60,9 +60,11 @@ class CdmControlleeImpl {
 
     ~CdmControlleeImpl();
 
-    QStatus Start();
+    QStatus Start(bool emitOnSetProperty);
 
     QStatus Stop();
+
+    bool EmitChangedSignalOnSet() const;
 
     Ref<CdmBusObject> GetCdmBusObject(const qcc::String& busPath);
 
@@ -82,6 +84,7 @@ class CdmControlleeImpl {
     std::map<std::pair<qcc::String, qcc::String>, Ref<CdmControlleeInterface>> m_interfaces;
     CdmBusListener* m_cdmBusListener;
     AtomicBool m_isStarted;
+    AtomicBool m_emitChangedOnSet;
 };
 
 }

@@ -303,7 +303,8 @@ QStatus {{Interface.Name}}IntfControllee::Impl::OnSetProperty(const String& prop
         }
         {% if property.EmitsChangedSignal %}
 
-        Emit{{property.Name}}Changed(validValue);
+        if (m_cdmControllee.EmitChangedSignalOnSetProperty())
+            Emit{{property.Name}}Changed(validValue);
         {% endif %}
 
         return ER_OK;

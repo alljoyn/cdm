@@ -36,7 +36,8 @@ namespace services {
 CdmControlleeImpl::CdmControlleeImpl(BusAttachment& bus) :
     m_bus(bus),
     m_cdmBusListener(new CdmBusListener(m_bus)),
-    m_isStarted(false)
+    m_isStarted(false),
+    m_emitChangedOnSet(false)
 {
     m_cdmBusListener->SetSessionPort(CDM_SERVICE_PORT);
 }
@@ -48,7 +49,7 @@ CdmControlleeImpl::~CdmControlleeImpl()
 }
 
 
-QStatus CdmControlleeImpl::Start()
+QStatus CdmControlleeImpl::Start(bool emitOnSetProperty)
 {
     QStatus status = ER_OK;
 
@@ -68,6 +69,7 @@ QStatus CdmControlleeImpl::Start()
         return status;
     }
 
+    m_emitChangedOnSet = emitOnSetProperty;
     m_isStarted = true;
     return status;
 }
@@ -90,6 +92,11 @@ QStatus CdmControlleeImpl::Stop()
     m_isStarted = false;
 
     return status;
+}
+
+bool CdmControlleeImpl::EmitChangedSignalOnSet() const
+{
+    return m_emitChangedOnSet;
 }
 
 Ref<CdmBusObject> CdmControlleeImpl::GetCdmBusObject(const qcc::String &busPath)

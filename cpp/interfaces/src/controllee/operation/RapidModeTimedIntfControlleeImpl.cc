@@ -256,7 +256,8 @@ QStatus RapidModeTimedIntfControllee::Impl::OnSetProperty(const String& propName
             return ER_BUS_PROPERTY_VALUE_NOT_SET;
         }
 
-        EmitRapidModeMinutesRemainingChanged(validValue);
+        if (m_cdmControllee.EmitChangedSignalOnSetProperty())
+            EmitRapidModeMinutesRemainingChanged(validValue);
 
         return ER_OK;
     } else    if (!(s_prop_MaxSetMinutes.compare(propName))) {
