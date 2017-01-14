@@ -196,7 +196,7 @@ static AJ_Status Validate{{p.Name}}({{Interface.Name}}Model* model, const char* 
     {% endif %}
 }
 {% endif %}
-{% if p.Clamp %}
+{% if p.Clamp and not p.CustomCheck %}
 
 static AJ_Status clamp{{p.Name}}({{Interface.Name}}Model* model, const char* objPath, {{p.Type.tcltype()}} value, {{p.Type.tcltype()}} *out)
 {
@@ -354,22 +354,27 @@ static AJ_Status {{Interface.Name}}_OnGetProperty(AJ_BusAttachment* busAttachmen
             {% set ajArrayType = p.Type.ajtypeIsArray() %}
             {% set ajStructType = p.Type.ajtypeIsStruct(name=ajArrayType) %}
             {% set isArray = ajArrayType != None %}
+            {% set containerMarshaling = ajStructType != None or p.Type.tclTypeName() == 'string' %}
             {{p.Type.tcltype(isArray)}} {{p.Name.snake()}};
             memset(&{{p.Name.snake()}}, 0, sizeof({{p.Type.tcltype(isArray)}}));
             status = {{Interface.Name}}_Get{{p.Name}}(busAttachment, objPath, &{{p.Name.snake()}});
             if (status == AJ_OK) {
-            {% if ajArrayType != None and ajStructType != None %}
+            {% if ajArrayType != None and containerMarshaling %}
                 AJ_Arg array;
                 int i=0;
                 status |= AJ_MarshalContainer(replyMsg, &array, AJ_ARG_ARRAY);
                 for (; i<{{p.Name.snake()}}.numElems; ++i)
                 {
+                    {% if ajStructType %}
                     AJ_Arg strc;
                     status |= AJ_MarshalContainer(replyMsg, &strc, AJ_ARG_STRUCT);
-                    AJ_MarshalArgs(replyMsg, "{{ajStructType.ajtypeStructOf()}}", {{tcl_macros.unpackStructFields(p.Name.snake(), p.Type.interfaceStruct(name=ajArrayType))}});
-                    AJ_MarshalCloseContainer(replyMsg, &strc);
+                    status |= AJ_MarshalArgs(replyMsg, "{{ajStructType.ajtypeStructOf()}}", {{tcl_macros.unpackStructFields(p.Name.snake(), p.Type.interfaceStruct(name=ajArrayType))}});
+                    status |= AJ_MarshalCloseContainer(replyMsg, &strc);
+                    {% else %}
+                    status |= AJ_MarshalArgs(replyMsg, "s", {{p.Name.snake()}}.elems[i]);
+                    {% endif %}
                 }
-                AJ_MarshalCloseContainer(replyMsg, &array);
+                status |= AJ_MarshalCloseContainer(replyMsg, &array);
             {% else %}
                 status = AJ_MarshalArgs(replyMsg, "{{p.Type.signature}}", {{tcl_macros.unpackArgs(p.Type, p.Name.snake())}});
             {% endif %}

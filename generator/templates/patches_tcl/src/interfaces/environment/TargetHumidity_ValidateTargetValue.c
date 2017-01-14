@@ -10,7 +10,7 @@
 
     if (minValue == maxValue)
     {
-        status = ValidateTargetValue(model, objPath, value);
+        status = ValidateTargetValue(model, objPath, *value);
         if (status != AJ_OK)
             return status;
     }
@@ -21,5 +21,5 @@
         if (status != AJ_OK)
             return status;
 
-        value = clamp_uint8(value, minValue, maxValue, stepValue);
+        *value = clamp_uint8(*value, minValue, maxValue, stepValue);
     }
