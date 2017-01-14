@@ -27,12 +27,13 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 #include "org_alljoyn_SmartSpaces_Operation_RepeatMode.h"
+#include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <sstream>
-
 
 
 
@@ -52,13 +53,16 @@ org_alljoyn_SmartSpaces_Operation_RepeatMode::org_alljoyn_SmartSpaces_Operation_
 
 
 
-    layout->addWidget(new QLabel("RepeatMode"));
+    layout->addWidget(new QLabel("<b>RepeatMode</b>"));
     // Create the editing widget for RepeatMode
     edit_RepeatMode = new QCheckBox();
     edit_RepeatMode->setEnabled(true);
     QObject::connect(edit_RepeatMode, SIGNAL(stateChanged(int)), this, SLOT(slotSetRepeatMode()));
 
     layout->addWidget(edit_RepeatMode);
+
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {
@@ -128,7 +132,9 @@ void org_alljoyn_SmartSpaces_Operation_RepeatMode::slotOnResponseSetRepeatMode(Q
 
     if (status != ER_OK)
     {
+        qcShowStatus(this, "Failed to set RepeatMode", status);
         qWarning() << "RepeatMode::slotOnResponseSetRepeatMode Failed to set RepeatMode" << QCC_StatusText(status);
+        fetchProperties();      // restore the display of properties
     }
 }
 

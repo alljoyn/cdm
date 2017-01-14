@@ -27,25 +27,26 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 #include "org_alljoyn_SmartSpaces_Operation_Channel.h"
+#include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <sstream>
+
 
 
 template<>
 QString
 QStringFrom<ChannelInterface::ChannelInfoRecord>(const ChannelInterface::ChannelInfoRecord& value)
 {
+    // the QLabel is AutoFmt 
     std::ostringstream strm;
-    strm << "{";
-    strm << "channelID=" << value.channelID.c_str();
-    strm << " ";
-    strm << "channelNumber=" << value.channelNumber.c_str();
-    strm << " ";
-    strm << "channelName=" << value.channelName.c_str();
-    strm << "}";
+
+    strm << "<b>channelID</b>: " << value.channelID.c_str() << "\n";
+    strm << "<b>channelNumber</b>: " << value.channelNumber.c_str() << "\n";
+    strm << "<b>channelName</b>: " << value.channelName.c_str() << "\n";
 
     return QString::fromStdString(strm.str());
 }
@@ -55,18 +56,28 @@ template<>
 QString
 QStringFrom<std::vector<ChannelInterface::ChannelInfoRecord>>(const std::vector<ChannelInterface::ChannelInfoRecord>& value)
 {
-    std::string result;
+    // the QLabel is AutoFmt 
+    std::ostringstream strm;
+
+    strm << "<html><body>";
+    strm << "<table><thead><tr>";
+    strm << "<th bgcolor=\"light blue\">channelID</th>";
+    strm << "<th bgcolor=\"light blue\">channelNumber</th>";
+    strm << "<th bgcolor=\"light blue\">channelName</th>";
+    strm << "</tr></thead>";
 
     for (auto& v : value)
     {
-        auto qs = QStringFrom<ChannelInterface::ChannelInfoRecord>(v);
-        result += qs.toStdString();
+        strm << "<tr>";
+        strm << "<td>" << v.channelID.c_str() << "</td>";
+        strm << "<td>" << v.channelNumber.c_str() << "</td>";
+        strm << "<td>" << v.channelName.c_str() << "</td>";
+        strm << "</tr>";
     }
-    return QString::fromStdString(result);
+
+    strm << "</table></body></html>";
+    return QString::fromStdString(strm.str());
 }
-
-
-
 
 
 using namespace CDMQtWidgets;
@@ -168,29 +179,6 @@ static bool DialogGetChannelList(QWidget* parent, uint16_t& startingRecord, uint
     return ok;
 }
 
-
-
-org_alljoyn_SmartSpaces_Operation_Channel_ShowChannelList::org_alljoyn_SmartSpaces_Operation_Channel_ShowChannelList(QWidget* parent, const char* text)
-{
-    dialog_ = new QMessageBox(parent);
-    dialog_->setInformativeText(text);
-}
-
-
-
-org_alljoyn_SmartSpaces_Operation_Channel_ShowChannelList::~org_alljoyn_SmartSpaces_Operation_Channel_ShowChannelList()
-{
-    delete dialog_;
-}
-
-
-
-int org_alljoyn_SmartSpaces_Operation_Channel_ShowChannelList::run()
-{
-    // This is always modal
-    return dialog_->exec();
-}
-
 org_alljoyn_SmartSpaces_Operation_Channel::org_alljoyn_SmartSpaces_Operation_Channel(CommonControllerInterface *iface)
   : controller(NULL),
     m_listener(mkRef<Listener>(this))
@@ -206,21 +194,21 @@ org_alljoyn_SmartSpaces_Operation_Channel::org_alljoyn_SmartSpaces_Operation_Cha
     QObject::connect(button_GetChannelList, SIGNAL(clicked()), this, SLOT(slotClickGetChannelList()));
     layout->addWidget(button_GetChannelList);
 
-    layout->addWidget(new QLabel("ChannelId"));
+    layout->addWidget(new QLabel("<b>ChannelId</b>"));
     // Create the editing widget for ChannelId
     edit_ChannelId = new QLineEdit();
     edit_ChannelId->setToolTip("Current channel id.");
-    edit_ChannelId->setReadOnly(false);
     QObject::connect(edit_ChannelId, SIGNAL(returnPressed()), this, SLOT(slotSetChannelId()));
 
     layout->addWidget(edit_ChannelId);
-    layout->addWidget(new QLabel("TotalNumberOfChannels"));
+    layout->addWidget(new QLabel("<b>TotalNumberOfChannels</b>"));
     // Create the editing widget for TotalNumberOfChannels
-    edit_TotalNumberOfChannels = new QLineEdit();
-    edit_TotalNumberOfChannels->setToolTip("Total number of scanned channels.");
-    edit_TotalNumberOfChannels->setReadOnly(true);
+    edit_TotalNumberOfChannels = new QLabel();
 
     layout->addWidget(edit_TotalNumberOfChannels);
+
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {
@@ -320,7 +308,9 @@ void org_alljoyn_SmartSpaces_Operation_Channel::slotOnResponseSetChannelId(QStat
 
     if (status != ER_OK)
     {
+        qcShowStatus(this, "Failed to set ChannelId", status);
         qWarning() << "Channel::slotOnResponseSetChannelId Failed to set ChannelId" << QCC_StatusText(status);
+        fetchProperties();      // restore the display of properties
     }
 }
 
@@ -385,12 +375,10 @@ void org_alljoyn_SmartSpaces_Operation_Channel::slotOnResponseMethodGetChannelLi
     }
     std::ostringstream strm;
 
-    // Qt rich text, auto-detected
     strm << "<html><body>"
          << "<h1>Channels</h1>\n"
          << "<table>\n"
          << "<thead><tr><th bgcolor=\"lightblue\">ID</th><th bgcolor=\"lightblue\">Number</th><th bgcolor=\"lightblue\">Name</th></tr></thead>\n";
-
 
     for (auto& entry : listOfChannelInfoRecords)
     {
@@ -403,9 +391,8 @@ void org_alljoyn_SmartSpaces_Operation_Channel::slotOnResponseMethodGetChannelLi
          << "</body></html>\n";
 
     auto str = strm.str();
-    auto dlg = new org_alljoyn_SmartSpaces_Operation_Channel_ShowChannelList(this, str.c_str());
-    dlg->run();
-    delete dlg;
+    messages_->setTextFormat(Qt::RichText);
+    messages_->setText(str.c_str());
 }
 
 

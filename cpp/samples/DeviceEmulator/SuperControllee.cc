@@ -133,8 +133,6 @@ namespace services {
 namespace emulator {
 //======================================================================
 
-const std::string BusPath = "/cdm/super";
-
 SuperControllee::SuperControllee(
         BusAttachment& bus,
         const Config& config,

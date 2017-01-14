@@ -34,6 +34,7 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QLineEdit>
+#include <QLabel>
 #include <QVBoxLayout>
 #include <QPushButton>
 
@@ -197,14 +198,15 @@ private:
     Ref<Listener> m_listener;
 
 
-    QLineEdit* edit_ExpectedLifeInDays;
+    QLabel* edit_ExpectedLifeInDays;
     QCheckBox* edit_IsCleanable;
-    QLineEdit* edit_OrderPercentage;
-    QLineEdit* edit_Manufacturer;
-    QLineEdit* edit_PartNumber;
-    QLineEdit* edit_Url;
-    QLineEdit* edit_LifeRemaining;
+    QLabel* edit_OrderPercentage;
+    QLabel* edit_Manufacturer;
+    QLabel* edit_PartNumber;
+    QLabel* edit_Url;
+    QLabel* edit_LifeRemaining;
 
+    QLabel* messages_;
     void    fetchProperties();
 
 protected:

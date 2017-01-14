@@ -27,12 +27,13 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 #include "org_alljoyn_SmartSpaces_Operation_UnlockControl.h"
+#include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <sstream>
-
 
 
 
@@ -57,6 +58,9 @@ org_alljoyn_SmartSpaces_Operation_UnlockControl::org_alljoyn_SmartSpaces_Operati
     QObject::connect(button_Unlock, SIGNAL(clicked()), this, SLOT(slotClickUnlock()));
     layout->addWidget(button_Unlock);
 
+
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {

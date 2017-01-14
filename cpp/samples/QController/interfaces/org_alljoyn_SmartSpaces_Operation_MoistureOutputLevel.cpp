@@ -27,13 +27,69 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 #include "org_alljoyn_SmartSpaces_Operation_MoistureOutputLevel.h"
+#include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <sstream>
 
 
+
+template<>
+QString
+QStringFrom<MoistureOutputLevelInterface::AutoMode>(const MoistureOutputLevelInterface::AutoMode& value)
+{
+    QString result;
+
+    switch (value)
+    {
+    case MoistureOutputLevelInterface::AUTO_MODE_OFF:
+        result = "Off";
+        break;
+
+    case MoistureOutputLevelInterface::AUTO_MODE_ON:
+        result = "On";
+        break;
+
+    default:
+        result = "Unknown";
+        break;
+    }
+
+    return result;
+}
+
+
+
+template<>
+QString
+QStringFrom<std::vector<MoistureOutputLevelInterface::AutoMode>>(const std::vector<MoistureOutputLevelInterface::AutoMode>& value)
+{
+    // the QLabel is AutoFmt 
+    std::ostringstream strm;
+
+    strm << "<html><body>";
+    strm << "<table><thead><tr>";
+    strm << "<th bgcolor=\"light blue\">AutoMode</th>";
+    strm << "</tr></thead>";
+
+    for (auto& v : value)
+    {
+        if (v == MoistureOutputLevelInterface::AUTO_MODE_OFF)
+        {
+            strm << "<tr><td>Off</td></tr>";
+        }
+        if (v == MoistureOutputLevelInterface::AUTO_MODE_ON)
+        {
+            strm << "<tr><td>On</td></tr>";
+        }
+    }
+
+    strm << "</table></body></html>";
+    return QString::fromStdString(strm.str());
+}
 
 
 using namespace CDMQtWidgets;
@@ -57,22 +113,19 @@ org_alljoyn_SmartSpaces_Operation_MoistureOutputLevel::org_alljoyn_SmartSpaces_O
 
 
 
-    layout->addWidget(new QLabel("MoistureOutputLevel"));
+    layout->addWidget(new QLabel("<b>MoistureOutputLevel</b>"));
     // Create the editing widget for MoistureOutputLevel
     edit_MoistureOutputLevel = new QLineEdit();
     edit_MoistureOutputLevel->setToolTip("Current level of moisture output.");
-    edit_MoistureOutputLevel->setReadOnly(false);
     QObject::connect(edit_MoistureOutputLevel, SIGNAL(returnPressed()), this, SLOT(slotSetMoistureOutputLevel()));
 
     layout->addWidget(edit_MoistureOutputLevel);
-    layout->addWidget(new QLabel("MaxMoistureOutputLevel"));
+    layout->addWidget(new QLabel("<b>MaxMoistureOutputLevel</b>"));
     // Create the editing widget for MaxMoistureOutputLevel
-    edit_MaxMoistureOutputLevel = new QLineEdit();
-    edit_MaxMoistureOutputLevel->setToolTip("Maximum level of moisture output.");
-    edit_MaxMoistureOutputLevel->setReadOnly(true);
+    edit_MaxMoistureOutputLevel = new QLabel();
 
     layout->addWidget(edit_MaxMoistureOutputLevel);
-    layout->addWidget(new QLabel("AutoMode"));
+    layout->addWidget(new QLabel("<b>AutoMode</b>"));
     // Create the editing widget for AutoMode
     edit_AutoMode = new QComboBox();
     edit_AutoMode->setEditable(false);
@@ -82,6 +135,9 @@ org_alljoyn_SmartSpaces_Operation_MoistureOutputLevel::org_alljoyn_SmartSpaces_O
     QObject::connect(edit_AutoMode, SIGNAL(currentTextChanged(const QString &)), this, SLOT(slotSetAutoMode()));
 
     layout->addWidget(edit_AutoMode);
+
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {
@@ -163,7 +219,9 @@ void org_alljoyn_SmartSpaces_Operation_MoistureOutputLevel::slotOnResponseSetMoi
 
     if (status != ER_OK)
     {
+        qcShowStatus(this, "Failed to set MoistureOutputLevel", status);
         qWarning() << "MoistureOutputLevel::slotOnResponseSetMoistureOutputLevel Failed to set MoistureOutputLevel" << QCC_StatusText(status);
+        fetchProperties();      // restore the display of properties
     }
 }
 
@@ -266,7 +324,9 @@ void org_alljoyn_SmartSpaces_Operation_MoistureOutputLevel::slotOnResponseSetAut
 
     if (status != ER_OK)
     {
+        qcShowStatus(this, "Failed to set AutoMode", status);
         qWarning() << "MoistureOutputLevel::slotOnResponseSetAutoMode Failed to set AutoMode" << QCC_StatusText(status);
+        fetchProperties();      // restore the display of properties
     }
 }
 

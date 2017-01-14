@@ -27,12 +27,13 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 #include "org_alljoyn_SmartSpaces_Operation_RapidModeTimed.h"
+#include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <sstream>
-
 
 
 
@@ -52,21 +53,21 @@ org_alljoyn_SmartSpaces_Operation_RapidModeTimed::org_alljoyn_SmartSpaces_Operat
 
 
 
-    layout->addWidget(new QLabel("RapidModeMinutesRemaining"));
+    layout->addWidget(new QLabel("<b>RapidModeMinutesRemaining</b>"));
     // Create the editing widget for RapidModeMinutesRemaining
     edit_RapidModeMinutesRemaining = new QLineEdit();
     edit_RapidModeMinutesRemaining->setToolTip("Time remaining in rapid mode. Zero indicates not in rapid mode.");
-    edit_RapidModeMinutesRemaining->setReadOnly(false);
     QObject::connect(edit_RapidModeMinutesRemaining, SIGNAL(returnPressed()), this, SLOT(slotSetRapidModeMinutesRemaining()));
 
     layout->addWidget(edit_RapidModeMinutesRemaining);
-    layout->addWidget(new QLabel("MaxSetMinutes"));
+    layout->addWidget(new QLabel("<b>MaxSetMinutes</b>"));
     // Create the editing widget for MaxSetMinutes
-    edit_MaxSetMinutes = new QLineEdit();
-    edit_MaxSetMinutes->setToolTip("Maximum rapid mode set time. It does not change to accomodate already in rapid mode.");
-    edit_MaxSetMinutes->setReadOnly(true);
+    edit_MaxSetMinutes = new QLabel();
 
     layout->addWidget(edit_MaxSetMinutes);
+
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {
@@ -142,7 +143,9 @@ void org_alljoyn_SmartSpaces_Operation_RapidModeTimed::slotOnResponseSetRapidMod
 
     if (status != ER_OK)
     {
+        qcShowStatus(this, "Failed to set RapidModeMinutesRemaining", status);
         qWarning() << "RapidModeTimed::slotOnResponseSetRapidModeMinutesRemaining Failed to set RapidModeMinutesRemaining" << QCC_StatusText(status);
+        fetchProperties();      // restore the display of properties
     }
 }
 

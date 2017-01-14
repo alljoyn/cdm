@@ -50,7 +50,7 @@ for file in args.xml_files:
             m = re.match("\s*<interface\s+name=\"([^\"]+)\"", line)
             if m != None:
                 iface = m.group(1)
-                m = re.match(".*\.(Operation|Environment)\.(\w+)", iface)
+                m = re.match(".*\.(Operation|Environment|UserInterfaceSettings|Input)\.(\w+)", iface)
                 if m != None:
                     cat = m.group(1).lower()
                     short = m.group(2)

@@ -34,6 +34,7 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QLineEdit>
+#include <QLabel>
 #include <QVBoxLayout>
 #include <QPushButton>
 
@@ -105,8 +106,9 @@ private:
 
     QPushButton* button_InjectEvents;
 
-    QLineEdit* edit_SupportedEvents;
+    QLabel* edit_SupportedEvents;
 
+    QLabel* messages_;
     void    fetchProperties();
 
 protected:

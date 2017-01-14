@@ -28,27 +28,27 @@
  ******************************************************************************/
 {% import "macros" as macros with context %}
 #include "{{Interface.ClassName}}.h"
+#include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <sstream>
 
-
 {% for struc in Interface.Structs %}
+
+
 template<>
 QString
 QStringFrom<{{Interface.Name}}Interface::{{struc.Name}}>(const {{Interface.Name}}Interface::{{struc.Name}}& value)
 {
+    // the QLabel is AutoFmt 
     std::ostringstream strm;
-    strm << "{";
+
 {% for field in struc.Fields %}
-{% if not loop.first %}
-    strm << " ";
-{% endif %}
-    strm << "{{field.Name}}=" << {{field.Type.toMsgArg("value."~field.Name)}};
+    strm << "<b>{{field.Name}}</b>: " << {{field.Type.toMsgArg("value."~field.Name)}} << "\n";
 {% endfor %}
-    strm << "}";
 
     return QString::fromStdString(strm.str());
 }
@@ -58,18 +58,81 @@ template<>
 QString
 QStringFrom<std::vector<{{Interface.Name}}Interface::{{struc.Name}}>>(const std::vector<{{Interface.Name}}Interface::{{struc.Name}}>& value)
 {
-    std::string result;
+    // the QLabel is AutoFmt 
+    std::ostringstream strm;
+
+    strm << "<html><body>";
+    strm << "<table><thead><tr>";
+{% for field in struc.Fields %}
+    strm << "<th bgcolor=\"light blue\">{{field.Name}}</th>";
+{% endfor %}
+    strm << "</tr></thead>";
 
     for (auto& v : value)
     {
-        auto qs = QStringFrom<{{Interface.Name}}Interface::{{struc.Name}}>(v);
-        result += qs.toStdString();
+        strm << "<tr>";
+{% for field in struc.Fields %}
+        strm << "<td>" << {{field.Type.toStreamArg("v."~field.Name)}} << "</td>";
+{% endfor %}
+        strm << "</tr>";
     }
-    return QString::fromStdString(result);
+
+    strm << "</table></body></html>";
+    return QString::fromStdString(strm.str());
+}
+{% endfor %}
+{% for enum in Interface.Enums %}
+
+
+template<>
+QString
+QStringFrom<{{Interface.Name}}Interface::{{enum.Name}}>(const {{Interface.Name}}Interface::{{enum.Name}}& value)
+{
+    QString result;
+
+    switch (value)
+    {
+{% for item in enum.Values %}
+    case {{Interface.Name ~ "Interface::" ~ macros.enumName(enum, item)}}:
+        result = "{{item.Name}}";
+        break;
+
+{% endfor %}
+    default:
+        result = "Unknown";
+        break;
+    }
+
+    return result;
 }
 
 
 
+template<>
+QString
+QStringFrom<std::vector<{{Interface.Name}}Interface::{{enum.Name}}>>(const std::vector<{{Interface.Name}}Interface::{{enum.Name}}>& value)
+{
+    // the QLabel is AutoFmt 
+    std::ostringstream strm;
+
+    strm << "<html><body>";
+    strm << "<table><thead><tr>";
+    strm << "<th bgcolor=\"light blue\">{{enum.Name}}</th>";
+    strm << "</tr></thead>";
+
+    for (auto& v : value)
+    {
+{% for item in enum.Values %}
+        if (v == {{Interface.Name ~ "Interface::" ~ macros.enumName(enum, item)}})
+        {
+            strm << "<tr><td>{{item.Name}}</td></tr>";
+        }
+{% endfor %}
+    }
+
+    strm << "</table></body></html>";
+    return QString::fromStdString(strm.str());
+}
 {% endfor %}
 
 {% include ("patch/" ~ Interface.ClassName ~ "-header.cpp") ignore missing with context %}
@@ -115,7 +178,7 @@ static const int auto_register_enum_v_{{enum.Name}} = qRegisterMetaType<std::vec
 {% endfor %}
 
 {% for property in Interface.UserProperties %}
-    layout->addWidget(new QLabel("{{property.Name}}"));
+    layout->addWidget(new QLabel("<b>{{property.Name}}</b>"));
     // Create the editing widget for {{property.Name}}
 {% if property.Type.ajtype() == "bool" %}
     {# ==================================== #}
@@ -144,21 +207,23 @@ static const int auto_register_enum_v_{{enum.Name}} = qRegisterMetaType<std::vec
 {%     endif %}
 {% else %}
     {# ==================================== #}
-    {# Default to a simple line edit widget #}
+    {# Default to a simple line edit or label widget #}
+{% if property.Writable %}
     edit_{{property.Name}} = new QLineEdit();
 {%  if "en" in property.doc %}
     edit_{{property.Name}}->setToolTip("{{property.doc['en']}}");
 {%  endif %}
-{% if property.Writable %}
-    edit_{{property.Name}}->setReadOnly(false);
     QObject::connect(edit_{{property.Name}}, SIGNAL(returnPressed()), this, SLOT(slotSet{{property.Name}}()));
 {% else %}
-    edit_{{property.Name}}->setReadOnly(true);
+    edit_{{property.Name}} = new QLabel();
 {% endif %}
 {% endif %}{# end of the branch on property type to decide the widget #}
 
     layout->addWidget(edit_{{property.Name}});
 {% endfor %}
+
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {
@@ -293,7 +358,9 @@ void {{Interface.ClassName}}::slotOnResponseSet{{property.Name}}(QStatus status)
 
     if (status != ER_OK)
     {
+        qcShowStatus(this, "Failed to set {{property.Name}}", status);
         qWarning() << "{{Interface.Name}}::slotOnResponseSet{{property.Name}} Failed to set {{property.Name}}" << QCC_StatusText(status);
+        fetchProperties();      // restore the display of properties
     }
 }
 

@@ -27,12 +27,13 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 #include "org_alljoyn_SmartSpaces_UserInterfaceSettings_TemperatureDisplay.h"
+#include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <sstream>
-
 
 
 
@@ -52,21 +53,21 @@ org_alljoyn_SmartSpaces_UserInterfaceSettings_TemperatureDisplay::org_alljoyn_Sm
 
 
 
-    layout->addWidget(new QLabel("DisplayTemperatureUnit"));
+    layout->addWidget(new QLabel("<b>DisplayTemperatureUnit</b>"));
     // Create the editing widget for DisplayTemperatureUnit
     edit_DisplayTemperatureUnit = new QLineEdit();
     edit_DisplayTemperatureUnit->setToolTip("The unit being used to display temperature (0=C, 1=F, 2 =K)");
-    edit_DisplayTemperatureUnit->setReadOnly(false);
     QObject::connect(edit_DisplayTemperatureUnit, SIGNAL(returnPressed()), this, SLOT(slotSetDisplayTemperatureUnit()));
 
     layout->addWidget(edit_DisplayTemperatureUnit);
-    layout->addWidget(new QLabel("SupportedDisplayTemperatureUnits"));
+    layout->addWidget(new QLabel("<b>SupportedDisplayTemperatureUnits</b>"));
     // Create the editing widget for SupportedDisplayTemperatureUnits
-    edit_SupportedDisplayTemperatureUnits = new QLineEdit();
-    edit_SupportedDisplayTemperatureUnits->setToolTip("List of supported temperature units");
-    edit_SupportedDisplayTemperatureUnits->setReadOnly(true);
+    edit_SupportedDisplayTemperatureUnits = new QLabel();
 
     layout->addWidget(edit_SupportedDisplayTemperatureUnits);
+
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {
@@ -142,7 +143,9 @@ void org_alljoyn_SmartSpaces_UserInterfaceSettings_TemperatureDisplay::slotOnRes
 
     if (status != ER_OK)
     {
+        qcShowStatus(this, "Failed to set DisplayTemperatureUnit", status);
         qWarning() << "TemperatureDisplay::slotOnResponseSetDisplayTemperatureUnit Failed to set DisplayTemperatureUnit" << QCC_StatusText(status);
+        fetchProperties();      // restore the display of properties
     }
 }
 

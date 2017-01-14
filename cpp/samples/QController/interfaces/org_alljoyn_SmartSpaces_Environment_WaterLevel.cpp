@@ -27,13 +27,69 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 #include "org_alljoyn_SmartSpaces_Environment_WaterLevel.h"
+#include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <sstream>
 
 
+
+template<>
+QString
+QStringFrom<WaterLevelInterface::SupplySource>(const WaterLevelInterface::SupplySource& value)
+{
+    QString result;
+
+    switch (value)
+    {
+    case WaterLevelInterface::SUPPLY_SOURCE_TANK:
+        result = "Tank";
+        break;
+
+    case WaterLevelInterface::SUPPLY_SOURCE_PIPE:
+        result = "Pipe";
+        break;
+
+    default:
+        result = "Unknown";
+        break;
+    }
+
+    return result;
+}
+
+
+
+template<>
+QString
+QStringFrom<std::vector<WaterLevelInterface::SupplySource>>(const std::vector<WaterLevelInterface::SupplySource>& value)
+{
+    // the QLabel is AutoFmt 
+    std::ostringstream strm;
+
+    strm << "<html><body>";
+    strm << "<table><thead><tr>";
+    strm << "<th bgcolor=\"light blue\">SupplySource</th>";
+    strm << "</tr></thead>";
+
+    for (auto& v : value)
+    {
+        if (v == WaterLevelInterface::SUPPLY_SOURCE_TANK)
+        {
+            strm << "<tr><td>Tank</td></tr>";
+        }
+        if (v == WaterLevelInterface::SUPPLY_SOURCE_PIPE)
+        {
+            strm << "<tr><td>Pipe</td></tr>";
+        }
+    }
+
+    strm << "</table></body></html>";
+    return QString::fromStdString(strm.str());
+}
 
 
 using namespace CDMQtWidgets;
@@ -57,7 +113,7 @@ org_alljoyn_SmartSpaces_Environment_WaterLevel::org_alljoyn_SmartSpaces_Environm
 
 
 
-    layout->addWidget(new QLabel("SupplySource"));
+    layout->addWidget(new QLabel("<b>SupplySource</b>"));
     // Create the editing widget for SupplySource
     edit_SupplySource = new QComboBox();
     edit_SupplySource->setEditable(false);
@@ -66,20 +122,19 @@ org_alljoyn_SmartSpaces_Environment_WaterLevel::org_alljoyn_SmartSpaces_Environm
     edit_SupplySource->setEnabled(false);
 
     layout->addWidget(edit_SupplySource);
-    layout->addWidget(new QLabel("CurrentLevel"));
+    layout->addWidget(new QLabel("<b>CurrentLevel</b>"));
     // Create the editing widget for CurrentLevel
-    edit_CurrentLevel = new QLineEdit();
-    edit_CurrentLevel->setToolTip("The current level of water in the tank.");
-    edit_CurrentLevel->setReadOnly(true);
+    edit_CurrentLevel = new QLabel();
 
     layout->addWidget(edit_CurrentLevel);
-    layout->addWidget(new QLabel("MaxLevel"));
+    layout->addWidget(new QLabel("<b>MaxLevel</b>"));
     // Create the editing widget for MaxLevel
-    edit_MaxLevel = new QLineEdit();
-    edit_MaxLevel->setToolTip("Maximum level allowed for water level.");
-    edit_MaxLevel->setReadOnly(true);
+    edit_MaxLevel = new QLabel();
 
     layout->addWidget(edit_MaxLevel);
+
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {

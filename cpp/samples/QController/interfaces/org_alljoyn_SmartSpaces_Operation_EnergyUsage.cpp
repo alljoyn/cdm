@@ -27,12 +27,13 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 #include "org_alljoyn_SmartSpaces_Operation_EnergyUsage.h"
+#include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <sstream>
-
 
 
 
@@ -57,27 +58,24 @@ org_alljoyn_SmartSpaces_Operation_EnergyUsage::org_alljoyn_SmartSpaces_Operation
     QObject::connect(button_ResetCumulativeEnergy, SIGNAL(clicked()), this, SLOT(slotClickResetCumulativeEnergy()));
     layout->addWidget(button_ResetCumulativeEnergy);
 
-    layout->addWidget(new QLabel("CumulativeEnergy"));
+    layout->addWidget(new QLabel("<b>CumulativeEnergy</b>"));
     // Create the editing widget for CumulativeEnergy
-    edit_CumulativeEnergy = new QLineEdit();
-    edit_CumulativeEnergy->setToolTip("The cumulative energy consumption of the device");
-    edit_CumulativeEnergy->setReadOnly(true);
+    edit_CumulativeEnergy = new QLabel();
 
     layout->addWidget(edit_CumulativeEnergy);
-    layout->addWidget(new QLabel("Precision"));
+    layout->addWidget(new QLabel("<b>Precision</b>"));
     // Create the editing widget for Precision
-    edit_Precision = new QLineEdit();
-    edit_Precision->setToolTip("The precision of the CumulativeEnergy property; i.e., the value the actual energy consumption must change before CumulativeEnergy is updated");
-    edit_Precision->setReadOnly(true);
+    edit_Precision = new QLabel();
 
     layout->addWidget(edit_Precision);
-    layout->addWidget(new QLabel("UpdateMinTime"));
+    layout->addWidget(new QLabel("<b>UpdateMinTime</b>"));
     // Create the editing widget for UpdateMinTime
-    edit_UpdateMinTime = new QLineEdit();
-    edit_UpdateMinTime->setToolTip("The minimum time between updates of the CumulativeEnergy property");
-    edit_UpdateMinTime->setReadOnly(true);
+    edit_UpdateMinTime = new QLabel();
 
     layout->addWidget(edit_UpdateMinTime);
+
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {

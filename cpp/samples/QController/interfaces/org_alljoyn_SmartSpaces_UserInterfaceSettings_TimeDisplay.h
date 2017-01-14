@@ -34,6 +34,7 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QLineEdit>
+#include <QLabel>
 #include <QVBoxLayout>
 #include <QPushButton>
 
@@ -122,8 +123,9 @@ private:
 
 
     QLineEdit* edit_DisplayTimeFormat;
-    QLineEdit* edit_SupportedDisplayTimeFormats;
+    QLabel* edit_SupportedDisplayTimeFormats;
 
+    QLabel* messages_;
     void    fetchProperties();
 
 protected:

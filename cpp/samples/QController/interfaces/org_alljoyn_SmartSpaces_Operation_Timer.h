@@ -34,6 +34,7 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QLineEdit>
+#include <QLabel>
 #include <QVBoxLayout>
 #include <QPushButton>
 
@@ -44,6 +45,36 @@
 
 using namespace ajn::services;
 
+#include <QSpinBox>
+#include <QMessageBox>
+#include <QDialog>
+
+namespace CDMQtWidgets {
+//======================================================================
+
+class org_alljoyn_SmartSpaces_Operation_Timer_GetTime : public QWidget
+{
+    Q_OBJECT
+public:
+    org_alljoyn_SmartSpaces_Operation_Timer_GetTime(QWidget* parent, const char* label, int32_t time);
+    ~org_alljoyn_SmartSpaces_Operation_Timer_GetTime();
+
+    int run();
+
+private slots:
+    void changed();
+
+public:
+    int32_t time_;
+
+private:
+    QString label_;
+    QDialog* dialog_;
+    QSpinBox* timeSpin_;
+};
+
+//======================================================================
+} // of namespace CDMQtWidgets
 
 namespace CDMQtWidgets
 {
@@ -200,13 +231,14 @@ private:
     QPushButton* button_SetTargetTimeToStart;
     QPushButton* button_SetTargetTimeToStop;
 
-    QLineEdit* edit_ReferenceTimer;
-    QLineEdit* edit_TargetTimeToStart;
-    QLineEdit* edit_TargetTimeToStop;
-    QLineEdit* edit_EstimatedTimeToEnd;
-    QLineEdit* edit_RunningTime;
-    QLineEdit* edit_TargetDuration;
+    QLabel* edit_ReferenceTimer;
+    QLabel* edit_TargetTimeToStart;
+    QLabel* edit_TargetTimeToStop;
+    QLabel* edit_EstimatedTimeToEnd;
+    QLabel* edit_RunningTime;
+    QLabel* edit_TargetDuration;
 
+    QLabel* messages_;
     void    fetchProperties();
 
 protected:

@@ -27,12 +27,13 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 #include "org_alljoyn_SmartSpaces_Operation_BatteryStatus.h"
+#include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <sstream>
-
 
 
 
@@ -52,19 +53,20 @@ org_alljoyn_SmartSpaces_Operation_BatteryStatus::org_alljoyn_SmartSpaces_Operati
 
 
 
-    layout->addWidget(new QLabel("CurrentValue"));
+    layout->addWidget(new QLabel("<b>CurrentValue</b>"));
     // Create the editing widget for CurrentValue
-    edit_CurrentValue = new QLineEdit();
-    edit_CurrentValue->setToolTip("This interface provides capability to represent remaining battery status.");
-    edit_CurrentValue->setReadOnly(true);
+    edit_CurrentValue = new QLabel();
 
     layout->addWidget(edit_CurrentValue);
-    layout->addWidget(new QLabel("IsCharging"));
+    layout->addWidget(new QLabel("<b>IsCharging</b>"));
     // Create the editing widget for IsCharging
     edit_IsCharging = new QCheckBox();
     edit_IsCharging->setEnabled(false);
 
     layout->addWidget(edit_IsCharging);
+
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {

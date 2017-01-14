@@ -27,13 +27,172 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 #include "org_alljoyn_SmartSpaces_Operation_CycleControl.h"
+#include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <sstream>
 
 
+
+template<>
+QString
+QStringFrom<CycleControlInterface::OperationalState>(const CycleControlInterface::OperationalState& value)
+{
+    QString result;
+
+    switch (value)
+    {
+    case CycleControlInterface::OPERATIONAL_STATE_IDLE:
+        result = "Idle";
+        break;
+
+    case CycleControlInterface::OPERATIONAL_STATE_WORKING:
+        result = "Working";
+        break;
+
+    case CycleControlInterface::OPERATIONAL_STATE_READY_TO_START:
+        result = "ReadyToStart";
+        break;
+
+    case CycleControlInterface::OPERATIONAL_STATE_DELAYED_START:
+        result = "DelayedStart";
+        break;
+
+    case CycleControlInterface::OPERATIONAL_STATE_PAUSED:
+        result = "Paused";
+        break;
+
+    case CycleControlInterface::OPERATIONAL_STATE_END_OF_CYCLE:
+        result = "EndOfCycle";
+        break;
+
+    default:
+        result = "Unknown";
+        break;
+    }
+
+    return result;
+}
+
+
+
+template<>
+QString
+QStringFrom<std::vector<CycleControlInterface::OperationalState>>(const std::vector<CycleControlInterface::OperationalState>& value)
+{
+    // the QLabel is AutoFmt 
+    std::ostringstream strm;
+
+    strm << "<html><body>";
+    strm << "<table><thead><tr>";
+    strm << "<th bgcolor=\"light blue\">OperationalState</th>";
+    strm << "</tr></thead>";
+
+    for (auto& v : value)
+    {
+        if (v == CycleControlInterface::OPERATIONAL_STATE_IDLE)
+        {
+            strm << "<tr><td>Idle</td></tr>";
+        }
+        if (v == CycleControlInterface::OPERATIONAL_STATE_WORKING)
+        {
+            strm << "<tr><td>Working</td></tr>";
+        }
+        if (v == CycleControlInterface::OPERATIONAL_STATE_READY_TO_START)
+        {
+            strm << "<tr><td>ReadyToStart</td></tr>";
+        }
+        if (v == CycleControlInterface::OPERATIONAL_STATE_DELAYED_START)
+        {
+            strm << "<tr><td>DelayedStart</td></tr>";
+        }
+        if (v == CycleControlInterface::OPERATIONAL_STATE_PAUSED)
+        {
+            strm << "<tr><td>Paused</td></tr>";
+        }
+        if (v == CycleControlInterface::OPERATIONAL_STATE_END_OF_CYCLE)
+        {
+            strm << "<tr><td>EndOfCycle</td></tr>";
+        }
+    }
+
+    strm << "</table></body></html>";
+    return QString::fromStdString(strm.str());
+}
+
+
+template<>
+QString
+QStringFrom<CycleControlInterface::OperationalCommands>(const CycleControlInterface::OperationalCommands& value)
+{
+    QString result;
+
+    switch (value)
+    {
+    case CycleControlInterface::OPERATIONAL_COMMANDS_START:
+        result = "Start";
+        break;
+
+    case CycleControlInterface::OPERATIONAL_COMMANDS_STOP:
+        result = "Stop";
+        break;
+
+    case CycleControlInterface::OPERATIONAL_COMMANDS_PAUSE:
+        result = "Pause";
+        break;
+
+    case CycleControlInterface::OPERATIONAL_COMMANDS_RESUME:
+        result = "Resume";
+        break;
+
+    default:
+        result = "Unknown";
+        break;
+    }
+
+    return result;
+}
+
+
+
+template<>
+QString
+QStringFrom<std::vector<CycleControlInterface::OperationalCommands>>(const std::vector<CycleControlInterface::OperationalCommands>& value)
+{
+    // the QLabel is AutoFmt 
+    std::ostringstream strm;
+
+    strm << "<html><body>";
+    strm << "<table><thead><tr>";
+    strm << "<th bgcolor=\"light blue\">OperationalCommands</th>";
+    strm << "</tr></thead>";
+
+    for (auto& v : value)
+    {
+        if (v == CycleControlInterface::OPERATIONAL_COMMANDS_START)
+        {
+            strm << "<tr><td>Start</td></tr>";
+        }
+        if (v == CycleControlInterface::OPERATIONAL_COMMANDS_STOP)
+        {
+            strm << "<tr><td>Stop</td></tr>";
+        }
+        if (v == CycleControlInterface::OPERATIONAL_COMMANDS_PAUSE)
+        {
+            strm << "<tr><td>Pause</td></tr>";
+        }
+        if (v == CycleControlInterface::OPERATIONAL_COMMANDS_RESUME)
+        {
+            strm << "<tr><td>Resume</td></tr>";
+        }
+    }
+
+    strm << "</table></body></html>";
+    return QString::fromStdString(strm.str());
+}
 
 
 using namespace CDMQtWidgets;
@@ -51,6 +210,79 @@ static const int auto_register_enum_OperationalCommands = qRegisterMetaType<ajn:
 static const int auto_register_enum_v_OperationalCommands = qRegisterMetaType<std::vector<ajn::services::CycleControlInterface::OperationalCommands>>("std::vector<CycleControlInterface::OperationalCommands>");
 
 
+#include <QDialogButtonBox>
+#include <QVBoxLayout>
+
+
+org_alljoyn_SmartSpaces_Operation_CycleControl_Execute::org_alljoyn_SmartSpaces_Operation_CycleControl_Execute(QWidget* parent)
+{
+    command_ = CycleControlInterface::OPERATIONAL_COMMANDS_START;
+
+    dialog_ = new QDialog(parent);
+    auto* dlgLayout_ = new QVBoxLayout(dialog_);
+
+    dlgLayout_->addWidget(new QLabel("Command"));
+
+    commandBox_ = new QComboBox();
+    commandBox_->setEditable(false);
+
+    commandBox_->addItem("Start", QVariant(CycleControlInterface::OPERATIONAL_COMMANDS_START));
+    commandBox_->addItem("Stop", QVariant(CycleControlInterface::OPERATIONAL_COMMANDS_STOP));
+    commandBox_->addItem("Pause", QVariant(CycleControlInterface::OPERATIONAL_COMMANDS_PAUSE));
+    commandBox_->addItem("Resume", QVariant(CycleControlInterface::OPERATIONAL_COMMANDS_RESUME));
+
+    dlgLayout_->addWidget(commandBox_);
+    QObject::connect(commandBox_, SIGNAL(currentIndexChanged(int)), this, SLOT(changed()));
+
+    auto* buttons = new QDialogButtonBox();
+    dlgLayout_->addWidget(buttons);
+
+    auto* cancel = buttons->addButton(QDialogButtonBox::Cancel);
+    QObject::connect(cancel, SIGNAL(clicked(bool)), dialog_, SLOT(reject()));
+
+    auto* ok = buttons->addButton(QDialogButtonBox::Ok);
+    QObject::connect(ok, SIGNAL(clicked(bool)), dialog_, SLOT(accept()));
+}
+
+
+
+org_alljoyn_SmartSpaces_Operation_CycleControl_Execute::~org_alljoyn_SmartSpaces_Operation_CycleControl_Execute()
+{
+    delete dialog_;
+}
+
+
+
+int org_alljoyn_SmartSpaces_Operation_CycleControl_Execute::run()
+{
+    // This is always modal
+    return dialog_->exec();
+}
+
+
+
+void org_alljoyn_SmartSpaces_Operation_CycleControl_Execute::changed()
+{
+    QVariant var = commandBox_->currentData();
+    command_ = static_cast<CycleControlInterface::OperationalCommands>(var.toInt());
+}
+
+
+
+static bool DialogGetCommand(QWidget* parent, CycleControlInterface::OperationalCommands& command)
+{
+    auto* dialog = new org_alljoyn_SmartSpaces_Operation_CycleControl_Execute(parent);
+    auto code = dialog->run();
+    bool ok = code == QDialog::Accepted;
+
+    if (ok)
+    {
+        command = dialog->command_;
+    }
+
+    delete dialog;
+    return ok;
+}
 
 org_alljoyn_SmartSpaces_Operation_CycleControl::org_alljoyn_SmartSpaces_Operation_CycleControl(CommonControllerInterface *iface)
   : controller(NULL),
@@ -67,7 +299,7 @@ org_alljoyn_SmartSpaces_Operation_CycleControl::org_alljoyn_SmartSpaces_Operatio
     QObject::connect(button_ExecuteOperationalCommand, SIGNAL(clicked()), this, SLOT(slotClickExecuteOperationalCommand()));
     layout->addWidget(button_ExecuteOperationalCommand);
 
-    layout->addWidget(new QLabel("OperationalState"));
+    layout->addWidget(new QLabel("<b>OperationalState</b>"));
     // Create the editing widget for OperationalState
     edit_OperationalState = new QComboBox();
     edit_OperationalState->setEditable(false);
@@ -80,20 +312,19 @@ org_alljoyn_SmartSpaces_Operation_CycleControl::org_alljoyn_SmartSpaces_Operatio
     edit_OperationalState->setEnabled(false);
 
     layout->addWidget(edit_OperationalState);
-    layout->addWidget(new QLabel("SupportedOperationalStates"));
+    layout->addWidget(new QLabel("<b>SupportedOperationalStates</b>"));
     // Create the editing widget for SupportedOperationalStates
-    edit_SupportedOperationalStates = new QLineEdit();
-    edit_SupportedOperationalStates->setToolTip("Operational states which are supported by the appliance.");
-    edit_SupportedOperationalStates->setReadOnly(true);
+    edit_SupportedOperationalStates = new QLabel();
 
     layout->addWidget(edit_SupportedOperationalStates);
-    layout->addWidget(new QLabel("SupportedOperationalCommands"));
+    layout->addWidget(new QLabel("<b>SupportedOperationalCommands</b>"));
     // Create the editing widget for SupportedOperationalCommands
-    edit_SupportedOperationalCommands = new QLineEdit();
-    edit_SupportedOperationalCommands->setToolTip("Operational commands which are supported by the appliance.");
-    edit_SupportedOperationalCommands->setReadOnly(true);
+    edit_SupportedOperationalCommands = new QLabel();
 
     layout->addWidget(edit_SupportedOperationalCommands);
+
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {
@@ -158,6 +389,7 @@ void org_alljoyn_SmartSpaces_Operation_CycleControl::slotClickExecuteOperational
     CycleControlInterface::OperationalCommands command {};
 
     bool ok = true;
+    ok = DialogGetCommand(this, command);
 
     if (ok)
     {

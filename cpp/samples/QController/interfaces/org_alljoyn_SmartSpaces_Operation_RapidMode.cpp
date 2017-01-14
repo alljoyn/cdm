@@ -27,12 +27,13 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 #include "org_alljoyn_SmartSpaces_Operation_RapidMode.h"
+#include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <sstream>
-
 
 
 
@@ -52,13 +53,16 @@ org_alljoyn_SmartSpaces_Operation_RapidMode::org_alljoyn_SmartSpaces_Operation_R
 
 
 
-    layout->addWidget(new QLabel("RapidMode"));
+    layout->addWidget(new QLabel("<b>RapidMode</b>"));
     // Create the editing widget for RapidMode
     edit_RapidMode = new QCheckBox();
     edit_RapidMode->setEnabled(true);
     QObject::connect(edit_RapidMode, SIGNAL(stateChanged(int)), this, SLOT(slotSetRapidMode()));
 
     layout->addWidget(edit_RapidMode);
+
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {
@@ -128,7 +132,9 @@ void org_alljoyn_SmartSpaces_Operation_RapidMode::slotOnResponseSetRapidMode(QSt
 
     if (status != ER_OK)
     {
+        qcShowStatus(this, "Failed to set RapidMode", status);
         qWarning() << "RapidMode::slotOnResponseSetRapidMode Failed to set RapidMode" << QCC_StatusText(status);
+        fetchProperties();      // restore the display of properties
     }
 }
 

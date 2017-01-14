@@ -34,6 +34,7 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QLineEdit>
+#include <QLabel>
 #include <QVBoxLayout>
 #include <QPushButton>
 
@@ -71,21 +72,6 @@ private:
     QDialog* dialog_;
     QSpinBox* startSpin_;
     QSpinBox* numSpin_;
-};
-
-
-
-class org_alljoyn_SmartSpaces_Operation_Channel_ShowChannelList : public QWidget
-{
-    Q_OBJECT
-public:
-    org_alljoyn_SmartSpaces_Operation_Channel_ShowChannelList(QWidget* parent, const char* text);
-    ~org_alljoyn_SmartSpaces_Operation_Channel_ShowChannelList();
-
-    int run();
-
-private:
-    QMessageBox* dialog_;
 };
 
 //======================================================================
@@ -184,8 +170,9 @@ private:
     QPushButton* button_GetChannelList;
 
     QLineEdit* edit_ChannelId;
-    QLineEdit* edit_TotalNumberOfChannels;
+    QLabel* edit_TotalNumberOfChannels;
 
+    QLabel* messages_;
     void    fetchProperties();
 
 protected:

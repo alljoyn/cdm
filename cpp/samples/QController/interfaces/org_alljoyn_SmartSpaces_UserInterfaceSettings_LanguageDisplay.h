@@ -34,6 +34,7 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QLineEdit>
+#include <QLabel>
 #include <QVBoxLayout>
 #include <QPushButton>
 
@@ -122,8 +123,9 @@ private:
 
 
     QLineEdit* edit_DisplayLanguage;
-    QLineEdit* edit_SupportedDisplayLanguages;
+    QLabel* edit_SupportedDisplayLanguages;
 
+    QLabel* messages_;
     void    fetchProperties();
 
 protected:

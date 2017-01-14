@@ -27,12 +27,13 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 #include "org_alljoyn_SmartSpaces_UserInterfaceSettings_TimeDisplay.h"
+#include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <sstream>
-
 
 
 
@@ -52,21 +53,21 @@ org_alljoyn_SmartSpaces_UserInterfaceSettings_TimeDisplay::org_alljoyn_SmartSpac
 
 
 
-    layout->addWidget(new QLabel("DisplayTimeFormat"));
+    layout->addWidget(new QLabel("<b>DisplayTimeFormat</b>"));
     // Create the editing widget for DisplayTimeFormat
     edit_DisplayTimeFormat = new QLineEdit();
     edit_DisplayTimeFormat->setToolTip("The clock format which is currently used to display time (0=12-hour, 1=24-hour)");
-    edit_DisplayTimeFormat->setReadOnly(false);
     QObject::connect(edit_DisplayTimeFormat, SIGNAL(returnPressed()), this, SLOT(slotSetDisplayTimeFormat()));
 
     layout->addWidget(edit_DisplayTimeFormat);
-    layout->addWidget(new QLabel("SupportedDisplayTimeFormats"));
+    layout->addWidget(new QLabel("<b>SupportedDisplayTimeFormats</b>"));
     // Create the editing widget for SupportedDisplayTimeFormats
-    edit_SupportedDisplayTimeFormats = new QLineEdit();
-    edit_SupportedDisplayTimeFormats->setToolTip("List of supported clock formats");
-    edit_SupportedDisplayTimeFormats->setReadOnly(true);
+    edit_SupportedDisplayTimeFormats = new QLabel();
 
     layout->addWidget(edit_SupportedDisplayTimeFormats);
+
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {
@@ -142,7 +143,9 @@ void org_alljoyn_SmartSpaces_UserInterfaceSettings_TimeDisplay::slotOnResponseSe
 
     if (status != ER_OK)
     {
+        qcShowStatus(this, "Failed to set DisplayTimeFormat", status);
         qWarning() << "TimeDisplay::slotOnResponseSetDisplayTimeFormat Failed to set DisplayTimeFormat" << QCC_StatusText(status);
+        fetchProperties();      // restore the display of properties
     }
 }
 

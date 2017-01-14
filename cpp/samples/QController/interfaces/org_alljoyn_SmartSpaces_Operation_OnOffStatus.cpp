@@ -27,12 +27,13 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 #include "org_alljoyn_SmartSpaces_Operation_OnOffStatus.h"
+#include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <sstream>
-
 
 
 
@@ -52,12 +53,15 @@ org_alljoyn_SmartSpaces_Operation_OnOffStatus::org_alljoyn_SmartSpaces_Operation
 
 
 
-    layout->addWidget(new QLabel("IsOn"));
+    layout->addWidget(new QLabel("<b>IsOn</b>"));
     // Create the editing widget for IsOn
     edit_IsOn = new QCheckBox();
     edit_IsOn->setEnabled(false);
 
     layout->addWidget(edit_IsOn);
+
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {

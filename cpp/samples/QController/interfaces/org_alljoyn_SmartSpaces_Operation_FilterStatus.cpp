@@ -27,12 +27,13 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 #include "org_alljoyn_SmartSpaces_Operation_FilterStatus.h"
+#include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <sstream>
-
 
 
 
@@ -52,54 +53,45 @@ org_alljoyn_SmartSpaces_Operation_FilterStatus::org_alljoyn_SmartSpaces_Operatio
 
 
 
-    layout->addWidget(new QLabel("ExpectedLifeInDays"));
+    layout->addWidget(new QLabel("<b>ExpectedLifeInDays</b>"));
     // Create the editing widget for ExpectedLifeInDays
-    edit_ExpectedLifeInDays = new QLineEdit();
-    edit_ExpectedLifeInDays->setToolTip("Days a new filter will last. Used to convert percentage into remaining days. If 0xFFFF there is no predicted life. If 0 the life is less than 1 day.");
-    edit_ExpectedLifeInDays->setReadOnly(true);
+    edit_ExpectedLifeInDays = new QLabel();
 
     layout->addWidget(edit_ExpectedLifeInDays);
-    layout->addWidget(new QLabel("IsCleanable"));
+    layout->addWidget(new QLabel("<b>IsCleanable</b>"));
     // Create the editing widget for IsCleanable
     edit_IsCleanable = new QCheckBox();
     edit_IsCleanable->setEnabled(false);
 
     layout->addWidget(edit_IsCleanable);
-    layout->addWidget(new QLabel("OrderPercentage"));
+    layout->addWidget(new QLabel("<b>OrderPercentage</b>"));
     // Create the editing widget for OrderPercentage
-    edit_OrderPercentage = new QLineEdit();
-    edit_OrderPercentage->setToolTip("LifeRemaining it is recommended that a new filter be orderedIt can have a value of 0 because the remaining life is unpredictable, for example a psid switch. It can also have a value of 255 if OrderPercentage is N/A, for example a cleanable filter.");
-    edit_OrderPercentage->setReadOnly(true);
+    edit_OrderPercentage = new QLabel();
 
     layout->addWidget(edit_OrderPercentage);
-    layout->addWidget(new QLabel("Manufacturer"));
+    layout->addWidget(new QLabel("<b>Manufacturer</b>"));
     // Create the editing widget for Manufacturer
-    edit_Manufacturer = new QLineEdit();
-    edit_Manufacturer->setToolTip("Identification of the filter manufacturer, which along with the part number act as a tuple to identify the filter within the Alljoyn device. Either one or both may be a null string.");
-    edit_Manufacturer->setReadOnly(true);
+    edit_Manufacturer = new QLabel();
 
     layout->addWidget(edit_Manufacturer);
-    layout->addWidget(new QLabel("PartNumber"));
+    layout->addWidget(new QLabel("<b>PartNumber</b>"));
     // Create the editing widget for PartNumber
-    edit_PartNumber = new QLineEdit();
-    edit_PartNumber->setToolTip("Identification of the filter manufacturer, which along with the part number act as a tuple to identify the filter within the Alljoyn device. Either one or both may be a null string.");
-    edit_PartNumber->setReadOnly(true);
+    edit_PartNumber = new QLabel();
 
     layout->addWidget(edit_PartNumber);
-    layout->addWidget(new QLabel("Url"));
+    layout->addWidget(new QLabel("<b>Url</b>"));
     // Create the editing widget for Url
-    edit_Url = new QLineEdit();
-    edit_Url->setToolTip("Url can be just a domain or a complete URL to the exact filter. It may provide additional information of a site for ordering. A null string is acceptable.");
-    edit_Url->setReadOnly(true);
+    edit_Url = new QLabel();
 
     layout->addWidget(edit_Url);
-    layout->addWidget(new QLabel("LifeRemaining"));
+    layout->addWidget(new QLabel("<b>LifeRemaining</b>"));
     // Create the editing widget for LifeRemaining
-    edit_LifeRemaining = new QLineEdit();
-    edit_LifeRemaining->setToolTip("Lifespan Remaining in percentage (100 - 0). 0 indicates replace/clean. A simple device may just implement 100/0 or 100/OrderPercentage/0 instead of implementing the entire range of values.");
-    edit_LifeRemaining->setReadOnly(true);
+    edit_LifeRemaining = new QLabel();
 
     layout->addWidget(edit_LifeRemaining);
+
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {

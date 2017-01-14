@@ -1,50 +1,54 @@
 /******************************************************************************
- * Copyright AllSeen Alliance. All rights reserved.
+ * Copyright (c) 2016 Open Connectivity Foundation (OCF) and AllJoyn Open
+ *    Source Project (AJOSP) Contributors and others.
  *
- *    Permission to use, copy, modify, and/or distribute this software for any
- *    purpose with or without fee is hereby granted, provided that the above
- *    copyright notice and this permission notice appear in all copies.
+ *    SPDX-License-Identifier: Apache-2.0
  *
- *    THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- *    WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- *    MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- *    ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- *    WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- *    ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ *    All rights reserved. This program and the accompanying materials are
+ *    made available under the terms of the Apache License, Version 2.0
+ *    which accompanies this distribution, and is available at
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Copyright 2016 Open Connectivity Foundation and Contributors to
+ *    AllSeen Alliance. All rights reserved.
+ *
+ *    Permission to use, copy, modify, and/or distribute this software for
+ *    any purpose with or without fee is hereby granted, provided that the
+ *    above copyright notice and this permission notice appear in all
+ *    copies.
+ *
+ *     THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+ *     WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+ *     WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE
+ *     AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL
+ *     DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR
+ *     PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
+ *     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+ *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-
 #include "org_alljoyn_SmartSpaces_Operation_Alerts.h"
 #include "QStringConversion.h"
 #include <QDebug>
-#include <QFrame>
 #include <QHeaderView>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
 #include <QLabel>
 #include <QPushButton>
-#include <QTableWidgetItem>
+#include <QVBoxLayout>
+
 #include <sstream>
 
 using namespace std;
-
-// This is the replaced whole file
-
-static const char* DefaultLanguageTag = "en";
 
 
 template<>
 QString
 QStringFrom<AlertsInterface::AlertRecord>(const AlertsInterface::AlertRecord& value)
 {
-    ostringstream strm;
-    strm << "{";
-    strm << "severity=" << value.severity;
-    strm << " ";
-    strm << "alertCode=" << value.alertCode;
-    strm << " ";
-    strm << "needAcknowledgement=" << value.needAcknowledgement;
-    strm << "}";
+    // the QLabel is AutoFmt 
+    std::ostringstream strm;
+
+    strm << "<b>severity</b>: " << value.severity << "\n";
+    strm << "<b>alertCode</b>: " << value.alertCode << "\n";
+    strm << "<b>needAcknowledgement</b>: " << value.needAcknowledgement << "\n";
 
     return QString::fromStdString(strm.str());
 }
@@ -52,16 +56,29 @@ QStringFrom<AlertsInterface::AlertRecord>(const AlertsInterface::AlertRecord& va
 
 template<>
 QString
-QStringFrom<vector<AlertsInterface::AlertRecord>>(const vector<AlertsInterface::AlertRecord>& value)
+QStringFrom<std::vector<AlertsInterface::AlertRecord>>(const std::vector<AlertsInterface::AlertRecord>& value)
 {
-    string result;
+    // the QLabel is AutoFmt 
+    std::ostringstream strm;
+
+    strm << "<html><body>";
+    strm << "<table><thead><tr>";
+    strm << "<th bgcolor=\"light blue\">severity</th>";
+    strm << "<th bgcolor=\"light blue\">alertCode</th>";
+    strm << "<th bgcolor=\"light blue\">needAcknowledgement</th>";
+    strm << "</tr></thead>";
 
     for (auto& v : value)
     {
-        auto qs = QStringFrom<AlertsInterface::AlertRecord>(v);
-        result += qs.toStdString();
+        strm << "<tr>";
+        strm << "<td>" << v.severity << "</td>";
+        strm << "<td>" << v.alertCode << "</td>";
+        strm << "<td>" << v.needAcknowledgement << "</td>";
+        strm << "</tr>";
     }
-    return QString::fromStdString(result);
+
+    strm << "</table></body></html>";
+    return QString::fromStdString(strm.str());
 }
 
 
@@ -70,12 +87,11 @@ template<>
 QString
 QStringFrom<AlertsInterface::AlertCodesDescriptor>(const AlertsInterface::AlertCodesDescriptor& value)
 {
-    ostringstream strm;
-    strm << "{";
-    strm << "alertCode=" << value.alertCode;
-    strm << " ";
-    strm << "description=" << value.description.c_str();
-    strm << "}";
+    // the QLabel is AutoFmt 
+    std::ostringstream strm;
+
+    strm << "<b>alertCode</b>: " << value.alertCode << "\n";
+    strm << "<b>description</b>: " << value.description.c_str() << "\n";
 
     return QString::fromStdString(strm.str());
 }
@@ -83,25 +99,28 @@ QStringFrom<AlertsInterface::AlertCodesDescriptor>(const AlertsInterface::AlertC
 
 template<>
 QString
-QStringFrom<vector<AlertsInterface::AlertCodesDescriptor>>(const vector<AlertsInterface::AlertCodesDescriptor>& value)
+QStringFrom<std::vector<AlertsInterface::AlertCodesDescriptor>>(const std::vector<AlertsInterface::AlertCodesDescriptor>& value)
 {
-    string result;
+    // the QLabel is AutoFmt 
+    std::ostringstream strm;
+
+    strm << "<html><body>";
+    strm << "<table><thead><tr>";
+    strm << "<th bgcolor=\"light blue\">alertCode</th>";
+    strm << "<th bgcolor=\"light blue\">description</th>";
+    strm << "</tr></thead>";
 
     for (auto& v : value)
     {
-        auto qs = QStringFrom<AlertsInterface::AlertCodesDescriptor>(v);
-        result += qs.toStdString();
+        strm << "<tr>";
+        strm << "<td>" << v.alertCode << "</td>";
+        strm << "<td>" << v.description.c_str() << "</td>";
+        strm << "</tr>";
     }
-    return QString::fromStdString(result);
+
+    strm << "</table></body></html>";
+    return QString::fromStdString(strm.str());
 }
-
-
-static void clearChildren(QWidget* parent)
-{
-    qDeleteAll(parent->findChildren<QWidget*>("", Qt::FindDirectChildrenOnly));
-}
-
-//======================================================================
 
 
 
@@ -109,11 +128,21 @@ using namespace CDMQtWidgets;
 
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_Alerts*>();
 
+Q_DECLARE_METATYPE(ajn::services::AlertsInterface::AlertRecord);
 Q_DECLARE_METATYPE(std::vector<ajn::services::AlertsInterface::AlertRecord>);
-static const int auto_register_meta_type_1 = qRegisterMetaType<std::vector<ajn::services::AlertsInterface::AlertRecord>>("std::vector<AlertsInterface::AlertRecord>");
+static const int auto_register_struct_AlertRecord = qRegisterMetaType<ajn::services::AlertsInterface::AlertRecord>("AlertsInterface::AlertRecord");
+static const int auto_register_struct_v_AlertRecord = qRegisterMetaType<std::vector<ajn::services::AlertsInterface::AlertRecord>>("std::vector<AlertsInterface::AlertRecord>");
 
+Q_DECLARE_METATYPE(ajn::services::AlertsInterface::AlertCodesDescriptor);
 Q_DECLARE_METATYPE(std::vector<ajn::services::AlertsInterface::AlertCodesDescriptor>);
-static const int auto_register_meta_type_2 = qRegisterMetaType<std::vector<ajn::services::AlertsInterface::AlertCodesDescriptor>>("std::vector<AlertsInterface::AlertCodesDescriptor>");
+static const int auto_register_struct_AlertCodesDescriptor = qRegisterMetaType<ajn::services::AlertsInterface::AlertCodesDescriptor>("AlertsInterface::AlertCodesDescriptor");
+static const int auto_register_struct_v_AlertCodesDescriptor = qRegisterMetaType<std::vector<ajn::services::AlertsInterface::AlertCodesDescriptor>>("std::vector<AlertsInterface::AlertCodesDescriptor>");
+
+Q_DECLARE_METATYPE(ajn::services::AlertsInterface::Severity);
+Q_DECLARE_METATYPE(std::vector<ajn::services::AlertsInterface::Severity>);
+static const int auto_register_enum_Severity = qRegisterMetaType<ajn::services::AlertsInterface::Severity>("AlertsInterface::Severity");
+static const int auto_register_enum_v_Severity = qRegisterMetaType<std::vector<ajn::services::AlertsInterface::Severity>>("std::vector<AlertsInterface::Severity>");
+
 
 
 org_alljoyn_SmartSpaces_Operation_Alerts::org_alljoyn_SmartSpaces_Operation_Alerts(CommonControllerInterface *iface)
@@ -124,51 +153,35 @@ org_alljoyn_SmartSpaces_Operation_Alerts::org_alljoyn_SmartSpaces_Operation_Aler
 
     QVBoxLayout *layout = new QVBoxLayout(this);
 
+
+    // Create button for GetAlertCodesDescription
+    button_GetAlertCodesDescription = new QPushButton("GetAlertCodesDescription");
+    button_GetAlertCodesDescription->setToolTip("Get alert codes description.");
+    QObject::connect(button_GetAlertCodesDescription, SIGNAL(clicked()), this, SLOT(slotClickGetAlertCodesDescription()));
+    layout->addWidget(button_GetAlertCodesDescription);
+    // Create button for AcknowledgeAllAlerts
+    button_AcknowledgeAllAlerts = new QPushButton("AcknowledgeAllAlerts");
+    button_AcknowledgeAllAlerts->setToolTip("Reset the user acknowledgment request of any pending alert.");
+    QObject::connect(button_AcknowledgeAllAlerts, SIGNAL(clicked()), this, SLOT(slotClickAcknowledgeAllAlerts()));
+    layout->addWidget(button_AcknowledgeAllAlerts);
+
     layout->addWidget(new QLabel("Alerts"));
 
-    // Create a table for the Alerts
-    {
-        auto* frame = new QFrame();
-        auto flayout = new QVBoxLayout();
-        frame->setLayout(flayout);
-        flayout->setContentsMargins(0, 0, 0, 0);
-        flayout->setSpacing(0);
-        alertsList = frame;
-        alertsList->setObjectName("alertsList");
-        layout->addWidget(frame);
-    }
+    alertList_ = new QTableWidget();
+    alertList_->setColumnCount(2);
+    QStringList labels{"Code", ""};
+    alertList_->setHorizontalHeaderLabels(labels);
+    alertList_->verticalHeader()->setVisible(false);
+    layout->addWidget(alertList_);
 
-    // Create a centred button for AcknowledgeAllAlerts
-    {
-        auto* frame = new QFrame();
-        auto flayout = new QHBoxLayout();
-        auto* button = new QPushButton("AcknowledgeAllAlerts");
-        frame->setLayout(flayout);
-        flayout->addStretch(1);
-        flayout->addWidget(button, 0);
-        flayout->addStretch(1);
-
-        button->setToolTip("Reset the user acknowledgment request of any pending alert.");
-        QObject::connect(button, SIGNAL(clicked()), this, SLOT(slotClickAcknowledgeAllAlerts()));
-        layout->addWidget(frame);
-    }
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {
         controller = iface->CreateInterface<AlertsIntfController>(m_listener);
         if (controller)
         {
-            qWarning() << __FUNCTION__ << " Getting properties";
-
-            QStatus status;
-
-            // Get the descriptions first.
-            status = controller->GetAlertCodesDescription(DefaultLanguageTag);
-            if (status != ER_OK)
-            {
-                qWarning() << __FUNCTION__ << " Failed to get AlertCodesDescription" << QCC_StatusText(status);
-            }
-
             fetchProperties();
         }
         else
@@ -192,14 +205,16 @@ org_alljoyn_SmartSpaces_Operation_Alerts::~org_alljoyn_SmartSpaces_Operation_Ale
 void org_alljoyn_SmartSpaces_Operation_Alerts::fetchProperties()
 {
     // Get current values
+    QStatus status;
+
     if (controller)
     {
-        qWarning() << __FUNCTION__ << " Getting properties";
+        qWarning() << "Alerts getting properties";
 
-        auto status = controller->GetAlertCodesDescription(DefaultLanguageTag);
+        status = controller->GetAlerts();
         if (status != ER_OK)
         {
-            qWarning() << __FUNCTION__ << " Failed to get AlertCodesDescription" << QCC_StatusText(status);
+            qWarning() << "Alerts::fetchProperties Failed to get Alerts" << QCC_StatusText(status);
         }
     }
 }
@@ -208,12 +223,19 @@ void org_alljoyn_SmartSpaces_Operation_Alerts::fetchProperties()
 
 void org_alljoyn_SmartSpaces_Operation_Alerts::slotClickGetAlertCodesDescription()
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "Alerts::slotClickGetAlertCodesDescription";
 
-    QStatus status = controller->GetAlertCodesDescription(DefaultLanguageTag, NULL);
-    if (status != ER_OK)
+    qcc::String languageTag {};
+
+    bool ok = true;
+
+    if (ok)
     {
-        qWarning() << __FUNCTION__ << " Failed to call GetAlertCodesDescription" << QCC_StatusText(status);
+        QStatus status = controller->GetAlertCodesDescription(languageTag, NULL);
+        if (status != ER_OK)
+        {
+            qWarning() << "Alerts::slotClick Failed to call GetAlertCodesDescription" << QCC_StatusText(status);
+        }
     }
 }
 
@@ -221,7 +243,8 @@ void org_alljoyn_SmartSpaces_Operation_Alerts::slotClickGetAlertCodesDescription
 
 void org_alljoyn_SmartSpaces_Operation_Alerts::slotClickAcknowledgeAlert()
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "Alerts::slotClickAcknowledgeAlert";
+
     auto* ackButton = dynamic_cast<QPushButton*>(QObject::sender());
     QVariant var = ackButton->property("alertCode");
 
@@ -231,7 +254,7 @@ void org_alljoyn_SmartSpaces_Operation_Alerts::slotClickAcknowledgeAlert()
     QStatus status = controller->AcknowledgeAlert(alertCode, NULL);
     if (status != ER_OK)
     {
-        qWarning() << __FUNCTION__ << " Failed to call AcknowledgeAlert" << QCC_StatusText(status);
+        qWarning() << "Alerts::slotClick Failed to call AcknowledgeAlert" << QCC_StatusText(status);
     }
 }
 
@@ -239,28 +262,33 @@ void org_alljoyn_SmartSpaces_Operation_Alerts::slotClickAcknowledgeAlert()
 
 void org_alljoyn_SmartSpaces_Operation_Alerts::slotClickAcknowledgeAllAlerts()
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "Alerts::slotClickAcknowledgeAllAlerts";
 
-    QStatus status = controller->AcknowledgeAllAlerts(NULL);
-    if (status != ER_OK)
+    bool ok = true;
+
+    if (ok)
     {
-        qWarning() << __FUNCTION__ << " Failed to call AcknowledgeAllAlerts" << QCC_StatusText(status);
+        QStatus status = controller->AcknowledgeAllAlerts(NULL);
+        if (status != ER_OK)
+        {
+            qWarning() << "Alerts::slotClick Failed to call AcknowledgeAllAlerts" << QCC_StatusText(status);
+        }
     }
 }
 
 
 
-void org_alljoyn_SmartSpaces_Operation_Alerts::slotOnResponseGetAlerts(QStatus status, vector<AlertsInterface::AlertRecord> value)
+void org_alljoyn_SmartSpaces_Operation_Alerts::slotOnResponseGetAlerts(QStatus status, const std::vector<AlertsInterface::AlertRecord>& value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "Alerts::slotOnResponseGetAlerts";
     showAlerts(value);
 }
 
 
 
-void org_alljoyn_SmartSpaces_Operation_Alerts::slotOnAlertsChanged(vector<AlertsInterface::AlertRecord> value)
+void org_alljoyn_SmartSpaces_Operation_Alerts::slotOnAlertsChanged(const std::vector<AlertsInterface::AlertRecord>& value)
 {
-    qWarning() << __FUNCTION__;
+    qWarning() << "Alerts::slotOnAlertsChanged";
     showAlerts(value);
 }
 
@@ -269,11 +297,12 @@ void org_alljoyn_SmartSpaces_Operation_Alerts::slotOnAlertsChanged(vector<Alerts
 void    
 org_alljoyn_SmartSpaces_Operation_Alerts::showAlerts(const vector<AlertsInterface::AlertRecord>& alerts)
 {
-    clearChildren(alertsList);
+    alertList_->clearContents();
+    alertList_->setRowCount(alerts.size());
 
-    for (size_t i = 0; i < alerts.size(); ++i)
+    for (size_t row = 0; row < alerts.size(); ++row)
     {
-        auto& alert = alerts[i];
+        auto& alert = alerts[row];
         const char* sev = "";
 
         // See if we can translate the code to a description
@@ -295,46 +324,53 @@ org_alljoyn_SmartSpaces_Operation_Alerts::showAlerts(const vector<AlertsInterfac
             code = strm.str();
         }
 
-        auto* box = new QWidget();
-        auto* layout = new QHBoxLayout();
-        layout->setContentsMargins(0, 0, 0, 0);
-        layout->setSpacing(0);
-        box->setLayout(layout);
-        box->setProperty("class", "alert");
+        ostringstream codeStrm;
+        codeStrm << "<center>";
 
-        auto* item = new QLabel(QString::fromStdString(code));
-        layout->addWidget(item, 1);             // stretch of 1
+        switch (alert.severity)
+        {
+        case AlertsInterface::SEVERITY_ALARM:
+            codeStrm << "<font color=\"red\">";
+            break;
 
-        item->setProperty("class", "alertDescription");
-        item->setProperty("severity", QVariant(static_cast<int>(alert.severity)));
+        case AlertsInterface::SEVERITY_FAULT:
+            codeStrm << "<font color=\"orange\">";
+            break;
+
+        default:
+            codeStrm << "<font>";
+            break;
+        }
+
+        codeStrm << code << "</font></center>";
+        alertList_->setCellWidget(row, 0, new QLabel(QString::fromStdString(codeStrm.str())));
 
         if (alert.needAcknowledgement)
         {
             auto* ack = new QPushButton("Ack");
             ack->setProperty("alertCode", QVariant(alert.alertCode)); 
-            layout->addWidget(ack, 0);          // stretch of 0
+            alertList_->setCellWidget(row, 1, ack);
 
             QObject::connect(ack, SIGNAL(clicked()), this, SLOT(slotClickAcknowledgeAlert()));
         }
-
-        alertsList->layout()->addWidget(box);
     }
 
-    alertsList->show();
+    alertList_->show();
 }
 
 
 
-void org_alljoyn_SmartSpaces_Operation_Alerts::slotOnResponseMethodGetAlertCodesDescription(std::vector<AlertsInterface::AlertCodesDescriptor> description, QStatus status, const QString& errorName)
+void org_alljoyn_SmartSpaces_Operation_Alerts::slotOnResponseMethodGetAlertCodesDescription(QStatus status, const std::vector<AlertsInterface::AlertCodesDescriptor>& description, const QString& errorName)
 {
     if (status == ER_OK)
     {
-        qInfo() << "Received response to method GetAlertCodesDescription";
+        qInfo() << "Alerts::slotOnResponseMethodGetAlertCodesDescription";
         alertDescrs = description;
+        messages_->setText(QStringFrom(description));
     }
     else
     {
-        qWarning() << "Received an error from method GetAlertCodesDescription, error = " << errorName;
+        qWarning() << "Alerts::slotOnResponseMethodGetAlertCodesDescription Received error = " << errorName;
     }
 }
 
@@ -344,11 +380,11 @@ void org_alljoyn_SmartSpaces_Operation_Alerts::slotOnResponseMethodAcknowledgeAl
 {
     if (status == ER_OK)
     {
-        qInfo() << "Received response to method AcknowledgeAlert";
+        qInfo() << "Alerts::slotOnResponseMethodAcknowledgeAlert";
     }
     else
     {
-        qWarning() << "Received an error from method AcknowledgeAlert, error = " << errorName;
+        qWarning() << "Alerts::slotOnResponseMethodAcknowledgeAlert Received error = " << errorName;
     }
 }
 
@@ -358,10 +394,10 @@ void org_alljoyn_SmartSpaces_Operation_Alerts::slotOnResponseMethodAcknowledgeAl
 {
     if (status == ER_OK)
     {
-        qInfo() << "Received response to method AcknowledgeAllAlerts";
+        qInfo() << "Alerts::slotOnResponseMethodAcknowledgeAllAlerts";
     }
     else
     {
-        qWarning() << "Received an error from method AcknowledgeAllAlerts, error = " << errorName;
+        qWarning() << "Alerts::slotOnResponseMethodAcknowledgeAllAlerts Received error = " << errorName;
     }
 }

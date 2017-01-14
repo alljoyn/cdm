@@ -27,13 +27,125 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 #include "org_alljoyn_SmartSpaces_Environment_CurrentAirQualityLevel.h"
+#include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <sstream>
 
 
+
+template<>
+QString
+QStringFrom<CurrentAirQualityLevelInterface::ContaminantType>(const CurrentAirQualityLevelInterface::ContaminantType& value)
+{
+    QString result;
+
+    switch (value)
+    {
+    case CurrentAirQualityLevelInterface::CONTAMINANT_TYPE_CH2O:
+        result = "CH2O";
+        break;
+
+    case CurrentAirQualityLevelInterface::CONTAMINANT_TYPE_CO2:
+        result = "CO2";
+        break;
+
+    case CurrentAirQualityLevelInterface::CONTAMINANT_TYPE_CO:
+        result = "CO";
+        break;
+
+    case CurrentAirQualityLevelInterface::CONTAMINANT_TYPE_PM2_5:
+        result = "PM2_5";
+        break;
+
+    case CurrentAirQualityLevelInterface::CONTAMINANT_TYPE_PM10:
+        result = "PM10";
+        break;
+
+    case CurrentAirQualityLevelInterface::CONTAMINANT_TYPE_VOC:
+        result = "VOC";
+        break;
+
+    case CurrentAirQualityLevelInterface::CONTAMINANT_TYPE_SMOKE:
+        result = "Smoke";
+        break;
+
+    case CurrentAirQualityLevelInterface::CONTAMINANT_TYPE_ODOR:
+        result = "Odor";
+        break;
+
+    case CurrentAirQualityLevelInterface::CONTAMINANT_TYPE_AIR_POLLUTION:
+        result = "AirPollution";
+        break;
+
+    default:
+        result = "Unknown";
+        break;
+    }
+
+    return result;
+}
+
+
+
+template<>
+QString
+QStringFrom<std::vector<CurrentAirQualityLevelInterface::ContaminantType>>(const std::vector<CurrentAirQualityLevelInterface::ContaminantType>& value)
+{
+    // the QLabel is AutoFmt 
+    std::ostringstream strm;
+
+    strm << "<html><body>";
+    strm << "<table><thead><tr>";
+    strm << "<th bgcolor=\"light blue\">ContaminantType</th>";
+    strm << "</tr></thead>";
+
+    for (auto& v : value)
+    {
+        if (v == CurrentAirQualityLevelInterface::CONTAMINANT_TYPE_CH2O)
+        {
+            strm << "<tr><td>CH2O</td></tr>";
+        }
+        if (v == CurrentAirQualityLevelInterface::CONTAMINANT_TYPE_CO2)
+        {
+            strm << "<tr><td>CO2</td></tr>";
+        }
+        if (v == CurrentAirQualityLevelInterface::CONTAMINANT_TYPE_CO)
+        {
+            strm << "<tr><td>CO</td></tr>";
+        }
+        if (v == CurrentAirQualityLevelInterface::CONTAMINANT_TYPE_PM2_5)
+        {
+            strm << "<tr><td>PM2_5</td></tr>";
+        }
+        if (v == CurrentAirQualityLevelInterface::CONTAMINANT_TYPE_PM10)
+        {
+            strm << "<tr><td>PM10</td></tr>";
+        }
+        if (v == CurrentAirQualityLevelInterface::CONTAMINANT_TYPE_VOC)
+        {
+            strm << "<tr><td>VOC</td></tr>";
+        }
+        if (v == CurrentAirQualityLevelInterface::CONTAMINANT_TYPE_SMOKE)
+        {
+            strm << "<tr><td>Smoke</td></tr>";
+        }
+        if (v == CurrentAirQualityLevelInterface::CONTAMINANT_TYPE_ODOR)
+        {
+            strm << "<tr><td>Odor</td></tr>";
+        }
+        if (v == CurrentAirQualityLevelInterface::CONTAMINANT_TYPE_AIR_POLLUTION)
+        {
+            strm << "<tr><td>AirPollution</td></tr>";
+        }
+    }
+
+    strm << "</table></body></html>";
+    return QString::fromStdString(strm.str());
+}
 
 
 using namespace CDMQtWidgets;
@@ -57,7 +169,7 @@ org_alljoyn_SmartSpaces_Environment_CurrentAirQualityLevel::org_alljoyn_SmartSpa
 
 
 
-    layout->addWidget(new QLabel("ContaminantType"));
+    layout->addWidget(new QLabel("<b>ContaminantType</b>"));
     // Create the editing widget for ContaminantType
     edit_ContaminantType = new QComboBox();
     edit_ContaminantType->setEditable(false);
@@ -73,20 +185,19 @@ org_alljoyn_SmartSpaces_Environment_CurrentAirQualityLevel::org_alljoyn_SmartSpa
     edit_ContaminantType->setEnabled(false);
 
     layout->addWidget(edit_ContaminantType);
-    layout->addWidget(new QLabel("CurrentLevel"));
+    layout->addWidget(new QLabel("<b>CurrentLevel</b>"));
     // Create the editing widget for CurrentLevel
-    edit_CurrentLevel = new QLineEdit();
-    edit_CurrentLevel->setToolTip("The qualitative representation of current air quality level.");
-    edit_CurrentLevel->setReadOnly(true);
+    edit_CurrentLevel = new QLabel();
 
     layout->addWidget(edit_CurrentLevel);
-    layout->addWidget(new QLabel("MaxLevel"));
+    layout->addWidget(new QLabel("<b>MaxLevel</b>"));
     // Create the editing widget for MaxLevel
-    edit_MaxLevel = new QLineEdit();
-    edit_MaxLevel->setToolTip("Maximum level allowed for represented air quality level.");
-    edit_MaxLevel->setReadOnly(true);
+    edit_MaxLevel = new QLabel();
 
     layout->addWidget(edit_MaxLevel);
+
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {

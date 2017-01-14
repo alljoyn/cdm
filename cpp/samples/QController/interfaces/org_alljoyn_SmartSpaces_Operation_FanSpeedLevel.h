@@ -34,6 +34,7 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QLineEdit>
+#include <QLabel>
 #include <QVBoxLayout>
 #include <QPushButton>
 
@@ -148,9 +149,10 @@ private:
 
 
     QLineEdit* edit_FanSpeedLevel;
-    QLineEdit* edit_MaxFanSpeedLevel;
+    QLabel* edit_MaxFanSpeedLevel;
     QComboBox* edit_AutoMode;
 
+    QLabel* messages_;
     void    fetchProperties();
 
 protected:

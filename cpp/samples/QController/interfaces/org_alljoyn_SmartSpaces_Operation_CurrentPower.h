@@ -34,6 +34,7 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QLineEdit>
+#include <QLabel>
 #include <QVBoxLayout>
 #include <QPushButton>
 
@@ -129,10 +130,11 @@ private:
     Ref<Listener> m_listener;
 
 
-    QLineEdit* edit_CurrentPower;
-    QLineEdit* edit_Precision;
-    QLineEdit* edit_UpdateMinTime;
+    QLabel* edit_CurrentPower;
+    QLabel* edit_Precision;
+    QLabel* edit_UpdateMinTime;
 
+    QLabel* messages_;
     void    fetchProperties();
 
 protected:

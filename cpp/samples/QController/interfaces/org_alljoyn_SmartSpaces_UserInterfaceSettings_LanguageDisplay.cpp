@@ -27,12 +27,13 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 #include "org_alljoyn_SmartSpaces_UserInterfaceSettings_LanguageDisplay.h"
+#include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <sstream>
-
 
 
 
@@ -52,21 +53,21 @@ org_alljoyn_SmartSpaces_UserInterfaceSettings_LanguageDisplay::org_alljoyn_Smart
 
 
 
-    layout->addWidget(new QLabel("DisplayLanguage"));
+    layout->addWidget(new QLabel("<b>DisplayLanguage</b>"));
     // Create the editing widget for DisplayLanguage
     edit_DisplayLanguage = new QLineEdit();
     edit_DisplayLanguage->setToolTip("The RFC 5646 tag of the current language being used by the device user interface");
-    edit_DisplayLanguage->setReadOnly(false);
     QObject::connect(edit_DisplayLanguage, SIGNAL(returnPressed()), this, SLOT(slotSetDisplayLanguage()));
 
     layout->addWidget(edit_DisplayLanguage);
-    layout->addWidget(new QLabel("SupportedDisplayLanguages"));
+    layout->addWidget(new QLabel("<b>SupportedDisplayLanguages</b>"));
     // Create the editing widget for SupportedDisplayLanguages
-    edit_SupportedDisplayLanguages = new QLineEdit();
-    edit_SupportedDisplayLanguages->setToolTip("The list of supported languages using RFC 5646 tags");
-    edit_SupportedDisplayLanguages->setReadOnly(true);
+    edit_SupportedDisplayLanguages = new QLabel();
 
     layout->addWidget(edit_SupportedDisplayLanguages);
+
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {
@@ -142,7 +143,9 @@ void org_alljoyn_SmartSpaces_UserInterfaceSettings_LanguageDisplay::slotOnRespon
 
     if (status != ER_OK)
     {
+        qcShowStatus(this, "Failed to set DisplayLanguage", status);
         qWarning() << "LanguageDisplay::slotOnResponseSetDisplayLanguage Failed to set DisplayLanguage" << QCC_StatusText(status);
+        fetchProperties();      // restore the display of properties
     }
 }
 

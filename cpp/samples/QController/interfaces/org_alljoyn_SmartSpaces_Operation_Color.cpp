@@ -27,12 +27,13 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 #include "org_alljoyn_SmartSpaces_Operation_Color.h"
+#include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <sstream>
-
 
 
 
@@ -52,22 +53,23 @@ org_alljoyn_SmartSpaces_Operation_Color::org_alljoyn_SmartSpaces_Operation_Color
 
 
 
-    layout->addWidget(new QLabel("Hue"));
+    layout->addWidget(new QLabel("<b>Hue</b>"));
     // Create the editing widget for Hue
     edit_Hue = new QLineEdit();
     edit_Hue->setToolTip("Hue of the device.");
-    edit_Hue->setReadOnly(false);
     QObject::connect(edit_Hue, SIGNAL(returnPressed()), this, SLOT(slotSetHue()));
 
     layout->addWidget(edit_Hue);
-    layout->addWidget(new QLabel("Saturation"));
+    layout->addWidget(new QLabel("<b>Saturation</b>"));
     // Create the editing widget for Saturation
     edit_Saturation = new QLineEdit();
     edit_Saturation->setToolTip("Saturation of the device.");
-    edit_Saturation->setReadOnly(false);
     QObject::connect(edit_Saturation, SIGNAL(returnPressed()), this, SLOT(slotSetSaturation()));
 
     layout->addWidget(edit_Saturation);
+
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {
@@ -143,7 +145,9 @@ void org_alljoyn_SmartSpaces_Operation_Color::slotOnResponseSetHue(QStatus statu
 
     if (status != ER_OK)
     {
+        qcShowStatus(this, "Failed to set Hue", status);
         qWarning() << "Color::slotOnResponseSetHue Failed to set Hue" << QCC_StatusText(status);
+        fetchProperties();      // restore the display of properties
     }
 }
 
@@ -199,7 +203,9 @@ void org_alljoyn_SmartSpaces_Operation_Color::slotOnResponseSetSaturation(QStatu
 
     if (status != ER_OK)
     {
+        qcShowStatus(this, "Failed to set Saturation", status);
         qWarning() << "Color::slotOnResponseSetSaturation Failed to set Saturation" << QCC_StatusText(status);
+        fetchProperties();      // restore the display of properties
     }
 }
 

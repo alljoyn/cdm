@@ -27,29 +27,28 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 #include "org_alljoyn_SmartSpaces_Operation_AudioVideoInput.h"
+#include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <sstream>
+
 
 
 template<>
 QString
 QStringFrom<AudioVideoInputInterface::InputSource>(const AudioVideoInputInterface::InputSource& value)
 {
+    // the QLabel is AutoFmt 
     std::ostringstream strm;
-    strm << "{";
-    strm << "id=" << value.id;
-    strm << " ";
-    strm << "sourceType=" << value.sourceType;
-    strm << " ";
-    strm << "signalPresence=" << value.signalPresence;
-    strm << " ";
-    strm << "portNumber=" << value.portNumber;
-    strm << " ";
-    strm << "friendlyName=" << value.friendlyName.c_str();
-    strm << "}";
+
+    strm << "<b>id</b>: " << value.id << "\n";
+    strm << "<b>sourceType</b>: " << value.sourceType << "\n";
+    strm << "<b>signalPresence</b>: " << value.signalPresence << "\n";
+    strm << "<b>portNumber</b>: " << value.portNumber << "\n";
+    strm << "<b>friendlyName</b>: " << value.friendlyName.c_str() << "\n";
 
     return QString::fromStdString(strm.str());
 }
@@ -59,18 +58,270 @@ template<>
 QString
 QStringFrom<std::vector<AudioVideoInputInterface::InputSource>>(const std::vector<AudioVideoInputInterface::InputSource>& value)
 {
-    std::string result;
+    // the QLabel is AutoFmt 
+    std::ostringstream strm;
+
+    strm << "<html><body>";
+    strm << "<table><thead><tr>";
+    strm << "<th bgcolor=\"light blue\">id</th>";
+    strm << "<th bgcolor=\"light blue\">sourceType</th>";
+    strm << "<th bgcolor=\"light blue\">signalPresence</th>";
+    strm << "<th bgcolor=\"light blue\">portNumber</th>";
+    strm << "<th bgcolor=\"light blue\">friendlyName</th>";
+    strm << "</tr></thead>";
 
     for (auto& v : value)
     {
-        auto qs = QStringFrom<AudioVideoInputInterface::InputSource>(v);
-        result += qs.toStdString();
+        strm << "<tr>";
+        strm << "<td>" << v.id << "</td>";
+        strm << "<td>" << v.sourceType << "</td>";
+        strm << "<td>" << v.signalPresence << "</td>";
+        strm << "<td>" << v.portNumber << "</td>";
+        strm << "<td>" << v.friendlyName.c_str() << "</td>";
+        strm << "</tr>";
     }
-    return QString::fromStdString(result);
+
+    strm << "</table></body></html>";
+    return QString::fromStdString(strm.str());
+}
+
+
+template<>
+QString
+QStringFrom<AudioVideoInputInterface::SourceType>(const AudioVideoInputInterface::SourceType& value)
+{
+    QString result;
+
+    switch (value)
+    {
+    case AudioVideoInputInterface::SOURCE_TYPE_UNKNOWN:
+        result = "Unknown";
+        break;
+
+    case AudioVideoInputInterface::SOURCE_TYPE_TUNER:
+        result = "Tuner";
+        break;
+
+    case AudioVideoInputInterface::SOURCE_TYPE_COMPONENT:
+        result = "Component";
+        break;
+
+    case AudioVideoInputInterface::SOURCE_TYPE_COMPOSITE:
+        result = "Composite";
+        break;
+
+    case AudioVideoInputInterface::SOURCE_TYPE_S_VIDEO:
+        result = "S_VIdeo";
+        break;
+
+    case AudioVideoInputInterface::SOURCE_TYPE_RGB:
+        result = "RGB";
+        break;
+
+    case AudioVideoInputInterface::SOURCE_TYPE_SDI:
+        result = "SDI";
+        break;
+
+    case AudioVideoInputInterface::SOURCE_TYPE_DVI:
+        result = "DVI";
+        break;
+
+    case AudioVideoInputInterface::SOURCE_TYPE_HDMI:
+        result = "HDMI";
+        break;
+
+    case AudioVideoInputInterface::SOURCE_TYPE_DISPLAY_PORT:
+        result = "DisplayPort";
+        break;
+
+    case AudioVideoInputInterface::SOURCE_TYPE_SCART:
+        result = "SCART";
+        break;
+
+    case AudioVideoInputInterface::SOURCE_TYPE_EXTERNAL_STORAGE:
+        result = "ExternalStorage";
+        break;
+
+    case AudioVideoInputInterface::SOURCE_TYPE_NETWORK:
+        result = "Network";
+        break;
+
+    case AudioVideoInputInterface::SOURCE_TYPE_ANALOG:
+        result = "Analog";
+        break;
+
+    case AudioVideoInputInterface::SOURCE_TYPE_PHONO:
+        result = "Phono";
+        break;
+
+    case AudioVideoInputInterface::SOURCE_TYPE_SPDIF_COAXIAL:
+        result = "SPDIF_Coaxial";
+        break;
+
+    case AudioVideoInputInterface::SOURCE_TYPE_SPDIF_OPTICAL:
+        result = "SPDIF_Optical";
+        break;
+
+    default:
+        result = "Unknown";
+        break;
+    }
+
+    return result;
 }
 
 
 
+template<>
+QString
+QStringFrom<std::vector<AudioVideoInputInterface::SourceType>>(const std::vector<AudioVideoInputInterface::SourceType>& value)
+{
+    // the QLabel is AutoFmt 
+    std::ostringstream strm;
+
+    strm << "<html><body>";
+    strm << "<table><thead><tr>";
+    strm << "<th bgcolor=\"light blue\">SourceType</th>";
+    strm << "</tr></thead>";
+
+    for (auto& v : value)
+    {
+        if (v == AudioVideoInputInterface::SOURCE_TYPE_UNKNOWN)
+        {
+            strm << "<tr><td>Unknown</td></tr>";
+        }
+        if (v == AudioVideoInputInterface::SOURCE_TYPE_TUNER)
+        {
+            strm << "<tr><td>Tuner</td></tr>";
+        }
+        if (v == AudioVideoInputInterface::SOURCE_TYPE_COMPONENT)
+        {
+            strm << "<tr><td>Component</td></tr>";
+        }
+        if (v == AudioVideoInputInterface::SOURCE_TYPE_COMPOSITE)
+        {
+            strm << "<tr><td>Composite</td></tr>";
+        }
+        if (v == AudioVideoInputInterface::SOURCE_TYPE_S_VIDEO)
+        {
+            strm << "<tr><td>S_VIdeo</td></tr>";
+        }
+        if (v == AudioVideoInputInterface::SOURCE_TYPE_RGB)
+        {
+            strm << "<tr><td>RGB</td></tr>";
+        }
+        if (v == AudioVideoInputInterface::SOURCE_TYPE_SDI)
+        {
+            strm << "<tr><td>SDI</td></tr>";
+        }
+        if (v == AudioVideoInputInterface::SOURCE_TYPE_DVI)
+        {
+            strm << "<tr><td>DVI</td></tr>";
+        }
+        if (v == AudioVideoInputInterface::SOURCE_TYPE_HDMI)
+        {
+            strm << "<tr><td>HDMI</td></tr>";
+        }
+        if (v == AudioVideoInputInterface::SOURCE_TYPE_DISPLAY_PORT)
+        {
+            strm << "<tr><td>DisplayPort</td></tr>";
+        }
+        if (v == AudioVideoInputInterface::SOURCE_TYPE_SCART)
+        {
+            strm << "<tr><td>SCART</td></tr>";
+        }
+        if (v == AudioVideoInputInterface::SOURCE_TYPE_EXTERNAL_STORAGE)
+        {
+            strm << "<tr><td>ExternalStorage</td></tr>";
+        }
+        if (v == AudioVideoInputInterface::SOURCE_TYPE_NETWORK)
+        {
+            strm << "<tr><td>Network</td></tr>";
+        }
+        if (v == AudioVideoInputInterface::SOURCE_TYPE_ANALOG)
+        {
+            strm << "<tr><td>Analog</td></tr>";
+        }
+        if (v == AudioVideoInputInterface::SOURCE_TYPE_PHONO)
+        {
+            strm << "<tr><td>Phono</td></tr>";
+        }
+        if (v == AudioVideoInputInterface::SOURCE_TYPE_SPDIF_COAXIAL)
+        {
+            strm << "<tr><td>SPDIF_Coaxial</td></tr>";
+        }
+        if (v == AudioVideoInputInterface::SOURCE_TYPE_SPDIF_OPTICAL)
+        {
+            strm << "<tr><td>SPDIF_Optical</td></tr>";
+        }
+    }
+
+    strm << "</table></body></html>";
+    return QString::fromStdString(strm.str());
+}
+
+
+template<>
+QString
+QStringFrom<AudioVideoInputInterface::SignalPresence>(const AudioVideoInputInterface::SignalPresence& value)
+{
+    QString result;
+
+    switch (value)
+    {
+    case AudioVideoInputInterface::SIGNAL_PRESENCE_UNKNOWN:
+        result = "Unknown";
+        break;
+
+    case AudioVideoInputInterface::SIGNAL_PRESENCE_SIGNAL_PRESENT:
+        result = "SignalPresent";
+        break;
+
+    case AudioVideoInputInterface::SIGNAL_PRESENCE_SIGNAL_ABSENT:
+        result = "SignalAbsent";
+        break;
+
+    default:
+        result = "Unknown";
+        break;
+    }
+
+    return result;
+}
+
+
+
+template<>
+QString
+QStringFrom<std::vector<AudioVideoInputInterface::SignalPresence>>(const std::vector<AudioVideoInputInterface::SignalPresence>& value)
+{
+    // the QLabel is AutoFmt 
+    std::ostringstream strm;
+
+    strm << "<html><body>";
+    strm << "<table><thead><tr>";
+    strm << "<th bgcolor=\"light blue\">SignalPresence</th>";
+    strm << "</tr></thead>";
+
+    for (auto& v : value)
+    {
+        if (v == AudioVideoInputInterface::SIGNAL_PRESENCE_UNKNOWN)
+        {
+            strm << "<tr><td>Unknown</td></tr>";
+        }
+        if (v == AudioVideoInputInterface::SIGNAL_PRESENCE_SIGNAL_PRESENT)
+        {
+            strm << "<tr><td>SignalPresent</td></tr>";
+        }
+        if (v == AudioVideoInputInterface::SIGNAL_PRESENCE_SIGNAL_ABSENT)
+        {
+            strm << "<tr><td>SignalAbsent</td></tr>";
+        }
+    }
+
+    strm << "</table></body></html>";
+    return QString::fromStdString(strm.str());
+}
 
 
 using namespace CDMQtWidgets;
@@ -104,21 +355,21 @@ org_alljoyn_SmartSpaces_Operation_AudioVideoInput::org_alljoyn_SmartSpaces_Opera
 
 
 
-    layout->addWidget(new QLabel("InputSourceId"));
+    layout->addWidget(new QLabel("<b>InputSourceId</b>"));
     // Create the editing widget for InputSourceId
     edit_InputSourceId = new QLineEdit();
     edit_InputSourceId->setToolTip("Activated input source id.");
-    edit_InputSourceId->setReadOnly(false);
     QObject::connect(edit_InputSourceId, SIGNAL(returnPressed()), this, SLOT(slotSetInputSourceId()));
 
     layout->addWidget(edit_InputSourceId);
-    layout->addWidget(new QLabel("SupportedInputSources"));
+    layout->addWidget(new QLabel("<b>SupportedInputSources</b>"));
     // Create the editing widget for SupportedInputSources
-    edit_SupportedInputSources = new QLineEdit();
-    edit_SupportedInputSources->setToolTip("Array of supported input sources.");
-    edit_SupportedInputSources->setReadOnly(true);
+    edit_SupportedInputSources = new QLabel();
 
     layout->addWidget(edit_SupportedInputSources);
+
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {
@@ -194,7 +445,9 @@ void org_alljoyn_SmartSpaces_Operation_AudioVideoInput::slotOnResponseSetInputSo
 
     if (status != ER_OK)
     {
+        qcShowStatus(this, "Failed to set InputSourceId", status);
         qWarning() << "AudioVideoInput::slotOnResponseSetInputSourceId Failed to set InputSourceId" << QCC_StatusText(status);
+        fetchProperties();      // restore the display of properties
     }
 }
 

@@ -89,6 +89,10 @@
 #include "interfaces/controller/environment/TargetTemperatureLevelIntfController.h"
 #include "interfaces/controller/environment/WaterLevelIntfController.h"
 #include "interfaces/controller/environment/WindDirectionIntfController.h"
+#include "interfaces/controller/userinterfacesettings/LanguageDisplayIntfController.h"
+#include "interfaces/controller/userinterfacesettings/TemperatureDisplayIntfController.h"
+#include "interfaces/controller/userinterfacesettings/TimeDisplayIntfController.h"
+#include "interfaces/controller/input/HidIntfController.h"
 
 using namespace std;
 using namespace qcc;
@@ -161,6 +165,10 @@ ControllerFactory::ControllerFactory() :
     m_controllerCreators["org.alljoyn.SmartSpaces.Environment.TargetTemperatureLevel"] = static_cast<CreateIntfControllerFptr>(&TargetTemperatureLevelIntfController::CreateInterface);
     m_controllerCreators["org.alljoyn.SmartSpaces.Environment.WaterLevel"] = static_cast<CreateIntfControllerFptr>(&WaterLevelIntfController::CreateInterface);
     m_controllerCreators["org.alljoyn.SmartSpaces.Environment.WindDirection"] = static_cast<CreateIntfControllerFptr>(&WindDirectionIntfController::CreateInterface);
+    m_controllerCreators["org.alljoyn.SmartSpaces.UserInterfaceSettings.LanguageDisplay"] = static_cast<CreateIntfControllerFptr>(&LanguageDisplayIntfController::CreateInterface);
+    m_controllerCreators["org.alljoyn.SmartSpaces.UserInterfaceSettings.TemperatureDisplay"] = static_cast<CreateIntfControllerFptr>(&TemperatureDisplayIntfController::CreateInterface);
+    m_controllerCreators["org.alljoyn.SmartSpaces.UserInterfaceSettings.TimeDisplay"] = static_cast<CreateIntfControllerFptr>(&TimeDisplayIntfController::CreateInterface);
+    m_controllerCreators["org.alljoyn.Input.Hid"] = static_cast<CreateIntfControllerFptr>(&HidIntfController::CreateInterface);
 }
 
 

@@ -27,12 +27,13 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 #include "org_alljoyn_SmartSpaces_Operation_Brightness.h"
+#include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <sstream>
-
 
 
 
@@ -52,14 +53,16 @@ org_alljoyn_SmartSpaces_Operation_Brightness::org_alljoyn_SmartSpaces_Operation_
 
 
 
-    layout->addWidget(new QLabel("Brightness"));
+    layout->addWidget(new QLabel("<b>Brightness</b>"));
     // Create the editing widget for Brightness
     edit_Brightness = new QLineEdit();
     edit_Brightness->setToolTip("Brightness of the device.");
-    edit_Brightness->setReadOnly(false);
     QObject::connect(edit_Brightness, SIGNAL(returnPressed()), this, SLOT(slotSetBrightness()));
 
     layout->addWidget(edit_Brightness);
+
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {
@@ -129,7 +132,9 @@ void org_alljoyn_SmartSpaces_Operation_Brightness::slotOnResponseSetBrightness(Q
 
     if (status != ER_OK)
     {
+        qcShowStatus(this, "Failed to set Brightness", status);
         qWarning() << "Brightness::slotOnResponseSetBrightness Failed to set Brightness" << QCC_StatusText(status);
+        fetchProperties();      // restore the display of properties
     }
 }
 

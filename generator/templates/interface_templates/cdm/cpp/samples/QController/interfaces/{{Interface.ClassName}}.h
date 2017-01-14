@@ -34,6 +34,7 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QLineEdit>
+#include <QLabel>
 #include <QVBoxLayout>
 #include <QPushButton>
 
@@ -150,10 +151,15 @@ private:
     {% elif property.Type.ajtypeIsEnum() %}
     QComboBox* edit_{{property.Name}};
     {% else %}
+    {% if property.Writable %}
     QLineEdit* edit_{{property.Name}};
+    {% else %}
+    QLabel* edit_{{property.Name}};
+    {% endif %}
     {% endif %}
     {% endfor %}
 
+    QLabel* messages_;
     void    fetchProperties();
 
 protected:

@@ -27,12 +27,13 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 #include "org_alljoyn_SmartSpaces_Operation_OffControl.h"
+#include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <sstream>
-
 
 
 
@@ -57,6 +58,9 @@ org_alljoyn_SmartSpaces_Operation_OffControl::org_alljoyn_SmartSpaces_Operation_
     QObject::connect(button_SwitchOff, SIGNAL(clicked()), this, SLOT(slotClickSwitchOff()));
     layout->addWidget(button_SwitchOff);
 
+
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {

@@ -27,18 +27,93 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 #include "org_alljoyn_SmartSpaces_Operation_Timer.h"
+#include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <sstream>
-
 
 
 
 using namespace CDMQtWidgets;
 
 static const int auto_register_meta_type = qRegisterMetaType<org_alljoyn_SmartSpaces_Operation_Timer*>();
+
+
+#include <QLabel>
+#include <QLineEdit>
+#include <QGridLayout>
+#include <QDialogButtonBox>
+#include <QVBoxLayout>
+#include <alljoyn/cdm/common/LogModule.h>
+#include <sstream>
+
+
+org_alljoyn_SmartSpaces_Operation_Timer_GetTime::org_alljoyn_SmartSpaces_Operation_Timer_GetTime(QWidget* parent, const char* label, int32_t time)
+{
+    time_ = time;
+    label_ = label;
+
+    dialog_ = new QDialog(parent);
+    auto* dlgLayout_ = new QVBoxLayout(dialog_);
+
+    dlgLayout_->addWidget(new QLabel(label_));
+    timeSpin_ = new QSpinBox();
+    dlgLayout_->addWidget(timeSpin_);
+    timeSpin_->setValue(time_);
+    QObject::connect(timeSpin_, SIGNAL(valueChanged(int)), this, SLOT(changed()));
+
+    auto* buttons = new QDialogButtonBox();
+    dlgLayout_->addWidget(buttons);
+
+    auto* cancel = buttons->addButton(QDialogButtonBox::Cancel);
+    QObject::connect(cancel, SIGNAL(clicked(bool)), dialog_, SLOT(reject()));
+
+    auto* ok = buttons->addButton(QDialogButtonBox::Ok);
+    QObject::connect(ok, SIGNAL(clicked(bool)), dialog_, SLOT(accept()));
+}
+
+
+
+org_alljoyn_SmartSpaces_Operation_Timer_GetTime::~org_alljoyn_SmartSpaces_Operation_Timer_GetTime()
+{
+    delete dialog_;
+}
+
+
+
+int org_alljoyn_SmartSpaces_Operation_Timer_GetTime::run()
+{
+    // This is always modal
+    return dialog_->exec();
+}
+
+
+
+void org_alljoyn_SmartSpaces_Operation_Timer_GetTime::changed()
+{
+    time_ = timeSpin_->value();
+}
+
+
+
+static bool DialogGetTime(QWidget* parent, const char* label, int32_t& time)
+{
+    auto* dialog = new org_alljoyn_SmartSpaces_Operation_Timer_GetTime(parent, label, time);
+    auto code = dialog->run();
+    bool ok = code == QDialog::Accepted;
+
+    if (ok)
+    {
+        time = dialog->time_;
+    }
+
+    delete dialog;
+    return ok;
+}
+
 
 
 
@@ -60,48 +135,39 @@ org_alljoyn_SmartSpaces_Operation_Timer::org_alljoyn_SmartSpaces_Operation_Timer
     QObject::connect(button_SetTargetTimeToStop, SIGNAL(clicked()), this, SLOT(slotClickSetTargetTimeToStop()));
     layout->addWidget(button_SetTargetTimeToStop);
 
-    layout->addWidget(new QLabel("ReferenceTimer"));
+    layout->addWidget(new QLabel("<b>ReferenceTimer</b>"));
     // Create the editing widget for ReferenceTimer
-    edit_ReferenceTimer = new QLineEdit();
-    edit_ReferenceTimer->setToolTip("Time counter to be used as reference.");
-    edit_ReferenceTimer->setReadOnly(true);
+    edit_ReferenceTimer = new QLabel();
 
     layout->addWidget(edit_ReferenceTimer);
-    layout->addWidget(new QLabel("TargetTimeToStart"));
+    layout->addWidget(new QLabel("<b>TargetTimeToStart</b>"));
     // Create the editing widget for TargetTimeToStart
-    edit_TargetTimeToStart = new QLineEdit();
-    edit_TargetTimeToStart->setToolTip("Time when the appliance is expected to start its operation.");
-    edit_TargetTimeToStart->setReadOnly(true);
+    edit_TargetTimeToStart = new QLabel();
 
     layout->addWidget(edit_TargetTimeToStart);
-    layout->addWidget(new QLabel("TargetTimeToStop"));
+    layout->addWidget(new QLabel("<b>TargetTimeToStop</b>"));
     // Create the editing widget for TargetTimeToStop
-    edit_TargetTimeToStop = new QLineEdit();
-    edit_TargetTimeToStop->setToolTip("Time when the appliance is expected to stop its operation.");
-    edit_TargetTimeToStop->setReadOnly(true);
+    edit_TargetTimeToStop = new QLabel();
 
     layout->addWidget(edit_TargetTimeToStop);
-    layout->addWidget(new QLabel("EstimatedTimeToEnd"));
+    layout->addWidget(new QLabel("<b>EstimatedTimeToEnd</b>"));
     // Create the editing widget for EstimatedTimeToEnd
-    edit_EstimatedTimeToEnd = new QLineEdit();
-    edit_EstimatedTimeToEnd->setToolTip("Time to the end of appliance operation.");
-    edit_EstimatedTimeToEnd->setReadOnly(true);
+    edit_EstimatedTimeToEnd = new QLabel();
 
     layout->addWidget(edit_EstimatedTimeToEnd);
-    layout->addWidget(new QLabel("RunningTime"));
+    layout->addWidget(new QLabel("<b>RunningTime</b>"));
     // Create the editing widget for RunningTime
-    edit_RunningTime = new QLineEdit();
-    edit_RunningTime->setToolTip("Time of current operation.");
-    edit_RunningTime->setReadOnly(true);
+    edit_RunningTime = new QLabel();
 
     layout->addWidget(edit_RunningTime);
-    layout->addWidget(new QLabel("TargetDuration"));
+    layout->addWidget(new QLabel("<b>TargetDuration</b>"));
     // Create the editing widget for TargetDuration
-    edit_TargetDuration = new QLineEdit();
-    edit_TargetDuration->setToolTip("Time representing the target duration of the operation as per user selection.");
-    edit_TargetDuration->setReadOnly(true);
+    edit_TargetDuration = new QLabel();
 
     layout->addWidget(edit_TargetDuration);
+
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {
@@ -184,6 +250,8 @@ void org_alljoyn_SmartSpaces_Operation_Timer::slotClickSetTargetTimeToStart()
     int32_t targetTimeToStart {};
 
     bool ok = true;
+    targetTimeToStart = 0;
+    ok = DialogGetTime(this, "Time to Start", targetTimeToStart);
 
     if (ok)
     {
@@ -204,6 +272,8 @@ void org_alljoyn_SmartSpaces_Operation_Timer::slotClickSetTargetTimeToStop()
     int32_t targetTimeToStop {};
 
     bool ok = true;
+    targetTimeToStop = 0;
+    ok = DialogGetTime(this, "Time to Stop", targetTimeToStop);
 
     if (ok)
     {

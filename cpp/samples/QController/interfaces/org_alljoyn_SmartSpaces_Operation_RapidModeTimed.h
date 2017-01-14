@@ -34,6 +34,7 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QLineEdit>
+#include <QLabel>
 #include <QVBoxLayout>
 #include <QPushButton>
 
@@ -122,8 +123,9 @@ private:
 
 
     QLineEdit* edit_RapidModeMinutesRemaining;
-    QLineEdit* edit_MaxSetMinutes;
+    QLabel* edit_MaxSetMinutes;
 
+    QLabel* messages_;
     void    fetchProperties();
 
 protected:

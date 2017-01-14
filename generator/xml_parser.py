@@ -479,6 +479,15 @@ class AJType(object):
             return expr + ".c_str()"
         return expr
 
+    def toStreamArg(self, expr):
+        # Patch the expression to pass it to std::ostream
+        # We need to be careful of byte sized integers.
+        if self.ajtypeIsString():
+            return expr + ".c_str()"
+        if self.ajtype() in ["byte"]:
+            return "(unsigned)(" + expr + ")"
+        return expr
+
     def fromMsgArg(self, expr):
         # For going from msgType() to the carrier type
         if self.ajtypeIsEnum():

@@ -72,10 +72,17 @@ struct CdmMsgCvt<std::vector<qcc::String>>
 {
     void get(const MsgArg& msgarg, std::vector<qcc::String>& value)
     {
-        char** v;
+        MsgArg* v = 0;          // despite what the documentation says
         size_t l;
-        msgarg.Get("as", &l, &v);
-        value = std::vector<qcc::String>(v, v + l);
+        value = std::vector<qcc::String>();
+        if (ER_OK == msgarg.Get("as", &l, &v)) {
+            for (size_t i = 0; i < l; ++i) {
+                char* text;
+                if (ER_OK == v[i].Get("s", &text)) {
+                    value.push_back(qcc::String(text));
+                }
+            }
+        }
     }
 
     void set(MsgArg& msgarg, const std::vector<qcc::String>& value)
@@ -87,13 +94,13 @@ struct CdmMsgCvt<std::vector<qcc::String>>
     std::string str(const MsgArg& msgarg)
     {
         std::string result;
-        char** v;
+        char** v = 0;
         size_t l;
-        msgarg.Get("as", &l, &v);
-        for (size_t i = 0; i < l; ++i)
-        {
-            result += *v;
-            result += "\n";
+        if (ER_OK == msgarg.Get("as", &l, &v)) {
+            for (size_t i = 0; i < l; ++i) {
+                result += *v;
+                result += "\n";
+            }
         }
         return result;
     }
@@ -129,10 +136,13 @@ struct CdmMsgCvt<std::vector<bool>>
 {
     void get(const MsgArg& msgarg, std::vector<bool>& value)
     {
-        bool* v;
+        bool* v = 0;
         size_t l;
-        msgarg.Get("ab", &l, &v);
-        value = std::vector<bool>(v, v + l);
+        if (ER_OK == msgarg.Get("ab", &l, &v)) {
+            value = std::vector<bool>(v, v + l);
+        } else {
+            value = std::vector<bool>();
+        }
     }
 
     void set(MsgArg& msgarg, const std::vector<bool>& value)
@@ -155,13 +165,13 @@ struct CdmMsgCvt<std::vector<bool>>
     std::string str(const MsgArg& msgarg)
     {
         std::string result;
-        bool* v;
+        bool* v = 0;
         size_t l;
-        msgarg.Get("ab", &l, &v);
-        for (size_t i = 0; i < l; ++i)
-        {
-            result += v[i]? "true" : "false";
-            result += "\n";
+        if (ER_OK == msgarg.Get("ab", &l, &v)) {
+            for (size_t i = 0; i < l; ++i) {
+                result += v[i]? "true" : "false";
+                result += "\n";
+            }
         }
         return result;
     }
@@ -185,7 +195,7 @@ struct CdmMsgCvt<double>
     std::string str(const MsgArg& msgarg)
     {
         std::ostringstream strm;
-        double value;
+        double value = 0;
         msgarg.Get("d", &value);
         strm << value;
         return strm.str();
@@ -199,10 +209,13 @@ struct CdmMsgCvt<std::vector<double>>
 {
     void get(const MsgArg& msgarg, std::vector<double>& value)
     {
-        double* v;
+        double* v = 0;
         size_t l;
-        msgarg.Get("ad", &l, &v);
-        value = std::vector<double>(v, v + l);
+        if (ER_OK == msgarg.Get("ad", &l, &v)) {
+            value = std::vector<double>(v, v + l);
+        } else {
+            value = std::vector<double>();
+        }
     }
 
     void set(MsgArg& msgarg, const std::vector<double>& value)
@@ -214,12 +227,12 @@ struct CdmMsgCvt<std::vector<double>>
     std::string str(const MsgArg& msgarg)
     {
         std::ostringstream strm;
-        double* v;
+        double* v = 0;
         size_t l;
-        msgarg.Get("ad", &l, &v);
-        for (size_t i = 0; i < l; ++i)
-        {
-            strm << v[i] << "\n";
+        if (ER_OK == msgarg.Get("ad", &l, &v)) {
+            for (size_t i = 0; i < l; ++i) {
+                strm << v[i] << "\n";
+            }
         }
         return strm.str();
     }
@@ -257,10 +270,13 @@ struct CdmMsgCvt<std::vector<int32_t>>
 {
     void get(const MsgArg& msgarg, std::vector<int32_t>& value)
     {
-        int32_t* v;
+        int32_t* v = 0;
         size_t l;
-        msgarg.Get("ai", &l, &v);
-        value = std::vector<int32_t>(v, v + l);
+        if (ER_OK == msgarg.Get("ai", &l, &v)) {
+            value = std::vector<int32_t>(v, v + l);
+        } else {
+            value = std::vector<int32_t>();
+        }
     }
 
     void set(MsgArg& msgarg, const std::vector<int32_t>& value)
@@ -272,12 +288,12 @@ struct CdmMsgCvt<std::vector<int32_t>>
     std::string str(const MsgArg& msgarg)
     {
         std::ostringstream strm;
-        int32_t* v;
+        int32_t* v = 0;
         size_t l;
-        msgarg.Get("ai", &l, &v);
-        for (size_t i = 0; i < l; ++i)
-        {
-            strm << v[i] << "\n";
+        if (ER_OK == msgarg.Get("ai", &l, &v)) {
+            for (size_t i = 0; i < l; ++i) {
+                strm << v[i] << "\n";
+            }
         }
         return strm.str();
     }
@@ -315,10 +331,13 @@ struct CdmMsgCvt<std::vector<int16_t>>
 {
     void get(const MsgArg& msgarg, std::vector<int16_t>& value)
     {
-        int16_t* v;
+        int16_t* v = 0;
         size_t l;
-        msgarg.Get("an", &l, &v);
-        value = std::vector<int16_t>(v, v + l);
+        if (ER_OK == msgarg.Get("an", &l, &v)) {
+            value = std::vector<int16_t>(v, v + l);
+        } else {
+            value = std::vector<int16_t>();
+        }
     }
 
     void set(MsgArg& msgarg, const std::vector<int16_t>& value)
@@ -330,12 +349,12 @@ struct CdmMsgCvt<std::vector<int16_t>>
     std::string str(const MsgArg& msgarg)
     {
         std::ostringstream strm;
-        int16_t* v;
+        int16_t* v = 0;
         size_t l;
-        msgarg.Get("an", &l, &v);
-        for (size_t i = 0; i < l; ++i)
-        {
-            strm << v[i] << "\n";
+        if (ER_OK == msgarg.Get("an", &l, &v)) {
+            for (size_t i = 0; i < l; ++i) {
+                strm << v[i] << "\n";
+            }
         }
         return strm.str();
     }
@@ -373,10 +392,13 @@ struct CdmMsgCvt<std::vector<uint16_t>>
 {
     void get(const MsgArg& msgarg, std::vector<uint16_t>& value)
     {
-        uint16_t* v;
+        uint16_t* v = 0;
         size_t l;
-        msgarg.Get("aq", &l, &v);
-        value = std::vector<uint16_t>(v, v + l);
+        if (ER_OK == msgarg.Get("aq", &l, &v)) {
+            value = std::vector<uint16_t>(v, v + l);
+        } else {
+            value = std::vector<uint16_t>();
+        }
     }
 
     void set(MsgArg& msgarg, const std::vector<uint16_t>& value)
@@ -388,12 +410,12 @@ struct CdmMsgCvt<std::vector<uint16_t>>
     std::string str(const MsgArg& msgarg)
     {
         std::ostringstream strm;
-        uint16_t* v;
+        uint16_t* v = 0;
         size_t l;
-        msgarg.Get("aq", &l, &v);
-        for (size_t i = 0; i < l; ++i)
-        {
-            strm << v[i] << "\n";
+        if (ER_OK == msgarg.Get("aq", &l, &v)) {
+            for (size_t i = 0; i < l; ++i) {
+                strm << v[i] << "\n";
+            }
         }
         return strm.str();
     }
@@ -431,10 +453,13 @@ struct CdmMsgCvt<std::vector<uint64_t>>
 {
     void get(const MsgArg& msgarg, std::vector<uint64_t>& value)
     {
-        uint64_t* v;
+        uint64_t* v = 0;
         size_t l;
-        msgarg.Get("at", &l, &v);
-        value = std::vector<uint64_t>(v, v + l);
+        if (ER_OK == msgarg.Get("at", &l, &v)) {
+            value = std::vector<uint64_t>(v, v + l);
+        } else {
+            value = std::vector<uint64_t>();
+        }
     }
 
     void set(MsgArg& msgarg, const std::vector<uint64_t>& value)
@@ -446,12 +471,12 @@ struct CdmMsgCvt<std::vector<uint64_t>>
     std::string str(const MsgArg& msgarg)
     {
         std::ostringstream strm;
-        uint64_t* v;
+        uint64_t* v = 0;
         size_t l;
-        msgarg.Get("at", &l, &v);
-        for (size_t i = 0; i < l; ++i)
-        {
-            strm << v[i] << "\n";
+        if (ER_OK == msgarg.Get("at", &l, &v)) {
+            for (size_t i = 0; i < l; ++i) {
+                strm << v[i] << "\n";
+            }
         }
         return strm.str();
     }
@@ -489,10 +514,13 @@ struct CdmMsgCvt<std::vector<uint32_t>>
 {
     void get(const MsgArg& msgarg, std::vector<uint32_t>& value)
     {
-        uint32_t* v;
+        uint32_t* v = 0;
         size_t l;
-        msgarg.Get("au", &l, &v);
-        value = std::vector<uint32_t>(v, v + l);
+        if (ER_OK == msgarg.Get("au", &l, &v)) {
+            value = std::vector<uint32_t>(v, v + l);
+        } else {
+            value = std::vector<uint32_t>();
+        }
     }
 
     void set(MsgArg& msgarg, const std::vector<uint32_t>& value)
@@ -504,12 +532,12 @@ struct CdmMsgCvt<std::vector<uint32_t>>
     std::string str(const MsgArg& msgarg)
     {
         std::ostringstream strm;
-        uint32_t* v;
+        uint32_t* v = 0;
         size_t l;
-        msgarg.Get("au", &l, &v);
-        for (size_t i = 0; i < l; ++i)
-        {
-            strm << v[i] << "\n";
+        if (ER_OK == msgarg.Get("au", &l, &v)) {
+            for (size_t i = 0; i < l; ++i) {
+                strm << v[i] << "\n";
+            }
         }
         return strm.str();
     }
@@ -547,10 +575,13 @@ struct CdmMsgCvt<std::vector<int64_t>>
 {
     void get(const MsgArg& msgarg, std::vector<int64_t>& value)
     {
-        int64_t* v;
+        int64_t* v = 0;
         size_t l;
-        msgarg.Get("ax", &l, &v);
-        value = std::vector<int64_t>(v, v + l);
+        if (ER_OK == msgarg.Get("ax", &l, &v)) {
+            value = std::vector<int64_t>(v, v + l);
+        } else {
+            value = std::vector<int64_t>();
+        }
     }
 
     void set(MsgArg& msgarg, const std::vector<int64_t>& value)
@@ -564,10 +595,10 @@ struct CdmMsgCvt<std::vector<int64_t>>
         std::ostringstream strm;
         int64_t* v;
         size_t l;
-        msgarg.Get("ax", &l, &v);
-        for (size_t i = 0; i < l; ++i)
-        {
-            strm << v[i] << "\n";
+        if (ER_OK == msgarg.Get("ax", &l, &v)) {
+            for (size_t i = 0; i < l; ++i) {
+                strm << v[i] << "\n";
+            }
         }
         return strm.str();
     }
@@ -605,10 +636,13 @@ struct CdmMsgCvt<std::vector<uint8_t>>
 {
     void get(const MsgArg& msgarg, std::vector<uint8_t>& value)
     {
-        uint8_t* v;
+        uint8_t* v = 0;
         size_t l;
-        msgarg.Get("ay", &l, &v);
-        value = std::vector<uint8_t>(v, v + l);
+        if (ER_OK == msgarg.Get("ay", &l, &v)) {
+            value = std::vector<uint8_t>(v, v + l);
+        } else {
+            value = std::vector<uint8_t>();
+        }
     }
 
     void set(MsgArg& msgarg, const std::vector<uint8_t>& value)
@@ -620,12 +654,12 @@ struct CdmMsgCvt<std::vector<uint8_t>>
     std::string str(const MsgArg& msgarg)
     {
         std::ostringstream strm;
-        uint8_t* v;
+        uint8_t* v = 0;
         size_t l;
-        msgarg.Get("ay", &l, &v);
-        for (size_t i = 0; i < l; ++i)
-        {
-            strm << v[i] << "\n";
+        if (ER_OK == msgarg.Get("ay", &l, &v)) {
+            for (size_t i = 0; i < l; ++i) {
+                strm << v[i] << "\n";
+            }
         }
         return strm.str();
     }

@@ -27,25 +27,26 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 #include "org_alljoyn_Input_Hid.h"
+#include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <sstream>
+
 
 
 template<>
 QString
 QStringFrom<HidInterface::InputEvent>(const HidInterface::InputEvent& value)
 {
+    // the QLabel is AutoFmt 
     std::ostringstream strm;
-    strm << "{";
-    strm << "type=" << value.type;
-    strm << " ";
-    strm << "code=" << value.code;
-    strm << " ";
-    strm << "value=" << value.value;
-    strm << "}";
+
+    strm << "<b>type</b>: " << value.type << "\n";
+    strm << "<b>code</b>: " << value.code << "\n";
+    strm << "<b>value</b>: " << value.value << "\n";
 
     return QString::fromStdString(strm.str());
 }
@@ -55,32 +56,41 @@ template<>
 QString
 QStringFrom<std::vector<HidInterface::InputEvent>>(const std::vector<HidInterface::InputEvent>& value)
 {
-    std::string result;
+    // the QLabel is AutoFmt 
+    std::ostringstream strm;
+
+    strm << "<html><body>";
+    strm << "<table><thead><tr>";
+    strm << "<th bgcolor=\"light blue\">type</th>";
+    strm << "<th bgcolor=\"light blue\">code</th>";
+    strm << "<th bgcolor=\"light blue\">value</th>";
+    strm << "</tr></thead>";
 
     for (auto& v : value)
     {
-        auto qs = QStringFrom<HidInterface::InputEvent>(v);
-        result += qs.toStdString();
+        strm << "<tr>";
+        strm << "<td>" << v.type << "</td>";
+        strm << "<td>" << v.code << "</td>";
+        strm << "<td>" << v.value << "</td>";
+        strm << "</tr>";
     }
-    return QString::fromStdString(result);
-}
 
+    strm << "</table></body></html>";
+    return QString::fromStdString(strm.str());
+}
 
 
 template<>
 QString
 QStringFrom<HidInterface::SupportedInputEvent>(const HidInterface::SupportedInputEvent& value)
 {
+    // the QLabel is AutoFmt 
     std::ostringstream strm;
-    strm << "{";
-    strm << "type=" << value.type;
-    strm << " ";
-    strm << "code=" << value.code;
-    strm << " ";
-    strm << "min=" << value.min;
-    strm << " ";
-    strm << "max=" << value.max;
-    strm << "}";
+
+    strm << "<b>type</b>: " << value.type << "\n";
+    strm << "<b>code</b>: " << value.code << "\n";
+    strm << "<b>min</b>: " << value.min << "\n";
+    strm << "<b>max</b>: " << value.max << "\n";
 
     return QString::fromStdString(strm.str());
 }
@@ -90,18 +100,30 @@ template<>
 QString
 QStringFrom<std::vector<HidInterface::SupportedInputEvent>>(const std::vector<HidInterface::SupportedInputEvent>& value)
 {
-    std::string result;
+    // the QLabel is AutoFmt 
+    std::ostringstream strm;
+
+    strm << "<html><body>";
+    strm << "<table><thead><tr>";
+    strm << "<th bgcolor=\"light blue\">type</th>";
+    strm << "<th bgcolor=\"light blue\">code</th>";
+    strm << "<th bgcolor=\"light blue\">min</th>";
+    strm << "<th bgcolor=\"light blue\">max</th>";
+    strm << "</tr></thead>";
 
     for (auto& v : value)
     {
-        auto qs = QStringFrom<HidInterface::SupportedInputEvent>(v);
-        result += qs.toStdString();
+        strm << "<tr>";
+        strm << "<td>" << v.type << "</td>";
+        strm << "<td>" << v.code << "</td>";
+        strm << "<td>" << v.min << "</td>";
+        strm << "<td>" << v.max << "</td>";
+        strm << "</tr>";
     }
-    return QString::fromStdString(result);
+
+    strm << "</table></body></html>";
+    return QString::fromStdString(strm.str());
 }
-
-
-
 
 
 using namespace CDMQtWidgets;
@@ -135,13 +157,14 @@ org_alljoyn_Input_Hid::org_alljoyn_Input_Hid(CommonControllerInterface *iface)
     QObject::connect(button_InjectEvents, SIGNAL(clicked()), this, SLOT(slotClickInjectEvents()));
     layout->addWidget(button_InjectEvents);
 
-    layout->addWidget(new QLabel("SupportedEvents"));
+    layout->addWidget(new QLabel("<b>SupportedEvents</b>"));
     // Create the editing widget for SupportedEvents
-    edit_SupportedEvents = new QLineEdit();
-    edit_SupportedEvents->setToolTip("List of supported input events by a device");
-    edit_SupportedEvents->setReadOnly(true);
+    edit_SupportedEvents = new QLabel();
 
     layout->addWidget(edit_SupportedEvents);
+
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {

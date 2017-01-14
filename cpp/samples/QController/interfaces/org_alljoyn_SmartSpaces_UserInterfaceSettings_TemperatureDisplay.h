@@ -34,6 +34,7 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QLineEdit>
+#include <QLabel>
 #include <QVBoxLayout>
 #include <QPushButton>
 
@@ -122,8 +123,9 @@ private:
 
 
     QLineEdit* edit_DisplayTemperatureUnit;
-    QLineEdit* edit_SupportedDisplayTemperatureUnits;
+    QLabel* edit_SupportedDisplayTemperatureUnits;
 
+    QLabel* messages_;
     void    fetchProperties();
 
 protected:

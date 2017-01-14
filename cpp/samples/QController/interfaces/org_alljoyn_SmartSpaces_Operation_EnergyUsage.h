@@ -34,6 +34,7 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QLineEdit>
+#include <QLabel>
 #include <QVBoxLayout>
 #include <QPushButton>
 
@@ -139,10 +140,11 @@ private:
 
     QPushButton* button_ResetCumulativeEnergy;
 
-    QLineEdit* edit_CumulativeEnergy;
-    QLineEdit* edit_Precision;
-    QLineEdit* edit_UpdateMinTime;
+    QLabel* edit_CumulativeEnergy;
+    QLabel* edit_Precision;
+    QLabel* edit_UpdateMinTime;
 
+    QLabel* messages_;
     void    fetchProperties();
 
 protected:

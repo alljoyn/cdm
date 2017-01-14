@@ -27,12 +27,13 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 #include "org_alljoyn_SmartSpaces_Operation_HeatingZone.h"
+#include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <sstream>
-
 
 
 
@@ -52,27 +53,24 @@ org_alljoyn_SmartSpaces_Operation_HeatingZone::org_alljoyn_SmartSpaces_Operation
 
 
 
-    layout->addWidget(new QLabel("NumberOfHeatingZones"));
+    layout->addWidget(new QLabel("<b>NumberOfHeatingZones</b>"));
     // Create the editing widget for NumberOfHeatingZones
-    edit_NumberOfHeatingZones = new QLineEdit();
-    edit_NumberOfHeatingZones->setToolTip("Number of heating zones.");
-    edit_NumberOfHeatingZones->setReadOnly(true);
+    edit_NumberOfHeatingZones = new QLabel();
 
     layout->addWidget(edit_NumberOfHeatingZones);
-    layout->addWidget(new QLabel("MaxHeatingLevels"));
+    layout->addWidget(new QLabel("<b>MaxHeatingLevels</b>"));
     // Create the editing widget for MaxHeatingLevels
-    edit_MaxHeatingLevels = new QLineEdit();
-    edit_MaxHeatingLevels->setToolTip("Max heating levels for each zone.");
-    edit_MaxHeatingLevels->setReadOnly(true);
+    edit_MaxHeatingLevels = new QLabel();
 
     layout->addWidget(edit_MaxHeatingLevels);
-    layout->addWidget(new QLabel("HeatingLevels"));
+    layout->addWidget(new QLabel("<b>HeatingLevels</b>"));
     // Create the editing widget for HeatingLevels
-    edit_HeatingLevels = new QLineEdit();
-    edit_HeatingLevels->setToolTip("Current heating levels for each zone.");
-    edit_HeatingLevels->setReadOnly(true);
+    edit_HeatingLevels = new QLabel();
 
     layout->addWidget(edit_HeatingLevels);
+
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {

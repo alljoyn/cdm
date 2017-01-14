@@ -27,13 +27,196 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 #include "org_alljoyn_SmartSpaces_Operation_ClimateControlMode.h"
+#include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <sstream>
 
 
+
+template<>
+QString
+QStringFrom<ClimateControlModeInterface::Mode>(const ClimateControlModeInterface::Mode& value)
+{
+    QString result;
+
+    switch (value)
+    {
+    case ClimateControlModeInterface::MODE_OFF:
+        result = "Off";
+        break;
+
+    case ClimateControlModeInterface::MODE_HEAT:
+        result = "Heat";
+        break;
+
+    case ClimateControlModeInterface::MODE_COOL:
+        result = "Cool";
+        break;
+
+    case ClimateControlModeInterface::MODE_AUTO:
+        result = "Auto";
+        break;
+
+    case ClimateControlModeInterface::MODE_AUXILIARY_HEAT:
+        result = "AuxiliaryHeat";
+        break;
+
+    case ClimateControlModeInterface::MODE_DRY:
+        result = "Dry";
+        break;
+
+    case ClimateControlModeInterface::MODE_CONTINUOUS_DRY:
+        result = "ContinuousDry";
+        break;
+
+    default:
+        result = "Unknown";
+        break;
+    }
+
+    return result;
+}
+
+
+
+template<>
+QString
+QStringFrom<std::vector<ClimateControlModeInterface::Mode>>(const std::vector<ClimateControlModeInterface::Mode>& value)
+{
+    // the QLabel is AutoFmt 
+    std::ostringstream strm;
+
+    strm << "<html><body>";
+    strm << "<table><thead><tr>";
+    strm << "<th bgcolor=\"light blue\">Mode</th>";
+    strm << "</tr></thead>";
+
+    for (auto& v : value)
+    {
+        if (v == ClimateControlModeInterface::MODE_OFF)
+        {
+            strm << "<tr><td>Off</td></tr>";
+        }
+        if (v == ClimateControlModeInterface::MODE_HEAT)
+        {
+            strm << "<tr><td>Heat</td></tr>";
+        }
+        if (v == ClimateControlModeInterface::MODE_COOL)
+        {
+            strm << "<tr><td>Cool</td></tr>";
+        }
+        if (v == ClimateControlModeInterface::MODE_AUTO)
+        {
+            strm << "<tr><td>Auto</td></tr>";
+        }
+        if (v == ClimateControlModeInterface::MODE_AUXILIARY_HEAT)
+        {
+            strm << "<tr><td>AuxiliaryHeat</td></tr>";
+        }
+        if (v == ClimateControlModeInterface::MODE_DRY)
+        {
+            strm << "<tr><td>Dry</td></tr>";
+        }
+        if (v == ClimateControlModeInterface::MODE_CONTINUOUS_DRY)
+        {
+            strm << "<tr><td>ContinuousDry</td></tr>";
+        }
+    }
+
+    strm << "</table></body></html>";
+    return QString::fromStdString(strm.str());
+}
+
+
+template<>
+QString
+QStringFrom<ClimateControlModeInterface::OperationalState>(const ClimateControlModeInterface::OperationalState& value)
+{
+    QString result;
+
+    switch (value)
+    {
+    case ClimateControlModeInterface::OPERATIONAL_STATE_IDLE:
+        result = "Idle";
+        break;
+
+    case ClimateControlModeInterface::OPERATIONAL_STATE_HEATING:
+        result = "Heating";
+        break;
+
+    case ClimateControlModeInterface::OPERATIONAL_STATE_COOLING:
+        result = "Cooling";
+        break;
+
+    case ClimateControlModeInterface::OPERATIONAL_STATE_PENDING_HEAT:
+        result = "PendingHeat";
+        break;
+
+    case ClimateControlModeInterface::OPERATIONAL_STATE_PENDING_COOL:
+        result = "PendingCool";
+        break;
+
+    case ClimateControlModeInterface::OPERATIONAL_STATE_AUXILLIARY_HEAT:
+        result = "AuxilliaryHeat";
+        break;
+
+    default:
+        result = "Unknown";
+        break;
+    }
+
+    return result;
+}
+
+
+
+template<>
+QString
+QStringFrom<std::vector<ClimateControlModeInterface::OperationalState>>(const std::vector<ClimateControlModeInterface::OperationalState>& value)
+{
+    // the QLabel is AutoFmt 
+    std::ostringstream strm;
+
+    strm << "<html><body>";
+    strm << "<table><thead><tr>";
+    strm << "<th bgcolor=\"light blue\">OperationalState</th>";
+    strm << "</tr></thead>";
+
+    for (auto& v : value)
+    {
+        if (v == ClimateControlModeInterface::OPERATIONAL_STATE_IDLE)
+        {
+            strm << "<tr><td>Idle</td></tr>";
+        }
+        if (v == ClimateControlModeInterface::OPERATIONAL_STATE_HEATING)
+        {
+            strm << "<tr><td>Heating</td></tr>";
+        }
+        if (v == ClimateControlModeInterface::OPERATIONAL_STATE_COOLING)
+        {
+            strm << "<tr><td>Cooling</td></tr>";
+        }
+        if (v == ClimateControlModeInterface::OPERATIONAL_STATE_PENDING_HEAT)
+        {
+            strm << "<tr><td>PendingHeat</td></tr>";
+        }
+        if (v == ClimateControlModeInterface::OPERATIONAL_STATE_PENDING_COOL)
+        {
+            strm << "<tr><td>PendingCool</td></tr>";
+        }
+        if (v == ClimateControlModeInterface::OPERATIONAL_STATE_AUXILLIARY_HEAT)
+        {
+            strm << "<tr><td>AuxilliaryHeat</td></tr>";
+        }
+    }
+
+    strm << "</table></body></html>";
+    return QString::fromStdString(strm.str());
+}
 
 
 using namespace CDMQtWidgets;
@@ -62,7 +245,7 @@ org_alljoyn_SmartSpaces_Operation_ClimateControlMode::org_alljoyn_SmartSpaces_Op
 
 
 
-    layout->addWidget(new QLabel("Mode"));
+    layout->addWidget(new QLabel("<b>Mode</b>"));
     // Create the editing widget for Mode
     edit_Mode = new QComboBox();
     edit_Mode->setEditable(false);
@@ -77,14 +260,12 @@ org_alljoyn_SmartSpaces_Operation_ClimateControlMode::org_alljoyn_SmartSpaces_Op
     QObject::connect(edit_Mode, SIGNAL(currentTextChanged(const QString &)), this, SLOT(slotSetMode()));
 
     layout->addWidget(edit_Mode);
-    layout->addWidget(new QLabel("SupportedModes"));
+    layout->addWidget(new QLabel("<b>SupportedModes</b>"));
     // Create the editing widget for SupportedModes
-    edit_SupportedModes = new QLineEdit();
-    edit_SupportedModes->setToolTip("Array of supported modes.");
-    edit_SupportedModes->setReadOnly(true);
+    edit_SupportedModes = new QLabel();
 
     layout->addWidget(edit_SupportedModes);
-    layout->addWidget(new QLabel("OperationalState"));
+    layout->addWidget(new QLabel("<b>OperationalState</b>"));
     // Create the editing widget for OperationalState
     edit_OperationalState = new QComboBox();
     edit_OperationalState->setEditable(false);
@@ -97,6 +278,9 @@ org_alljoyn_SmartSpaces_Operation_ClimateControlMode::org_alljoyn_SmartSpaces_Op
     edit_OperationalState->setEnabled(false);
 
     layout->addWidget(edit_OperationalState);
+
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {
@@ -244,7 +428,9 @@ void org_alljoyn_SmartSpaces_Operation_ClimateControlMode::slotOnResponseSetMode
 
     if (status != ER_OK)
     {
+        qcShowStatus(this, "Failed to set Mode", status);
         qWarning() << "ClimateControlMode::slotOnResponseSetMode Failed to set Mode" << QCC_StatusText(status);
+        fetchProperties();      // restore the display of properties
     }
 }
 

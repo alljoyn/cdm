@@ -27,12 +27,13 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 #include "org_alljoyn_SmartSpaces_Operation_CurrentPower.h"
+#include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <sstream>
-
 
 
 
@@ -52,27 +53,24 @@ org_alljoyn_SmartSpaces_Operation_CurrentPower::org_alljoyn_SmartSpaces_Operatio
 
 
 
-    layout->addWidget(new QLabel("CurrentPower"));
+    layout->addWidget(new QLabel("<b>CurrentPower</b>"));
     // Create the editing widget for CurrentPower
-    edit_CurrentPower = new QLineEdit();
-    edit_CurrentPower->setToolTip("The instantaneous power consumption of the device ");
-    edit_CurrentPower->setReadOnly(true);
+    edit_CurrentPower = new QLabel();
 
     layout->addWidget(edit_CurrentPower);
-    layout->addWidget(new QLabel("Precision"));
+    layout->addWidget(new QLabel("<b>Precision</b>"));
     // Create the editing widget for Precision
-    edit_Precision = new QLineEdit();
-    edit_Precision->setToolTip("The precision of the CurrentPower property; i.e., the value actual power consumption must change before CurrentPower is updated.");
-    edit_Precision->setReadOnly(true);
+    edit_Precision = new QLabel();
 
     layout->addWidget(edit_Precision);
-    layout->addWidget(new QLabel("UpdateMinTime"));
+    layout->addWidget(new QLabel("<b>UpdateMinTime</b>"));
     // Create the editing widget for UpdateMinTime
-    edit_UpdateMinTime = new QLineEdit();
-    edit_UpdateMinTime->setToolTip("The minimum time between updates of the CurrentPower");
-    edit_UpdateMinTime->setReadOnly(true);
+    edit_UpdateMinTime = new QLabel();
 
     layout->addWidget(edit_UpdateMinTime);
+
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {

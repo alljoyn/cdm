@@ -27,12 +27,13 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 #include "org_alljoyn_SmartSpaces_Environment_TargetTemperature.h"
+#include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <sstream>
-
 
 
 
@@ -52,35 +53,31 @@ org_alljoyn_SmartSpaces_Environment_TargetTemperature::org_alljoyn_SmartSpaces_E
 
 
 
-    layout->addWidget(new QLabel("TargetValue"));
+    layout->addWidget(new QLabel("<b>TargetValue</b>"));
     // Create the editing widget for TargetValue
     edit_TargetValue = new QLineEdit();
     edit_TargetValue->setToolTip("Target temperature expressed in Celsius.");
-    edit_TargetValue->setReadOnly(false);
     QObject::connect(edit_TargetValue, SIGNAL(returnPressed()), this, SLOT(slotSetTargetValue()));
 
     layout->addWidget(edit_TargetValue);
-    layout->addWidget(new QLabel("MinValue"));
+    layout->addWidget(new QLabel("<b>MinValue</b>"));
     // Create the editing widget for MinValue
-    edit_MinValue = new QLineEdit();
-    edit_MinValue->setToolTip("Minimum value of target temperature.");
-    edit_MinValue->setReadOnly(true);
+    edit_MinValue = new QLabel();
 
     layout->addWidget(edit_MinValue);
-    layout->addWidget(new QLabel("MaxValue"));
+    layout->addWidget(new QLabel("<b>MaxValue</b>"));
     // Create the editing widget for MaxValue
-    edit_MaxValue = new QLineEdit();
-    edit_MaxValue->setToolTip("Maximum value of target temperature.");
-    edit_MaxValue->setReadOnly(true);
+    edit_MaxValue = new QLabel();
 
     layout->addWidget(edit_MaxValue);
-    layout->addWidget(new QLabel("StepValue"));
+    layout->addWidget(new QLabel("<b>StepValue</b>"));
     // Create the editing widget for StepValue
-    edit_StepValue = new QLineEdit();
-    edit_StepValue->setToolTip("Step value allowed for the TargetTemperature setting.");
-    edit_StepValue->setReadOnly(true);
+    edit_StepValue = new QLabel();
 
     layout->addWidget(edit_StepValue);
+
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {
@@ -168,7 +165,9 @@ void org_alljoyn_SmartSpaces_Environment_TargetTemperature::slotOnResponseSetTar
 
     if (status != ER_OK)
     {
+        qcShowStatus(this, "Failed to set TargetValue", status);
         qWarning() << "TargetTemperature::slotOnResponseSetTargetValue Failed to set TargetValue" << QCC_StatusText(status);
+        fetchProperties();      // restore the display of properties
     }
 }
 
