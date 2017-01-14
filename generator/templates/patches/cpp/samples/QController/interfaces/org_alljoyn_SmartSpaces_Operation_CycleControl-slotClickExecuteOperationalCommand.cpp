@@ -1,0 +1,1 @@
+    ok = DialogGetCommand(this, command);

@@ -34,6 +34,7 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QLineEdit>
+#include <QLabel>
 #include <QVBoxLayout>
 #include <QPushButton>
 
@@ -173,11 +174,12 @@ private:
 
 
     QLineEdit* edit_TargetValue;
-    QLineEdit* edit_MinValue;
-    QLineEdit* edit_MaxValue;
-    QLineEdit* edit_StepValue;
-    QLineEdit* edit_SelectableHumidityLevels;
+    QLabel* edit_MinValue;
+    QLabel* edit_MaxValue;
+    QLabel* edit_StepValue;
+    QLabel* edit_SelectableHumidityLevels;
 
+    QLabel* messages_;
     void    fetchProperties();
 
 protected:

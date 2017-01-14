@@ -27,12 +27,13 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 #include "org_alljoyn_SmartSpaces_Environment_TargetHumidity.h"
+#include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <sstream>
-
 
 
 
@@ -52,42 +53,36 @@ org_alljoyn_SmartSpaces_Environment_TargetHumidity::org_alljoyn_SmartSpaces_Envi
 
 
 
-    layout->addWidget(new QLabel("TargetValue"));
+    layout->addWidget(new QLabel("<b>TargetValue</b>"));
     // Create the editing widget for TargetValue
     edit_TargetValue = new QLineEdit();
     edit_TargetValue->setToolTip("Target set-point value of relative humidity.");
-    edit_TargetValue->setReadOnly(false);
     QObject::connect(edit_TargetValue, SIGNAL(returnPressed()), this, SLOT(slotSetTargetValue()));
 
     layout->addWidget(edit_TargetValue);
-    layout->addWidget(new QLabel("MinValue"));
+    layout->addWidget(new QLabel("<b>MinValue</b>"));
     // Create the editing widget for MinValue
-    edit_MinValue = new QLineEdit();
-    edit_MinValue->setToolTip("Minimum value allowed for the TargetValue.");
-    edit_MinValue->setReadOnly(true);
+    edit_MinValue = new QLabel();
 
     layout->addWidget(edit_MinValue);
-    layout->addWidget(new QLabel("MaxValue"));
+    layout->addWidget(new QLabel("<b>MaxValue</b>"));
     // Create the editing widget for MaxValue
-    edit_MaxValue = new QLineEdit();
-    edit_MaxValue->setToolTip("Maximum value allowed for the TargetValue.");
-    edit_MaxValue->setReadOnly(true);
+    edit_MaxValue = new QLabel();
 
     layout->addWidget(edit_MaxValue);
-    layout->addWidget(new QLabel("StepValue"));
+    layout->addWidget(new QLabel("<b>StepValue</b>"));
     // Create the editing widget for StepValue
-    edit_StepValue = new QLineEdit();
-    edit_StepValue->setToolTip("Step value allowed for the TargetValue setting.");
-    edit_StepValue->setReadOnly(true);
+    edit_StepValue = new QLabel();
 
     layout->addWidget(edit_StepValue);
-    layout->addWidget(new QLabel("SelectableHumidityLevels"));
+    layout->addWidget(new QLabel("<b>SelectableHumidityLevels</b>"));
     // Create the editing widget for SelectableHumidityLevels
-    edit_SelectableHumidityLevels = new QLineEdit();
-    edit_SelectableHumidityLevels->setToolTip("List of the selectable levels of target humidity. The list is only available when this interface is implemented for setting a qualitative level of target humidity. (When MinValue = MaxValue)");
-    edit_SelectableHumidityLevels->setReadOnly(true);
+    edit_SelectableHumidityLevels = new QLabel();
 
     layout->addWidget(edit_SelectableHumidityLevels);
+
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {
@@ -181,7 +176,9 @@ void org_alljoyn_SmartSpaces_Environment_TargetHumidity::slotOnResponseSetTarget
 
     if (status != ER_OK)
     {
+        qcShowStatus(this, "Failed to set TargetValue", status);
         qWarning() << "TargetHumidity::slotOnResponseSetTargetValue Failed to set TargetValue" << QCC_StatusText(status);
+        fetchProperties();      // restore the display of properties
     }
 }
 

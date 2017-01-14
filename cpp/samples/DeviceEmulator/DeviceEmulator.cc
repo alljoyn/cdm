@@ -94,6 +94,19 @@ void FindArg(int argc, char** argv, const std::string& arg, const std::string& d
     out = defValue;
 }
 
+static int ArgExists(int argc, char **argv, const std::string& arg)
+{
+    for (int i=0; i<argc; ++i)
+    {
+        if (arg == argv[i])
+        {
+            return i;
+        }
+    }
+
+    return 0;
+}
+
 int CDECL_CALL main(int argc, char** argv)
 {
     std::string configFile;
@@ -117,6 +130,7 @@ int CDECL_CALL main(int argc, char** argv)
 
     FindArg(argc, argv, "--state-dir", "emulated_device_state", state_dir);
     FindArg(argc, argv, "--certs-dir", "device_emulator_certs", certs_dir);
+    bool emitOnSet = (ArgExists(argc, argv, "--emit-on-set") > 0);
     HAL::SetRootDir(state_dir);
 
     CdmSystem system("DeviceEmulator");

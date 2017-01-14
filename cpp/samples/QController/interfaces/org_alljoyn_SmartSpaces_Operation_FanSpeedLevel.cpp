@@ -27,13 +27,77 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 #include "org_alljoyn_SmartSpaces_Operation_FanSpeedLevel.h"
+#include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <sstream>
 
 
+
+template<>
+QString
+QStringFrom<FanSpeedLevelInterface::AutoMode>(const FanSpeedLevelInterface::AutoMode& value)
+{
+    QString result;
+
+    switch (value)
+    {
+    case FanSpeedLevelInterface::AUTO_MODE_OFF:
+        result = "Off";
+        break;
+
+    case FanSpeedLevelInterface::AUTO_MODE_ON:
+        result = "On";
+        break;
+
+    case FanSpeedLevelInterface::AUTO_MODE_NOT_SUPPORTED:
+        result = "NotSupported";
+        break;
+
+    default:
+        result = "Unknown";
+        break;
+    }
+
+    return result;
+}
+
+
+
+template<>
+QString
+QStringFrom<std::vector<FanSpeedLevelInterface::AutoMode>>(const std::vector<FanSpeedLevelInterface::AutoMode>& value)
+{
+    // the QLabel is AutoFmt 
+    std::ostringstream strm;
+
+    strm << "<html><body>";
+    strm << "<table><thead><tr>";
+    strm << "<th bgcolor=\"light blue\">AutoMode</th>";
+    strm << "</tr></thead>";
+
+    for (auto& v : value)
+    {
+        if (v == FanSpeedLevelInterface::AUTO_MODE_OFF)
+        {
+            strm << "<tr><td>Off</td></tr>";
+        }
+        if (v == FanSpeedLevelInterface::AUTO_MODE_ON)
+        {
+            strm << "<tr><td>On</td></tr>";
+        }
+        if (v == FanSpeedLevelInterface::AUTO_MODE_NOT_SUPPORTED)
+        {
+            strm << "<tr><td>NotSupported</td></tr>";
+        }
+    }
+
+    strm << "</table></body></html>";
+    return QString::fromStdString(strm.str());
+}
 
 
 using namespace CDMQtWidgets;
@@ -57,22 +121,19 @@ org_alljoyn_SmartSpaces_Operation_FanSpeedLevel::org_alljoyn_SmartSpaces_Operati
 
 
 
-    layout->addWidget(new QLabel("FanSpeedLevel"));
+    layout->addWidget(new QLabel("<b>FanSpeedLevel</b>"));
     // Create the editing widget for FanSpeedLevel
     edit_FanSpeedLevel = new QLineEdit();
     edit_FanSpeedLevel->setToolTip("Fan speed level of a device. Special value: 0x00 - Fan operation is turned off and controller shall not set 0x00. Turning on/off shall be operated by a different interface (OnOff).");
-    edit_FanSpeedLevel->setReadOnly(false);
     QObject::connect(edit_FanSpeedLevel, SIGNAL(returnPressed()), this, SLOT(slotSetFanSpeedLevel()));
 
     layout->addWidget(edit_FanSpeedLevel);
-    layout->addWidget(new QLabel("MaxFanSpeedLevel"));
+    layout->addWidget(new QLabel("<b>MaxFanSpeedLevel</b>"));
     // Create the editing widget for MaxFanSpeedLevel
-    edit_MaxFanSpeedLevel = new QLineEdit();
-    edit_MaxFanSpeedLevel->setToolTip("Maximum level allowed for target fan speed level.");
-    edit_MaxFanSpeedLevel->setReadOnly(true);
+    edit_MaxFanSpeedLevel = new QLabel();
 
     layout->addWidget(edit_MaxFanSpeedLevel);
-    layout->addWidget(new QLabel("AutoMode"));
+    layout->addWidget(new QLabel("<b>AutoMode</b>"));
     // Create the editing widget for AutoMode
     edit_AutoMode = new QComboBox();
     edit_AutoMode->setEditable(false);
@@ -83,6 +144,9 @@ org_alljoyn_SmartSpaces_Operation_FanSpeedLevel::org_alljoyn_SmartSpaces_Operati
     QObject::connect(edit_AutoMode, SIGNAL(currentTextChanged(const QString &)), this, SLOT(slotSetAutoMode()));
 
     layout->addWidget(edit_AutoMode);
+
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {
@@ -164,7 +228,9 @@ void org_alljoyn_SmartSpaces_Operation_FanSpeedLevel::slotOnResponseSetFanSpeedL
 
     if (status != ER_OK)
     {
+        qcShowStatus(this, "Failed to set FanSpeedLevel", status);
         qWarning() << "FanSpeedLevel::slotOnResponseSetFanSpeedLevel Failed to set FanSpeedLevel" << QCC_StatusText(status);
+        fetchProperties();      // restore the display of properties
     }
 }
 
@@ -275,7 +341,9 @@ void org_alljoyn_SmartSpaces_Operation_FanSpeedLevel::slotOnResponseSetAutoMode(
 
     if (status != ER_OK)
     {
+        qcShowStatus(this, "Failed to set AutoMode", status);
         qWarning() << "FanSpeedLevel::slotOnResponseSetAutoMode Failed to set AutoMode" << QCC_StatusText(status);
+        fetchProperties();      // restore the display of properties
     }
 }
 

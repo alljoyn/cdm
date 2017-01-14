@@ -27,25 +27,26 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 #include "org_alljoyn_SmartSpaces_Operation_PlugInUnits.h"
+#include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <sstream>
+
 
 
 template<>
 QString
 QStringFrom<PlugInUnitsInterface::PlugInInfo>(const PlugInUnitsInterface::PlugInInfo& value)
 {
+    // the QLabel is AutoFmt 
     std::ostringstream strm;
-    strm << "{";
-    strm << "objectPath=" << value.objectPath.c_str();
-    strm << " ";
-    strm << "deviceId=" << value.deviceId;
-    strm << " ";
-    strm << "pluggedIn=" << value.pluggedIn;
-    strm << "}";
+
+    strm << "<b>objectPath</b>: " << value.objectPath.c_str() << "\n";
+    strm << "<b>deviceId</b>: " << value.deviceId << "\n";
+    strm << "<b>pluggedIn</b>: " << value.pluggedIn << "\n";
 
     return QString::fromStdString(strm.str());
 }
@@ -55,18 +56,28 @@ template<>
 QString
 QStringFrom<std::vector<PlugInUnitsInterface::PlugInInfo>>(const std::vector<PlugInUnitsInterface::PlugInInfo>& value)
 {
-    std::string result;
+    // the QLabel is AutoFmt 
+    std::ostringstream strm;
+
+    strm << "<html><body>";
+    strm << "<table><thead><tr>";
+    strm << "<th bgcolor=\"light blue\">objectPath</th>";
+    strm << "<th bgcolor=\"light blue\">deviceId</th>";
+    strm << "<th bgcolor=\"light blue\">pluggedIn</th>";
+    strm << "</tr></thead>";
 
     for (auto& v : value)
     {
-        auto qs = QStringFrom<PlugInUnitsInterface::PlugInInfo>(v);
-        result += qs.toStdString();
+        strm << "<tr>";
+        strm << "<td>" << v.objectPath.c_str() << "</td>";
+        strm << "<td>" << v.deviceId << "</td>";
+        strm << "<td>" << v.pluggedIn << "</td>";
+        strm << "</tr>";
     }
-    return QString::fromStdString(result);
+
+    strm << "</table></body></html>";
+    return QString::fromStdString(strm.str());
 }
-
-
-
 
 
 using namespace CDMQtWidgets;
@@ -90,13 +101,14 @@ org_alljoyn_SmartSpaces_Operation_PlugInUnits::org_alljoyn_SmartSpaces_Operation
 
 
 
-    layout->addWidget(new QLabel("PlugInUnits"));
+    layout->addWidget(new QLabel("<b>PlugInUnits</b>"));
     // Create the editing widget for PlugInUnits
-    edit_PlugInUnits = new QLineEdit();
-    edit_PlugInUnits->setToolTip("The lists of all the possible hot pluggable devices and the associated status.");
-    edit_PlugInUnits->setReadOnly(true);
+    edit_PlugInUnits = new QLabel();
 
     layout->addWidget(edit_PlugInUnits);
+
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {

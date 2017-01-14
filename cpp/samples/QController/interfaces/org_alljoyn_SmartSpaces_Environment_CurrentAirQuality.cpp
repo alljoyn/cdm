@@ -27,13 +27,101 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 #include "org_alljoyn_SmartSpaces_Environment_CurrentAirQuality.h"
+#include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <sstream>
 
 
+
+template<>
+QString
+QStringFrom<CurrentAirQualityInterface::ContaminantType>(const CurrentAirQualityInterface::ContaminantType& value)
+{
+    QString result;
+
+    switch (value)
+    {
+    case CurrentAirQualityInterface::CONTAMINANT_TYPE_CH2O:
+        result = "CH2O";
+        break;
+
+    case CurrentAirQualityInterface::CONTAMINANT_TYPE_CO2:
+        result = "CO2";
+        break;
+
+    case CurrentAirQualityInterface::CONTAMINANT_TYPE_CO:
+        result = "CO";
+        break;
+
+    case CurrentAirQualityInterface::CONTAMINANT_TYPE_PM2_5:
+        result = "PM2_5";
+        break;
+
+    case CurrentAirQualityInterface::CONTAMINANT_TYPE_PM10:
+        result = "PM10";
+        break;
+
+    case CurrentAirQualityInterface::CONTAMINANT_TYPE_VOC:
+        result = "VOC";
+        break;
+
+    default:
+        result = "Unknown";
+        break;
+    }
+
+    return result;
+}
+
+
+
+template<>
+QString
+QStringFrom<std::vector<CurrentAirQualityInterface::ContaminantType>>(const std::vector<CurrentAirQualityInterface::ContaminantType>& value)
+{
+    // the QLabel is AutoFmt 
+    std::ostringstream strm;
+
+    strm << "<html><body>";
+    strm << "<table><thead><tr>";
+    strm << "<th bgcolor=\"light blue\">ContaminantType</th>";
+    strm << "</tr></thead>";
+
+    for (auto& v : value)
+    {
+        if (v == CurrentAirQualityInterface::CONTAMINANT_TYPE_CH2O)
+        {
+            strm << "<tr><td>CH2O</td></tr>";
+        }
+        if (v == CurrentAirQualityInterface::CONTAMINANT_TYPE_CO2)
+        {
+            strm << "<tr><td>CO2</td></tr>";
+        }
+        if (v == CurrentAirQualityInterface::CONTAMINANT_TYPE_CO)
+        {
+            strm << "<tr><td>CO</td></tr>";
+        }
+        if (v == CurrentAirQualityInterface::CONTAMINANT_TYPE_PM2_5)
+        {
+            strm << "<tr><td>PM2_5</td></tr>";
+        }
+        if (v == CurrentAirQualityInterface::CONTAMINANT_TYPE_PM10)
+        {
+            strm << "<tr><td>PM10</td></tr>";
+        }
+        if (v == CurrentAirQualityInterface::CONTAMINANT_TYPE_VOC)
+        {
+            strm << "<tr><td>VOC</td></tr>";
+        }
+    }
+
+    strm << "</table></body></html>";
+    return QString::fromStdString(strm.str());
+}
 
 
 using namespace CDMQtWidgets;
@@ -57,7 +145,7 @@ org_alljoyn_SmartSpaces_Environment_CurrentAirQuality::org_alljoyn_SmartSpaces_E
 
 
 
-    layout->addWidget(new QLabel("ContaminantType"));
+    layout->addWidget(new QLabel("<b>ContaminantType</b>"));
     // Create the editing widget for ContaminantType
     edit_ContaminantType = new QComboBox();
     edit_ContaminantType->setEditable(false);
@@ -70,41 +158,34 @@ org_alljoyn_SmartSpaces_Environment_CurrentAirQuality::org_alljoyn_SmartSpaces_E
     edit_ContaminantType->setEnabled(false);
 
     layout->addWidget(edit_ContaminantType);
-    layout->addWidget(new QLabel("CurrentValue"));
+    layout->addWidget(new QLabel("<b>CurrentValue</b>"));
     // Create the editing widget for CurrentValue
-    edit_CurrentValue = new QLineEdit();
-    edit_CurrentValue->setToolTip("The current value of air quality.");
-    edit_CurrentValue->setReadOnly(true);
+    edit_CurrentValue = new QLabel();
 
     layout->addWidget(edit_CurrentValue);
-    layout->addWidget(new QLabel("MinValue"));
+    layout->addWidget(new QLabel("<b>MinValue</b>"));
     // Create the editing widget for MinValue
-    edit_MinValue = new QLineEdit();
-    edit_MinValue->setToolTip("The minimum value allowed for CurrentValue.");
-    edit_MinValue->setReadOnly(true);
+    edit_MinValue = new QLabel();
 
     layout->addWidget(edit_MinValue);
-    layout->addWidget(new QLabel("MaxValue"));
+    layout->addWidget(new QLabel("<b>MaxValue</b>"));
     // Create the editing widget for MaxValue
-    edit_MaxValue = new QLineEdit();
-    edit_MaxValue->setToolTip("The maximum value allowed for CurrentValue.");
-    edit_MaxValue->setReadOnly(true);
+    edit_MaxValue = new QLabel();
 
     layout->addWidget(edit_MaxValue);
-    layout->addWidget(new QLabel("Precision"));
+    layout->addWidget(new QLabel("<b>Precision</b>"));
     // Create the editing widget for Precision
-    edit_Precision = new QLineEdit();
-    edit_Precision->setToolTip("The precision of the CurrentValue property.");
-    edit_Precision->setReadOnly(true);
+    edit_Precision = new QLabel();
 
     layout->addWidget(edit_Precision);
-    layout->addWidget(new QLabel("UpdateMinTime"));
+    layout->addWidget(new QLabel("<b>UpdateMinTime</b>"));
     // Create the editing widget for UpdateMinTime
-    edit_UpdateMinTime = new QLineEdit();
-    edit_UpdateMinTime->setToolTip("The minimum time between updates of the CurrentValue property in milliseconds.");
-    edit_UpdateMinTime->setReadOnly(true);
+    edit_UpdateMinTime = new QLabel();
 
     layout->addWidget(edit_UpdateMinTime);
+
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {

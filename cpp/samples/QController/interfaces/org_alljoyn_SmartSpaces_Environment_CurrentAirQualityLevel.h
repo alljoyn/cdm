@@ -34,6 +34,7 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QLineEdit>
+#include <QLabel>
 #include <QVBoxLayout>
 #include <QPushButton>
 
@@ -130,9 +131,10 @@ private:
 
 
     QComboBox* edit_ContaminantType;
-    QLineEdit* edit_CurrentLevel;
-    QLineEdit* edit_MaxLevel;
+    QLabel* edit_CurrentLevel;
+    QLabel* edit_MaxLevel;
 
+    QLabel* messages_;
     void    fetchProperties();
 
 protected:

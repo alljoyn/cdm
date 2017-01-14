@@ -240,7 +240,7 @@ def main():
     argument_parser.add_argument('--components', nargs='*', default=["all"], help="The components to generate (controller, controllee or all")
     argument_parser.add_argument('--sample', action='store_true', required=False, help='Generate sample programs using the device emulator xml file')
     argument_parser.add_argument('--patches', required=False, default="", help='Path to the root for patch templates')
-    argument_parser.add_argument('--dryrun', action='store_true', required=False, default=False, help='Path to the root for patch templates')
+    argument_parser.add_argument('--dryrun', action='store_true', required=False, default=False, help="Executes but doesn't write any files")
     args = argument_parser.parse_args()
 
     generator = SampleAppGenerator(args) if args.sample else InterfaceCodeGenerator(args)

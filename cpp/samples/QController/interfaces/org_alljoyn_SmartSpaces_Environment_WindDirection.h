@@ -34,6 +34,7 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QLineEdit>
+#include <QLabel>
 #include <QVBoxLayout>
 #include <QPushButton>
 
@@ -217,12 +218,13 @@ private:
 
 
     QLineEdit* edit_HorizontalDirection;
-    QLineEdit* edit_HorizontalMax;
+    QLabel* edit_HorizontalMax;
     QComboBox* edit_HorizontalAutoMode;
     QLineEdit* edit_VerticalDirection;
-    QLineEdit* edit_VerticalMax;
+    QLabel* edit_VerticalMax;
     QComboBox* edit_VerticalAutoMode;
 
+    QLabel* messages_;
     void    fetchProperties();
 
 protected:

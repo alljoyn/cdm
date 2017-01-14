@@ -27,12 +27,13 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 #include "org_alljoyn_SmartSpaces_Operation_AudioVolume.h"
+#include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <sstream>
-
 
 
 
@@ -52,28 +53,28 @@ org_alljoyn_SmartSpaces_Operation_AudioVolume::org_alljoyn_SmartSpaces_Operation
 
 
 
-    layout->addWidget(new QLabel("Volume"));
+    layout->addWidget(new QLabel("<b>Volume</b>"));
     // Create the editing widget for Volume
     edit_Volume = new QLineEdit();
     edit_Volume->setToolTip("Speaker volume index of the device.");
-    edit_Volume->setReadOnly(false);
     QObject::connect(edit_Volume, SIGNAL(returnPressed()), this, SLOT(slotSetVolume()));
 
     layout->addWidget(edit_Volume);
-    layout->addWidget(new QLabel("MaxVolume"));
+    layout->addWidget(new QLabel("<b>MaxVolume</b>"));
     // Create the editing widget for MaxVolume
-    edit_MaxVolume = new QLineEdit();
-    edit_MaxVolume->setToolTip("Maximum value allowed for Volume.");
-    edit_MaxVolume->setReadOnly(true);
+    edit_MaxVolume = new QLabel();
 
     layout->addWidget(edit_MaxVolume);
-    layout->addWidget(new QLabel("Mute"));
+    layout->addWidget(new QLabel("<b>Mute</b>"));
     // Create the editing widget for Mute
     edit_Mute = new QCheckBox();
     edit_Mute->setEnabled(true);
     QObject::connect(edit_Mute, SIGNAL(stateChanged(int)), this, SLOT(slotSetMute()));
 
     layout->addWidget(edit_Mute);
+
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {
@@ -155,7 +156,9 @@ void org_alljoyn_SmartSpaces_Operation_AudioVolume::slotOnResponseSetVolume(QSta
 
     if (status != ER_OK)
     {
+        qcShowStatus(this, "Failed to set Volume", status);
         qWarning() << "AudioVolume::slotOnResponseSetVolume Failed to set Volume" << QCC_StatusText(status);
+        fetchProperties();      // restore the display of properties
     }
 }
 
@@ -232,7 +235,9 @@ void org_alljoyn_SmartSpaces_Operation_AudioVolume::slotOnResponseSetMute(QStatu
 
     if (status != ER_OK)
     {
+        qcShowStatus(this, "Failed to set Mute", status);
         qWarning() << "AudioVolume::slotOnResponseSetMute Failed to set Mute" << QCC_StatusText(status);
+        fetchProperties();      // restore the display of properties
     }
 }
 

@@ -34,6 +34,7 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QLineEdit>
+#include <QLabel>
 #include <QVBoxLayout>
 #include <QPushButton>
 
@@ -133,6 +134,7 @@ private:
     QLineEdit* edit_Hue;
     QLineEdit* edit_Saturation;
 
+    QLabel* messages_;
     void    fetchProperties();
 
 protected:

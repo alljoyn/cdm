@@ -27,12 +27,13 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 #include "org_alljoyn_SmartSpaces_Operation_SpinSpeedLevel.h"
+#include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <sstream>
-
 
 
 
@@ -52,28 +53,26 @@ org_alljoyn_SmartSpaces_Operation_SpinSpeedLevel::org_alljoyn_SmartSpaces_Operat
 
 
 
-    layout->addWidget(new QLabel("MaxLevel"));
+    layout->addWidget(new QLabel("<b>MaxLevel</b>"));
     // Create the editing widget for MaxLevel
-    edit_MaxLevel = new QLineEdit();
-    edit_MaxLevel->setToolTip("Maximum value allowed for the spin speed level setting.");
-    edit_MaxLevel->setReadOnly(true);
+    edit_MaxLevel = new QLabel();
 
     layout->addWidget(edit_MaxLevel);
-    layout->addWidget(new QLabel("TargetLevel"));
+    layout->addWidget(new QLabel("<b>TargetLevel</b>"));
     // Create the editing widget for TargetLevel
     edit_TargetLevel = new QLineEdit();
     edit_TargetLevel->setToolTip("Target set-point value of spin speed level.");
-    edit_TargetLevel->setReadOnly(false);
     QObject::connect(edit_TargetLevel, SIGNAL(returnPressed()), this, SLOT(slotSetTargetLevel()));
 
     layout->addWidget(edit_TargetLevel);
-    layout->addWidget(new QLabel("SelectableLevels"));
+    layout->addWidget(new QLabel("<b>SelectableLevels</b>"));
     // Create the editing widget for SelectableLevels
-    edit_SelectableLevels = new QLineEdit();
-    edit_SelectableLevels->setToolTip("List of the values of spin speed level which can be selected.");
-    edit_SelectableLevels->setReadOnly(true);
+    edit_SelectableLevels = new QLabel();
 
     layout->addWidget(edit_SelectableLevels);
+
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {
@@ -176,7 +175,9 @@ void org_alljoyn_SmartSpaces_Operation_SpinSpeedLevel::slotOnResponseSetTargetLe
 
     if (status != ER_OK)
     {
+        qcShowStatus(this, "Failed to set TargetLevel", status);
         qWarning() << "SpinSpeedLevel::slotOnResponseSetTargetLevel Failed to set TargetLevel" << QCC_StatusText(status);
+        fetchProperties();      // restore the display of properties
     }
 }
 

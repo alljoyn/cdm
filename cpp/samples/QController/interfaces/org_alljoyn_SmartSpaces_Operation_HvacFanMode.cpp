@@ -27,13 +27,77 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 #include "org_alljoyn_SmartSpaces_Operation_HvacFanMode.h"
+#include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <sstream>
 
 
+
+template<>
+QString
+QStringFrom<HvacFanModeInterface::Mode>(const HvacFanModeInterface::Mode& value)
+{
+    QString result;
+
+    switch (value)
+    {
+    case HvacFanModeInterface::MODE_AUTO:
+        result = "Auto";
+        break;
+
+    case HvacFanModeInterface::MODE_CIRCULATION:
+        result = "Circulation";
+        break;
+
+    case HvacFanModeInterface::MODE_CONTINUOUS:
+        result = "Continuous";
+        break;
+
+    default:
+        result = "Unknown";
+        break;
+    }
+
+    return result;
+}
+
+
+
+template<>
+QString
+QStringFrom<std::vector<HvacFanModeInterface::Mode>>(const std::vector<HvacFanModeInterface::Mode>& value)
+{
+    // the QLabel is AutoFmt 
+    std::ostringstream strm;
+
+    strm << "<html><body>";
+    strm << "<table><thead><tr>";
+    strm << "<th bgcolor=\"light blue\">Mode</th>";
+    strm << "</tr></thead>";
+
+    for (auto& v : value)
+    {
+        if (v == HvacFanModeInterface::MODE_AUTO)
+        {
+            strm << "<tr><td>Auto</td></tr>";
+        }
+        if (v == HvacFanModeInterface::MODE_CIRCULATION)
+        {
+            strm << "<tr><td>Circulation</td></tr>";
+        }
+        if (v == HvacFanModeInterface::MODE_CONTINUOUS)
+        {
+            strm << "<tr><td>Continuous</td></tr>";
+        }
+    }
+
+    strm << "</table></body></html>";
+    return QString::fromStdString(strm.str());
+}
 
 
 using namespace CDMQtWidgets;
@@ -57,7 +121,7 @@ org_alljoyn_SmartSpaces_Operation_HvacFanMode::org_alljoyn_SmartSpaces_Operation
 
 
 
-    layout->addWidget(new QLabel("Mode"));
+    layout->addWidget(new QLabel("<b>Mode</b>"));
     // Create the editing widget for Mode
     edit_Mode = new QComboBox();
     edit_Mode->setEditable(false);
@@ -68,13 +132,14 @@ org_alljoyn_SmartSpaces_Operation_HvacFanMode::org_alljoyn_SmartSpaces_Operation
     QObject::connect(edit_Mode, SIGNAL(currentTextChanged(const QString &)), this, SLOT(slotSetMode()));
 
     layout->addWidget(edit_Mode);
-    layout->addWidget(new QLabel("SupportedModes"));
+    layout->addWidget(new QLabel("<b>SupportedModes</b>"));
     // Create the editing widget for SupportedModes
-    edit_SupportedModes = new QLineEdit();
-    edit_SupportedModes->setToolTip("Array of supported modes.");
-    edit_SupportedModes->setReadOnly(true);
+    edit_SupportedModes = new QLabel();
 
     layout->addWidget(edit_SupportedModes);
+
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {
@@ -184,7 +249,9 @@ void org_alljoyn_SmartSpaces_Operation_HvacFanMode::slotOnResponseSetMode(QStatu
 
     if (status != ER_OK)
     {
+        qcShowStatus(this, "Failed to set Mode", status);
         qWarning() << "HvacFanMode::slotOnResponseSetMode Failed to set Mode" << QCC_StatusText(status);
+        fetchProperties();      // restore the display of properties
     }
 }
 

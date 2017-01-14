@@ -27,12 +27,13 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 #include "org_alljoyn_SmartSpaces_Operation_LockedStatus.h"
+#include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <sstream>
-
 
 
 
@@ -52,12 +53,15 @@ org_alljoyn_SmartSpaces_Operation_LockedStatus::org_alljoyn_SmartSpaces_Operatio
 
 
 
-    layout->addWidget(new QLabel("IsLocked"));
+    layout->addWidget(new QLabel("<b>IsLocked</b>"));
     // Create the editing widget for IsLocked
     edit_IsLocked = new QCheckBox();
     edit_IsLocked->setEnabled(false);
 
     layout->addWidget(edit_IsLocked);
+
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {

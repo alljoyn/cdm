@@ -27,12 +27,13 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 #include "org_alljoyn_SmartSpaces_Environment_CurrentHumidity.h"
+#include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <sstream>
-
 
 
 
@@ -52,20 +53,19 @@ org_alljoyn_SmartSpaces_Environment_CurrentHumidity::org_alljoyn_SmartSpaces_Env
 
 
 
-    layout->addWidget(new QLabel("CurrentValue"));
+    layout->addWidget(new QLabel("<b>CurrentValue</b>"));
     // Create the editing widget for CurrentValue
-    edit_CurrentValue = new QLineEdit();
-    edit_CurrentValue->setToolTip("Current relative humidity value");
-    edit_CurrentValue->setReadOnly(true);
+    edit_CurrentValue = new QLabel();
 
     layout->addWidget(edit_CurrentValue);
-    layout->addWidget(new QLabel("MaxValue"));
+    layout->addWidget(new QLabel("<b>MaxValue</b>"));
     // Create the editing widget for MaxValue
-    edit_MaxValue = new QLineEdit();
-    edit_MaxValue->setToolTip("Maximum value allowed for represented relative humidity");
-    edit_MaxValue->setReadOnly(true);
+    edit_MaxValue = new QLabel();
 
     layout->addWidget(edit_MaxValue);
+
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {

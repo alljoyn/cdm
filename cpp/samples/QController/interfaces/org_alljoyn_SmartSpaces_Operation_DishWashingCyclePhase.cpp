@@ -27,25 +27,26 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 #include "org_alljoyn_SmartSpaces_Operation_DishWashingCyclePhase.h"
+#include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <sstream>
+
 
 
 template<>
 QString
 QStringFrom<DishWashingCyclePhaseInterface::CyclePhaseDescriptor>(const DishWashingCyclePhaseInterface::CyclePhaseDescriptor& value)
 {
+    // the QLabel is AutoFmt 
     std::ostringstream strm;
-    strm << "{";
-    strm << "phase=" << value.phase;
-    strm << " ";
-    strm << "name=" << value.name.c_str();
-    strm << " ";
-    strm << "description=" << value.description.c_str();
-    strm << "}";
+
+    strm << "<b>phase</b>: " << value.phase << "\n";
+    strm << "<b>name</b>: " << value.name.c_str() << "\n";
+    strm << "<b>description</b>: " << value.description.c_str() << "\n";
 
     return QString::fromStdString(strm.str());
 }
@@ -55,18 +56,28 @@ template<>
 QString
 QStringFrom<std::vector<DishWashingCyclePhaseInterface::CyclePhaseDescriptor>>(const std::vector<DishWashingCyclePhaseInterface::CyclePhaseDescriptor>& value)
 {
-    std::string result;
+    // the QLabel is AutoFmt 
+    std::ostringstream strm;
+
+    strm << "<html><body>";
+    strm << "<table><thead><tr>";
+    strm << "<th bgcolor=\"light blue\">phase</th>";
+    strm << "<th bgcolor=\"light blue\">name</th>";
+    strm << "<th bgcolor=\"light blue\">description</th>";
+    strm << "</tr></thead>";
 
     for (auto& v : value)
     {
-        auto qs = QStringFrom<DishWashingCyclePhaseInterface::CyclePhaseDescriptor>(v);
-        result += qs.toStdString();
+        strm << "<tr>";
+        strm << "<td>" << (unsigned)(v.phase) << "</td>";
+        strm << "<td>" << v.name.c_str() << "</td>";
+        strm << "<td>" << v.description.c_str() << "</td>";
+        strm << "</tr>";
     }
-    return QString::fromStdString(result);
+
+    strm << "</table></body></html>";
+    return QString::fromStdString(strm.str());
 }
-
-
-
 
 
 using namespace CDMQtWidgets;
@@ -77,6 +88,77 @@ Q_DECLARE_METATYPE(ajn::services::DishWashingCyclePhaseInterface::CyclePhaseDesc
 Q_DECLARE_METATYPE(std::vector<ajn::services::DishWashingCyclePhaseInterface::CyclePhaseDescriptor>);
 static const int auto_register_struct_CyclePhaseDescriptor = qRegisterMetaType<ajn::services::DishWashingCyclePhaseInterface::CyclePhaseDescriptor>("DishWashingCyclePhaseInterface::CyclePhaseDescriptor");
 static const int auto_register_struct_v_CyclePhaseDescriptor = qRegisterMetaType<std::vector<ajn::services::DishWashingCyclePhaseInterface::CyclePhaseDescriptor>>("std::vector<DishWashingCyclePhaseInterface::CyclePhaseDescriptor>");
+
+
+#include <QLabel>
+#include <QLineEdit>
+#include <QDialogButtonBox>
+#include <QVBoxLayout>
+#include <sstream>
+
+
+org_alljoyn_SmartSpaces_Operation_DishWashingCyclePhase_GetLang::org_alljoyn_SmartSpaces_Operation_DishWashingCyclePhase_GetLang(QWidget* parent, const QString& lang)
+{
+    lang_ = lang;
+
+    dialog_ = new QDialog(parent);
+    auto* dlgLayout_ = new QVBoxLayout(dialog_);
+
+    dlgLayout_->addWidget(new QLabel("Language"));
+    langEdit_ = new QLineEdit();
+    dlgLayout_->addWidget(langEdit_);
+    langEdit_->setText(lang_);
+    QObject::connect(langEdit_, SIGNAL(returnPressed()), this, SLOT(changed()));
+
+    auto* buttons = new QDialogButtonBox();
+    dlgLayout_->addWidget(buttons);
+
+    auto* cancel = buttons->addButton(QDialogButtonBox::Cancel);
+    QObject::connect(cancel, SIGNAL(clicked(bool)), dialog_, SLOT(reject()));
+
+    auto* ok = buttons->addButton(QDialogButtonBox::Ok);
+    QObject::connect(ok, SIGNAL(clicked(bool)), dialog_, SLOT(accept()));
+}
+
+
+
+org_alljoyn_SmartSpaces_Operation_DishWashingCyclePhase_GetLang::~org_alljoyn_SmartSpaces_Operation_DishWashingCyclePhase_GetLang()
+{
+    delete dialog_;
+}
+
+
+
+int org_alljoyn_SmartSpaces_Operation_DishWashingCyclePhase_GetLang::run()
+{
+    // This is always modal
+    return dialog_->exec();
+}
+
+
+
+void org_alljoyn_SmartSpaces_Operation_DishWashingCyclePhase_GetLang::changed()
+{
+    lang_ = langEdit_->text();
+}
+
+
+
+static bool DialogGetLang(QWidget* parent, QString& lang)
+{
+    auto* dialog = new org_alljoyn_SmartSpaces_Operation_DishWashingCyclePhase_GetLang(parent, lang);
+    auto code = dialog->run();
+    bool ok = code == QDialog::Accepted;
+
+    if (ok)
+    {
+        lang = dialog->lang_;
+    }
+
+    delete dialog;
+    return ok;
+}
+
 
 
 
@@ -95,20 +177,19 @@ org_alljoyn_SmartSpaces_Operation_DishWashingCyclePhase::org_alljoyn_SmartSpaces
     QObject::connect(button_GetVendorPhasesDescription, SIGNAL(clicked()), this, SLOT(slotClickGetVendorPhasesDescription()));
     layout->addWidget(button_GetVendorPhasesDescription);
 
-    layout->addWidget(new QLabel("CyclePhase"));
+    layout->addWidget(new QLabel("<b>CyclePhase</b>"));
     // Create the editing widget for CyclePhase
-    edit_CyclePhase = new QLineEdit();
-    edit_CyclePhase->setToolTip("Current cycle phase. Range value [0x00-0x7F] is for standard phases; range value [0x80-0xFF] is for vendor-defined phases and so the meanings depend on manufacturer");
-    edit_CyclePhase->setReadOnly(true);
+    edit_CyclePhase = new QLabel();
 
     layout->addWidget(edit_CyclePhase);
-    layout->addWidget(new QLabel("SupportedCyclePhases"));
+    layout->addWidget(new QLabel("<b>SupportedCyclePhases</b>"));
     // Create the editing widget for SupportedCyclePhases
-    edit_SupportedCyclePhases = new QLineEdit();
-    edit_SupportedCyclePhases->setToolTip("List of supported cycle phases.");
-    edit_SupportedCyclePhases->setReadOnly(true);
+    edit_SupportedCyclePhases = new QLabel();
 
     layout->addWidget(edit_SupportedCyclePhases);
+
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {
@@ -167,6 +248,14 @@ void org_alljoyn_SmartSpaces_Operation_DishWashingCyclePhase::slotClickGetVendor
     qcc::String languageTag {};
 
     bool ok = true;
+    QString lang = languageTag.c_str();
+    if (lang.isEmpty())
+    {
+        lang = "en";
+    }
+    ok = DialogGetLang(this, lang);
+    auto ascii = lang.toStdString();
+    languageTag = ascii.c_str();
 
     if (ok)
     {
@@ -232,4 +321,5 @@ void org_alljoyn_SmartSpaces_Operation_DishWashingCyclePhase::slotOnResponseMeth
     {
         qWarning() << "DishWashingCyclePhase::slotOnResponseMethodGetVendorPhasesDescription Received error = " << errorName;
     }
+    messages_->setText(QStringFrom(phasesDescription));
 }

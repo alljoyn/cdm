@@ -48,7 +48,7 @@ static Element* HAL_Encode_{{Interface.Name}}_{{struc.Name}}({{Interface.Name}}_
     {
         Element* field = BSXML_NewElement("field", struc);
         BSXML_AddAttribute(field, "name", "{{field.Name}}");
-        BSXML_AddChild(field, {{field.Type.tclHalEncoder()}}(value.{{field.Name}}, field));
+        {{field.Type.tclHalEncoder()}}(value.{{field.Name}}, field);
     }
 {% endfor %}
     return struc;
@@ -75,7 +75,7 @@ static Element* HAL_Encode_Array_{{Interface.Name}}_{{struc.Name}}(Array_{{Inter
 {
     Element* array = BSXML_NewElement("array", parent);
     for (size_t i = 0; i < value.numElems; ++i) {
-        BSXML_AddChild(array, HAL_Encode_{{Interface.Name}}_{{struc.Name}}(value.elems[i], array));
+        HAL_Encode_{{Interface.Name}}_{{struc.Name}}(value.elems[i], array);
     }
     return array;
 }
@@ -122,7 +122,7 @@ static Element* HAL_Encode_Array_{{Interface.Name}}_{{enum.Name}}(Array_{{Interf
 {
     Element* array = BSXML_NewElement("array", parent);
     for (size_t i = 0; i < value.numElems; ++i) {
-        BSXML_AddChild(array, {{enum.enum_type().tclHalEncoder()}}(value.elems[i], array));
+        {{enum.enum_type().tclHalEncoder()}}(value.elems[i], array);
     }
     return array;
 }

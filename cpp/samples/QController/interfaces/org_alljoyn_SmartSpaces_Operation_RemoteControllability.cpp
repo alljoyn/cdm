@@ -27,12 +27,13 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 #include "org_alljoyn_SmartSpaces_Operation_RemoteControllability.h"
+#include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <sstream>
-
 
 
 
@@ -52,12 +53,15 @@ org_alljoyn_SmartSpaces_Operation_RemoteControllability::org_alljoyn_SmartSpaces
 
 
 
-    layout->addWidget(new QLabel("IsControllable"));
+    layout->addWidget(new QLabel("<b>IsControllable</b>"));
     // Create the editing widget for IsControllable
     edit_IsControllable = new QCheckBox();
     edit_IsControllable->setEnabled(false);
 
     layout->addWidget(edit_IsControllable);
+
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {

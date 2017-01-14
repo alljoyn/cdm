@@ -34,6 +34,7 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QLineEdit>
+#include <QLabel>
 #include <QVBoxLayout>
 #include <QPushButton>
 
@@ -138,10 +139,11 @@ private:
     Ref<Listener> m_listener;
 
 
-    QLineEdit* edit_MaxLevel;
+    QLabel* edit_MaxLevel;
     QLineEdit* edit_TargetLevel;
-    QLineEdit* edit_SelectableTemperatureLevels;
+    QLabel* edit_SelectableTemperatureLevels;
 
+    QLabel* messages_;
     void    fetchProperties();
 
 protected:

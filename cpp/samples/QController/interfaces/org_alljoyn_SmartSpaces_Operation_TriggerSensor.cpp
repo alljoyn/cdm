@@ -27,12 +27,13 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 #include "org_alljoyn_SmartSpaces_Operation_TriggerSensor.h"
+#include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <sstream>
-
 
 
 
@@ -52,12 +53,15 @@ org_alljoyn_SmartSpaces_Operation_TriggerSensor::org_alljoyn_SmartSpaces_Operati
 
 
 
-    layout->addWidget(new QLabel("CurrentlyTriggered"));
+    layout->addWidget(new QLabel("<b>CurrentlyTriggered</b>"));
     // Create the editing widget for CurrentlyTriggered
     edit_CurrentlyTriggered = new QCheckBox();
     edit_CurrentlyTriggered->setEnabled(false);
 
     layout->addWidget(edit_CurrentlyTriggered);
+
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {

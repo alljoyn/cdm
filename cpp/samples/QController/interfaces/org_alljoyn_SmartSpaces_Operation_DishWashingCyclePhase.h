@@ -34,6 +34,7 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QLineEdit>
+#include <QLabel>
 #include <QVBoxLayout>
 #include <QPushButton>
 
@@ -44,6 +45,35 @@
 
 using namespace ajn::services;
 
+#include <QLineEdit>
+#include <QDialog>
+
+namespace CDMQtWidgets {
+//======================================================================
+
+class org_alljoyn_SmartSpaces_Operation_DishWashingCyclePhase_GetLang : public QWidget
+{
+    Q_OBJECT
+public:
+    org_alljoyn_SmartSpaces_Operation_DishWashingCyclePhase_GetLang(QWidget* parent, const QString& lang);
+    ~org_alljoyn_SmartSpaces_Operation_DishWashingCyclePhase_GetLang();
+
+    int run();
+
+private slots:
+    void changed();
+
+public:
+    QString lang_;
+
+private:
+    QString label_;
+    QDialog* dialog_;
+    QLineEdit* langEdit_;
+};
+
+//======================================================================
+} // of namespace CDMQtWidgets
 
 namespace CDMQtWidgets
 {
@@ -122,9 +152,10 @@ private:
 
     QPushButton* button_GetVendorPhasesDescription;
 
-    QLineEdit* edit_CyclePhase;
-    QLineEdit* edit_SupportedCyclePhases;
+    QLabel* edit_CyclePhase;
+    QLabel* edit_SupportedCyclePhases;
 
+    QLabel* messages_;
     void    fetchProperties();
 
 protected:

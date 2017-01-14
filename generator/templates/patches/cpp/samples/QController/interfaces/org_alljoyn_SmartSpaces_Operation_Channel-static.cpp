@@ -86,26 +86,3 @@ static bool DialogGetChannelList(QWidget* parent, uint16_t& startingRecord, uint
     delete dialog;
     return ok;
 }
-
-
-
-org_alljoyn_SmartSpaces_Operation_Channel_ShowChannelList::org_alljoyn_SmartSpaces_Operation_Channel_ShowChannelList(QWidget* parent, const char* text)
-{
-    dialog_ = new QMessageBox(parent);
-    dialog_->setInformativeText(text);
-}
-
-
-
-org_alljoyn_SmartSpaces_Operation_Channel_ShowChannelList::~org_alljoyn_SmartSpaces_Operation_Channel_ShowChannelList()
-{
-    delete dialog_;
-}
-
-
-
-int org_alljoyn_SmartSpaces_Operation_Channel_ShowChannelList::run()
-{
-    // This is always modal
-    return dialog_->exec();
-}

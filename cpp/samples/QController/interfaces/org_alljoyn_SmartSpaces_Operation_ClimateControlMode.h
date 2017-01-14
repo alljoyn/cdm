@@ -34,6 +34,7 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QLineEdit>
+#include <QLabel>
 #include <QVBoxLayout>
 #include <QPushButton>
 
@@ -139,9 +140,10 @@ private:
 
 
     QComboBox* edit_Mode;
-    QLineEdit* edit_SupportedModes;
+    QLabel* edit_SupportedModes;
     QComboBox* edit_OperationalState;
 
+    QLabel* messages_;
     void    fetchProperties();
 
 protected:

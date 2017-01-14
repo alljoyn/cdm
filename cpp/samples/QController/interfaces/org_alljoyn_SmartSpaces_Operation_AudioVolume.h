@@ -34,6 +34,7 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QLineEdit>
+#include <QLabel>
 #include <QVBoxLayout>
 #include <QPushButton>
 
@@ -148,9 +149,10 @@ private:
 
 
     QLineEdit* edit_Volume;
-    QLineEdit* edit_MaxVolume;
+    QLabel* edit_MaxVolume;
     QCheckBox* edit_Mute;
 
+    QLabel* messages_;
     void    fetchProperties();
 
 protected:

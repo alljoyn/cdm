@@ -30,6 +30,7 @@
 #include "TimerModel.h"
 #include "../../../Utils/HAL.h"
 
+#include <interfaces/controllee/operation/TimerIntfControllee.h>
 
 namespace ajn {
 namespace services {
@@ -80,12 +81,30 @@ QStatus TimerModel::GetTargetDuration(int32_t& out) const
 
 QStatus TimerModel::SetTargetTimeToStart(int32_t arg_targetTimeToStart, ErrorCode& error, CdmControllee& controllee)
 {
-    return HAL::WriteProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.Timer", "TargetTimeToStart", arg_targetTimeToStart);
+    auto value = arg_targetTimeToStart;
+    QStatus status = HAL::WriteProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.Timer", "TargetTimeToStart", value);
+
+    if (status == ER_OK && controllee.EmitChangedSignalOnSetProperty())
+    {
+        auto iface = controllee.GetInterface<TimerIntfControllee>(m_busPath, "org.alljoyn.SmartSpaces.Operation.Timer");
+        iface->EmitTargetTimeToStartChanged(value);
+    }
+
+    return status;
 }
 
 QStatus TimerModel::SetTargetTimeToStop(int32_t arg_targetTimeToStop, ErrorCode& error, CdmControllee& controllee)
 {
-    return HAL::WriteProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.Timer", "TargetTimeToStop", arg_targetTimeToStop);
+    auto value = arg_targetTimeToStop;
+    QStatus status = HAL::WriteProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.Timer", "TargetTimeToStop", value);
+
+    if (status == ER_OK && controllee.EmitChangedSignalOnSetProperty())
+    {
+        auto iface = controllee.GetInterface<TimerIntfControllee>(m_busPath, "org.alljoyn.SmartSpaces.Operation.Timer");
+        iface->EmitTargetTimeToStopChanged(value);
+    }
+
+    return status;
 }
 
 } // namespace emulator

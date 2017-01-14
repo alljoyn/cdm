@@ -27,12 +27,13 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 #include "org_alljoyn_SmartSpaces_Operation_AirRecirculationMode.h"
+#include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <sstream>
-
 
 
 
@@ -52,13 +53,16 @@ org_alljoyn_SmartSpaces_Operation_AirRecirculationMode::org_alljoyn_SmartSpaces_
 
 
 
-    layout->addWidget(new QLabel("IsRecirculating"));
+    layout->addWidget(new QLabel("<b>IsRecirculating</b>"));
     // Create the editing widget for IsRecirculating
     edit_IsRecirculating = new QCheckBox();
     edit_IsRecirculating->setEnabled(true);
     QObject::connect(edit_IsRecirculating, SIGNAL(stateChanged(int)), this, SLOT(slotSetIsRecirculating()));
 
     layout->addWidget(edit_IsRecirculating);
+
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {
@@ -128,7 +132,9 @@ void org_alljoyn_SmartSpaces_Operation_AirRecirculationMode::slotOnResponseSetIs
 
     if (status != ER_OK)
     {
+        qcShowStatus(this, "Failed to set IsRecirculating", status);
         qWarning() << "AirRecirculationMode::slotOnResponseSetIsRecirculating Failed to set IsRecirculating" << QCC_StatusText(status);
+        fetchProperties();      // restore the display of properties
     }
 }
 

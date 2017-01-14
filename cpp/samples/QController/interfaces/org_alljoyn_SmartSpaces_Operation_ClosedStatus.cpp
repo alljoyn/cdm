@@ -27,12 +27,13 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 #include "org_alljoyn_SmartSpaces_Operation_ClosedStatus.h"
+#include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <sstream>
-
 
 
 
@@ -52,12 +53,15 @@ org_alljoyn_SmartSpaces_Operation_ClosedStatus::org_alljoyn_SmartSpaces_Operatio
 
 
 
-    layout->addWidget(new QLabel("IsClosed"));
+    layout->addWidget(new QLabel("<b>IsClosed</b>"));
     // Create the editing widget for IsClosed
     edit_IsClosed = new QCheckBox();
     edit_IsClosed->setEnabled(false);
 
     layout->addWidget(edit_IsClosed);
+
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {

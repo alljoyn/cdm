@@ -27,12 +27,13 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 #include "org_alljoyn_SmartSpaces_Operation_ResourceSaving.h"
+#include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <sstream>
-
 
 
 
@@ -52,13 +53,16 @@ org_alljoyn_SmartSpaces_Operation_ResourceSaving::org_alljoyn_SmartSpaces_Operat
 
 
 
-    layout->addWidget(new QLabel("ResourceSavingMode"));
+    layout->addWidget(new QLabel("<b>ResourceSavingMode</b>"));
     // Create the editing widget for ResourceSavingMode
     edit_ResourceSavingMode = new QCheckBox();
     edit_ResourceSavingMode->setEnabled(true);
     QObject::connect(edit_ResourceSavingMode, SIGNAL(stateChanged(int)), this, SLOT(slotSetResourceSavingMode()));
 
     layout->addWidget(edit_ResourceSavingMode);
+
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {
@@ -128,7 +132,9 @@ void org_alljoyn_SmartSpaces_Operation_ResourceSaving::slotOnResponseSetResource
 
     if (status != ER_OK)
     {
+        qcShowStatus(this, "Failed to set ResourceSavingMode", status);
         qWarning() << "ResourceSaving::slotOnResponseSetResourceSavingMode Failed to set ResourceSavingMode" << QCC_StatusText(status);
+        fetchProperties();      // restore the display of properties
     }
 }
 

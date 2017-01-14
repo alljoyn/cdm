@@ -27,12 +27,13 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 #include "org_alljoyn_SmartSpaces_Operation_ColorTemperature.h"
+#include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <sstream>
-
 
 
 
@@ -52,28 +53,26 @@ org_alljoyn_SmartSpaces_Operation_ColorTemperature::org_alljoyn_SmartSpaces_Oper
 
 
 
-    layout->addWidget(new QLabel("Temperature"));
+    layout->addWidget(new QLabel("<b>Temperature</b>"));
     // Create the editing widget for Temperature
     edit_Temperature = new QLineEdit();
     edit_Temperature->setToolTip("Color temperature of the device.");
-    edit_Temperature->setReadOnly(false);
     QObject::connect(edit_Temperature, SIGNAL(returnPressed()), this, SLOT(slotSetTemperature()));
 
     layout->addWidget(edit_Temperature);
-    layout->addWidget(new QLabel("MinTemperature"));
+    layout->addWidget(new QLabel("<b>MinTemperature</b>"));
     // Create the editing widget for MinTemperature
-    edit_MinTemperature = new QLineEdit();
-    edit_MinTemperature->setToolTip("The minimum color temperature supported by the device.");
-    edit_MinTemperature->setReadOnly(true);
+    edit_MinTemperature = new QLabel();
 
     layout->addWidget(edit_MinTemperature);
-    layout->addWidget(new QLabel("MaxTemperature"));
+    layout->addWidget(new QLabel("<b>MaxTemperature</b>"));
     // Create the editing widget for MaxTemperature
-    edit_MaxTemperature = new QLineEdit();
-    edit_MaxTemperature->setToolTip("The maximum color temperature supported by the device.");
-    edit_MaxTemperature->setReadOnly(true);
+    edit_MaxTemperature = new QLabel();
 
     layout->addWidget(edit_MaxTemperature);
+
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {
@@ -155,7 +154,9 @@ void org_alljoyn_SmartSpaces_Operation_ColorTemperature::slotOnResponseSetTemper
 
     if (status != ER_OK)
     {
+        qcShowStatus(this, "Failed to set Temperature", status);
         qWarning() << "ColorTemperature::slotOnResponseSetTemperature Failed to set Temperature" << QCC_StatusText(status);
+        fetchProperties();      // restore the display of properties
     }
 }
 

@@ -26,6 +26,9 @@ set(SOURCE_FILES
     main.cpp
     qcontroller.cpp
     qcontroller.h
+    qcTypes.h
+    qcUtils.h
+    qcUtils.cpp
     InspectorWidget.cpp
     InspectorWidget.h
     )

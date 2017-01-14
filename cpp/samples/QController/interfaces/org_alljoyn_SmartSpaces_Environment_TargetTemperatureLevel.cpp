@@ -27,12 +27,13 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 #include "org_alljoyn_SmartSpaces_Environment_TargetTemperatureLevel.h"
+#include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <sstream>
-
 
 
 
@@ -52,28 +53,26 @@ org_alljoyn_SmartSpaces_Environment_TargetTemperatureLevel::org_alljoyn_SmartSpa
 
 
 
-    layout->addWidget(new QLabel("MaxLevel"));
+    layout->addWidget(new QLabel("<b>MaxLevel</b>"));
     // Create the editing widget for MaxLevel
-    edit_MaxLevel = new QLineEdit();
-    edit_MaxLevel->setToolTip("Maximum value allowed for target temperature level setting.");
-    edit_MaxLevel->setReadOnly(true);
+    edit_MaxLevel = new QLabel();
 
     layout->addWidget(edit_MaxLevel);
-    layout->addWidget(new QLabel("TargetLevel"));
+    layout->addWidget(new QLabel("<b>TargetLevel</b>"));
     // Create the editing widget for TargetLevel
     edit_TargetLevel = new QLineEdit();
     edit_TargetLevel->setToolTip("Target set-point value of temperature level.");
-    edit_TargetLevel->setReadOnly(false);
     QObject::connect(edit_TargetLevel, SIGNAL(returnPressed()), this, SLOT(slotSetTargetLevel()));
 
     layout->addWidget(edit_TargetLevel);
-    layout->addWidget(new QLabel("SelectableTemperatureLevels"));
+    layout->addWidget(new QLabel("<b>SelectableTemperatureLevels</b>"));
     // Create the editing widget for SelectableTemperatureLevels
-    edit_SelectableTemperatureLevels = new QLineEdit();
-    edit_SelectableTemperatureLevels->setToolTip("List of the values of temperature level which can be selected.");
-    edit_SelectableTemperatureLevels->setReadOnly(true);
+    edit_SelectableTemperatureLevels = new QLabel();
 
     layout->addWidget(edit_SelectableTemperatureLevels);
+
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {
@@ -176,7 +175,9 @@ void org_alljoyn_SmartSpaces_Environment_TargetTemperatureLevel::slotOnResponseS
 
     if (status != ER_OK)
     {
+        qcShowStatus(this, "Failed to set TargetLevel", status);
         qWarning() << "TargetTemperatureLevel::slotOnResponseSetTargetLevel Failed to set TargetLevel" << QCC_StatusText(status);
+        fetchProperties();      // restore the display of properties
     }
 }
 

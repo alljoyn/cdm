@@ -27,20 +27,5 @@ private:
     QSpinBox* numSpin_;
 };
 
-
-
-class org_alljoyn_SmartSpaces_Operation_Channel_ShowChannelList : public QWidget
-{
-    Q_OBJECT
-public:
-    org_alljoyn_SmartSpaces_Operation_Channel_ShowChannelList(QWidget* parent, const char* text);
-    ~org_alljoyn_SmartSpaces_Operation_Channel_ShowChannelList();
-
-    int run();
-
-private:
-    QMessageBox* dialog_;
-};
-
 //======================================================================
 } // of namespace CDMQtWidgets

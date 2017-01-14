@@ -27,13 +27,69 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 #include "org_alljoyn_SmartSpaces_Environment_WindDirection.h"
+#include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <sstream>
 
 
+
+template<>
+QString
+QStringFrom<WindDirectionInterface::AutoMode>(const WindDirectionInterface::AutoMode& value)
+{
+    QString result;
+
+    switch (value)
+    {
+    case WindDirectionInterface::AUTO_MODE_OFF:
+        result = "Off";
+        break;
+
+    case WindDirectionInterface::AUTO_MODE_ON:
+        result = "On";
+        break;
+
+    default:
+        result = "Unknown";
+        break;
+    }
+
+    return result;
+}
+
+
+
+template<>
+QString
+QStringFrom<std::vector<WindDirectionInterface::AutoMode>>(const std::vector<WindDirectionInterface::AutoMode>& value)
+{
+    // the QLabel is AutoFmt 
+    std::ostringstream strm;
+
+    strm << "<html><body>";
+    strm << "<table><thead><tr>";
+    strm << "<th bgcolor=\"light blue\">AutoMode</th>";
+    strm << "</tr></thead>";
+
+    for (auto& v : value)
+    {
+        if (v == WindDirectionInterface::AUTO_MODE_OFF)
+        {
+            strm << "<tr><td>Off</td></tr>";
+        }
+        if (v == WindDirectionInterface::AUTO_MODE_ON)
+        {
+            strm << "<tr><td>On</td></tr>";
+        }
+    }
+
+    strm << "</table></body></html>";
+    return QString::fromStdString(strm.str());
+}
 
 
 using namespace CDMQtWidgets;
@@ -57,22 +113,19 @@ org_alljoyn_SmartSpaces_Environment_WindDirection::org_alljoyn_SmartSpaces_Envir
 
 
 
-    layout->addWidget(new QLabel("HorizontalDirection"));
+    layout->addWidget(new QLabel("<b>HorizontalDirection</b>"));
     // Create the editing widget for HorizontalDirection
     edit_HorizontalDirection = new QLineEdit();
     edit_HorizontalDirection->setToolTip("Horizontal wind direction of a device.");
-    edit_HorizontalDirection->setReadOnly(false);
     QObject::connect(edit_HorizontalDirection, SIGNAL(returnPressed()), this, SLOT(slotSetHorizontalDirection()));
 
     layout->addWidget(edit_HorizontalDirection);
-    layout->addWidget(new QLabel("HorizontalMax"));
+    layout->addWidget(new QLabel("<b>HorizontalMax</b>"));
     // Create the editing widget for HorizontalMax
-    edit_HorizontalMax = new QLineEdit();
-    edit_HorizontalMax->setToolTip("Maximum value allowed for a target horizontal wind direction.");
-    edit_HorizontalMax->setReadOnly(true);
+    edit_HorizontalMax = new QLabel();
 
     layout->addWidget(edit_HorizontalMax);
-    layout->addWidget(new QLabel("HorizontalAutoMode"));
+    layout->addWidget(new QLabel("<b>HorizontalAutoMode</b>"));
     // Create the editing widget for HorizontalAutoMode
     edit_HorizontalAutoMode = new QComboBox();
     edit_HorizontalAutoMode->setEditable(false);
@@ -82,22 +135,19 @@ org_alljoyn_SmartSpaces_Environment_WindDirection::org_alljoyn_SmartSpaces_Envir
     QObject::connect(edit_HorizontalAutoMode, SIGNAL(currentTextChanged(const QString &)), this, SLOT(slotSetHorizontalAutoMode()));
 
     layout->addWidget(edit_HorizontalAutoMode);
-    layout->addWidget(new QLabel("VerticalDirection"));
+    layout->addWidget(new QLabel("<b>VerticalDirection</b>"));
     // Create the editing widget for VerticalDirection
     edit_VerticalDirection = new QLineEdit();
     edit_VerticalDirection->setToolTip("Vertical wind direction of a device.");
-    edit_VerticalDirection->setReadOnly(false);
     QObject::connect(edit_VerticalDirection, SIGNAL(returnPressed()), this, SLOT(slotSetVerticalDirection()));
 
     layout->addWidget(edit_VerticalDirection);
-    layout->addWidget(new QLabel("VerticalMax"));
+    layout->addWidget(new QLabel("<b>VerticalMax</b>"));
     // Create the editing widget for VerticalMax
-    edit_VerticalMax = new QLineEdit();
-    edit_VerticalMax->setToolTip("Maximum value allowed for a target vertical wind direction.");
-    edit_VerticalMax->setReadOnly(true);
+    edit_VerticalMax = new QLabel();
 
     layout->addWidget(edit_VerticalMax);
-    layout->addWidget(new QLabel("VerticalAutoMode"));
+    layout->addWidget(new QLabel("<b>VerticalAutoMode</b>"));
     // Create the editing widget for VerticalAutoMode
     edit_VerticalAutoMode = new QComboBox();
     edit_VerticalAutoMode->setEditable(false);
@@ -107,6 +157,9 @@ org_alljoyn_SmartSpaces_Environment_WindDirection::org_alljoyn_SmartSpaces_Envir
     QObject::connect(edit_VerticalAutoMode, SIGNAL(currentTextChanged(const QString &)), this, SLOT(slotSetVerticalAutoMode()));
 
     layout->addWidget(edit_VerticalAutoMode);
+
+    messages_ = new QLabel();
+    layout->addWidget(messages_);
 
     if (iface)
     {
@@ -206,7 +259,9 @@ void org_alljoyn_SmartSpaces_Environment_WindDirection::slotOnResponseSetHorizon
 
     if (status != ER_OK)
     {
+        qcShowStatus(this, "Failed to set HorizontalDirection", status);
         qWarning() << "WindDirection::slotOnResponseSetHorizontalDirection Failed to set HorizontalDirection" << QCC_StatusText(status);
+        fetchProperties();      // restore the display of properties
     }
 }
 
@@ -309,7 +364,9 @@ void org_alljoyn_SmartSpaces_Environment_WindDirection::slotOnResponseSetHorizon
 
     if (status != ER_OK)
     {
+        qcShowStatus(this, "Failed to set HorizontalAutoMode", status);
         qWarning() << "WindDirection::slotOnResponseSetHorizontalAutoMode Failed to set HorizontalAutoMode" << QCC_StatusText(status);
+        fetchProperties();      // restore the display of properties
     }
 }
 
@@ -376,7 +433,9 @@ void org_alljoyn_SmartSpaces_Environment_WindDirection::slotOnResponseSetVertica
 
     if (status != ER_OK)
     {
+        qcShowStatus(this, "Failed to set VerticalDirection", status);
         qWarning() << "WindDirection::slotOnResponseSetVerticalDirection Failed to set VerticalDirection" << QCC_StatusText(status);
+        fetchProperties();      // restore the display of properties
     }
 }
 
@@ -479,7 +538,9 @@ void org_alljoyn_SmartSpaces_Environment_WindDirection::slotOnResponseSetVertica
 
     if (status != ER_OK)
     {
+        qcShowStatus(this, "Failed to set VerticalAutoMode", status);
         qWarning() << "WindDirection::slotOnResponseSetVerticalAutoMode Failed to set VerticalAutoMode" << QCC_StatusText(status);
+        fetchProperties();      // restore the display of properties
     }
 }
 
