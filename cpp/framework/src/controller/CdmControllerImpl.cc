@@ -190,7 +190,6 @@ Ref<CdmInterface> CdmControllerImpl::CreateInterface(const std::string& interfac
     }
 
     auto pbo = mkRef<ProxyBusObject>(m_bus, busName.c_str(), objectPath.c_str(), sessionId);
-
     interface = ControllerFactory::Instance().CreateIntfController(interfaceName, listener, pbo);
 
     if (!interface) {
@@ -200,6 +199,8 @@ Ref<CdmInterface> CdmControllerImpl::CreateInterface(const std::string& interfac
 
     const InterfaceDescription* description = interface->GetInterfaceDescription();
     status = pbo->AddInterface(*description);
+    pbo->SecureConnection();
+    
     if (status != ER_OK) {
         QCC_LogError(status, ("%s: could not add interface.", __func__));
         return NULL;

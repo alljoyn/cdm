@@ -6,6 +6,8 @@ Free{{type.tclArrayDescr()}}(&{{name}});
 {% elif type.ajtypeStructName() %}
 {# name must not be the pointer #}
 FreeFields_{{type.ajtypeInterfaceName()}}_{{type.ajtypeStructName()}}(&{{name}});
+{% elif type.ajtypeIsArray() %}
+Free{{type.tclArrayDescr()}}(&{{name}});
 {% endif %}
 {% endmacro %}
 

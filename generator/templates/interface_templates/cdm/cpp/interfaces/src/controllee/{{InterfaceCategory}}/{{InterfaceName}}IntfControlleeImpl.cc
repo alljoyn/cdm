@@ -141,7 +141,7 @@ class {{Interface.Name}}IntfControllee::Impl :
 
     QStatus Validate{{property.Name}}({{property.Type.cpptype_arg()}} value);
     {% endif %}
-    {% if property.Clamp %}
+    {% if property.Clamp and not property.CustomCheck %}
 
     QStatus clamp{{property.Name}}({{property.Type.cpptype_arg()}} value, {{property.Type.cpptype_arg()}}& out);
     {% endif %}
@@ -449,7 +449,7 @@ QStatus {{Interface.Name}}IntfControllee::Impl::Validate{{property.Name}}({{prop
     return ER_OK;
 }
 {% endif %}
-{% if property.Clamp %}
+{% if property.Clamp and not property.CustomCheck %}
 
 QStatus {{Interface.Name}}IntfControllee::Impl::clamp{{property.Name}}({{property.Type.cpptype_arg()}} value, {{property.Type.cpptype_arg()}}& out)
 {
