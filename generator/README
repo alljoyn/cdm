@@ -1,0 +1,46 @@
+
+The generate.py script automatically generates the code for the interface and model
+layers of CDM.  These include
+
+    cpp/interfaces/
+    samples/DeviceEmulator/Models/
+    samples/QController/interfaces/
+
+The code is generated using the XML files in the alljoyn_interfaces repo.
+This should be in $AJ_ROOT/alljoyn_interfaces.
+The code is generated using Jinja2 templates in the templates/interface_templates directory.
+In templates/patches* there are hand-crafted patches for the generated code.
+
+The generation process is controlled by the Makefile. Normally you would generate into
+a local tree, output/ or output_tcl. The code can then be installed into the source tree.
+
+To generate and install everything for standard CDM do
+    make generate install
+
+To generate and install everything for standard CDM do
+    make which=tcl generate install
+
+The model code can be generated separately using
+    make generate_samples install_samples
+or
+    make which=tcl generate_samples install_samples
+
+
+Other Files
+===========
+
+genFactory.py
+ControllerFactory.cc
+InterfaceFactory.c
+template_ControllerFactory.cc
+template_InterfaceFactory.c
+    This generates a factory for the interfaces.
+
+macros
+tcl_macros
+    Jinja2 macros used in the code generation
+
+output
+output_tcl
+    The standard output trees.
+
