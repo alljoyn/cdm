@@ -28,6 +28,7 @@
  ******************************************************************************/
 
 #include "RapidModeTimedModel.h"
+#include <interfaces/controllee/operation/RapidModeTimedIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
 
@@ -62,6 +63,29 @@ QStatus RapidModeTimedModel::GetMaxSetMinutes(uint16_t& out) const
 {
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.RapidModeTimed", "MaxSetMinutes", out);
 }
+
+
+
+QStatus HandleRapidModeTimedCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+    if (cmd.name == "changed" && cmd.interface == "org.alljoyn.SmartSpaces.Operation.RapidModeTimed") {
+        if (cmd.property == "RapidModeMinutesRemaining") {
+            uint16_t value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<RapidModeTimedIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.RapidModeTimed");
+                if (iface) {
+                    iface->EmitRapidModeMinutesRemainingChanged(value);
+                }
+            }
+        }
+    }
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

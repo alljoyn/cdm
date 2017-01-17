@@ -31,6 +31,7 @@
 #define {{Interface.Name.upper()}}MODEL_H_
 
 #include <interfaces/controllee/{{InterfaceCategory}}/{{Interface.Name}}IntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -74,6 +75,9 @@ class {{Interface.Name}}Model : public virtual {{Interface.Name}}IntfControlleeM
   private:
     std::string m_busPath;
 };
+
+
+QStatus Handle{{Interface.Name}}Command(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

@@ -28,6 +28,7 @@
  ******************************************************************************/
 
 #include "CurrentHumidityModel.h"
+#include <interfaces/controllee/environment/CurrentHumidityIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
 
@@ -57,6 +58,39 @@ QStatus CurrentHumidityModel::GetMaxValue(uint8_t& out) const
 {
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Environment.CurrentHumidity", "MaxValue", out);
 }
+
+
+
+QStatus HandleCurrentHumidityCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+    if (cmd.name == "changed" && cmd.interface == "org.alljoyn.SmartSpaces.Environment.CurrentHumidity") {
+        if (cmd.property == "CurrentValue") {
+            uint8_t value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<CurrentHumidityIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Environment.CurrentHumidity");
+                if (iface) {
+                    iface->EmitCurrentValueChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "MaxValue") {
+            uint8_t value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<CurrentHumidityIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Environment.CurrentHumidity");
+                if (iface) {
+                    iface->EmitMaxValueChanged(value);
+                }
+            }
+        }
+    }
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

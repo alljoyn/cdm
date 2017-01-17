@@ -28,6 +28,7 @@
  ******************************************************************************/
 
 #include "TemperatureDisplayModel.h"
+#include <interfaces/controllee/userinterfacesettings/TemperatureDisplayIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
 
@@ -62,6 +63,29 @@ QStatus TemperatureDisplayModel::GetSupportedDisplayTemperatureUnits(std::vector
 {
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.UserInterfaceSettings.TemperatureDisplay", "SupportedDisplayTemperatureUnits", out);
 }
+
+
+
+QStatus HandleTemperatureDisplayCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+    if (cmd.name == "changed" && cmd.interface == "org.alljoyn.SmartSpaces.UserInterfaceSettings.TemperatureDisplay") {
+        if (cmd.property == "DisplayTemperatureUnit") {
+            uint8_t value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<TemperatureDisplayIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.UserInterfaceSettings.TemperatureDisplay");
+                if (iface) {
+                    iface->EmitDisplayTemperatureUnitChanged(value);
+                }
+            }
+        }
+    }
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

@@ -28,6 +28,7 @@
  ******************************************************************************/
 
 #include "ClosedStatusModel.h"
+#include <interfaces/controllee/operation/ClosedStatusIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
 
@@ -52,6 +53,29 @@ QStatus ClosedStatusModel::GetIsClosed(bool& out) const
 {
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.ClosedStatus", "IsClosed", out);
 }
+
+
+
+QStatus HandleClosedStatusCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+    if (cmd.name == "changed" && cmd.interface == "org.alljoyn.SmartSpaces.Operation.ClosedStatus") {
+        if (cmd.property == "IsClosed") {
+            bool value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<ClosedStatusIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.ClosedStatus");
+                if (iface) {
+                    iface->EmitIsClosedChanged(value);
+                }
+            }
+        }
+    }
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

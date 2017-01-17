@@ -28,6 +28,7 @@
  ******************************************************************************/
 
 #include "HeatingZoneModel.h"
+#include <interfaces/controllee/operation/HeatingZoneIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
 
@@ -62,6 +63,49 @@ QStatus HeatingZoneModel::GetHeatingLevels(std::vector<uint8_t>& out) const
 {
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.HeatingZone", "HeatingLevels", out);
 }
+
+
+
+QStatus HandleHeatingZoneCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+    if (cmd.name == "changed" && cmd.interface == "org.alljoyn.SmartSpaces.Operation.HeatingZone") {
+        if (cmd.property == "NumberOfHeatingZones") {
+            uint8_t value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<HeatingZoneIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.HeatingZone");
+                if (iface) {
+                    iface->EmitNumberOfHeatingZonesChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "MaxHeatingLevels") {
+            std::vector<uint8_t> value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<HeatingZoneIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.HeatingZone");
+                if (iface) {
+                    iface->EmitMaxHeatingLevelsChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "HeatingLevels") {
+            std::vector<uint8_t> value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<HeatingZoneIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.HeatingZone");
+                if (iface) {
+                    iface->EmitHeatingLevelsChanged(value);
+                }
+            }
+        }
+    }
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

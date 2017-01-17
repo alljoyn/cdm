@@ -31,6 +31,7 @@
 #define CLOSEDSTATUSMODEL_H_
 
 #include <interfaces/controllee/operation/ClosedStatusIntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -51,6 +52,9 @@ class ClosedStatusModel : public virtual ClosedStatusIntfControlleeModel {
   private:
     std::string m_busPath;
 };
+
+
+QStatus HandleClosedStatusCommand(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

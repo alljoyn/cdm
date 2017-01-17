@@ -31,6 +31,7 @@
 #define FANSPEEDLEVELMODEL_H_
 
 #include <interfaces/controllee/operation/FanSpeedLevelIntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -77,6 +78,9 @@ class FanSpeedLevelModel : public virtual FanSpeedLevelIntfControlleeModel {
   private:
     std::string m_busPath;
 };
+
+
+QStatus HandleFanSpeedLevelCommand(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

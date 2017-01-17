@@ -28,6 +28,7 @@
  ******************************************************************************/
 
 #include "TargetHumidityModel.h"
+#include <interfaces/controllee/environment/TargetHumidityIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
 
@@ -77,6 +78,69 @@ QStatus TargetHumidityModel::GetSelectableHumidityLevels(std::vector<uint8_t>& o
 {
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Environment.TargetHumidity", "SelectableHumidityLevels", out);
 }
+
+
+
+QStatus HandleTargetHumidityCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+    if (cmd.name == "changed" && cmd.interface == "org.alljoyn.SmartSpaces.Environment.TargetHumidity") {
+        if (cmd.property == "TargetValue") {
+            uint8_t value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<TargetHumidityIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Environment.TargetHumidity");
+                if (iface) {
+                    iface->EmitTargetValueChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "MinValue") {
+            uint8_t value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<TargetHumidityIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Environment.TargetHumidity");
+                if (iface) {
+                    iface->EmitMinValueChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "MaxValue") {
+            uint8_t value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<TargetHumidityIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Environment.TargetHumidity");
+                if (iface) {
+                    iface->EmitMaxValueChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "StepValue") {
+            uint8_t value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<TargetHumidityIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Environment.TargetHumidity");
+                if (iface) {
+                    iface->EmitStepValueChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "SelectableHumidityLevels") {
+            std::vector<uint8_t> value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<TargetHumidityIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Environment.TargetHumidity");
+                if (iface) {
+                    iface->EmitSelectableHumidityLevelsChanged(value);
+                }
+            }
+        }
+    }
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

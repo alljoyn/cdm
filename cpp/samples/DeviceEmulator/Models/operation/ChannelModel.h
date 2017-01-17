@@ -31,6 +31,7 @@
 #define CHANNELMODEL_H_
 
 #include <interfaces/controllee/operation/ChannelIntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -70,6 +71,9 @@ class ChannelModel : public virtual ChannelIntfControlleeModel {
   private:
     std::string m_busPath;
 };
+
+
+QStatus HandleChannelCommand(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

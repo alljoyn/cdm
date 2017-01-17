@@ -28,6 +28,7 @@
  ******************************************************************************/
 
 #include "TimeDisplayModel.h"
+#include <interfaces/controllee/userinterfacesettings/TimeDisplayIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
 
@@ -62,6 +63,29 @@ QStatus TimeDisplayModel::GetSupportedDisplayTimeFormats(std::vector<uint8_t>& o
 {
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.UserInterfaceSettings.TimeDisplay", "SupportedDisplayTimeFormats", out);
 }
+
+
+
+QStatus HandleTimeDisplayCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+    if (cmd.name == "changed" && cmd.interface == "org.alljoyn.SmartSpaces.UserInterfaceSettings.TimeDisplay") {
+        if (cmd.property == "DisplayTimeFormat") {
+            uint8_t value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<TimeDisplayIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.UserInterfaceSettings.TimeDisplay");
+                if (iface) {
+                    iface->EmitDisplayTimeFormatChanged(value);
+                }
+            }
+        }
+    }
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

@@ -31,6 +31,7 @@
 #define OVENCYCLEPHASEMODEL_H_
 
 #include <interfaces/controllee/operation/OvenCyclePhaseIntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -63,6 +64,9 @@ class OvenCyclePhaseModel : public virtual OvenCyclePhaseIntfControlleeModel {
   private:
     std::string m_busPath;
 };
+
+
+QStatus HandleOvenCyclePhaseCommand(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

@@ -520,5 +520,281 @@ QStatus SuperControllee::Stop()
     return m_controllee.Stop();
 }
 
+
+
+QStatus HandleCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_OK;
+
+    if (cmd.name == "changed")
+    {
+        if (cmd.interface == "org.alljoyn.Input.Hid")
+        {
+            status = HandleHidCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Environment.CurrentAirQuality")
+        {
+            status = HandleCurrentAirQualityCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Environment.CurrentAirQualityLevel")
+        {
+            status = HandleCurrentAirQualityLevelCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Environment.CurrentHumidity")
+        {
+            status = HandleCurrentHumidityCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Environment.CurrentTemperature")
+        {
+            status = HandleCurrentTemperatureCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Environment.TargetHumidity")
+        {
+            status = HandleTargetHumidityCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Environment.TargetTemperature")
+        {
+            status = HandleTargetTemperatureCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Environment.TargetTemperatureLevel")
+        {
+            status = HandleTargetTemperatureLevelCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Environment.WaterLevel")
+        {
+            status = HandleWaterLevelCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Environment.WindDirection")
+        {
+            status = HandleWindDirectionCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Operation.AirRecirculationMode")
+        {
+            status = HandleAirRecirculationModeCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Operation.Alerts")
+        {
+            status = HandleAlertsCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Operation.AudioVideoInput")
+        {
+            status = HandleAudioVideoInputCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Operation.AudioVolume")
+        {
+            status = HandleAudioVolumeCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Operation.BatteryStatus")
+        {
+            status = HandleBatteryStatusCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Operation.Brightness")
+        {
+            status = HandleBrightnessCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Operation.Channel")
+        {
+            status = HandleChannelCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Operation.ClimateControlMode")
+        {
+            status = HandleClimateControlModeCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Operation.ClosedStatus")
+        {
+            status = HandleClosedStatusCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Operation.Color")
+        {
+            status = HandleColorCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Operation.ColorTemperature")
+        {
+            status = HandleColorTemperatureCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Operation.CurrentPower")
+        {
+            status = HandleCurrentPowerCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Operation.CycleControl")
+        {
+            status = HandleCycleControlCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Operation.DishWashingCyclePhase")
+        {
+            status = HandleDishWashingCyclePhaseCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Operation.EnergyUsage")
+        {
+            status = HandleEnergyUsageCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Operation.FanSpeedLevel")
+        {
+            status = HandleFanSpeedLevelCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Operation.FilterStatus")
+        {
+            status = HandleFilterStatusCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Operation.HeatingZone")
+        {
+            status = HandleHeatingZoneCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Operation.HvacFanMode")
+        {
+            status = HandleHvacFanModeCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Operation.LaundryCyclePhase")
+        {
+            status = HandleLaundryCyclePhaseCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Operation.LockControl")
+        {
+            status = HandleLockControlCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Operation.LockedStatus")
+        {
+            status = HandleLockedStatusCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Operation.MoistureOutputLevel")
+        {
+            status = HandleMoistureOutputLevelCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Operation.OffControl")
+        {
+            status = HandleOffControlCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Operation.OnControl")
+        {
+            status = HandleOnControlCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Operation.OnOffStatus")
+        {
+            status = HandleOnOffStatusCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Operation.OvenCyclePhase")
+        {
+            status = HandleOvenCyclePhaseCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Operation.PlugInUnits")
+        {
+            status = HandlePlugInUnitsCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Operation.RapidMode")
+        {
+            status = HandleRapidModeCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Operation.RapidModeTimed")
+        {
+            status = HandleRapidModeTimedCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Operation.RemoteControllability")
+        {
+            status = HandleRemoteControllabilityCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Operation.RepeatMode")
+        {
+            status = HandleRepeatModeCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Operation.ResourceSaving")
+        {
+            status = HandleResourceSavingCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Operation.RobotCleaningCyclePhase")
+        {
+            status = HandleRobotCleaningCyclePhaseCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Operation.SoilLevel")
+        {
+            status = HandleSoilLevelCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Operation.SpinSpeedLevel")
+        {
+            status = HandleSpinSpeedLevelCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Operation.Timer")
+        {
+            status = HandleTimerCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Operation.TriggerSensor")
+        {
+            status = HandleTriggerSensorCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.Operation.UnlockControl")
+        {
+            status = HandleUnlockControlCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.UserInterfaceSettings.LanguageDisplay")
+        {
+            status = HandleLanguageDisplayCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.UserInterfaceSettings.TemperatureDisplay")
+        {
+            status = HandleTemperatureDisplayCommand(cmd, controllee);
+        }
+        else
+        if (cmd.interface == "org.alljoyn.SmartSpaces.UserInterfaceSettings.TimeDisplay")
+        {
+            status = HandleTimeDisplayCommand(cmd, controllee);
+        }
+        else
+        {
+            status = ER_FAIL;
+        }
+    }
+
+    return status;
+}
+
 //======================================================================
 }}}

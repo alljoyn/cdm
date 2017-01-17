@@ -28,6 +28,7 @@
  ******************************************************************************/
 
 #include "AudioVideoInputModel.h"
+#include <interfaces/controllee/operation/AudioVideoInputIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
 
@@ -199,6 +200,39 @@ QStatus AudioVideoInputModel::GetSupportedInputSources(std::vector<AudioVideoInp
 {
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.AudioVideoInput", "SupportedInputSources", out);
 }
+
+
+
+QStatus HandleAudioVideoInputCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+    if (cmd.name == "changed" && cmd.interface == "org.alljoyn.SmartSpaces.Operation.AudioVideoInput") {
+        if (cmd.property == "InputSourceId") {
+            uint16_t value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<AudioVideoInputIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.AudioVideoInput");
+                if (iface) {
+                    iface->EmitInputSourceIdChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "SupportedInputSources") {
+            std::vector<AudioVideoInputInterface::InputSource> value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<AudioVideoInputIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.AudioVideoInput");
+                if (iface) {
+                    iface->EmitSupportedInputSourcesChanged(value);
+                }
+            }
+        }
+    }
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

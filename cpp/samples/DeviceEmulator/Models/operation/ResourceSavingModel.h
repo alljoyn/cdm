@@ -31,6 +31,7 @@
 #define RESOURCESAVINGMODEL_H_
 
 #include <interfaces/controllee/operation/ResourceSavingIntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -58,6 +59,9 @@ class ResourceSavingModel : public virtual ResourceSavingIntfControlleeModel {
   private:
     std::string m_busPath;
 };
+
+
+QStatus HandleResourceSavingCommand(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

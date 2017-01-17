@@ -28,9 +28,9 @@
  ******************************************************************************/
 
 #include "ChannelModel.h"
+#include <interfaces/controllee/operation/ChannelIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
-//#include "Commands.h"
 #include <interfaces/controllee/operation/ChannelIntfControllee.h>
 
 namespace ajn {
@@ -123,28 +123,6 @@ static std::vector<ChannelInterface::ChannelInfoRecord> s_channels = {
     {"b",   "2",    "Shire Shopping Network"}
 };
 
-//static const char* BusPath = "/CDM/Channel";
-//
-//static bool ChannelCommand(const std::string& key, const StringVec& args, CdmControllee& controllee)
-//{
-//    bool ok = false;
-//
-//    if (args.size() >= 1)
-//    {
-//        if (args[0] == "signal")
-//        {
-//            if (auto iface = controllee.GetInterface<ChannelIntfControllee>(BusPath, "org.alljoyn.SmartSpaces.Operation.Channel"))
-//            {
-//                iface->EmitChannelListChanged();
-//                ok = true;
-//            }
-//        }
-//    }
-//
-//    return ok;
-//}
-//
-//static bool s_subscribed = Commands::Instance().Subscribe("channel", ChannelCommand, "channel signal");
 
 
 ChannelModel::ChannelModel(const std::string& busPath) :
@@ -182,6 +160,39 @@ QStatus ChannelModel::GetChannelList(uint16_t arg_startingRecord, uint16_t arg_n
 
     return ER_OK;
 }
+
+
+
+QStatus HandleChannelCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+    if (cmd.name == "changed" && cmd.interface == "org.alljoyn.SmartSpaces.Operation.Channel") {
+        if (cmd.property == "ChannelId") {
+            qcc::String value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<ChannelIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.Channel");
+                if (iface) {
+                    iface->EmitChannelIdChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "TotalNumberOfChannels") {
+            uint16_t value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<ChannelIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.Channel");
+                if (iface) {
+                    iface->EmitTotalNumberOfChannelsChanged(value);
+                }
+            }
+        }
+    }
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

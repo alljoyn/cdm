@@ -34,8 +34,11 @@
 
 #include <ajtcl/cdm/interfaces/{{Interface.Category}}/{{Interface.Name}}Model.h>
 #include <ajtcl/cdm/interfaces/{{Interface.Category}}/{{Interface.Name}}Interface.h>
+#include "../../../Utils/Command.h"
 
 {{Interface.Name}}Model *Get{{Interface.Name}}Model(void);
+
+AJ_Status Handle{{Interface.Name}}Command(const Command* cmd, void* context);
 
 /* REVISIT delete this */
 {% for struc in Interface.Structs %}

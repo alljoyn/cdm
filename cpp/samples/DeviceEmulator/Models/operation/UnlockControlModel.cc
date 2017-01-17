@@ -28,6 +28,7 @@
  ******************************************************************************/
 
 #include "UnlockControlModel.h"
+#include <interfaces/controllee/operation/UnlockControlIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
 #include <interfaces/controllee/operation/LockedStatusIntfControllee.h>
@@ -62,6 +63,17 @@ QStatus UnlockControlModel::Unlock(ErrorCode& error, CdmControllee& controllee)
 
     return status;
 }
+
+
+
+QStatus HandleUnlockControlCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

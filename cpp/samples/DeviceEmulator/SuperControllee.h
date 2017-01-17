@@ -39,6 +39,7 @@
 #include <alljoyn/cdm/util/CdmSecurity.h>
 
 #include "Config.h"
+#include "../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -77,6 +78,9 @@ class SuperControllee {
     }
 
 };
+
+
+QStatus HandleCommand(const Command& cmd, CdmControllee& controllee);
 
 //======================================================================
 }}}

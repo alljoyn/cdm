@@ -28,6 +28,7 @@
  ******************************************************************************/
 
 #include "SpinSpeedLevelModel.h"
+#include <interfaces/controllee/operation/SpinSpeedLevelIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
 
@@ -67,6 +68,39 @@ QStatus SpinSpeedLevelModel::GetSelectableLevels(std::vector<uint8_t>& out) cons
 {
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.SpinSpeedLevel", "SelectableLevels", out);
 }
+
+
+
+QStatus HandleSpinSpeedLevelCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+    if (cmd.name == "changed" && cmd.interface == "org.alljoyn.SmartSpaces.Operation.SpinSpeedLevel") {
+        if (cmd.property == "TargetLevel") {
+            uint8_t value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<SpinSpeedLevelIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.SpinSpeedLevel");
+                if (iface) {
+                    iface->EmitTargetLevelChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "SelectableLevels") {
+            std::vector<uint8_t> value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<SpinSpeedLevelIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.SpinSpeedLevel");
+                if (iface) {
+                    iface->EmitSelectableLevelsChanged(value);
+                }
+            }
+        }
+    }
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

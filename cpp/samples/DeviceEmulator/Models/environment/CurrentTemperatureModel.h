@@ -31,6 +31,7 @@
 #define CURRENTTEMPERATUREMODEL_H_
 
 #include <interfaces/controllee/environment/CurrentTemperatureIntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -63,6 +64,9 @@ class CurrentTemperatureModel : public virtual CurrentTemperatureIntfControlleeM
   private:
     std::string m_busPath;
 };
+
+
+QStatus HandleCurrentTemperatureCommand(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

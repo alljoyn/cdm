@@ -28,6 +28,7 @@
  ******************************************************************************/
 
 #include "AirRecirculationModeModel.h"
+#include <interfaces/controllee/operation/AirRecirculationModeIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
 
@@ -57,6 +58,29 @@ QStatus AirRecirculationModeModel::SetIsRecirculating(const bool value)
 {
     return HAL::WriteProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.AirRecirculationMode", "IsRecirculating", value);
 }
+
+
+
+QStatus HandleAirRecirculationModeCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+    if (cmd.name == "changed" && cmd.interface == "org.alljoyn.SmartSpaces.Operation.AirRecirculationMode") {
+        if (cmd.property == "IsRecirculating") {
+            bool value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<AirRecirculationModeIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.AirRecirculationMode");
+                if (iface) {
+                    iface->EmitIsRecirculatingChanged(value);
+                }
+            }
+        }
+    }
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

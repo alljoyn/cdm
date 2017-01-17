@@ -28,6 +28,7 @@
  ******************************************************************************/
 
 #include "AudioVolumeModel.h"
+#include <interfaces/controllee/operation/AudioVolumeIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
 
@@ -72,6 +73,49 @@ QStatus AudioVolumeModel::SetMute(const bool value)
 {
     return HAL::WriteProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.AudioVolume", "Mute", value);
 }
+
+
+
+QStatus HandleAudioVolumeCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+    if (cmd.name == "changed" && cmd.interface == "org.alljoyn.SmartSpaces.Operation.AudioVolume") {
+        if (cmd.property == "Volume") {
+            uint8_t value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<AudioVolumeIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.AudioVolume");
+                if (iface) {
+                    iface->EmitVolumeChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "MaxVolume") {
+            uint8_t value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<AudioVolumeIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.AudioVolume");
+                if (iface) {
+                    iface->EmitMaxVolumeChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "Mute") {
+            bool value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<AudioVolumeIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.AudioVolume");
+                if (iface) {
+                    iface->EmitMuteChanged(value);
+                }
+            }
+        }
+    }
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

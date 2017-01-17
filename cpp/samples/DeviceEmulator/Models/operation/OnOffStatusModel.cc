@@ -28,6 +28,7 @@
  ******************************************************************************/
 
 #include "OnOffStatusModel.h"
+#include <interfaces/controllee/operation/OnOffStatusIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
 
@@ -52,6 +53,29 @@ QStatus OnOffStatusModel::GetIsOn(bool& out) const
 {
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.OnOffStatus", "IsOn", out);
 }
+
+
+
+QStatus HandleOnOffStatusCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+    if (cmd.name == "changed" && cmd.interface == "org.alljoyn.SmartSpaces.Operation.OnOffStatus") {
+        if (cmd.property == "IsOn") {
+            bool value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<OnOffStatusIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.OnOffStatus");
+                if (iface) {
+                    iface->EmitIsOnChanged(value);
+                }
+            }
+        }
+    }
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

@@ -28,6 +28,7 @@
  ******************************************************************************/
 
 #include "CurrentPowerModel.h"
+#include <interfaces/controllee/operation/CurrentPowerIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
 
@@ -62,6 +63,49 @@ QStatus CurrentPowerModel::GetUpdateMinTime(uint16_t& out) const
 {
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.CurrentPower", "UpdateMinTime", out);
 }
+
+
+
+QStatus HandleCurrentPowerCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+    if (cmd.name == "changed" && cmd.interface == "org.alljoyn.SmartSpaces.Operation.CurrentPower") {
+        if (cmd.property == "CurrentPower") {
+            double value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<CurrentPowerIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.CurrentPower");
+                if (iface) {
+                    iface->EmitCurrentPowerChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "Precision") {
+            double value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<CurrentPowerIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.CurrentPower");
+                if (iface) {
+                    iface->EmitPrecisionChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "UpdateMinTime") {
+            uint16_t value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<CurrentPowerIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.CurrentPower");
+                if (iface) {
+                    iface->EmitUpdateMinTimeChanged(value);
+                }
+            }
+        }
+    }
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

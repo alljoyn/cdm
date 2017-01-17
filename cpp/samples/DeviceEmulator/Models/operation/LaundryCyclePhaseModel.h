@@ -31,6 +31,7 @@
 #define LAUNDRYCYCLEPHASEMODEL_H_
 
 #include <interfaces/controllee/operation/LaundryCyclePhaseIntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -63,6 +64,9 @@ class LaundryCyclePhaseModel : public virtual LaundryCyclePhaseIntfControlleeMod
   private:
     std::string m_busPath;
 };
+
+
+QStatus HandleLaundryCyclePhaseCommand(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

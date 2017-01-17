@@ -31,6 +31,7 @@
 #define TIMERMODEL_H_
 
 #include <interfaces/controllee/operation/TimerIntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -93,6 +94,9 @@ class TimerModel : public virtual TimerIntfControlleeModel {
   private:
     std::string m_busPath;
 };
+
+
+QStatus HandleTimerCommand(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

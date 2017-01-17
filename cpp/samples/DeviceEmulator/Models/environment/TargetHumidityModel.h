@@ -31,6 +31,7 @@
 #define TARGETHUMIDITYMODEL_H_
 
 #include <interfaces/controllee/environment/TargetHumidityIntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -82,6 +83,9 @@ class TargetHumidityModel : public virtual TargetHumidityIntfControlleeModel {
   private:
     std::string m_busPath;
 };
+
+
+QStatus HandleTargetHumidityCommand(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

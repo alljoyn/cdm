@@ -31,6 +31,7 @@
 #define CURRENTPOWERMODEL_H_
 
 #include <interfaces/controllee/operation/CurrentPowerIntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -63,6 +64,9 @@ class CurrentPowerModel : public virtual CurrentPowerIntfControlleeModel {
   private:
     std::string m_busPath;
 };
+
+
+QStatus HandleCurrentPowerCommand(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

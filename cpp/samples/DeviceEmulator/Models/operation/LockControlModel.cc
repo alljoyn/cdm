@@ -28,6 +28,7 @@
  ******************************************************************************/
 
 #include "LockControlModel.h"
+#include <interfaces/controllee/operation/LockControlIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
 #include <interfaces/controllee/operation/LockedStatusIntfControllee.h>
@@ -62,6 +63,17 @@ QStatus LockControlModel::Lock(ErrorCode& error, CdmControllee& controllee)
 
     return status;
 }
+
+
+
+QStatus HandleLockControlCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

@@ -31,6 +31,7 @@
 #define COLORMODEL_H_
 
 #include <interfaces/controllee/operation/ColorIntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -71,6 +72,9 @@ class ColorModel : public virtual ColorIntfControlleeModel {
   private:
     std::string m_busPath;
 };
+
+
+QStatus HandleColorCommand(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

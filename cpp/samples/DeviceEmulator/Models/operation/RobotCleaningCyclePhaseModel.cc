@@ -28,6 +28,7 @@
  ******************************************************************************/
 
 #include "RobotCleaningCyclePhaseModel.h"
+#include <interfaces/controllee/operation/RobotCleaningCyclePhaseIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
 
@@ -139,6 +140,39 @@ QStatus RobotCleaningCyclePhaseModel::GetVendorPhasesDescription(qcc::String& ar
     arg_phasesDescription = s_phases;
     return ER_OK;
 }
+
+
+
+QStatus HandleRobotCleaningCyclePhaseCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+    if (cmd.name == "changed" && cmd.interface == "org.alljoyn.SmartSpaces.Operation.RobotCleaningCyclePhase") {
+        if (cmd.property == "CyclePhase") {
+            uint8_t value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<RobotCleaningCyclePhaseIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.RobotCleaningCyclePhase");
+                if (iface) {
+                    iface->EmitCyclePhaseChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "SupportedCyclePhases") {
+            std::vector<uint8_t> value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<RobotCleaningCyclePhaseIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.RobotCleaningCyclePhase");
+                if (iface) {
+                    iface->EmitSupportedCyclePhasesChanged(value);
+                }
+            }
+        }
+    }
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

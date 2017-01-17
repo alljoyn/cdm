@@ -31,6 +31,7 @@
 #define REMOTECONTROLLABILITYMODEL_H_
 
 #include <interfaces/controllee/operation/RemoteControllabilityIntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -51,6 +52,9 @@ class RemoteControllabilityModel : public virtual RemoteControllabilityIntfContr
   private:
     std::string m_busPath;
 };
+
+
+QStatus HandleRemoteControllabilityCommand(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

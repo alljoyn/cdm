@@ -28,6 +28,7 @@
  ******************************************************************************/
 
 #include "HidModel.h"
+#include <interfaces/controllee/input/HidIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
 
@@ -215,6 +216,29 @@ QStatus HidModel::InjectEvents(std::vector<HidInterface::InputEvent>& arg_inputE
 {
     return ER_OK;
 }
+
+
+
+QStatus HandleHidCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+    if (cmd.name == "changed" && cmd.interface == "org.alljoyn.Input.Hid") {
+        if (cmd.property == "SupportedEvents") {
+            std::vector<HidInterface::SupportedInputEvent> value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<HidIntfControllee>(cmd.objPath, "org.alljoyn.Input.Hid");
+                if (iface) {
+                    iface->EmitSupportedEventsChanged(value);
+                }
+            }
+        }
+    }
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

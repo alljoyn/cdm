@@ -28,6 +28,7 @@
  ******************************************************************************/
 
 #include "PlugInUnitsModel.h"
+#include <interfaces/controllee/operation/PlugInUnitsIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
 
@@ -123,6 +124,29 @@ QStatus PlugInUnitsModel::GetPlugInUnits(std::vector<PlugInUnitsInterface::PlugI
 {
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.PlugInUnits", "PlugInUnits", out);
 }
+
+
+
+QStatus HandlePlugInUnitsCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+    if (cmd.name == "changed" && cmd.interface == "org.alljoyn.SmartSpaces.Operation.PlugInUnits") {
+        if (cmd.property == "PlugInUnits") {
+            std::vector<PlugInUnitsInterface::PlugInInfo> value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<PlugInUnitsIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.PlugInUnits");
+                if (iface) {
+                    iface->EmitPlugInUnitsChanged(value);
+                }
+            }
+        }
+    }
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

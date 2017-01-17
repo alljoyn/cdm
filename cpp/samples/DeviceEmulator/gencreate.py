@@ -76,3 +76,15 @@ for (cat, short, full) in ifaces:
 else
 """)
     print code.substitute(short = short, full = full),
+
+print
+print
+
+for (cat, short, full) in ifaces:
+    code = Template("""if (cmd.interface == "$full")
+{
+    status = Handle${short}Command(cmd, controllee);
+}
+else
+""")
+    print code.substitute(short = short, full = full),

@@ -31,6 +31,7 @@
 #define TRIGGERSENSORMODEL_H_
 
 #include <interfaces/controllee/operation/TriggerSensorIntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -51,6 +52,9 @@ class TriggerSensorModel : public virtual TriggerSensorIntfControlleeModel {
   private:
     std::string m_busPath;
 };
+
+
+QStatus HandleTriggerSensorCommand(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

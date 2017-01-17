@@ -31,6 +31,7 @@
 #define ONCONTROLMODEL_H_
 
 #include <interfaces/controllee/operation/OnControlIntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -51,6 +52,9 @@ class OnControlModel : public virtual OnControlIntfControlleeModel {
   private:
     std::string m_busPath;
 };
+
+
+QStatus HandleOnControlCommand(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

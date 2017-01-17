@@ -28,6 +28,7 @@
  ******************************************************************************/
 
 #include "LanguageDisplayModel.h"
+#include <interfaces/controllee/userinterfacesettings/LanguageDisplayIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
 
@@ -62,6 +63,29 @@ QStatus LanguageDisplayModel::GetSupportedDisplayLanguages(std::vector<qcc::Stri
 {
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.UserInterfaceSettings.LanguageDisplay", "SupportedDisplayLanguages", out);
 }
+
+
+
+QStatus HandleLanguageDisplayCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+    if (cmd.name == "changed" && cmd.interface == "org.alljoyn.SmartSpaces.UserInterfaceSettings.LanguageDisplay") {
+        if (cmd.property == "DisplayLanguage") {
+            qcc::String value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<LanguageDisplayIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.UserInterfaceSettings.LanguageDisplay");
+                if (iface) {
+                    iface->EmitDisplayLanguageChanged(value);
+                }
+            }
+        }
+    }
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

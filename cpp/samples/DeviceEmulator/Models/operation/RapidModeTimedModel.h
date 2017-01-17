@@ -31,6 +31,7 @@
 #define RAPIDMODETIMEDMODEL_H_
 
 #include <interfaces/controllee/operation/RapidModeTimedIntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -64,6 +65,9 @@ class RapidModeTimedModel : public virtual RapidModeTimedIntfControlleeModel {
   private:
     std::string m_busPath;
 };
+
+
+QStatus HandleRapidModeTimedCommand(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

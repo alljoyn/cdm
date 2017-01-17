@@ -31,6 +31,7 @@
 #define LANGUAGEDISPLAYMODEL_H_
 
 #include <interfaces/controllee/userinterfacesettings/LanguageDisplayIntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -64,6 +65,9 @@ class LanguageDisplayModel : public virtual LanguageDisplayIntfControlleeModel {
   private:
     std::string m_busPath;
 };
+
+
+QStatus HandleLanguageDisplayCommand(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

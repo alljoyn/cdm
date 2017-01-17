@@ -28,6 +28,7 @@
  ******************************************************************************/
 
 #include "TimerModel.h"
+#include <interfaces/controllee/operation/TimerIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
 #include <interfaces/controllee/operation/TimerIntfControllee.h>
@@ -106,6 +107,49 @@ QStatus TimerModel::SetTargetTimeToStop(int32_t arg_targetTimeToStop, ErrorCode&
 
     return status;
 }
+
+
+
+QStatus HandleTimerCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+    if (cmd.name == "changed" && cmd.interface == "org.alljoyn.SmartSpaces.Operation.Timer") {
+        if (cmd.property == "TargetTimeToStart") {
+            int32_t value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<TimerIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.Timer");
+                if (iface) {
+                    iface->EmitTargetTimeToStartChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "TargetTimeToStop") {
+            int32_t value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<TimerIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.Timer");
+                if (iface) {
+                    iface->EmitTargetTimeToStopChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "TargetDuration") {
+            int32_t value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<TimerIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.Timer");
+                if (iface) {
+                    iface->EmitTargetDurationChanged(value);
+                }
+            }
+        }
+    }
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

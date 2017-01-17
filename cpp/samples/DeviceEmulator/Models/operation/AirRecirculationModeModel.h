@@ -31,6 +31,7 @@
 #define AIRRECIRCULATIONMODEMODEL_H_
 
 #include <interfaces/controllee/operation/AirRecirculationModeIntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -58,6 +59,9 @@ class AirRecirculationModeModel : public virtual AirRecirculationModeIntfControl
   private:
     std::string m_busPath;
 };
+
+
+QStatus HandleAirRecirculationModeCommand(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

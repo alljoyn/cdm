@@ -28,6 +28,7 @@
  ******************************************************************************/
 
 #include "FilterStatusModel.h"
+#include <interfaces/controllee/operation/FilterStatusIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
 
@@ -82,6 +83,59 @@ QStatus FilterStatusModel::GetLifeRemaining(uint8_t& out) const
 {
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.FilterStatus", "LifeRemaining", out);
 }
+
+
+
+QStatus HandleFilterStatusCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+    if (cmd.name == "changed" && cmd.interface == "org.alljoyn.SmartSpaces.Operation.FilterStatus") {
+        if (cmd.property == "ExpectedLifeInDays") {
+            uint16_t value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<FilterStatusIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.FilterStatus");
+                if (iface) {
+                    iface->EmitExpectedLifeInDaysChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "IsCleanable") {
+            bool value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<FilterStatusIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.FilterStatus");
+                if (iface) {
+                    iface->EmitIsCleanableChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "OrderPercentage") {
+            uint8_t value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<FilterStatusIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.FilterStatus");
+                if (iface) {
+                    iface->EmitOrderPercentageChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "LifeRemaining") {
+            uint8_t value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<FilterStatusIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.FilterStatus");
+                if (iface) {
+                    iface->EmitLifeRemainingChanged(value);
+                }
+            }
+        }
+    }
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

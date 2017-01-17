@@ -31,6 +31,7 @@
 #define REPEATMODEMODEL_H_
 
 #include <interfaces/controllee/operation/RepeatModeIntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -58,6 +59,9 @@ class RepeatModeModel : public virtual RepeatModeIntfControlleeModel {
   private:
     std::string m_busPath;
 };
+
+
+QStatus HandleRepeatModeCommand(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

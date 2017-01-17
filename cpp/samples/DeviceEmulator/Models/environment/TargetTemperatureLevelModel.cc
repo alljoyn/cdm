@@ -28,6 +28,7 @@
  ******************************************************************************/
 
 #include "TargetTemperatureLevelModel.h"
+#include <interfaces/controllee/environment/TargetTemperatureLevelIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
 
@@ -67,6 +68,49 @@ QStatus TargetTemperatureLevelModel::GetSelectableTemperatureLevels(std::vector<
 {
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Environment.TargetTemperatureLevel", "SelectableTemperatureLevels", out);
 }
+
+
+
+QStatus HandleTargetTemperatureLevelCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+    if (cmd.name == "changed" && cmd.interface == "org.alljoyn.SmartSpaces.Environment.TargetTemperatureLevel") {
+        if (cmd.property == "MaxLevel") {
+            uint8_t value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<TargetTemperatureLevelIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Environment.TargetTemperatureLevel");
+                if (iface) {
+                    iface->EmitMaxLevelChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "TargetLevel") {
+            uint8_t value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<TargetTemperatureLevelIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Environment.TargetTemperatureLevel");
+                if (iface) {
+                    iface->EmitTargetLevelChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "SelectableTemperatureLevels") {
+            std::vector<uint8_t> value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<TargetTemperatureLevelIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Environment.TargetTemperatureLevel");
+                if (iface) {
+                    iface->EmitSelectableTemperatureLevelsChanged(value);
+                }
+            }
+        }
+    }
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

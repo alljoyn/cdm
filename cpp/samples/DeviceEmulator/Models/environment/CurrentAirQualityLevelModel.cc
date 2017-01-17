@@ -28,6 +28,7 @@
  ******************************************************************************/
 
 #include "CurrentAirQualityLevelModel.h"
+#include <interfaces/controllee/environment/CurrentAirQualityLevelIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
 
@@ -79,6 +80,49 @@ QStatus CurrentAirQualityLevelModel::GetMaxLevel(uint8_t& out) const
 {
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Environment.CurrentAirQualityLevel", "MaxLevel", out);
 }
+
+
+
+QStatus HandleCurrentAirQualityLevelCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+    if (cmd.name == "changed" && cmd.interface == "org.alljoyn.SmartSpaces.Environment.CurrentAirQualityLevel") {
+        if (cmd.property == "ContaminantType") {
+            CurrentAirQualityLevelInterface::ContaminantType value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<CurrentAirQualityLevelIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Environment.CurrentAirQualityLevel");
+                if (iface) {
+                    iface->EmitContaminantTypeChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "CurrentLevel") {
+            uint8_t value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<CurrentAirQualityLevelIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Environment.CurrentAirQualityLevel");
+                if (iface) {
+                    iface->EmitCurrentLevelChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "MaxLevel") {
+            uint8_t value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<CurrentAirQualityLevelIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Environment.CurrentAirQualityLevel");
+                if (iface) {
+                    iface->EmitMaxLevelChanged(value);
+                }
+            }
+        }
+    }
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

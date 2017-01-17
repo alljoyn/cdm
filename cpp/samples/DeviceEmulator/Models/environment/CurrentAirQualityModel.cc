@@ -28,6 +28,7 @@
  ******************************************************************************/
 
 #include "CurrentAirQualityModel.h"
+#include <interfaces/controllee/environment/CurrentAirQualityIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
 
@@ -94,6 +95,79 @@ QStatus CurrentAirQualityModel::GetUpdateMinTime(uint16_t& out) const
 {
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Environment.CurrentAirQuality", "UpdateMinTime", out);
 }
+
+
+
+QStatus HandleCurrentAirQualityCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+    if (cmd.name == "changed" && cmd.interface == "org.alljoyn.SmartSpaces.Environment.CurrentAirQuality") {
+        if (cmd.property == "ContaminantType") {
+            CurrentAirQualityInterface::ContaminantType value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<CurrentAirQualityIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Environment.CurrentAirQuality");
+                if (iface) {
+                    iface->EmitContaminantTypeChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "CurrentValue") {
+            double value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<CurrentAirQualityIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Environment.CurrentAirQuality");
+                if (iface) {
+                    iface->EmitCurrentValueChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "MinValue") {
+            double value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<CurrentAirQualityIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Environment.CurrentAirQuality");
+                if (iface) {
+                    iface->EmitMinValueChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "MaxValue") {
+            double value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<CurrentAirQualityIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Environment.CurrentAirQuality");
+                if (iface) {
+                    iface->EmitMaxValueChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "Precision") {
+            double value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<CurrentAirQualityIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Environment.CurrentAirQuality");
+                if (iface) {
+                    iface->EmitPrecisionChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "UpdateMinTime") {
+            uint16_t value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<CurrentAirQualityIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Environment.CurrentAirQuality");
+                if (iface) {
+                    iface->EmitUpdateMinTimeChanged(value);
+                }
+            }
+        }
+    }
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

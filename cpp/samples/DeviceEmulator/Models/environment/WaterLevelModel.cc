@@ -28,6 +28,7 @@
  ******************************************************************************/
 
 #include "WaterLevelModel.h"
+#include <interfaces/controllee/environment/WaterLevelIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
 
@@ -79,6 +80,49 @@ QStatus WaterLevelModel::GetMaxLevel(uint8_t& out) const
 {
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Environment.WaterLevel", "MaxLevel", out);
 }
+
+
+
+QStatus HandleWaterLevelCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+    if (cmd.name == "changed" && cmd.interface == "org.alljoyn.SmartSpaces.Environment.WaterLevel") {
+        if (cmd.property == "SupplySource") {
+            WaterLevelInterface::SupplySource value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<WaterLevelIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Environment.WaterLevel");
+                if (iface) {
+                    iface->EmitSupplySourceChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "CurrentLevel") {
+            uint8_t value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<WaterLevelIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Environment.WaterLevel");
+                if (iface) {
+                    iface->EmitCurrentLevelChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "MaxLevel") {
+            uint8_t value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<WaterLevelIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Environment.WaterLevel");
+                if (iface) {
+                    iface->EmitMaxLevelChanged(value);
+                }
+            }
+        }
+    }
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

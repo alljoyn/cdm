@@ -36,9 +36,9 @@
 #include <alljoyn/cdm/util/CdmSecurity.h>
 
 #include "Config.h"
-#include "Commands.h"
 #include "SuperControllee.h"
 #include "../Utils/HAL.h"
+#include "../Utils/Command.h"
 
 using namespace qcc;
 using namespace ajn;
@@ -48,51 +48,6 @@ using std::string;
 typedef std::vector<std::string> StringVec;
 
 //======================================================================
-
-static bool s_quit = false;
-
-static bool HelpCommand(const string& key, const StringVec& args, CdmControllee&)
-{
-    for (auto& h : emulator::Commands::Instance().Help())
-    {
-        std::cout << h << "\n";
-    }
-    return true;
-}
-
-
-
-static bool QuitCommand(const string& key, const StringVec& args, CdmControllee&)
-{
-    s_quit = true;
-    return true;
-}
-
-
-
-static void CommandLoop(Ref<emulator::SuperControllee> supercontrollee)
-{
-    auto& cmds = emulator::Commands::Instance();
-    auto& clee = supercontrollee->GetControllee();
-
-    cmds.Subscribe("help", HelpCommand, "help");
-    cmds.Subscribe("h",    HelpCommand, "h - help");
-    cmds.Subscribe("quit", QuitCommand, "quit");
-    cmds.Subscribe("q",    QuitCommand, "q - quit");
-
-    // testing cin detects an eof (^D)
-    while (!s_quit && std::cin)
-    {
-        string line;
-        std::cout << "emul> ";
-        std::getline(std::cin, line);
-        if (!line.empty() && !cmds.Publish(line, clee))
-        {
-            std::cout << "Failed\n";
-        }
-    }
-}
-
 
 void FindArg(int argc, char** argv, const std::string& arg, const std::string& defValue, std::string& out)
 {
@@ -164,7 +119,7 @@ int CDECL_CALL main(int argc, char** argv)
         return 1;
     }
 
-    CommandLoop(device);
+    StartCommands(emulator::HandleCommand, device->GetControllee());
 
     device->Stop();
     return 0;

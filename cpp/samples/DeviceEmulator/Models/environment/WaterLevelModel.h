@@ -31,6 +31,7 @@
 #define WATERLEVELMODEL_H_
 
 #include <interfaces/controllee/environment/WaterLevelIntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -63,6 +64,9 @@ class WaterLevelModel : public virtual WaterLevelIntfControlleeModel {
   private:
     std::string m_busPath;
 };
+
+
+QStatus HandleWaterLevelCommand(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

@@ -28,9 +28,9 @@
  ******************************************************************************/
 
 #include "CycleControlModel.h"
+#include <interfaces/controllee/operation/CycleControlIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
-#include "Commands.h"
 #include <interfaces/controllee/operation/CycleControlIntfControllee.h>
 
 namespace ajn {
@@ -143,6 +143,29 @@ QStatus CycleControlModel::ExecuteOperationalCommand(CycleControlInterface::Oper
 
     return ER_OK;
 }
+
+
+
+QStatus HandleCycleControlCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+    if (cmd.name == "changed" && cmd.interface == "org.alljoyn.SmartSpaces.Operation.CycleControl") {
+        if (cmd.property == "OperationalState") {
+            CycleControlInterface::OperationalState value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<CycleControlIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.CycleControl");
+                if (iface) {
+                    iface->EmitOperationalStateChanged(value);
+                }
+            }
+        }
+    }
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

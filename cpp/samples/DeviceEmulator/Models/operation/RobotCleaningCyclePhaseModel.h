@@ -31,6 +31,7 @@
 #define ROBOTCLEANINGCYCLEPHASEMODEL_H_
 
 #include <interfaces/controllee/operation/RobotCleaningCyclePhaseIntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -63,6 +64,9 @@ class RobotCleaningCyclePhaseModel : public virtual RobotCleaningCyclePhaseIntfC
   private:
     std::string m_busPath;
 };
+
+
+QStatus HandleRobotCleaningCyclePhaseCommand(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

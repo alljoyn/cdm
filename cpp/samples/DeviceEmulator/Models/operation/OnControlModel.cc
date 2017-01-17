@@ -28,6 +28,7 @@
  ******************************************************************************/
 
 #include "OnControlModel.h"
+#include <interfaces/controllee/operation/OnControlIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
 #include <interfaces/controllee/operation/OnOffStatusIntfControllee.h>
@@ -62,6 +63,17 @@ QStatus OnControlModel::SwitchOn(ErrorCode& error, CdmControllee& controllee)
 
     return status;
 }
+
+
+
+QStatus HandleOnControlCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

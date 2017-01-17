@@ -28,6 +28,7 @@
  ******************************************************************************/
 
 #include "TriggerSensorModel.h"
+#include <interfaces/controllee/operation/TriggerSensorIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
 
@@ -52,6 +53,29 @@ QStatus TriggerSensorModel::GetCurrentlyTriggered(bool& out) const
 {
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.TriggerSensor", "CurrentlyTriggered", out);
 }
+
+
+
+QStatus HandleTriggerSensorCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+    if (cmd.name == "changed" && cmd.interface == "org.alljoyn.SmartSpaces.Operation.TriggerSensor") {
+        if (cmd.property == "CurrentlyTriggered") {
+            bool value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<TriggerSensorIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.TriggerSensor");
+                if (iface) {
+                    iface->EmitCurrentlyTriggeredChanged(value);
+                }
+            }
+        }
+    }
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

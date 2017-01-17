@@ -31,6 +31,7 @@
 #define TIMEDISPLAYMODEL_H_
 
 #include <interfaces/controllee/userinterfacesettings/TimeDisplayIntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -64,6 +65,9 @@ class TimeDisplayModel : public virtual TimeDisplayIntfControlleeModel {
   private:
     std::string m_busPath;
 };
+
+
+QStatus HandleTimeDisplayCommand(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

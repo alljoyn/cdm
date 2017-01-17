@@ -28,6 +28,7 @@
  ******************************************************************************/
 
 #include "ColorModel.h"
+#include <interfaces/controllee/operation/ColorIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
 
@@ -67,6 +68,39 @@ QStatus ColorModel::SetSaturation(const double value)
 {
     return HAL::WriteProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.Color", "Saturation", value);
 }
+
+
+
+QStatus HandleColorCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+    if (cmd.name == "changed" && cmd.interface == "org.alljoyn.SmartSpaces.Operation.Color") {
+        if (cmd.property == "Hue") {
+            double value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<ColorIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.Color");
+                if (iface) {
+                    iface->EmitHueChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "Saturation") {
+            double value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<ColorIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.Color");
+                if (iface) {
+                    iface->EmitSaturationChanged(value);
+                }
+            }
+        }
+    }
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

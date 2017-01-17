@@ -28,6 +28,7 @@
  ******************************************************************************/
 
 #include "ClimateControlModeModel.h"
+#include <interfaces/controllee/operation/ClimateControlModeIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
 
@@ -101,6 +102,49 @@ QStatus ClimateControlModeModel::GetOperationalState(ClimateControlModeInterface
 {
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.ClimateControlMode", "OperationalState", out);
 }
+
+
+
+QStatus HandleClimateControlModeCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+    if (cmd.name == "changed" && cmd.interface == "org.alljoyn.SmartSpaces.Operation.ClimateControlMode") {
+        if (cmd.property == "Mode") {
+            ClimateControlModeInterface::Mode value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<ClimateControlModeIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.ClimateControlMode");
+                if (iface) {
+                    iface->EmitModeChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "SupportedModes") {
+            std::vector<ClimateControlModeInterface::Mode> value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<ClimateControlModeIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.ClimateControlMode");
+                if (iface) {
+                    iface->EmitSupportedModesChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "OperationalState") {
+            ClimateControlModeInterface::OperationalState value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<ClimateControlModeIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.ClimateControlMode");
+                if (iface) {
+                    iface->EmitOperationalStateChanged(value);
+                }
+            }
+        }
+    }
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

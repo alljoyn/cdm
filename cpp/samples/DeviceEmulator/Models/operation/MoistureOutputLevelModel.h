@@ -31,6 +31,7 @@
 #define MOISTUREOUTPUTLEVELMODEL_H_
 
 #include <interfaces/controllee/operation/MoistureOutputLevelIntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -77,6 +78,9 @@ class MoistureOutputLevelModel : public virtual MoistureOutputLevelIntfControlle
   private:
     std::string m_busPath;
 };
+
+
+QStatus HandleMoistureOutputLevelCommand(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

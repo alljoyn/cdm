@@ -31,6 +31,7 @@
 #define HVACFANMODEMODEL_H_
 
 #include <interfaces/controllee/operation/HvacFanModeIntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -64,6 +65,9 @@ class HvacFanModeModel : public virtual HvacFanModeIntfControlleeModel {
   private:
     std::string m_busPath;
 };
+
+
+QStatus HandleHvacFanModeCommand(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

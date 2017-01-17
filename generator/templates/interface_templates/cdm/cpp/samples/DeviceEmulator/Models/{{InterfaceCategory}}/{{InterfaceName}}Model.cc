@@ -28,6 +28,7 @@
  ******************************************************************************/
 
 #include "{{Interface.Name}}Model.h"
+#include <interfaces/controllee/{{InterfaceCategory}}/{{Interface.Name}}IntfControllee.h>
 #include "../../../Utils/HAL.h"
 
 {% include ("patch/" ~ Interface.Name ~ "Model_header.cc") ignore missing with context %}
@@ -139,6 +140,35 @@ QStatus {{Interface.Name}}Model::{{method.Name}}(
     {% include ["patch/" ~ Interface.Name ~ "Model-" ~ method.Name ~ ".cc", "patch/TODO.cc"] ignore missing with context %}
 }
 {% endfor %}
+
+
+
+QStatus Handle{{Interface.Name}}Command(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+{% for property in Interface.EmittingProperties() %}
+{% if loop.first %}
+    if (cmd.name == "changed" && cmd.interface == "{{Interface.FullName}}") {
+{% endif %}
+        if (cmd.property == "{{property.Name}}") {
+            {{property.Type.cpptype()}} value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<{{Interface.Name}}IntfControllee>(cmd.objPath, "{{Interface.FullName}}");
+                if (iface) {
+                    iface->Emit{{property.Name}}Changed(value);
+                }
+            }
+        }
+{% if loop.last %}
+    }
+{% endif %}
+{% endfor %}
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

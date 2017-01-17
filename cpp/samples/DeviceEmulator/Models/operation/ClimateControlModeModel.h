@@ -31,6 +31,7 @@
 #define CLIMATECONTROLMODEMODEL_H_
 
 #include <interfaces/controllee/operation/ClimateControlModeIntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -70,6 +71,9 @@ class ClimateControlModeModel : public virtual ClimateControlModeIntfControlleeM
   private:
     std::string m_busPath;
 };
+
+
+QStatus HandleClimateControlModeCommand(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

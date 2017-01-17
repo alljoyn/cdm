@@ -31,6 +31,7 @@
 #define COLORTEMPERATUREMODEL_H_
 
 #include <interfaces/controllee/operation/ColorTemperatureIntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -70,6 +71,9 @@ class ColorTemperatureModel : public virtual ColorTemperatureIntfControlleeModel
   private:
     std::string m_busPath;
 };
+
+
+QStatus HandleColorTemperatureCommand(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

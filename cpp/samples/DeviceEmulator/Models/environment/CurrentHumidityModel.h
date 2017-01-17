@@ -31,6 +31,7 @@
 #define CURRENTHUMIDITYMODEL_H_
 
 #include <interfaces/controllee/environment/CurrentHumidityIntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -57,6 +58,9 @@ class CurrentHumidityModel : public virtual CurrentHumidityIntfControlleeModel {
   private:
     std::string m_busPath;
 };
+
+
+QStatus HandleCurrentHumidityCommand(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

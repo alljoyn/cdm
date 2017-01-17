@@ -28,6 +28,7 @@
  ******************************************************************************/
 
 #include "CurrentTemperatureModel.h"
+#include <interfaces/controllee/environment/CurrentTemperatureIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
 
@@ -62,6 +63,49 @@ QStatus CurrentTemperatureModel::GetUpdateMinTime(uint16_t& out) const
 {
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Environment.CurrentTemperature", "UpdateMinTime", out);
 }
+
+
+
+QStatus HandleCurrentTemperatureCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+    if (cmd.name == "changed" && cmd.interface == "org.alljoyn.SmartSpaces.Environment.CurrentTemperature") {
+        if (cmd.property == "CurrentValue") {
+            double value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<CurrentTemperatureIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Environment.CurrentTemperature");
+                if (iface) {
+                    iface->EmitCurrentValueChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "Precision") {
+            double value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<CurrentTemperatureIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Environment.CurrentTemperature");
+                if (iface) {
+                    iface->EmitPrecisionChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "UpdateMinTime") {
+            uint16_t value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<CurrentTemperatureIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Environment.CurrentTemperature");
+                if (iface) {
+                    iface->EmitUpdateMinTimeChanged(value);
+                }
+            }
+        }
+    }
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

@@ -28,6 +28,7 @@
  ******************************************************************************/
 
 #include "RemoteControllabilityModel.h"
+#include <interfaces/controllee/operation/RemoteControllabilityIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
 
@@ -52,6 +53,29 @@ QStatus RemoteControllabilityModel::GetIsControllable(bool& out) const
 {
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.RemoteControllability", "IsControllable", out);
 }
+
+
+
+QStatus HandleRemoteControllabilityCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+    if (cmd.name == "changed" && cmd.interface == "org.alljoyn.SmartSpaces.Operation.RemoteControllability") {
+        if (cmd.property == "IsControllable") {
+            bool value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<RemoteControllabilityIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.RemoteControllability");
+                if (iface) {
+                    iface->EmitIsControllableChanged(value);
+                }
+            }
+        }
+    }
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

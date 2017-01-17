@@ -28,6 +28,7 @@
  ******************************************************************************/
 
 #include "HvacFanModeModel.h"
+#include <interfaces/controllee/operation/HvacFanModeIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
 
@@ -79,6 +80,39 @@ QStatus HvacFanModeModel::GetSupportedModes(std::vector<HvacFanModeInterface::Mo
 {
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.HvacFanMode", "SupportedModes", out);
 }
+
+
+
+QStatus HandleHvacFanModeCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+    if (cmd.name == "changed" && cmd.interface == "org.alljoyn.SmartSpaces.Operation.HvacFanMode") {
+        if (cmd.property == "Mode") {
+            HvacFanModeInterface::Mode value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<HvacFanModeIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.HvacFanMode");
+                if (iface) {
+                    iface->EmitModeChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "SupportedModes") {
+            std::vector<HvacFanModeInterface::Mode> value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<HvacFanModeIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.HvacFanMode");
+                if (iface) {
+                    iface->EmitSupportedModesChanged(value);
+                }
+            }
+        }
+    }
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

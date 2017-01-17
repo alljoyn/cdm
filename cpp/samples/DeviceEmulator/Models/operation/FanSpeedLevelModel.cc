@@ -28,6 +28,7 @@
  ******************************************************************************/
 
 #include "FanSpeedLevelModel.h"
+#include <interfaces/controllee/operation/FanSpeedLevelIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
 
@@ -89,6 +90,39 @@ QStatus FanSpeedLevelModel::SetAutoMode(const FanSpeedLevelInterface::AutoMode v
 {
     return HAL::WriteProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.FanSpeedLevel", "AutoMode", value);
 }
+
+
+
+QStatus HandleFanSpeedLevelCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+    if (cmd.name == "changed" && cmd.interface == "org.alljoyn.SmartSpaces.Operation.FanSpeedLevel") {
+        if (cmd.property == "FanSpeedLevel") {
+            uint8_t value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<FanSpeedLevelIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.FanSpeedLevel");
+                if (iface) {
+                    iface->EmitFanSpeedLevelChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "AutoMode") {
+            FanSpeedLevelInterface::AutoMode value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<FanSpeedLevelIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.FanSpeedLevel");
+                if (iface) {
+                    iface->EmitAutoModeChanged(value);
+                }
+            }
+        }
+    }
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

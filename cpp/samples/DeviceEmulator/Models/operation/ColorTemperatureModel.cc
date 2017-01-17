@@ -28,6 +28,7 @@
  ******************************************************************************/
 
 #include "ColorTemperatureModel.h"
+#include <interfaces/controllee/operation/ColorTemperatureIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
 
@@ -67,6 +68,29 @@ QStatus ColorTemperatureModel::GetMaxTemperature(double& out) const
 {
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.ColorTemperature", "MaxTemperature", out);
 }
+
+
+
+QStatus HandleColorTemperatureCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+    if (cmd.name == "changed" && cmd.interface == "org.alljoyn.SmartSpaces.Operation.ColorTemperature") {
+        if (cmd.property == "Temperature") {
+            double value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<ColorTemperatureIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.ColorTemperature");
+                if (iface) {
+                    iface->EmitTemperatureChanged(value);
+                }
+            }
+        }
+    }
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

@@ -31,6 +31,7 @@
 #define HIDMODEL_H_
 
 #include <interfaces/controllee/input/HidIntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -57,6 +58,9 @@ class HidModel : public virtual HidIntfControlleeModel {
   private:
     std::string m_busPath;
 };
+
+
+QStatus HandleHidCommand(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

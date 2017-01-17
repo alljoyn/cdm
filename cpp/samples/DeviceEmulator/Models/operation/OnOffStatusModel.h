@@ -31,6 +31,7 @@
 #define ONOFFSTATUSMODEL_H_
 
 #include <interfaces/controllee/operation/OnOffStatusIntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -51,6 +52,9 @@ class OnOffStatusModel : public virtual OnOffStatusIntfControlleeModel {
   private:
     std::string m_busPath;
 };
+
+
+QStatus HandleOnOffStatusCommand(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

@@ -28,6 +28,7 @@
  ******************************************************************************/
 
 #include "BrightnessModel.h"
+#include <interfaces/controllee/operation/BrightnessIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
 
@@ -57,6 +58,29 @@ QStatus BrightnessModel::SetBrightness(const double value)
 {
     return HAL::WriteProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.Brightness", "Brightness", value);
 }
+
+
+
+QStatus HandleBrightnessCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+    if (cmd.name == "changed" && cmd.interface == "org.alljoyn.SmartSpaces.Operation.Brightness") {
+        if (cmd.property == "Brightness") {
+            double value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<BrightnessIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.Brightness");
+                if (iface) {
+                    iface->EmitBrightnessChanged(value);
+                }
+            }
+        }
+    }
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

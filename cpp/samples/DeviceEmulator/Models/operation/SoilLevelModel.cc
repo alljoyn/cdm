@@ -28,6 +28,7 @@
  ******************************************************************************/
 
 #include "SoilLevelModel.h"
+#include <interfaces/controllee/operation/SoilLevelIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
 
@@ -67,6 +68,49 @@ QStatus SoilLevelModel::GetSelectableLevels(std::vector<uint8_t>& out) const
 {
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.SoilLevel", "SelectableLevels", out);
 }
+
+
+
+QStatus HandleSoilLevelCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+    if (cmd.name == "changed" && cmd.interface == "org.alljoyn.SmartSpaces.Operation.SoilLevel") {
+        if (cmd.property == "MaxLevel") {
+            uint8_t value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<SoilLevelIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.SoilLevel");
+                if (iface) {
+                    iface->EmitMaxLevelChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "TargetLevel") {
+            uint8_t value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<SoilLevelIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.SoilLevel");
+                if (iface) {
+                    iface->EmitTargetLevelChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "SelectableLevels") {
+            std::vector<uint8_t> value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<SoilLevelIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.SoilLevel");
+                if (iface) {
+                    iface->EmitSelectableLevelsChanged(value);
+                }
+            }
+        }
+    }
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

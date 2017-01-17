@@ -31,6 +31,7 @@
 #define LOCKCONTROLMODEL_H_
 
 #include <interfaces/controllee/operation/LockControlIntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -51,6 +52,9 @@ class LockControlModel : public virtual LockControlIntfControlleeModel {
   private:
     std::string m_busPath;
 };
+
+
+QStatus HandleLockControlCommand(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

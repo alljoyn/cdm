@@ -28,6 +28,7 @@
  ******************************************************************************/
 
 #include "LockedStatusModel.h"
+#include <interfaces/controllee/operation/LockedStatusIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
 
@@ -52,6 +53,29 @@ QStatus LockedStatusModel::GetIsLocked(bool& out) const
 {
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.LockedStatus", "IsLocked", out);
 }
+
+
+
+QStatus HandleLockedStatusCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+    if (cmd.name == "changed" && cmd.interface == "org.alljoyn.SmartSpaces.Operation.LockedStatus") {
+        if (cmd.property == "IsLocked") {
+            bool value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<LockedStatusIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.LockedStatus");
+                if (iface) {
+                    iface->EmitIsLockedChanged(value);
+                }
+            }
+        }
+    }
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

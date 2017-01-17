@@ -31,6 +31,7 @@
 #define CYCLECONTROLMODEL_H_
 
 #include <interfaces/controllee/operation/CycleControlIntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -69,6 +70,9 @@ class CycleControlModel : public virtual CycleControlIntfControlleeModel {
   private:
     std::string m_busPath;
 };
+
+
+QStatus HandleCycleControlCommand(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

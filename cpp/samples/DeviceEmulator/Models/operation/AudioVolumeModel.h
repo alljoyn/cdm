@@ -31,6 +31,7 @@
 #define AUDIOVOLUMEMODEL_H_
 
 #include <interfaces/controllee/operation/AudioVolumeIntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -77,6 +78,9 @@ class AudioVolumeModel : public virtual AudioVolumeIntfControlleeModel {
   private:
     std::string m_busPath;
 };
+
+
+QStatus HandleAudioVolumeCommand(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

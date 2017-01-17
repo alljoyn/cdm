@@ -31,6 +31,7 @@
 #define AUDIOVIDEOINPUTMODEL_H_
 
 #include <interfaces/controllee/operation/AudioVideoInputIntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -64,6 +65,9 @@ class AudioVideoInputModel : public virtual AudioVideoInputIntfControlleeModel {
   private:
     std::string m_busPath;
 };
+
+
+QStatus HandleAudioVideoInputCommand(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

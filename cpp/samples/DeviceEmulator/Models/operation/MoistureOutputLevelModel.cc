@@ -28,6 +28,7 @@
  ******************************************************************************/
 
 #include "MoistureOutputLevelModel.h"
+#include <interfaces/controllee/operation/MoistureOutputLevelIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
 
@@ -89,6 +90,49 @@ QStatus MoistureOutputLevelModel::SetAutoMode(const MoistureOutputLevelInterface
 {
     return HAL::WriteProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.MoistureOutputLevel", "AutoMode", value);
 }
+
+
+
+QStatus HandleMoistureOutputLevelCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+    if (cmd.name == "changed" && cmd.interface == "org.alljoyn.SmartSpaces.Operation.MoistureOutputLevel") {
+        if (cmd.property == "MoistureOutputLevel") {
+            uint8_t value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<MoistureOutputLevelIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.MoistureOutputLevel");
+                if (iface) {
+                    iface->EmitMoistureOutputLevelChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "MaxMoistureOutputLevel") {
+            uint8_t value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<MoistureOutputLevelIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.MoistureOutputLevel");
+                if (iface) {
+                    iface->EmitMaxMoistureOutputLevelChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "AutoMode") {
+            MoistureOutputLevelInterface::AutoMode value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<MoistureOutputLevelIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.MoistureOutputLevel");
+                if (iface) {
+                    iface->EmitAutoModeChanged(value);
+                }
+            }
+        }
+    }
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

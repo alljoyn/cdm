@@ -143,6 +143,7 @@ static void HAL_Decode_Array_{{Interface.Name}}_{{enum.Name}}(Element* elem, Arr
 }
 {% endfor %}
 
+
 {% include ("patch/" ~ Interface.Name ~ "Model_static.c") ignore missing with context %}
 
 {% for property in Interface.UserProperties %}
@@ -197,6 +198,35 @@ static AJ_Status Method{{method.Name}}(void *context, const char *objPath
 {% include ["patch/" ~ Interface.Name ~ "Model_" ~ method.Name ~ ".c", "patch/TODO.c"] ignore missing with context %}
 }
 {% endfor %}
+
+
+
+AJ_Status Handle{{Interface.Name}}Command(const Command* cmd, void* context)
+{
+    AJ_Status status = AJ_OK;
+
+    if (strcmp(cmd->name, "changed") == 0 && strcmp(cmd->interface, "{{Interface.FullName}}") == 0)
+    {
+{% for property in Interface.EmittingProperties() %}
+{% set isArray = property.Type.is_array() %}
+        if (strcmp(cmd->property, "{{property.Name}}") == 0)
+        {
+            {{property.Type.tcltype(isArray)}} value;
+            status = Get{{property.Name}}(context, cmd->objPath, &value);
+            if (status == AJ_OK)
+            {
+                {{Interface.Name}}Model* model = ({{Interface.Name}}Model*)context;
+                status = Cdm_{{Interface.Name}}_Emit{{property.Name}}Changed(model->busAttachment, cmd->objPath, value);
+            }
+{% if isArray %}
+{{ tcl_macros.freeType(property.Type, "value")|indent(3 * 4, True) }}
+{% endif %}
+        }
+{% endfor %}
+    }
+
+    return status;
+}
 
 
 

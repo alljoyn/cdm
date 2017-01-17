@@ -31,6 +31,7 @@
 #define DISHWASHINGCYCLEPHASEMODEL_H_
 
 #include <interfaces/controllee/operation/DishWashingCyclePhaseIntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -63,6 +64,9 @@ class DishWashingCyclePhaseModel : public virtual DishWashingCyclePhaseIntfContr
   private:
     std::string m_busPath;
 };
+
+
+QStatus HandleDishWashingCyclePhaseCommand(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

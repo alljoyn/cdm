@@ -28,6 +28,7 @@
  ******************************************************************************/
 
 #include "TargetTemperatureModel.h"
+#include <interfaces/controllee/environment/TargetTemperatureIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
 
@@ -72,6 +73,59 @@ QStatus TargetTemperatureModel::GetStepValue(double& out) const
 {
     return HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Environment.TargetTemperature", "StepValue", out);
 }
+
+
+
+QStatus HandleTargetTemperatureCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+    if (cmd.name == "changed" && cmd.interface == "org.alljoyn.SmartSpaces.Environment.TargetTemperature") {
+        if (cmd.property == "TargetValue") {
+            double value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<TargetTemperatureIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Environment.TargetTemperature");
+                if (iface) {
+                    iface->EmitTargetValueChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "MinValue") {
+            double value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<TargetTemperatureIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Environment.TargetTemperature");
+                if (iface) {
+                    iface->EmitMinValueChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "MaxValue") {
+            double value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<TargetTemperatureIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Environment.TargetTemperature");
+                if (iface) {
+                    iface->EmitMaxValueChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "StepValue") {
+            double value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<TargetTemperatureIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Environment.TargetTemperature");
+                if (iface) {
+                    iface->EmitStepValueChanged(value);
+                }
+            }
+        }
+    }
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

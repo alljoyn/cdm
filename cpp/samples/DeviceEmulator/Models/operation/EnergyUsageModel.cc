@@ -28,6 +28,7 @@
  ******************************************************************************/
 
 #include "EnergyUsageModel.h"
+#include <interfaces/controllee/operation/EnergyUsageIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
 #include <interfaces/controllee/operation/EnergyUsageIntfControllee.h>
@@ -75,6 +76,49 @@ QStatus EnergyUsageModel::ResetCumulativeEnergy(ErrorCode& error, CdmControllee&
 
     return status;
 }
+
+
+
+QStatus HandleEnergyUsageCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+    if (cmd.name == "changed" && cmd.interface == "org.alljoyn.SmartSpaces.Operation.EnergyUsage") {
+        if (cmd.property == "CumulativeEnergy") {
+            double value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<EnergyUsageIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.EnergyUsage");
+                if (iface) {
+                    iface->EmitCumulativeEnergyChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "Precision") {
+            double value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<EnergyUsageIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.EnergyUsage");
+                if (iface) {
+                    iface->EmitPrecisionChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "UpdateMinTime") {
+            uint16_t value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<EnergyUsageIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.EnergyUsage");
+                if (iface) {
+                    iface->EmitUpdateMinTimeChanged(value);
+                }
+            }
+        }
+    }
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

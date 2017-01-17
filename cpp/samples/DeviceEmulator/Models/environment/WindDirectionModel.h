@@ -31,6 +31,7 @@
 #define WINDDIRECTIONMODEL_H_
 
 #include <interfaces/controllee/environment/WindDirectionIntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -109,6 +110,9 @@ class WindDirectionModel : public virtual WindDirectionIntfControlleeModel {
   private:
     std::string m_busPath;
 };
+
+
+QStatus HandleWindDirectionCommand(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

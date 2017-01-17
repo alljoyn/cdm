@@ -31,6 +31,7 @@
 #define TEMPERATUREDISPLAYMODEL_H_
 
 #include <interfaces/controllee/userinterfacesettings/TemperatureDisplayIntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -64,6 +65,9 @@ class TemperatureDisplayModel : public virtual TemperatureDisplayIntfControlleeM
   private:
     std::string m_busPath;
 };
+
+
+QStatus HandleTemperatureDisplayCommand(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

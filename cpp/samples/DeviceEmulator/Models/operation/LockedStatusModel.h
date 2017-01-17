@@ -31,6 +31,7 @@
 #define LOCKEDSTATUSMODEL_H_
 
 #include <interfaces/controllee/operation/LockedStatusIntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -51,6 +52,9 @@ class LockedStatusModel : public virtual LockedStatusIntfControlleeModel {
   private:
     std::string m_busPath;
 };
+
+
+QStatus HandleLockedStatusCommand(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

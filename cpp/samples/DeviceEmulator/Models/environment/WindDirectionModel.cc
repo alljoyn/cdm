@@ -28,6 +28,7 @@
  ******************************************************************************/
 
 #include "WindDirectionModel.h"
+#include <interfaces/controllee/environment/WindDirectionIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
 
@@ -114,6 +115,79 @@ QStatus WindDirectionModel::SetVerticalAutoMode(const WindDirectionInterface::Au
 {
     return HAL::WriteProperty(m_busPath, "org.alljoyn.SmartSpaces.Environment.WindDirection", "VerticalAutoMode", value);
 }
+
+
+
+QStatus HandleWindDirectionCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+    if (cmd.name == "changed" && cmd.interface == "org.alljoyn.SmartSpaces.Environment.WindDirection") {
+        if (cmd.property == "HorizontalDirection") {
+            uint16_t value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<WindDirectionIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Environment.WindDirection");
+                if (iface) {
+                    iface->EmitHorizontalDirectionChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "HorizontalMax") {
+            uint16_t value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<WindDirectionIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Environment.WindDirection");
+                if (iface) {
+                    iface->EmitHorizontalMaxChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "HorizontalAutoMode") {
+            WindDirectionInterface::AutoMode value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<WindDirectionIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Environment.WindDirection");
+                if (iface) {
+                    iface->EmitHorizontalAutoModeChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "VerticalDirection") {
+            uint16_t value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<WindDirectionIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Environment.WindDirection");
+                if (iface) {
+                    iface->EmitVerticalDirectionChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "VerticalMax") {
+            uint16_t value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<WindDirectionIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Environment.WindDirection");
+                if (iface) {
+                    iface->EmitVerticalMaxChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "VerticalAutoMode") {
+            WindDirectionInterface::AutoMode value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<WindDirectionIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Environment.WindDirection");
+                if (iface) {
+                    iface->EmitVerticalAutoModeChanged(value);
+                }
+            }
+        }
+    }
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

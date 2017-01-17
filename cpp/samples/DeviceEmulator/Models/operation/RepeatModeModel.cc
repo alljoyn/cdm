@@ -28,6 +28,7 @@
  ******************************************************************************/
 
 #include "RepeatModeModel.h"
+#include <interfaces/controllee/operation/RepeatModeIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
 
@@ -57,6 +58,29 @@ QStatus RepeatModeModel::SetRepeatMode(const bool value)
 {
     return HAL::WriteProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.RepeatMode", "RepeatMode", value);
 }
+
+
+
+QStatus HandleRepeatModeCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+    if (cmd.name == "changed" && cmd.interface == "org.alljoyn.SmartSpaces.Operation.RepeatMode") {
+        if (cmd.property == "RepeatMode") {
+            bool value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<RepeatModeIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.RepeatMode");
+                if (iface) {
+                    iface->EmitRepeatModeChanged(value);
+                }
+            }
+        }
+    }
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

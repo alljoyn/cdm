@@ -31,6 +31,7 @@
 #define CURRENTAIRQUALITYMODEL_H_
 
 #include <interfaces/controllee/environment/CurrentAirQualityIntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -81,6 +82,9 @@ class CurrentAirQualityModel : public virtual CurrentAirQualityIntfControlleeMod
   private:
     std::string m_busPath;
 };
+
+
+QStatus HandleCurrentAirQualityCommand(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

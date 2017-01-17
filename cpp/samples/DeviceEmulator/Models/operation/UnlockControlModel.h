@@ -31,6 +31,7 @@
 #define UNLOCKCONTROLMODEL_H_
 
 #include <interfaces/controllee/operation/UnlockControlIntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -51,6 +52,9 @@ class UnlockControlModel : public virtual UnlockControlIntfControlleeModel {
   private:
     std::string m_busPath;
 };
+
+
+QStatus HandleUnlockControlCommand(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

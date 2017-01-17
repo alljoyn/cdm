@@ -31,6 +31,7 @@
 #define BRIGHTNESSMODEL_H_
 
 #include <interfaces/controllee/operation/BrightnessIntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -58,6 +59,9 @@ class BrightnessModel : public virtual BrightnessIntfControlleeModel {
   private:
     std::string m_busPath;
 };
+
+
+QStatus HandleBrightnessCommand(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

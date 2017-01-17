@@ -28,6 +28,7 @@
  ******************************************************************************/
 
 #include "OvenCyclePhaseModel.h"
+#include <interfaces/controllee/operation/OvenCyclePhaseIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
 
@@ -140,6 +141,39 @@ QStatus OvenCyclePhaseModel::GetVendorPhasesDescription(qcc::String& arg_languag
     arg_phasesDescription = s_phases;
     return ER_OK;
 }
+
+
+
+QStatus HandleOvenCyclePhaseCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+    if (cmd.name == "changed" && cmd.interface == "org.alljoyn.SmartSpaces.Operation.OvenCyclePhase") {
+        if (cmd.property == "CyclePhase") {
+            uint8_t value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<OvenCyclePhaseIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.OvenCyclePhase");
+                if (iface) {
+                    iface->EmitCyclePhaseChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "SupportedCyclePhases") {
+            std::vector<uint8_t> value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<OvenCyclePhaseIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.OvenCyclePhase");
+                if (iface) {
+                    iface->EmitSupportedCyclePhasesChanged(value);
+                }
+            }
+        }
+    }
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services

@@ -31,6 +31,7 @@
 #define ALERTSMODEL_H_
 
 #include <interfaces/controllee/operation/AlertsIntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -69,6 +70,9 @@ class AlertsModel : public virtual AlertsIntfControlleeModel {
   private:
     std::string m_busPath;
 };
+
+
+QStatus HandleAlertsCommand(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

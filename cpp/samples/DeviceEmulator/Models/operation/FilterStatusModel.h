@@ -31,6 +31,7 @@
 #define FILTERSTATUSMODEL_H_
 
 #include <interfaces/controllee/operation/FilterStatusIntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -87,6 +88,9 @@ class FilterStatusModel : public virtual FilterStatusIntfControlleeModel {
   private:
     std::string m_busPath;
 };
+
+
+QStatus HandleFilterStatusCommand(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

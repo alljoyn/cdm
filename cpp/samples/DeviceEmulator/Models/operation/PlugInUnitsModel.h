@@ -31,6 +31,7 @@
 #define PLUGINUNITSMODEL_H_
 
 #include <interfaces/controllee/operation/PlugInUnitsIntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -51,6 +52,9 @@ class PlugInUnitsModel : public virtual PlugInUnitsIntfControlleeModel {
   private:
     std::string m_busPath;
 };
+
+
+QStatus HandlePlugInUnitsCommand(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

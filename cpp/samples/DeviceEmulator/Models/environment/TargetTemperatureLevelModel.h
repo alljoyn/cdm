@@ -31,6 +31,7 @@
 #define TARGETTEMPERATURELEVELMODEL_H_
 
 #include <interfaces/controllee/environment/TargetTemperatureLevelIntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -70,6 +71,9 @@ class TargetTemperatureLevelModel : public virtual TargetTemperatureLevelIntfCon
   private:
     std::string m_busPath;
 };
+
+
+QStatus HandleTargetTemperatureLevelCommand(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

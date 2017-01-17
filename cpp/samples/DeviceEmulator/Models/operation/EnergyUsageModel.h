@@ -31,6 +31,7 @@
 #define ENERGYUSAGEMODEL_H_
 
 #include <interfaces/controllee/operation/EnergyUsageIntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -69,6 +70,9 @@ class EnergyUsageModel : public virtual EnergyUsageIntfControlleeModel {
   private:
     std::string m_busPath;
 };
+
+
+QStatus HandleEnergyUsageCommand(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

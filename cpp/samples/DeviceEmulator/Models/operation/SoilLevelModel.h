@@ -31,6 +31,7 @@
 #define SOILLEVELMODEL_H_
 
 #include <interfaces/controllee/operation/SoilLevelIntfControlleeModel.h>
+#include "../../../Utils/Command.h"
 
 namespace ajn {
 namespace services {
@@ -70,6 +71,9 @@ class SoilLevelModel : public virtual SoilLevelIntfControlleeModel {
   private:
     std::string m_busPath;
 };
+
+
+QStatus HandleSoilLevelCommand(const Command& cmd, CdmControllee& controllee);
 
 } // namespace emulator
 } // namespace services

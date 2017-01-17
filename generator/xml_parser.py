@@ -681,6 +681,9 @@ class Interface(object):
     def UIProperties(self):
         return filter(lambda x: str(x.Name) != "Version" and not x.is_selector(), self.Properties)
 
+    def EmittingProperties(self):
+        return [p for p in self.Properties if p.EmitsChangedSignal]
+
     def set_secure(self, value):
         self.Secure = bool(value)
 

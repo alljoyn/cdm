@@ -28,6 +28,7 @@
  ******************************************************************************/
 
 #include "ResourceSavingModel.h"
+#include <interfaces/controllee/operation/ResourceSavingIntfControllee.h>
 #include "../../../Utils/HAL.h"
 
 
@@ -57,6 +58,29 @@ QStatus ResourceSavingModel::SetResourceSavingMode(const bool value)
 {
     return HAL::WriteProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.ResourceSaving", "ResourceSavingMode", value);
 }
+
+
+
+QStatus HandleResourceSavingCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+    if (cmd.name == "changed" && cmd.interface == "org.alljoyn.SmartSpaces.Operation.ResourceSaving") {
+        if (cmd.property == "ResourceSavingMode") {
+            bool value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<ResourceSavingIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.ResourceSaving");
+                if (iface) {
+                    iface->EmitResourceSavingModeChanged(value);
+                }
+            }
+        }
+    }
+
+    return status;
+}
+
 
 } // namespace emulator
 } // namespace services
