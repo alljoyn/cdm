@@ -116,14 +116,6 @@ namespace ajn {
 namespace services {
 namespace emulator {
 
-// A static list of channels
-static std::vector<ChannelInterface::ChannelInfoRecord> s_channels = {
-    // channelID channelNumber channelName
-    {"a",   "1",    "Hobbit News"},
-    {"b",   "2",    "Shire Shopping Network"}
-};
-
-
 
 ChannelModel::ChannelModel(const std::string& busPath) :
     m_busPath(busPath)
@@ -146,15 +138,20 @@ QStatus ChannelModel::GetTotalNumberOfChannels(uint16_t& out) const
 
 QStatus ChannelModel::GetChannelList(uint16_t arg_startingRecord, uint16_t arg_numRecords, std::vector<ChannelInterface::ChannelInfoRecord>& arg_listOfChannelInfoRecords, ErrorCode& error, CdmControllee& controllee)
 {
-    if (arg_startingRecord >= s_channels.size())
-    {
-        error = INVALID_VALUE;
+    std::vector<ChannelInterface::ChannelInfoRecord> channels;
+
+    auto status = HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.Channel", "__ChannelList", channels);
+
+    if (status != ER_OK) {
+        error = FEATURE_NOT_AVAILABLE;
+        return status;
     }
-    else
-    {
-        for (auto i = arg_startingRecord; i < arg_startingRecord + arg_numRecords && i < s_channels.size(); ++i)
-        {
-            arg_listOfChannelInfoRecords.push_back(s_channels[i]);
+
+    if (arg_startingRecord >= channels.size()) {
+        error = INVALID_VALUE;
+    } else {
+        for (auto i = arg_startingRecord; i < arg_startingRecord + arg_numRecords && i < channels.size(); ++i) {
+            arg_listOfChannelInfoRecords.push_back(channels[i]);
         }
     }
 

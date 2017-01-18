@@ -115,11 +115,6 @@ namespace ajn {
 namespace services {
 namespace emulator {
 
-static std::vector<RobotCleaningCyclePhaseInterface::CyclePhaseDescriptor> s_phases = {
-    // phase name description
-    {1,   "seek",   "Seek some dirt"},
-    {2,   "suck",   "Suck it up"}
-};
 
 RobotCleaningCyclePhaseModel::RobotCleaningCyclePhaseModel(const std::string& busPath) :
     m_busPath(busPath)
@@ -137,8 +132,11 @@ QStatus RobotCleaningCyclePhaseModel::GetSupportedCyclePhases(std::vector<uint8_
 
 QStatus RobotCleaningCyclePhaseModel::GetVendorPhasesDescription(qcc::String& arg_languageTag, std::vector<RobotCleaningCyclePhaseInterface::CyclePhaseDescriptor>& arg_phasesDescription, ErrorCode& error, CdmControllee& controllee)
 {
-    arg_phasesDescription = s_phases;
-    return ER_OK;
+    auto status = HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.RobotCleaningCyclePhase", "__PhaseDescription", arg_phasesDescription);
+    if (status != ER_OK) {
+        error = FEATURE_NOT_AVAILABLE;
+    }
+    return status;
 }
 
 

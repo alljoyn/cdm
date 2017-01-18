@@ -319,6 +319,34 @@
                         </struct>
                     </array>
                 </Property>
+                <Property name='__AlertCodesDescriptor' mode='default'>
+                    <array>
+                        <struct>
+                            <field name='alertCode'>
+                                <scalar type='unsigned' value='1'/>
+                            </field>
+                            <field name='description'>
+                                <scalar type='string' value='bad'/>
+                            </field>
+                        </struct>
+                        <struct>
+                            <field name='alertCode'>
+                                <scalar type='unsigned' value='2'/>
+                            </field>
+                            <field name='description'>
+                                <scalar type='string' value='worse'/>
+                            </field>
+                        </struct>
+                        <struct>
+                            <field name='alertCode'>
+                                <scalar type='unsigned' value='3'/>
+                            </field>
+                            <field name='description'>
+                                <scalar type='string' value='stuffed'/>
+                            </field>
+                        </struct>
+                    </array>
+                </Property>
             </Interface>
             <Interface name='org.alljoyn.SmartSpaces.Operation.AudioVideoInput'>
                 <Property name='InputSourceId' mode='default'>
@@ -393,6 +421,32 @@
                 </Property>
                 <Property name='TotalNumberOfChannels' mode='default'>
                     <scalar type='unsigned' value='2'/>
+                </Property>
+                <Property name='__ChannelList' mode='default'>
+                    <array>
+                        <struct>
+                            <field name='channelID'>
+                                <scalar type='string' value='a'/>
+                            </field>
+                            <field name='channelNumber'>
+                                <scalar type='string' value='1'/>
+                            </field>
+                            <field name='channelName'>
+                                <scalar type='string' value='Hobbit News'/>
+                            </field>
+                        </struct>
+                        <struct>
+                            <field name='channelID'>
+                                <scalar type='string' value='b'/>
+                            </field>
+                            <field name='channelNumber'>
+                                <scalar type='string' value='2'/>
+                            </field>
+                            <field name='channelName'>
+                                <scalar type='string' value='Shire Shopping Network'/>
+                            </field>
+                        </struct>
+                    </array>
                 </Property>
             </Interface>
             <Interface name='org.alljoyn.SmartSpaces.Operation.ClimateControlMode'>
@@ -480,6 +534,43 @@
                         <scalar type='unsigned' value='1'/>
                         <scalar type='unsigned' value='2'/>
                         <scalar type='unsigned' value='3'/>
+                    </array>
+                </Property>
+                <Property name='__PhaseDescription' mode='default'>
+                    <array>
+                        <struct>
+                            <field name='phase'>
+                                <scalar type='unsigned' value='1'/>
+                            </field>
+                            <field name='name'>
+                                <scalar type='string' value='fill'/>
+                            </field>
+                            <field name='description'>
+                                <scalar type='string' value='Fill with water'/>
+                            </field>
+                        </struct>
+                        <struct>
+                            <field name='phase'>
+                                <scalar type='unsigned' value='2'/>
+                            </field>
+                            <field name='name'>
+                                <scalar type='string' value='wash'/>
+                            </field>
+                            <field name='description'>
+                                <scalar type='string' value='Wash the dishes'/>
+                            </field>
+                        </struct>
+                        <struct>
+                            <field name='phase'>
+                                <scalar type='unsigned' value='3'/>
+                            </field>
+                            <field name='name'>
+                                <scalar type='string' value='dry'/>
+                            </field>
+                            <field name='description'>
+                                <scalar type='string' value='Dry the dishes'/>
+                            </field>
+                        </struct>
                     </array>
                 </Property>
             </Interface>
@@ -572,6 +663,43 @@
                         <scalar type='unsigned' value='3'/>
                     </array>
                 </Property>
+                <Property name='__PhaseDescription' mode='default'>
+                    <array>
+                        <struct>
+                            <field name='phase'>
+                                <scalar type='unsigned' value='1'/>
+                            </field>
+                            <field name='name'>
+                                <scalar type='string' value='fill'/>
+                            </field>
+                            <field name='description'>
+                                <scalar type='string' value='Fill with water'/>
+                            </field>
+                        </struct>
+                        <struct>
+                            <field name='phase'>
+                                <scalar type='unsigned' value='2'/>
+                            </field>
+                            <field name='name'>
+                                <scalar type='string' value='wash'/>
+                            </field>
+                            <field name='description'>
+                                <scalar type='string' value='Wash the laundry'/>
+                            </field>
+                        </struct>
+                        <struct>
+                            <field name='phase'>
+                                <scalar type='unsigned' value='3'/>
+                            </field>
+                            <field name='name'>
+                                <scalar type='string' value='dry'/>
+                            </field>
+                            <field name='description'>
+                                <scalar type='string' value='Dry the laundry'/>
+                            </field>
+                        </struct>
+                    </array>
+                </Property>
             </Interface>
             <Interface name='org.alljoyn.SmartSpaces.Operation.LockControl'/>
             <Interface name='org.alljoyn.SmartSpaces.Operation.LockedStatus'>
@@ -606,6 +734,43 @@
                         <scalar type='unsigned' value='1'/>
                         <scalar type='unsigned' value='2'/>
                         <scalar type='unsigned' value='3'/>
+                    </array>
+                </Property>
+                <Property name='__PhaseDescription' mode='default'>
+                    <array>
+                        <struct>
+                            <field name='phase'>
+                                <scalar type='unsigned' value='1'/>
+                            </field>
+                            <field name='name'>
+                                <scalar type='string' value='cook'/>
+                            </field>
+                            <field name='description'>
+                                <scalar type='string' value='Cook it'/>
+                            </field>
+                        </struct>
+                        <struct>
+                            <field name='phase'>
+                                <scalar type='unsigned' value='2'/>
+                            </field>
+                            <field name='name'>
+                                <scalar type='string' value='brown'/>
+                            </field>
+                            <field name='description'>
+                                <scalar type='string' value='Brown the skin'/>
+                            </field>
+                        </struct>
+                        <struct>
+                            <field name='phase'>
+                                <scalar type='unsigned' value='3'/>
+                            </field>
+                            <field name='name'>
+                                <scalar type='string' value='cool'/>
+                            </field>
+                            <field name='description'>
+                                <scalar type='string' value='Let it cool'/>
+                            </field>
+                        </struct>
                     </array>
                 </Property>
             </Interface>
@@ -673,6 +838,32 @@
                     <array>
                         <scalar type='unsigned' value='1'/>
                         <scalar type='unsigned' value='2'/>
+                    </array>
+                </Property>
+                <Property name='__PhaseDescription' mode='default'>
+                    <array>
+                        <struct>
+                            <field name='phase'>
+                                <scalar type='unsigned' value='1'/>
+                            </field>
+                            <field name='name'>
+                                <scalar type='string' value='seek'/>
+                            </field>
+                            <field name='description'>
+                                <scalar type='string' value='Seek some dirt'/>
+                            </field>
+                        </struct>
+                        <struct>
+                            <field name='phase'>
+                                <scalar type='unsigned' value='2'/>
+                            </field>
+                            <field name='name'>
+                                <scalar type='string' value='suck'/>
+                            </field>
+                            <field name='description'>
+                                <scalar type='string' value='Suck it up'/>
+                            </field>
+                        </struct>
                     </array>
                 </Property>
             </Interface>

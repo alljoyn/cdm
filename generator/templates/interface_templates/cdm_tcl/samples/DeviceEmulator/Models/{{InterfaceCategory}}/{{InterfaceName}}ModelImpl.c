@@ -164,6 +164,11 @@ static AJ_Status Get{{property.Name}}(void *context, const char *objPath, {{prop
         {{tcl_macros.halDecode(property.Type, "value", "elem")}}
         BSXML_FreeElement(elem);
     }
+    {% if property.Type.ajtypeIsString() %}
+    else {
+        value = strdup("");
+    }
+    {% endif %}
 
     *out = value;
     return result;
@@ -204,7 +209,7 @@ static AJ_Status Method{{method.Name}}(void *context, const char *objPath
 AJ_Status Handle{{Interface.Name}}Command(const Command* cmd, void* context)
 {
     AJ_Status status = AJ_OK;
-
+{% if Interface.EmittingProperties() %}
     if (strcmp(cmd->name, "changed") == 0 && strcmp(cmd->interface, "{{Interface.FullName}}") == 0)
     {
 {% for property in Interface.EmittingProperties() %}
@@ -218,13 +223,11 @@ AJ_Status Handle{{Interface.Name}}Command(const Command* cmd, void* context)
                 {{Interface.Name}}Model* model = ({{Interface.Name}}Model*)context;
                 status = Cdm_{{Interface.Name}}_Emit{{property.Name}}Changed(model->busAttachment, cmd->objPath, value);
             }
-{% if isArray %}
 {{ tcl_macros.freeType(property.Type, "value")|indent(3 * 4, True) }}
-{% endif %}
         }
 {% endfor %}
     }
-
+{% endif %}
     return status;
 }
 

@@ -115,12 +115,6 @@ namespace ajn {
 namespace services {
 namespace emulator {
 
-static std::vector<DishWashingCyclePhaseInterface::CyclePhaseDescriptor> s_phases = {
-    // phase name description
-    {1,   "fill",    "Fill with water"},
-    {2,   "wash",    "Wash the dishes"},
-    {3,   "dry",     "Dry the dishes"}
-};
 
 DishWashingCyclePhaseModel::DishWashingCyclePhaseModel(const std::string& busPath) :
     m_busPath(busPath)
@@ -138,8 +132,11 @@ QStatus DishWashingCyclePhaseModel::GetSupportedCyclePhases(std::vector<uint8_t>
 
 QStatus DishWashingCyclePhaseModel::GetVendorPhasesDescription(qcc::String& arg_languageTag, std::vector<DishWashingCyclePhaseInterface::CyclePhaseDescriptor>& arg_phasesDescription, ErrorCode& error, CdmControllee& controllee)
 {
-    arg_phasesDescription = s_phases;
-    return ER_OK;
+    auto status = HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.DishWashingCyclePhase", "__PhaseDescription", arg_phasesDescription);
+    if (status != ER_OK) {
+        error = FEATURE_NOT_AVAILABLE;
+    }
+    return status;
 }
 
 

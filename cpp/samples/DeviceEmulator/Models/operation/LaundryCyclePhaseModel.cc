@@ -115,12 +115,6 @@ namespace ajn {
 namespace services {
 namespace emulator {
 
-static std::vector<LaundryCyclePhaseInterface::CyclePhaseDescriptor> s_phases = {
-    // phase name description
-    {1,   "fill",    "Fill with water"},
-    {2,   "wash",    "Wash the laundry"},
-    {3,   "dry",     "Dry the laundry"}
-};
 
 LaundryCyclePhaseModel::LaundryCyclePhaseModel(const std::string& busPath) :
     m_busPath(busPath)
@@ -138,8 +132,11 @@ QStatus LaundryCyclePhaseModel::GetSupportedCyclePhases(std::vector<uint8_t>& ou
 
 QStatus LaundryCyclePhaseModel::GetVendorPhasesDescription(qcc::String& arg_languageTag, std::vector<LaundryCyclePhaseInterface::CyclePhaseDescriptor>& arg_phasesDescription, ErrorCode& error, CdmControllee& controllee)
 {
-    arg_phasesDescription = s_phases;
-    return ER_OK;
+    auto status = HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.LaundryCyclePhase", "__PhaseDescription", arg_phasesDescription);
+    if (status != ER_OK) {
+        error = FEATURE_NOT_AVAILABLE;
+    }
+    return status;
 }
 
 

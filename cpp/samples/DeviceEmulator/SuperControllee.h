@@ -57,12 +57,12 @@ class SuperControllee {
     CdmControllee&  GetControllee() {return m_controllee;}
 
     QStatus CreateInterfaces();
+    QStatus PreloadHAL(bool force = false);
     QStatus Start(bool emitOnSet=false);
     QStatus Stop();
 
  private:
     QStatus SetupDevice(bool emitOnSet);
-    QStatus PreloadHAL();
 
     CdmAnnouncer m_announcer;
     CdmSecurity m_security;

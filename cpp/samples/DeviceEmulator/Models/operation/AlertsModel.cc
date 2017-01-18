@@ -191,14 +191,6 @@ namespace ajn {
 namespace services {
 namespace emulator {
 
-static std::vector<AlertsInterface::AlertCodesDescriptor> s_descriptions = {
-    // alertCode description
-    {1,   "bad",    },
-    {2,   "worse"   },
-    {3,   "stuffed" }
-};
-
-
 
 AlertsModel::AlertsModel(const std::string& busPath) :
     m_busPath(busPath)
@@ -211,8 +203,11 @@ QStatus AlertsModel::GetAlerts(std::vector<AlertsInterface::AlertRecord>& out) c
 
 QStatus AlertsModel::GetAlertCodesDescription(qcc::String& arg_languageTag, std::vector<AlertsInterface::AlertCodesDescriptor>& arg_description, ErrorCode& error, CdmControllee& controllee)
 {
-    arg_description = s_descriptions;
-    return ER_OK;
+    auto status = HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.Alerts", "__AlertCodesDescriptor", arg_description);
+    if (status != ER_OK) {
+        error = FEATURE_NOT_AVAILABLE;
+    }
+    return status;
 }
 
 QStatus AlertsModel::AcknowledgeAlert(uint16_t arg_alertCode, ErrorCode& error, CdmControllee& controllee)

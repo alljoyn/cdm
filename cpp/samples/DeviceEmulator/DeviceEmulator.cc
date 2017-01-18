@@ -76,6 +76,22 @@ static int ArgExists(int argc, char **argv, const std::string& arg)
     return 0;
 }
 
+
+
+static Ref<emulator::SuperControllee> theDevice;
+
+
+static QStatus MainHandleCommand(const Command& cmd, CdmControllee& controllee)
+{
+    if (cmd.name == "reset") {
+        return theDevice->PreloadHAL(true);
+    }
+
+    return emulator::HandleCommand(cmd, controllee);
+}
+
+
+
 int CDECL_CALL main(int argc, char** argv)
 {
     std::string configFile;
@@ -111,16 +127,16 @@ int CDECL_CALL main(int argc, char** argv)
         return 1;
     }
 
-    auto device = mkRef<emulator::SuperControllee>(system.GetBusAttachment(), config, certs_dir + "/security");
+    theDevice = mkRef<emulator::SuperControllee>(system.GetBusAttachment(), config, certs_dir + "/security");
 
-    status = device->Start(emitOnSet);
+    status = theDevice->Start(emitOnSet);
     if (status != ER_OK) {
         std::cerr << "Failed to start the DeviceEmulator " << QCC_StatusText(status) << "\n";
         return 1;
     }
 
-    StartCommands(emulator::HandleCommand, device->GetControllee());
+    StartCommands(MainHandleCommand, theDevice->GetControllee());
 
-    device->Stop();
+    theDevice->Stop();
     return 0;
 }

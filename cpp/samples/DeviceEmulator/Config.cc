@@ -135,8 +135,6 @@ Config::Impl::ParseXml()
                         if (!ifObj.name.empty())
                         {
                             auto props = iface->GetPath("Property");
-                            cout << "object path " << objPath << " : iface " << ifObj.name << " #props=" << props.size() << "\n";
-
                             for (auto& prop : props)
                             {
                                 Property prObj;
@@ -152,7 +150,6 @@ Config::Impl::ParseXml()
                                     if (cs.size() == 1)
                                     {
                                         prObj.initialState = cs[0]->Generate();
-                                        cout << "The initial state for " << objPath << ":" << ifObj.name << ":" << prObj.name << " is: " << prObj.initialState << "\n";
                                     }
                                     else
                                     if (cs.size() > 1)

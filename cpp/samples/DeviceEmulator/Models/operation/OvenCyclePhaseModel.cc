@@ -115,12 +115,6 @@ namespace ajn {
 namespace services {
 namespace emulator {
 
-static std::vector<OvenCyclePhaseInterface::CyclePhaseDescriptor> s_phases = {
-    // phase name description
-    {1,   "cook",    "Cook it"},
-    {2,   "brown",   "Brown the skin"},
-    {3,   "cool",    "Let it cool"}
-};
 
 OvenCyclePhaseModel::OvenCyclePhaseModel(const std::string& busPath) :
     m_busPath(busPath)
@@ -138,8 +132,11 @@ QStatus OvenCyclePhaseModel::GetSupportedCyclePhases(std::vector<uint8_t>& out) 
 
 QStatus OvenCyclePhaseModel::GetVendorPhasesDescription(qcc::String& arg_languageTag, std::vector<OvenCyclePhaseInterface::CyclePhaseDescriptor>& arg_phasesDescription, ErrorCode& error, CdmControllee& controllee)
 {
-    arg_phasesDescription = s_phases;
-    return ER_OK;
+    auto status = HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.OvenCyclePhase", "__PhaseDescription", arg_phasesDescription);
+    if (status != ER_OK) {
+        error = FEATURE_NOT_AVAILABLE;
+    }
+    return status;
 }
 
 

@@ -34,7 +34,7 @@ Free{{type.tclArrayDescr()}}(&{{name}});
 {% endmacro -%}
 
 {%- macro halInit(type) %}
-{%-   if type.ajtypeIsString() %}""{%- else %}{0}{% endif %}
+{%-   if type.ajtypeIsString() %}0{%- else %}{0}{% endif %}
 {% endmacro -%}
 
 {%- macro castTo(type) %}

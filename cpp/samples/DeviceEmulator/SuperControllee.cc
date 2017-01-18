@@ -458,7 +458,7 @@ QStatus SuperControllee::CreateInterfaces()
 
 
 
-QStatus SuperControllee::PreloadHAL()
+QStatus SuperControllee::PreloadHAL(bool force)
 {
     auto& objects = m_config.GetObjects();
 
@@ -470,7 +470,7 @@ QStatus SuperControllee::PreloadHAL()
             {
                 if (!prop.initialState.empty())
                 {
-                    bool force = (prop.mode == Config::PropMode::Initialize);
+                    force = force || (prop.mode == Config::PropMode::Initialize);
                     HAL::X::instance().WritePropertyXml(obj.path, iface.name, prop.name, prop.initialState, force);
                 }
             }
