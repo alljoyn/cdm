@@ -18,6 +18,7 @@ class _SysConf(object):
         self.bin_dir = sys_conf['bin_dir'] if os.path.exists(sys_conf['bin_dir']) else _raise_value_error("bin dir does not exist")
         self.mount_dir = sys_conf['mount_dir']
 
+
 def _extract_device_xml(boot_args, device_conf):
     if device_conf['devicexml'] == 'from args' and not boot_args.devicexml:
         raise ValueError("Device configuration wants a device xml passed in as an argument but argument missing")

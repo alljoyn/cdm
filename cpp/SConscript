@@ -52,7 +52,6 @@ for component in ('common', 'controllee', 'controller'):
     cdm_env.Install('$CDM_DISTDIR/interfaces/inc/interfaces/%s/input' % component, cdm_env.Glob('interfaces/inc/interfaces/%s/input/*.h' % component))
     cdm_env.Install('$CDM_DISTDIR/interfaces/inc/interfaces/%s/userinterfacesettings' % component, cdm_env.Glob('interfaces/inc/interfaces/%s/userinterfacesettings/*.h' % component))
 
-
 # Libraries
 cdm_env.Install('$CDM_DISTDIR/lib', cdm_env.SConscript('framework/src/SConscript', exports = ['cdm_env']))
 cdm_env.Install('$CDM_DISTDIR/lib', cdm_env.SConscript('interfaces/src/SConscript', exports = ['cdm_env']))

@@ -44,7 +44,7 @@ def _format_property(property_data, accum):
 def _scalar_writer(xml, data_type, data_value):
     scalar_node = xml.createElement('scalar')
     scalar_node.attributes['type'] = str(data_type)
-    scalar_node.attributes['value'] = str(data_value)
+    scalar_node.attributes['value'] = str(data_value).strip('"')
     return scalar_node
 
 

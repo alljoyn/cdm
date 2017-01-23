@@ -234,7 +234,7 @@ class CdmOS(object):
         os.chdir(self._sys_conf.mount_dir)
         launch_args = [bin_path] + self._device_conf.args
         try:
-            self._proc = subprocess.Popen(launch_args, stdin=subprocess.PIPE)
+            self._proc = subprocess.Popen(launch_args, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             print " * Device bin {} started successfully\n".format(self._device_conf.device)
         except Exception as err:
             print "ERROR - Device bin {} failed to start: {}".format(self._device_conf.device, err)
@@ -256,7 +256,7 @@ class CdmOS(object):
             self._boot_program.start()
             print "Boot program '{}' has terminated - System shutdown initiated".format(self._device_conf.boot_program)
         except Exception as err:
-            print "ERROR starting boot program {}: {}".format(self._device_conf.boot_program, err)
+            print "ERROR during boot program {}: {}".format(self._device_conf.boot_program, err)
 
         time.sleep(0.1)
         print "Shutting down device bin {}...".format(self._device_conf.device)

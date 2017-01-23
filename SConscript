@@ -41,4 +41,4 @@ cdm_env.Append(CPPPATH = '$DISTDIR/cdm/interfaces/inc')
 for b in cdm_env['bindings']:
     if os.path.exists('%s/SConscript' % b):
         cdm_env.VariantDir('$OBJDIR_SERVICES_CDM/%s' % b, b, duplicate = 0)
-        cdm_env.SConscript(['$OBJDIR_SERVICES_CDM/%s/SConscript' % b for b in env['bindings'] ], exports = ['cdm_env'])
+        cdm_env.SConscript('$OBJDIR_SERVICES_CDM/%s/SConscript' % b, exports = ['cdm_env'])
