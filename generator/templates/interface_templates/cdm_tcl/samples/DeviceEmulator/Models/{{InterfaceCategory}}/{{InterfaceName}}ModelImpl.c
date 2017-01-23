@@ -74,7 +74,8 @@ static Element* HAL_Encode_Array_{{Interface.Name}}_{{struc.Name}}(Array_{{Inter
 static Element* HAL_Encode_Array_{{Interface.Name}}_{{struc.Name}}(Array_{{Interface.Name}}_{{struc.Name}} value, Element* parent)
 {
     Element* array = BSXML_NewElement("array", parent);
-    for (size_t i = 0; i < value.numElems; ++i) {
+    size_t i = 0;
+    for (; i < value.numElems; ++i) {
         HAL_Encode_{{Interface.Name}}_{{struc.Name}}(value.elems[i], array);
     }
     return array;
@@ -88,7 +89,8 @@ static void HAL_Decode_Array_{{Interface.Name}}_{{struc.Name}}(Element* elem, Ar
     InitArray_{{Interface.Name}}_{{struc.Name}}(value, 0);
 
     if (strcmp(elem->name, "array") == 0) {
-        for (size_t i = 0; i < elem->numChildren; ++i) {
+        size_t i = 0;
+        for (; i < elem->numChildren; ++i) {
             size_t j = ExtendArray_{{Interface.Name}}_{{struc.Name}}(value, 1);
             HAL_Decode_{{Interface.Name}}_{{struc.Name}}(elem->children[i], &value->elems[j]);
         }
@@ -121,7 +123,8 @@ static Element* HAL_Encode_Array_{{Interface.Name}}_{{enum.Name}}(Array_{{Interf
 static Element* HAL_Encode_Array_{{Interface.Name}}_{{enum.Name}}(Array_{{Interface.Name}}_{{enum.Name}} value, Element* parent)
 {
     Element* array = BSXML_NewElement("array", parent);
-    for (size_t i = 0; i < value.numElems; ++i) {
+    size_t i = 0;
+    for (; i < value.numElems; ++i) {
         {{enum.enum_type().tclHalEncoder()}}(value.elems[i], array);
     }
     return array;
@@ -135,7 +138,8 @@ static void HAL_Decode_Array_{{Interface.Name}}_{{enum.Name}}(Element* elem, Arr
     InitArray_{{Interface.Name}}_{{enum.Name}}(value, 0);
 
     if (strcmp(elem->name, "array") == 0) {
-        for (size_t i = 0; i < elem->numChildren; ++i) {
+        size_t i = 0;
+        for (; i < elem->numChildren; ++i) {
             size_t j = ExtendArray_{{Interface.Name}}_{{enum.Name}}(value, 1);
             value->elems[j] = ({{enum.enum_type().tcltype(false)}}){{enum.enum_type().tclHalEncoder(decode=True)}}(elem->children[i]);
         }

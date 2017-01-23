@@ -40,9 +40,4 @@
 
 AJ_Status Handle{{Interface.Name}}Command(const Command* cmd, void* context);
 
-/* REVISIT delete this */
-{% for struc in Interface.Structs %}
-extern int Encoder_{{Interface.Name}}_{{struc.Name}}(FILE* fp, void* value);
-{% endfor %}
-
 #endif /* ALLJOYN_{{Interface.Name.upper()}}_MODELIMPL_H */

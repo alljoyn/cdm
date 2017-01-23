@@ -13,7 +13,8 @@
 
         if (startingRecord < channels.numElems)
         {
-            for (size_t i = startingRecord; i < startingRecord + numRecords && i < channels.numElems; ++i)
+            size_t i = startingRecord;
+            for (; i < startingRecord + numRecords && i < channels.numElems; ++i)
             {
                 size_t j = ExtendArray_Channel_ChannelInfoRecord(listOfChannelInfoRecords, 1);
                 listOfChannelInfoRecords->elems[j] = channels.elems[i];
