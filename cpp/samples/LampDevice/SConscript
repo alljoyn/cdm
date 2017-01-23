@@ -28,9 +28,6 @@
 
 Import('env')
 
-certs = env.Glob('lamp_certs/*.*')
-env.Install('$CDM_DISTDIR/bin/lamp_certs', certs)
-
 srcs = env.Glob('*.cc')
 srcs += env.Glob('../Utils/*.cc')
 

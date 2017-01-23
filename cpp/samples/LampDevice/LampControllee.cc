@@ -28,9 +28,6 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#include <iostream>
-#include <thread>
-
 #include <alljoyn/cdm/controllee/CdmBusObject.h>
 
 #include <interfaces/controllee/operation/OnOffStatusIntfControllee.h>
@@ -40,6 +37,9 @@
 #include <interfaces/controllee/operation/ColorIntfControllee.h>
 
 #include "LampControllee.h"
+
+#include "../Utils/Command.h"
+#include "../Utils/HAL.H"
 
 using namespace ajn;
 using namespace services;
@@ -52,6 +52,49 @@ typedef ajn::services::OffControlIntfControllee OffControl;
 typedef ajn::services::BrightnessIntfControllee BrightnessControl;
 typedef ajn::services::ColorIntfControllee ColorControl;
 
+
+static QStatus SetFactoryDefaults(CdmControllee& controllee, bool force)
+{
+    QStatus status = HAL::WriteProperty(BusPath, "OnOffStatus", "IsOn", false, force);
+    if (status != ER_OK)
+        return status;
+
+    status = HAL::WriteProperty(BusPath, "Brightness", "Brightness", 0.75, force);
+    if (status != ER_OK)
+        return status;
+
+    status = HAL::WriteProperty(BusPath, "Color", "Hue", 0.0, force);
+    if (status != ER_OK)
+        return status;
+
+    status = HAL::WriteProperty(BusPath, "Color", "Saturation", 1.0, force);
+    if (status != ER_OK)
+        return status;
+
+    if (controllee.EmitChangedSignalOnSetProperty()) {
+        auto onOffIface = controllee.GetInterface<OnOffStatusIntfControllee>(BusPath, "org.alljoyn.SmartSpaces.Operation.OnOffStatus");
+        onOffIface->EmitIsOnChanged(false);
+
+        auto brightnessIface = controllee.GetInterface<BrightnessIntfControllee>(BusPath, "org.alljoyn.SmartSpaces.Operation.Brightness");
+        brightnessIface->EmitBrightnessChanged(0.75);
+
+        auto colorIface = controllee.GetInterface<ColorIntfControllee>(BusPath, "org.alljoyn.SmartSpaces.Operation.Color");
+        colorIface->EmitHueChanged(0.0);
+        colorIface->EmitSaturationChanged(1.0);
+    }
+
+    return ER_OK;
+}
+
+static QStatus HandleCommand(const Command& cmd, CdmControllee& controllee)
+{
+    if (cmd.name == "reset") {
+        return SetFactoryDefaults(controllee, true);
+    }
+
+    return HandleCommand(cmd, controllee);
+}
+
 LampControllee::LampControllee(BusAttachment& bus, const std::string& aboutData, const std::string& certPath) :
     m_announcer(bus),
     m_security(bus),
@@ -63,18 +106,14 @@ LampControllee::LampControllee(BusAttachment& bus, const std::string& aboutData,
     m_announcer.SetAboutData(aboutData);
 }
 
-QStatus LampControllee::Run()
+QStatus LampControllee::Run(bool emitOnSet)
 {
-    QStatus status = SetupDevice();
+    QStatus status = SetupDevice(emitOnSet);
     if (status != ER_OK)
         return status;
 
-    for(auto i=100; i>0; --i) {
-        std::cout<<"Warning: Lamp gonna self destruct in "<<i<<" seconds.\n";
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-    }
+    StartCommands(HandleCommand, m_controllee);
 
-    std::cout<<"BOOM!\n";
     return ER_OK;
 }
 
@@ -88,21 +127,24 @@ void LampControllee::CreateInterfaces()
     m_controllee.CreateInterface<ColorControl>(m_hsvModel, BusPath);
 }
 
-QStatus LampControllee::SetupDevice()
+QStatus LampControllee::SetupDevice(bool emitOnSet)
 {
     CreateInterfaces();
     QStatus status;
+
+    SetFactoryDefaults(m_controllee, false);
 
     status = m_security.Enable();
     if (status != ER_OK)
         return status;
 
-    status = m_controllee.Start();
+    status = m_controllee.Start(emitOnSet);
     if (status != ER_OK)
         return status;
 
     return m_announcer.Announce();
 }
+
 
 QStatus LampControllee::Shutdown()
 {

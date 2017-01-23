@@ -157,6 +157,33 @@ vector<string> SplitWords(const string& text)
     return words;
 }
 
+void FindArg(int argc, char** argv, const std::string& arg, const std::string& defValue, std::string& out)
+{
+    for (int i=0; i<argc; ++i)
+    {
+        if (arg == argv[i])
+        {
+            out = argv[i + 1];
+            return;
+        }
+    }
+
+    out = defValue;
+}
+
+int ArgExists(int argc, char **argv, const std::string& arg)
+{
+    for (int i=0; i<argc; ++i)
+    {
+        if (arg == argv[i])
+        {
+            return i;
+        }
+    }
+
+    return 0;
+}
+
 //======================================================================
 } // namespace utils
 } // namespace services

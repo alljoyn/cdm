@@ -71,7 +71,9 @@ static void ParseCommand(char* buf, IrqArg& irqArg)
 
     /* Split the line into words at white space.
     */
-    while ((token = strsep(&buf, " \t")) != NULL)
+    for (token = strtok(buf, " \t");
+         token;
+         token = strtok(NULL, " \t"))
     {
         switch (step)
         {

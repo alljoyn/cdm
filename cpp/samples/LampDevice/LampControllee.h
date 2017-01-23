@@ -48,12 +48,12 @@ class LampControllee {
  public:
     LampControllee(ajn::BusAttachment& bus, const std::string& aboutData, const std::string& certPath);
 
-    QStatus Run();
+    QStatus Run(bool emitOnSet);
     QStatus Shutdown();
 
  private:
     void CreateInterfaces();
-    QStatus SetupDevice();
+    QStatus SetupDevice(bool emitOnSet);
 
     ajn::services::CdmAnnouncer m_announcer;
     ajn::services::CdmSecurity m_security;
