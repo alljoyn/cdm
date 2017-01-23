@@ -39,6 +39,8 @@
 #include "SuperControllee.h"
 #include "../Utils/HAL.h"
 #include "../Utils/Command.h"
+#include "../Utils/Utils.h"
+
 
 using namespace qcc;
 using namespace ajn;
@@ -48,34 +50,6 @@ using std::string;
 typedef std::vector<std::string> StringVec;
 
 //======================================================================
-
-void FindArg(int argc, char** argv, const std::string& arg, const std::string& defValue, std::string& out)
-{
-    for (int i=0; i<argc; ++i)
-    {
-        if (arg == argv[i])
-        {
-            out = argv[i + 1];
-            return;
-        }
-    }
-
-    out = defValue;
-}
-
-static int ArgExists(int argc, char **argv, const std::string& arg)
-{
-    for (int i=0; i<argc; ++i)
-    {
-        if (arg == argv[i])
-        {
-            return i;
-        }
-    }
-
-    return 0;
-}
-
 
 
 static Ref<emulator::SuperControllee> theDevice;
@@ -113,9 +87,9 @@ int CDECL_CALL main(int argc, char** argv)
     std::string certs_dir;
     std::string state_dir;
 
-    FindArg(argc, argv, "--state-dir", "emulated_device_state", state_dir);
-    FindArg(argc, argv, "--certs-dir", "device_emulator_certs", certs_dir);
-    bool emitOnSet = (ArgExists(argc, argv, "--emit-on-set") > 0);
+    utils::FindArg(argc, argv, "--state-dir", "emulated_device_state", state_dir);
+    utils::FindArg(argc, argv, "--certs-dir", "certificates/security", certs_dir);
+    bool emitOnSet = (utils::ArgExists(argc, argv, "--emit-on-set") > 0);
     HAL::SetRootDir(state_dir);
 
     CdmSystem system("DeviceEmulator");
@@ -127,7 +101,7 @@ int CDECL_CALL main(int argc, char** argv)
         return 1;
     }
 
-    theDevice = mkRef<emulator::SuperControllee>(system.GetBusAttachment(), config, certs_dir + "/security");
+    theDevice = mkRef<emulator::SuperControllee>(system.GetBusAttachment(), config, certs_dir);
 
     status = theDevice->Start(emitOnSet);
     if (status != ER_OK) {

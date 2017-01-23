@@ -37,12 +37,25 @@
 
 #include "LampControllee.h"
 #include "../Utils/HAL.h"
+#include "../Utils/Utils.h"
+
 
 namespace cdm = ajn::services;
 
-int CDECL_CALL main() {
+//======================================================================
+
+
+int CDECL_CALL main(int argc, char** argv) {
 
     cdm::CdmSystem system("Lamp");
+
+    std::string certsDir;
+    std::string stateDir;
+
+    cdm::utils::FindArg(argc, argv, "--state-dir", "lamp_device_state", stateDir);
+    cdm::utils::FindArg(argc, argv, "--certs-dir", "certificates/security", certsDir);
+    bool emitOnSet = (cdm::utils::ArgExists(argc, argv, "--emit-on-set") > 0);
+    cdm::HAL::SetRootDir(stateDir);
 
     QStatus status = system.Start();
     if (status != ER_OK) {
@@ -52,10 +65,10 @@ int CDECL_CALL main() {
 
     const std::string aboutData =
         "<AboutData>"
-            "  <AppId>4a354637-5649-4518-8a48-323c158bc004</AppId>"
+            "  <AppId></AppId>"
             "  <DefaultLanguage>en</DefaultLanguage>"
             "  <DeviceName>Lamp</DeviceName>"
-            "  <DeviceId>deviceID</DeviceId>"
+            "  <DeviceId></DeviceId>"
             "  <AppName>SomeLamp</AppName>"
             "  <Manufacturer>Manufacturer</Manufacturer>"
             "  <ModelNumber>Wxfy388i</ModelNumber>"
@@ -76,11 +89,9 @@ int CDECL_CALL main() {
             "  </DeviceTypeDescription>"
             "</AboutData>";
 
-    const std::string certPathPrefix = "lamp_certs/security";
+    LampControllee lamp(system.GetBusAttachment(), aboutData, certsDir);
 
-    LampControllee lamp(system.GetBusAttachment(), aboutData, certPathPrefix);
-
-    status = lamp.Run();
+    status = lamp.Run(emitOnSet);
     if (status != ER_OK) {
         std::cerr << "Failed to start the Lamp: " << QCC_StatusText(status) << "\n";
         return 1;

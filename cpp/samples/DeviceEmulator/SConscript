@@ -28,9 +28,6 @@
 
 Import('env')
 
-certs = env.Glob('device_emulator_certs/*.*')
-env.Install('$CDM_DISTDIR/bin/device_emulator_certs', certs)
-
 srcs = env.Glob('*.cc')
 srcs += env.Glob('Models/operation/*.cc')
 srcs += env.Glob('Models/environment/*.cc')

@@ -65,6 +65,27 @@ std::vector<std::string> SplitFields(const std::string& text, char delim);
 std::vector<std::string> SplitWords(const std::string& text);
 
 
+/**
+ * Searches the argument list for a specific argument and extracts it value
+ *
+ * @param argc
+ * @param argv
+ * @param arg the argument to search for
+ * @param defValue the default value if the argument isn't found
+ * @param out the value contained in the argument or default value defined in DefValue
+ */
+void FindArg(int argc, char** argv, const std::string& arg, const std::string& defValue, std::string& out);
+
+/**
+ * Searches the argument list for an argument and returns true if it is found
+ *
+ * @param argc
+ * @param argv
+ * @param arg the argument to search for
+ * @return 0 if the argument isn't found else the index of the argument
+ */
+int ArgExists(int argc, char **argv, const std::string& arg);
+
 //======================================================================
 } // namespace utils
 } // namespace services

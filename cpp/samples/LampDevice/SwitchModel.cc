@@ -45,11 +45,11 @@ QStatus SwitchModel::GetIsOn(bool& out) const
     return HAL::ReadProperty<bool>(m_busPath, "OnOffStatus", "IsOn", out);
 }
 
-static QStatus writeIsOnWithSideEffect(const qcc::String& busPath, bool value, ajn::services::CdmControllee& controllee)
+static QStatus writeIsOn(const qcc::String& busPath, bool value, ajn::services::CdmControllee& controllee)
 {
     QStatus status = HAL::WriteProperty(busPath, "OnOffStatus", "IsOn", value);
 
-    if (status == ER_OK) {
+    if (status == ER_OK && controllee.EmitChangedSignalOnSetProperty()) {
         auto iface = controllee.GetInterface<OnOffStatusIntfControllee>(busPath, "org.alljoyn.SmartSpaces.Operation.OnOffStatus");
         iface->EmitIsOnChanged(value);
     }
@@ -59,10 +59,10 @@ static QStatus writeIsOnWithSideEffect(const qcc::String& busPath, bool value, a
 
 QStatus SwitchModel::SwitchOn(ajn::services::ErrorCode& error, ajn::services::CdmControllee& controllee)
 {
-    return writeIsOnWithSideEffect(m_busPath, true, controllee);
+    return writeIsOn(m_busPath, true, controllee);
 }
 
 QStatus SwitchModel::SwitchOff(ajn::services::ErrorCode& error, ajn::services::CdmControllee& controllee)
 {
-    return writeIsOnWithSideEffect(m_busPath, false, controllee);
+    return writeIsOn(m_busPath, false, controllee);
 }

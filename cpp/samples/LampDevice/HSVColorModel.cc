@@ -48,17 +48,17 @@ QStatus HSVColorModel::SetBrightness(const double value) {
 }
 
 QStatus HSVColorModel::GetHue(double &out) const {
-    return HAL::ReadProperty<double>(m_busPath, "Brightness", "Hue", out);
+    return HAL::ReadProperty<double>(m_busPath, "Color", "Hue", out);
 }
 
 QStatus HSVColorModel::SetHue(const double value) {
-    return HAL::WriteProperty(m_busPath, "Brightness", "Hue", value);
+    return HAL::WriteProperty(m_busPath, "Color", "Hue", value);
 }
 
 QStatus HSVColorModel::GetSaturation(double &out) const {
-    return HAL::ReadProperty<double>(m_busPath, "Brightness", "Saturation", out);
+    return HAL::ReadProperty<double>(m_busPath, "Color", "Saturation", out);
 }
 
 QStatus HSVColorModel::SetSaturation(const double value) {
-    return HAL::WriteProperty(m_busPath, "Brightness", "Saturation", value);
+    return HAL::WriteProperty(m_busPath, "Color", "Saturation", value);
 }
