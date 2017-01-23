@@ -32,11 +32,13 @@
 #include <string.h>
 #include <ajtcl/alljoyn.h>
 #include <ajtcl/cdm/CdmControllee.h>
-#include <ajtcl/cdm/CdmInterfaceCommon.h>
-#include <ajtcl/cdm/utils/Cdm_Array.h>
+
+#include <ajtcl/cdm/interfaces/CdmInterfaceCommon.h>
 #include <ajtcl/cdm/interfaces/CdmInterfaceValidation.h>
 #include <ajtcl/cdm/interfaces/{{InterfaceCategory}}/{{Interface.Name}}Interface.h>
 #include <ajtcl/cdm/interfaces/{{InterfaceCategory}}/{{Interface.Name}}Model.h>
+
+#include <ajtcl/cdm/utils/CdmArray.h>
 
 #define INTERFACE_VERSION {{Interface.Version}}
 #define INTERFACE_NAME {{Interface.Name.upper_snake()}}
@@ -68,7 +70,7 @@ void FreeFields_{{Interface.Name}}_{{struc.Name}}({{Interface.Name}}_{{struc.Nam
 
 void InitArray_{{Interface.Name}}_{{struc.Name}}(Array_{{Interface.Name}}_{{struc.Name}}* value, size_t numElems)
 {
-    Init_Array((CDM_Array*)value, sizeof({{Interface.Name}}_{{struc.Name}}), numElems);
+    Init_Array((CdmArray*)value, sizeof({{Interface.Name}}_{{struc.Name}}), numElems);
 }
 
 
@@ -106,7 +108,7 @@ void FreeArray_{{Interface.Name}}_{{struc.Name}}(Array_{{Interface.Name}}_{{stru
 
 size_t ExtendArray_{{Interface.Name}}_{{struc.Name}}(Array_{{Interface.Name}}_{{struc.Name}}* value, size_t numElems)
 {
-    return Extend_Array((CDM_Array*)value, sizeof({{Interface.Name}}_{{struc.Name}}), numElems);
+    return Extend_Array((CdmArray*)value, sizeof({{Interface.Name}}_{{struc.Name}}), numElems);
 }
 {% endfor %}
 {% for enum in Interface.Enums %}
@@ -114,13 +116,13 @@ size_t ExtendArray_{{Interface.Name}}_{{struc.Name}}(Array_{{Interface.Name}}_{{
 
 void InitArray_{{Interface.Name}}_{{enum.Name}}(Array_{{Interface.Name}}_{{enum.Name}}* value, size_t numElems)
 {
-    Init_Array((CDM_Array*)value, sizeof({{Interface.Name}}_{{enum.Name}}), numElems);
+    Init_Array((CdmArray*)value, sizeof({{Interface.Name}}_{{enum.Name}}), numElems);
 }
 
 
 void CopyArray_{{Interface.Name}}_{{enum.Name}}(Array_{{Interface.Name}}_{{enum.Name}}* value, Array_{{Interface.Name}}_{{enum.Name}}* copy)
 {
-    Copy_Array((CDM_Array*)value, sizeof({{Interface.Name}}_{{enum.Name}}), (CDM_Array*)copy);
+    Copy_Array((CdmArray*)value, sizeof({{Interface.Name}}_{{enum.Name}}), (CdmArray*)copy);
 }
 
 
@@ -133,7 +135,7 @@ void FreeArray_{{Interface.Name}}_{{enum.Name}}(Array_{{Interface.Name}}_{{enum.
 
 size_t ExtendArray_{{Interface.Name}}_{{enum.Name}}(Array_{{Interface.Name}}_{{enum.Name}}* value, size_t numElems)
 {
-    return Extend_Array((CDM_Array*)value, sizeof({{Interface.Name}}_{{enum.Name}}), numElems);
+    return Extend_Array((CdmArray*)value, sizeof({{Interface.Name}}_{{enum.Name}}), numElems);
 }
 {% endfor %}
 
