@@ -1,6 +1,8 @@
+import sys
 import os
 import random
 import subprocess
+import threading
 import time
 from xml.dom import minidom
 import importlib
@@ -124,6 +126,19 @@ class CdmOS(object):
         self._boot_program = self._make_boot_program()
         self._proc = None
 
+        self._running = False
+
+    def _proc_poll(self):
+        while self._running:
+            if self._proc is None:
+                print "ERROR device failed."
+                quit(1)
+
+            poll_result = self._proc.poll()
+            if poll_result is not None:
+                print "ERROR device failed with error code: {}".format(poll_result)
+                quit(poll_result)
+
     def _extract_device_name(self):
         xml = minidom.parse(self._device_conf.device_xml)
         device_name_nodes = xml.getElementsByTagName('DeviceName')
@@ -225,6 +240,8 @@ class CdmOS(object):
         self.send_signal(signal, signal_dest)
 
     def start(self):
+        self._running = True
+
         time.sleep(0.3)
         bin_path = os.path.join(self._sys_conf.bin_dir, self._device_conf.device)
         if not os.path.exists(bin_path):
@@ -251,6 +268,9 @@ class CdmOS(object):
         print "Welcome to{}\nCDM OS - for emulated CDM devices Version 16.10\n".format(_intros[intro_index])
         time.sleep(0.1)
 
+        monitor = threading.Thread(target=self._proc_poll)
+        monitor.start()
+
         try:
             print "Starting boot program '{}'...".format(self._device_conf.boot_program)
             self._boot_program.start()
@@ -258,8 +278,14 @@ class CdmOS(object):
         except Exception as err:
             print "ERROR during boot program {}: {}".format(self._device_conf.boot_program, err)
 
+        self._running = False
         time.sleep(0.1)
+        print "Shutting down device monitor..."
+        monitor.join()
         print "Shutting down device bin {}...".format(self._device_conf.device)
         time.sleep(0.2)
-        self._proc.kill()
+        try:
+            self._proc.kill()
+        except OSError:
+            pass
         print "Goodbye!"
