@@ -1,0 +1,94 @@
+<DeviceEmulator name="SmokeSensor">
+    <AboutData>
+        <AppId><!-- Runtime Generated --></AppId>
+        <DefaultLanguage>en</DefaultLanguage>
+        <DeviceName>Virtual Smoke Sensor</DeviceName>
+        <DeviceId><!-- Runtime Generated --></DeviceId>
+        <AppName>AllJoyn CDM Controllee</AppName>
+        <Manufacturer>AllJoyn Sample</Manufacturer>
+        <ModelNumber>smoke-sensor</ModelNumber>
+        <Description>Simulated AllJoyn Device</Description>
+        <DateOfManufacture>2016-10-01</DateOfManufacture>
+        <SoftwareVersion>1.0.0</SoftwareVersion>
+        <HardwareVersion>1.0.0</HardwareVersion>
+        <SupportUrl>https://allseenalliance.org/</SupportUrl>
+        <CountryOfProduction>Nowhere</CountryOfProduction>
+        <Location>Sample Location</Location>
+        <ProductBrand>AllJoyn Sample</ProductBrand>
+        <DeviceTypeDescription>
+            <TypeDescription>
+                <device_type>30</device_type>
+                <object_path>/Cdm/SmokeSensor</object_path>
+            </TypeDescription>
+        </DeviceTypeDescription>
+    </AboutData>
+    <InterfaceList>
+        <Object path='/Cdm/SmokeSensor'>
+            <Interface name='org.alljoyn.SmartSpaces.Environment.CurrentTemperature'>
+                <Property name='CurrentValue' mode='default'>
+                    <scalar type='double' value='22.0'/>
+                </Property>
+                <Property name='Precision' mode='default'>
+                    <scalar type='double' value='0.5'/>
+                </Property>
+                <Property name='UpdateMinTime' mode='default'>
+                    <scalar type='unsigned' value='1000'/>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.TriggerSensor'>
+                <Property name='CurrentlyTriggered' mode='default'>
+                    <scalar type='bool' value='false'/>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.Alerts'>
+                <Property name='Alerts' mode='default'>
+                    <array/>
+                </Property>
+                <Property name='__AlertCodesDescriptor' mode='default'>
+                    <array>
+                        <struct>
+                            <field name='alertCode'>
+                                <scalar type='unsigned' value='1'/>
+                            </field>
+                            <field name='description'>
+                                <scalar type='string' value='Smoke Detected'/>
+                            </field>
+                        </struct>
+                        <struct>
+                            <field name='alertCode'>
+                                <scalar type='unsigned' value='2'/>
+                            </field>
+                            <field name='description'>
+                                <scalar type='string' value='Alarm dismissed'/>
+                            </field>
+                        </struct>
+                        <struct>
+                            <field name='alertCode'>
+                                <scalar type='unsigned' value='3'/>
+                            </field>
+                            <field name='description'>
+                                <scalar type='string' value='Low Battery'/>
+                            </field>
+                        </struct>
+                        <struct>
+                            <field name='alertCode'>
+                                <scalar type='unsigned' value='4'/>
+                            </field>
+                            <field name='description'>
+                                <scalar type='string' value='Malfunction'/>
+                            </field>
+                        </struct>
+                    </array>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.BatteryStatus'>
+                <Property name='CurrentValue' mode='default'>
+                    <scalar type='unsigned' value='100'/>
+                </Property>
+                <Property name='IsCharging' mode='default'>
+                    <scalar type='bool' value='true'/>
+                </Property>
+            </Interface>
+        </Object>
+    </InterfaceList>
+</DeviceEmulator>

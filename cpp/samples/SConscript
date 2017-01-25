@@ -72,7 +72,7 @@ sys_conf_data = {
     }
 }
 
-sys_conf_path = File(local_env.subst('$CDM_DISTDIR/bin/conf/sys.conf')).abspath
+sys_conf_path = File(local_env.subst('$CDM_DISTDIR/bin/cdm_os/conf/sys.conf')).abspath
 
 if not os.path.exists(os.path.dirname(sys_conf_path)):
     os.makedirs(os.path.dirname(sys_conf_path))
@@ -81,13 +81,17 @@ if not os.path.exists(os.path.dirname(sys_conf_path)):
 with open(sys_conf_path, "w") as fp:
     json.dump(sys_conf_data, fp, indent=4)
 
-local_env.Install('$CDM_DISTDIR/bin/conf/cdm', local_env.Glob(samples_launcher_path + '/conf/cdm/*.conf'))
-local_env.Install('$CDM_DISTDIR/bin/conf/cdm_tcl', local_env.Glob(samples_launcher_path + '/conf/cdm_tcl/*.conf'))
 local_env.Install('$CDM_DISTDIR/bin/cdm_os', local_env.Glob(samples_launcher_path + '/cdm_os/*.py'))
+local_env.Install('$CDM_DISTDIR/bin/cdm_os/conf/cdm', local_env.Glob(samples_launcher_path + '/conf/cdm/*.conf'))
+local_env.Install('$CDM_DISTDIR/bin/cdm_os/conf/cdm_tcl', local_env.Glob(samples_launcher_path + '/conf/cdm_tcl/*.conf'))
 local_env.Install('$CDM_DISTDIR/bin/cdm_os/bin', local_env.Glob(samples_launcher_path + '/cdm_os/bin/*.py'))
 
 ### install some sample certificate files
 local_env.Install('$CDM_DISTDIR/bin/certificates', local_env.Glob('certificates/*.*'))
+
+### install some sample device xml files to use with device emulator
+local_env.Install('$CDM_DISTDIR/bin/DeviceXML', local_env.Glob('DeviceXML/*.*'))
+
 
 progs = [ local_env.SConscript('%s/SConscript' % sampleapp, exports = exports) for sampleapp in sample_dirs ]
 

@@ -17,17 +17,31 @@
         <ProductBrand>AllJoyn Sample</ProductBrand>
         <DeviceTypeDescription>
             <TypeDescription>
-                <device_type>27</device_type><!-- TODO: Ensure enum value is correct -->
-                <object_path>/CDM/Speaker</object_path>
+                <device_type>31</device_type>
+                <object_path>/Cdm/Speaker</object_path>
             </TypeDescription>
         </DeviceTypeDescription>
     </AboutData>
     <InterfaceList>
-        <Object path='/CDM/Speaker'>
-            <Interface name='org.alljoyn.SmartSpaces.Operation.OnOffStatus'/>
+        <Object path='/Cdm/Speaker'>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.OnOffStatus'>
+                <Property name='IsOn' mode='default'>
+                    <scalar type='bool' value='true'/>
+                </Property>
+            </Interface>
             <Interface name='org.alljoyn.SmartSpaces.Operation.OffControl'/>
             <Interface name='org.alljoyn.SmartSpaces.Operation.OnControl'/>
-            <Interface name='org.alljoyn.SmartSpaces.Operation.AudioVolume'/>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.AudioVolume'>
+                <Property name='Volume' mode='default'>
+                    <scalar type='unsigned' value='10'/>
+                </Property>
+                <Property name='MaxVolume' mode='default'>
+                    <scalar type='unsigned' value='100'/>
+                </Property>
+                <Property name='Mute' mode='default'>
+                    <scalar type='bool' value='false'/>
+                </Property>
+            </Interface>
         </Object>
     </InterfaceList>
 </DeviceEmulator>

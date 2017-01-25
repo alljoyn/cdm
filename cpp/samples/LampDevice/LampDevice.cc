@@ -52,7 +52,7 @@ int CDECL_CALL main(int argc, char** argv) {
     std::string certsDir;
     std::string stateDir;
 
-    cdm::utils::FindArg(argc, argv, "--state-dir", "lamp_device_state", stateDir);
+    cdm::utils::FindArg(argc, argv, "--state-dir", "emulated_device_state", stateDir);
     cdm::utils::FindArg(argc, argv, "--certs-dir", "certificates/security", certsDir);
     bool emitOnSet = (cdm::utils::ArgExists(argc, argv, "--emit-on-set") > 0);
     cdm::HAL::SetRootDir(stateDir);
@@ -67,10 +67,10 @@ int CDECL_CALL main(int argc, char** argv) {
         "<AboutData>"
             "  <AppId></AppId>"
             "  <DefaultLanguage>en</DefaultLanguage>"
-            "  <DeviceName>Lamp</DeviceName>"
+            "  <DeviceName>Virtual Lamp (Color)</DeviceName>"
             "  <DeviceId></DeviceId>"
-            "  <AppName>SomeLamp</AppName>"
-            "  <Manufacturer>Manufacturer</Manufacturer>"
+            "  <AppName>AllJoyn CDM Controllee</AppName>"
+            "  <Manufacturer>Alljoyn Sample</Manufacturer>"
             "  <ModelNumber>Wxfy388i</ModelNumber>"
             "  <Description>This is a Full Featured Lamp Controllee Application</Description>"
             "  <DateOfManufacture>10/1/2199</DateOfManufacture>"
@@ -83,8 +83,8 @@ int CDECL_CALL main(int argc, char** argv) {
             "  <Location>Room1</Location>"
             "  <DeviceTypeDescription>"
             "      <TypeDescription>"
-            "          <device_type>21</device_type>"
-            "          <object_path>/cdm/lamp</object_path>"
+            "          <device_type>23</device_type>"
+            "          <object_path>/Cdm/Lamp</object_path>"
             "      </TypeDescription>"
             "  </DeviceTypeDescription>"
             "</AboutData>";

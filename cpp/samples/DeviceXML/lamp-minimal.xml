@@ -1,12 +1,12 @@
-<DeviceEmulator name="SmartPlug-Basic">
+<DeviceEmulator name="Lamp-Minimal">
     <AboutData>
         <AppId><!-- Runtime Generated --></AppId>
         <DefaultLanguage>en</DefaultLanguage>
-        <DeviceName>Virtual SmartPlug (Basic)</DeviceName>
+        <DeviceName>Virtual Lamp (Minimal)</DeviceName>
         <DeviceId><!-- Runtime Generated --></DeviceId>
         <AppName>AllJoyn CDM Controllee</AppName>
         <Manufacturer>AllJoyn Sample</Manufacturer>
-        <ModelNumber>smartplug-basic</ModelNumber>
+        <ModelNumber>lamp-minimal</ModelNumber>
         <Description>Simulated AllJoyn Device</Description>
         <DateOfManufacture>2016-10-01</DateOfManufacture>
         <SoftwareVersion>1.0.0</SoftwareVersion>
@@ -17,16 +17,20 @@
         <ProductBrand>AllJoyn Sample</ProductBrand>
         <DeviceTypeDescription>
             <TypeDescription>
-                <device_type>26</device_type><!-- TODO: Ensure enum value is correct -->
-                <object_path>/CDM/SmartPlug</object_path>
+                <device_type>23</device_type>
+                <object_path>/Cdm/Lamp</object_path>
             </TypeDescription>
         </DeviceTypeDescription>
     </AboutData>
     <InterfaceList>
-        <Object path='/CDM/SmartPlug'>
-            <Interface name='org.alljoyn.SmartSpaces.Operation.OnOffStatus'/>
-            <Interface name='org.alljoyn.SmartSpaces.Operation.OffControl'/>
+        <Object path='/Cdm/Lamp'>
             <Interface name='org.alljoyn.SmartSpaces.Operation.OnControl'/>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.OffControl'/>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.OnOffStatus'>
+                <Property name='IsOn' mode='default'>
+                    <scalar type='bool' value='false'/>
+                </Property>
+            </Interface>
         </Object>
     </InterfaceList>
 </DeviceEmulator>

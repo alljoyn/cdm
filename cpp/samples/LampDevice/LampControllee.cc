@@ -44,7 +44,7 @@
 using namespace ajn;
 using namespace services;
 
-const std::string BusPath = "/cdm/lamp";
+const std::string BusPath = "/Cdm/Lamp";
 
 typedef ajn::services::OnOffStatusIntfControllee OnOffStatus;
 typedef ajn::services::OnControlIntfControllee OnControl;
@@ -55,19 +55,19 @@ typedef ajn::services::ColorIntfControllee ColorControl;
 
 static QStatus SetFactoryDefaults(CdmControllee& controllee, bool force)
 {
-    QStatus status = HAL::WriteProperty(BusPath, "OnOffStatus", "IsOn", false, force);
+    QStatus status = HAL::WriteProperty(BusPath, "org.alljoyn.SmartSpaces.Operation.OnOffStatus", "IsOn", false, force);
     if (status != ER_OK)
         return status;
 
-    status = HAL::WriteProperty(BusPath, "Brightness", "Brightness", 0.75, force);
+    status = HAL::WriteProperty(BusPath, "org.alljoyn.SmartSpaces.Operation.Brightness", "Brightness", 0.75, force);
     if (status != ER_OK)
         return status;
 
-    status = HAL::WriteProperty(BusPath, "Color", "Hue", 0.0, force);
+    status = HAL::WriteProperty(BusPath, "org.alljoyn.SmartSpaces.Operation.Color", "Hue", 0.0, force);
     if (status != ER_OK)
         return status;
 
-    status = HAL::WriteProperty(BusPath, "Color", "Saturation", 1.0, force);
+    status = HAL::WriteProperty(BusPath, "org.alljoyn.SmartSpaces.Operation.Color", "Saturation", 1.0, force);
     if (status != ER_OK)
         return status;
 

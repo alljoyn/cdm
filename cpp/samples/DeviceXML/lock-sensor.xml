@@ -1,12 +1,12 @@
-<DeviceEmulator name="Switch-Sensor">
+<DeviceEmulator name="Lock-Sensor">
     <AboutData>
         <AppId><!-- Runtime Generated --></AppId>
         <DefaultLanguage>en</DefaultLanguage>
-        <DeviceName>Virtual Switch (Sensor)</DeviceName>
+        <DeviceName>Virtual Lock (Sensor)</DeviceName>
         <DeviceId><!-- Runtime Generated --></DeviceId>
         <AppName>AllJoyn CDM Controllee</AppName>
         <Manufacturer>AllJoyn Sample</Manufacturer>
-        <ModelNumber>switch-sensor</ModelNumber>
+        <ModelNumber>lock-sensor</ModelNumber>
         <Description>Simulated AllJoyn Device</Description>
         <DateOfManufacture>2016-10-01</DateOfManufacture>
         <SoftwareVersion>1.0.0</SoftwareVersion>
@@ -17,14 +17,18 @@
         <ProductBrand>AllJoyn Sample</ProductBrand>
         <DeviceTypeDescription>
             <TypeDescription>
-                <device_type>25</device_type><!-- TODO: Ensure enum value is correct -->
-                <object_path>/CDM/Switch</object_path>
+                <device_type>24</device_type>
+                <object_path>/Cdm/Lock</object_path>
             </TypeDescription>
         </DeviceTypeDescription>
     </AboutData>
     <InterfaceList>
-        <Object path='/CDM/Switch'>
-            <Interface name='org.alljoyn.SmartSpaces.Operation.OnOffStatus'/>
+        <Object path='/Cdm/Lock'>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.LockedStatus'>
+                <Property name='IsLocked' mode='default'>
+                    <scalar type='bool' value='false'/>
+                </Property>
+            </Interface>
         </Object>
     </InterfaceList>
 </DeviceEmulator>

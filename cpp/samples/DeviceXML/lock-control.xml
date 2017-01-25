@@ -1,12 +1,12 @@
-<DeviceEmulator name="DoorSensor">
+<DeviceEmulator name="Lock-Control">
     <AboutData>
         <AppId><!-- Runtime Generated --></AppId>
         <DefaultLanguage>en</DefaultLanguage>
-        <DeviceName>Virtual Door Sensor</DeviceName>
+        <DeviceName>Virtual Lock (Control)</DeviceName>
         <DeviceId><!-- Runtime Generated --></DeviceId>
         <AppName>AllJoyn CDM Controllee</AppName>
         <Manufacturer>AllJoyn Sample</Manufacturer>
-        <ModelNumber>door-sensor</ModelNumber>
+        <ModelNumber>lock-control</ModelNumber>
         <Description>Simulated AllJoyn Device</Description>
         <DateOfManufacture>2016-10-01</DateOfManufacture>
         <SoftwareVersion>1.0.0</SoftwareVersion>
@@ -17,14 +17,20 @@
         <ProductBrand>AllJoyn Sample</ProductBrand>
         <DeviceTypeDescription>
             <TypeDescription>
-                <device_type>29</device_type><!-- TODO: Ensure enum value is correct -->
-                <object_path>/CDM/DoorSensor</object_path>
+                <device_type>24</device_type>
+                <object_path>/Cdm/Lock</object_path>
             </TypeDescription>
         </DeviceTypeDescription>
     </AboutData>
     <InterfaceList>
-        <Object path='/CDM/DoorSensor'>
-            <Interface name='org.alljoyn.SmartSpaces.Operation.ClosedStatus'/>
+        <Object path='/Cdm/Lock'>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.LockedStatus'>
+                <Property name='IsLocked' mode='default'>
+                    <scalar type='bool' value='false'/>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.LockControl'/>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.UnlockControl'/>
         </Object>
     </InterfaceList>
 </DeviceEmulator>

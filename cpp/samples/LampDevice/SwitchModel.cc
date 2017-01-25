@@ -42,12 +42,12 @@ SwitchModel::SwitchModel(const std::string& busPath) :
 
 QStatus SwitchModel::GetIsOn(bool& out) const
 {
-    return HAL::ReadProperty<bool>(m_busPath, "OnOffStatus", "IsOn", out);
+    return HAL::ReadProperty<bool>(m_busPath, "org.alljoyn.SmartSpaces.Operation.OnOffStatus", "IsOn", out);
 }
 
 static QStatus writeIsOn(const qcc::String& busPath, bool value, ajn::services::CdmControllee& controllee)
 {
-    QStatus status = HAL::WriteProperty(busPath, "OnOffStatus", "IsOn", value);
+    QStatus status = HAL::WriteProperty(busPath, "org.alljoyn.SmartSpaces.Operation.OnOffStatus", "IsOn", value);
 
     if (status == ER_OK && controllee.EmitChangedSignalOnSetProperty()) {
         auto iface = controllee.GetInterface<OnOffStatusIntfControllee>(busPath, "org.alljoyn.SmartSpaces.Operation.OnOffStatus");

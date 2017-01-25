@@ -1,12 +1,12 @@
-<DeviceEmulator name="WindowSensor">
+<DeviceEmulator name="SmartPlug-Basic">
     <AboutData>
         <AppId><!-- Runtime Generated --></AppId>
         <DefaultLanguage>en</DefaultLanguage>
-        <DeviceName>Virtual Window Sensor</DeviceName>
+        <DeviceName>Virtual SmartPlug (Basic)</DeviceName>
         <DeviceId><!-- Runtime Generated --></DeviceId>
         <AppName>AllJoyn CDM Controllee</AppName>
         <Manufacturer>AllJoyn Sample</Manufacturer>
-        <ModelNumber>window-sensor</ModelNumber>
+        <ModelNumber>smartplug-basic</ModelNumber>
         <Description>Simulated AllJoyn Device</Description>
         <DateOfManufacture>2016-10-01</DateOfManufacture>
         <SoftwareVersion>1.0.0</SoftwareVersion>
@@ -17,14 +17,20 @@
         <ProductBrand>AllJoyn Sample</ProductBrand>
         <DeviceTypeDescription>
             <TypeDescription>
-                <device_type>30</device_type><!-- TODO: Ensure enum value is correct -->
-                <object_path>/CDM/DoorSensor</object_path>
+                <device_type>29</device_type>
+                <object_path>/Cdm/SmartPlug</object_path>
             </TypeDescription>
         </DeviceTypeDescription>
     </AboutData>
     <InterfaceList>
-        <Object path='/CDM/WindowSensor'>
-            <Interface name='org.alljoyn.SmartSpaces.Operation.ClosedStatus'/>
+        <Object path='/Cdm/SmartPlug'>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.OnOffStatus'>
+                <Property name='IsOn' mode='default'>
+                    <scalar type='bool' value='true'/>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.OffControl'/>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.OnControl'/>
         </Object>
     </InterfaceList>
 </DeviceEmulator>

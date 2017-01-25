@@ -1,12 +1,12 @@
-<DeviceEmulator name="Lamp-Minimal">
+<DeviceEmulator name="Switch-Sensor">
     <AboutData>
         <AppId><!-- Runtime Generated --></AppId>
         <DefaultLanguage>en</DefaultLanguage>
-        <DeviceName>Virtual Lamp (Minmal)</DeviceName>
+        <DeviceName>Virtual Switch (Sensor)</DeviceName>
         <DeviceId><!-- Runtime Generated --></DeviceId>
         <AppName>AllJoyn CDM Controllee</AppName>
         <Manufacturer>AllJoyn Sample</Manufacturer>
-        <ModelNumber>lamp-minimal</ModelNumber>
+        <ModelNumber>switch-sensor</ModelNumber>
         <Description>Simulated AllJoyn Device</Description>
         <DateOfManufacture>2016-10-01</DateOfManufacture>
         <SoftwareVersion>1.0.0</SoftwareVersion>
@@ -17,16 +17,18 @@
         <ProductBrand>AllJoyn Sample</ProductBrand>
         <DeviceTypeDescription>
             <TypeDescription>
-                <device_type>23</device_type><!-- TODO: Ensure enum value is correct -->
-                <object_path>/CDM/Lamp</object_path>
+                <device_type>25</device_type>
+                <object_path>/Cdm/Switch</object_path>
             </TypeDescription>
         </DeviceTypeDescription>
     </AboutData>
     <InterfaceList>
-        <Object path='/CDM/Lamp'>
-            <Interface name='org.alljoyn.SmartSpaces.Operation.OnControl'/>
-            <Interface name='org.alljoyn.SmartSpaces.Operation.OffControl'/>
-            <Interface name='org.alljoyn.SmartSpaces.Operation.OnOffStatus'/>
+        <Object path='/Cdm/Switch'>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.OnOffStatus'>
+                <Property name='IsOn' mode='default'>
+                    <scalar type='bool' value='true'/>
+                </Property>
+            </Interface>
         </Object>
     </InterfaceList>
 </DeviceEmulator>

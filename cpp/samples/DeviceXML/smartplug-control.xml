@@ -1,0 +1,58 @@
+<DeviceEmulator name="SmartPlug-Control">
+    <AboutData>
+        <AppId><!-- Runtime Generated --></AppId>
+        <DefaultLanguage>en</DefaultLanguage>
+        <DeviceName>Virtual SmartPlug (Control)</DeviceName>
+        <DeviceId><!-- Runtime Generated --></DeviceId>
+        <AppName>AllJoyn CDM Controllee</AppName>
+        <Manufacturer>AllJoyn Sample</Manufacturer>
+        <ModelNumber>smartplug-Control</ModelNumber>
+        <Description>Simulated AllJoyn Device</Description>
+        <DateOfManufacture>2016-10-01</DateOfManufacture>
+        <SoftwareVersion>1.0.0</SoftwareVersion>
+        <HardwareVersion>1.0.0</HardwareVersion>
+        <SupportUrl>https://allseenalliance.org/</SupportUrl>
+        <CountryOfProduction>Nowhere</CountryOfProduction>
+        <Location>Sample Location</Location>
+        <ProductBrand>AllJoyn Sample</ProductBrand>
+        <DeviceTypeDescription>
+            <TypeDescription>
+                <device_type>29</device_type>
+                <object_path>/Cdm/SmartPlug</object_path>
+            </TypeDescription>
+        </DeviceTypeDescription>
+    </AboutData>
+    <InterfaceList>
+        <Object path='/Cdm/SmartPlug'>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.OnOffStatus'>
+                <Property name='IsOn' mode='default'>
+                    <scalar type='bool' value='true'/>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.OffControl'/>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.OnControl'/>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.CurrentPower'>
+                <Property name='CurrentPower' mode='default'>
+                    <scalar type='double' value='100.0'/>
+                </Property>
+                <Property name='Precision' mode='default'>
+                    <scalar type='double' value='5.0'/>
+                </Property>
+                <Property name='UpdateMinTime' mode='default'>
+                    <scalar type='unsigned' value='1'/>
+                </Property>
+            </Interface>
+            <Interface name='org.alljoyn.SmartSpaces.Operation.EnergyUsage'>
+                <Property name='CumulativeEnergy' mode='default'>
+                    <scalar type='double' value='0.0'/>
+                </Property>
+                <Property name='Precision' mode='default'>
+                    <scalar type='double' value='5.0'/>
+                </Property>
+                <Property name='UpdateMinTime' mode='default'>
+                    <scalar type='unsigned' value='1000'/>
+                </Property>
+            </Interface>
+        </Object>
+    </InterfaceList>
+</DeviceEmulator>

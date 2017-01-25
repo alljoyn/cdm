@@ -40,25 +40,25 @@ HSVColorModel::HSVColorModel(const std::string& busPath) :
 
 
 QStatus HSVColorModel::GetBrightness(double &out) const {
-    return HAL::ReadProperty<double>(m_busPath, "Brightness", "Brightness", out);
+    return HAL::ReadProperty<double>(m_busPath, "org.alljoyn.SmartSpaces.Operation.Brightness", "Brightness", out);
 }
 
 QStatus HSVColorModel::SetBrightness(const double value) {
-    return HAL::WriteProperty(m_busPath, "Brightness", "Brightness", value);
+    return HAL::WriteProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.Brightness", "Brightness", value);
 }
 
 QStatus HSVColorModel::GetHue(double &out) const {
-    return HAL::ReadProperty<double>(m_busPath, "Color", "Hue", out);
+    return HAL::ReadProperty<double>(m_busPath, "org.alljoyn.SmartSpaces.Operation.Color", "Hue", out);
 }
 
 QStatus HSVColorModel::SetHue(const double value) {
-    return HAL::WriteProperty(m_busPath, "Color", "Hue", value);
+    return HAL::WriteProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.Color", "Hue", value);
 }
 
 QStatus HSVColorModel::GetSaturation(double &out) const {
-    return HAL::ReadProperty<double>(m_busPath, "Color", "Saturation", out);
+    return HAL::ReadProperty<double>(m_busPath, "org.alljoyn.SmartSpaces.Operation.Color", "Saturation", out);
 }
 
 QStatus HSVColorModel::SetSaturation(const double value) {
-    return HAL::WriteProperty(m_busPath, "Color", "Saturation", value);
+    return HAL::WriteProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.Color", "Saturation", value);
 }
