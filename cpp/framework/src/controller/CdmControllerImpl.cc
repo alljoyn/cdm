@@ -40,6 +40,7 @@
 #include "CdmControllerImpl.h"
 #include "../common/CdmBusListener.h"
 #include "interfaces/controller/ControllerFactory.h"
+#include "CdmLsfTranslator.h"
 
 using namespace ajn;
 using namespace services;
@@ -63,6 +64,7 @@ CdmControllerImpl::CdmControllerImpl(BusAttachment& bus, DeviceListener* listene
     m_security.m_keyStoreFileName = NULL;
     m_security.m_isKeyStoreShared = false;
 
+    m_translatorAttachFuncs.insert(&CdmLsfTranslator::Attach);
 }
 
 CdmControllerImpl::~CdmControllerImpl()
@@ -160,6 +162,14 @@ QStatus CdmControllerImpl::JoinDevice(const std::string& busName, SessionPort po
 
     if (ER_OK == status && 0 != sessionId) {
         Ref<DeviceInfo> info(new DeviceInfo(busName.c_str(), sessionId, port, data, description));
+
+        // Run through all translators and try to attach them to this new device
+        // If a translation isn't viable for the device, this will be a noop
+        // If a translation is viable, then it'll e added to the m_translators mapping in the device info
+        for (auto& attach: m_translatorAttachFuncs) {
+            attach(m_bus, info);
+        }
+
         QStatus ret = m_deviceManager.AddDeviceInfo(info);
         if (ER_OK == ret && m_deviceListener) {
             m_deviceListener->OnDeviceSessionJoined(info);
@@ -204,7 +214,26 @@ Ref<CdmInterface> CdmControllerImpl::CreateInterface(const std::string& interfac
     }
 
     auto pbo = mkRef<ProxyBusObject>(m_bus, busName.c_str(), objectPath.c_str(), sessionId);
-    interface = ControllerFactory::Instance().CreateIntfController(interfaceName, listener, pbo);
+    Ref<DeviceInfo> deviceInfo;
+    // See if a translator module is available for this interface
+    if (m_deviceManager.FindDeviceInfoBySessionId(sessionId, deviceInfo) == ER_OK) {
+        if (deviceInfo->GetTranslators().count(objectPath.c_str())) {
+            interface = deviceInfo->GetTranslators().at(objectPath.c_str())->CreateInterface(interfaceName, listener, pbo);
+            if (interface) {
+                status = interface->Init();
+                if (status != ER_OK) {
+                    QCC_LogError(status, ("%s: could not init translated interface %s/%s(%s)", __func__, busName.c_str(), objectPath.c_str(), interface->GetInterfaceName().c_str()));
+                    return NULL;
+                } else {
+                    QCC_DbgPrintf(("%s: Using translator for %s/%s(%s)", __func__, busName.c_str(), objectPath.c_str(), interface->GetInterfaceName().c_str()));
+                }
+            }
+        }
+    }
+
+    if (!interface) {
+        interface = ControllerFactory::Instance().CreateIntfController(interfaceName, listener, pbo);
+    }
 
     if (!interface) {
         QCC_LogError(ER_FAIL, ("%s: could not create interface.", __func__));
@@ -212,13 +241,17 @@ Ref<CdmInterface> CdmControllerImpl::CreateInterface(const std::string& interfac
     }
 
     const InterfaceDescription* description = interface->GetInterfaceDescription();
-    status = pbo->AddInterface(*description);
-    pbo->SecureConnection();
-    
-    if (status != ER_OK) {
-        QCC_LogError(status, ("%s: could not add interface.", __func__));
-        return NULL;
+    if (description)
+    {
+        status = pbo->AddInterface(*description);
+
+        if (status!=ER_OK) {
+            QCC_LogError(status, ("%s: could not add interface.", __func__));
+            return NULL;
+        }
     }
+
+    pbo->SecureConnection();
 
     return interface;
 }

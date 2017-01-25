@@ -65,7 +65,7 @@ QStatus DeviceManager::RemoveDeviceInfo(SessionId id)
     return ER_OK;
 }
 
-QStatus DeviceManager::FindDeviceInfoBySessionId(SessionId id, Ref<DeviceInfo> info)
+QStatus DeviceManager::FindDeviceInfoBySessionId(SessionId id, Ref<DeviceInfo>& info)
 {
     DeviceMap::iterator itr = m_deviceMap.find(id);
     if (itr == m_deviceMap.end()) {
@@ -76,7 +76,7 @@ QStatus DeviceManager::FindDeviceInfoBySessionId(SessionId id, Ref<DeviceInfo> i
     return ER_OK;
 }
 
-QStatus DeviceManager::FindDeviceInfoByBusName(const std::string busName, Ref<DeviceInfo> info)
+QStatus DeviceManager::FindDeviceInfoByBusName(const std::string busName, Ref<DeviceInfo>& info)
 {
     DeviceMap::iterator itr;
 

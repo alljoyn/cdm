@@ -35,14 +35,23 @@
 #include <alljoyn/MessageReceiver.h>
 #include <alljoyn/ProxyBusObject.h>
 #include <alljoyn/cdm/controller/InterfaceController.h>
-#include <interfaces/controller/operation/OnOffStatusIntfController.h>
-#include <interfaces/controller/operation/OnOffStatusIntfControllerListener.h>
 #include <alljoyn/cdm/controller/DeviceInfo.h>
 #include <alljoyn/cdm/controller/CdmTranslator.h>
+
+#include <interfaces/controller/operation/OnOffStatusIntfController.h>
+#include <interfaces/controller/operation/OnOffStatusIntfControllerListener.h>
 #include <interfaces/controller/operation/OnControlIntfController.h>
 #include <interfaces/controller/operation/OffControlIntfController.h>
+#include <interfaces/controller/operation/BrightnessIntfController.h>
+#include <interfaces/controller/operation/ColorIntfController.h>
+#include <interfaces/controller/operation/ColorTemperatureIntfController.h>
+
 #include <interfaces/controller/operation/OnControlIntfControllerListener.h>
 #include <interfaces/controller/operation/OffControlIntfControllerListener.h>
+#include <interfaces/controller/operation/BrightnessIntfControllerListener.h>
+#include <interfaces/controller/operation/ColorIntfControllerListener.h>
+#include <interfaces/controller/operation/ColorTemperatureIntfControllerListener.h>
+
 #include <unordered_set>
 
 
@@ -56,7 +65,7 @@ public:
     CdmLsfTranslator(BusAttachment& busAttachment, const std::unordered_set<std::string>& interfaces);
     ~CdmLsfTranslator() override;
     const std::unordered_set<std::string>& GetInterfaces() override { return m_interfaces; }
-    Ref<CdmInterface> CreateInterface(const CdmInterfaceType type, Ref<InterfaceControllerListener> listener, Ref<ProxyBusObject> pbo) override;
+    Ref<CdmInterface> CreateInterface(const std::string& ifaceName, Ref<InterfaceControllerListener> listener, Ref<ProxyBusObject> pbo) override;
 
 private:
     BusAttachment& m_busAttachment;
@@ -114,6 +123,86 @@ class OffControlIntfControllerLsfTranslator : public ProxyBusObject::Listener, p
     Ref<ProxyBusObject> m_proxyObject;
 };
 
+class BrightnessIntfControllerLsfTranslator : public MessageReceiver, public ProxyBusObject::Listener, public BrightnessIntfController {
+ public:
+    BrightnessIntfControllerLsfTranslator(BusAttachment& busAttachment, Ref<BrightnessIntfControllerListener> listener, Ref<ProxyBusObject> pbo);
+    ~BrightnessIntfControllerLsfTranslator() override;
+    QStatus Init() override;
+    BusAttachment& GetBusAttachment() const override { return m_busAttachment; }
+
+    QStatus GetBrightness(void* context) override;
+    QStatus SetBrightness(const double value, void* context = NULL) override;
+
+ private:
+    void GetBrightnessPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+    void SetBrightnessPropertyCB(QStatus status, ProxyBusObject* obj, void* context);
+
+    void LampStateChanged(const InterfaceDescription::Member* member, const char* srcPath, Message& message);
+
+    BusAttachment& m_busAttachment;
+    Ref<BrightnessIntfControllerListener> m_interfaceListener;
+    Ref<ProxyBusObject> m_proxyObject;
+    const InterfaceDescription::Member* m_lampStateChanged;
+};
+
+
+class ColorIntfControllerLsfTranslator : public MessageReceiver, public ProxyBusObject::Listener, public ColorIntfController {
+ public:
+    ColorIntfControllerLsfTranslator(BusAttachment& busAttachment, Ref<ColorIntfControllerListener> listener, Ref<ProxyBusObject> pbo);
+    ~ColorIntfControllerLsfTranslator() override;
+    QStatus Init() override;
+    BusAttachment& GetBusAttachment() const override { return m_busAttachment; }
+
+    QStatus GetHue(void* context) override;
+    QStatus SetHue(const double value, void* context = NULL) override;
+
+    QStatus GetSaturation(void* context) override;
+    QStatus SetSaturation(const double value, void* context = NULL) override;
+
+ private:
+    void GetHuePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+    void SetHuePropertyCB(QStatus status, ProxyBusObject* obj, void* context);
+
+    void GetSaturationPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+    void SetSaturationPropertyCB(QStatus status, ProxyBusObject* obj, void* context);
+
+
+    void LampStateChanged(const InterfaceDescription::Member* member, const char* srcPath, Message& message);
+
+    BusAttachment& m_busAttachment;
+    Ref<ColorIntfControllerListener> m_interfaceListener;
+    Ref<ProxyBusObject> m_proxyObject;
+    const InterfaceDescription::Member* m_lampStateChanged;
+};
+
+
+//class ColorTemperatureIntfControllerLsfTranslator : public MessageReceiver, public ProxyBusObject::Listener, public ColorTemperatureIntfController {
+// public:
+//    ColorTemperatureIntfControllerLsfTranslator(BusAttachment& busAttachment, Ref<ColorTemperatureIntfControllerListener> listener, Ref<ProxyBusObject> pbo);
+//    ~ColorTemperatureIntfControllerLsfTranslator() override;
+//    QStatus Init() override;
+//    BusAttachment& GetBusAttachment() const override { return m_busAttachment; }
+//
+//    QStatus GetTemperature(void* context) override;
+//    QStatus GetMinTemperature(void* context) override;
+//    QStatus GetMaxTemperature(void* context) override;
+//
+//    QStatus SetTemperature(const double value, void* context = NULL) override;
+//
+// private:
+//    void GetTemperaturePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+//    void GetMinTemperaturePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+//    void GetMaxTemperaturePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context);
+//
+//    void SetTemperaturePropertyCB(QStatus status, ProxyBusObject* obj, void* context);
+//
+//    void LampStateChanged(const InterfaceDescription::Member* member, const char* srcPath, Message& message);
+//
+//    BusAttachment& m_busAttachment;
+//    Ref<ColorTemperatureIntfControllerListener> m_interfaceListener;
+//    Ref<ProxyBusObject> m_proxyObject;
+//    const InterfaceDescription::Member* m_lampStateChanged;
+//};
 
 } //namespace services
 } //namespace ajn

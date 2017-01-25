@@ -64,7 +64,7 @@ public:
      * Create a CDM Interface Controller class for the interface on this bus path. Also and register the listener so async events can be processed
      * @return New CdmInterface specific to the interface type, or NULL on failure
      */
-    virtual Ref<CdmInterface> CreateInterface(const CdmInterfaceType type, Ref<InterfaceControllerListener> listener, Ref<ProxyBusObject> pbo) = 0;
+    virtual Ref<CdmInterface> CreateInterface(const std::string& ifaceName, Ref<InterfaceControllerListener> listener, Ref<ProxyBusObject> pbo) = 0;
 };
 
 } //namespace services

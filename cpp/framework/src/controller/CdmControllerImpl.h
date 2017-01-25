@@ -42,6 +42,8 @@
 #include "DeviceManager.h"
 #include "../common/SecurityInfo.h"
 
+#include <unordered_set>
+
 namespace ajn {
 
 class BusAttachment;
@@ -162,6 +164,8 @@ class CdmControllerImpl : public ajn::AboutListener
     DeviceManager m_deviceManager;
     DeviceListener* m_deviceListener;
     SecurityInfo m_security;
+
+    std::unordered_set<CdmTranslatorAttachFunc> m_translatorAttachFuncs;
 };
 
 }  /* ajn */

@@ -43,8 +43,8 @@ class DeviceManager {
     void Clear();
     QStatus AddDeviceInfo(Ref<DeviceInfo> info);
     QStatus RemoveDeviceInfo(SessionId id);
-    QStatus FindDeviceInfoBySessionId(SessionId, Ref<DeviceInfo> info);
-    QStatus FindDeviceInfoByBusName(const std::string busName, Ref<DeviceInfo> info);
+    QStatus FindDeviceInfoBySessionId(SessionId, Ref<DeviceInfo>& info);
+    QStatus FindDeviceInfoByBusName(const std::string busName, Ref<DeviceInfo>& info);
 
   private:
     qcc::Mutex m_mutex;

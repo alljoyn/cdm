@@ -36,15 +36,18 @@
 #include <qcc/Debug.h>
 #include <alljoyn/ProxyBusObject.h>
 #include <alljoyn/MsgArg.h>
-#include <alljoyn/cdm/controller/CdmLsfTranslator.h>
 #include <alljoyn/ProxyBusObject.h>
 
 #include "interfaces/controller/operation/OnOffStatusIntfController.h"
 #include "interfaces/controller/operation/BrightnessIntfController.h"
 #include "interfaces/controller/operation/ColorIntfController.h"
 #include "interfaces/controller/operation/ColorTemperatureIntfController.h"
+#include "../../../interfaces/inc/interfaces/common/operation/OnOffStatusInterface.h"
 
 #include <alljoyn/cdm/common/LogModule.h>
+
+#include "CdmLsfTranslator.h"
+
 
 using namespace qcc;
 using namespace std;
@@ -190,20 +193,20 @@ void CdmLsfTranslator::Attach(BusAttachment& busAttachment, Ref<DeviceInfo> devi
         }
     }
 
-    MsgArg variableColorTempProperty;
-    status = pbo.GetProperty(LampServiceDetailsInterfaceName, "VariableColorTemp", variableColorTempProperty);
-    if (status != ER_OK) {
-            QCC_LogError(status, ("%s: %s Failed to read VariableColorTemp", __func__, deviceInfo->GetBusName().c_str()));
-    } else {
-        bool value;
-        status = variableColorTempProperty.Get("b", &value);
-        if (status != ER_OK) {
-            QCC_LogError(status, ("%s: %s failed to decode VariableColorTemp", __func__, deviceInfo->GetBusName().c_str()));
-        } else if (value) {
-            QCC_DbgPrintf(("%s: %s has color temperature", __func__, deviceInfo->GetBusName().c_str()));
-            interfaces.insert(ColorTemperatureInterface::INTERFACE_NAME);
-        }
-    }
+//    MsgArg variableColorTempProperty;
+//    status = pbo.GetProperty(LampServiceDetailsInterfaceName, "VariableColorTemp", variableColorTempProperty);
+//    if (status != ER_OK) {
+//            QCC_LogError(status, ("%s: %s Failed to read VariableColorTemp", __func__, deviceInfo->GetBusName().c_str()));
+//    } else {
+//        bool value;
+//        status = variableColorTempProperty.Get("b", &value);
+//        if (status != ER_OK) {
+//            QCC_LogError(status, ("%s: %s failed to decode VariableColorTemp", __func__, deviceInfo->GetBusName().c_str()));
+//        } else if (value) {
+//            QCC_DbgPrintf(("%s: %s has color temperature", __func__, deviceInfo->GetBusName().c_str()));
+//            interfaces.insert(ColorTemperatureInterface::INTERFACE_NAME);
+//        }
+//    }
 
     QCC_DbgPrintf(("%s: Installing LSF translator for device %s", __func__, deviceInfo->GetBusName().c_str()));
 
@@ -218,20 +221,31 @@ CdmLsfTranslator::CdmLsfTranslator(BusAttachment& busAttachment, const std::unor
 CdmLsfTranslator::~CdmLsfTranslator() {
 }
 
-Ref<CdmInterface> CdmLsfTranslator::CreateInterface(const CdmInterfaceType type, Ref<InterfaceControllerListener> listener, Ref<ProxyBusObject> pbo) {
-    if (type == OnOffStatusInterface::INTERFACE_TYPE && m_interfaces.count(OnOffStatusInterface::INTERFACE_NAME)) {
+Ref<CdmInterface> CdmLsfTranslator::CreateInterface(const std::string& ifaceName, Ref<InterfaceControllerListener> listener, Ref<ProxyBusObject> pbo) {
+    if (ifaceName == OnOffStatusInterface::INTERFACE_NAME && m_interfaces.count(OnOffStatusInterface::INTERFACE_NAME))
+    {
         return mkRef<OnOffStatusIntfControllerLsfTranslator>(m_busAttachment, dynamic_pointer_cast<OnOffStatusIntfControllerListener>(listener), pbo);
-    } else if (type == OnControlInterface::INTERFACE_TYPE && m_interfaces.count(OnControlInterface::INTERFACE_NAME)) {
-        return mkRef<OnControlIntfControllerLsfTranslator>(m_busAttachment, dynamic_pointer_cast<OnControlIntfControllerListener>(listener), pbo);
-    } else if (type == OffControlInterface::INTERFACE_TYPE && m_interfaces.count(OffControlInterface::INTERFACE_NAME)) {
-        return mkRef<OffControlIntfControllerLsfTranslator>(m_busAttachment, dynamic_pointer_cast<OffControlIntfControllerListener>(listener), pbo);
-    } else if (type == BrightnessInterface::INTERFACE_TYPE && m_interfaces.count(BrightnessInterface::INTERFACE_NAME)) {
-        //return mkRef<BrightnessIntfControllerLsfTranslator>(m_busAttachment, dynamic_pointer_cast<BrightnessIntfControllerListener>(listener), pbo);
-    } else if (type == ColorInterface::INTERFACE_TYPE && m_interfaces.count(ColorInterface::INTERFACE_NAME)) {
-        //return mkRef<ColorIntfControllerLsfTranslator>(m_busAttachment, dynamic_pointer_cast<ColorIntfControllerListener>(listener), pbo);
-    } else if (type == ColorTemperatureInterface::INTERFACE_TYPE && m_interfaces.count(ColorTemperatureInterface::INTERFACE_NAME)) {
-        //return mkRef<ColorTemperatureIntfControllerLsfTranslator>(m_busAttachment, dynamic_pointer_cast<ColorTemperatureIntfControllerListener>(listener), pbo);
     }
+    else if (ifaceName == OnControlInterface::INTERFACE_NAME && m_interfaces.count(OnControlInterface::INTERFACE_NAME))
+    {
+        return mkRef<OnControlIntfControllerLsfTranslator>(m_busAttachment, dynamic_pointer_cast<OnControlIntfControllerListener>(listener), pbo);
+    }
+    else if (ifaceName == OffControlInterface::INTERFACE_NAME && m_interfaces.count(OffControlInterface::INTERFACE_NAME))
+    {
+        return mkRef<OffControlIntfControllerLsfTranslator>(m_busAttachment, dynamic_pointer_cast<OffControlIntfControllerListener>(listener), pbo);
+    }
+    else if (ifaceName == BrightnessInterface::INTERFACE_NAME && m_interfaces.count(BrightnessInterface::INTERFACE_NAME))
+    {
+        return mkRef<BrightnessIntfControllerLsfTranslator>(m_busAttachment, dynamic_pointer_cast<BrightnessIntfControllerListener>(listener), pbo);
+    }
+    else if (ifaceName == ColorInterface::INTERFACE_NAME && m_interfaces.count(ColorInterface::INTERFACE_NAME))
+    {
+        return mkRef<ColorIntfControllerLsfTranslator>(m_busAttachment, dynamic_pointer_cast<ColorIntfControllerListener>(listener), pbo);
+    }
+//    else if (ifaceName == ColorTemperatureInterface::INTERFACE_NAME && m_interfaces.count(ColorTemperatureInterface::INTERFACE_NAME))
+//    {
+//        return mkRef<ColorTemperatureIntfControllerLsfTranslator>(m_busAttachment, dynamic_pointer_cast<ColorTemperatureIntfControllerListener>(listener), pbo);
+//    }
     return Ref<CdmInterface>();
 }
 
@@ -387,7 +401,432 @@ void OffControlIntfControllerLsfTranslator::SetOnOffPropertyCB(QStatus status, P
     m_interfaceListener->OnResponseSwitchOff(status, obj->GetPath(), context, QCC_StatusText(status), "");
 }
 
+///////////////////////////////////////////
+//// BrightnessIntfControllerLsfTranslator
+///////////////////////////////////////////
 
+BrightnessIntfControllerLsfTranslator::BrightnessIntfControllerLsfTranslator(BusAttachment& busAttachment, Ref<BrightnessIntfControllerListener> listener, Ref<ProxyBusObject> pbo)
+    : BrightnessIntfController(busAttachment, listener, pbo),
+      m_busAttachment(busAttachment), m_interfaceListener(listener), m_proxyObject(pbo), m_lampStateChanged(NULL)
+{
+}
+
+BrightnessIntfControllerLsfTranslator::~BrightnessIntfControllerLsfTranslator() {
+    QStatus status;
+    if (m_lampStateChanged) {
+        status = m_busAttachment.UnregisterSignalHandler(this, static_cast<SignalHandler>(&BrightnessIntfControllerLsfTranslator::LampStateChanged), m_lampStateChanged, NULL);
+        if (ER_OK != status) {
+            QCC_LogError(status, ("%s: UnregisterSignalHandler for ChannelListChanged signal failed.", __func__));
+        }
+    }
+}
+
+QStatus BrightnessIntfControllerLsfTranslator::Init() {
+    QStatus status;
+    status = m_proxyObject->AddInterface(LampServiceStateInterfaceName);
+    if (status != ER_OK && status != ER_BUS_IFACE_ALREADY_EXISTS) {
+        QCC_LogError(status, ("%s: AddInterface failed.", __func__));
+        return status;
+    }
+
+    const InterfaceDescription* intf = m_busAttachment.GetInterface(LampServiceStateInterfaceName);
+    if (!intf) {
+        status = ER_FAIL;
+        QCC_LogError(status, ("%s: failed to get interface description.", __func__));
+        return status;
+    }
+
+    m_lampStateChanged = intf->GetMember("LampStateChanged");
+    if (!m_lampStateChanged) {
+        status = ER_FAIL;
+        QCC_LogError(status, ("%s: failed to resolve LampStateChanged signal.", __func__));
+        return status;
+    }
+
+    status = m_busAttachment.RegisterSignalHandler(this, static_cast<SignalHandler>(&BrightnessIntfControllerLsfTranslator::LampStateChanged), m_lampStateChanged, NULL);
+    if (ER_OK != status) {
+        QCC_LogError(status, ("%s: RegisterSignalHandler for ChannelListChanged signal failed.", __func__));
+        return status;
+    }
+
+    std::vector<const ajn::InterfaceDescription*> interfaces(m_proxyObject->GetInterfaces());
+    m_proxyObject->GetInterfaces(interfaces.data(), interfaces.size());
+    return ER_OK;
+}
+
+QStatus BrightnessIntfControllerLsfTranslator::GetBrightness(void* context) {
+    return m_proxyObject->GetPropertyAsync(LampServiceStateInterfaceName, "Brightness", this, (ProxyBusObject::Listener::GetPropertyCB)&BrightnessIntfControllerLsfTranslator::GetBrightnessPropertyCB, context);
+}
+
+QStatus BrightnessIntfControllerLsfTranslator::SetBrightness(const double value, void* context) {
+    uint32_t brightness = static_cast<uint32_t>(((value > 1.0) ? 1.0 : (value < 0.0) ? 0.0 : value) * UINT32_MAX);
+
+    MsgArg arg;
+    {
+        CdmMsgCvt<uint32_t> converter;
+        converter.set(arg, brightness);
+    }
+
+    auto status = m_proxyObject->SetPropertyAsync(LampServiceStateInterfaceName, "Brightness", arg, this,
+                                                  (ProxyBusObject::Listener::SetPropertyCB)&BrightnessIntfControllerLsfTranslator::SetBrightnessPropertyCB, context);
+    return status;
+}
+
+void BrightnessIntfControllerLsfTranslator::GetBrightnessPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context) {
+    if (!obj) {
+        return;
+    }
+
+    uint32_t val;
+    value.Get("u", &val);
+
+    double brightness = (double)val / UINT32_MAX;
+    m_interfaceListener->OnResponseGetBrightness(status, obj->GetPath(), brightness, context);
+}
+
+void BrightnessIntfControllerLsfTranslator::SetBrightnessPropertyCB(QStatus status, ProxyBusObject* obj, void* context)
+{
+    if (obj) {
+        m_interfaceListener->OnResponseSetBrightness(status, obj->GetPath(), context);
+    }
+}
+
+void BrightnessIntfControllerLsfTranslator::LampStateChanged(const InterfaceDescription::Member* member, const char* srcPath, Message& message) {
+    MsgArg property;
+    QCC_DbgPrintf(("%s: State updated!", __func__));
+
+    m_busAttachment.EnableConcurrentCallbacks();
+    QStatus status = m_proxyObject->GetProperty(LampServiceStateInterfaceName, "Brightness", property);
+    if (status != ER_OK) {
+        QCC_LogError(status, ("%s: Failed to get Brightness state!", __func__));
+        return;
+    }
+
+    uint32_t value;
+    status = property.Get("u", &value);
+    if (status) {
+        QCC_LogError(status, ("%s: Bad type %d", __func__, property.typeId));
+        return;
+    }
+
+    double brightness = (double)value / UINT32_MAX;
+
+    m_interfaceListener->OnBrightnessChanged(srcPath, brightness);
+}
+
+
+///////////////////////////////////////////
+//// ColorIntfControllerLsfTranslator
+///////////////////////////////////////////
+
+ColorIntfControllerLsfTranslator::ColorIntfControllerLsfTranslator(BusAttachment& busAttachment, Ref<ColorIntfControllerListener> listener, Ref<ProxyBusObject> pbo)
+    : ColorIntfController(busAttachment, listener, pbo),
+      m_busAttachment(busAttachment), m_interfaceListener(listener), m_proxyObject(pbo), m_lampStateChanged(NULL)
+{
+}
+
+ColorIntfControllerLsfTranslator::~ColorIntfControllerLsfTranslator() {
+    QStatus status;
+    if (m_lampStateChanged) {
+        status = m_busAttachment.UnregisterSignalHandler(this, static_cast<SignalHandler>(&ColorIntfControllerLsfTranslator::LampStateChanged), m_lampStateChanged, NULL);
+        if (ER_OK != status) {
+            QCC_LogError(status, ("%s: UnregisterSignalHandler for ChannelListChanged signal failed.", __func__));
+        }
+    }
+}
+
+QStatus ColorIntfControllerLsfTranslator::Init() {
+    QStatus status;
+    status = m_proxyObject->AddInterface(LampServiceStateInterfaceName);
+    if (status != ER_OK && status != ER_BUS_IFACE_ALREADY_EXISTS) {
+        QCC_LogError(status, ("%s: AddInterface failed.", __func__));
+        return status;
+    }
+
+    const InterfaceDescription* intf = m_busAttachment.GetInterface(LampServiceStateInterfaceName);
+    if (!intf) {
+        status = ER_FAIL;
+        QCC_LogError(status, ("%s: failed to get interface description.", __func__));
+        return status;
+    }
+
+    m_lampStateChanged = intf->GetMember("LampStateChanged");
+    if (!m_lampStateChanged) {
+        status = ER_FAIL;
+        QCC_LogError(status, ("%s: failed to resolve LampStateChanged signal.", __func__));
+        return status;
+    }
+
+    status = m_busAttachment.RegisterSignalHandler(this, static_cast<SignalHandler>(&ColorIntfControllerLsfTranslator::LampStateChanged), m_lampStateChanged, NULL);
+    if (ER_OK != status) {
+        QCC_LogError(status, ("%s: RegisterSignalHandler for ChannelListChanged signal failed.", __func__));
+        return status;
+    }
+
+    std::vector<const ajn::InterfaceDescription*> interfaces(m_proxyObject->GetInterfaces());
+    m_proxyObject->GetInterfaces(interfaces.data(), interfaces.size());
+    return ER_OK;
+}
+
+QStatus ColorIntfControllerLsfTranslator::GetHue(void* context) {
+    return m_proxyObject->GetPropertyAsync(LampServiceStateInterfaceName, "Hue", this, (ProxyBusObject::Listener::GetPropertyCB)&ColorIntfControllerLsfTranslator::GetHuePropertyCB, context);
+}
+
+QStatus ColorIntfControllerLsfTranslator::SetHue(const double value, void* context) {
+    uint32_t hue = static_cast<uint32_t>((((value > 360.0) ? 360.0 : (value < 0.0) ? 0.0 : value) / 360.0) * UINT32_MAX);
+
+    MsgArg arg;
+    {
+        CdmMsgCvt<uint32_t> converter;
+        converter.set(arg, hue);
+    }
+
+    auto status = m_proxyObject->SetPropertyAsync(LampServiceStateInterfaceName, "Hue", arg, this,
+                                                  (ProxyBusObject::Listener::SetPropertyCB)&ColorIntfControllerLsfTranslator::SetHuePropertyCB, context);
+    return status;
+}
+
+QStatus ColorIntfControllerLsfTranslator::GetSaturation(void* context) {
+    return m_proxyObject->GetPropertyAsync(LampServiceStateInterfaceName, "Saturation", this, (ProxyBusObject::Listener::GetPropertyCB)&ColorIntfControllerLsfTranslator::GetSaturationPropertyCB, context);
+}
+
+QStatus ColorIntfControllerLsfTranslator::SetSaturation(const double value, void* context) {
+    uint32_t saturation = static_cast<uint32_t>(((value > 1.0) ? 1.0 : (value < 0.0) ? 0.0 : value) * UINT32_MAX);
+
+    MsgArg arg;
+    {
+        CdmMsgCvt<uint32_t> converter;
+        converter.set(arg, saturation);
+    }
+
+    auto status = m_proxyObject->SetPropertyAsync(LampServiceStateInterfaceName, "Saturation", arg, this,
+                                                  (ProxyBusObject::Listener::SetPropertyCB)&ColorIntfControllerLsfTranslator::SetSaturationPropertyCB, context);
+    return status;
+}
+
+void ColorIntfControllerLsfTranslator::GetHuePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context) {
+    if (!obj) {
+        return;
+    }
+
+    uint32_t val;
+    value.Get("u", &val);
+
+    double hue = ((double)val / UINT32_MAX) * 360.0;
+    m_interfaceListener->OnResponseGetHue(status, obj->GetPath(), hue, context);
+}
+
+void ColorIntfControllerLsfTranslator::SetHuePropertyCB(QStatus status, ProxyBusObject* obj, void* context)
+{
+    if (obj) {
+        m_interfaceListener->OnResponseSetHue(status, obj->GetPath(), context);
+    }
+}
+
+void ColorIntfControllerLsfTranslator::GetSaturationPropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context) {
+    if (!obj) {
+        return;
+    }
+
+    uint32_t val;
+    value.Get("u", &val);
+
+    double saturation = (double)val / UINT32_MAX;
+    m_interfaceListener->OnResponseGetSaturation(status, obj->GetPath(), saturation, context);
+}
+
+void ColorIntfControllerLsfTranslator::SetSaturationPropertyCB(QStatus status, ProxyBusObject* obj, void* context)
+{
+    if (obj) {
+        m_interfaceListener->OnResponseSetSaturation(status, obj->GetPath(), context);
+    }
+}
+
+void ColorIntfControllerLsfTranslator::LampStateChanged(const InterfaceDescription::Member* member, const char* srcPath, Message& message) {
+    MsgArg property;
+    QCC_DbgPrintf(("%s: State updated!", __func__));
+
+    m_busAttachment.EnableConcurrentCallbacks();
+    QStatus status = m_proxyObject->GetProperty(LampServiceStateInterfaceName, "Hue", property);
+    if (status != ER_OK) {
+        QCC_LogError(status, ("%s: Failed to get Hue state!", __func__));
+        return;
+    }
+
+    uint32_t value;
+    status = property.Get("u", &value);
+    if (status) {
+        QCC_LogError(status, ("%s: Bad type %d", __func__, property.typeId));
+        return;
+    }
+
+    double hue = (double)value / UINT32_MAX;
+
+    m_interfaceListener->OnHueChanged(srcPath, hue);
+
+
+    m_busAttachment.EnableConcurrentCallbacks();
+    status = m_proxyObject->GetProperty(LampServiceStateInterfaceName, "Saturation", property);
+    if (status != ER_OK) {
+        QCC_LogError(status, ("%s: Failed to get Hue state!", __func__));
+        return;
+    }
+
+    status = property.Get("u", &value);
+    if (status) {
+        QCC_LogError(status, ("%s: Bad type %d", __func__, property.typeId));
+        return;
+    }
+
+    double saturation = (double)value / UINT32_MAX;
+
+    m_interfaceListener->OnSaturationChanged(srcPath, saturation);
+}
+
+///////////////////////////////////////////
+//// ColorTemperatureIntfControllerLsfTranslator
+///////////////////////////////////////////
+
+//ColorTemperatureIntfControllerLsfTranslator::ColorTemperatureIntfControllerLsfTranslator(BusAttachment& busAttachment, Ref<ColorTemperatureIntfControllerListener> listener, Ref<ProxyBusObject> pbo)
+//    : ColorTemperatureIntfController(busAttachment, listener, pbo),
+//      m_busAttachment(busAttachment), m_interfaceListener(listener), m_proxyObject(pbo), m_lampStateChanged(NULL)
+//{
+//}
+//
+//ColorTemperatureIntfControllerLsfTranslator::~ColorTemperatureIntfControllerLsfTranslator() {
+//    QStatus status;
+//    if (m_lampStateChanged) {
+//        status = m_busAttachment.UnregisterSignalHandler(this, static_cast<SignalHandler>(&ColorTemperatureIntfControllerLsfTranslator::LampStateChanged), m_lampStateChanged, NULL);
+//        if (ER_OK != status) {
+//            QCC_LogError(status, ("%s: UnregisterSignalHandler for ChannelListChanged signal failed.", __func__));
+//        }
+//    }
+//}
+//
+//QStatus ColorTemperatureIntfControllerLsfTranslator::Init() {
+//    QStatus status;
+//    status = m_proxyObject->AddInterface(LampServiceStateInterfaceName);
+//    if (status != ER_OK && status != ER_BUS_IFACE_ALREADY_EXISTS) {
+//        QCC_LogError(status, ("%s: AddInterface failed.", __func__));
+//        return status;
+//    }
+//
+//    const InterfaceDescription* intf = m_busAttachment.GetInterface(LampServiceStateInterfaceName);
+//    if (!intf) {
+//        status = ER_FAIL;
+//        QCC_LogError(status, ("%s: failed to get interface description.", __func__));
+//        return status;
+//    }
+//
+//    m_lampStateChanged = intf->GetMember("LampStateChanged");
+//    if (!m_lampStateChanged) {
+//        status = ER_FAIL;
+//        QCC_LogError(status, ("%s: failed to resolve LampStateChanged signal.", __func__));
+//        return status;
+//    }
+//
+//    status = m_busAttachment.RegisterSignalHandler(this, static_cast<SignalHandler>(&ColorTemperatureIntfControllerLsfTranslator::LampStateChanged), m_lampStateChanged, NULL);
+//    if (ER_OK != status) {
+//        QCC_LogError(status, ("%s: RegisterSignalHandler for ChannelListChanged signal failed.", __func__));
+//        return status;
+//    }
+//
+//    std::vector<const ajn::InterfaceDescription*> interfaces(m_proxyObject->GetInterfaces());
+//    m_proxyObject->GetInterfaces(interfaces.data(), interfaces.size());
+//    return ER_OK;
+//}
+//
+//QStatus ColorTemperatureIntfControllerLsfTranslator::GetTemperature(void* context) {
+//    return m_proxyObject->GetPropertyAsync(LampServiceStateInterfaceName, "ColorTemp", this, (ProxyBusObject::Listener::GetPropertyCB)&ColorTemperatureIntfControllerLsfTranslator::GetTemperaturePropertyCB, context);
+//}
+//
+//QStatus ColorTemperatureIntfControllerLsfTranslator::GetMinTemperature(void* context) {
+//    return m_proxyObject->GetPropertyAsync(LampServiceDetailsInterfaceName, "MinTemperature", this, (ProxyBusObject::Listener::GetPropertyCB)&ColorTemperatureIntfControllerLsfTranslator::GetMinTemperaturePropertyCB, context);
+//}
+//
+//QStatus ColorTemperatureIntfControllerLsfTranslator::GetMaxTemperature(void* context) {
+//    return m_proxyObject->GetPropertyAsync(LampServiceDetailsInterfaceName, "MaxTemperature", this, (ProxyBusObject::Listener::GetPropertyCB)&ColorTemperatureIntfControllerLsfTranslator::GetMaxTemperaturePropertyCB, context);
+//}
+//
+//QStatus ColorTemperatureIntfControllerLsfTranslator::SetTemperature(const double value, void* context) {
+//    uint32_t brightness = static_cast<uint32_t>(((value > 1.0) ? 1.0 : (value < 0.0) ? 0.0 : value) * UINT32_MAX);
+//
+//    MsgArg arg;
+//    {
+//        CdmMsgCvt<uint32_t> converter;
+//        converter.set(arg, brightness);
+//    }
+//
+//    auto status = m_proxyObject->SetPropertyAsync(LampServiceStateInterfaceName, "ColorTemp", arg, this,
+//                                                  (ProxyBusObject::Listener::SetPropertyCB)&ColorTemperatureIntfControllerLsfTranslator::SetTemperaturePropertyCB, context);
+//    return status;
+//}
+//
+//void ColorTemperatureIntfControllerLsfTranslator::GetTemperaturePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context) {
+//    if (!obj) {
+//        return;
+//    }
+//
+//    uint32_t val=0;
+//    value.Get("u", &val);
+//
+//    double colorTemp = (double)val; // / UINT32_MAX;
+//    m_interfaceListener->OnResponseGetTemperature(status, obj->GetPath(), colorTemp, context);
+//}
+//
+//void ColorTemperatureIntfControllerLsfTranslator::GetMinTemperaturePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context) {
+//    if (!obj) {
+//        return;
+//    }
+//
+//    uint32_t val;
+//    value.Get("u", &val);
+//
+//    double minColorTemp = (double)val; // / UINT32_MAX;
+//    m_interfaceListener->OnResponseGetMinTemperature(status, obj->GetPath(), minColorTemp, context);
+//}
+//
+//void ColorTemperatureIntfControllerLsfTranslator::GetMaxTemperaturePropertyCB(QStatus status, ProxyBusObject* obj, const MsgArg& value, void* context) {
+//    if (!obj) {
+//        return;
+//    }
+//
+//    uint32_t val;
+//    value.Get("u", &val);
+//
+//    double maxColorTemp = (double)val; // / UINT32_MAX;
+//    m_interfaceListener->OnResponseGetMaxTemperature(status, obj->GetPath(), maxColorTemp, context);
+//}
+//
+//void ColorTemperatureIntfControllerLsfTranslator::SetTemperaturePropertyCB(QStatus status, ProxyBusObject* obj, void* context)
+//{
+//    if (obj) {
+//        m_interfaceListener->OnResponseSetTemperature(status, obj->GetPath(), context);
+//    }
+//}
+//
+//void ColorTemperatureIntfControllerLsfTranslator::LampStateChanged(const InterfaceDescription::Member* member, const char* srcPath, Message& message) {
+//    MsgArg property;
+//    QCC_DbgPrintf(("%s: State updated!", __func__));
+//
+//    m_busAttachment.EnableConcurrentCallbacks();
+//    QStatus status = m_proxyObject->GetProperty(LampServiceStateInterfaceName, "ColorTemperature", property);
+//    if (status != ER_OK) {
+//        QCC_LogError(status, ("%s: Failed to get ColorTemperature state!", __func__));
+//        return;
+//    }
+//
+//    uint32_t value;
+//    status = property.Get("u", &value);
+//    if (status) {
+//        QCC_LogError(status, ("%s: Bad type %d", __func__, property.typeId));
+//        return;
+//    }
+//
+//    double colorTemp = (double)value / UINT32_MAX;
+//
+//    m_interfaceListener->OnTemperatureChanged(srcPath, colorTemp);
+//}
 
 } //namespace services
 } //namespace ajn
