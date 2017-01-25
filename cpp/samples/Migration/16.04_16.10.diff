@@ -1,0 +1,177 @@
+diff -r 16.04/BaseSample/BaseSample.h 16.10/BaseSample/BaseSample.h
+34a35
+> #include <alljoyn/cdm/common/CdmTypes.h>
+diff -r 16.04/BaseSample/Controllee/ControlleeSample.cc 16.10/BaseSample/Controllee/ControlleeSample.cc
+185,189d184
+< CdmInterface* ControlleeSample::CreateInterface(const CdmInterfaceType type, const qcc::String& objectPath, InterfaceControlleeListener& listener)
+< {
+<     return m_controllee->CreateInterface(type, objectPath, listener);
+< }
+< 
+194,199d188
+<     if (!m_bus) {
+<         status = ER_FAIL;
+<         printf("m_bus is NULL. (%s)\n", QCC_StatusText(status));
+<         return status;
+<     }
+< 
+206c195
+<     m_controllee = new CdmControllee(*m_bus, m_aboutData);
+---
+>     m_controllee = new CdmControllee(*m_bus);
+216c205
+<     status = m_controllee->EnablePeerSecurity(ECDHE_KEYX, &s_authListener, "/.alljoyn_keystore/s_ecdhe.ks", false);
+---
+>     status = m_bus->EnablePeerSecurity(ECDHE_KEYX, &s_authListener, "/.alljoyn_keystore/s_ecdhe.ks", false, NULL);
+298,303d286
+<     if (m_aboutObj) {
+<         m_aboutObj->Unannounce();
+<         delete m_aboutObj;
+<         m_aboutObj = NULL;
+<     }
+< 
+diff -r 16.04/BaseSample/Controllee/ControlleeSample.h 16.10/BaseSample/Controllee/ControlleeSample.h
+33a34
+> #include <memory>
+38,39c39,40
+< #include <alljoyn/cdm/CdmControllee.h>
+< #include <alljoyn/cdm/CdmAboutData.h>
+---
+> #include <alljoyn/cdm/controllee/CdmControllee.h>
+> #include <alljoyn/cdm/common/CdmAboutData.h>
+45a47
+> 
+63c65,66
+< class ControlleeSample : public BaseSample
+---
+> class ControlleeSample : public BaseSample,
+>                          public std::enable_shared_from_this<ControlleeSample>
+71d73
+<     CdmInterface* CreateInterface(const CdmInterfaceType type, const qcc::String& objectPath, InterfaceControlleeListener& listener);
+Only in 16.04/BaseSample/Controllee: HeatingZoneListener.cc
+Only in 16.04/BaseSample/Controllee: HeatingZoneListener.h
+Only in 16.10/BaseSample/Controllee: HeatingZoneModel.cc
+Only in 16.10/BaseSample/Controllee: HeatingZoneModel.h
+Only in 16.10/BaseSample/Controllee: InterfaceCommands.h
+Only in 16.04/BaseSample/Controllee: OvenCyclePhaseListener.cc
+Only in 16.04/BaseSample/Controllee: OvenCyclePhaseListener.h
+Only in 16.10/BaseSample/Controllee: OvenCyclePhaseModel.cc
+Only in 16.10/BaseSample/Controllee: OvenCyclePhaseModel.h
+Only in 16.04/BaseSample/Controllee: RapidModeListener.cc
+Only in 16.04/BaseSample/Controllee: RapidModeListener.h
+Only in 16.10/BaseSample/Controllee: RapidModeModel.cc
+Only in 16.10/BaseSample/Controllee: RapidModeModel.h
+diff -r 16.04/CookTopControllee/CookTopControllee.cc 16.10/CookTopControllee/CookTopControllee.cc
+37c37
+< #include <alljoyn/cdm/DeviceTypeDescription.h>
+---
+> #include <alljoyn/cdm/common/DeviceTypeDescription.h>
+39,44c39,44
+< #include "HeatingZoneListener.h"
+< #include "OvenCyclePhaseListener.h"
+< #include "RapidModeListener.h"
+< #include <alljoyn/cdm/interfaces/operation/HeatingZoneIntfControllee.h>
+< #include <alljoyn/cdm/interfaces/operation/OvenCyclePhaseIntfControllee.h>
+< #include <alljoyn/cdm/interfaces/operation/RapidModeIntfControllee.h>
+---
+> #include "HeatingZoneModel.h"
+> #include "OvenCyclePhaseModel.h"
+> #include "RapidModeModel.h"
+> #include <interfaces/controllee/operation/HeatingZoneIntfControllee.h>
+> #include <interfaces/controllee/operation/OvenCyclePhaseIntfControllee.h>
+> #include <interfaces/controllee/operation/RapidModeIntfControllee.h>
+51,58c51,54
+<   private:
+<     HeatingZoneListener *m_heatingZoneListener;
+<     OvenCyclePhaseListener *m_ovenCyclePhaseListener;
+<     RapidModeListener *m_rapidModeListener;
+< 
+<     HeatingZoneIntfControllee* m_heatingZoneIntfControllee;
+<     OvenCyclePhaseIntfControllee* m_ovenCyclePhaseIntfControllee;
+<     RapidModeIntfControllee* m_rapidModeIntfControllee;
+---
+>  private:
+>     Ref<HeatingZoneModel> m_heatingZoneModel;
+>     Ref<OvenCyclePhaseModel> m_ovenCyclePhaseModel;
+>     Ref<RapidModeModel> m_rapidModeModel;
+60c56
+<   public:
+---
+>  public:
+68c64
+<   : ControlleeSample(bus, aboutData), m_heatingZoneIntfControllee(NULL), m_ovenCyclePhaseIntfControllee(NULL), m_rapidModeIntfControllee(NULL)
+---
+>     : ControlleeSample(bus, aboutData)
+70,72c66,68
+<     m_heatingZoneListener = new HeatingZoneListener();
+<     m_ovenCyclePhaseListener = new OvenCyclePhaseListener();
+<     m_rapidModeListener = new RapidModeListener();
+---
+>     m_heatingZoneModel = mkRef<HeatingZoneModel>();
+>     m_ovenCyclePhaseModel = mkRef<OvenCyclePhaseModel>();
+>     m_rapidModeModel = mkRef<RapidModeModel>();
+77,85d72
+<     if(m_heatingZoneListener) {
+<         delete m_heatingZoneListener;
+<     }
+<     if(m_ovenCyclePhaseListener) {
+<         delete m_ovenCyclePhaseListener;
+<     }
+<     if(m_rapidModeListener) {
+<         delete m_rapidModeListener;
+<     }
+90d76
+<     CdmInterface* intf = NULL;
+96,103c82,84
+<     intf = cdmControllee->CreateInterface(HEATING_ZONE_INTERFACE, "/Cdm/Cooktop", *m_heatingZoneListener);
+<     m_heatingZoneIntfControllee = static_cast<HeatingZoneIntfControllee*>(intf);
+< 
+<     intf = cdmControllee->CreateInterface(OVEN_CYCLE_PHASE_INTERFACE, "/Cdm/Cooktop", *m_ovenCyclePhaseListener);
+<     m_ovenCyclePhaseIntfControllee = static_cast<OvenCyclePhaseIntfControllee*>(intf);
+< 
+<     intf = cdmControllee->CreateInterface(RAPID_MODE_INTERFACE, "/Cdm/Cooktop", *m_rapidModeListener);
+<     m_rapidModeIntfControllee = static_cast<RapidModeIntfControllee*>(intf);
+---
+>     cdmControllee->CreateInterface<HeatingZoneIntfControllee>(m_heatingZoneModel, "/Cdm/Cooktop");
+>     cdmControllee->CreateInterface<OvenCyclePhaseIntfControllee>(m_ovenCyclePhaseModel, "/Cdm/Cooktop");
+>     cdmControllee->CreateInterface<RapidModeIntfControllee>(m_rapidModeModel, "/Cdm/Cooktop");
+108,109c89,91
+<     m_heatingZoneIntfControllee->SetNumberOfHeatingZones(4);
+<     uint8_t numZones = m_heatingZoneIntfControllee->GetNumberOfHeatingZones();
+---
+>     uint8_t numZones;
+>     m_heatingZoneModel->SetNumberOfHeatingZones(4);
+>     m_heatingZoneModel->GetNumberOfHeatingZones(numZones);
+113c95
+<     m_heatingZoneIntfControllee->SetMaxHeatingLevels(maxHeatingLevels);
+---
+>     m_heatingZoneModel->SetMaxHeatingLevels(maxHeatingLevels);
+118c100
+<     m_heatingZoneIntfControllee->SetHeatingLevels(heatingLevels);
+---
+>     m_heatingZoneModel->SetHeatingLevels(heatingLevels);
+120c102
+<     m_ovenCyclePhaseIntfControllee->SetCyclePhase(OvenCyclePhaseInterface::OvenCyclePhase::OVEN_PHASE_PREHEATING);
+---
+>     m_ovenCyclePhaseModel->SetCyclePhase(OvenCyclePhaseModel::OVEN_PHASE_PREHEATING);
+122,126c104,108
+<     OvenCyclePhaseInterface::SupportedCyclePhases phases;
+<     phases.push_back(OvenCyclePhaseInterface::OvenCyclePhase::OVEN_PHASE_COOKING);
+<     phases.push_back(OvenCyclePhaseInterface::OvenCyclePhase::OVEN_PHASE_PREHEATING);
+<     phases.push_back(OvenCyclePhaseInterface::OvenCyclePhase::OVEN_PHASE_CLEANING);
+<     phases.push_back(OvenCyclePhaseInterface::OvenCyclePhase::OVEN_PHASE_UNAVAILABLE);
+---
+>     std::vector<uint8_t> phases;
+>     phases.push_back(OvenCyclePhaseModel::OVEN_PHASE_COOKING);
+>     phases.push_back(OvenCyclePhaseModel::OVEN_PHASE_PREHEATING);
+>     phases.push_back(OvenCyclePhaseModel::OVEN_PHASE_CLEANING);
+>     phases.push_back(OvenCyclePhaseModel::OVEN_PHASE_UNAVAILABLE);
+128c110
+<     m_ovenCyclePhaseIntfControllee->SetSupportedCyclePhases(phases);
+---
+>     m_ovenCyclePhaseModel->SetSupportedCyclePhases(phases);
+263d244
+< 
+diff -r 16.04/CookTopControllee/SConscript 16.10/CookTopControllee/SConscript
+28d27
+< 
