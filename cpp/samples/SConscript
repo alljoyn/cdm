@@ -33,7 +33,7 @@ Import('cdm_env')
 
 local_env = cdm_env.Clone()
 
-local_env.Prepend(LIBS = ['alljoyn_cdm_interfaces', 'alljoyn_cdm_controllee', 'alljoyn_cdm_common', 'alljoyn_cdm_util', 'alljoyn_about' ])
+local_env.Prepend(LIBS = ['alljoyn_cdm_util', 'alljoyn_cdm_controllee', 'alljoyn_cdm_common', 'alljoyn_cdm_interfaces', 'alljoyn_about' ])
 
 if local_env['BR'] == 'on':
     # Build apps with bundled daemon support
@@ -64,11 +64,13 @@ cdm_tcl_mount_dir = cdm_tcl_bin_dir
 sys_conf_data = {
     "cdm_tcl": {
         "bin_dir": cdm_tcl_bin_dir,
-        "mount_dir": cdm_tcl_mount_dir
+        "mount_dir": cdm_tcl_mount_dir,
+        "device_xml_dir": os.path.join(cdm_tcl_bin_dir, 'DeviceXML')
     },
     "cdm": {
         "bin_dir": cdm_bin_dir,
-        "mount_dir": cdm_mount_dir
+        "mount_dir": cdm_mount_dir,
+        "device_xml_dir": os.path.join(cdm_bin_dir, 'DeviceXML')
     }
 }
 
@@ -82,8 +84,8 @@ with open(sys_conf_path, "w") as fp:
     json.dump(sys_conf_data, fp, indent=4)
 
 local_env.Install('$CDM_DISTDIR/bin/cdm_os', local_env.Glob(samples_launcher_path + '/cdm_os/*.py'))
-local_env.Install('$CDM_DISTDIR/bin/cdm_os/conf/cdm', local_env.Glob(samples_launcher_path + '/conf/cdm/*.conf'))
-local_env.Install('$CDM_DISTDIR/bin/cdm_os/conf/cdm_tcl', local_env.Glob(samples_launcher_path + '/conf/cdm_tcl/*.conf'))
+local_env.Install('$CDM_DISTDIR/bin/cdm_os/conf/cdm', local_env.Glob(samples_launcher_path + '/cdm_os/conf/cdm/*.conf'))
+local_env.Install('$CDM_DISTDIR/bin/cdm_os/conf/cdm_tcl', local_env.Glob(samples_launcher_path + '/cdm_os/conf/cdm_tcl/*.conf'))
 local_env.Install('$CDM_DISTDIR/bin/cdm_os/bin', local_env.Glob(samples_launcher_path + '/cdm_os/bin/*.py'))
 
 ### install some sample certificate files

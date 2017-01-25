@@ -121,6 +121,7 @@ class CdmOS(object):
         self._file_system = {}
         self._property_lut = self._build_property_lut()
 
+        print self._property_lut
         self._boot_program = self._make_boot_program()
         self._proc = None
 
