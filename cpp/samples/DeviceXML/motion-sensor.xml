@@ -75,7 +75,7 @@
                     <scalar type='unsigned' value='100'/>
                 </Property>
                 <Property name='IsCharging' mode='default'>
-                    <scalar type='bool' value='true'/>
+                    <scalar type='bool' value='false'/>
                 </Property>
             </Interface>
         </Object>

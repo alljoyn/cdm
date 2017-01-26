@@ -227,17 +227,18 @@ class CdmOS(object):
         except Exception as e:
             print "An error occurred reading {}: {}".format(os.path.basename(prop_file_name), e)
 
-    def send_signal(self, signal, signal_dest):
+    def send_signal(self, signal, signal_dest, silent=False):
         try:
             self._proc.stdin.write(signal + "\n")
-            print "Signal emitted for {}".format(signal_dest)
+            if not silent:
+                print "Signal emitted for {}".format(signal_dest)
         except Exception as err:
             print "Error emitting signal for {}: {}".format(signal_dest, err)
 
-    def send_property_signal(self, path, property_name):
+    def send_property_signal(self, path, property_name, silent=False):
         signal_dest = "{} {}".format(' '.join(path), property_name)
         signal = "changed {}".format(signal_dest)
-        self.send_signal(signal, signal_dest)
+        self.send_signal(signal, signal_dest, silent)
 
     def start(self):
         self._running = True

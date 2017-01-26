@@ -1,5 +1,18 @@
 import itertools
+from collections import OrderedDict
 from xml.dom import minidom
+
+
+_true_values = ['1', 'true', 'True', 'TRUE', True, 1]
+_false_values = ['0', 'false', 'False', 'FALSE', False, 0]
+
+_data_type_validators = {
+    'unsigned': lambda x: int(x) if int(x) >= 0 else _raise_value_error(),
+    'signed': lambda x: int(x),
+    'string': lambda x: str(x),
+    'bool': lambda x: 'true' if x in _true_values else 'false' if x in _false_values else _raise_value_error(),
+    'double': lambda x: float(x)
+}
 
 
 def _scalar_handler(elem):
@@ -12,7 +25,7 @@ def _array_handler(elem):
 
 def _struct_handler(elem):
     fields = [_field_handler(child_elem) for child_elem in elem.childNodes if child_elem.nodeName in _read_handlers]
-    return dict(list(itertools.chain(*fields)))
+    return OrderedDict(list(itertools.chain(*fields)))
 
 
 def _field_handler(elem):
@@ -31,7 +44,7 @@ def _format_property(property_data, accum):
     if type(property_data) is list:
         accum += "{}".format('\n'.join(["array[{}] = {}".format(i, _format_property(p, "")) for i, p in enumerate(property_data)]))
 
-    elif type(property_data) is dict:
+    elif type(property_data) is OrderedDict:
         fields = [_format_property(v, "{} = ".format(k)) for k, v in property_data.items()]
         accum += "struct {{{0}}}".format(", ".join(fields))
     elif type(property_data) is tuple:
@@ -43,8 +56,9 @@ def _format_property(property_data, accum):
 
 def _scalar_writer(xml, data_type, data_value):
     scalar_node = xml.createElement('scalar')
+    value = _data_type_validators.get(str(data_type), lambda _: _raise_value_error())(str(data_value))
     scalar_node.attributes['type'] = str(data_type)
-    scalar_node.attributes['value'] = str(data_value).strip('"')
+    scalar_node.attributes['value'] = str(value).strip('"')
     return scalar_node
 
 
@@ -72,24 +86,12 @@ def _write_property(xml, property_data):
         return _scalar_writer(xml, *property_data)
     elif type(property_data) is list:
         return _array_writer(xml, property_data)
-    elif type(property_data) is dict:
+    elif type(property_data) is OrderedDict:
         return _struct_writer(xml, property_data)
 
 
 def _raise_value_error():
     raise ValueError()
-
-
-_true_values = ['1', 'true', 'True', 'TRUE']
-_false_values = ['0', 'false', 'False', 'FALSE']
-
-_data_type_validators = {
-    'unsigned': lambda x: int(x) if int(x) >= 0 else _raise_value_error(),
-    'signed': lambda x: int(x),
-    'string': lambda x: str(x),
-    'bool': lambda x: 'true' if x in _true_values else 'false' if x in _false_values else _raise_value_error(),
-    'double': lambda x: float(x)
-}
 
 
 def read_property_file(full_path):

@@ -86,13 +86,73 @@ static QStatus SetFactoryDefaults(CdmControllee& controllee, bool force)
     return ER_OK;
 }
 
+static QStatus HandleBrightnessCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+    if (cmd.name == "changed" && cmd.interface == "org.alljoyn.SmartSpaces.Operation.Brightness") {
+        if (cmd.property == "Brightness") {
+            double value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<BrightnessIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.Brightness");
+                if (iface) {
+                    iface->EmitBrightnessChanged(value);
+                }
+            }
+        }
+    }
+
+    return status;
+}
+
+QStatus HandleColorCommand(const Command& cmd, CdmControllee& controllee)
+{
+    QStatus status = ER_FAIL;
+
+    if (cmd.name == "changed" && cmd.interface == "org.alljoyn.SmartSpaces.Operation.Color") {
+        if (cmd.property == "Hue") {
+            double value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<ColorIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.Color");
+                if (iface) {
+                    iface->EmitHueChanged(value);
+                }
+            }
+        }
+        if (cmd.property == "Saturation") {
+            double value;
+            status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
+            if (status == ER_OK) {
+                auto iface = controllee.GetInterface<ColorIntfControllee>(cmd.objPath, "org.alljoyn.SmartSpaces.Operation.Color");
+                if (iface) {
+                    iface->EmitSaturationChanged(value);
+                }
+            }
+        }
+    }
+
+    return status;
+}
+
 static QStatus HandleCommand(const Command& cmd, CdmControllee& controllee)
 {
     if (cmd.name == "reset") {
         return SetFactoryDefaults(controllee, true);
     }
 
-    return HandleCommand(cmd, controllee);
+    QStatus status = ER_OK;
+
+    if (cmd.name == "changed") {
+        if (cmd.interface=="org.alljoyn.SmartSpaces.Operation.Brightness") {
+            status = HandleBrightnessCommand(cmd, controllee);
+        } else if (cmd.interface=="org.alljoyn.SmartSpaces.Operation.Color") {
+            status = HandleColorCommand(cmd, controllee);
+        }
+    }
+
+    return status;
 }
 
 LampControllee::LampControllee(BusAttachment& bus, const std::string& aboutData, const std::string& certPath) :

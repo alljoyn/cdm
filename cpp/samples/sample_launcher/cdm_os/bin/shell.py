@@ -1,10 +1,10 @@
+import sys
 import cmd
 import argparse
 import re
+from collections import OrderedDict
 
 from cdm_os import property_io
-
-import sys
 
 try:
     import readline
@@ -132,6 +132,9 @@ def _cmd_set(shell, args):
 
             return array_entry
 
+        def get_new_type():
+            return OrderedDict() if type(args.value) is list else tuple()
+
         parse_result = parse_file_for_properties(list, "array")
         if parse_result is None:
             return
@@ -154,11 +157,11 @@ def _cmd_set(shell, args):
             if not args.value:
                 print "Missing value parameter"
 
-            old_entry = type(prop_data[0])() if args.insert else prop_data[index]
+            old_entry = get_new_type() if args.insert else prop_data[index]
 
             new_entry = {
                 tuple: set_array_scalar_entry,
-                dict: set_array_struct_entry,
+                OrderedDict: set_array_struct_entry,
             }.get(type(old_entry))(old_entry)
 
             if new_entry is None:
