@@ -12,7 +12,8 @@ INSTALL_TARGETS  = install_tcl install_tcl_samples install_tcl_factory
 OUTPUT    = ./output_tcl
 else
 INSTALL_DIR = $(CDM)/cpp
-TEMPLATES   = $(CDM)/generator/templates/interface_templates/cdm/cpp/
+BINDINGS    = cpp
+TEMPLATES   = $(CDM)/generator/templates/interface_templates/cdm/$(BINDINGS)/
 PATCHES     = templates/patches/cpp
 GENERATE_TARGETS = generate_common generate_controllee generate_controller generate_samples generate_factory
 INSTALL_TARGETS  = install_interfaces install_samples install_factory
@@ -94,6 +95,11 @@ generate_controllee:
 generate_controller:
 	@for x in $(XML_PATHS); do \
             ./generate.py --output_dir $(OUTPUT) --patches $(PATCHES) --components=controller $(TEMPLATES) $$x || exit 1;\
+	done
+
+generate_ios_controller:
+	@for x in $(XML_PATHS); do \
+            ./generate.py --output_dir $(OUTPUT) --bindings=ios --components=controller $(TEMPLATES) $$x || exit 1;\
 	done
 
 generate_samples:

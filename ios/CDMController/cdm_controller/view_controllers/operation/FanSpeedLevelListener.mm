@@ -86,7 +86,7 @@ void FanSpeedLevelListener::OnResponseGetMaxFanSpeedLevel(QStatus status, const 
 
 
 
-void FanSpeedLevelListener::UpdateAutoMode(const AutoMode value)
+void FanSpeedLevelListener::UpdateAutoMode(const FanSpeedLevelInterface::AutoMode value)
 {
     NSString *valueAsStr = [NSString stringWithFormat:@"%u", value];
     NSLog(@"Got AutoMode: %@", valueAsStr);
@@ -95,12 +95,12 @@ void FanSpeedLevelListener::UpdateAutoMode(const AutoMode value)
     });
 }
 
-void FanSpeedLevelListener::OnResponseGetAutoMode(QStatus status, const qcc::String& objectPath, const AutoMode value, void* context)
+void FanSpeedLevelListener::OnResponseGetAutoMode(QStatus status, const qcc::String& objectPath, const FanSpeedLevelInterface::AutoMode value, void* context)
 {
     UpdateAutoMode(value);
 }
 
-void FanSpeedLevelListener::OnAutoModeChanged(const qcc::String& objectPath, const AutoMode value)
+void FanSpeedLevelListener::OnAutoModeChanged(const qcc::String& objectPath, const FanSpeedLevelInterface::AutoMode value)
 {
     UpdateAutoMode(value);
 }

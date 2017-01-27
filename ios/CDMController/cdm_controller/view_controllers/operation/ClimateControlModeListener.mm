@@ -42,21 +42,21 @@ ClimateControlModeListener::~ClimateControlModeListener()
     
 }
 
-void ClimateControlModeListener::UpdateMode(const Mode value)
+void ClimateControlModeListener::UpdateMode(const ClimateControlModeInterface::Mode value)
 {
-    NSString *valueAsStr = [NSString stringWithFormat:@"%hu", value];
+    NSString *valueAsStr = [NSString stringWithFormat:@"%u", value];
     NSLog(@"Got Mode: %@", valueAsStr);
     dispatch_async(dispatch_get_main_queue(), ^{
         viewController.modeCell.value.text = valueAsStr;
     });
 }
 
-void ClimateControlModeListener::OnResponseGetMode(QStatus status, const qcc::String& objectPath, const Mode value, void* context)
+void ClimateControlModeListener::OnResponseGetMode(QStatus status, const qcc::String& objectPath, const ClimateControlModeInterface::Mode value, void* context)
 {
     UpdateMode(value);
 }
 
-void ClimateControlModeListener::OnModeChanged(const qcc::String& objectPath, const Mode value)
+void ClimateControlModeListener::OnModeChanged(const qcc::String& objectPath, const ClimateControlModeInterface::Mode value)
 {
     UpdateMode(value);
 }
@@ -70,37 +70,46 @@ void ClimateControlModeListener::OnResponseSetMode(QStatus status, const qcc::St
     }
 }
 
-void ClimateControlModeListener::UpdateSupportedModes(const std::vector<Mode>& value)
+void ClimateControlModeListener::UpdateSupportedModes(const std::vector<ClimateControlModeInterface::Mode>& value)
 {
-    [viewController setSupportedModes:value];
+    NSString *valueArrayAsString = @"";
+    std::vector<ClimateControlModeInterface::Mode>::const_iterator it = value.begin();
+    while(it != value.end()) {
+        valueArrayAsString = [valueArrayAsString stringByAppendingString:[NSString stringWithFormat:@"%u,", *it]];
+        ++it;
+    }
+    NSLog(@"Got SupportedModes: %@", valueArrayAsString);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        viewController.supportedModesCell.value.text = [NSString stringWithFormat:@"%@", valueArrayAsString];
+    });
 }
 
-void ClimateControlModeListener::OnResponseGetSupportedModes(QStatus status, const qcc::String& objectPath, const std::vector<Mode>& value, void* context)
+void ClimateControlModeListener::OnResponseGetSupportedModes(QStatus status, const qcc::String& objectPath, const std::vector<ClimateControlModeInterface::Mode>& value, void* context)
 {
     UpdateSupportedModes(value);
 }
 
-void ClimateControlModeListener::OnSupportedModesChanged(const qcc::String& objectPath, const std::vector<Mode>& value)
+void ClimateControlModeListener::OnSupportedModesChanged(const qcc::String& objectPath, const std::vector<ClimateControlModeInterface::Mode>& value)
 {
     UpdateSupportedModes(value);
 }
 
 
-void ClimateControlModeListener::UpdateOperationalState(const OperationalState value)
+void ClimateControlModeListener::UpdateOperationalState(const ClimateControlModeInterface::OperationalState value)
 {
-    NSString *valueAsStr = [NSString stringWithFormat:@"%hu", value];
+    NSString *valueAsStr = [NSString stringWithFormat:@"%u", value];
     NSLog(@"Got OperationalState: %@", valueAsStr);
     dispatch_async(dispatch_get_main_queue(), ^{
         viewController.operationalStateCell.value.text = valueAsStr;
     });
 }
 
-void ClimateControlModeListener::OnResponseGetOperationalState(QStatus status, const qcc::String& objectPath, const OperationalState value, void* context)
+void ClimateControlModeListener::OnResponseGetOperationalState(QStatus status, const qcc::String& objectPath, const ClimateControlModeInterface::OperationalState value, void* context)
 {
     UpdateOperationalState(value);
 }
 
-void ClimateControlModeListener::OnOperationalStateChanged(const qcc::String& objectPath, const OperationalState value)
+void ClimateControlModeListener::OnOperationalStateChanged(const qcc::String& objectPath, const ClimateControlModeInterface::OperationalState value)
 {
     UpdateOperationalState(value);
 }

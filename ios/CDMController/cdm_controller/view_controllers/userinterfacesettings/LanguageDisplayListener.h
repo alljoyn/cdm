@@ -32,8 +32,10 @@
 #define LanguageDisplayListener_h
 
 #import "LanguageDisplayViewController.h"
-#import "alljoyn/cdm/interfaces/userinterfacesettings/LanguageDisplayInterface.h"
-#import "alljoyn/cdm/interfaces/userinterfacesettings/LanguageDisplayIntfControllerListener.h"
+#import "interfaces/common/userinterfacesettings/LanguageDisplayInterface.h"
+#import "interfaces/controller/userinterfacesettings/LanguageDisplayIntfControllerListener.h"
+
+using ajn::services::LanguageDisplayInterface;
 
 class LanguageDisplayListener : public ajn::services::LanguageDisplayIntfControllerListener
 {

@@ -33,6 +33,10 @@ Import('env')
 env['_ALLJOYN_CDM_'] = True
 env['OBJDIR_SERVICES_CDM'] = env['OBJDIR'] + '/services/cdm'
 
+if not env.get('ALLJOYN_DISTDIR'):
+    env.SConscript('../../core/alljoyn/alljoyn_core/SConscript')
+    env.SConscript('../../core/alljoyn/services/about/SConscript')
+
 cdm_env = env.Clone()
 cdm_env.Append(LIBPATH = '$DISTDIR/cdm/lib')
 cdm_env.Append(CPPPATH = '$DISTDIR/cdm/framework/inc')

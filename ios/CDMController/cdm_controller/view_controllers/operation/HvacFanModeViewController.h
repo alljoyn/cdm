@@ -32,17 +32,16 @@
 #define HvacFanModeViewController_h
 
 #import "InterfaceViewController.h"
-#import "alljoyn/cdm/CdmController.h"
+#import "alljoyn/cdm/controller/CdmController.h"
 #import "Device.h"
 #import "ReadOnlyValuePropertyCell.h"
-#import "SelectableValuePropertyCell.h"
-#import "alljoyn/cdm/interfaces/operation/HvacFanModeInterface.h"
+#import "ReadWriteValuePropertyCell.h"
 
-@interface HvacFanModeViewController : InterfaceViewController 
-@property (nonatomic, strong) SelectableValuePropertyCell *modeCell;
+@interface HvacFanModeViewController : InterfaceViewController <ReadWriteValueDelegate>
+@property (nonatomic, strong) ReadWriteValuePropertyCell *modeCell;
+@property (nonatomic, strong) ReadOnlyValuePropertyCell *supportedModesCell;
 
 - (instancetype)initWithDevice:(Device *)device andController:(ajn::services::CdmController *)cdmController;
-- (void) setSupportedModes:(const std::vector<ajn::services::HvacFanModeInterface::Mode>&)supportedModes;
 
 @end
 

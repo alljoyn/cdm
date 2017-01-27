@@ -32,8 +32,10 @@
 #define LockControlListener_h
 
 #import "LockControlViewController.h"
-#import "alljoyn/cdm/interfaces/operation/LockControlInterface.h"
-#import "alljoyn/cdm/interfaces/operation/LockControlIntfControllerListener.h"
+#import "interfaces/common/operation/LockControlInterface.h"
+#import "interfaces/controller/operation/LockControlIntfControllerListener.h"
+
+using ajn::services::LockControlInterface;
 
 class LockControlListener : public ajn::services::LockControlIntfControllerListener
 {

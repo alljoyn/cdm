@@ -32,8 +32,10 @@
 #define ClimateControlModeListener_h
 
 #import "ClimateControlModeViewController.h"
-#import "alljoyn/cdm/interfaces/operation/ClimateControlModeInterface.h"
-#import "alljoyn/cdm/interfaces/operation/ClimateControlModeIntfControllerListener.h"
+#import "interfaces/common/operation/ClimateControlModeInterface.h"
+#import "interfaces/controller/operation/ClimateControlModeIntfControllerListener.h"
+
+using ajn::services::ClimateControlModeInterface;
 
 class ClimateControlModeListener : public ajn::services::ClimateControlModeIntfControllerListener
 {
@@ -42,18 +44,18 @@ class ClimateControlModeListener : public ajn::services::ClimateControlModeIntfC
     
         virtual ~ClimateControlModeListener();
 
-        virtual void UpdateMode(const Mode value);
-        virtual void OnResponseGetMode(QStatus status, const qcc::String& objectPath, const Mode value, void* context);
-        virtual void OnModeChanged(const qcc::String& objectPath, const Mode value);
+        virtual void UpdateMode(const ClimateControlModeInterface::Mode value);
+        virtual void OnResponseGetMode(QStatus status, const qcc::String& objectPath, const ClimateControlModeInterface::Mode value, void* context);
+        virtual void OnModeChanged(const qcc::String& objectPath, const ClimateControlModeInterface::Mode value);
         virtual void OnResponseSetMode(QStatus status, const qcc::String& objectPath, void* context);
 
-        virtual void UpdateSupportedModes(const std::vector<Mode>& value);
-        virtual void OnResponseGetSupportedModes(QStatus status, const qcc::String& objectPath, const std::vector<Mode>& value, void* context);
-        virtual void OnSupportedModesChanged(const qcc::String& objectPath, const std::vector<Mode>& value);
+        virtual void UpdateSupportedModes(const std::vector<ClimateControlModeInterface::Mode>& value);
+        virtual void OnResponseGetSupportedModes(QStatus status, const qcc::String& objectPath, const std::vector<ClimateControlModeInterface::Mode>& value, void* context);
+        virtual void OnSupportedModesChanged(const qcc::String& objectPath, const std::vector<ClimateControlModeInterface::Mode>& value);
 
-        virtual void UpdateOperationalState(const OperationalState value);
-        virtual void OnResponseGetOperationalState(QStatus status, const qcc::String& objectPath, const OperationalState value, void* context);
-        virtual void OnOperationalStateChanged(const qcc::String& objectPath, const OperationalState value);
+        virtual void UpdateOperationalState(const ClimateControlModeInterface::OperationalState value);
+        virtual void OnResponseGetOperationalState(QStatus status, const qcc::String& objectPath, const ClimateControlModeInterface::OperationalState value, void* context);
+        virtual void OnOperationalStateChanged(const qcc::String& objectPath, const ClimateControlModeInterface::OperationalState value);
 
         
 

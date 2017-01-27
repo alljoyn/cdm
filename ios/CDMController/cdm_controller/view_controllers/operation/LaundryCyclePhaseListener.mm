@@ -64,7 +64,16 @@ void LaundryCyclePhaseListener::OnCyclePhaseChanged(const qcc::String& objectPat
 
 void LaundryCyclePhaseListener::UpdateSupportedCyclePhases(const std::vector<uint8_t>& value)
 {
-    [viewController setSupportedCyclePhases:value];
+    NSString *valueArrayAsString = @"";
+    std::vector<uint8_t>::const_iterator it = value.begin();
+    while(it != value.end()) {
+        valueArrayAsString = [valueArrayAsString stringByAppendingString:[NSString stringWithFormat:@"%u,", *it]];
+        ++it;
+    }
+    NSLog(@"Got SupportedCyclePhases: %@", valueArrayAsString);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        viewController.supportedCyclePhasesCell.value.text = [NSString stringWithFormat:@"%@", valueArrayAsString];
+    });
 }
 
 void LaundryCyclePhaseListener::OnResponseGetSupportedCyclePhases(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& value, void* context)
@@ -78,14 +87,14 @@ void LaundryCyclePhaseListener::OnSupportedCyclePhasesChanged(const qcc::String&
 }
 
 
-void LaundryCyclePhaseListener::OnResponseGetVendorPhasesDescription(QStatus status, const qcc::String& objectPath, const std::vector<CyclePhaseDescriptor>& phasesDescription, void* context, const char* errorName, const char* errorMessage)
+void LaundryCyclePhaseListener::OnResponseGetVendorPhasesDescription(QStatus status, const qcc::String& objectPath, const std::vector<LaundryCyclePhaseInterface::CyclePhaseDescriptor>& phasesDescription, void* context, const char* errorName, const char* errorMessage)
 {
     if(status == ER_OK) {
         NSLog(@"GetVendorPhasesDescription succeeded");
         NSString *builtArgResponseStr = @"";
-        std::vector<CyclePhaseDescriptor>::const_iterator it;
+        std::vector<LaundryCyclePhaseInterface::CyclePhaseDescriptor>::const_iterator it;
         for(it = phasesDescription.begin(); it != phasesDescription.end(); ++it) {
-            NSString *line = [NSString stringWithFormat:@"Phase:%u, Name:%s, Description:%s", it->phase, it->name.c_str(), it->description.c_str()];
+            NSString *line = [NSString stringWithFormat:@"%u,%s,%s\n", it->phase, it->name.c_str(), it->description.c_str()];
             builtArgResponseStr = [builtArgResponseStr stringByAppendingString:line];
         }
         dispatch_async(dispatch_get_main_queue(), ^{

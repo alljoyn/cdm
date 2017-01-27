@@ -32,27 +32,21 @@
 #import "CDMUtil.h"
 #import "TargetTemperatureLevelViewController.h"
 #import "TargetTemperatureLevelListener.h"
-#import "alljoyn/cdm/interfaces/CdmInterfaceTypes.h"
-#import "alljoyn/cdm/interfaces/CdmInterface.h"
-#import "alljoyn/cdm/interfaces/environment/TargetTemperatureLevelIntfController.h"
+#import "alljoyn/cdm/common/CdmInterfaceTypes.h"
+#import "alljoyn/cdm/common/CdmInterface.h"
+#import "interfaces/controller/environment/TargetTemperatureLevelIntfController.h"
 
 static NSInteger NUM_MEMBER_CATEGORIES = 1;
-static NSInteger NUM_PROPERTIES = 2;
+static NSInteger NUM_PROPERTIES = 3;
 static NSInteger NUM_METHODS = 0;
 
-typedef NS_ENUM(NSInteger, PICKER_TAG) {
-    TARGET_LEVEL_PICKER_TAG = 1,
-};
-
-@interface TargetTemperatureLevelViewController() <UIPickerViewDelegate, UIPickerViewDataSource>
+@interface TargetTemperatureLevelViewController() 
 @property ajn::services::CdmController *cdmController;
 @property (nonatomic, strong) Device* device;
-@property TargetTemperatureLevelListener *listener;
+@property std::shared_ptr<TargetTemperatureLevelListener> listener;
 @property std::shared_ptr<ajn::services::TargetTemperatureLevelIntfController> targetTemperatureLevelIntfController;
 @property std::shared_ptr<ajn::services::CdmInterface> cdmInterface;
 
-@property (nonatomic, strong) UIPickerView *targetLevelPicker;
-@property std::vector<uint8_t> *selectorValuesForTargetLevel;
 
 @end
 
@@ -67,13 +61,13 @@ typedef NS_ENUM(NSInteger, PICKER_TAG) {
         _cdmController = cdmController;
         _device = device;
 
-        _listener = new TargetTemperatureLevelListener(self);
+        _listener = std::shared_ptr<TargetTemperatureLevelListener>(new TargetTemperatureLevelListener(self));
 
-        _cdmInterface = _cdmController->CreateInterface(ajn::services::TARGET_TEMPERATURE_LEVEL_INTERFACE,
+        _cdmInterface = _cdmController->CreateInterface(ajn::services::CdmInterface::GetInterfaceName(ajn::services::TARGET_TEMPERATURE_LEVEL_INTERFACE),
                                                         _device.deviceInfo->GetBusName(),
                                                         qcc::String([_device.objPath cStringUsingEncoding:NSUTF8StringEncoding]),
                                                         _device.deviceInfo->GetSessionId(),
-                                                        *_listener);
+                                                        _listener);
         if (_cdmInterface == NULL) {
             return nil;
         }
@@ -88,23 +82,12 @@ typedef NS_ENUM(NSInteger, PICKER_TAG) {
 {
     [super viewDidLoad];
 
-    _targetLevelPicker = [[UIPickerView alloc] init];
-    _targetLevelPicker.delegate = self;
-    _targetLevelPicker.dataSource = self;
-    _targetLevelPicker.showsSelectionIndicator = YES;
-    _targetLevelPicker.hidden = NO;
-    _targetLevelPicker.tag = TARGET_LEVEL_PICKER_TAG;
 }
 
 - (void) viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
 
-    if (_selectorValuesForTargetLevel) {
-        delete _selectorValuesForTargetLevel;
-    }
-
-    delete _listener;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -137,14 +120,9 @@ typedef NS_ENUM(NSInteger, PICKER_TAG) {
             return _maxLevelCell;
         }
         if(indexPath.row == 1) {
-            _targetLevelCell  = [tableView dequeueReusableCellWithIdentifier:SELECTABLE_TABLE_VIEW_CELL];
+            _targetLevelCell  = [tableView dequeueReusableCellWithIdentifier:READ_WRITE_TABLE_VIEW_CELL];
             _targetLevelCell.label.text = @"TargetLevel";
-            _targetLevelCell.value.inputView = _targetLevelPicker;
-
-            status = _targetTemperatureLevelIntfController->GetSelectableTemperatureLevels();
-            if(status != ER_OK) {
-                NSLog(@"Failed to get GetSelectableTemperatureLevels");
-            }                
+            _targetLevelCell.delegate = self;
 
             status = _targetTemperatureLevelIntfController->GetTargetLevel();
             if(status != ER_OK) {
@@ -153,66 +131,29 @@ typedef NS_ENUM(NSInteger, PICKER_TAG) {
 
             return _targetLevelCell;
         }
+        if(indexPath.row == 2) {
+            _selectableTemperatureLevelsCell  = [tableView dequeueReusableCellWithIdentifier:READ_ONLY_TABLE_VIEW_CELL];
+            _selectableTemperatureLevelsCell.label.text = @"SelectableTemperatureLevels";
+
+            status = _targetTemperatureLevelIntfController->GetSelectableTemperatureLevels();
+            if(status != ER_OK) {
+                NSLog(@"Failed to get GetSelectableTemperatureLevels");
+            }
+
+            return _selectableTemperatureLevelsCell;
+        }
     }     
     return nil;
 }
 
-
-
-- (void) setSelectableTemperatureLevels:(const std::vector<uint8_t>&)selectableTemperatureLevels
+-(void) updateValue:(NSString *)value forProperty:(NSString *)property
 {
-    if(self.self.selectorValuesForTargetLevel) {
-        delete _selectorValuesForTargetLevel;
-    }
-
-    self.selectorValuesForTargetLevel = new std::vector<uint8_t>(selectableTemperatureLevels);
-}
-
-#pragma mark UIPickerViewDataSource
-
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
-{
-    return 1;
-}
-
-- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
-{   
-    switch(pickerView.tag) {
-        case TARGET_LEVEL_PICKER_TAG:
-            return (NSInteger)self.selectorValuesForTargetLevel->size();
-        default:
-            return 0;
+    if([property isEqualToString:@"TargetLevel"]){
+        _targetTemperatureLevelIntfController->SetTargetLevel((uint8_t)[value longLongValue]);
     }
 }
 
-#pragma mark UIPickerViewDelegate
 
-- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
-{
-    switch(pickerView.tag) {
-        case TARGET_LEVEL_PICKER_TAG:
-        {
-            uint8_t targetLevel = self.selectorValuesForTargetLevel->at(row);
-            return [NSString stringWithFormat:@"%u", targetLevel];
-        }
-        default:
-            return nil;
-    }
-}
 
-- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
-{
-   switch(pickerView.tag) {
-        case TARGET_LEVEL_PICKER_TAG:
-        {
-            uint8_t targetLevel = self.selectorValuesForTargetLevel->at(row);
-            _targetTemperatureLevelIntfController->SetTargetLevel(targetLevel);
-            [self.targetLevelCell.value resignFirstResponder];
-            break;
-        }
-        default:
-            break;
-    }    
-}
 
 @end

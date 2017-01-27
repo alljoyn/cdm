@@ -32,9 +32,9 @@
 #import "CDMUtil.h"
 #import "AirRecirculationModeViewController.h"
 #import "AirRecirculationModeListener.h"
-#import "alljoyn/cdm/interfaces/CdmInterfaceTypes.h"
-#import "alljoyn/cdm/interfaces/CdmInterface.h"
-#import "alljoyn/cdm/interfaces/operation/AirRecirculationModeIntfController.h"
+#import "alljoyn/cdm/common/CdmInterfaceTypes.h"
+#import "alljoyn/cdm/common/CdmInterface.h"
+#import "interfaces/controller/operation/AirRecirculationModeIntfController.h"
 
 static NSInteger NUM_MEMBER_CATEGORIES = 1;
 static NSInteger NUM_PROPERTIES = 1;
@@ -43,7 +43,7 @@ static NSInteger NUM_METHODS = 0;
 @interface AirRecirculationModeViewController() 
 @property ajn::services::CdmController *cdmController;
 @property (nonatomic, strong) Device* device;
-@property AirRecirculationModeListener *listener;
+@property std::shared_ptr<AirRecirculationModeListener> listener;
 @property std::shared_ptr<ajn::services::AirRecirculationModeIntfController> airRecirculationModeIntfController;
 @property std::shared_ptr<ajn::services::CdmInterface> cdmInterface;
 
@@ -61,13 +61,13 @@ static NSInteger NUM_METHODS = 0;
         _cdmController = cdmController;
         _device = device;
 
-        _listener = new AirRecirculationModeListener(self);
+        _listener = std::shared_ptr<AirRecirculationModeListener>(new AirRecirculationModeListener(self));
 
-        _cdmInterface = _cdmController->CreateInterface(ajn::services::AIR_RECIRCULATION_MODE_INTERFACE,
+        _cdmInterface = _cdmController->CreateInterface(ajn::services::CdmInterface::GetInterfaceName(ajn::services::AIR_RECIRCULATION_MODE_INTERFACE),
                                                         _device.deviceInfo->GetBusName(),
                                                         qcc::String([_device.objPath cStringUsingEncoding:NSUTF8StringEncoding]),
                                                         _device.deviceInfo->GetSessionId(),
-                                                        *_listener);
+                                                        _listener);
         if (_cdmInterface == NULL) {
             return nil;
         }
@@ -88,8 +88,6 @@ static NSInteger NUM_METHODS = 0;
 {
     [super viewDidDisappear:animated];
 
-
-    delete _listener;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

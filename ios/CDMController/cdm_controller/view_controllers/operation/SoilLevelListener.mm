@@ -92,7 +92,16 @@ void SoilLevelListener::OnResponseSetTargetLevel(QStatus status, const qcc::Stri
 
 void SoilLevelListener::UpdateSelectableLevels(const std::vector<uint8_t>& value)
 {
-    [viewController setSelectableLevels:value];
+    NSString *valueArrayAsString = @"";
+    std::vector<uint8_t>::const_iterator it = value.begin();
+    while(it != value.end()) {
+        valueArrayAsString = [valueArrayAsString stringByAppendingString:[NSString stringWithFormat:@"%u,", *it]];
+        ++it;
+    }
+    NSLog(@"Got SelectableLevels: %@", valueArrayAsString);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        viewController.selectableLevelsCell.value.text = [NSString stringWithFormat:@"%@", valueArrayAsString];
+    });
 }
 
 void SoilLevelListener::OnResponseGetSelectableLevels(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& value, void* context)

@@ -32,8 +32,10 @@
 #define TargetHumidityListener_h
 
 #import "TargetHumidityViewController.h"
-#import "alljoyn/cdm/interfaces/environment/TargetHumidityInterface.h"
-#import "alljoyn/cdm/interfaces/environment/TargetHumidityIntfControllerListener.h"
+#import "interfaces/common/environment/TargetHumidityInterface.h"
+#import "interfaces/controller/environment/TargetHumidityIntfControllerListener.h"
+
+using ajn::services::TargetHumidityInterface;
 
 class TargetHumidityListener : public ajn::services::TargetHumidityIntfControllerListener
 {

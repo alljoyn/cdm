@@ -42,7 +42,7 @@ CurrentAirQualityListener::~CurrentAirQualityListener()
     
 }
 
-void CurrentAirQualityListener::UpdateContaminantType(const ContaminantType value)
+void CurrentAirQualityListener::UpdateContaminantType(const CurrentAirQualityInterface::ContaminantType value)
 {
     NSString *valueAsStr = [NSString stringWithFormat:@"%u", value];
     NSLog(@"Got ContaminantType: %@", valueAsStr);
@@ -51,12 +51,12 @@ void CurrentAirQualityListener::UpdateContaminantType(const ContaminantType valu
     });
 }
 
-void CurrentAirQualityListener::OnResponseGetContaminantType(QStatus status, const qcc::String& objectPath, const ContaminantType value, void* context)
+void CurrentAirQualityListener::OnResponseGetContaminantType(QStatus status, const qcc::String& objectPath, const CurrentAirQualityInterface::ContaminantType value, void* context)
 {
     UpdateContaminantType(value);
 }
 
-void CurrentAirQualityListener::OnContaminantTypeChanged(const qcc::String& objectPath, const ContaminantType value)
+void CurrentAirQualityListener::OnContaminantTypeChanged(const qcc::String& objectPath, const CurrentAirQualityInterface::ContaminantType value)
 {
     UpdateContaminantType(value);
 }

@@ -32,8 +32,10 @@
 #define EnergyUsageListener_h
 
 #import "EnergyUsageViewController.h"
-#import "alljoyn/cdm/interfaces/operation/EnergyUsageInterface.h"
-#import "alljoyn/cdm/interfaces/operation/EnergyUsageIntfControllerListener.h"
+#import "interfaces/common/operation/EnergyUsageInterface.h"
+#import "interfaces/controller/operation/EnergyUsageIntfControllerListener.h"
+
+using ajn::services::EnergyUsageInterface;
 
 class EnergyUsageListener : public ajn::services::EnergyUsageIntfControllerListener
 {

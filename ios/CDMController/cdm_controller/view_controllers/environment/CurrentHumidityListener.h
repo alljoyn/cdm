@@ -32,8 +32,10 @@
 #define CurrentHumidityListener_h
 
 #import "CurrentHumidityViewController.h"
-#import "alljoyn/cdm/interfaces/environment/CurrentHumidityInterface.h"
-#import "alljoyn/cdm/interfaces/environment/CurrentHumidityIntfControllerListener.h"
+#import "interfaces/common/environment/CurrentHumidityInterface.h"
+#import "interfaces/controller/environment/CurrentHumidityIntfControllerListener.h"
+
+using ajn::services::CurrentHumidityInterface;
 
 class CurrentHumidityListener : public ajn::services::CurrentHumidityIntfControllerListener
 {

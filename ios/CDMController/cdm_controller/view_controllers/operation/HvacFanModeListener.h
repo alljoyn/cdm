@@ -32,8 +32,10 @@
 #define HvacFanModeListener_h
 
 #import "HvacFanModeViewController.h"
-#import "alljoyn/cdm/interfaces/operation/HvacFanModeInterface.h"
-#import "alljoyn/cdm/interfaces/operation/HvacFanModeIntfControllerListener.h"
+#import "interfaces/common/operation/HvacFanModeInterface.h"
+#import "interfaces/controller/operation/HvacFanModeIntfControllerListener.h"
+
+using ajn::services::HvacFanModeInterface;
 
 class HvacFanModeListener : public ajn::services::HvacFanModeIntfControllerListener
 {
@@ -42,14 +44,14 @@ class HvacFanModeListener : public ajn::services::HvacFanModeIntfControllerListe
     
         virtual ~HvacFanModeListener();
 
-        virtual void UpdateMode(const Mode value);
-        virtual void OnResponseGetMode(QStatus status, const qcc::String& objectPath, const Mode value, void* context);
-        virtual void OnModeChanged(const qcc::String& objectPath, const Mode value);
+        virtual void UpdateMode(const HvacFanModeInterface::Mode value);
+        virtual void OnResponseGetMode(QStatus status, const qcc::String& objectPath, const HvacFanModeInterface::Mode value, void* context);
+        virtual void OnModeChanged(const qcc::String& objectPath, const HvacFanModeInterface::Mode value);
         virtual void OnResponseSetMode(QStatus status, const qcc::String& objectPath, void* context);
 
-        virtual void UpdateSupportedModes(const std::vector<Mode>& value);
-        virtual void OnResponseGetSupportedModes(QStatus status, const qcc::String& objectPath, const std::vector<Mode>& value, void* context);
-        virtual void OnSupportedModesChanged(const qcc::String& objectPath, const std::vector<Mode>& value);
+        virtual void UpdateSupportedModes(const std::vector<HvacFanModeInterface::Mode>& value);
+        virtual void OnResponseGetSupportedModes(QStatus status, const qcc::String& objectPath, const std::vector<HvacFanModeInterface::Mode>& value, void* context);
+        virtual void OnSupportedModesChanged(const qcc::String& objectPath, const std::vector<HvacFanModeInterface::Mode>& value);
 
         
 

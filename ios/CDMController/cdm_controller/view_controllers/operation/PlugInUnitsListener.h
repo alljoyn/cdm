@@ -32,8 +32,10 @@
 #define PlugInUnitsListener_h
 
 #import "PlugInUnitsViewController.h"
-#import "alljoyn/cdm/interfaces/operation/PlugInUnitsInterface.h"
-#import "alljoyn/cdm/interfaces/operation/PlugInUnitsIntfControllerListener.h"
+#import "interfaces/common/operation/PlugInUnitsInterface.h"
+#import "interfaces/controller/operation/PlugInUnitsIntfControllerListener.h"
+
+using ajn::services::PlugInUnitsInterface;
 
 class PlugInUnitsListener : public ajn::services::PlugInUnitsIntfControllerListener
 {
@@ -42,9 +44,9 @@ class PlugInUnitsListener : public ajn::services::PlugInUnitsIntfControllerListe
     
         virtual ~PlugInUnitsListener();
 
-        virtual void UpdatePlugInUnits(const std::vector<PlugInInfo>& value);
-        virtual void OnResponseGetPlugInUnits(QStatus status, const qcc::String& objectPath, const std::vector<PlugInInfo>& value, void* context);
-        virtual void OnPlugInUnitsChanged(const qcc::String& objectPath, const std::vector<PlugInInfo>& value);
+        virtual void UpdatePlugInUnits(const std::vector<PlugInUnitsInterface::PlugInInfo>& value);
+        virtual void OnResponseGetPlugInUnits(QStatus status, const qcc::String& objectPath, const std::vector<PlugInUnitsInterface::PlugInInfo>& value, void* context);
+        virtual void OnPlugInUnitsChanged(const qcc::String& objectPath, const std::vector<PlugInUnitsInterface::PlugInInfo>& value);
 
         
 

@@ -32,8 +32,10 @@
 #define ChannelListener_h
 
 #import "ChannelViewController.h"
-#import "alljoyn/cdm/interfaces/operation/ChannelInterface.h"
-#import "alljoyn/cdm/interfaces/operation/ChannelIntfControllerListener.h"
+#import "interfaces/common/operation/ChannelInterface.h"
+#import "interfaces/controller/operation/ChannelIntfControllerListener.h"
+
+using ajn::services::ChannelInterface;
 
 class ChannelListener : public ajn::services::ChannelIntfControllerListener
 {
@@ -51,7 +53,7 @@ class ChannelListener : public ajn::services::ChannelIntfControllerListener
         virtual void OnResponseGetTotalNumberOfChannels(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context);
         virtual void OnTotalNumberOfChannelsChanged(const qcc::String& objectPath, const uint16_t value);
 
-        virtual void OnResponseGetChannelList(QStatus status, const qcc::String& objectPath, const std::vector<ChannelInfoRecord>& listOfChannelInfoRecords, void* context, const char* errorName, const char* errorMessage);
+        virtual void OnResponseGetChannelList(QStatus status, const qcc::String& objectPath, const std::vector<ChannelInterface::ChannelInfoRecord>& listOfChannelInfoRecords, void* context, const char* errorName, const char* errorMessage);
         
         virtual void OnChannelListChanged(const qcc::String& objectPath);
 

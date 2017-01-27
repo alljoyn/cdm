@@ -32,8 +32,10 @@
 #define ColorTemperatureListener_h
 
 #import "ColorTemperatureViewController.h"
-#import "alljoyn/cdm/interfaces/operation/ColorTemperatureInterface.h"
-#import "alljoyn/cdm/interfaces/operation/ColorTemperatureIntfControllerListener.h"
+#import "interfaces/common/operation/ColorTemperatureInterface.h"
+#import "interfaces/controller/operation/ColorTemperatureIntfControllerListener.h"
+
+using ajn::services::ColorTemperatureInterface;
 
 class ColorTemperatureListener : public ajn::services::ColorTemperatureIntfControllerListener
 {

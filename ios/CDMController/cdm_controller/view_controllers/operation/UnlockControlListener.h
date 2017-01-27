@@ -32,8 +32,10 @@
 #define UnlockControlListener_h
 
 #import "UnlockControlViewController.h"
-#import "alljoyn/cdm/interfaces/operation/UnlockControlInterface.h"
-#import "alljoyn/cdm/interfaces/operation/UnlockControlIntfControllerListener.h"
+#import "interfaces/common/operation/UnlockControlInterface.h"
+#import "interfaces/controller/operation/UnlockControlIntfControllerListener.h"
+
+using ajn::services::UnlockControlInterface;
 
 class UnlockControlListener : public ajn::services::UnlockControlIntfControllerListener
 {

@@ -90,7 +90,7 @@ void WindDirectionListener::OnHorizontalMaxChanged(const qcc::String& objectPath
 }
 
 
-void WindDirectionListener::UpdateHorizontalAutoMode(const AutoMode value)
+void WindDirectionListener::UpdateHorizontalAutoMode(const WindDirectionInterface::AutoMode value)
 {
     NSString *valueAsStr = [NSString stringWithFormat:@"%u", value];
     NSLog(@"Got HorizontalAutoMode: %@", valueAsStr);
@@ -99,12 +99,12 @@ void WindDirectionListener::UpdateHorizontalAutoMode(const AutoMode value)
     });
 }
 
-void WindDirectionListener::OnResponseGetHorizontalAutoMode(QStatus status, const qcc::String& objectPath, const AutoMode value, void* context)
+void WindDirectionListener::OnResponseGetHorizontalAutoMode(QStatus status, const qcc::String& objectPath, const WindDirectionInterface::AutoMode value, void* context)
 {
     UpdateHorizontalAutoMode(value);
 }
 
-void WindDirectionListener::OnHorizontalAutoModeChanged(const qcc::String& objectPath, const AutoMode value)
+void WindDirectionListener::OnHorizontalAutoModeChanged(const qcc::String& objectPath, const WindDirectionInterface::AutoMode value)
 {
     UpdateHorizontalAutoMode(value);
 }
@@ -166,7 +166,7 @@ void WindDirectionListener::OnVerticalMaxChanged(const qcc::String& objectPath, 
 }
 
 
-void WindDirectionListener::UpdateVerticalAutoMode(const AutoMode value)
+void WindDirectionListener::UpdateVerticalAutoMode(const WindDirectionInterface::AutoMode value)
 {
     NSString *valueAsStr = [NSString stringWithFormat:@"%u", value];
     NSLog(@"Got VerticalAutoMode: %@", valueAsStr);
@@ -175,12 +175,12 @@ void WindDirectionListener::UpdateVerticalAutoMode(const AutoMode value)
     });
 }
 
-void WindDirectionListener::OnResponseGetVerticalAutoMode(QStatus status, const qcc::String& objectPath, const AutoMode value, void* context)
+void WindDirectionListener::OnResponseGetVerticalAutoMode(QStatus status, const qcc::String& objectPath, const WindDirectionInterface::AutoMode value, void* context)
 {
     UpdateVerticalAutoMode(value);
 }
 
-void WindDirectionListener::OnVerticalAutoModeChanged(const qcc::String& objectPath, const AutoMode value)
+void WindDirectionListener::OnVerticalAutoModeChanged(const qcc::String& objectPath, const WindDirectionInterface::AutoMode value)
 {
     UpdateVerticalAutoMode(value);
 }

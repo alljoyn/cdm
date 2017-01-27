@@ -42,7 +42,7 @@ HvacFanModeListener::~HvacFanModeListener()
     
 }
 
-void HvacFanModeListener::UpdateMode(const Mode value)
+void HvacFanModeListener::UpdateMode(const HvacFanModeInterface::Mode value)
 {
     NSString *valueAsStr = [NSString stringWithFormat:@"%u", value];
     NSLog(@"Got Mode: %@", valueAsStr);
@@ -51,12 +51,12 @@ void HvacFanModeListener::UpdateMode(const Mode value)
     });
 }
 
-void HvacFanModeListener::OnResponseGetMode(QStatus status, const qcc::String& objectPath, const Mode value, void* context)
+void HvacFanModeListener::OnResponseGetMode(QStatus status, const qcc::String& objectPath, const HvacFanModeInterface::Mode value, void* context)
 {
     UpdateMode(value);
 }
 
-void HvacFanModeListener::OnModeChanged(const qcc::String& objectPath, const Mode value)
+void HvacFanModeListener::OnModeChanged(const qcc::String& objectPath, const HvacFanModeInterface::Mode value)
 {
     UpdateMode(value);
 }
@@ -70,17 +70,26 @@ void HvacFanModeListener::OnResponseSetMode(QStatus status, const qcc::String& o
     }
 }
 
-void HvacFanModeListener::UpdateSupportedModes(const std::vector<Mode>& value)
+void HvacFanModeListener::UpdateSupportedModes(const std::vector<HvacFanModeInterface::Mode>& value)
 {
-    [viewController setSupportedModes:value];
+    NSString *valueArrayAsString = @"";
+    std::vector<HvacFanModeInterface::Mode>::const_iterator it = value.begin();
+    while(it != value.end()) {
+        valueArrayAsString = [valueArrayAsString stringByAppendingString:[NSString stringWithFormat:@"%u,", *it]];
+        ++it;
+    }
+    NSLog(@"Got SupportedModes: %@", valueArrayAsString);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        viewController.supportedModesCell.value.text = [NSString stringWithFormat:@"%@", valueArrayAsString];
+    });
 }
 
-void HvacFanModeListener::OnResponseGetSupportedModes(QStatus status, const qcc::String& objectPath, const std::vector<Mode>& value, void* context)
+void HvacFanModeListener::OnResponseGetSupportedModes(QStatus status, const qcc::String& objectPath, const std::vector<HvacFanModeInterface::Mode>& value, void* context)
 {
     UpdateSupportedModes(value);
 }
 
-void HvacFanModeListener::OnSupportedModesChanged(const qcc::String& objectPath, const std::vector<Mode>& value)
+void HvacFanModeListener::OnSupportedModesChanged(const qcc::String& objectPath, const std::vector<HvacFanModeInterface::Mode>& value)
 {
     UpdateSupportedModes(value);
 }

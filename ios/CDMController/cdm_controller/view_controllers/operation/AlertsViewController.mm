@@ -32,9 +32,9 @@
 #import "CDMUtil.h"
 #import "AlertsViewController.h"
 #import "AlertsListener.h"
-#import "alljoyn/cdm/interfaces/CdmInterfaceTypes.h"
-#import "alljoyn/cdm/interfaces/CdmInterface.h"
-#import "alljoyn/cdm/interfaces/operation/AlertsIntfController.h"
+#import "alljoyn/cdm/common/CdmInterfaceTypes.h"
+#import "alljoyn/cdm/common/CdmInterface.h"
+#import "interfaces/controller/operation/AlertsIntfController.h"
 
 static NSInteger NUM_MEMBER_CATEGORIES = 3;
 static NSInteger NUM_PROPERTIES = 1;
@@ -43,7 +43,7 @@ static NSInteger NUM_METHODS = 3;
 @interface AlertsViewController() 
 @property ajn::services::CdmController *cdmController;
 @property (nonatomic, strong) Device* device;
-@property AlertsListener *listener;
+@property std::shared_ptr<AlertsListener> listener;
 @property std::shared_ptr<ajn::services::AlertsIntfController> alertsIntfController;
 @property std::shared_ptr<ajn::services::CdmInterface> cdmInterface;
 
@@ -61,13 +61,13 @@ static NSInteger NUM_METHODS = 3;
         _cdmController = cdmController;
         _device = device;
 
-        _listener = new AlertsListener(self);
+        _listener = std::shared_ptr<AlertsListener>(new AlertsListener(self));
 
-        _cdmInterface = _cdmController->CreateInterface(ajn::services::ALERTS_INTERFACE,
+        _cdmInterface = _cdmController->CreateInterface(ajn::services::CdmInterface::GetInterfaceName(ajn::services::ALERTS_INTERFACE),
                                                         _device.deviceInfo->GetBusName(),
                                                         qcc::String([_device.objPath cStringUsingEncoding:NSUTF8StringEncoding]),
                                                         _device.deviceInfo->GetSessionId(),
-                                                        *_listener);
+                                                        _listener);
         if (_cdmInterface == NULL) {
             return nil;
         }
@@ -88,8 +88,6 @@ static NSInteger NUM_METHODS = 3;
 {
     [super viewDidDisappear:animated];
 
-
-    delete _listener;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

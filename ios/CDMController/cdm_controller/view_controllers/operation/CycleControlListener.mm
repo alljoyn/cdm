@@ -42,7 +42,7 @@ CycleControlListener::~CycleControlListener()
     
 }
 
-void CycleControlListener::UpdateOperationalState(const OperationalState value)
+void CycleControlListener::UpdateOperationalState(const CycleControlInterface::OperationalState value)
 {
     NSString *valueAsStr = [NSString stringWithFormat:@"%u", value];
     NSLog(@"Got OperationalState: %@", valueAsStr);
@@ -51,35 +51,44 @@ void CycleControlListener::UpdateOperationalState(const OperationalState value)
     });
 }
 
-void CycleControlListener::OnResponseGetOperationalState(QStatus status, const qcc::String& objectPath, const OperationalState value, void* context)
+void CycleControlListener::OnResponseGetOperationalState(QStatus status, const qcc::String& objectPath, const CycleControlInterface::OperationalState value, void* context)
 {
     UpdateOperationalState(value);
 }
 
-void CycleControlListener::OnOperationalStateChanged(const qcc::String& objectPath, const OperationalState value)
+void CycleControlListener::OnOperationalStateChanged(const qcc::String& objectPath, const CycleControlInterface::OperationalState value)
 {
     UpdateOperationalState(value);
 }
 
 
-void CycleControlListener::UpdateSupportedOperationalStates(const std::vector<OperationalState>& value)
+void CycleControlListener::UpdateSupportedOperationalStates(const std::vector<CycleControlInterface::OperationalState>& value)
 {
-    [viewController setSupportedOperationalStates:value];
+    NSString *valueArrayAsString = @"";
+    std::vector<CycleControlInterface::OperationalState>::const_iterator it = value.begin();
+    while(it != value.end()) {
+        valueArrayAsString = [valueArrayAsString stringByAppendingString:[NSString stringWithFormat:@"%u,", *it]];
+        ++it;
+    }
+    NSLog(@"Got SupportedOperationalStates: %@", valueArrayAsString);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        viewController.supportedOperationalStatesCell.value.text = [NSString stringWithFormat:@"%@", valueArrayAsString];
+    });
 }
 
-void CycleControlListener::OnResponseGetSupportedOperationalStates(QStatus status, const qcc::String& objectPath, const std::vector<OperationalState>& value, void* context)
+void CycleControlListener::OnResponseGetSupportedOperationalStates(QStatus status, const qcc::String& objectPath, const std::vector<CycleControlInterface::OperationalState>& value, void* context)
 {
     UpdateSupportedOperationalStates(value);
 }
 
 
 
-void CycleControlListener::UpdateSupportedOperationalCommands(const std::vector<OperationalCommands>& value)
+void CycleControlListener::UpdateSupportedOperationalCommands(const std::vector<CycleControlInterface::OperationalCommands>& value)
 {
     NSString *valueArrayAsString = @"";
-    std::vector<OperationalCommands>::const_iterator it = value.begin();
+    std::vector<CycleControlInterface::OperationalCommands>::const_iterator it = value.begin();
     while(it != value.end()) {
-        valueArrayAsString = [valueArrayAsString stringByAppendingString:[NSString stringWithFormat:@"%u/,", *it]];
+        valueArrayAsString = [valueArrayAsString stringByAppendingString:[NSString stringWithFormat:@"%u,", *it]];
         ++it;
     }
     NSLog(@"Got SupportedOperationalCommands: %@", valueArrayAsString);
@@ -88,7 +97,7 @@ void CycleControlListener::UpdateSupportedOperationalCommands(const std::vector<
     });
 }
 
-void CycleControlListener::OnResponseGetSupportedOperationalCommands(QStatus status, const qcc::String& objectPath, const std::vector<OperationalCommands>& value, void* context)
+void CycleControlListener::OnResponseGetSupportedOperationalCommands(QStatus status, const qcc::String& objectPath, const std::vector<CycleControlInterface::OperationalCommands>& value, void* context)
 {
     UpdateSupportedOperationalCommands(value);
 }

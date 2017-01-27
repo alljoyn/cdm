@@ -32,8 +32,10 @@
 #define TemperatureDisplayListener_h
 
 #import "TemperatureDisplayViewController.h"
-#import "alljoyn/cdm/interfaces/userinterfacesettings/TemperatureDisplayInterface.h"
-#import "alljoyn/cdm/interfaces/userinterfacesettings/TemperatureDisplayIntfControllerListener.h"
+#import "interfaces/common/userinterfacesettings/TemperatureDisplayInterface.h"
+#import "interfaces/controller/userinterfacesettings/TemperatureDisplayIntfControllerListener.h"
+
+using ajn::services::TemperatureDisplayInterface;
 
 class TemperatureDisplayListener : public ajn::services::TemperatureDisplayIntfControllerListener
 {

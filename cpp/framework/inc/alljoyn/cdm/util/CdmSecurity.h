@@ -40,7 +40,6 @@ namespace ajn {
 namespace services {
 //======================================================================
 
-
 class CdmSecurity
 {
   public:

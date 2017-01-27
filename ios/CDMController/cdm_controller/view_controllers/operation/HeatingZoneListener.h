@@ -32,8 +32,10 @@
 #define HeatingZoneListener_h
 
 #import "HeatingZoneViewController.h"
-#import "alljoyn/cdm/interfaces/operation/HeatingZoneInterface.h"
-#import "alljoyn/cdm/interfaces/operation/HeatingZoneIntfControllerListener.h"
+#import "interfaces/common/operation/HeatingZoneInterface.h"
+#import "interfaces/controller/operation/HeatingZoneIntfControllerListener.h"
+
+using ajn::services::HeatingZoneInterface;
 
 class HeatingZoneListener : public ajn::services::HeatingZoneIntfControllerListener
 {

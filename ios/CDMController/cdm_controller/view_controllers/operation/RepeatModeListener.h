@@ -32,8 +32,10 @@
 #define RepeatModeListener_h
 
 #import "RepeatModeViewController.h"
-#import "alljoyn/cdm/interfaces/operation/RepeatModeInterface.h"
-#import "alljoyn/cdm/interfaces/operation/RepeatModeIntfControllerListener.h"
+#import "interfaces/common/operation/RepeatModeInterface.h"
+#import "interfaces/controller/operation/RepeatModeIntfControllerListener.h"
+
+using ajn::services::RepeatModeInterface;
 
 class RepeatModeListener : public ajn::services::RepeatModeIntfControllerListener
 {

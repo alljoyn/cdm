@@ -32,8 +32,10 @@
 #define WaterLevelListener_h
 
 #import "WaterLevelViewController.h"
-#import "alljoyn/cdm/interfaces/environment/WaterLevelInterface.h"
-#import "alljoyn/cdm/interfaces/environment/WaterLevelIntfControllerListener.h"
+#import "interfaces/common/environment/WaterLevelInterface.h"
+#import "interfaces/controller/environment/WaterLevelIntfControllerListener.h"
+
+using ajn::services::WaterLevelInterface;
 
 class WaterLevelListener : public ajn::services::WaterLevelIntfControllerListener
 {
@@ -42,9 +44,9 @@ class WaterLevelListener : public ajn::services::WaterLevelIntfControllerListene
     
         virtual ~WaterLevelListener();
 
-        virtual void UpdateSupplySource(const SupplySource value);
-        virtual void OnResponseGetSupplySource(QStatus status, const qcc::String& objectPath, const SupplySource value, void* context);
-        virtual void OnSupplySourceChanged(const qcc::String& objectPath, const SupplySource value);
+        virtual void UpdateSupplySource(const WaterLevelInterface::SupplySource value);
+        virtual void OnResponseGetSupplySource(QStatus status, const qcc::String& objectPath, const WaterLevelInterface::SupplySource value, void* context);
+        virtual void OnSupplySourceChanged(const qcc::String& objectPath, const WaterLevelInterface::SupplySource value);
 
         virtual void UpdateCurrentLevel(const uint8_t value);
         virtual void OnResponseGetCurrentLevel(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context);

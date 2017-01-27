@@ -32,8 +32,10 @@
 #define OffControlListener_h
 
 #import "OffControlViewController.h"
-#import "alljoyn/cdm/interfaces/operation/OffControlInterface.h"
-#import "alljoyn/cdm/interfaces/operation/OffControlIntfControllerListener.h"
+#import "interfaces/common/operation/OffControlInterface.h"
+#import "interfaces/controller/operation/OffControlIntfControllerListener.h"
+
+using ajn::services::OffControlInterface;
 
 class OffControlListener : public ajn::services::OffControlIntfControllerListener
 {

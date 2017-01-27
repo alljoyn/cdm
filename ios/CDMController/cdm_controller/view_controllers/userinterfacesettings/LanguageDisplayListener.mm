@@ -72,7 +72,16 @@ void LanguageDisplayListener::OnResponseSetDisplayLanguage(QStatus status, const
 
 void LanguageDisplayListener::UpdateSupportedDisplayLanguages(const std::vector<qcc::String>& value)
 {
-    [viewController setSupportedDisplayLanguages:value];
+    NSString *valueArrayAsString = @"";
+    std::vector<qcc::String>::const_iterator it = value.begin();
+    while(it != value.end()) {
+        valueArrayAsString = [valueArrayAsString stringByAppendingString:[NSString stringWithFormat:@"%s,", it->c_str()]];
+        ++it;
+    }
+    NSLog(@"Got SupportedDisplayLanguages: %@", valueArrayAsString);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        viewController.supportedDisplayLanguagesCell.value.text = [NSString stringWithFormat:@"%@", valueArrayAsString];
+    });
 }
 
 void LanguageDisplayListener::OnResponseGetSupportedDisplayLanguages(QStatus status, const qcc::String& objectPath, const std::vector<qcc::String>& value, void* context)

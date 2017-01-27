@@ -32,27 +32,21 @@
 #import "CDMUtil.h"
 #import "CycleControlViewController.h"
 #import "CycleControlListener.h"
-#import "alljoyn/cdm/interfaces/CdmInterfaceTypes.h"
-#import "alljoyn/cdm/interfaces/CdmInterface.h"
-#import "alljoyn/cdm/interfaces/operation/CycleControlIntfController.h"
+#import "alljoyn/cdm/common/CdmInterfaceTypes.h"
+#import "alljoyn/cdm/common/CdmInterface.h"
+#import "interfaces/controller/operation/CycleControlIntfController.h"
 
 static NSInteger NUM_MEMBER_CATEGORIES = 3;
-static NSInteger NUM_PROPERTIES = 2;
+static NSInteger NUM_PROPERTIES = 3;
 static NSInteger NUM_METHODS = 1;
 
-typedef NS_ENUM(NSInteger, PICKER_TAG) {
-    OPERATIONAL_STATE_PICKER_TAG = 1,
-};
-
-@interface CycleControlViewController() <UIPickerViewDelegate, UIPickerViewDataSource>
+@interface CycleControlViewController() 
 @property ajn::services::CdmController *cdmController;
 @property (nonatomic, strong) Device* device;
-@property CycleControlListener *listener;
+@property std::shared_ptr<CycleControlListener> listener;
 @property std::shared_ptr<ajn::services::CycleControlIntfController> cycleControlIntfController;
 @property std::shared_ptr<ajn::services::CdmInterface> cdmInterface;
 
-@property (nonatomic, strong) UIPickerView *operationalStatePicker;
-@property std::vector<CycleControlListener::OperationalState> *selectorValuesForOperationalState;
 
 @end
 
@@ -67,13 +61,13 @@ typedef NS_ENUM(NSInteger, PICKER_TAG) {
         _cdmController = cdmController;
         _device = device;
 
-        _listener = new CycleControlListener(self);
+        _listener = std::shared_ptr<CycleControlListener>(new CycleControlListener(self));
 
-        _cdmInterface = _cdmController->CreateInterface(ajn::services::CYCLE_CONTROL_INTERFACE,
+        _cdmInterface = _cdmController->CreateInterface(ajn::services::CdmInterface::GetInterfaceName(ajn::services::CYCLE_CONTROL_INTERFACE),
                                                         _device.deviceInfo->GetBusName(),
                                                         qcc::String([_device.objPath cStringUsingEncoding:NSUTF8StringEncoding]),
                                                         _device.deviceInfo->GetSessionId(),
-                                                        *_listener);
+                                                        _listener);
         if (_cdmInterface == NULL) {
             return nil;
         }
@@ -88,23 +82,12 @@ typedef NS_ENUM(NSInteger, PICKER_TAG) {
 {
     [super viewDidLoad];
 
-    _operationalStatePicker = [[UIPickerView alloc] init];
-    _operationalStatePicker.delegate = self;
-    _operationalStatePicker.dataSource = self;
-    _operationalStatePicker.showsSelectionIndicator = YES;
-    _operationalStatePicker.hidden = NO;
-    _operationalStatePicker.tag = OPERATIONAL_STATE_PICKER_TAG;
 }
 
 - (void) viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
 
-    if (_selectorValuesForOperationalState) {
-        delete _selectorValuesForOperationalState;
-    }
-
-    delete _listener;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -131,14 +114,8 @@ typedef NS_ENUM(NSInteger, PICKER_TAG) {
     
     if (indexPath.section == SECTION_PROPERTY) {
         if(indexPath.row == 0) {
-            _operationalStateCell  = [tableView dequeueReusableCellWithIdentifier:SELECTABLE_TABLE_VIEW_CELL];
+            _operationalStateCell  = [tableView dequeueReusableCellWithIdentifier:READ_ONLY_TABLE_VIEW_CELL];
             _operationalStateCell.label.text = @"OperationalState";
-            _operationalStateCell.value.inputView = _operationalStatePicker;
-
-            status = _cycleControlIntfController->GetSupportedOperationalStates();
-            if(status != ER_OK) {
-                NSLog(@"Failed to get GetSupportedOperationalStates");
-            }                
 
             status = _cycleControlIntfController->GetOperationalState();
             if(status != ER_OK) {
@@ -148,6 +125,17 @@ typedef NS_ENUM(NSInteger, PICKER_TAG) {
             return _operationalStateCell;
         }
         if(indexPath.row == 1) {
+            _supportedOperationalStatesCell  = [tableView dequeueReusableCellWithIdentifier:READ_ONLY_TABLE_VIEW_CELL];
+            _supportedOperationalStatesCell.label.text = @"SupportedOperationalStates";
+
+            status = _cycleControlIntfController->GetSupportedOperationalStates();
+            if(status != ER_OK) {
+                NSLog(@"Failed to get GetSupportedOperationalStates");
+            }
+
+            return _supportedOperationalStatesCell;
+        }
+        if(indexPath.row == 2) {
             _supportedOperationalCommandsCell  = [tableView dequeueReusableCellWithIdentifier:READ_ONLY_TABLE_VIEW_CELL];
             _supportedOperationalCommandsCell.label.text = @"SupportedOperationalCommands";
 
@@ -192,7 +180,7 @@ typedef NS_ENUM(NSInteger, PICKER_TAG) {
                                                             style:UIAlertActionStyleDefault
                                                           handler:^(UIAlertAction * _Nonnull action) {
                                                               NSLog(@"Executing %@ from the view controller", methodName);
-                                                              CycleControlListener::OperationalCommands commandCommand = (CycleControlListener::OperationalCommands)[alertController.textFields[0].text longLongValue];
+                                                              CycleControlInterface::OperationalCommands commandCommand = (CycleControlInterface::OperationalCommands)[alertController.textFields[0].text longLongValue];
                                                               _cycleControlIntfController->ExecuteOperationalCommand(commandCommand);
                                                           }]];
 
@@ -206,60 +194,6 @@ typedef NS_ENUM(NSInteger, PICKER_TAG) {
 
 }
 
-- (void) setSupportedOperationalStates:(const std::vector<CycleControlListener::OperationalState>&)supportedOperationalStates
-{
-    if(self.self.selectorValuesForOperationalState) {
-        delete _selectorValuesForOperationalState;
-    }
 
-    self.selectorValuesForOperationalState = new std::vector<CycleControlListener::OperationalState>(supportedOperationalStates);
-}
-
-#pragma mark UIPickerViewDataSource
-
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
-{
-    return 1;
-}
-
-- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
-{   
-    switch(pickerView.tag) {
-        case OPERATIONAL_STATE_PICKER_TAG:
-            return (NSInteger)self.selectorValuesForOperationalState->size();
-        default:
-            return 0;
-    }
-}
-
-#pragma mark UIPickerViewDelegate
-
-- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
-{
-    switch(pickerView.tag) {
-        case OPERATIONAL_STATE_PICKER_TAG:
-        {
-            CycleControlListener::OperationalState operationalState = self.selectorValuesForOperationalState->at(row);
-            return [NSString stringWithFormat:@"%u", operationalState];
-        }
-        default:
-            return nil;
-    }
-}
-
-- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
-{
-   switch(pickerView.tag) {
-        case OPERATIONAL_STATE_PICKER_TAG:
-        {
-//            CycleControlListener::OperationalState operationalState = self.selectorValuesForOperationalState->at(row);
-//            _cycleControlIntfController->SetOperationalState(operationalState);
-            [self.operationalStateCell.value resignFirstResponder];
-            break;
-        }
-        default:
-            break;
-    }    
-}
 
 @end

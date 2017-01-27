@@ -32,9 +32,9 @@
 #import "CDMUtil.h"
 #import "TimerViewController.h"
 #import "TimerListener.h"
-#import "alljoyn/cdm/interfaces/CdmInterfaceTypes.h"
-#import "alljoyn/cdm/interfaces/CdmInterface.h"
-#import "alljoyn/cdm/interfaces/operation/TimerIntfController.h"
+#import "alljoyn/cdm/common/CdmInterfaceTypes.h"
+#import "alljoyn/cdm/common/CdmInterface.h"
+#import "interfaces/controller/operation/TimerIntfController.h"
 
 static NSInteger NUM_MEMBER_CATEGORIES = 3;
 static NSInteger NUM_PROPERTIES = 6;
@@ -43,7 +43,7 @@ static NSInteger NUM_METHODS = 2;
 @interface TimerViewController() 
 @property ajn::services::CdmController *cdmController;
 @property (nonatomic, strong) Device* device;
-@property TimerListener *listener;
+@property std::shared_ptr<TimerListener> listener;
 @property std::shared_ptr<ajn::services::TimerIntfController> timerIntfController;
 @property std::shared_ptr<ajn::services::CdmInterface> cdmInterface;
 
@@ -61,13 +61,13 @@ static NSInteger NUM_METHODS = 2;
         _cdmController = cdmController;
         _device = device;
 
-        _listener = new TimerListener(self);
+        _listener = std::shared_ptr<TimerListener>(new TimerListener(self));
 
-        _cdmInterface = _cdmController->CreateInterface(ajn::services::TIMER_INTERFACE,
+        _cdmInterface = _cdmController->CreateInterface(ajn::services::CdmInterface::GetInterfaceName(ajn::services::TIMER_INTERFACE),
                                                         _device.deviceInfo->GetBusName(),
                                                         qcc::String([_device.objPath cStringUsingEncoding:NSUTF8StringEncoding]),
                                                         _device.deviceInfo->GetSessionId(),
-                                                        *_listener);
+                                                        _listener);
         if (_cdmInterface == NULL) {
             return nil;
         }
@@ -88,8 +88,6 @@ static NSInteger NUM_METHODS = 2;
 {
     [super viewDidDisappear:animated];
 
-
-    delete _listener;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

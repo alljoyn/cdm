@@ -32,8 +32,10 @@
 #define TriggerSensorListener_h
 
 #import "TriggerSensorViewController.h"
-#import "alljoyn/cdm/interfaces/operation/TriggerSensorInterface.h"
-#import "alljoyn/cdm/interfaces/operation/TriggerSensorIntfControllerListener.h"
+#import "interfaces/common/operation/TriggerSensorInterface.h"
+#import "interfaces/controller/operation/TriggerSensorIntfControllerListener.h"
+
+using ajn::services::TriggerSensorInterface;
 
 class TriggerSensorListener : public ajn::services::TriggerSensorIntfControllerListener
 {

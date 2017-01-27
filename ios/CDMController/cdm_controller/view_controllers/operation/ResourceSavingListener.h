@@ -32,8 +32,10 @@
 #define ResourceSavingListener_h
 
 #import "ResourceSavingViewController.h"
-#import "alljoyn/cdm/interfaces/operation/ResourceSavingInterface.h"
-#import "alljoyn/cdm/interfaces/operation/ResourceSavingIntfControllerListener.h"
+#import "interfaces/common/operation/ResourceSavingInterface.h"
+#import "interfaces/controller/operation/ResourceSavingIntfControllerListener.h"
+
+using ajn::services::ResourceSavingInterface;
 
 class ResourceSavingListener : public ajn::services::ResourceSavingIntfControllerListener
 {

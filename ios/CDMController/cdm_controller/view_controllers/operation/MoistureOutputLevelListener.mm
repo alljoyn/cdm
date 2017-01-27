@@ -90,7 +90,7 @@ void MoistureOutputLevelListener::OnMaxMoistureOutputLevelChanged(const qcc::Str
 }
 
 
-void MoistureOutputLevelListener::UpdateAutoMode(const AutoMode value)
+void MoistureOutputLevelListener::UpdateAutoMode(const MoistureOutputLevelInterface::AutoMode value)
 {
     NSString *valueAsStr = [NSString stringWithFormat:@"%u", value];
     NSLog(@"Got AutoMode: %@", valueAsStr);
@@ -99,12 +99,12 @@ void MoistureOutputLevelListener::UpdateAutoMode(const AutoMode value)
     });
 }
 
-void MoistureOutputLevelListener::OnResponseGetAutoMode(QStatus status, const qcc::String& objectPath, const AutoMode value, void* context)
+void MoistureOutputLevelListener::OnResponseGetAutoMode(QStatus status, const qcc::String& objectPath, const MoistureOutputLevelInterface::AutoMode value, void* context)
 {
     UpdateAutoMode(value);
 }
 
-void MoistureOutputLevelListener::OnAutoModeChanged(const qcc::String& objectPath, const AutoMode value)
+void MoistureOutputLevelListener::OnAutoModeChanged(const qcc::String& objectPath, const MoistureOutputLevelInterface::AutoMode value)
 {
     UpdateAutoMode(value);
 }

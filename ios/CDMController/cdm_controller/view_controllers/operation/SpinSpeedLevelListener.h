@@ -32,8 +32,10 @@
 #define SpinSpeedLevelListener_h
 
 #import "SpinSpeedLevelViewController.h"
-#import "alljoyn/cdm/interfaces/operation/SpinSpeedLevelInterface.h"
-#import "alljoyn/cdm/interfaces/operation/SpinSpeedLevelIntfControllerListener.h"
+#import "interfaces/common/operation/SpinSpeedLevelInterface.h"
+#import "interfaces/controller/operation/SpinSpeedLevelIntfControllerListener.h"
+
+using ajn::services::SpinSpeedLevelInterface;
 
 class SpinSpeedLevelListener : public ajn::services::SpinSpeedLevelIntfControllerListener
 {

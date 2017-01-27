@@ -30,7 +30,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Device.h"
-#import "alljoyn/cdm/CdmController.h"
+#import "alljoyn/cdm/controller/CdmController.h"
 
 @interface InterfaceListViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 

@@ -32,8 +32,10 @@
 #define TargetTemperatureListener_h
 
 #import "TargetTemperatureViewController.h"
-#import "alljoyn/cdm/interfaces/environment/TargetTemperatureInterface.h"
-#import "alljoyn/cdm/interfaces/environment/TargetTemperatureIntfControllerListener.h"
+#import "interfaces/common/environment/TargetTemperatureInterface.h"
+#import "interfaces/controller/environment/TargetTemperatureIntfControllerListener.h"
+
+using ajn::services::TargetTemperatureInterface;
 
 class TargetTemperatureListener : public ajn::services::TargetTemperatureIntfControllerListener
 {

@@ -32,9 +32,9 @@
 #import "CDMUtil.h"
 #import "CurrentTemperatureViewController.h"
 #import "CurrentTemperatureListener.h"
-#import "alljoyn/cdm/interfaces/CdmInterfaceTypes.h"
-#import "alljoyn/cdm/interfaces/CdmInterface.h"
-#import "alljoyn/cdm/interfaces/environment/CurrentTemperatureIntfController.h"
+#import "alljoyn/cdm/common/CdmInterfaceTypes.h"
+#import "alljoyn/cdm/common/CdmInterface.h"
+#import "interfaces/controller/environment/CurrentTemperatureIntfController.h"
 
 static NSInteger NUM_MEMBER_CATEGORIES = 1;
 static NSInteger NUM_PROPERTIES = 3;
@@ -43,7 +43,7 @@ static NSInteger NUM_METHODS = 0;
 @interface CurrentTemperatureViewController() 
 @property ajn::services::CdmController *cdmController;
 @property (nonatomic, strong) Device* device;
-@property CurrentTemperatureListener *listener;
+@property std::shared_ptr<CurrentTemperatureListener> listener;
 @property std::shared_ptr<ajn::services::CurrentTemperatureIntfController> currentTemperatureIntfController;
 @property std::shared_ptr<ajn::services::CdmInterface> cdmInterface;
 
@@ -61,13 +61,13 @@ static NSInteger NUM_METHODS = 0;
         _cdmController = cdmController;
         _device = device;
 
-        _listener = new CurrentTemperatureListener(self);
+        _listener = std::shared_ptr<CurrentTemperatureListener>(new CurrentTemperatureListener(self));
 
-        _cdmInterface = _cdmController->CreateInterface(ajn::services::CURRENT_TEMPERATURE_INTERFACE,
+        _cdmInterface = _cdmController->CreateInterface(ajn::services::CdmInterface::GetInterfaceName(ajn::services::CURRENT_TEMPERATURE_INTERFACE),
                                                         _device.deviceInfo->GetBusName(),
                                                         qcc::String([_device.objPath cStringUsingEncoding:NSUTF8StringEncoding]),
                                                         _device.deviceInfo->GetSessionId(),
-                                                        *_listener);
+                                                        _listener);
         if (_cdmInterface == NULL) {
             return nil;
         }
@@ -88,8 +88,6 @@ static NSInteger NUM_METHODS = 0;
 {
     [super viewDidDisappear:animated];
 
-
-    delete _listener;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

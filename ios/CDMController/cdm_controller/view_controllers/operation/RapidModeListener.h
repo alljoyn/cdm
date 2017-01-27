@@ -32,8 +32,10 @@
 #define RapidModeListener_h
 
 #import "RapidModeViewController.h"
-#import "alljoyn/cdm/interfaces/operation/RapidModeInterface.h"
-#import "alljoyn/cdm/interfaces/operation/RapidModeIntfControllerListener.h"
+#import "interfaces/common/operation/RapidModeInterface.h"
+#import "interfaces/controller/operation/RapidModeIntfControllerListener.h"
+
+using ajn::services::RapidModeInterface;
 
 class RapidModeListener : public ajn::services::RapidModeIntfControllerListener
 {

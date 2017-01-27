@@ -36,7 +36,7 @@
 #import "alljoyn/BusAttachment.h"
 #import "CDMUtil.h"
 #import "DeviceTableViewCell.h"
-#import "alljoyn/cdm/CdmController.h"
+#import "alljoyn/cdm/controller/CdmController.h"
 #import "ECDHEKeyXListener.h"
 
 
@@ -92,7 +92,7 @@ static NSString * const DEVICE_TABLE_VIEW_CELL = @"DeviceTableViewCell";
     _deviceListener->SetController(_cdmController);
     
     _authListener = new ECDHEKeyXListener();
-    status = _cdmController->EnablePeerSecurity(ECDHE_KEYX, _authListener, ".alljoyn_keystore/c_ecdhe.ks", true);
+    status = _cdmController->EnablePeerSecurity(ECDHE_KEYX, _authListener, "Library/.alljoyn_keystore/c_ecdhe.ks", true);
     if(status != ER_OK) {
         NSLog(@"EnablePeerSecurity failed");
     }

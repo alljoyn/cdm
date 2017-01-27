@@ -32,27 +32,21 @@
 #import "CDMUtil.h"
 #import "TimeDisplayViewController.h"
 #import "TimeDisplayListener.h"
-#import "alljoyn/cdm/interfaces/CdmInterfaceTypes.h"
-#import "alljoyn/cdm/interfaces/CdmInterface.h"
-#import "alljoyn/cdm/interfaces/userinterfacesettings/TimeDisplayIntfController.h"
+#import "alljoyn/cdm/common/CdmInterfaceTypes.h"
+#import "alljoyn/cdm/common/CdmInterface.h"
+#import "interfaces/controller/userinterfacesettings/TimeDisplayIntfController.h"
 
 static NSInteger NUM_MEMBER_CATEGORIES = 1;
-static NSInteger NUM_PROPERTIES = 1;
+static NSInteger NUM_PROPERTIES = 2;
 static NSInteger NUM_METHODS = 0;
 
-typedef NS_ENUM(NSInteger, PICKER_TAG) {
-    DISPLAY_TIME_FORMAT_PICKER_TAG = 1,
-};
-
-@interface TimeDisplayViewController() <UIPickerViewDelegate, UIPickerViewDataSource>
+@interface TimeDisplayViewController() 
 @property ajn::services::CdmController *cdmController;
 @property (nonatomic, strong) Device* device;
-@property TimeDisplayListener *listener;
+@property std::shared_ptr<TimeDisplayListener> listener;
 @property std::shared_ptr<ajn::services::TimeDisplayIntfController> timeDisplayIntfController;
 @property std::shared_ptr<ajn::services::CdmInterface> cdmInterface;
 
-@property (nonatomic, strong) UIPickerView *displayTimeFormatPicker;
-@property std::vector<uint8_t> *selectorValuesForDisplayTimeFormat;
 
 @end
 
@@ -67,13 +61,13 @@ typedef NS_ENUM(NSInteger, PICKER_TAG) {
         _cdmController = cdmController;
         _device = device;
 
-        _listener = new TimeDisplayListener(self);
+        _listener = std::shared_ptr<TimeDisplayListener>(new TimeDisplayListener(self));
 
-        _cdmInterface = _cdmController->CreateInterface(ajn::services::TIME_DISPLAY_INTERFACE,
+        _cdmInterface = _cdmController->CreateInterface(ajn::services::CdmInterface::GetInterfaceName(ajn::services::TIME_DISPLAY_INTERFACE),
                                                         _device.deviceInfo->GetBusName(),
                                                         qcc::String([_device.objPath cStringUsingEncoding:NSUTF8StringEncoding]),
                                                         _device.deviceInfo->GetSessionId(),
-                                                        *_listener);
+                                                        _listener);
         if (_cdmInterface == NULL) {
             return nil;
         }
@@ -88,23 +82,12 @@ typedef NS_ENUM(NSInteger, PICKER_TAG) {
 {
     [super viewDidLoad];
 
-    _displayTimeFormatPicker = [[UIPickerView alloc] init];
-    _displayTimeFormatPicker.delegate = self;
-    _displayTimeFormatPicker.dataSource = self;
-    _displayTimeFormatPicker.showsSelectionIndicator = YES;
-    _displayTimeFormatPicker.hidden = NO;
-    _displayTimeFormatPicker.tag = DISPLAY_TIME_FORMAT_PICKER_TAG;
 }
 
 - (void) viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
 
-    if (_selectorValuesForDisplayTimeFormat) {
-        delete _selectorValuesForDisplayTimeFormat;
-    }
-
-    delete _listener;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -126,14 +109,9 @@ typedef NS_ENUM(NSInteger, PICKER_TAG) {
     
     if (indexPath.section == SECTION_PROPERTY) {
         if(indexPath.row == 0) {
-            _displayTimeFormatCell  = [tableView dequeueReusableCellWithIdentifier:SELECTABLE_TABLE_VIEW_CELL];
+            _displayTimeFormatCell  = [tableView dequeueReusableCellWithIdentifier:READ_WRITE_TABLE_VIEW_CELL];
             _displayTimeFormatCell.label.text = @"DisplayTimeFormat";
-            _displayTimeFormatCell.value.inputView = _displayTimeFormatPicker;
-
-            status = _timeDisplayIntfController->GetSupportedDisplayTimeFormats();
-            if(status != ER_OK) {
-                NSLog(@"Failed to get GetSupportedDisplayTimeFormats");
-            }                
+            _displayTimeFormatCell.delegate = self;
 
             status = _timeDisplayIntfController->GetDisplayTimeFormat();
             if(status != ER_OK) {
@@ -142,66 +120,29 @@ typedef NS_ENUM(NSInteger, PICKER_TAG) {
 
             return _displayTimeFormatCell;
         }
+        if(indexPath.row == 1) {
+            _supportedDisplayTimeFormatsCell  = [tableView dequeueReusableCellWithIdentifier:READ_ONLY_TABLE_VIEW_CELL];
+            _supportedDisplayTimeFormatsCell.label.text = @"SupportedDisplayTimeFormats";
+
+            status = _timeDisplayIntfController->GetSupportedDisplayTimeFormats();
+            if(status != ER_OK) {
+                NSLog(@"Failed to get GetSupportedDisplayTimeFormats");
+            }
+
+            return _supportedDisplayTimeFormatsCell;
+        }
     }     
     return nil;
 }
 
-
-
-- (void) setSupportedDisplayTimeFormats:(const std::vector<uint8_t>&)supportedDisplayTimeFormats
+-(void) updateValue:(NSString *)value forProperty:(NSString *)property
 {
-    if(self.self.selectorValuesForDisplayTimeFormat) {
-        delete _selectorValuesForDisplayTimeFormat;
-    }
-
-    self.selectorValuesForDisplayTimeFormat = new std::vector<uint8_t>(supportedDisplayTimeFormats);
-}
-
-#pragma mark UIPickerViewDataSource
-
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
-{
-    return 1;
-}
-
-- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
-{   
-    switch(pickerView.tag) {
-        case DISPLAY_TIME_FORMAT_PICKER_TAG:
-            return (NSInteger)self.selectorValuesForDisplayTimeFormat->size();
-        default:
-            return 0;
+    if([property isEqualToString:@"DisplayTimeFormat"]){
+        _timeDisplayIntfController->SetDisplayTimeFormat((uint8_t)[value longLongValue]);
     }
 }
 
-#pragma mark UIPickerViewDelegate
 
-- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
-{
-    switch(pickerView.tag) {
-        case DISPLAY_TIME_FORMAT_PICKER_TAG:
-        {
-            uint8_t displayTimeFormat = self.selectorValuesForDisplayTimeFormat->at(row);
-            return [NSString stringWithFormat:@"%u", displayTimeFormat];
-        }
-        default:
-            return nil;
-    }
-}
 
-- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
-{
-   switch(pickerView.tag) {
-        case DISPLAY_TIME_FORMAT_PICKER_TAG:
-        {
-            uint8_t displayTimeFormat = self.selectorValuesForDisplayTimeFormat->at(row);
-            _timeDisplayIntfController->SetDisplayTimeFormat(displayTimeFormat);
-            [self.displayTimeFormatCell.value resignFirstResponder];
-            break;
-        }
-        default:
-            break;
-    }    
-}
 
 @end

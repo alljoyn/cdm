@@ -32,8 +32,10 @@
 #define CurrentAirQualityLevelListener_h
 
 #import "CurrentAirQualityLevelViewController.h"
-#import "alljoyn/cdm/interfaces/environment/CurrentAirQualityLevelInterface.h"
-#import "alljoyn/cdm/interfaces/environment/CurrentAirQualityLevelIntfControllerListener.h"
+#import "interfaces/common/environment/CurrentAirQualityLevelInterface.h"
+#import "interfaces/controller/environment/CurrentAirQualityLevelIntfControllerListener.h"
+
+using ajn::services::CurrentAirQualityLevelInterface;
 
 class CurrentAirQualityLevelListener : public ajn::services::CurrentAirQualityLevelIntfControllerListener
 {
@@ -42,9 +44,9 @@ class CurrentAirQualityLevelListener : public ajn::services::CurrentAirQualityLe
     
         virtual ~CurrentAirQualityLevelListener();
 
-        virtual void UpdateContaminantType(const ContaminantType value);
-        virtual void OnResponseGetContaminantType(QStatus status, const qcc::String& objectPath, const ContaminantType value, void* context);
-        virtual void OnContaminantTypeChanged(const qcc::String& objectPath, const ContaminantType value);
+        virtual void UpdateContaminantType(const CurrentAirQualityLevelInterface::ContaminantType value);
+        virtual void OnResponseGetContaminantType(QStatus status, const qcc::String& objectPath, const CurrentAirQualityLevelInterface::ContaminantType value, void* context);
+        virtual void OnContaminantTypeChanged(const qcc::String& objectPath, const CurrentAirQualityLevelInterface::ContaminantType value);
 
         virtual void UpdateCurrentLevel(const uint8_t value);
         virtual void OnResponseGetCurrentLevel(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context);

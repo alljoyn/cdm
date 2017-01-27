@@ -32,9 +32,9 @@
 #import "CDMUtil.h"
 #import "TargetTemperatureViewController.h"
 #import "TargetTemperatureListener.h"
-#import "alljoyn/cdm/interfaces/CdmInterfaceTypes.h"
-#import "alljoyn/cdm/interfaces/CdmInterface.h"
-#import "alljoyn/cdm/interfaces/environment/TargetTemperatureIntfController.h"
+#import "alljoyn/cdm/common/CdmInterfaceTypes.h"
+#import "alljoyn/cdm/common/CdmInterface.h"
+#import "interfaces/controller/environment/TargetTemperatureIntfController.h"
 
 static NSInteger NUM_MEMBER_CATEGORIES = 1;
 static NSInteger NUM_PROPERTIES = 4;
@@ -43,7 +43,7 @@ static NSInteger NUM_METHODS = 0;
 @interface TargetTemperatureViewController() 
 @property ajn::services::CdmController *cdmController;
 @property (nonatomic, strong) Device* device;
-@property TargetTemperatureListener *listener;
+@property std::shared_ptr<TargetTemperatureListener> listener;
 @property std::shared_ptr<ajn::services::TargetTemperatureIntfController> targetTemperatureIntfController;
 @property std::shared_ptr<ajn::services::CdmInterface> cdmInterface;
 
@@ -61,13 +61,13 @@ static NSInteger NUM_METHODS = 0;
         _cdmController = cdmController;
         _device = device;
 
-        _listener = new TargetTemperatureListener(self);
+        _listener = std::shared_ptr<TargetTemperatureListener>(new TargetTemperatureListener(self));
 
-        _cdmInterface = _cdmController->CreateInterface(ajn::services::TARGET_TEMPERATURE_INTERFACE,
+        _cdmInterface = _cdmController->CreateInterface(ajn::services::CdmInterface::GetInterfaceName(ajn::services::TARGET_TEMPERATURE_INTERFACE),
                                                         _device.deviceInfo->GetBusName(),
                                                         qcc::String([_device.objPath cStringUsingEncoding:NSUTF8StringEncoding]),
                                                         _device.deviceInfo->GetSessionId(),
-                                                        *_listener);
+                                                        _listener);
         if (_cdmInterface == NULL) {
             return nil;
         }
@@ -88,8 +88,6 @@ static NSInteger NUM_METHODS = 0;
 {
     [super viewDidDisappear:animated];
 
-
-    delete _listener;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -162,7 +160,7 @@ static NSInteger NUM_METHODS = 0;
 -(void) updateValue:(NSString *)value forProperty:(NSString *)property
 {
     if([property isEqualToString:@"TargetValue"]){
-        _targetTemperatureIntfController->SetTargetValue((double)[value longLongValue]);
+        _targetTemperatureIntfController->SetTargetValue((double)[value doubleValue]);
     }
 }
 

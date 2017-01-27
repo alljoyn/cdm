@@ -32,8 +32,10 @@
 #define BrightnessListener_h
 
 #import "BrightnessViewController.h"
-#import "alljoyn/cdm/interfaces/operation/BrightnessInterface.h"
-#import "alljoyn/cdm/interfaces/operation/BrightnessIntfControllerListener.h"
+#import "interfaces/common/operation/BrightnessInterface.h"
+#import "interfaces/controller/operation/BrightnessIntfControllerListener.h"
+
+using ajn::services::BrightnessInterface;
 
 class BrightnessListener : public ajn::services::BrightnessIntfControllerListener
 {

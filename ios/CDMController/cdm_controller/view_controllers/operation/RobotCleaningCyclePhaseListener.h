@@ -32,8 +32,10 @@
 #define RobotCleaningCyclePhaseListener_h
 
 #import "RobotCleaningCyclePhaseViewController.h"
-#import "alljoyn/cdm/interfaces/operation/RobotCleaningCyclePhaseInterface.h"
-#import "alljoyn/cdm/interfaces/operation/RobotCleaningCyclePhaseIntfControllerListener.h"
+#import "interfaces/common/operation/RobotCleaningCyclePhaseInterface.h"
+#import "interfaces/controller/operation/RobotCleaningCyclePhaseIntfControllerListener.h"
+
+using ajn::services::RobotCleaningCyclePhaseInterface;
 
 class RobotCleaningCyclePhaseListener : public ajn::services::RobotCleaningCyclePhaseIntfControllerListener
 {
@@ -50,7 +52,7 @@ class RobotCleaningCyclePhaseListener : public ajn::services::RobotCleaningCycle
         virtual void OnResponseGetSupportedCyclePhases(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& value, void* context);
         virtual void OnSupportedCyclePhasesChanged(const qcc::String& objectPath, const std::vector<uint8_t>& value);
 
-        virtual void OnResponseGetVendorPhasesDescription(QStatus status, const qcc::String& objectPath, const std::vector<CyclePhaseDescriptor>& phasesDescription, void* context, const char* errorName, const char* errorMessage);
+        virtual void OnResponseGetVendorPhasesDescription(QStatus status, const qcc::String& objectPath, const std::vector<RobotCleaningCyclePhaseInterface::CyclePhaseDescriptor>& phasesDescription, void* context, const char* errorName, const char* errorMessage);
         
 
     private:

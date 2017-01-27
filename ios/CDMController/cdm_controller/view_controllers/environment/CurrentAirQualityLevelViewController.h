@@ -32,7 +32,7 @@
 #define CurrentAirQualityLevelViewController_h
 
 #import "InterfaceViewController.h"
-#import "alljoyn/cdm/CdmController.h"
+#import "alljoyn/cdm/controller/CdmController.h"
 #import "Device.h"
 #import "ReadOnlyValuePropertyCell.h"
 

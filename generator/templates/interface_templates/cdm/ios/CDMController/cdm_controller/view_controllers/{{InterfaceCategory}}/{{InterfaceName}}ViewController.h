@@ -32,7 +32,7 @@
 #define {{Interface.Name}}ViewController_h
 
 #import "InterfaceViewController.h"
-#import "alljoyn/cdm/CdmController.h"
+#import "alljoyn/cdm/controller/CdmController.h"
 #import "Device.h"
 #import "ReadOnlyValuePropertyCell.h"
 {% if Interface.has_writable_property() %}
@@ -48,7 +48,7 @@
 
 @interface {{Interface.Name}}ViewController : InterfaceViewController {% if Interface.has_writable_property() or Interface.Methods %}<{% if Interface.has_writable_property() %}ReadWriteValueDelegate{% endif %}{% if Interface.Methods %}{% if Interface.has_writable_property() %}, {% endif %}MethodViewDelegate{% endif %}>{% endif %}
 
-{% for property in Interface.UIProperties %}
+{% for property in Interface.UIProperties() %}
 {% if property.Writable %}
 {% if property.Selector %}
 @property (nonatomic, strong) SelectableValuePropertyCell *{{property.Name.camel_case()}}Cell;

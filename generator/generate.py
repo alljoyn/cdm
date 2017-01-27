@@ -93,7 +93,8 @@ class Generator(object):
         self._binding_checks_metadata = (
                 (('all', 'cpp'),  ('cpp',  ['.cc', '.cpp', '.h'])),
                 (('all', 'java'), ('java', ['.java'])),
-                (('all', 'tcl'), ('tcl', ['.c', '.h']))
+                (('all', 'tcl'), ('tcl', ['.c', '.h'])),
+                (('all', 'ios'), ('ios', ['.mm', '.h']))
             )
 
         self._component_checks_metadata = (

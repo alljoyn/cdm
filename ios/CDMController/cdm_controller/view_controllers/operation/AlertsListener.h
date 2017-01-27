@@ -32,8 +32,10 @@
 #define AlertsListener_h
 
 #import "AlertsViewController.h"
-#import "alljoyn/cdm/interfaces/operation/AlertsInterface.h"
-#import "alljoyn/cdm/interfaces/operation/AlertsIntfControllerListener.h"
+#import "interfaces/common/operation/AlertsInterface.h"
+#import "interfaces/controller/operation/AlertsIntfControllerListener.h"
+
+using ajn::services::AlertsInterface;
 
 class AlertsListener : public ajn::services::AlertsIntfControllerListener
 {
@@ -42,11 +44,11 @@ class AlertsListener : public ajn::services::AlertsIntfControllerListener
     
         virtual ~AlertsListener();
 
-        virtual void UpdateAlerts(const std::vector<AlertRecord>& value);
-        virtual void OnResponseGetAlerts(QStatus status, const qcc::String& objectPath, const std::vector<AlertRecord>& value, void* context);
-        virtual void OnAlertsChanged(const qcc::String& objectPath, const std::vector<AlertRecord>& value);
+        virtual void UpdateAlerts(const std::vector<AlertsInterface::AlertRecord>& value);
+        virtual void OnResponseGetAlerts(QStatus status, const qcc::String& objectPath, const std::vector<AlertsInterface::AlertRecord>& value, void* context);
+        virtual void OnAlertsChanged(const qcc::String& objectPath, const std::vector<AlertsInterface::AlertRecord>& value);
 
-        virtual void OnResponseGetAlertCodesDescription(QStatus status, const qcc::String& objectPath, const std::vector<AlertCodesDescriptor>& description, void* context, const char* errorName, const char* errorMessage);
+        virtual void OnResponseGetAlertCodesDescription(QStatus status, const qcc::String& objectPath, const std::vector<AlertsInterface::AlertCodesDescriptor>& description, void* context, const char* errorName, const char* errorMessage);
         virtual void OnResponseAcknowledgeAlert(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage);
         virtual void OnResponseAcknowledgeAllAlerts(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage);
         

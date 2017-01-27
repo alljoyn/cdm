@@ -92,7 +92,16 @@ void TargetTemperatureLevelListener::OnResponseSetTargetLevel(QStatus status, co
 
 void TargetTemperatureLevelListener::UpdateSelectableTemperatureLevels(const std::vector<uint8_t>& value)
 {
-    [viewController setSelectableTemperatureLevels:value];
+    NSString *valueArrayAsString = @"";
+    std::vector<uint8_t>::const_iterator it = value.begin();
+    while(it != value.end()) {
+        valueArrayAsString = [valueArrayAsString stringByAppendingString:[NSString stringWithFormat:@"%u,", *it]];
+        ++it;
+    }
+    NSLog(@"Got SelectableTemperatureLevels: %@", valueArrayAsString);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        viewController.selectableTemperatureLevelsCell.value.text = [NSString stringWithFormat:@"%@", valueArrayAsString];
+    });
 }
 
 void TargetTemperatureLevelListener::OnResponseGetSelectableTemperatureLevels(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& value, void* context)

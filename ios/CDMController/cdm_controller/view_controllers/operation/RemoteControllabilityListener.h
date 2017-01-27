@@ -32,8 +32,10 @@
 #define RemoteControllabilityListener_h
 
 #import "RemoteControllabilityViewController.h"
-#import "alljoyn/cdm/interfaces/operation/RemoteControllabilityInterface.h"
-#import "alljoyn/cdm/interfaces/operation/RemoteControllabilityIntfControllerListener.h"
+#import "interfaces/common/operation/RemoteControllabilityInterface.h"
+#import "interfaces/controller/operation/RemoteControllabilityIntfControllerListener.h"
+
+using ajn::services::RemoteControllabilityInterface;
 
 class RemoteControllabilityListener : public ajn::services::RemoteControllabilityIntfControllerListener
 {

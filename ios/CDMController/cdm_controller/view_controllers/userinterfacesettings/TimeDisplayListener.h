@@ -32,8 +32,10 @@
 #define TimeDisplayListener_h
 
 #import "TimeDisplayViewController.h"
-#import "alljoyn/cdm/interfaces/userinterfacesettings/TimeDisplayInterface.h"
-#import "alljoyn/cdm/interfaces/userinterfacesettings/TimeDisplayIntfControllerListener.h"
+#import "interfaces/common/userinterfacesettings/TimeDisplayInterface.h"
+#import "interfaces/controller/userinterfacesettings/TimeDisplayIntfControllerListener.h"
+
+using ajn::services::TimeDisplayInterface;
 
 class TimeDisplayListener : public ajn::services::TimeDisplayIntfControllerListener
 {

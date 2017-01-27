@@ -32,8 +32,10 @@
 #define FanSpeedLevelListener_h
 
 #import "FanSpeedLevelViewController.h"
-#import "alljoyn/cdm/interfaces/operation/FanSpeedLevelInterface.h"
-#import "alljoyn/cdm/interfaces/operation/FanSpeedLevelIntfControllerListener.h"
+#import "interfaces/common/operation/FanSpeedLevelInterface.h"
+#import "interfaces/controller/operation/FanSpeedLevelIntfControllerListener.h"
+
+using ajn::services::FanSpeedLevelInterface;
 
 class FanSpeedLevelListener : public ajn::services::FanSpeedLevelIntfControllerListener
 {
@@ -50,9 +52,9 @@ class FanSpeedLevelListener : public ajn::services::FanSpeedLevelIntfControllerL
         virtual void UpdateMaxFanSpeedLevel(const uint8_t value);
         virtual void OnResponseGetMaxFanSpeedLevel(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context);
 
-        virtual void UpdateAutoMode(const AutoMode value);
-        virtual void OnResponseGetAutoMode(QStatus status, const qcc::String& objectPath, const AutoMode value, void* context);
-        virtual void OnAutoModeChanged(const qcc::String& objectPath, const AutoMode value);
+        virtual void UpdateAutoMode(const FanSpeedLevelInterface::AutoMode value);
+        virtual void OnResponseGetAutoMode(QStatus status, const qcc::String& objectPath, const FanSpeedLevelInterface::AutoMode value, void* context);
+        virtual void OnAutoModeChanged(const qcc::String& objectPath, const FanSpeedLevelInterface::AutoMode value);
         virtual void OnResponseSetAutoMode(QStatus status, const qcc::String& objectPath, void* context);
 
         

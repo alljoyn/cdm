@@ -32,9 +32,9 @@
 #import "CDMUtil.h"
 #import "OffControlViewController.h"
 #import "OffControlListener.h"
-#import "alljoyn/cdm/interfaces/CdmInterfaceTypes.h"
-#import "alljoyn/cdm/interfaces/CdmInterface.h"
-#import "alljoyn/cdm/interfaces/operation/OffControlIntfController.h"
+#import "alljoyn/cdm/common/CdmInterfaceTypes.h"
+#import "alljoyn/cdm/common/CdmInterface.h"
+#import "interfaces/controller/operation/OffControlIntfController.h"
 
 static NSInteger NUM_MEMBER_CATEGORIES = 3;
 static NSInteger NUM_PROPERTIES = 0;
@@ -43,7 +43,7 @@ static NSInteger NUM_METHODS = 1;
 @interface OffControlViewController() 
 @property ajn::services::CdmController *cdmController;
 @property (nonatomic, strong) Device* device;
-@property OffControlListener *listener;
+@property std::shared_ptr<OffControlListener> listener;
 @property std::shared_ptr<ajn::services::OffControlIntfController> offControlIntfController;
 @property std::shared_ptr<ajn::services::CdmInterface> cdmInterface;
 
@@ -61,13 +61,13 @@ static NSInteger NUM_METHODS = 1;
         _cdmController = cdmController;
         _device = device;
 
-        _listener = new OffControlListener(self);
+        _listener = std::shared_ptr<OffControlListener>(new OffControlListener(self));
 
-        _cdmInterface = _cdmController->CreateInterface(ajn::services::OFF_CONTROL_INTERFACE,
+        _cdmInterface = _cdmController->CreateInterface(ajn::services::CdmInterface::GetInterfaceName(ajn::services::OFF_CONTROL_INTERFACE),
                                                         _device.deviceInfo->GetBusName(),
                                                         qcc::String([_device.objPath cStringUsingEncoding:NSUTF8StringEncoding]),
                                                         _device.deviceInfo->GetSessionId(),
-                                                        *_listener);
+                                                        _listener);
         if (_cdmInterface == NULL) {
             return nil;
         }
@@ -88,8 +88,6 @@ static NSInteger NUM_METHODS = 1;
 {
     [super viewDidDisappear:animated];
 
-
-    delete _listener;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

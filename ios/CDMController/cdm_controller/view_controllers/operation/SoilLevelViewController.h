@@ -32,17 +32,17 @@
 #define SoilLevelViewController_h
 
 #import "InterfaceViewController.h"
-#import "alljoyn/cdm/CdmController.h"
+#import "alljoyn/cdm/controller/CdmController.h"
 #import "Device.h"
 #import "ReadOnlyValuePropertyCell.h"
-#import "SelectableValuePropertyCell.h"
+#import "ReadWriteValuePropertyCell.h"
 
-@interface SoilLevelViewController : InterfaceViewController 
+@interface SoilLevelViewController : InterfaceViewController <ReadWriteValueDelegate>
 @property (nonatomic, strong) ReadOnlyValuePropertyCell *maxLevelCell;
-@property (nonatomic, strong) SelectableValuePropertyCell *targetLevelCell;
+@property (nonatomic, strong) ReadWriteValuePropertyCell *targetLevelCell;
+@property (nonatomic, strong) ReadOnlyValuePropertyCell *selectableLevelsCell;
 
 - (instancetype)initWithDevice:(Device *)device andController:(ajn::services::CdmController *)cdmController;
-- (void) setSelectableLevels:(const std::vector<uint8_t>&)selectableLevels;
 
 @end
 

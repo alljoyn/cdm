@@ -10,7 +10,7 @@
   "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "94F089EF-920D-4F2E-896C-F5D05B6CEF0A",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
     "7CBB55656BB066B1695DE29073AF0F9637BDC9D4" : "..\/core\/alljoyn",
-    "7EB9F55F99A49D6ED26D1209C7B9713E08AC4D23" : "hae\/"
+    "7EB9F55F99A49D6ED26D1209C7B9713E08AC4D23" : "cdm\/"
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "CDMController",
   "DVTSourceControlWorkspaceBlueprintVersion" : 204,

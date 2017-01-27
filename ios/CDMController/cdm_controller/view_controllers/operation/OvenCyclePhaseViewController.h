@@ -32,20 +32,19 @@
 #define OvenCyclePhaseViewController_h
 
 #import "InterfaceViewController.h"
-#import "alljoyn/cdm/CdmController.h"
+#import "alljoyn/cdm/controller/CdmController.h"
 #import "Device.h"
 #import "ReadOnlyValuePropertyCell.h"
-#import "SelectableValuePropertyCell.h"
 #import "MethodViewCell.h"
 #import "MethodViewOutputCell.h"
 
 @interface OvenCyclePhaseViewController : InterfaceViewController <MethodViewDelegate>
 @property (nonatomic, strong) ReadOnlyValuePropertyCell *cyclePhaseCell;
+@property (nonatomic, strong) ReadOnlyValuePropertyCell *supportedCyclePhasesCell;
 @property (nonatomic, strong) MethodViewCell *getVendorPhasesDescriptionCell;
 @property (nonatomic, strong) MethodViewOutputCell *getVendorPhasesDescriptionOutputCell;
 
 - (instancetype)initWithDevice:(Device *)device andController:(ajn::services::CdmController *)cdmController;
-- (void) setSupportedCyclePhases:(const std::vector<uint8_t>&)supportedCyclePhases;
 
 @end
 

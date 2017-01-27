@@ -32,8 +32,10 @@
 #define AudioVolumeListener_h
 
 #import "AudioVolumeViewController.h"
-#import "alljoyn/cdm/interfaces/operation/AudioVolumeInterface.h"
-#import "alljoyn/cdm/interfaces/operation/AudioVolumeIntfControllerListener.h"
+#import "interfaces/common/operation/AudioVolumeInterface.h"
+#import "interfaces/controller/operation/AudioVolumeIntfControllerListener.h"
+
+using ajn::services::AudioVolumeInterface;
 
 class AudioVolumeListener : public ajn::services::AudioVolumeIntfControllerListener
 {

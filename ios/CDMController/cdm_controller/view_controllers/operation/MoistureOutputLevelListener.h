@@ -32,8 +32,10 @@
 #define MoistureOutputLevelListener_h
 
 #import "MoistureOutputLevelViewController.h"
-#import "alljoyn/cdm/interfaces/operation/MoistureOutputLevelInterface.h"
-#import "alljoyn/cdm/interfaces/operation/MoistureOutputLevelIntfControllerListener.h"
+#import "interfaces/common/operation/MoistureOutputLevelInterface.h"
+#import "interfaces/controller/operation/MoistureOutputLevelIntfControllerListener.h"
+
+using ajn::services::MoistureOutputLevelInterface;
 
 class MoistureOutputLevelListener : public ajn::services::MoistureOutputLevelIntfControllerListener
 {
@@ -51,9 +53,9 @@ class MoistureOutputLevelListener : public ajn::services::MoistureOutputLevelInt
         virtual void OnResponseGetMaxMoistureOutputLevel(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context);
         virtual void OnMaxMoistureOutputLevelChanged(const qcc::String& objectPath, const uint8_t value);
 
-        virtual void UpdateAutoMode(const AutoMode value);
-        virtual void OnResponseGetAutoMode(QStatus status, const qcc::String& objectPath, const AutoMode value, void* context);
-        virtual void OnAutoModeChanged(const qcc::String& objectPath, const AutoMode value);
+        virtual void UpdateAutoMode(const MoistureOutputLevelInterface::AutoMode value);
+        virtual void OnResponseGetAutoMode(QStatus status, const qcc::String& objectPath, const MoistureOutputLevelInterface::AutoMode value, void* context);
+        virtual void OnAutoModeChanged(const qcc::String& objectPath, const MoistureOutputLevelInterface::AutoMode value);
         virtual void OnResponseSetAutoMode(QStatus status, const qcc::String& objectPath, void* context);
 
         

@@ -32,8 +32,10 @@
 #define BatteryStatusListener_h
 
 #import "BatteryStatusViewController.h"
-#import "alljoyn/cdm/interfaces/operation/BatteryStatusInterface.h"
-#import "alljoyn/cdm/interfaces/operation/BatteryStatusIntfControllerListener.h"
+#import "interfaces/common/operation/BatteryStatusInterface.h"
+#import "interfaces/controller/operation/BatteryStatusIntfControllerListener.h"
+
+using ajn::services::BatteryStatusInterface;
 
 class BatteryStatusListener : public ajn::services::BatteryStatusIntfControllerListener
 {

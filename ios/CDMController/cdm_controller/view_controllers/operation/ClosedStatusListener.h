@@ -32,8 +32,10 @@
 #define ClosedStatusListener_h
 
 #import "ClosedStatusViewController.h"
-#import "alljoyn/cdm/interfaces/operation/ClosedStatusInterface.h"
-#import "alljoyn/cdm/interfaces/operation/ClosedStatusIntfControllerListener.h"
+#import "interfaces/common/operation/ClosedStatusInterface.h"
+#import "interfaces/controller/operation/ClosedStatusIntfControllerListener.h"
+
+using ajn::services::ClosedStatusInterface;
 
 class ClosedStatusListener : public ajn::services::ClosedStatusIntfControllerListener
 {

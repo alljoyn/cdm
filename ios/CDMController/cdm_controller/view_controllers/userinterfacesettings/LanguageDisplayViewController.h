@@ -32,16 +32,16 @@
 #define LanguageDisplayViewController_h
 
 #import "InterfaceViewController.h"
-#import "alljoyn/cdm/CdmController.h"
+#import "alljoyn/cdm/controller/CdmController.h"
 #import "Device.h"
 #import "ReadOnlyValuePropertyCell.h"
-#import "SelectableValuePropertyCell.h"
+#import "ReadWriteValuePropertyCell.h"
 
-@interface LanguageDisplayViewController : InterfaceViewController 
-@property (nonatomic, strong) SelectableValuePropertyCell *displayLanguageCell;
+@interface LanguageDisplayViewController : InterfaceViewController <ReadWriteValueDelegate>
+@property (nonatomic, strong) ReadWriteValuePropertyCell *displayLanguageCell;
+@property (nonatomic, strong) ReadOnlyValuePropertyCell *supportedDisplayLanguagesCell;
 
 - (instancetype)initWithDevice:(Device *)device andController:(ajn::services::CdmController *)cdmController;
-- (void) setSupportedDisplayLanguages:(const std::vector<qcc::String>&)supportedDisplayLanguages;
 
 @end
 

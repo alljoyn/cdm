@@ -72,7 +72,16 @@ void TimeDisplayListener::OnResponseSetDisplayTimeFormat(QStatus status, const q
 
 void TimeDisplayListener::UpdateSupportedDisplayTimeFormats(const std::vector<uint8_t>& value)
 {
-    [viewController setSupportedDisplayTimeFormats:value];
+    NSString *valueArrayAsString = @"";
+    std::vector<uint8_t>::const_iterator it = value.begin();
+    while(it != value.end()) {
+        valueArrayAsString = [valueArrayAsString stringByAppendingString:[NSString stringWithFormat:@"%u,", *it]];
+        ++it;
+    }
+    NSLog(@"Got SupportedDisplayTimeFormats: %@", valueArrayAsString);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        viewController.supportedDisplayTimeFormatsCell.value.text = [NSString stringWithFormat:@"%@", valueArrayAsString];
+    });
 }
 
 void TimeDisplayListener::OnResponseGetSupportedDisplayTimeFormats(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& value, void* context)

@@ -32,8 +32,10 @@
 #define OvenCyclePhaseListener_h
 
 #import "OvenCyclePhaseViewController.h"
-#import "alljoyn/cdm/interfaces/operation/OvenCyclePhaseInterface.h"
-#import "alljoyn/cdm/interfaces/operation/OvenCyclePhaseIntfControllerListener.h"
+#import "interfaces/common/operation/OvenCyclePhaseInterface.h"
+#import "interfaces/controller/operation/OvenCyclePhaseIntfControllerListener.h"
+
+using ajn::services::OvenCyclePhaseInterface;
 
 class OvenCyclePhaseListener : public ajn::services::OvenCyclePhaseIntfControllerListener
 {
@@ -50,7 +52,7 @@ class OvenCyclePhaseListener : public ajn::services::OvenCyclePhaseIntfControlle
         virtual void OnResponseGetSupportedCyclePhases(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& value, void* context);
         virtual void OnSupportedCyclePhasesChanged(const qcc::String& objectPath, const std::vector<uint8_t>& value);
 
-        virtual void OnResponseGetVendorPhasesDescription(QStatus status, const qcc::String& objectPath, const std::vector<CyclePhaseDescriptor>& phasesDescription, void* context, const char* errorName, const char* errorMessage);
+        virtual void OnResponseGetVendorPhasesDescription(QStatus status, const qcc::String& objectPath, const std::vector<OvenCyclePhaseInterface::CyclePhaseDescriptor>& phasesDescription, void* context, const char* errorName, const char* errorMessage);
         
 
     private:

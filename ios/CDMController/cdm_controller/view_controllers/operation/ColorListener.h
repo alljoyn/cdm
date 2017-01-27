@@ -32,8 +32,10 @@
 #define ColorListener_h
 
 #import "ColorViewController.h"
-#import "alljoyn/cdm/interfaces/operation/ColorInterface.h"
-#import "alljoyn/cdm/interfaces/operation/ColorIntfControllerListener.h"
+#import "interfaces/common/operation/ColorInterface.h"
+#import "interfaces/controller/operation/ColorIntfControllerListener.h"
+
+using ajn::services::ColorInterface;
 
 class ColorListener : public ajn::services::ColorIntfControllerListener
 {

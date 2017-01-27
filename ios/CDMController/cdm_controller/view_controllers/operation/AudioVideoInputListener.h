@@ -32,14 +32,14 @@
 #define AudioVideoInputListener_h
 
 #import "AudioVideoInputViewController.h"
-#import "alljoyn/cdm/interfaces/operation/AudioVideoInputInterface.h"
-#import "alljoyn/cdm/interfaces/operation/AudioVideoInputIntfControllerListener.h"
+#import "interfaces/common/operation/AudioVideoInputInterface.h"
+#import "interfaces/controller/operation/AudioVideoInputIntfControllerListener.h"
+
+using ajn::services::AudioVideoInputInterface;
 
 class AudioVideoInputListener : public ajn::services::AudioVideoInputIntfControllerListener
 {
     public:
-        using InputSources = ajn::services::AudioVideoInputInterface::InputSources;
-    
         AudioVideoInputListener(AudioVideoInputViewController *viewController);
     
         virtual ~AudioVideoInputListener();
@@ -49,9 +49,9 @@ class AudioVideoInputListener : public ajn::services::AudioVideoInputIntfControl
         virtual void OnInputSourceIdChanged(const qcc::String& objectPath, const uint16_t value);
         virtual void OnResponseSetInputSourceId(QStatus status, const qcc::String& objectPath, void* context);
 
-        virtual void UpdateSupportedInputSources(const InputSources& value);
-        virtual void OnResponseGetSupportedInputSources(QStatus status, const qcc::String& objectPath, const InputSources& value, void* context);
-        virtual void OnSupportedInputSourcesChanged(const qcc::String& objectPath, const InputSources& value);
+        virtual void UpdateSupportedInputSources(const std::vector<AudioVideoInputInterface::InputSource>& value);
+        virtual void OnResponseGetSupportedInputSources(QStatus status, const qcc::String& objectPath, const std::vector<AudioVideoInputInterface::InputSource>& value, void* context);
+        virtual void OnSupportedInputSourcesChanged(const qcc::String& objectPath, const std::vector<AudioVideoInputInterface::InputSource>& value);
 
         
 

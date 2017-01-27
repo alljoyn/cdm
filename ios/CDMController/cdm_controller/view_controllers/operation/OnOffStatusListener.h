@@ -32,8 +32,10 @@
 #define OnOffStatusListener_h
 
 #import "OnOffStatusViewController.h"
-#import "alljoyn/cdm/interfaces/operation/OnOffStatusInterface.h"
-#import "alljoyn/cdm/interfaces/operation/OnOffStatusIntfControllerListener.h"
+#import "interfaces/common/operation/OnOffStatusInterface.h"
+#import "interfaces/controller/operation/OnOffStatusIntfControllerListener.h"
+
+using ajn::services::OnOffStatusInterface;
 
 class OnOffStatusListener : public ajn::services::OnOffStatusIntfControllerListener
 {

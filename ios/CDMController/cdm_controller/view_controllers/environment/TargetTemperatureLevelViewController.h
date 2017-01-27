@@ -32,17 +32,17 @@
 #define TargetTemperatureLevelViewController_h
 
 #import "InterfaceViewController.h"
-#import "alljoyn/cdm/CdmController.h"
+#import "alljoyn/cdm/controller/CdmController.h"
 #import "Device.h"
 #import "ReadOnlyValuePropertyCell.h"
-#import "SelectableValuePropertyCell.h"
+#import "ReadWriteValuePropertyCell.h"
 
-@interface TargetTemperatureLevelViewController : InterfaceViewController 
+@interface TargetTemperatureLevelViewController : InterfaceViewController <ReadWriteValueDelegate>
 @property (nonatomic, strong) ReadOnlyValuePropertyCell *maxLevelCell;
-@property (nonatomic, strong) SelectableValuePropertyCell *targetLevelCell;
+@property (nonatomic, strong) ReadWriteValuePropertyCell *targetLevelCell;
+@property (nonatomic, strong) ReadOnlyValuePropertyCell *selectableTemperatureLevelsCell;
 
 - (instancetype)initWithDevice:(Device *)device andController:(ajn::services::CdmController *)cdmController;
-- (void) setSelectableTemperatureLevels:(const std::vector<uint8_t>&)selectableTemperatureLevels;
 
 @end
 

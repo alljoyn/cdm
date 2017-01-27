@@ -32,16 +32,16 @@
 #define TemperatureDisplayViewController_h
 
 #import "InterfaceViewController.h"
-#import "alljoyn/cdm/CdmController.h"
+#import "alljoyn/cdm/controller/CdmController.h"
 #import "Device.h"
 #import "ReadOnlyValuePropertyCell.h"
-#import "SelectableValuePropertyCell.h"
+#import "ReadWriteValuePropertyCell.h"
 
-@interface TemperatureDisplayViewController : InterfaceViewController 
-@property (nonatomic, strong) SelectableValuePropertyCell *displayTemperatureUnitCell;
+@interface TemperatureDisplayViewController : InterfaceViewController <ReadWriteValueDelegate>
+@property (nonatomic, strong) ReadWriteValuePropertyCell *displayTemperatureUnitCell;
+@property (nonatomic, strong) ReadOnlyValuePropertyCell *supportedDisplayTemperatureUnitsCell;
 
 - (instancetype)initWithDevice:(Device *)device andController:(ajn::services::CdmController *)cdmController;
-- (void) setSupportedDisplayTemperatureUnits:(const std::vector<uint8_t>&)supportedDisplayTemperatureUnits;
 
 @end
 

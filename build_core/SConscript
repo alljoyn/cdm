@@ -222,6 +222,7 @@ else:
     dummyBuilder = Builder(action = dummy_action,
                            emitter = dummy_emitter);
     env.Append(BUILDERS = {'Doxygen' : dummyBuilder})
+env.Tool('genversion', toolpath=['tools/scons'])
 env.Tool('javadoc', toolpath=['tools/scons'])
 
 # Create the builder that generates Status.h from Status.xml

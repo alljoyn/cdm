@@ -32,8 +32,10 @@
 #define SoilLevelListener_h
 
 #import "SoilLevelViewController.h"
-#import "alljoyn/cdm/interfaces/operation/SoilLevelInterface.h"
-#import "alljoyn/cdm/interfaces/operation/SoilLevelIntfControllerListener.h"
+#import "interfaces/common/operation/SoilLevelInterface.h"
+#import "interfaces/controller/operation/SoilLevelIntfControllerListener.h"
+
+using ajn::services::SoilLevelInterface;
 
 class SoilLevelListener : public ajn::services::SoilLevelIntfControllerListener
 {

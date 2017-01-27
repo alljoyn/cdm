@@ -32,8 +32,10 @@
 #define CycleControlListener_h
 
 #import "CycleControlViewController.h"
-#import "alljoyn/cdm/interfaces/operation/CycleControlInterface.h"
-#import "alljoyn/cdm/interfaces/operation/CycleControlIntfControllerListener.h"
+#import "interfaces/common/operation/CycleControlInterface.h"
+#import "interfaces/controller/operation/CycleControlIntfControllerListener.h"
+
+using ajn::services::CycleControlInterface;
 
 class CycleControlListener : public ajn::services::CycleControlIntfControllerListener
 {
@@ -42,15 +44,15 @@ class CycleControlListener : public ajn::services::CycleControlIntfControllerLis
     
         virtual ~CycleControlListener();
 
-        virtual void UpdateOperationalState(const OperationalState value);
-        virtual void OnResponseGetOperationalState(QStatus status, const qcc::String& objectPath, const OperationalState value, void* context);
-        virtual void OnOperationalStateChanged(const qcc::String& objectPath, const OperationalState value);
+        virtual void UpdateOperationalState(const CycleControlInterface::OperationalState value);
+        virtual void OnResponseGetOperationalState(QStatus status, const qcc::String& objectPath, const CycleControlInterface::OperationalState value, void* context);
+        virtual void OnOperationalStateChanged(const qcc::String& objectPath, const CycleControlInterface::OperationalState value);
 
-        virtual void UpdateSupportedOperationalStates(const std::vector<OperationalState>& value);
-        virtual void OnResponseGetSupportedOperationalStates(QStatus status, const qcc::String& objectPath, const std::vector<OperationalState>& value, void* context);
+        virtual void UpdateSupportedOperationalStates(const std::vector<CycleControlInterface::OperationalState>& value);
+        virtual void OnResponseGetSupportedOperationalStates(QStatus status, const qcc::String& objectPath, const std::vector<CycleControlInterface::OperationalState>& value, void* context);
 
-        virtual void UpdateSupportedOperationalCommands(const std::vector<OperationalCommands>& value);
-        virtual void OnResponseGetSupportedOperationalCommands(QStatus status, const qcc::String& objectPath, const std::vector<OperationalCommands>& value, void* context);
+        virtual void UpdateSupportedOperationalCommands(const std::vector<CycleControlInterface::OperationalCommands>& value);
+        virtual void OnResponseGetSupportedOperationalCommands(QStatus status, const qcc::String& objectPath, const std::vector<CycleControlInterface::OperationalCommands>& value, void* context);
 
         virtual void OnResponseExecuteOperationalCommand(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage);
         

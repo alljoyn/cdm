@@ -32,18 +32,17 @@
 #define ClimateControlModeViewController_h
 
 #import "InterfaceViewController.h"
-#import "alljoyn/cdm/CdmController.h"
+#import "alljoyn/cdm/controller/CdmController.h"
 #import "Device.h"
 #import "ReadOnlyValuePropertyCell.h"
-#import "SelectableValuePropertyCell.h"
-#include <alljoyn/cdm/interfaces/operation/ClimateControlModeInterface.h>
+#import "ReadWriteValuePropertyCell.h"
 
-@interface ClimateControlModeViewController : InterfaceViewController 
-@property (nonatomic, strong) SelectableValuePropertyCell *modeCell;
+@interface ClimateControlModeViewController : InterfaceViewController <ReadWriteValueDelegate>
+@property (nonatomic, strong) ReadWriteValuePropertyCell *modeCell;
+@property (nonatomic, strong) ReadOnlyValuePropertyCell *supportedModesCell;
 @property (nonatomic, strong) ReadOnlyValuePropertyCell *operationalStateCell;
 
 - (instancetype)initWithDevice:(Device *)device andController:(ajn::services::CdmController *)cdmController;
-- (void) setSupportedModes:(const std::vector<ajn::services::ClimateControlModeInterface::Mode>&)supportedModes;
 
 @end
 

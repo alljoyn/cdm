@@ -28,7 +28,7 @@
 
 import os
 
-env = SConscript('./build_core/SConscript')
+env = SConscript('build_core/SConscript')
 
 vars = Variables()
 vars.Add('BINDINGS', 'Bindings to build (comma separated list): cpp, java', 'cpp,java')
@@ -48,9 +48,23 @@ vars.Update(env)
 Help(vars.GenerateHelpText(env))
 
 if '' == env.subst('$ALLJOYN_DISTDIR'):
-    print 'ALLJOYN_DISTDIR variable is required'
-    if not GetOption('help'):
-        Exit(1)
+    if env['OS'] == 'darwin' and 'arm' in env['CPU']:
+        print 'Building Core with RTTI'
+
+        env = SConscript('../../core/alljoyn/build_core/SConscript')
+        vars.Update(env)
+
+        flags = env['CXXFLAGS']
+        if '-fno-rtti' in flags:
+            flags.remove('-fno-rtti')
+            env['CXXFLAGS'] = flags
+
+        env['bindings'] = set([ b.strip() for b in env['BINDINGS'].split(',') ])
+        env.SConscript('SConscript')
+    else:
+        print 'ALLJOYN_DISTDIR variable is required'
+        if not GetOption('help'):
+            Exit(1)
 else:
     if env.get('ALLJOYN_DISTDIR'):
         # normalize ALLJOYN_DISTDIR first

@@ -32,8 +32,10 @@
 #define TimerListener_h
 
 #import "TimerViewController.h"
-#import "alljoyn/cdm/interfaces/operation/TimerInterface.h"
-#import "alljoyn/cdm/interfaces/operation/TimerIntfControllerListener.h"
+#import "interfaces/common/operation/TimerInterface.h"
+#import "interfaces/controller/operation/TimerIntfControllerListener.h"
+
+using ajn::services::TimerInterface;
 
 class TimerListener : public ajn::services::TimerIntfControllerListener
 {

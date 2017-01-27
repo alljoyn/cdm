@@ -42,12 +42,12 @@ AlertsListener::~AlertsListener()
     
 }
 
-void AlertsListener::UpdateAlerts(const std::vector<AlertRecord>& value)
+void AlertsListener::UpdateAlerts(const std::vector<AlertsInterface::AlertRecord>& value)
 {
     NSString *valueArrayAsString = @"";
-    std::vector<AlertRecord>::const_iterator it = value.begin();
+    std::vector<AlertsInterface::AlertRecord>::const_iterator it = value.begin();
     while(it != value.end()) {
-        valueArrayAsString = [valueArrayAsString stringByAppendingString:[NSString stringWithFormat:@"%u:%hu:%@\n", it->severity, it->alertCode, [CDMUtil boolToNSString:it->needAcknowledgement]]];
+        valueArrayAsString = [valueArrayAsString stringByAppendingString:[NSString stringWithFormat:@"%u,%u,%d ", it->severity, it->alertCode, it->needAcknowledgement]];
         ++it;
     }
     NSLog(@"Got Alerts: %@", valueArrayAsString);
@@ -56,25 +56,25 @@ void AlertsListener::UpdateAlerts(const std::vector<AlertRecord>& value)
     });
 }
 
-void AlertsListener::OnResponseGetAlerts(QStatus status, const qcc::String& objectPath, const std::vector<AlertRecord>& value, void* context)
+void AlertsListener::OnResponseGetAlerts(QStatus status, const qcc::String& objectPath, const std::vector<AlertsInterface::AlertRecord>& value, void* context)
 {
     UpdateAlerts(value);
 }
 
-void AlertsListener::OnAlertsChanged(const qcc::String& objectPath, const std::vector<AlertRecord>& value)
+void AlertsListener::OnAlertsChanged(const qcc::String& objectPath, const std::vector<AlertsInterface::AlertRecord>& value)
 {
     UpdateAlerts(value);
 }
 
 
-void AlertsListener::OnResponseGetAlertCodesDescription(QStatus status, const qcc::String& objectPath, const std::vector<AlertCodesDescriptor>& description, void* context, const char* errorName, const char* errorMessage)
+void AlertsListener::OnResponseGetAlertCodesDescription(QStatus status, const qcc::String& objectPath, const std::vector<AlertsInterface::AlertCodesDescriptor>& description, void* context, const char* errorName, const char* errorMessage)
 {
     if(status == ER_OK) {
         NSLog(@"GetAlertCodesDescription succeeded");
         NSString *builtArgResponseStr = @"";
-        std::vector<AlertCodesDescriptor>::const_iterator it;
+        std::vector<AlertsInterface::AlertCodesDescriptor>::const_iterator it;
         for(it = description.begin(); it != description.end(); ++it) {
-            NSString *line = [NSString stringWithFormat:@"Alert Code:%u, Description:%s", it->alertCode, it->description.c_str()];
+            NSString *line = [NSString stringWithFormat:@"%u,%s\n", it->alertCode, it->description.c_str()];
             builtArgResponseStr = [builtArgResponseStr stringByAppendingString:line];
         }
         dispatch_async(dispatch_get_main_queue(), ^{

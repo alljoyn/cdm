@@ -32,8 +32,10 @@
 #define FilterStatusListener_h
 
 #import "FilterStatusViewController.h"
-#import "alljoyn/cdm/interfaces/operation/FilterStatusInterface.h"
-#import "alljoyn/cdm/interfaces/operation/FilterStatusIntfControllerListener.h"
+#import "interfaces/common/operation/FilterStatusInterface.h"
+#import "interfaces/controller/operation/FilterStatusIntfControllerListener.h"
+
+using ajn::services::FilterStatusInterface;
 
 class FilterStatusListener : public ajn::services::FilterStatusIntfControllerListener
 {

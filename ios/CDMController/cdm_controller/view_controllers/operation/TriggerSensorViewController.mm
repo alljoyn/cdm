@@ -32,9 +32,9 @@
 #import "CDMUtil.h"
 #import "TriggerSensorViewController.h"
 #import "TriggerSensorListener.h"
-#import "alljoyn/cdm/interfaces/CdmInterfaceTypes.h"
-#import "alljoyn/cdm/interfaces/CdmInterface.h"
-#import "alljoyn/cdm/interfaces/operation/TriggerSensorIntfController.h"
+#import "alljoyn/cdm/common/CdmInterfaceTypes.h"
+#import "alljoyn/cdm/common/CdmInterface.h"
+#import "interfaces/controller/operation/TriggerSensorIntfController.h"
 
 static NSInteger NUM_MEMBER_CATEGORIES = 1;
 static NSInteger NUM_PROPERTIES = 1;
@@ -43,7 +43,7 @@ static NSInteger NUM_METHODS = 0;
 @interface TriggerSensorViewController() 
 @property ajn::services::CdmController *cdmController;
 @property (nonatomic, strong) Device* device;
-@property TriggerSensorListener *listener;
+@property std::shared_ptr<TriggerSensorListener> listener;
 @property std::shared_ptr<ajn::services::TriggerSensorIntfController> triggerSensorIntfController;
 @property std::shared_ptr<ajn::services::CdmInterface> cdmInterface;
 
@@ -61,13 +61,13 @@ static NSInteger NUM_METHODS = 0;
         _cdmController = cdmController;
         _device = device;
 
-        _listener = new TriggerSensorListener(self);
+        _listener = std::shared_ptr<TriggerSensorListener>(new TriggerSensorListener(self));
 
-        _cdmInterface = _cdmController->CreateInterface(ajn::services::TRIGGER_SENSOR_INTERFACE,
+        _cdmInterface = _cdmController->CreateInterface(ajn::services::CdmInterface::GetInterfaceName(ajn::services::TRIGGER_SENSOR_INTERFACE),
                                                         _device.deviceInfo->GetBusName(),
                                                         qcc::String([_device.objPath cStringUsingEncoding:NSUTF8StringEncoding]),
                                                         _device.deviceInfo->GetSessionId(),
-                                                        *_listener);
+                                                        _listener);
         if (_cdmInterface == NULL) {
             return nil;
         }
@@ -88,8 +88,6 @@ static NSInteger NUM_METHODS = 0;
 {
     [super viewDidDisappear:animated];
 
-
-    delete _listener;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

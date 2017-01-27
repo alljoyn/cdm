@@ -7,14 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8B62D5621E3091D9000683E8 /* HidListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B62D55F1E3091D9000683E8 /* HidListener.mm */; };
+		8B62D5631E3091D9000683E8 /* HidViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B62D5611E3091D9000683E8 /* HidViewController.mm */; };
 		ACB2C6B9160B7CF200D7E3A6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACB2C6B8160B7CF200D7E3A6 /* UIKit.framework */; };
 		ACB2C6BB160B7CF200D7E3A6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACB2C6BA160B7CF200D7E3A6 /* Foundation.framework */; };
 		ACB2C6BD160B7CF200D7E3A6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACB2C6BC160B7CF200D7E3A6 /* CoreGraphics.framework */; };
 		ACB2C752160B8FDC00D7E3A6 /* libstdc++.6.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = ACB2C751160B8FDC00D7E3A6 /* libstdc++.6.dylib */; };
 		ACB2C754160B8FE800D7E3A6 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACB2C753160B8FE800D7E3A6 /* SystemConfiguration.framework */; };
-		B01A02511D790F6B0057098C /* cdm_controller in Resources */ = {isa = PBXBuildFile; fileRef = B01A024F1D790F6B0057098C /* cdm_controller */; };
+		B01A02511D790F6B0057098C /* (null) in Resources */ = {isa = PBXBuildFile; };
 		B01A02A01D7926710057098C /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = B01A02621D7926700057098C /* AppDelegate.mm */; };
-		B01A02A11D7926710057098C /* CDMController-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B01A02631D7926700057098C /* CDMController-Info.plist */; };
 		B01A02A21D7926710057098C /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B01A02651D7926700057098C /* Default-568h@2x.png */; };
 		B01A02A31D7926710057098C /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = B01A02661D7926700057098C /* Default.png */; };
 		B01A02A41D7926710057098C /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B01A02671D7926700057098C /* Default@2x.png */; };
@@ -149,11 +150,14 @@
 		B02DF5DB1DADDF0A0089CA30 /* UnlockControlListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = B02DF5CC1DADDF0A0089CA30 /* UnlockControlListener.mm */; };
 		B02DF5DC1DADDF0A0089CA30 /* UnlockControlViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B02DF5CE1DADDF0A0089CA30 /* UnlockControlViewController.mm */; };
 		B07DF3EC1D7D432E00AC9D58 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B07DF3EB1D7D432E00AC9D58 /* QuartzCore.framework */; };
-		B0E8FCF41DAF0C920061C741 /* SampleCertificateChainEngine.cc in Sources */ = {isa = PBXBuildFile; fileRef = B0E8FCF21DAF0C920061C741 /* SampleCertificateChainEngine.cc */; };
 		B0E8FCF81DAF10AB0061C741 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = B0E8FCF71DAF10AB0061C741 /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8B62D55E1E3091D9000683E8 /* HidListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HidListener.h; path = input/HidListener.h; sourceTree = "<group>"; };
+		8B62D55F1E3091D9000683E8 /* HidListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = HidListener.mm; path = input/HidListener.mm; sourceTree = "<group>"; };
+		8B62D5601E3091D9000683E8 /* HidViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HidViewController.h; path = input/HidViewController.h; sourceTree = "<group>"; };
+		8B62D5611E3091D9000683E8 /* HidViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = HidViewController.mm; path = input/HidViewController.mm; sourceTree = "<group>"; };
 		ACB2C6B4160B7CF200D7E3A6 /* CDMController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CDMController.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ACB2C6B8160B7CF200D7E3A6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		ACB2C6BA160B7CF200D7E3A6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -161,7 +165,6 @@
 		ACB2C74F160B8FAB00D7E3A6 /* libstdc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "usr/lib/libstdc++.dylib"; sourceTree = SDKROOT; };
 		ACB2C751160B8FDC00D7E3A6 /* libstdc++.6.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.6.dylib"; path = "usr/lib/libstdc++.6.dylib"; sourceTree = SDKROOT; };
 		ACB2C753160B8FE800D7E3A6 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		B01A024F1D790F6B0057098C /* cdm_controller */ = {isa = PBXFileReference; lastKnownFileType = folder; name = cdm_controller; path = /Users/jaydeni/Projects/alljoyn/services/cdm/ios/CDMController/cdm_controller; sourceTree = "<absolute>"; };
 		B01A02611D7926700057098C /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		B01A02621D7926700057098C /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
 		B01A02631D7926700057098C /* CDMController-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "CDMController-Info.plist"; sourceTree = "<group>"; };
@@ -417,8 +420,6 @@
 		B02DF5CD1DADDF0A0089CA30 /* UnlockControlViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnlockControlViewController.h; sourceTree = "<group>"; };
 		B02DF5CE1DADDF0A0089CA30 /* UnlockControlViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UnlockControlViewController.mm; sourceTree = "<group>"; };
 		B07DF3EB1D7D432E00AC9D58 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		B0E8FCF21DAF0C920061C741 /* SampleCertificateChainEngine.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SampleCertificateChainEngine.cc; path = ../../../../cpp/samples/BaseSample/SampleCertificateChainEngine.cc; sourceTree = "<group>"; };
-		B0E8FCF31DAF0C920061C741 /* SampleCertificateChainEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SampleCertificateChainEngine.h; path = ../../../../cpp/samples/BaseSample/SampleCertificateChainEngine.h; sourceTree = "<group>"; };
 		B0E8FCF71DAF10AB0061C741 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -439,6 +440,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8B62D55D1E3091B7000683E8 /* input */ = {
+			isa = PBXGroup;
+			children = (
+				8B62D55E1E3091D9000683E8 /* HidListener.h */,
+				8B62D55F1E3091D9000683E8 /* HidListener.mm */,
+				8B62D5601E3091D9000683E8 /* HidViewController.h */,
+				8B62D5611E3091D9000683E8 /* HidViewController.mm */,
+			);
+			name = input;
+			sourceTree = "<group>";
+		};
 		ACB2C6A9160B7CF100D7E3A6 = {
 			isa = PBXGroup;
 			children = (
@@ -496,8 +508,6 @@
 		B01A026E1D7926700057098C /* logic */ = {
 			isa = PBXGroup;
 			children = (
-				B0E8FCF21DAF0C920061C741 /* SampleCertificateChainEngine.cc */,
-				B0E8FCF31DAF0C920061C741 /* SampleCertificateChainEngine.h */,
 				B01A026F1D7926700057098C /* CDMDeviceListener.h */,
 				B01A02701D7926700057098C /* CDMDeviceListener.mm */,
 				B01A02711D7926700057098C /* Device.h */,
@@ -521,6 +531,7 @@
 		B01A027A1D7926700057098C /* view_controllers */ = {
 			isa = PBXGroup;
 			children = (
+				8B62D55D1E3091B7000683E8 /* input */,
 				B01D81D01D7FD0850053CDE5 /* userinterfacesettings */,
 				B01A027B1D7926700057098C /* DeviceViewController.h */,
 				B01A027C1D7926700057098C /* DeviceViewController.mm */,
@@ -840,8 +851,13 @@
 		ACB2C6AB160B7CF100D7E3A6 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = "AllSeen Alliance.";
+				TargetAttributes = {
+					ACB2C6B3160B7CF100D7E3A6 = {
+						DevelopmentTeam = 2AF8SA47V8;
+					};
+				};
 			};
 			buildConfigurationList = ACB2C6AE160B7CF100D7E3A6 /* Build configuration list for PBXProject "CDMController" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -872,7 +888,7 @@
 				B01A02C01D7926710057098C /* icon_tv.png in Resources */,
 				B01A02BF1D7926710057098C /* icon_set_top_box.png in Resources */,
 				B01A02B71D7926710057098C /* alljoyn_logo.png in Resources */,
-				B01A02511D790F6B0057098C /* cdm_controller in Resources */,
+				B01A02511D790F6B0057098C /* (null) in Resources */,
 				B01A02A51D7926710057098C /* InfoPlist.strings in Resources */,
 				B01A02A31D7926710057098C /* Default.png in Resources */,
 				B01A02BB1D7926710057098C /* icon_electric_fan.png in Resources */,
@@ -882,7 +898,6 @@
 				B01A02A61D7926710057098C /* MainStoryboard_iPad.storyboard in Resources */,
 				B01A02A41D7926710057098C /* Default@2x.png in Resources */,
 				B01A02BC1D7926710057098C /* icon_freezer.png in Resources */,
-				B01A02A11D7926710057098C /* CDMController-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -952,6 +967,7 @@
 				B01A02A91D7926710057098C /* Device.mm in Sources */,
 				B01EBF351D7E4016002F442D /* CycleControlListener.mm in Sources */,
 				B01D82571D7FF5150053CDE5 /* OnControlListener.mm in Sources */,
+				8B62D5631E3091D9000683E8 /* HidViewController.mm in Sources */,
 				B01D823B1D7FF11F0053CDE5 /* HvacFanModeListener.mm in Sources */,
 				B02DF5D41DADDF0A0089CA30 /* ColorViewController.mm in Sources */,
 				B01D81FF1D7FE7F30053CDE5 /* ClimateControlModeListener.mm in Sources */,
@@ -998,6 +1014,7 @@
 				B01EF5881D80DAD900C423B8 /* RapidModeViewController.mm in Sources */,
 				B01D82291D7FEEE40053CDE5 /* FanSpeedLevelListener.mm in Sources */,
 				B02DF5D71DADDF0A0089CA30 /* LockedStatusListener.mm in Sources */,
+				8B62D5621E3091D9000683E8 /* HidListener.mm in Sources */,
 				B02DF5CF1DADDF0A0089CA30 /* BrightnessListener.mm in Sources */,
 				B01D82171D7FE99A0053CDE5 /* CurrentPowerListener.mm in Sources */,
 				B01EBF301D7E3A02002F442D /* WindDirectionViewController.mm in Sources */,
@@ -1012,7 +1029,6 @@
 				B01EBF201D7E3A02002F442D /* CurrentAirQualityLevelViewController.mm in Sources */,
 				B01EF5A61D80DC1500C423B8 /* RemoteControllabilityViewController.mm in Sources */,
 				B01A02B31D7926710057098C /* InterfaceTableViewCell.m in Sources */,
-				B0E8FCF41DAF0C920061C741 /* SampleCertificateChainEngine.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1053,21 +1069,33 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1083,13 +1111,25 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1104,45 +1144,27 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				DEVELOPMENT_TEAM = 2AF8SA47V8;
 				ENABLE_BITCODE = NO;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "cdm_controller/CDMController-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
-					"\"$(SRCROOT)/../../../../core/alljoyn/build/darwin/$(CURRENT_ARCH)/$(PLATFORM_NAME)/debug/dist/cpp/inc\"",
-					"\"$(SRCROOT)/../../../../core/alljoyn/build/darwin/$(CURRENT_ARCH)/$(PLATFORM_NAME)/debug/dist/cpp/inc/alljoyn\"",
-					"\"$(SRCROOT)/../../../../core/alljoyn/build/darwin/arm64/$(PLATFORM_NAME)/debug/dist/cpp/inc\"",
-					"\"$(SRCROOT)/../../../../core/alljoyn/build/darwin/armv7/$(PLATFORM_NAME)/debug/dist/cpp/inc\"",
-					"\"$(SRCROOT)/../../../../core/alljoyn/build/darwin/x86_64/$(PLATFORM_NAME)/debug/dist/cpp/inc\"",
-					"\"$(SRCROOT)/../../../../core/alljoyn/build/darwin/x86/$(PLATFORM_NAME)/debug/dist/cpp/inc\"",
-					"\"$(SRCROOT)/../../../../core/alljoyn/common/inc\"",
-					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/x86_64/$(PLATFORM_NAME)/debug/dist/cdm/inc/alljoyn/cdm\"",
-					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/x86_64/$(PLATFORM_NAME)/debug/dist/cdm/inc\"",
-					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/x86_64/$(PLATFORM_NAME)/debug/dist/cdm/inc/alljoyn\"",
-					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/x86/$(PLATFORM_NAME)/debug/dist/cdm/inc/alljoyn/cdm\"",
-					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/x86/$(PLATFORM_NAME)/debug/dist/cdm/inc\"",
-					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/x86/$(PLATFORM_NAME)/debug/dist/cdm/inc/alljoyn\"",
-					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/arm64/$(PLATFORM_NAME)/debug/dist/cdm/inc/alljoyn/cdm\"",
-					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/arm64/$(PLATFORM_NAME)/debug/dist/cdm/inc\"",
-					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/arm64/$(PLATFORM_NAME)/debug/dist/cdm/inc/alljoyn\"",
-					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/armv7/$(PLATFORM_NAME)/debug/dist/cdm/inc/alljoyn/cdm\"",
-					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/armv7/$(PLATFORM_NAME)/debug/dist/cdm/inc\"",
-					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/armv7/$(PLATFORM_NAME)/debug/dist/cdm/inc/alljoyn\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/$(CURRENT_ARCH)/$(PLATFORM_NAME)/debug/dist/cpp/inc\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/$(CURRENT_ARCH)/$(PLATFORM_NAME)/debug/dist/cpp/inc/alljoyn\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/$(CURRENT_ARCH)/$(PLATFORM_NAME)/debug/dist/cdm/interfaces/inc/\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/$(CURRENT_ARCH)/$(PLATFORM_NAME)/debug/dist/cdm/framework/inc\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/$(CURRENT_ARCH)/$(PLATFORM_NAME)/debug/dist/cdm/framework/inc/alljoyn/cdm/common\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/$(CURRENT_ARCH)/$(PLATFORM_NAME)/debug/dist/cdm/framework/inc/alljoyn/cdm/controller\"",
 					"\"$(SRCROOT)/../../../../core/alljoyn/alljoyn_objc/AllJoynFramework/AllJoynFramework\"",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/cdm_controller/CDMController-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/x86_64/$(PLATFORM_NAME)/debug/dist/cpp/lib\"",
-					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/x86_64/$(PLATFORM_NAME)/debug/dist/cdm/lib\"",
-					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/arm64/$(PLATFORM_NAME)/debug/dist/cpp/lib\"",
-					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/arm64/$(PLATFORM_NAME)/debug/dist/cdm/lib\"",
-					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/armv7/$(PLATFORM_NAME)/debug/dist/cpp/lib\"",
-					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/armv7/$(PLATFORM_NAME)/debug/dist/cdm/lib\"",
-					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/x86/$(PLATFORM_NAME)/debug/dist/cpp/lib\"",
-					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/x86/$(PLATFORM_NAME)/debug/dist/cdm/lib\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/$(CURRENT_ARCH)/$(PLATFORM_NAME)/debug/dist/cdm/lib\"",
+					"\"$(SRCROOT)/../../../../services/cdm/build/darwin/$(CURRENT_ARCH)/$(PLATFORM_NAME)/debug/dist/cpp/lib\"",
 					"\"$(SRCROOT)/../../../../core/alljoyn/build/darwin/arm/$(PLATFORM_NAME)/debug/dist/about/lib\"",
 				);
 				OTHER_CFLAGS = (
@@ -1152,8 +1174,11 @@
 				OTHER_LDFLAGS = (
 					"-lalljoyn",
 					"-lajrouter",
-					"-lalljoyn_cdm",
 					"-lAllJoynFramework_iOS",
+					"-lalljoyn_cdm_common",
+					"-lalljoyn_cdm_controller",
+					"-lalljoyn_cdm_util",
+					"-lalljoyn_cdm_interfaces",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.alljoyn.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = CDMController;
@@ -1166,6 +1191,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				DEVELOPMENT_TEAM = 2AF8SA47V8;
 				ENABLE_BITCODE = NO;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = YES;

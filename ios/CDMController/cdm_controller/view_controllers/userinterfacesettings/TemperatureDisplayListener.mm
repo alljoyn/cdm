@@ -72,7 +72,16 @@ void TemperatureDisplayListener::OnResponseSetDisplayTemperatureUnit(QStatus sta
 
 void TemperatureDisplayListener::UpdateSupportedDisplayTemperatureUnits(const std::vector<uint8_t>& value)
 {
-    [viewController setSupportedDisplayTemperatureUnits:value];
+    NSString *valueArrayAsString = @"";
+    std::vector<uint8_t>::const_iterator it = value.begin();
+    while(it != value.end()) {
+        valueArrayAsString = [valueArrayAsString stringByAppendingString:[NSString stringWithFormat:@"%u,", *it]];
+        ++it;
+    }
+    NSLog(@"Got SupportedDisplayTemperatureUnits: %@", valueArrayAsString);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        viewController.supportedDisplayTemperatureUnitsCell.value.text = [NSString stringWithFormat:@"%@", valueArrayAsString];
+    });
 }
 
 void TemperatureDisplayListener::OnResponseGetSupportedDisplayTemperatureUnits(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& value, void* context)

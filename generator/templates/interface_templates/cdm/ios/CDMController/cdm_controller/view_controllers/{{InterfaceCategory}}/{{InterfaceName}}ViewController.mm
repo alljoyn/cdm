@@ -32,12 +32,12 @@
 #import "CDMUtil.h"
 #import "{{Interface.Name}}ViewController.h"
 #import "{{Interface.Name}}Listener.h"
-#import "alljoyn/cdm/interfaces/CdmInterfaceTypes.h"
-#import "alljoyn/cdm/interfaces/CdmInterface.h"
-#import "alljoyn/cdm/interfaces/{{Interface.Category}}/{{Interface.Name}}IntfController.h"
+#import "alljoyn/cdm/common/CdmInterfaceTypes.h"
+#import "alljoyn/cdm/common/CdmInterface.h"
+#import "interfaces/controller/{{Interface.Category}}/{{Interface.Name}}IntfController.h"
 
 static NSInteger NUM_MEMBER_CATEGORIES = {% if Interface.Methods %}3{% else %}1{% endif %};
-static NSInteger NUM_PROPERTIES = {{ Interface.UIProperties | length }};
+static NSInteger NUM_PROPERTIES = {{ Interface.UIProperties() | length }};
 static NSInteger NUM_METHODS = {{ Interface.Methods | length }};
 
 {% if Interface.has_property_with_selector() %}
@@ -52,7 +52,7 @@ typedef NS_ENUM(NSInteger, PICKER_TAG) {
 
 @property ajn::services::CdmController *cdmController;
 @property (nonatomic, strong) Device* device;
-@property {{Interface.Name}}Listener *listener;
+@property std::shared_ptr<{{Interface.Name}}Listener> listener;
 @property std::shared_ptr<ajn::services::{{Interface.Name}}IntfController> {{Interface.Name.camel_case()}}IntfController;
 @property std::shared_ptr<ajn::services::CdmInterface> cdmInterface;
 
@@ -74,13 +74,13 @@ typedef NS_ENUM(NSInteger, PICKER_TAG) {
         _cdmController = cdmController;
         _device = device;
 
-        _listener = new {{Interface.Name}}Listener(self);
+        _listener = std::shared_ptr<{{Interface.Name}}Listener>(new {{Interface.Name}}Listener(self));
 
-        _cdmInterface = _cdmController->CreateInterface(ajn::services::{{Interface.Name.upper_snake()}}_INTERFACE,
+        _cdmInterface = _cdmController->CreateInterface(ajn::services::CdmInterface::GetInterfaceName(ajn::services::{{Interface.Name.upper_snake()}}_INTERFACE),
                                                         _device.deviceInfo->GetBusName(),
                                                         qcc::String([_device.objPath cStringUsingEncoding:NSUTF8StringEncoding]),
                                                         _device.deviceInfo->GetSessionId(),
-                                                        *_listener);
+                                                        _listener);
         if (_cdmInterface == NULL) {
             return nil;
         }
@@ -114,8 +114,6 @@ typedef NS_ENUM(NSInteger, PICKER_TAG) {
         delete _selectorValuesFor{{property.Name}};
     }
     {% endfor %}
-
-    delete _listener;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -142,7 +140,7 @@ typedef NS_ENUM(NSInteger, PICKER_TAG) {
     QStatus status;
     
     if (indexPath.section == SECTION_PROPERTY) {
-        {% for property in Interface.UIProperties %}
+        {% for property in Interface.UIProperties() %}
         if(indexPath.row == {{loop.index0}}) {
             _{{property.Name.camel_case()}}Cell  = [tableView dequeueReusableCellWithIdentifier:{% if property.Writable and not property.Selector %}READ_WRITE_TABLE_VIEW_CELL{% elif property.Selector %}SELECTABLE_TABLE_VIEW_CELL{% else %}READ_ONLY_TABLE_VIEW_CELL{% endif %}];
             _{{property.Name.camel_case()}}Cell.label.text = @"{{property.Name}}";
@@ -192,7 +190,7 @@ typedef NS_ENUM(NSInteger, PICKER_TAG) {
 {% if Interface.has_writable_property() %}
 -(void) updateValue:(NSString *)value forProperty:(NSString *)property
 {
-    {% for property in Interface.UIProperties %}
+    {% for property in Interface.UIProperties() %}
     {% if property.Writable %}
     if([property isEqualToString:@"{{property.Name}}"]){
         {% if property.is_bool() %}

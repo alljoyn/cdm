@@ -225,7 +225,7 @@ class AJType(object):
         'b': '@',
         'y': 'u',
         'n': 'hd',
-        'q': 'hu',
+        'q': 'u',
         'i': 'd',
         'u': 'u',
         'x': 'lld',

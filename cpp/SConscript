@@ -57,13 +57,14 @@ cdm_env.Install('$CDM_DISTDIR/lib', cdm_env.SConscript('framework/src/SConscript
 cdm_env.Install('$CDM_DISTDIR/lib', cdm_env.SConscript('interfaces/src/SConscript', exports = ['cdm_env']))
 
 # Sample programs
-if cdm_env['BUILD_CDM_SAMPLES'] == 'on':
-    cdm_env.Install('$CDM_DISTDIR/bin', cdm_env.SConscript('samples/SConscript', exports = ['cdm_env']))
+if cdm_env['CPU'] not in ['armv7', 'arm64']:
+    if cdm_env['BUILD_CDM_SAMPLES'] == 'on':
+        cdm_env.Install('$CDM_DISTDIR/bin', cdm_env.SConscript('samples/SConscript', exports = ['cdm_env']))
 
-#Build Unit Tests
-cdm_env.Install('$CDM_DISTDIR/cdm/bin', cdm_env.SConscript('unit_test/DUT/SConscript', exports = ['cdm_env']))
-cdm_env.Install('$CDM_DISTDIR/cdm/bin', cdm_env.SConscript('unit_test/ServiceFramework/SConscript', exports = ['cdm_env']))
+    #Build Unit Tests
+    cdm_env.Install('$CDM_DISTDIR/cdm/bin', cdm_env.SConscript('unit_test/DUT/SConscript', exports = ['cdm_env']))
+    cdm_env.Install('$CDM_DISTDIR/cdm/bin', cdm_env.SConscript('unit_test/ServiceFramework/SConscript', exports = ['cdm_env']))
 
-# Build docs
-installDocs = cdm_env.SConscript('docs/SConscript', exports = ['cdm_env'])
-cdm_env.Depends(installDocs, cdm_env.Glob('$CDM_DISTDIR/inc/alljoyn/cdm/*.h'));
+    # Build docs
+    installDocs = cdm_env.SConscript('docs/SConscript', exports = ['cdm_env'])
+    cdm_env.Depends(installDocs, cdm_env.Glob('$CDM_DISTDIR/inc/alljoyn/cdm/*.h'));

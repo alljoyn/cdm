@@ -42,7 +42,7 @@ WaterLevelListener::~WaterLevelListener()
     
 }
 
-void WaterLevelListener::UpdateSupplySource(const SupplySource value)
+void WaterLevelListener::UpdateSupplySource(const WaterLevelInterface::SupplySource value)
 {
     NSString *valueAsStr = [NSString stringWithFormat:@"%u", value];
     NSLog(@"Got SupplySource: %@", valueAsStr);
@@ -51,12 +51,12 @@ void WaterLevelListener::UpdateSupplySource(const SupplySource value)
     });
 }
 
-void WaterLevelListener::OnResponseGetSupplySource(QStatus status, const qcc::String& objectPath, const SupplySource value, void* context)
+void WaterLevelListener::OnResponseGetSupplySource(QStatus status, const qcc::String& objectPath, const WaterLevelInterface::SupplySource value, void* context)
 {
     UpdateSupplySource(value);
 }
 
-void WaterLevelListener::OnSupplySourceChanged(const qcc::String& objectPath, const SupplySource value)
+void WaterLevelListener::OnSupplySourceChanged(const qcc::String& objectPath, const WaterLevelInterface::SupplySource value)
 {
     UpdateSupplySource(value);
 }

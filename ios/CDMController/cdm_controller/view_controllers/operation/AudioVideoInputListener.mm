@@ -44,7 +44,7 @@ AudioVideoInputListener::~AudioVideoInputListener()
 
 void AudioVideoInputListener::UpdateInputSourceId(const uint16_t value)
 {
-    NSString *valueAsStr = [NSString stringWithFormat:@"%u", value];
+    NSString *valueAsStr = [NSString stringWithFormat:@"%hu", value];
     NSLog(@"Got InputSourceId: %@", valueAsStr);
     dispatch_async(dispatch_get_main_queue(), ^{
         viewController.inputSourceIdCell.value.text = valueAsStr;
@@ -70,17 +70,26 @@ void AudioVideoInputListener::OnResponseSetInputSourceId(QStatus status, const q
     }
 }
 
-void AudioVideoInputListener::UpdateSupportedInputSources(const InputSources& value)
+void AudioVideoInputListener::UpdateSupportedInputSources(const std::vector<AudioVideoInputInterface::InputSource>& value)
 {
-    [viewController setSupportedInputSources:value];
+    NSString *valueArrayAsString = @"";
+    std::vector<AudioVideoInputInterface::InputSource>::const_iterator it = value.begin();
+    while(it != value.end()) {
+        valueArrayAsString = [valueArrayAsString stringByAppendingString:[NSString stringWithFormat:@"%u,%u,%u,%u,%s\n", it->id, it->sourceType, it->signalPresence, it->portNumber, it->friendlyName.c_str()]];
+        ++it;
+    }
+    NSLog(@"Got SupportedInputSources: %@", valueArrayAsString);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        viewController.supportedInputSourcesCell.value.text = [NSString stringWithFormat:@"%@", valueArrayAsString];
+    });
 }
 
-void AudioVideoInputListener::OnResponseGetSupportedInputSources(QStatus status, const qcc::String& objectPath, const InputSources& value, void* context)
+void AudioVideoInputListener::OnResponseGetSupportedInputSources(QStatus status, const qcc::String& objectPath, const std::vector<AudioVideoInputInterface::InputSource>& value, void* context)
 {
     UpdateSupportedInputSources(value);
 }
 
-void AudioVideoInputListener::OnSupportedInputSourcesChanged(const qcc::String& objectPath, const InputSources& value)
+void AudioVideoInputListener::OnSupportedInputSourcesChanged(const qcc::String& objectPath, const std::vector<AudioVideoInputInterface::InputSource>& value)
 {
     UpdateSupportedInputSources(value);
 }

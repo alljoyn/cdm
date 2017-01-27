@@ -32,22 +32,20 @@
 #define CycleControlViewController_h
 
 #import "InterfaceViewController.h"
-#import "alljoyn/cdm/CdmController.h"
+#import "alljoyn/cdm/controller/CdmController.h"
 #import "Device.h"
 #import "ReadOnlyValuePropertyCell.h"
-#import "SelectableValuePropertyCell.h"
 #import "MethodViewCell.h"
 #import "MethodViewOutputCell.h"
-#import "alljoyn/cdm/interfaces/operation/CycleControlInterface.h"
 
 @interface CycleControlViewController : InterfaceViewController <MethodViewDelegate>
 @property (nonatomic, strong) ReadOnlyValuePropertyCell *operationalStateCell;
+@property (nonatomic, strong) ReadOnlyValuePropertyCell *supportedOperationalStatesCell;
 @property (nonatomic, strong) ReadOnlyValuePropertyCell *supportedOperationalCommandsCell;
 @property (nonatomic, strong) MethodViewCell *executeOperationalCommandCell;
 @property (nonatomic, strong) MethodViewOutputCell *executeOperationalCommandOutputCell;
 
 - (instancetype)initWithDevice:(Device *)device andController:(ajn::services::CdmController *)cdmController;
-- (void) setSupportedOperationalStates:(const std::vector<ajn::services::CycleControlInterface::OperationalState>&)supportedOperationalStates;
 
 @end
 

@@ -32,8 +32,10 @@
 #define LockedStatusListener_h
 
 #import "LockedStatusViewController.h"
-#import "alljoyn/cdm/interfaces/operation/LockedStatusInterface.h"
-#import "alljoyn/cdm/interfaces/operation/LockedStatusIntfControllerListener.h"
+#import "interfaces/common/operation/LockedStatusInterface.h"
+#import "interfaces/controller/operation/LockedStatusIntfControllerListener.h"
+
+using ajn::services::LockedStatusInterface;
 
 class LockedStatusListener : public ajn::services::LockedStatusIntfControllerListener
 {

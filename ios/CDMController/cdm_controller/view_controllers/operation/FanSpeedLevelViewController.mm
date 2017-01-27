@@ -32,9 +32,9 @@
 #import "CDMUtil.h"
 #import "FanSpeedLevelViewController.h"
 #import "FanSpeedLevelListener.h"
-#import "alljoyn/cdm/interfaces/CdmInterfaceTypes.h"
-#import "alljoyn/cdm/interfaces/CdmInterface.h"
-#import "alljoyn/cdm/interfaces/operation/FanSpeedLevelIntfController.h"
+#import "alljoyn/cdm/common/CdmInterfaceTypes.h"
+#import "alljoyn/cdm/common/CdmInterface.h"
+#import "interfaces/controller/operation/FanSpeedLevelIntfController.h"
 
 static NSInteger NUM_MEMBER_CATEGORIES = 1;
 static NSInteger NUM_PROPERTIES = 3;
@@ -43,7 +43,7 @@ static NSInteger NUM_METHODS = 0;
 @interface FanSpeedLevelViewController() 
 @property ajn::services::CdmController *cdmController;
 @property (nonatomic, strong) Device* device;
-@property FanSpeedLevelListener *listener;
+@property std::shared_ptr<FanSpeedLevelListener> listener;
 @property std::shared_ptr<ajn::services::FanSpeedLevelIntfController> fanSpeedLevelIntfController;
 @property std::shared_ptr<ajn::services::CdmInterface> cdmInterface;
 
@@ -61,13 +61,13 @@ static NSInteger NUM_METHODS = 0;
         _cdmController = cdmController;
         _device = device;
 
-        _listener = new FanSpeedLevelListener(self);
+        _listener = std::shared_ptr<FanSpeedLevelListener>(new FanSpeedLevelListener(self));
 
-        _cdmInterface = _cdmController->CreateInterface(ajn::services::FAN_SPEED_LEVEL_INTERFACE,
+        _cdmInterface = _cdmController->CreateInterface(ajn::services::CdmInterface::GetInterfaceName(ajn::services::FAN_SPEED_LEVEL_INTERFACE),
                                                         _device.deviceInfo->GetBusName(),
                                                         qcc::String([_device.objPath cStringUsingEncoding:NSUTF8StringEncoding]),
                                                         _device.deviceInfo->GetSessionId(),
-                                                        *_listener);
+                                                        _listener);
         if (_cdmInterface == NULL) {
             return nil;
         }
@@ -88,8 +88,6 @@ static NSInteger NUM_METHODS = 0;
 {
     [super viewDidDisappear:animated];
 
-
-    delete _listener;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -155,7 +153,7 @@ static NSInteger NUM_METHODS = 0;
         _fanSpeedLevelIntfController->SetFanSpeedLevel((uint8_t)[value longLongValue]);
     }
     if([property isEqualToString:@"AutoMode"]){
-        _fanSpeedLevelIntfController->SetAutoMode((FanSpeedLevelListener::AutoMode)[value longLongValue]);
+        _fanSpeedLevelIntfController->SetAutoMode((FanSpeedLevelInterface::AutoMode)[value longLongValue]);
     }
 }
 

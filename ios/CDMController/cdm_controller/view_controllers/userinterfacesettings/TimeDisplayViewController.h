@@ -32,16 +32,16 @@
 #define TimeDisplayViewController_h
 
 #import "InterfaceViewController.h"
-#import "alljoyn/cdm/CdmController.h"
+#import "alljoyn/cdm/controller/CdmController.h"
 #import "Device.h"
 #import "ReadOnlyValuePropertyCell.h"
-#import "SelectableValuePropertyCell.h"
+#import "ReadWriteValuePropertyCell.h"
 
-@interface TimeDisplayViewController : InterfaceViewController 
-@property (nonatomic, strong) SelectableValuePropertyCell *displayTimeFormatCell;
+@interface TimeDisplayViewController : InterfaceViewController <ReadWriteValueDelegate>
+@property (nonatomic, strong) ReadWriteValuePropertyCell *displayTimeFormatCell;
+@property (nonatomic, strong) ReadOnlyValuePropertyCell *supportedDisplayTimeFormatsCell;
 
 - (instancetype)initWithDevice:(Device *)device andController:(ajn::services::CdmController *)cdmController;
-- (void) setSupportedDisplayTimeFormats:(const std::vector<uint8_t>&)supportedDisplayTimeFormats;
 
 @end
 

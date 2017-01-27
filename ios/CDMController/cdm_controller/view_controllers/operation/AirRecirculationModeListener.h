@@ -32,8 +32,10 @@
 #define AirRecirculationModeListener_h
 
 #import "AirRecirculationModeViewController.h"
-#import "alljoyn/cdm/interfaces/operation/AirRecirculationModeInterface.h"
-#import "alljoyn/cdm/interfaces/operation/AirRecirculationModeIntfControllerListener.h"
+#import "interfaces/common/operation/AirRecirculationModeInterface.h"
+#import "interfaces/controller/operation/AirRecirculationModeIntfControllerListener.h"
+
+using ajn::services::AirRecirculationModeInterface;
 
 class AirRecirculationModeListener : public ajn::services::AirRecirculationModeIntfControllerListener
 {

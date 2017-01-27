@@ -42,12 +42,12 @@ PlugInUnitsListener::~PlugInUnitsListener()
     
 }
 
-void PlugInUnitsListener::UpdatePlugInUnits(const std::vector<PlugInInfo>& value)
+void PlugInUnitsListener::UpdatePlugInUnits(const std::vector<PlugInUnitsInterface::PlugInInfo>& value)
 {
     NSString *valueArrayAsString = @"";
-    std::vector<PlugInInfo>::const_iterator it = value.begin();
+    std::vector<PlugInUnitsInterface::PlugInInfo>::const_iterator it = value.begin();
     while(it != value.end()) {
-        valueArrayAsString = [valueArrayAsString stringByAppendingString:[NSString stringWithFormat:@"%s:%u:%@,", it->objectPath.c_str(), it->deviceId, [CDMUtil boolToNSString:it->pluggedIn]]];
+        valueArrayAsString = [valueArrayAsString stringByAppendingString:[NSString stringWithFormat:@"%u,%d ", it->deviceId, it->pluggedIn]];
         ++it;
     }
     NSLog(@"Got PlugInUnits: %@", valueArrayAsString);
@@ -56,12 +56,12 @@ void PlugInUnitsListener::UpdatePlugInUnits(const std::vector<PlugInInfo>& value
     });
 }
 
-void PlugInUnitsListener::OnResponseGetPlugInUnits(QStatus status, const qcc::String& objectPath, const std::vector<PlugInInfo>& value, void* context)
+void PlugInUnitsListener::OnResponseGetPlugInUnits(QStatus status, const qcc::String& objectPath, const std::vector<PlugInUnitsInterface::PlugInInfo>& value, void* context)
 {
     UpdatePlugInUnits(value);
 }
 
-void PlugInUnitsListener::OnPlugInUnitsChanged(const qcc::String& objectPath, const std::vector<PlugInInfo>& value)
+void PlugInUnitsListener::OnPlugInUnitsChanged(const qcc::String& objectPath, const std::vector<PlugInUnitsInterface::PlugInInfo>& value)
 {
     UpdatePlugInUnits(value);
 }

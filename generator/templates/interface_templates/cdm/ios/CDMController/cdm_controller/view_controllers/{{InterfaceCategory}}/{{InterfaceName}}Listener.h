@@ -32,8 +32,10 @@
 #define {{Interface.Name}}Listener_h
 
 #import "{{Interface.Name}}ViewController.h"
-#import "alljoyn/cdm/interfaces/{{Interface.Category}}/{{Interface.Name}}Interface.h"
-#import "alljoyn/cdm/interfaces/{{Interface.Category}}/{{Interface.Name}}IntfControllerListener.h"
+#import "interfaces/common/{{Interface.Category}}/{{Interface.Name}}Interface.h"
+#import "interfaces/controller/{{Interface.Category}}/{{Interface.Name}}IntfControllerListener.h"
+
+using ajn::services::{{Interface.Name}}Interface;
 
 class {{Interface.Name}}Listener : public ajn::services::{{Interface.Name}}IntfControllerListener
 {

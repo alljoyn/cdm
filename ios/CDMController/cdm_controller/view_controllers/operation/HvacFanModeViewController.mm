@@ -32,27 +32,21 @@
 #import "CDMUtil.h"
 #import "HvacFanModeViewController.h"
 #import "HvacFanModeListener.h"
-#import "alljoyn/cdm/interfaces/CdmInterfaceTypes.h"
-#import "alljoyn/cdm/interfaces/CdmInterface.h"
-#import "alljoyn/cdm/interfaces/operation/HvacFanModeIntfController.h"
+#import "alljoyn/cdm/common/CdmInterfaceTypes.h"
+#import "alljoyn/cdm/common/CdmInterface.h"
+#import "interfaces/controller/operation/HvacFanModeIntfController.h"
 
 static NSInteger NUM_MEMBER_CATEGORIES = 1;
-static NSInteger NUM_PROPERTIES = 1;
+static NSInteger NUM_PROPERTIES = 2;
 static NSInteger NUM_METHODS = 0;
 
-typedef NS_ENUM(NSInteger, PICKER_TAG) {
-    MODE_PICKER_TAG = 1,
-};
-
-@interface HvacFanModeViewController() <UIPickerViewDelegate, UIPickerViewDataSource>
+@interface HvacFanModeViewController() 
 @property ajn::services::CdmController *cdmController;
 @property (nonatomic, strong) Device* device;
-@property HvacFanModeListener *listener;
+@property std::shared_ptr<HvacFanModeListener> listener;
 @property std::shared_ptr<ajn::services::HvacFanModeIntfController> hvacFanModeIntfController;
 @property std::shared_ptr<ajn::services::CdmInterface> cdmInterface;
 
-@property (nonatomic, strong) UIPickerView *modePicker;
-@property std::vector<HvacFanModeListener::Mode> *selectorValuesForMode;
 
 @end
 
@@ -67,13 +61,13 @@ typedef NS_ENUM(NSInteger, PICKER_TAG) {
         _cdmController = cdmController;
         _device = device;
 
-        _listener = new HvacFanModeListener(self);
+        _listener = std::shared_ptr<HvacFanModeListener>(new HvacFanModeListener(self));
 
-        _cdmInterface = _cdmController->CreateInterface(ajn::services::HVAC_FAN_MODE_INTERFACE,
+        _cdmInterface = _cdmController->CreateInterface(ajn::services::CdmInterface::GetInterfaceName(ajn::services::HVAC_FAN_MODE_INTERFACE),
                                                         _device.deviceInfo->GetBusName(),
                                                         qcc::String([_device.objPath cStringUsingEncoding:NSUTF8StringEncoding]),
                                                         _device.deviceInfo->GetSessionId(),
-                                                        *_listener);
+                                                        _listener);
         if (_cdmInterface == NULL) {
             return nil;
         }
@@ -88,23 +82,12 @@ typedef NS_ENUM(NSInteger, PICKER_TAG) {
 {
     [super viewDidLoad];
 
-    _modePicker = [[UIPickerView alloc] init];
-    _modePicker.delegate = self;
-    _modePicker.dataSource = self;
-    _modePicker.showsSelectionIndicator = YES;
-    _modePicker.hidden = NO;
-    _modePicker.tag = MODE_PICKER_TAG;
 }
 
 - (void) viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
 
-    if (_selectorValuesForMode) {
-        delete _selectorValuesForMode;
-    }
-
-    delete _listener;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -126,14 +109,9 @@ typedef NS_ENUM(NSInteger, PICKER_TAG) {
     
     if (indexPath.section == SECTION_PROPERTY) {
         if(indexPath.row == 0) {
-            _modeCell  = [tableView dequeueReusableCellWithIdentifier:SELECTABLE_TABLE_VIEW_CELL];
+            _modeCell  = [tableView dequeueReusableCellWithIdentifier:READ_WRITE_TABLE_VIEW_CELL];
             _modeCell.label.text = @"Mode";
-            _modeCell.value.inputView = _modePicker;
-
-            status = _hvacFanModeIntfController->GetSupportedModes();
-            if(status != ER_OK) {
-                NSLog(@"Failed to get GetSupportedModes");
-            }                
+            _modeCell.delegate = self;
 
             status = _hvacFanModeIntfController->GetMode();
             if(status != ER_OK) {
@@ -142,66 +120,29 @@ typedef NS_ENUM(NSInteger, PICKER_TAG) {
 
             return _modeCell;
         }
+        if(indexPath.row == 1) {
+            _supportedModesCell  = [tableView dequeueReusableCellWithIdentifier:READ_ONLY_TABLE_VIEW_CELL];
+            _supportedModesCell.label.text = @"SupportedModes";
+
+            status = _hvacFanModeIntfController->GetSupportedModes();
+            if(status != ER_OK) {
+                NSLog(@"Failed to get GetSupportedModes");
+            }
+
+            return _supportedModesCell;
+        }
     }     
     return nil;
 }
 
-
-
-- (void) setSupportedModes:(const std::vector<HvacFanModeListener::Mode>&)supportedModes
+-(void) updateValue:(NSString *)value forProperty:(NSString *)property
 {
-    if(self.self.selectorValuesForMode) {
-        delete _selectorValuesForMode;
-    }
-
-    self.selectorValuesForMode = new std::vector<HvacFanModeListener::Mode>(supportedModes);
-}
-
-#pragma mark UIPickerViewDataSource
-
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
-{
-    return 1;
-}
-
-- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
-{   
-    switch(pickerView.tag) {
-        case MODE_PICKER_TAG:
-            return (NSInteger)self.selectorValuesForMode->size();
-        default:
-            return 0;
+    if([property isEqualToString:@"Mode"]){
+        _hvacFanModeIntfController->SetMode((HvacFanModeInterface::Mode)[value longLongValue]);
     }
 }
 
-#pragma mark UIPickerViewDelegate
 
-- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
-{
-    switch(pickerView.tag) {
-        case MODE_PICKER_TAG:
-        {
-            HvacFanModeListener::Mode mode = self.selectorValuesForMode->at(row);
-            return [NSString stringWithFormat:@"%hu", mode];
-        }
-        default:
-            return nil;
-    }
-}
 
-- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
-{
-   switch(pickerView.tag) {
-        case MODE_PICKER_TAG:
-        {
-            HvacFanModeListener::Mode mode = self.selectorValuesForMode->at(row);
-            _hvacFanModeIntfController->SetMode(mode);
-            [self.modeCell.value resignFirstResponder];
-            break;
-        }
-        default:
-            break;
-    }    
-}
 
 @end

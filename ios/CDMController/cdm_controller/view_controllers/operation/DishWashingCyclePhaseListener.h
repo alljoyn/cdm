@@ -32,8 +32,10 @@
 #define DishWashingCyclePhaseListener_h
 
 #import "DishWashingCyclePhaseViewController.h"
-#import "alljoyn/cdm/interfaces/operation/DishWashingCyclePhaseInterface.h"
-#import "alljoyn/cdm/interfaces/operation/DishWashingCyclePhaseIntfControllerListener.h"
+#import "interfaces/common/operation/DishWashingCyclePhaseInterface.h"
+#import "interfaces/controller/operation/DishWashingCyclePhaseIntfControllerListener.h"
+
+using ajn::services::DishWashingCyclePhaseInterface;
 
 class DishWashingCyclePhaseListener : public ajn::services::DishWashingCyclePhaseIntfControllerListener
 {
@@ -50,7 +52,7 @@ class DishWashingCyclePhaseListener : public ajn::services::DishWashingCyclePhas
         virtual void OnResponseGetSupportedCyclePhases(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& value, void* context);
         virtual void OnSupportedCyclePhasesChanged(const qcc::String& objectPath, const std::vector<uint8_t>& value);
 
-        virtual void OnResponseGetVendorPhasesDescription(QStatus status, const qcc::String& objectPath, const std::vector<CyclePhaseDescriptor>& phasesDescription, void* context, const char* errorName, const char* errorMessage);
+        virtual void OnResponseGetVendorPhasesDescription(QStatus status, const qcc::String& objectPath, const std::vector<DishWashingCyclePhaseInterface::CyclePhaseDescriptor>& phasesDescription, void* context, const char* errorName, const char* errorMessage);
         
 
     private:

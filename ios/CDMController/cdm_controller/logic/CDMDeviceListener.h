@@ -35,7 +35,7 @@
 #include "DeviceInfo.h"
 #include "CdmAboutData.h"
 #include "DeviceViewController.h"
-#import "alljoyn/cdm/CdmController.h"
+#import "alljoyn/cdm/controller/CdmController.h"
 
 namespace ajn {
 namespace services{
@@ -57,7 +57,7 @@ class CDMDeviceListener : public ajn::services::DeviceListener
     
         virtual void OnDeviceRemoved(const char* busname);
    
-        virtual void OnDeviceSessionJoined(const DeviceInfoPtr& info);
+        virtual void OnDeviceSessionJoined(const Ref<DeviceInfo> info);
     
         virtual void OnDeviceSessionLost(SessionId sessionId);
     

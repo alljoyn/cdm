@@ -32,8 +32,10 @@
 #define OnControlListener_h
 
 #import "OnControlViewController.h"
-#import "alljoyn/cdm/interfaces/operation/OnControlInterface.h"
-#import "alljoyn/cdm/interfaces/operation/OnControlIntfControllerListener.h"
+#import "interfaces/common/operation/OnControlInterface.h"
+#import "interfaces/controller/operation/OnControlIntfControllerListener.h"
+
+using ajn::services::OnControlInterface;
 
 class OnControlListener : public ajn::services::OnControlIntfControllerListener
 {

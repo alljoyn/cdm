@@ -43,7 +43,7 @@
 @property (nonatomic, strong) NSString *objPath;
 @property NSUInteger type;
 @property (nonatomic, strong) NSString *busName;
-@property ajn::services::DeviceInfoPtr deviceInfo;
+@property ajn::services::Ref<ajn::services::DeviceInfo> deviceInfo;
 
 -(id)initWithName:(NSString *)name withAppID:(NSUUID *)appID withObjPath:(NSString *)objPath withInterfaces:(NSMutableArray *)interfaces;
 

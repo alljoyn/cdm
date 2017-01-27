@@ -32,27 +32,21 @@
 #import "CDMUtil.h"
 #import "LaundryCyclePhaseViewController.h"
 #import "LaundryCyclePhaseListener.h"
-#import "alljoyn/cdm/interfaces/CdmInterfaceTypes.h"
-#import "alljoyn/cdm/interfaces/CdmInterface.h"
-#import "alljoyn/cdm/interfaces/operation/LaundryCyclePhaseIntfController.h"
+#import "alljoyn/cdm/common/CdmInterfaceTypes.h"
+#import "alljoyn/cdm/common/CdmInterface.h"
+#import "interfaces/controller/operation/LaundryCyclePhaseIntfController.h"
 
 static NSInteger NUM_MEMBER_CATEGORIES = 3;
-static NSInteger NUM_PROPERTIES = 1;
+static NSInteger NUM_PROPERTIES = 2;
 static NSInteger NUM_METHODS = 1;
 
-typedef NS_ENUM(NSInteger, PICKER_TAG) {
-    CYCLE_PHASE_PICKER_TAG = 1,
-};
-
-@interface LaundryCyclePhaseViewController() <UIPickerViewDelegate, UIPickerViewDataSource>
+@interface LaundryCyclePhaseViewController() 
 @property ajn::services::CdmController *cdmController;
 @property (nonatomic, strong) Device* device;
-@property LaundryCyclePhaseListener *listener;
+@property std::shared_ptr<LaundryCyclePhaseListener> listener;
 @property std::shared_ptr<ajn::services::LaundryCyclePhaseIntfController> laundryCyclePhaseIntfController;
 @property std::shared_ptr<ajn::services::CdmInterface> cdmInterface;
 
-@property (nonatomic, strong) UIPickerView *cyclePhasePicker;
-@property std::vector<uint8_t> *selectorValuesForCyclePhase;
 
 @end
 
@@ -67,13 +61,13 @@ typedef NS_ENUM(NSInteger, PICKER_TAG) {
         _cdmController = cdmController;
         _device = device;
 
-        _listener = new LaundryCyclePhaseListener(self);
+        _listener = std::shared_ptr<LaundryCyclePhaseListener>(new LaundryCyclePhaseListener(self));
 
-        _cdmInterface = _cdmController->CreateInterface(ajn::services::LAUNDRY_CYCLE_PHASE_INTERFACE,
+        _cdmInterface = _cdmController->CreateInterface(ajn::services::CdmInterface::GetInterfaceName(ajn::services::LAUNDRY_CYCLE_PHASE_INTERFACE),
                                                         _device.deviceInfo->GetBusName(),
                                                         qcc::String([_device.objPath cStringUsingEncoding:NSUTF8StringEncoding]),
                                                         _device.deviceInfo->GetSessionId(),
-                                                        *_listener);
+                                                        _listener);
         if (_cdmInterface == NULL) {
             return nil;
         }
@@ -88,23 +82,12 @@ typedef NS_ENUM(NSInteger, PICKER_TAG) {
 {
     [super viewDidLoad];
 
-    _cyclePhasePicker = [[UIPickerView alloc] init];
-    _cyclePhasePicker.delegate = self;
-    _cyclePhasePicker.dataSource = self;
-    _cyclePhasePicker.showsSelectionIndicator = YES;
-    _cyclePhasePicker.hidden = NO;
-    _cyclePhasePicker.tag = CYCLE_PHASE_PICKER_TAG;
 }
 
 - (void) viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
 
-    if (_selectorValuesForCyclePhase) {
-        delete _selectorValuesForCyclePhase;
-    }
-
-    delete _listener;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -131,14 +114,8 @@ typedef NS_ENUM(NSInteger, PICKER_TAG) {
     
     if (indexPath.section == SECTION_PROPERTY) {
         if(indexPath.row == 0) {
-            _cyclePhaseCell  = [tableView dequeueReusableCellWithIdentifier:SELECTABLE_TABLE_VIEW_CELL];
+            _cyclePhaseCell  = [tableView dequeueReusableCellWithIdentifier:READ_ONLY_TABLE_VIEW_CELL];
             _cyclePhaseCell.label.text = @"CyclePhase";
-            _cyclePhaseCell.value.inputView = _cyclePhasePicker;
-
-            status = _laundryCyclePhaseIntfController->GetSupportedCyclePhases();
-            if(status != ER_OK) {
-                NSLog(@"Failed to get GetSupportedCyclePhases");
-            }                
 
             status = _laundryCyclePhaseIntfController->GetCyclePhase();
             if(status != ER_OK) {
@@ -146,6 +123,17 @@ typedef NS_ENUM(NSInteger, PICKER_TAG) {
             }
 
             return _cyclePhaseCell;
+        }
+        if(indexPath.row == 1) {
+            _supportedCyclePhasesCell  = [tableView dequeueReusableCellWithIdentifier:READ_ONLY_TABLE_VIEW_CELL];
+            _supportedCyclePhasesCell.label.text = @"SupportedCyclePhases";
+
+            status = _laundryCyclePhaseIntfController->GetSupportedCyclePhases();
+            if(status != ER_OK) {
+                NSLog(@"Failed to get GetSupportedCyclePhases");
+            }
+
+            return _supportedCyclePhasesCell;
         }
     } else if (indexPath.section == SECTION_METHOD) {
         if(indexPath.row == 0) {
@@ -195,60 +183,6 @@ typedef NS_ENUM(NSInteger, PICKER_TAG) {
 
 }
 
-- (void) setSupportedCyclePhases:(const std::vector<uint8_t>&)supportedCyclePhases
-{
-    if(self.self.selectorValuesForCyclePhase) {
-        delete _selectorValuesForCyclePhase;
-    }
 
-    self.selectorValuesForCyclePhase = new std::vector<uint8_t>(supportedCyclePhases);
-}
-
-#pragma mark UIPickerViewDataSource
-
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
-{
-    return 1;
-}
-
-- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
-{   
-    switch(pickerView.tag) {
-        case CYCLE_PHASE_PICKER_TAG:
-            return (NSInteger)self.selectorValuesForCyclePhase->size();
-        default:
-            return 0;
-    }
-}
-
-#pragma mark UIPickerViewDelegate
-
-- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
-{
-    switch(pickerView.tag) {
-        case CYCLE_PHASE_PICKER_TAG:
-        {
-            uint8_t cyclePhase = self.selectorValuesForCyclePhase->at(row);
-            return [NSString stringWithFormat:@"%u", cyclePhase];
-        }
-        default:
-            return nil;
-    }
-}
-
-- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
-{
-   switch(pickerView.tag) {
-        case CYCLE_PHASE_PICKER_TAG:
-        {
-//            uint8_t cyclePhase = self.selectorValuesForCyclePhase->at(row);
-//            _laundryCyclePhaseIntfController->SetCyclePhase(cyclePhase);
-            [self.cyclePhaseCell.value resignFirstResponder];
-            break;
-        }
-        default:
-            break;
-    }    
-}
 
 @end

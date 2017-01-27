@@ -32,8 +32,10 @@
 #define LaundryCyclePhaseListener_h
 
 #import "LaundryCyclePhaseViewController.h"
-#import "alljoyn/cdm/interfaces/operation/LaundryCyclePhaseInterface.h"
-#import "alljoyn/cdm/interfaces/operation/LaundryCyclePhaseIntfControllerListener.h"
+#import "interfaces/common/operation/LaundryCyclePhaseInterface.h"
+#import "interfaces/controller/operation/LaundryCyclePhaseIntfControllerListener.h"
+
+using ajn::services::LaundryCyclePhaseInterface;
 
 class LaundryCyclePhaseListener : public ajn::services::LaundryCyclePhaseIntfControllerListener
 {
@@ -50,7 +52,7 @@ class LaundryCyclePhaseListener : public ajn::services::LaundryCyclePhaseIntfCon
         virtual void OnResponseGetSupportedCyclePhases(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& value, void* context);
         virtual void OnSupportedCyclePhasesChanged(const qcc::String& objectPath, const std::vector<uint8_t>& value);
 
-        virtual void OnResponseGetVendorPhasesDescription(QStatus status, const qcc::String& objectPath, const std::vector<CyclePhaseDescriptor>& phasesDescription, void* context, const char* errorName, const char* errorMessage);
+        virtual void OnResponseGetVendorPhasesDescription(QStatus status, const qcc::String& objectPath, const std::vector<LaundryCyclePhaseInterface::CyclePhaseDescriptor>& phasesDescription, void* context, const char* errorName, const char* errorMessage);
         
 
     private:

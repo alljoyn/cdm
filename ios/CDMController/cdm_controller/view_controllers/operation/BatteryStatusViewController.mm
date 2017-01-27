@@ -32,9 +32,9 @@
 #import "CDMUtil.h"
 #import "BatteryStatusViewController.h"
 #import "BatteryStatusListener.h"
-#import "alljoyn/cdm/interfaces/CdmInterfaceTypes.h"
-#import "alljoyn/cdm/interfaces/CdmInterface.h"
-#import "alljoyn/cdm/interfaces/operation/BatteryStatusIntfController.h"
+#import "alljoyn/cdm/common/CdmInterfaceTypes.h"
+#import "alljoyn/cdm/common/CdmInterface.h"
+#import "interfaces/controller/operation/BatteryStatusIntfController.h"
 
 static NSInteger NUM_MEMBER_CATEGORIES = 1;
 static NSInteger NUM_PROPERTIES = 2;
@@ -43,7 +43,7 @@ static NSInteger NUM_METHODS = 0;
 @interface BatteryStatusViewController() 
 @property ajn::services::CdmController *cdmController;
 @property (nonatomic, strong) Device* device;
-@property BatteryStatusListener *listener;
+@property std::shared_ptr<BatteryStatusListener> listener;
 @property std::shared_ptr<ajn::services::BatteryStatusIntfController> batteryStatusIntfController;
 @property std::shared_ptr<ajn::services::CdmInterface> cdmInterface;
 
@@ -61,13 +61,13 @@ static NSInteger NUM_METHODS = 0;
         _cdmController = cdmController;
         _device = device;
 
-        _listener = new BatteryStatusListener(self);
+        _listener = std::shared_ptr<BatteryStatusListener>(new BatteryStatusListener(self));
 
-        _cdmInterface = _cdmController->CreateInterface(ajn::services::BATTERY_STATUS_INTERFACE,
+        _cdmInterface = _cdmController->CreateInterface(ajn::services::CdmInterface::GetInterfaceName(ajn::services::BATTERY_STATUS_INTERFACE),
                                                         _device.deviceInfo->GetBusName(),
                                                         qcc::String([_device.objPath cStringUsingEncoding:NSUTF8StringEncoding]),
                                                         _device.deviceInfo->GetSessionId(),
-                                                        *_listener);
+                                                        _listener);
         if (_cdmInterface == NULL) {
             return nil;
         }
@@ -88,8 +88,6 @@ static NSInteger NUM_METHODS = 0;
 {
     [super viewDidDisappear:animated];
 
-
-    delete _listener;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

@@ -32,17 +32,16 @@
 #define AudioVideoInputViewController_h
 
 #import "InterfaceViewController.h"
-#import "alljoyn/cdm/CdmController.h"
+#import "alljoyn/cdm/controller/CdmController.h"
 #import "Device.h"
 #import "ReadOnlyValuePropertyCell.h"
-#import "SelectableValuePropertyCell.h"
-#import "alljoyn/cdm/interfaces/operation/AudioVideoInputInterface.h"
+#import "ReadWriteValuePropertyCell.h"
 
-@interface AudioVideoInputViewController : InterfaceViewController 
-@property (nonatomic, strong) SelectableValuePropertyCell *inputSourceIdCell;
+@interface AudioVideoInputViewController : InterfaceViewController <ReadWriteValueDelegate>
+@property (nonatomic, strong) ReadWriteValuePropertyCell *inputSourceIdCell;
+@property (nonatomic, strong) ReadOnlyValuePropertyCell *supportedInputSourcesCell;
 
 - (instancetype)initWithDevice:(Device *)device andController:(ajn::services::CdmController *)cdmController;
-- (void) setSupportedInputSources:(const ajn::services::AudioVideoInputInterface::InputSources&)supportedInputSources;
 
 @end
 

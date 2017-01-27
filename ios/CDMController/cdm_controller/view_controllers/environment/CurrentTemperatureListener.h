@@ -32,8 +32,10 @@
 #define CurrentTemperatureListener_h
 
 #import "CurrentTemperatureViewController.h"
-#import "alljoyn/cdm/interfaces/environment/CurrentTemperatureInterface.h"
-#import "alljoyn/cdm/interfaces/environment/CurrentTemperatureIntfControllerListener.h"
+#import "interfaces/common/environment/CurrentTemperatureInterface.h"
+#import "interfaces/controller/environment/CurrentTemperatureIntfControllerListener.h"
+
+using ajn::services::CurrentTemperatureInterface;
 
 class CurrentTemperatureListener : public ajn::services::CurrentTemperatureIntfControllerListener
 {

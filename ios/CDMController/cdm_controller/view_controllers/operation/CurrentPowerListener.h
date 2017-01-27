@@ -32,8 +32,10 @@
 #define CurrentPowerListener_h
 
 #import "CurrentPowerViewController.h"
-#import "alljoyn/cdm/interfaces/operation/CurrentPowerInterface.h"
-#import "alljoyn/cdm/interfaces/operation/CurrentPowerIntfControllerListener.h"
+#import "interfaces/common/operation/CurrentPowerInterface.h"
+#import "interfaces/controller/operation/CurrentPowerIntfControllerListener.h"
+
+using ajn::services::CurrentPowerInterface;
 
 class CurrentPowerListener : public ajn::services::CurrentPowerIntfControllerListener
 {

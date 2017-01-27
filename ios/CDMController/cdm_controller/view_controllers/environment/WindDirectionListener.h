@@ -32,8 +32,10 @@
 #define WindDirectionListener_h
 
 #import "WindDirectionViewController.h"
-#import "alljoyn/cdm/interfaces/environment/WindDirectionInterface.h"
-#import "alljoyn/cdm/interfaces/environment/WindDirectionIntfControllerListener.h"
+#import "interfaces/common/environment/WindDirectionInterface.h"
+#import "interfaces/controller/environment/WindDirectionIntfControllerListener.h"
+
+using ajn::services::WindDirectionInterface;
 
 class WindDirectionListener : public ajn::services::WindDirectionIntfControllerListener
 {
@@ -51,9 +53,9 @@ class WindDirectionListener : public ajn::services::WindDirectionIntfControllerL
         virtual void OnResponseGetHorizontalMax(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context);
         virtual void OnHorizontalMaxChanged(const qcc::String& objectPath, const uint16_t value);
 
-        virtual void UpdateHorizontalAutoMode(const AutoMode value);
-        virtual void OnResponseGetHorizontalAutoMode(QStatus status, const qcc::String& objectPath, const AutoMode value, void* context);
-        virtual void OnHorizontalAutoModeChanged(const qcc::String& objectPath, const AutoMode value);
+        virtual void UpdateHorizontalAutoMode(const WindDirectionInterface::AutoMode value);
+        virtual void OnResponseGetHorizontalAutoMode(QStatus status, const qcc::String& objectPath, const WindDirectionInterface::AutoMode value, void* context);
+        virtual void OnHorizontalAutoModeChanged(const qcc::String& objectPath, const WindDirectionInterface::AutoMode value);
         virtual void OnResponseSetHorizontalAutoMode(QStatus status, const qcc::String& objectPath, void* context);
 
         virtual void UpdateVerticalDirection(const uint16_t value);
@@ -65,9 +67,9 @@ class WindDirectionListener : public ajn::services::WindDirectionIntfControllerL
         virtual void OnResponseGetVerticalMax(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context);
         virtual void OnVerticalMaxChanged(const qcc::String& objectPath, const uint16_t value);
 
-        virtual void UpdateVerticalAutoMode(const AutoMode value);
-        virtual void OnResponseGetVerticalAutoMode(QStatus status, const qcc::String& objectPath, const AutoMode value, void* context);
-        virtual void OnVerticalAutoModeChanged(const qcc::String& objectPath, const AutoMode value);
+        virtual void UpdateVerticalAutoMode(const WindDirectionInterface::AutoMode value);
+        virtual void OnResponseGetVerticalAutoMode(QStatus status, const qcc::String& objectPath, const WindDirectionInterface::AutoMode value, void* context);
+        virtual void OnVerticalAutoModeChanged(const qcc::String& objectPath, const WindDirectionInterface::AutoMode value);
         virtual void OnResponseSetVerticalAutoMode(QStatus status, const qcc::String& objectPath, void* context);
 
         

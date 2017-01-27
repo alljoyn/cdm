@@ -90,14 +90,14 @@ void ChannelListener::OnTotalNumberOfChannelsChanged(const qcc::String& objectPa
 }
 
 
-void ChannelListener::OnResponseGetChannelList(QStatus status, const qcc::String& objectPath, const std::vector<ChannelInfoRecord>& listOfChannelInfoRecords, void* context, const char* errorName, const char* errorMessage)
+void ChannelListener::OnResponseGetChannelList(QStatus status, const qcc::String& objectPath, const std::vector<ChannelInterface::ChannelInfoRecord>& listOfChannelInfoRecords, void* context, const char* errorName, const char* errorMessage)
 {
     if(status == ER_OK) {
         NSLog(@"GetChannelList succeeded");
         NSString *builtArgResponseStr = @"";
-        std::vector<ChannelInfoRecord>::const_iterator it;
+        std::vector<ChannelInterface::ChannelInfoRecord>::const_iterator it;
         for(it = listOfChannelInfoRecords.begin(); it != listOfChannelInfoRecords.end(); ++it) {
-            NSString *line = [NSString stringWithFormat:@"ID:%s, Number:%s, Name:%s", it->channelID.c_str(), it->channelNumber.c_str(), it->channelName.c_str()];
+            NSString *line = [NSString stringWithFormat:@"%s,%s,%s\n", it->channelID.c_str(), it->channelNumber.c_str(), it->channelName.c_str()];
             builtArgResponseStr = [builtArgResponseStr stringByAppendingString:line];
         }
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -110,8 +110,5 @@ void ChannelListener::OnResponseGetChannelList(QStatus status, const qcc::String
 
 void ChannelListener::OnChannelListChanged(const qcc::String& objectPath)
 {
-    NSLog(@"Channel list changed at path: %s", objectPath.c_str());
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [viewController executeMethod:@"GetChannelList"];
-    });
+    // TODO: Implement on signal logic
 }
