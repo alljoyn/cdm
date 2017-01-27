@@ -41,7 +41,7 @@
 #include <interfaces/controllee/operation/RapidModeIntfControllee.h>
 #include <interfaces/controllee/operation/RapidModeIntfControlleeModel.h>
 
-#include "../CdmInterfaceValidation.h"
+#include <interfaces/controllee/CdmInterfaceValidation.h>
 
 
 using namespace qcc;
@@ -66,6 +66,12 @@ class RapidModeIntfControllee::Impl :
      * @return status
      */
     QStatus Init() override;
+
+    /**
+     * override the interfaces GetInterfaceName method
+     * @return
+     */
+    const qcc::String& GetInterfaceName() const override { return InterfaceName; }
 
     /**
      * a callback function for getting property.
@@ -119,6 +125,7 @@ class RapidModeIntfControllee::Impl :
     MethodHandlers m_methodHandlers;
 
     Ref<RapidModeIntfControlleeModel> m_RapidModeModelInterface;
+    qcc::String InterfaceName;
 };
 
 /*
@@ -179,7 +186,8 @@ RapidModeIntfControllee::Impl::Impl(BusAttachment& busAttachment, Ref<RapidModeI
     m_busAttachment(busAttachment),
     m_cdmControllee(cdmControllee),
     m_methodHandlers(),
-    m_RapidModeModelInterface(model)
+    m_RapidModeModelInterface(model),
+    InterfaceName(RapidModeInterface::INTERFACE_NAME)
 {
     ignore_unused(m_cdmControllee);
 }

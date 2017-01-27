@@ -22,12 +22,12 @@
         <DeviceTypeDescription>
             <TypeDescription>
                 <device_type>1</device_type>
-                <object_path>/Cdm/Integrated</object_path>
+                <object_path>/Cdm/Emulated</object_path>
             </TypeDescription>
         </DeviceTypeDescription>
     </AboutData>
     <InterfaceList>
-        <Object path='/Cdm/Other'>
+        <Object path='/Cdm/Emulated'>
             <!-- org.alljoyn.Input -->
             <Interface name='org.alljoyn.Input.Hid'>
                 <Property name='SupportedEvents' mode='default'>

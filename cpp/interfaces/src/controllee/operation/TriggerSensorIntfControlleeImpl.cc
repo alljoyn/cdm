@@ -41,7 +41,7 @@
 #include <interfaces/controllee/operation/TriggerSensorIntfControllee.h>
 #include <interfaces/controllee/operation/TriggerSensorIntfControlleeModel.h>
 
-#include "../CdmInterfaceValidation.h"
+#include <interfaces/controllee/CdmInterfaceValidation.h>
 
 
 using namespace qcc;
@@ -66,6 +66,12 @@ class TriggerSensorIntfControllee::Impl :
      * @return status
      */
     QStatus Init() override;
+
+    /**
+     * override the interfaces GetInterfaceName method
+     * @return
+     */
+    const qcc::String& GetInterfaceName() const override { return InterfaceName; }
 
     /**
      * a callback function for getting property.
@@ -119,6 +125,7 @@ class TriggerSensorIntfControllee::Impl :
     MethodHandlers m_methodHandlers;
 
     Ref<TriggerSensorIntfControlleeModel> m_TriggerSensorModelInterface;
+    qcc::String InterfaceName;
 };
 
 /*
@@ -179,7 +186,8 @@ TriggerSensorIntfControllee::Impl::Impl(BusAttachment& busAttachment, Ref<Trigge
     m_busAttachment(busAttachment),
     m_cdmControllee(cdmControllee),
     m_methodHandlers(),
-    m_TriggerSensorModelInterface(model)
+    m_TriggerSensorModelInterface(model),
+    InterfaceName(TriggerSensorInterface::INTERFACE_NAME)
 {
     ignore_unused(m_cdmControllee);
 }

@@ -41,7 +41,7 @@
 #include <interfaces/controllee/operation/SoilLevelIntfControllee.h>
 #include <interfaces/controllee/operation/SoilLevelIntfControlleeModel.h>
 
-#include "../CdmInterfaceValidation.h"
+#include <interfaces/controllee/CdmInterfaceValidation.h>
 
 
 using namespace qcc;
@@ -66,6 +66,12 @@ class SoilLevelIntfControllee::Impl :
      * @return status
      */
     QStatus Init() override;
+
+    /**
+     * override the interfaces GetInterfaceName method
+     * @return
+     */
+    const qcc::String& GetInterfaceName() const override { return InterfaceName; }
 
     /**
      * a callback function for getting property.
@@ -137,6 +143,7 @@ class SoilLevelIntfControllee::Impl :
     MethodHandlers m_methodHandlers;
 
     Ref<SoilLevelIntfControlleeModel> m_SoilLevelModelInterface;
+    qcc::String InterfaceName;
 };
 
 /*
@@ -207,7 +214,8 @@ SoilLevelIntfControllee::Impl::Impl(BusAttachment& busAttachment, Ref<SoilLevelI
     m_busAttachment(busAttachment),
     m_cdmControllee(cdmControllee),
     m_methodHandlers(),
-    m_SoilLevelModelInterface(model)
+    m_SoilLevelModelInterface(model),
+    InterfaceName(SoilLevelInterface::INTERFACE_NAME)
 {
     ignore_unused(m_cdmControllee);
 }

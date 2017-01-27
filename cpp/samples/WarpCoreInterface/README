@@ -1,0 +1,55 @@
+This sample demonstrates how to use the code generator to quickly implement a new interface.
+
+
+Step 1: Using the WarpCore-v1.xml file in this directory generate all the interface code.
+
+  As an example, from this directory in a terminal enter:
+
+../../../generator/generate.py ../../../generator/templates/interface_templates/cdm WarpCore-v1.xml --output ./output --binding cpp --components common controllee controller samples
+
+  This create all the files required in the ./output directory.
+
+
+Step 2: The controllee side
+
+  Copy all the all the relevant controllee and common files the your controllee directory
+  This step involves a bit of digging through the output directory due to the nature of the template setup of the
+  generator for the CDM interfaces.
+
+  You need these files from the interfaces inc and src dirs:
+    common
+        WarpCoreInterface.h
+        WarpCoreInterface.cc
+    controllee
+        WarpCoreIntfControllee.h
+        WarpCoreIntfControlleeImpl.cc
+        WarpCoreIntfControlleeModel.h
+
+  You need these files from the samples/DeviceEmulator
+        WarpCoreModel.h
+        WarpCoreModel.cc
+
+
+  Notes:
+    You might need to modify some header paths in the above files.
+    In the Common/WarpCoreInterface.h change the return of GetInterfaceType() from WARP_CORE_INTERFACE to VENDOR_DEFINED_INTERFACE
+
+  You should now have the interfaces that can be used in an app.
+
+
+Step 3: The controller side
+
+   * This will depend on the controller app being used. It is assumed here the QController is being used.
+
+  From the generated output dir, under samples/QController, grab org_USSEnterprise_Engineering_WarpCore.h and org_USSEnterprise_Engineering_WarpCore.cpp
+  and put them in the samples/QController/interfaces directory.
+
+  Also copy from the interfaces directory the common and controller files.
+  The includes might need to be corrected.
+
+  In the QController/commoncontrollerroot.cpp include: WarpCoreInterface.h and WarpCoreIntfController.h
+  At the bottom of the CommonControllerRoot constructor, call controller->RegisterInterface(WarpCoreInterface::INTERFACE_NAME, WarpCoreIntfController::CreateInterface);
+
+
+
+

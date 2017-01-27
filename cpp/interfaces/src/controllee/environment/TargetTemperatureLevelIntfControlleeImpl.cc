@@ -41,7 +41,7 @@
 #include <interfaces/controllee/environment/TargetTemperatureLevelIntfControllee.h>
 #include <interfaces/controllee/environment/TargetTemperatureLevelIntfControlleeModel.h>
 
-#include "../CdmInterfaceValidation.h"
+#include <interfaces/controllee/CdmInterfaceValidation.h>
 
 
 using namespace qcc;
@@ -66,6 +66,12 @@ class TargetTemperatureLevelIntfControllee::Impl :
      * @return status
      */
     QStatus Init() override;
+
+    /**
+     * override the interfaces GetInterfaceName method
+     * @return
+     */
+    const qcc::String& GetInterfaceName() const override { return InterfaceName; }
 
     /**
      * a callback function for getting property.
@@ -135,6 +141,7 @@ class TargetTemperatureLevelIntfControllee::Impl :
     MethodHandlers m_methodHandlers;
 
     Ref<TargetTemperatureLevelIntfControlleeModel> m_TargetTemperatureLevelModelInterface;
+    qcc::String InterfaceName;
 };
 
 /*
@@ -205,7 +212,8 @@ TargetTemperatureLevelIntfControllee::Impl::Impl(BusAttachment& busAttachment, R
     m_busAttachment(busAttachment),
     m_cdmControllee(cdmControllee),
     m_methodHandlers(),
-    m_TargetTemperatureLevelModelInterface(model)
+    m_TargetTemperatureLevelModelInterface(model),
+    InterfaceName(TargetTemperatureLevelInterface::INTERFACE_NAME)
 {
     ignore_unused(m_cdmControllee);
 }

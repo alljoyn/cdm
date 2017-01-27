@@ -41,7 +41,7 @@
 #include <interfaces/controllee/operation/RobotCleaningCyclePhaseIntfControllee.h>
 #include <interfaces/controllee/operation/RobotCleaningCyclePhaseIntfControlleeModel.h>
 
-#include "../CdmInterfaceValidation.h"
+#include <interfaces/controllee/CdmInterfaceValidation.h>
 
 
 using namespace qcc;
@@ -66,6 +66,12 @@ class RobotCleaningCyclePhaseIntfControllee::Impl :
      * @return status
      */
     QStatus Init() override;
+
+    /**
+     * override the interfaces GetInterfaceName method
+     * @return
+     */
+    const qcc::String& GetInterfaceName() const override { return InterfaceName; }
 
     /**
      * a callback function for getting property.
@@ -133,6 +139,7 @@ class RobotCleaningCyclePhaseIntfControllee::Impl :
     MethodHandlers m_methodHandlers;
 
     Ref<RobotCleaningCyclePhaseIntfControlleeModel> m_RobotCleaningCyclePhaseModelInterface;
+    qcc::String InterfaceName;
 };
 
 /*
@@ -198,7 +205,8 @@ RobotCleaningCyclePhaseIntfControllee::Impl::Impl(BusAttachment& busAttachment, 
     m_busAttachment(busAttachment),
     m_cdmControllee(cdmControllee),
     m_methodHandlers(),
-    m_RobotCleaningCyclePhaseModelInterface(model)
+    m_RobotCleaningCyclePhaseModelInterface(model),
+    InterfaceName(RobotCleaningCyclePhaseInterface::INTERFACE_NAME)
 {
     ignore_unused(m_cdmControllee);
 }

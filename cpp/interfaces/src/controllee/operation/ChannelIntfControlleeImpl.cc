@@ -41,7 +41,7 @@
 #include <interfaces/controllee/operation/ChannelIntfControllee.h>
 #include <interfaces/controllee/operation/ChannelIntfControlleeModel.h>
 
-#include "../CdmInterfaceValidation.h"
+#include <interfaces/controllee/CdmInterfaceValidation.h>
 
 
 using namespace qcc;
@@ -66,6 +66,12 @@ class ChannelIntfControllee::Impl :
      * @return status
      */
     QStatus Init() override;
+
+    /**
+     * override the interfaces GetInterfaceName method
+     * @return
+     */
+    const qcc::String& GetInterfaceName() const override { return InterfaceName; }
 
     /**
      * a callback function for getting property.
@@ -139,6 +145,7 @@ class ChannelIntfControllee::Impl :
     MethodHandlers m_methodHandlers;
 
     Ref<ChannelIntfControlleeModel> m_ChannelModelInterface;
+    qcc::String InterfaceName;
 };
 
 /*
@@ -209,7 +216,8 @@ ChannelIntfControllee::Impl::Impl(BusAttachment& busAttachment, Ref<ChannelIntfC
     m_busAttachment(busAttachment),
     m_cdmControllee(cdmControllee),
     m_methodHandlers(),
-    m_ChannelModelInterface(model)
+    m_ChannelModelInterface(model),
+    InterfaceName(ChannelInterface::INTERFACE_NAME)
 {
     ignore_unused(m_cdmControllee);
 }

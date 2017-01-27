@@ -40,22 +40,25 @@ except ImportError as e:
 except BaseException:
     sys.exit(1)
 
+import inspect
 import xml_parser as xml
 import argparse
 
 # Ugly global for the current template relative path
 CurrentRelativePath = ""
 
+
 # Load local macro files from the current directory.
 class LocalLoader(jinja2.BaseLoader):
 
     def __init__(self):
+        self.generator_path = os.path.dirname(os.path.abspath(__file__))
         self.files = ["macros", "tcl_macros"]
 
     def get_source(self, environment, template):
         # "patch/foo" maps to somewhere in the patches tree according to the template relative path
         if template in self.files:
-            path = template
+            path = os.path.join(self.generator_path, template)
             if not os.path.exists(path):
                 raise jinja2.TemplateNotFound(template)
             mtime = os.path.getmtime(path)

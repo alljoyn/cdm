@@ -41,7 +41,7 @@
 #include <interfaces/controllee/operation/TimerIntfControllee.h>
 #include <interfaces/controllee/operation/TimerIntfControlleeModel.h>
 
-#include "../CdmInterfaceValidation.h"
+#include <interfaces/controllee/CdmInterfaceValidation.h>
 
 
 using namespace qcc;
@@ -66,6 +66,12 @@ class TimerIntfControllee::Impl :
      * @return status
      */
     QStatus Init() override;
+
+    /**
+     * override the interfaces GetInterfaceName method
+     * @return
+     */
+    const qcc::String& GetInterfaceName() const override { return InterfaceName; }
 
     /**
      * a callback function for getting property.
@@ -147,6 +153,7 @@ class TimerIntfControllee::Impl :
     MethodHandlers m_methodHandlers;
 
     Ref<TimerIntfControlleeModel> m_TimerModelInterface;
+    qcc::String InterfaceName;
 };
 
 /*
@@ -217,7 +224,8 @@ TimerIntfControllee::Impl::Impl(BusAttachment& busAttachment, Ref<TimerIntfContr
     m_busAttachment(busAttachment),
     m_cdmControllee(cdmControllee),
     m_methodHandlers(),
-    m_TimerModelInterface(model)
+    m_TimerModelInterface(model),
+    InterfaceName(TimerInterface::INTERFACE_NAME)
 {
     ignore_unused(m_cdmControllee);
 }

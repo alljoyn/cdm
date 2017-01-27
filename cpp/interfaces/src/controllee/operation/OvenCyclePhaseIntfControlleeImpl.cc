@@ -41,7 +41,7 @@
 #include <interfaces/controllee/operation/OvenCyclePhaseIntfControllee.h>
 #include <interfaces/controllee/operation/OvenCyclePhaseIntfControlleeModel.h>
 
-#include "../CdmInterfaceValidation.h"
+#include <interfaces/controllee/CdmInterfaceValidation.h>
 
 
 using namespace qcc;
@@ -66,6 +66,12 @@ class OvenCyclePhaseIntfControllee::Impl :
      * @return status
      */
     QStatus Init() override;
+
+    /**
+     * override the interfaces GetInterfaceName method
+     * @return
+     */
+    const qcc::String& GetInterfaceName() const override { return InterfaceName; }
 
     /**
      * a callback function for getting property.
@@ -133,6 +139,7 @@ class OvenCyclePhaseIntfControllee::Impl :
     MethodHandlers m_methodHandlers;
 
     Ref<OvenCyclePhaseIntfControlleeModel> m_OvenCyclePhaseModelInterface;
+    qcc::String InterfaceName;
 };
 
 /*
@@ -198,7 +205,8 @@ OvenCyclePhaseIntfControllee::Impl::Impl(BusAttachment& busAttachment, Ref<OvenC
     m_busAttachment(busAttachment),
     m_cdmControllee(cdmControllee),
     m_methodHandlers(),
-    m_OvenCyclePhaseModelInterface(model)
+    m_OvenCyclePhaseModelInterface(model),
+    InterfaceName(OvenCyclePhaseInterface::INTERFACE_NAME)
 {
     ignore_unused(m_cdmControllee);
 }

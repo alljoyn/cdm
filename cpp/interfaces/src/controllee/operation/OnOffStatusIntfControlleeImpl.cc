@@ -41,7 +41,7 @@
 #include <interfaces/controllee/operation/OnOffStatusIntfControllee.h>
 #include <interfaces/controllee/operation/OnOffStatusIntfControlleeModel.h>
 
-#include "../CdmInterfaceValidation.h"
+#include <interfaces/controllee/CdmInterfaceValidation.h>
 
 
 using namespace qcc;
@@ -66,6 +66,12 @@ class OnOffStatusIntfControllee::Impl :
      * @return status
      */
     QStatus Init() override;
+
+    /**
+     * override the interfaces GetInterfaceName method
+     * @return
+     */
+    const qcc::String& GetInterfaceName() const override { return InterfaceName; }
 
     /**
      * a callback function for getting property.
@@ -119,6 +125,7 @@ class OnOffStatusIntfControllee::Impl :
     MethodHandlers m_methodHandlers;
 
     Ref<OnOffStatusIntfControlleeModel> m_OnOffStatusModelInterface;
+    qcc::String InterfaceName;
 };
 
 /*
@@ -179,7 +186,8 @@ OnOffStatusIntfControllee::Impl::Impl(BusAttachment& busAttachment, Ref<OnOffSta
     m_busAttachment(busAttachment),
     m_cdmControllee(cdmControllee),
     m_methodHandlers(),
-    m_OnOffStatusModelInterface(model)
+    m_OnOffStatusModelInterface(model),
+    InterfaceName(OnOffStatusInterface::INTERFACE_NAME)
 {
     ignore_unused(m_cdmControllee);
 }

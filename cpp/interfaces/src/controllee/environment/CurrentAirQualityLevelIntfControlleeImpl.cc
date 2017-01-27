@@ -41,7 +41,7 @@
 #include <interfaces/controllee/environment/CurrentAirQualityLevelIntfControllee.h>
 #include <interfaces/controllee/environment/CurrentAirQualityLevelIntfControlleeModel.h>
 
-#include "../CdmInterfaceValidation.h"
+#include <interfaces/controllee/CdmInterfaceValidation.h>
 
 
 using namespace qcc;
@@ -66,6 +66,12 @@ class CurrentAirQualityLevelIntfControllee::Impl :
      * @return status
      */
     QStatus Init() override;
+
+    /**
+     * override the interfaces GetInterfaceName method
+     * @return
+     */
+    const qcc::String& GetInterfaceName() const override { return InterfaceName; }
 
     /**
      * a callback function for getting property.
@@ -133,6 +139,7 @@ class CurrentAirQualityLevelIntfControllee::Impl :
     MethodHandlers m_methodHandlers;
 
     Ref<CurrentAirQualityLevelIntfControlleeModel> m_CurrentAirQualityLevelModelInterface;
+    qcc::String InterfaceName;
 };
 
 /*
@@ -203,7 +210,8 @@ CurrentAirQualityLevelIntfControllee::Impl::Impl(BusAttachment& busAttachment, R
     m_busAttachment(busAttachment),
     m_cdmControllee(cdmControllee),
     m_methodHandlers(),
-    m_CurrentAirQualityLevelModelInterface(model)
+    m_CurrentAirQualityLevelModelInterface(model),
+    InterfaceName(CurrentAirQualityLevelInterface::INTERFACE_NAME)
 {
     ignore_unused(m_cdmControllee);
 }

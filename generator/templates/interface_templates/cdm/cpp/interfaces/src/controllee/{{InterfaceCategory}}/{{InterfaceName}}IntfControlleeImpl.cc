@@ -42,7 +42,7 @@
 #include <interfaces/controllee/{{Interface.Category}}/{{Interface.Name}}IntfControllee.h>
 #include <interfaces/controllee/{{Interface.Category}}/{{Interface.Name}}IntfControlleeModel.h>
 
-#include "../CdmInterfaceValidation.h"
+#include <interfaces/controllee/CdmInterfaceValidation.h>
 
 
 using namespace qcc;
@@ -67,6 +67,12 @@ class {{Interface.Name}}IntfControllee::Impl :
      * @return status
      */
     QStatus Init() override;
+
+    /**
+     * override the interfaces GetInterfaceName method
+     * @return
+     */
+    const qcc::String& GetInterfaceName() const override { return InterfaceName; }
 
     /**
      * a callback function for getting property.
@@ -153,6 +159,7 @@ class {{Interface.Name}}IntfControllee::Impl :
     MethodHandlers m_methodHandlers;
 
     Ref<{{Interface.Name}}IntfControlleeModel> m_{{Interface.Name}}ModelInterface;
+    qcc::String InterfaceName;
 };
 
 /*
@@ -224,7 +231,8 @@ ERROR_CLEANUP:
     m_busAttachment(busAttachment),
     m_cdmControllee(cdmControllee),
     m_methodHandlers(),
-    m_{{Interface.Name}}ModelInterface(model)
+    m_{{Interface.Name}}ModelInterface(model),
+    InterfaceName({{Interface.Name}}Interface::INTERFACE_NAME)
 {
     ignore_unused(m_cdmControllee);
 }

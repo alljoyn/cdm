@@ -1,0 +1,17 @@
+<node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
+    <interface name="org.alljoyn.SmartSpaces.Operation.Brightness">
+        <annotation name="org.alljoyn.Bus.DocString.En" value="This interface provides capabilities to control and monitor brightness."/>
+        <annotation name="org.alljoyn.Bus.Secure" value="true"/>
+        <property name="Version" type="q" access="read">
+            <annotation name="org.alljoyn.Bus.DocString.En" value="The interface version."/>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const"/>
+        </property>
+        <property name="Brightness" type="d" access="readwrite">
+            <annotation name="org.alljoyn.Bus.DocString.En" value="Brightness of the device."/>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+            <annotation name="org.alljoyn.Bus.Type.Min" value="0.0"/>
+            <annotation name="org.alljoyn.Bus.Type.Max" value="1.0"/>
+            <annotation name="org.twobulls.Property.Clamp" value="true"/>
+        </property>
+    </interface>
+</node>

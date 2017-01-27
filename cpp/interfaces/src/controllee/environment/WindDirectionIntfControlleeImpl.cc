@@ -41,7 +41,7 @@
 #include <interfaces/controllee/environment/WindDirectionIntfControllee.h>
 #include <interfaces/controllee/environment/WindDirectionIntfControlleeModel.h>
 
-#include "../CdmInterfaceValidation.h"
+#include <interfaces/controllee/CdmInterfaceValidation.h>
 
 
 using namespace qcc;
@@ -66,6 +66,12 @@ class WindDirectionIntfControllee::Impl :
      * @return status
      */
     QStatus Init() override;
+
+    /**
+     * override the interfaces GetInterfaceName method
+     * @return
+     */
+    const qcc::String& GetInterfaceName() const override { return InterfaceName; }
 
     /**
      * a callback function for getting property.
@@ -162,6 +168,7 @@ class WindDirectionIntfControllee::Impl :
     MethodHandlers m_methodHandlers;
 
     Ref<WindDirectionIntfControlleeModel> m_WindDirectionModelInterface;
+    qcc::String InterfaceName;
 };
 
 /*
@@ -247,7 +254,8 @@ WindDirectionIntfControllee::Impl::Impl(BusAttachment& busAttachment, Ref<WindDi
     m_busAttachment(busAttachment),
     m_cdmControllee(cdmControllee),
     m_methodHandlers(),
-    m_WindDirectionModelInterface(model)
+    m_WindDirectionModelInterface(model),
+    InterfaceName(WindDirectionInterface::INTERFACE_NAME)
 {
     ignore_unused(m_cdmControllee);
 }

@@ -41,7 +41,7 @@
 #include <interfaces/controllee/operation/LockControlIntfControllee.h>
 #include <interfaces/controllee/operation/LockControlIntfControlleeModel.h>
 
-#include "../CdmInterfaceValidation.h"
+#include <interfaces/controllee/CdmInterfaceValidation.h>
 
 
 using namespace qcc;
@@ -66,6 +66,12 @@ class LockControlIntfControllee::Impl :
      * @return status
      */
     QStatus Init() override;
+
+    /**
+     * override the interfaces GetInterfaceName method
+     * @return
+     */
+    const qcc::String& GetInterfaceName() const override { return InterfaceName; }
 
     /**
      * a callback function for getting property.
@@ -119,6 +125,7 @@ class LockControlIntfControllee::Impl :
     MethodHandlers m_methodHandlers;
 
     Ref<LockControlIntfControlleeModel> m_LockControlModelInterface;
+    qcc::String InterfaceName;
 };
 
 /*
@@ -174,7 +181,8 @@ LockControlIntfControllee::Impl::Impl(BusAttachment& busAttachment, Ref<LockCont
     m_busAttachment(busAttachment),
     m_cdmControllee(cdmControllee),
     m_methodHandlers(),
-    m_LockControlModelInterface(model)
+    m_LockControlModelInterface(model),
+    InterfaceName(LockControlInterface::INTERFACE_NAME)
 {
     ignore_unused(m_cdmControllee);
 }

@@ -41,7 +41,7 @@
 #include <interfaces/controllee/operation/AlertsIntfControllee.h>
 #include <interfaces/controllee/operation/AlertsIntfControlleeModel.h>
 
-#include "../CdmInterfaceValidation.h"
+#include <interfaces/controllee/CdmInterfaceValidation.h>
 
 
 using namespace qcc;
@@ -66,6 +66,12 @@ class AlertsIntfControllee::Impl :
      * @return status
      */
     QStatus Init() override;
+
+    /**
+     * override the interfaces GetInterfaceName method
+     * @return
+     */
+    const qcc::String& GetInterfaceName() const override { return InterfaceName; }
 
     /**
      * a callback function for getting property.
@@ -140,6 +146,7 @@ class AlertsIntfControllee::Impl :
     MethodHandlers m_methodHandlers;
 
     Ref<AlertsIntfControlleeModel> m_AlertsModelInterface;
+    qcc::String InterfaceName;
 };
 
 /*
@@ -200,7 +207,8 @@ AlertsIntfControllee::Impl::Impl(BusAttachment& busAttachment, Ref<AlertsIntfCon
     m_busAttachment(busAttachment),
     m_cdmControllee(cdmControllee),
     m_methodHandlers(),
-    m_AlertsModelInterface(model)
+    m_AlertsModelInterface(model),
+    InterfaceName(AlertsInterface::INTERFACE_NAME)
 {
     ignore_unused(m_cdmControllee);
 }

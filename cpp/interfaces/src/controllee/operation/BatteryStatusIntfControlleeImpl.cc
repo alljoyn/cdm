@@ -41,7 +41,7 @@
 #include <interfaces/controllee/operation/BatteryStatusIntfControllee.h>
 #include <interfaces/controllee/operation/BatteryStatusIntfControlleeModel.h>
 
-#include "../CdmInterfaceValidation.h"
+#include <interfaces/controllee/CdmInterfaceValidation.h>
 
 
 using namespace qcc;
@@ -66,6 +66,12 @@ class BatteryStatusIntfControllee::Impl :
      * @return status
      */
     QStatus Init() override;
+
+    /**
+     * override the interfaces GetInterfaceName method
+     * @return
+     */
+    const qcc::String& GetInterfaceName() const override { return InterfaceName; }
 
     /**
      * a callback function for getting property.
@@ -126,6 +132,7 @@ class BatteryStatusIntfControllee::Impl :
     MethodHandlers m_methodHandlers;
 
     Ref<BatteryStatusIntfControlleeModel> m_BatteryStatusModelInterface;
+    qcc::String InterfaceName;
 };
 
 /*
@@ -191,7 +198,8 @@ BatteryStatusIntfControllee::Impl::Impl(BusAttachment& busAttachment, Ref<Batter
     m_busAttachment(busAttachment),
     m_cdmControllee(cdmControllee),
     m_methodHandlers(),
-    m_BatteryStatusModelInterface(model)
+    m_BatteryStatusModelInterface(model),
+    InterfaceName(BatteryStatusInterface::INTERFACE_NAME)
 {
     ignore_unused(m_cdmControllee);
 }

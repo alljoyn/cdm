@@ -1,0 +1,13 @@
+<node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
+    <interface name="org.alljoyn.SmartSpaces.Operation.OffControl">
+        <annotation name="org.alljoyn.Bus.DocString.En" value="This interface provides the capability to switch off the device."/>
+        <annotation name="org.alljoyn.Bus.Secure" value="true"/>
+        <property name="Version" type="q" access="read">
+            <annotation name="org.alljoyn.Bus.DocString.En" value="The interface version."/>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const"/>
+        </property>
+        <method name="SwitchOff">
+            <annotation name="org.alljoyn.Bus.DocString.En" value="Switch off the device."/>
+        </method>
+    </interface>
+</node>

@@ -41,7 +41,7 @@
 #include <interfaces/controllee/operation/CycleControlIntfControllee.h>
 #include <interfaces/controllee/operation/CycleControlIntfControlleeModel.h>
 
-#include "../CdmInterfaceValidation.h"
+#include <interfaces/controllee/CdmInterfaceValidation.h>
 
 
 using namespace qcc;
@@ -66,6 +66,12 @@ class CycleControlIntfControllee::Impl :
      * @return status
      */
     QStatus Init() override;
+
+    /**
+     * override the interfaces GetInterfaceName method
+     * @return
+     */
+    const qcc::String& GetInterfaceName() const override { return InterfaceName; }
 
     /**
      * a callback function for getting property.
@@ -126,6 +132,7 @@ class CycleControlIntfControllee::Impl :
     MethodHandlers m_methodHandlers;
 
     Ref<CycleControlIntfControlleeModel> m_CycleControlModelInterface;
+    qcc::String InterfaceName;
 };
 
 /*
@@ -186,7 +193,8 @@ CycleControlIntfControllee::Impl::Impl(BusAttachment& busAttachment, Ref<CycleCo
     m_busAttachment(busAttachment),
     m_cdmControllee(cdmControllee),
     m_methodHandlers(),
-    m_CycleControlModelInterface(model)
+    m_CycleControlModelInterface(model),
+    InterfaceName(CycleControlInterface::INTERFACE_NAME)
 {
     ignore_unused(m_cdmControllee);
 }

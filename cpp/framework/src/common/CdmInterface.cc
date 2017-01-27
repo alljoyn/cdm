@@ -107,7 +107,13 @@ std::map<ErrorCode, qcc::String> CdmInterface::InterfaceErrorMessageMap = {
     {REMOTE_CONTROL_DISABLED, "Remote control disabled"},
 };
 
+
 QStatus CdmInterface::Init()
+{
+    return Init(GetInterfaceName().c_str());
+}
+
+QStatus CdmInterface::Init(const char *interfaceName)
 {
     QStatus status = ER_OK;
 
@@ -118,7 +124,7 @@ QStatus CdmInterface::Init()
         QCC_LogError(status, ("%s: failed to initialize.", __func__));
         return status;
     }
-    m_interfaceDescription = busAttachment.GetInterface(GetInterfaceName().c_str());
+    m_interfaceDescription = busAttachment.GetInterface(interfaceName);
     if (!m_interfaceDescription) {
         status = ER_FAIL;
         QCC_LogError(status, ("%s: failed to get interface description.", __func__));

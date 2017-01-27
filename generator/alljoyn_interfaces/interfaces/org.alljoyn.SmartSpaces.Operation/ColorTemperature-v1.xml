@@ -1,0 +1,31 @@
+<node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
+    <interface name="org.alljoyn.SmartSpaces.Operation.ColorTemperature">
+        <annotation name="org.alljoyn.Bus.DocString.En" value="This interface provides capabilities to control and monitor the color temperature."/>
+        <annotation name="org.alljoyn.Bus.Secure" value="true"/>
+        <property name="Version" type="q" access="read">
+            <annotation name="org.alljoyn.Bus.DocString.En" value="The interface version."/>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const"/>
+        </property>
+        <property name="Temperature" type="d" access="readwrite">
+            <annotation name="org.alljoyn.Bus.DocString.En" value="Color temperature of the device."/>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+            <annotation name="org.alljoyn.Bus.Type.Min" value="0.0"/>
+            <annotation name="org.alljoyn.Bus.Type.Units" value="K"/>
+            <annotation name="org.twobulls.Property.Min" value="MinTemperature"/>
+            <annotation name="org.twobulls.Property.Max" value="MaxTemperature"/>
+            <annotation name="org.twobulls.Property.Clamp" value="true"/>
+        </property>
+        <property name="MinTemperature" type="d" access="read">
+            <annotation name="org.alljoyn.Bus.DocString.En" value="The minimum color temperature supported by the device."/>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const"/>
+            <annotation name="org.alljoyn.Bus.Type.Min" value="0.0"/>
+            <annotation name="org.alljoyn.Bus.Type.Units" value="K"/>
+        </property>
+        <property name="MaxTemperature" type="d" access="read">
+            <annotation name="org.alljoyn.Bus.DocString.En" value="The maximum color temperature supported by the device."/>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const"/>
+            <annotation name="org.alljoyn.Bus.Type.Min" value="0.0"/>
+            <annotation name="org.alljoyn.Bus.Type.Units" value="K"/>
+        </property>
+    </interface>
+</node>

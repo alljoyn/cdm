@@ -41,7 +41,7 @@
 #include <interfaces/controllee/operation/DishWashingCyclePhaseIntfControllee.h>
 #include <interfaces/controllee/operation/DishWashingCyclePhaseIntfControlleeModel.h>
 
-#include "../CdmInterfaceValidation.h"
+#include <interfaces/controllee/CdmInterfaceValidation.h>
 
 
 using namespace qcc;
@@ -66,6 +66,12 @@ class DishWashingCyclePhaseIntfControllee::Impl :
      * @return status
      */
     QStatus Init() override;
+
+    /**
+     * override the interfaces GetInterfaceName method
+     * @return
+     */
+    const qcc::String& GetInterfaceName() const override { return InterfaceName; }
 
     /**
      * a callback function for getting property.
@@ -133,6 +139,7 @@ class DishWashingCyclePhaseIntfControllee::Impl :
     MethodHandlers m_methodHandlers;
 
     Ref<DishWashingCyclePhaseIntfControlleeModel> m_DishWashingCyclePhaseModelInterface;
+    qcc::String InterfaceName;
 };
 
 /*
@@ -198,7 +205,8 @@ DishWashingCyclePhaseIntfControllee::Impl::Impl(BusAttachment& busAttachment, Re
     m_busAttachment(busAttachment),
     m_cdmControllee(cdmControllee),
     m_methodHandlers(),
-    m_DishWashingCyclePhaseModelInterface(model)
+    m_DishWashingCyclePhaseModelInterface(model),
+    InterfaceName(DishWashingCyclePhaseInterface::INTERFACE_NAME)
 {
     ignore_unused(m_cdmControllee);
 }

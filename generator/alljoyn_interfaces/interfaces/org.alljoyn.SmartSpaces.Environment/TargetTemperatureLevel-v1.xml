@@ -1,0 +1,24 @@
+<node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.allseenalliance.org/schemas/introspect" xsi:schemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
+    <interface name="org.alljoyn.SmartSpaces.Environment.TargetTemperatureLevel">
+        <annotation name="org.alljoyn.Bus.DocString.En" value="This interface provides a capability to set target temperature level"/>
+        <annotation name="org.alljoyn.Bus.Secure" value="true"/>
+        <property name="Version" type="q" access="read">
+            <annotation name="org.alljoyn.Bus.DocString.En" value="The interface version"/>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const"/>
+        </property>
+        <property name="MaxLevel" type="y" access="read">
+            <annotation name="org.alljoyn.Bus.DocString.En" value="Maximum value allowed for target temperature level setting."/>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <property name="TargetLevel" type="y" access="readwrite">
+            <annotation name="org.alljoyn.Bus.DocString.En" value="Target set-point value of temperature level."/>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+            <annotation name="org.alljoyn.Bus.Type.Min" value="0"/>
+            <annotation name="org.twobulls.Property.ValueIn" value="SelectableTemperatureLevels"/>
+        </property>
+        <property name="SelectableTemperatureLevels" type="ay" access="read">
+            <annotation name="org.alljoyn.Bus.DocString.En" value="List of the values of temperature level which can be selected."/>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+    </interface>
+</node>

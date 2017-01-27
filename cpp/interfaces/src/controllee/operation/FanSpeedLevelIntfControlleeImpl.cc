@@ -41,7 +41,7 @@
 #include <interfaces/controllee/operation/FanSpeedLevelIntfControllee.h>
 #include <interfaces/controllee/operation/FanSpeedLevelIntfControlleeModel.h>
 
-#include "../CdmInterfaceValidation.h"
+#include <interfaces/controllee/CdmInterfaceValidation.h>
 
 
 using namespace qcc;
@@ -66,6 +66,12 @@ class FanSpeedLevelIntfControllee::Impl :
      * @return status
      */
     QStatus Init() override;
+
+    /**
+     * override the interfaces GetInterfaceName method
+     * @return
+     */
+    const qcc::String& GetInterfaceName() const override { return InterfaceName; }
 
     /**
      * a callback function for getting property.
@@ -130,6 +136,7 @@ class FanSpeedLevelIntfControllee::Impl :
     MethodHandlers m_methodHandlers;
 
     Ref<FanSpeedLevelIntfControlleeModel> m_FanSpeedLevelModelInterface;
+    qcc::String InterfaceName;
 };
 
 /*
@@ -195,7 +202,8 @@ FanSpeedLevelIntfControllee::Impl::Impl(BusAttachment& busAttachment, Ref<FanSpe
     m_busAttachment(busAttachment),
     m_cdmControllee(cdmControllee),
     m_methodHandlers(),
-    m_FanSpeedLevelModelInterface(model)
+    m_FanSpeedLevelModelInterface(model),
+    InterfaceName(FanSpeedLevelInterface::INTERFACE_NAME)
 {
     ignore_unused(m_cdmControllee);
 }

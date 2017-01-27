@@ -1,0 +1,30 @@
+<node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
+    <interface name="org.USSEnterprise.Engineering.WarpCore">
+        <annotation name="org.alljoyn.Bus.DocString.En" value="This interface provides the capability to set a warp factor and engage the warp drive."/>
+        <annotation name="org.alljoyn.Bus.Secure" value="true"/>
+        <property name="Version" type="q" access="read">
+            <annotation name="org.alljoyn.Bus.DocString.En" value="The interface version."/>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const"/>
+        </property>
+        <property name="WarpFactor" type="d" access="readwrite">
+            <annotation name="org.alljoyn.Bus.DocString.En" value="The desired warp factor."/>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+            <annotation name="org.alljoyn.Bus.Type.Min" value="1.0"/>
+            <annotation name="org.alljoyn.Bus.Type.Max" value="9.8"/>
+        </property>
+        <property name="CurrentWarpFactor" type="d" access="read">
+            <annotation name="org.alljoyn.Bus.DocString.En" value="The current warp factor."/>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <property name="IsEngaged" type="b" access="read">
+            <annotation name="org.alljoyn.Bus.DocString.En" value="Current state of the warp core."/>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <method name="Engage">
+            <annotation name="org.alljoyn.Bus.DocString.En" value="Engage the warp core and enter warp."/>
+        </method>
+        <method name="Disengage">
+            <annotation name="org.alljoyn.Bus.DocString.En" value="Return to impulse."/>
+        </method>
+    </interface>
+</node>

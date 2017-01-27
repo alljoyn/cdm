@@ -41,7 +41,7 @@
 #include <interfaces/controllee/operation/LockedStatusIntfControllee.h>
 #include <interfaces/controllee/operation/LockedStatusIntfControlleeModel.h>
 
-#include "../CdmInterfaceValidation.h"
+#include <interfaces/controllee/CdmInterfaceValidation.h>
 
 
 using namespace qcc;
@@ -66,6 +66,12 @@ class LockedStatusIntfControllee::Impl :
      * @return status
      */
     QStatus Init() override;
+
+    /**
+     * override the interfaces GetInterfaceName method
+     * @return
+     */
+    const qcc::String& GetInterfaceName() const override { return InterfaceName; }
 
     /**
      * a callback function for getting property.
@@ -119,6 +125,7 @@ class LockedStatusIntfControllee::Impl :
     MethodHandlers m_methodHandlers;
 
     Ref<LockedStatusIntfControlleeModel> m_LockedStatusModelInterface;
+    qcc::String InterfaceName;
 };
 
 /*
@@ -179,7 +186,8 @@ LockedStatusIntfControllee::Impl::Impl(BusAttachment& busAttachment, Ref<LockedS
     m_busAttachment(busAttachment),
     m_cdmControllee(cdmControllee),
     m_methodHandlers(),
-    m_LockedStatusModelInterface(model)
+    m_LockedStatusModelInterface(model),
+    InterfaceName(LockedStatusInterface::INTERFACE_NAME)
 {
     ignore_unused(m_cdmControllee);
 }

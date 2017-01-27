@@ -41,7 +41,7 @@
 #include <interfaces/controllee/operation/ColorIntfControllee.h>
 #include <interfaces/controllee/operation/ColorIntfControlleeModel.h>
 
-#include "../CdmInterfaceValidation.h"
+#include <interfaces/controllee/CdmInterfaceValidation.h>
 
 
 using namespace qcc;
@@ -66,6 +66,12 @@ class ColorIntfControllee::Impl :
      * @return status
      */
     QStatus Init() override;
+
+    /**
+     * override the interfaces GetInterfaceName method
+     * @return
+     */
+    const qcc::String& GetInterfaceName() const override { return InterfaceName; }
 
     /**
      * a callback function for getting property.
@@ -130,6 +136,7 @@ class ColorIntfControllee::Impl :
     MethodHandlers m_methodHandlers;
 
     Ref<ColorIntfControlleeModel> m_ColorModelInterface;
+    qcc::String InterfaceName;
 };
 
 /*
@@ -195,7 +202,8 @@ ColorIntfControllee::Impl::Impl(BusAttachment& busAttachment, Ref<ColorIntfContr
     m_busAttachment(busAttachment),
     m_cdmControllee(cdmControllee),
     m_methodHandlers(),
-    m_ColorModelInterface(model)
+    m_ColorModelInterface(model),
+    InterfaceName(ColorInterface::INTERFACE_NAME)
 {
     ignore_unused(m_cdmControllee);
 }

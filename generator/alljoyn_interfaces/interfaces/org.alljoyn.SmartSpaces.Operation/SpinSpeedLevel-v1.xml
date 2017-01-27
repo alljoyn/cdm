@@ -1,0 +1,26 @@
+<node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
+    <interface name="org.alljoyn.SmartSpaces.Operation.SpinSpeedLevel">
+        <annotation name="org.alljoyn.Bus.DocString.En" value="This interface provides a capability to set the spin speed level."/>
+        <annotation name="org.alljoyn.Bus.Secure" value="true"/>
+        <property name="Version" type="q" access="read">
+            <annotation name="org.alljoyn.Bus.DocString.En" value="The interface version."/>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const"/>
+        </property>
+        <property name="MaxLevel" type="y" access="read">
+            <annotation name="org.alljoyn.Bus.DocString.En" value="Maximum value allowed for the spin speed level setting."/>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const"/>
+        </property>
+        <property name="TargetLevel" type="y" access="readwrite">
+            <annotation name="org.alljoyn.Bus.DocString.En" value="Target set-point value of spin speed level."/>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+            <annotation name="org.alljoyn.Bus.Type.Min" value="0"/>
+            <annotation name="org.twobulls.Property.Max" value="MaxLevel"/>
+            <annotation name="org.twobulls.Property.Clamp" value="true"/>
+            <annotation name="org.twobulls.Property.ValueIn" value="SelectableLevels"/>
+        </property>
+        <property name="SelectableLevels" type="ay" access="read">
+            <annotation name="org.alljoyn.Bus.DocString.En" value="List of the values of spin speed level which can be selected."/>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+    </interface>
+</node>

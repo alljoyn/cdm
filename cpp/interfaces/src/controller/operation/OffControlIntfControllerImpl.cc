@@ -66,7 +66,7 @@ class OffControlIntfController::Impl : public InterfaceController
 
     const char* GetInterfaceName() const
     {
-        return m_outer.GetInterfaceName().c_str();
+        return INTERFACE_NAME;
     }
 
 

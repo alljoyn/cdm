@@ -97,10 +97,16 @@ class CdmInterface {
     virtual QStatus Init();
 
     /**
+     * Initialize interface
+     * @return ER_OK on success
+     */
+    QStatus Init(const char *interfaceName);
+
+    /**
      * Get interface name
      * @return Interface name
      */
-    const qcc::String& GetInterfaceName() const { return InterfaceTypesMap.find(GetInterfaceType())->second; }
+    virtual const qcc::String& GetInterfaceName() const { return InterfaceTypesMap.find(GetInterfaceType())->second; }
 
     /**
      * Get interface description

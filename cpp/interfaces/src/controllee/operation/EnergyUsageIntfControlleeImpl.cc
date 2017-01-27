@@ -41,7 +41,7 @@
 #include <interfaces/controllee/operation/EnergyUsageIntfControllee.h>
 #include <interfaces/controllee/operation/EnergyUsageIntfControlleeModel.h>
 
-#include "../CdmInterfaceValidation.h"
+#include <interfaces/controllee/CdmInterfaceValidation.h>
 
 
 using namespace qcc;
@@ -66,6 +66,12 @@ class EnergyUsageIntfControllee::Impl :
      * @return status
      */
     QStatus Init() override;
+
+    /**
+     * override the interfaces GetInterfaceName method
+     * @return
+     */
+    const qcc::String& GetInterfaceName() const override { return InterfaceName; }
 
     /**
      * a callback function for getting property.
@@ -140,6 +146,7 @@ class EnergyUsageIntfControllee::Impl :
     MethodHandlers m_methodHandlers;
 
     Ref<EnergyUsageIntfControlleeModel> m_EnergyUsageModelInterface;
+    qcc::String InterfaceName;
 };
 
 /*
@@ -210,7 +217,8 @@ EnergyUsageIntfControllee::Impl::Impl(BusAttachment& busAttachment, Ref<EnergyUs
     m_busAttachment(busAttachment),
     m_cdmControllee(cdmControllee),
     m_methodHandlers(),
-    m_EnergyUsageModelInterface(model)
+    m_EnergyUsageModelInterface(model),
+    InterfaceName(EnergyUsageInterface::INTERFACE_NAME)
 {
     ignore_unused(m_cdmControllee);
 }

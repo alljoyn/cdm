@@ -1,5 +1,5 @@
 
-IFACES    = $(AJ_ROOT)/alljoyn_interfaces/interfaces/
+IFACES    = ./alljoyn_interfaces/interfaces/
 CDM       = $(AJ_ROOT)/services/cdm/
 THIN      = $(AJ_ROOT)/services/cdm_tcl/
 

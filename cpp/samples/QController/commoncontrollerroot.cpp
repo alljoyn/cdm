@@ -31,6 +31,11 @@
 #include <alljoyn/Init.h>
 #include <alljoyn/version.h>
 
+#include "interfaces/WarpCore/WarpCoreInterface.h"
+#include "interfaces/WarpCore/WarpCoreIntfController.h"
+
+using namespace ajn::services;
+
 static const char* KEYX_ECDHE_NULL = "ALLJOYN_ECDHE_NULL";
 static const char* KEYX_ECDHE_PSK = "ALLJOYN_ECDHE_PSK";
 static const char* KEYX_ECDHE_ECDSA = "ALLJOYN_ECDHE_ECDSA";
@@ -197,9 +202,16 @@ CommonControllerRoot::CommonControllerRoot(CommonControllerModel *model)
     }
 
     controller = new ajn::services::CdmController(*bus, this);
+
     status = controller->Start();
     if (status != ER_OK) {
         qCritical() << "Failed to start controller! " << status;
+        return;
+    }
+
+    status = controller->RegisterInterface(WarpCoreInterface::INTERFACE_NAME, WarpCoreIntfController::CreateInterface);
+    if (status != ER_OK) {
+        qCritical() << "Failed to register WarpCore " << status;
         return;
     }
 }

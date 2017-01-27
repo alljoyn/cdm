@@ -41,7 +41,7 @@
 #include <interfaces/controllee/input/HidIntfControllee.h>
 #include <interfaces/controllee/input/HidIntfControlleeModel.h>
 
-#include "../CdmInterfaceValidation.h"
+#include <interfaces/controllee/CdmInterfaceValidation.h>
 
 
 using namespace qcc;
@@ -66,6 +66,12 @@ class HidIntfControllee::Impl :
      * @return status
      */
     QStatus Init() override;
+
+    /**
+     * override the interfaces GetInterfaceName method
+     * @return
+     */
+    const qcc::String& GetInterfaceName() const override { return InterfaceName; }
 
     /**
      * a callback function for getting property.
@@ -126,6 +132,7 @@ class HidIntfControllee::Impl :
     MethodHandlers m_methodHandlers;
 
     Ref<HidIntfControlleeModel> m_HidModelInterface;
+    qcc::String InterfaceName;
 };
 
 /*
@@ -186,7 +193,8 @@ HidIntfControllee::Impl::Impl(BusAttachment& busAttachment, Ref<HidIntfControlle
     m_busAttachment(busAttachment),
     m_cdmControllee(cdmControllee),
     m_methodHandlers(),
-    m_HidModelInterface(model)
+    m_HidModelInterface(model),
+    InterfaceName(HidInterface::INTERFACE_NAME)
 {
     ignore_unused(m_cdmControllee);
 }

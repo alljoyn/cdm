@@ -41,7 +41,7 @@
 #include <interfaces/controllee/operation/CurrentPowerIntfControllee.h>
 #include <interfaces/controllee/operation/CurrentPowerIntfControlleeModel.h>
 
-#include "../CdmInterfaceValidation.h"
+#include <interfaces/controllee/CdmInterfaceValidation.h>
 
 
 using namespace qcc;
@@ -66,6 +66,12 @@ class CurrentPowerIntfControllee::Impl :
      * @return status
      */
     QStatus Init() override;
+
+    /**
+     * override the interfaces GetInterfaceName method
+     * @return
+     */
+    const qcc::String& GetInterfaceName() const override { return InterfaceName; }
 
     /**
      * a callback function for getting property.
@@ -133,6 +139,7 @@ class CurrentPowerIntfControllee::Impl :
     MethodHandlers m_methodHandlers;
 
     Ref<CurrentPowerIntfControlleeModel> m_CurrentPowerModelInterface;
+    qcc::String InterfaceName;
 };
 
 /*
@@ -203,7 +210,8 @@ CurrentPowerIntfControllee::Impl::Impl(BusAttachment& busAttachment, Ref<Current
     m_busAttachment(busAttachment),
     m_cdmControllee(cdmControllee),
     m_methodHandlers(),
-    m_CurrentPowerModelInterface(model)
+    m_CurrentPowerModelInterface(model),
+    InterfaceName(CurrentPowerInterface::INTERFACE_NAME)
 {
     ignore_unused(m_cdmControllee);
 }

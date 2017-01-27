@@ -41,7 +41,7 @@
 #include <interfaces/controllee/operation/MoistureOutputLevelIntfControllee.h>
 #include <interfaces/controllee/operation/MoistureOutputLevelIntfControlleeModel.h>
 
-#include "../CdmInterfaceValidation.h"
+#include <interfaces/controllee/CdmInterfaceValidation.h>
 
 
 using namespace qcc;
@@ -66,6 +66,12 @@ class MoistureOutputLevelIntfControllee::Impl :
      * @return status
      */
     QStatus Init() override;
+
+    /**
+     * override the interfaces GetInterfaceName method
+     * @return
+     */
+    const qcc::String& GetInterfaceName() const override { return InterfaceName; }
 
     /**
      * a callback function for getting property.
@@ -137,6 +143,7 @@ class MoistureOutputLevelIntfControllee::Impl :
     MethodHandlers m_methodHandlers;
 
     Ref<MoistureOutputLevelIntfControlleeModel> m_MoistureOutputLevelModelInterface;
+    qcc::String InterfaceName;
 };
 
 /*
@@ -207,7 +214,8 @@ MoistureOutputLevelIntfControllee::Impl::Impl(BusAttachment& busAttachment, Ref<
     m_busAttachment(busAttachment),
     m_cdmControllee(cdmControllee),
     m_methodHandlers(),
-    m_MoistureOutputLevelModelInterface(model)
+    m_MoistureOutputLevelModelInterface(model),
+    InterfaceName(MoistureOutputLevelInterface::INTERFACE_NAME)
 {
     ignore_unused(m_cdmControllee);
 }

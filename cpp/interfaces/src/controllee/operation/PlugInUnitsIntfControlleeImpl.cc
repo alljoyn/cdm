@@ -41,7 +41,7 @@
 #include <interfaces/controllee/operation/PlugInUnitsIntfControllee.h>
 #include <interfaces/controllee/operation/PlugInUnitsIntfControlleeModel.h>
 
-#include "../CdmInterfaceValidation.h"
+#include <interfaces/controllee/CdmInterfaceValidation.h>
 
 
 using namespace qcc;
@@ -66,6 +66,12 @@ class PlugInUnitsIntfControllee::Impl :
      * @return status
      */
     QStatus Init() override;
+
+    /**
+     * override the interfaces GetInterfaceName method
+     * @return
+     */
+    const qcc::String& GetInterfaceName() const override { return InterfaceName; }
 
     /**
      * a callback function for getting property.
@@ -119,6 +125,7 @@ class PlugInUnitsIntfControllee::Impl :
     MethodHandlers m_methodHandlers;
 
     Ref<PlugInUnitsIntfControlleeModel> m_PlugInUnitsModelInterface;
+    qcc::String InterfaceName;
 };
 
 /*
@@ -179,7 +186,8 @@ PlugInUnitsIntfControllee::Impl::Impl(BusAttachment& busAttachment, Ref<PlugInUn
     m_busAttachment(busAttachment),
     m_cdmControllee(cdmControllee),
     m_methodHandlers(),
-    m_PlugInUnitsModelInterface(model)
+    m_PlugInUnitsModelInterface(model),
+    InterfaceName(PlugInUnitsInterface::INTERFACE_NAME)
 {
     ignore_unused(m_cdmControllee);
 }

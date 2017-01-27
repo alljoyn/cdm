@@ -41,7 +41,7 @@
 #include <interfaces/controllee/operation/AirRecirculationModeIntfControllee.h>
 #include <interfaces/controllee/operation/AirRecirculationModeIntfControlleeModel.h>
 
-#include "../CdmInterfaceValidation.h"
+#include <interfaces/controllee/CdmInterfaceValidation.h>
 
 
 using namespace qcc;
@@ -66,6 +66,12 @@ class AirRecirculationModeIntfControllee::Impl :
      * @return status
      */
     QStatus Init() override;
+
+    /**
+     * override the interfaces GetInterfaceName method
+     * @return
+     */
+    const qcc::String& GetInterfaceName() const override { return InterfaceName; }
 
     /**
      * a callback function for getting property.
@@ -119,6 +125,7 @@ class AirRecirculationModeIntfControllee::Impl :
     MethodHandlers m_methodHandlers;
 
     Ref<AirRecirculationModeIntfControlleeModel> m_AirRecirculationModeModelInterface;
+    qcc::String InterfaceName;
 };
 
 /*
@@ -179,7 +186,8 @@ AirRecirculationModeIntfControllee::Impl::Impl(BusAttachment& busAttachment, Ref
     m_busAttachment(busAttachment),
     m_cdmControllee(cdmControllee),
     m_methodHandlers(),
-    m_AirRecirculationModeModelInterface(model)
+    m_AirRecirculationModeModelInterface(model),
+    InterfaceName(AirRecirculationModeInterface::INTERFACE_NAME)
 {
     ignore_unused(m_cdmControllee);
 }

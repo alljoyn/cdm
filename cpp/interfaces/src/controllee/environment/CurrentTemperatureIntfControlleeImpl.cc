@@ -41,7 +41,7 @@
 #include <interfaces/controllee/environment/CurrentTemperatureIntfControllee.h>
 #include <interfaces/controllee/environment/CurrentTemperatureIntfControlleeModel.h>
 
-#include "../CdmInterfaceValidation.h"
+#include <interfaces/controllee/CdmInterfaceValidation.h>
 
 
 using namespace qcc;
@@ -66,6 +66,12 @@ class CurrentTemperatureIntfControllee::Impl :
      * @return status
      */
     QStatus Init() override;
+
+    /**
+     * override the interfaces GetInterfaceName method
+     * @return
+     */
+    const qcc::String& GetInterfaceName() const override { return InterfaceName; }
 
     /**
      * a callback function for getting property.
@@ -133,6 +139,7 @@ class CurrentTemperatureIntfControllee::Impl :
     MethodHandlers m_methodHandlers;
 
     Ref<CurrentTemperatureIntfControlleeModel> m_CurrentTemperatureModelInterface;
+    qcc::String InterfaceName;
 };
 
 /*
@@ -203,7 +210,8 @@ CurrentTemperatureIntfControllee::Impl::Impl(BusAttachment& busAttachment, Ref<C
     m_busAttachment(busAttachment),
     m_cdmControllee(cdmControllee),
     m_methodHandlers(),
-    m_CurrentTemperatureModelInterface(model)
+    m_CurrentTemperatureModelInterface(model),
+    InterfaceName(CurrentTemperatureInterface::INTERFACE_NAME)
 {
     ignore_unused(m_cdmControllee);
 }

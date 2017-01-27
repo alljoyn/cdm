@@ -41,7 +41,7 @@
 #include <interfaces/controllee/operation/HvacFanModeIntfControllee.h>
 #include <interfaces/controllee/operation/HvacFanModeIntfControlleeModel.h>
 
-#include "../CdmInterfaceValidation.h"
+#include <interfaces/controllee/CdmInterfaceValidation.h>
 
 
 using namespace qcc;
@@ -66,6 +66,12 @@ class HvacFanModeIntfControllee::Impl :
      * @return status
      */
     QStatus Init() override;
+
+    /**
+     * override the interfaces GetInterfaceName method
+     * @return
+     */
+    const qcc::String& GetInterfaceName() const override { return InterfaceName; }
 
     /**
      * a callback function for getting property.
@@ -128,6 +134,7 @@ class HvacFanModeIntfControllee::Impl :
     MethodHandlers m_methodHandlers;
 
     Ref<HvacFanModeIntfControlleeModel> m_HvacFanModeModelInterface;
+    qcc::String InterfaceName;
 };
 
 /*
@@ -193,7 +200,8 @@ HvacFanModeIntfControllee::Impl::Impl(BusAttachment& busAttachment, Ref<HvacFanM
     m_busAttachment(busAttachment),
     m_cdmControllee(cdmControllee),
     m_methodHandlers(),
-    m_HvacFanModeModelInterface(model)
+    m_HvacFanModeModelInterface(model),
+    InterfaceName(HvacFanModeInterface::INTERFACE_NAME)
 {
     ignore_unused(m_cdmControllee);
 }

@@ -41,7 +41,7 @@
 #include <interfaces/controllee/operation/ResourceSavingIntfControllee.h>
 #include <interfaces/controllee/operation/ResourceSavingIntfControlleeModel.h>
 
-#include "../CdmInterfaceValidation.h"
+#include <interfaces/controllee/CdmInterfaceValidation.h>
 
 
 using namespace qcc;
@@ -66,6 +66,12 @@ class ResourceSavingIntfControllee::Impl :
      * @return status
      */
     QStatus Init() override;
+
+    /**
+     * override the interfaces GetInterfaceName method
+     * @return
+     */
+    const qcc::String& GetInterfaceName() const override { return InterfaceName; }
 
     /**
      * a callback function for getting property.
@@ -119,6 +125,7 @@ class ResourceSavingIntfControllee::Impl :
     MethodHandlers m_methodHandlers;
 
     Ref<ResourceSavingIntfControlleeModel> m_ResourceSavingModelInterface;
+    qcc::String InterfaceName;
 };
 
 /*
@@ -179,7 +186,8 @@ ResourceSavingIntfControllee::Impl::Impl(BusAttachment& busAttachment, Ref<Resou
     m_busAttachment(busAttachment),
     m_cdmControllee(cdmControllee),
     m_methodHandlers(),
-    m_ResourceSavingModelInterface(model)
+    m_ResourceSavingModelInterface(model),
+    InterfaceName(ResourceSavingInterface::INTERFACE_NAME)
 {
     ignore_unused(m_cdmControllee);
 }

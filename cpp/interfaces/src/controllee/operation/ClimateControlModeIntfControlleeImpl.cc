@@ -41,7 +41,7 @@
 #include <interfaces/controllee/operation/ClimateControlModeIntfControllee.h>
 #include <interfaces/controllee/operation/ClimateControlModeIntfControlleeModel.h>
 
-#include "../CdmInterfaceValidation.h"
+#include <interfaces/controllee/CdmInterfaceValidation.h>
 
 
 using namespace qcc;
@@ -66,6 +66,12 @@ class ClimateControlModeIntfControllee::Impl :
      * @return status
      */
     QStatus Init() override;
+
+    /**
+     * override the interfaces GetInterfaceName method
+     * @return
+     */
+    const qcc::String& GetInterfaceName() const override { return InterfaceName; }
 
     /**
      * a callback function for getting property.
@@ -135,6 +141,7 @@ class ClimateControlModeIntfControllee::Impl :
     MethodHandlers m_methodHandlers;
 
     Ref<ClimateControlModeIntfControlleeModel> m_ClimateControlModeModelInterface;
+    qcc::String InterfaceName;
 };
 
 /*
@@ -205,7 +212,8 @@ ClimateControlModeIntfControllee::Impl::Impl(BusAttachment& busAttachment, Ref<C
     m_busAttachment(busAttachment),
     m_cdmControllee(cdmControllee),
     m_methodHandlers(),
-    m_ClimateControlModeModelInterface(model)
+    m_ClimateControlModeModelInterface(model),
+    InterfaceName(ClimateControlModeInterface::INTERFACE_NAME)
 {
     ignore_unused(m_cdmControllee);
 }

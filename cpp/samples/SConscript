@@ -44,7 +44,8 @@ if local_env['BR'] == 'on':
 sample_dirs = [
     'LampDevice',
     'DeviceEmulator',
-    'Migration/16.10/CookTopControllee'
+    'Migration/16.10/CookTopControllee',
+    'WarpCoreInterface'
     ]
 
 exports = { 'env': local_env }

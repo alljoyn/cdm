@@ -1,0 +1,22 @@
+<node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.allseenalliance.org/schemas/introspect.xsd">
+    <interface name="org.alljoyn.SmartSpaces.Operation.HeatingZone">
+        <annotation name="org.alljoyn.Bus.DocString.En" value="This interface provides a capability to monitor the status of heating zones."/>
+        <annotation name="org.alljoyn.Bus.Secure" value="true"/>
+        <property name="Version" type="q" access="read">
+            <annotation name="org.alljoyn.Bus.DocString.En" value="The interface version."/>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const"/>
+        </property>
+        <property name="NumberOfHeatingZones" type="y" access="read">
+            <annotation name="org.alljoyn.Bus.DocString.En" value="Number of heating zones."/>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <property name="MaxHeatingLevels" type="ay" access="read">
+            <annotation name="org.alljoyn.Bus.DocString.En" value="Max heating levels for each zone."/>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+        <property name="HeatingLevels" type="ay" access="read">
+            <annotation name="org.alljoyn.Bus.DocString.En" value="Current heating levels for each zone."/>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+        </property>
+    </interface>
+</node>

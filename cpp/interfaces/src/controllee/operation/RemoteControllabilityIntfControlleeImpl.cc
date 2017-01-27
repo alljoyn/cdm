@@ -41,7 +41,7 @@
 #include <interfaces/controllee/operation/RemoteControllabilityIntfControllee.h>
 #include <interfaces/controllee/operation/RemoteControllabilityIntfControlleeModel.h>
 
-#include "../CdmInterfaceValidation.h"
+#include <interfaces/controllee/CdmInterfaceValidation.h>
 
 
 using namespace qcc;
@@ -66,6 +66,12 @@ class RemoteControllabilityIntfControllee::Impl :
      * @return status
      */
     QStatus Init() override;
+
+    /**
+     * override the interfaces GetInterfaceName method
+     * @return
+     */
+    const qcc::String& GetInterfaceName() const override { return InterfaceName; }
 
     /**
      * a callback function for getting property.
@@ -119,6 +125,7 @@ class RemoteControllabilityIntfControllee::Impl :
     MethodHandlers m_methodHandlers;
 
     Ref<RemoteControllabilityIntfControlleeModel> m_RemoteControllabilityModelInterface;
+    qcc::String InterfaceName;
 };
 
 /*
@@ -179,7 +186,8 @@ RemoteControllabilityIntfControllee::Impl::Impl(BusAttachment& busAttachment, Re
     m_busAttachment(busAttachment),
     m_cdmControllee(cdmControllee),
     m_methodHandlers(),
-    m_RemoteControllabilityModelInterface(model)
+    m_RemoteControllabilityModelInterface(model),
+    InterfaceName(RemoteControllabilityInterface::INTERFACE_NAME)
 {
     ignore_unused(m_cdmControllee);
 }

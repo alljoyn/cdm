@@ -41,7 +41,7 @@
 #include <interfaces/controllee/operation/AudioVideoInputIntfControllee.h>
 #include <interfaces/controllee/operation/AudioVideoInputIntfControlleeModel.h>
 
-#include "../CdmInterfaceValidation.h"
+#include <interfaces/controllee/CdmInterfaceValidation.h>
 
 
 using namespace qcc;
@@ -66,6 +66,12 @@ class AudioVideoInputIntfControllee::Impl :
      * @return status
      */
     QStatus Init() override;
+
+    /**
+     * override the interfaces GetInterfaceName method
+     * @return
+     */
+    const qcc::String& GetInterfaceName() const override { return InterfaceName; }
 
     /**
      * a callback function for getting property.
@@ -128,6 +134,7 @@ class AudioVideoInputIntfControllee::Impl :
     MethodHandlers m_methodHandlers;
 
     Ref<AudioVideoInputIntfControlleeModel> m_AudioVideoInputModelInterface;
+    qcc::String InterfaceName;
 };
 
 /*
@@ -193,7 +200,8 @@ AudioVideoInputIntfControllee::Impl::Impl(BusAttachment& busAttachment, Ref<Audi
     m_busAttachment(busAttachment),
     m_cdmControllee(cdmControllee),
     m_methodHandlers(),
-    m_AudioVideoInputModelInterface(model)
+    m_AudioVideoInputModelInterface(model),
+    InterfaceName(AudioVideoInputInterface::INTERFACE_NAME)
 {
     ignore_unused(m_cdmControllee);
 }

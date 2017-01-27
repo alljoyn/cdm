@@ -41,7 +41,7 @@
 #include <interfaces/controllee/operation/AudioVolumeIntfControllee.h>
 #include <interfaces/controllee/operation/AudioVolumeIntfControlleeModel.h>
 
-#include "../CdmInterfaceValidation.h"
+#include <interfaces/controllee/CdmInterfaceValidation.h>
 
 
 using namespace qcc;
@@ -66,6 +66,12 @@ class AudioVolumeIntfControllee::Impl :
      * @return status
      */
     QStatus Init() override;
+
+    /**
+     * override the interfaces GetInterfaceName method
+     * @return
+     */
+    const qcc::String& GetInterfaceName() const override { return InterfaceName; }
 
     /**
      * a callback function for getting property.
@@ -135,6 +141,7 @@ class AudioVolumeIntfControllee::Impl :
     MethodHandlers m_methodHandlers;
 
     Ref<AudioVolumeIntfControlleeModel> m_AudioVolumeModelInterface;
+    qcc::String InterfaceName;
 };
 
 /*
@@ -205,7 +212,8 @@ AudioVolumeIntfControllee::Impl::Impl(BusAttachment& busAttachment, Ref<AudioVol
     m_busAttachment(busAttachment),
     m_cdmControllee(cdmControllee),
     m_methodHandlers(),
-    m_AudioVolumeModelInterface(model)
+    m_AudioVolumeModelInterface(model),
+    InterfaceName(AudioVolumeInterface::INTERFACE_NAME)
 {
     ignore_unused(m_cdmControllee);
 }

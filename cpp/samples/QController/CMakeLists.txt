@@ -36,6 +36,8 @@ set(SOURCE_FILES
 file(GLOB INTERFACE_SOURCE_FILES
     interfaces/*.cpp
     interfaces/*.h
+    interfaces/WarpCore/*.cc
+    interfaces/WarpCore/*.h
 )
 
 set(CDM_DIST "${PROJECT_SOURCE_DIR}/../../../build/darwin/x86_64/debug/dist")

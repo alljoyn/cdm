@@ -41,7 +41,7 @@
 #include <interfaces/controllee/operation/BrightnessIntfControllee.h>
 #include <interfaces/controllee/operation/BrightnessIntfControlleeModel.h>
 
-#include "../CdmInterfaceValidation.h"
+#include <interfaces/controllee/CdmInterfaceValidation.h>
 
 
 using namespace qcc;
@@ -66,6 +66,12 @@ class BrightnessIntfControllee::Impl :
      * @return status
      */
     QStatus Init() override;
+
+    /**
+     * override the interfaces GetInterfaceName method
+     * @return
+     */
+    const qcc::String& GetInterfaceName() const override { return InterfaceName; }
 
     /**
      * a callback function for getting property.
@@ -121,6 +127,7 @@ class BrightnessIntfControllee::Impl :
     MethodHandlers m_methodHandlers;
 
     Ref<BrightnessIntfControlleeModel> m_BrightnessModelInterface;
+    qcc::String InterfaceName;
 };
 
 /*
@@ -181,7 +188,8 @@ BrightnessIntfControllee::Impl::Impl(BusAttachment& busAttachment, Ref<Brightnes
     m_busAttachment(busAttachment),
     m_cdmControllee(cdmControllee),
     m_methodHandlers(),
-    m_BrightnessModelInterface(model)
+    m_BrightnessModelInterface(model),
+    InterfaceName(BrightnessInterface::INTERFACE_NAME)
 {
     ignore_unused(m_cdmControllee);
 }

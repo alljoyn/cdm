@@ -41,7 +41,7 @@
 #include <interfaces/controllee/operation/HeatingZoneIntfControllee.h>
 #include <interfaces/controllee/operation/HeatingZoneIntfControlleeModel.h>
 
-#include "../CdmInterfaceValidation.h"
+#include <interfaces/controllee/CdmInterfaceValidation.h>
 
 
 using namespace qcc;
@@ -66,6 +66,12 @@ class HeatingZoneIntfControllee::Impl :
      * @return status
      */
     QStatus Init() override;
+
+    /**
+     * override the interfaces GetInterfaceName method
+     * @return
+     */
+    const qcc::String& GetInterfaceName() const override { return InterfaceName; }
 
     /**
      * a callback function for getting property.
@@ -133,6 +139,7 @@ class HeatingZoneIntfControllee::Impl :
     MethodHandlers m_methodHandlers;
 
     Ref<HeatingZoneIntfControlleeModel> m_HeatingZoneModelInterface;
+    qcc::String InterfaceName;
 };
 
 /*
@@ -203,7 +210,8 @@ HeatingZoneIntfControllee::Impl::Impl(BusAttachment& busAttachment, Ref<HeatingZ
     m_busAttachment(busAttachment),
     m_cdmControllee(cdmControllee),
     m_methodHandlers(),
-    m_HeatingZoneModelInterface(model)
+    m_HeatingZoneModelInterface(model),
+    InterfaceName(HeatingZoneInterface::INTERFACE_NAME)
 {
     ignore_unused(m_cdmControllee);
 }

@@ -41,7 +41,7 @@
 #include <interfaces/controllee/userinterfacesettings/LanguageDisplayIntfControllee.h>
 #include <interfaces/controllee/userinterfacesettings/LanguageDisplayIntfControlleeModel.h>
 
-#include "../CdmInterfaceValidation.h"
+#include <interfaces/controllee/CdmInterfaceValidation.h>
 
 
 using namespace qcc;
@@ -66,6 +66,12 @@ class LanguageDisplayIntfControllee::Impl :
      * @return status
      */
     QStatus Init() override;
+
+    /**
+     * override the interfaces GetInterfaceName method
+     * @return
+     */
+    const qcc::String& GetInterfaceName() const override { return InterfaceName; }
 
     /**
      * a callback function for getting property.
@@ -121,6 +127,7 @@ class LanguageDisplayIntfControllee::Impl :
     MethodHandlers m_methodHandlers;
 
     Ref<LanguageDisplayIntfControlleeModel> m_LanguageDisplayModelInterface;
+    qcc::String InterfaceName;
 };
 
 /*
@@ -181,7 +188,8 @@ LanguageDisplayIntfControllee::Impl::Impl(BusAttachment& busAttachment, Ref<Lang
     m_busAttachment(busAttachment),
     m_cdmControllee(cdmControllee),
     m_methodHandlers(),
-    m_LanguageDisplayModelInterface(model)
+    m_LanguageDisplayModelInterface(model),
+    InterfaceName(LanguageDisplayInterface::INTERFACE_NAME)
 {
     ignore_unused(m_cdmControllee);
 }

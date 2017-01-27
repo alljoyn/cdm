@@ -41,7 +41,7 @@
 #include <interfaces/controllee/userinterfacesettings/TemperatureDisplayIntfControllee.h>
 #include <interfaces/controllee/userinterfacesettings/TemperatureDisplayIntfControlleeModel.h>
 
-#include "../CdmInterfaceValidation.h"
+#include <interfaces/controllee/CdmInterfaceValidation.h>
 
 
 using namespace qcc;
@@ -66,6 +66,12 @@ class TemperatureDisplayIntfControllee::Impl :
      * @return status
      */
     QStatus Init() override;
+
+    /**
+     * override the interfaces GetInterfaceName method
+     * @return
+     */
+    const qcc::String& GetInterfaceName() const override { return InterfaceName; }
 
     /**
      * a callback function for getting property.
@@ -121,6 +127,7 @@ class TemperatureDisplayIntfControllee::Impl :
     MethodHandlers m_methodHandlers;
 
     Ref<TemperatureDisplayIntfControlleeModel> m_TemperatureDisplayModelInterface;
+    qcc::String InterfaceName;
 };
 
 /*
@@ -181,7 +188,8 @@ TemperatureDisplayIntfControllee::Impl::Impl(BusAttachment& busAttachment, Ref<T
     m_busAttachment(busAttachment),
     m_cdmControllee(cdmControllee),
     m_methodHandlers(),
-    m_TemperatureDisplayModelInterface(model)
+    m_TemperatureDisplayModelInterface(model),
+    InterfaceName(TemperatureDisplayInterface::INTERFACE_NAME)
 {
     ignore_unused(m_cdmControllee);
 }

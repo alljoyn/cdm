@@ -41,7 +41,7 @@
 #include <interfaces/controllee/operation/ClosedStatusIntfControllee.h>
 #include <interfaces/controllee/operation/ClosedStatusIntfControlleeModel.h>
 
-#include "../CdmInterfaceValidation.h"
+#include <interfaces/controllee/CdmInterfaceValidation.h>
 
 
 using namespace qcc;
@@ -66,6 +66,12 @@ class ClosedStatusIntfControllee::Impl :
      * @return status
      */
     QStatus Init() override;
+
+    /**
+     * override the interfaces GetInterfaceName method
+     * @return
+     */
+    const qcc::String& GetInterfaceName() const override { return InterfaceName; }
 
     /**
      * a callback function for getting property.
@@ -119,6 +125,7 @@ class ClosedStatusIntfControllee::Impl :
     MethodHandlers m_methodHandlers;
 
     Ref<ClosedStatusIntfControlleeModel> m_ClosedStatusModelInterface;
+    qcc::String InterfaceName;
 };
 
 /*
@@ -179,7 +186,8 @@ ClosedStatusIntfControllee::Impl::Impl(BusAttachment& busAttachment, Ref<ClosedS
     m_busAttachment(busAttachment),
     m_cdmControllee(cdmControllee),
     m_methodHandlers(),
-    m_ClosedStatusModelInterface(model)
+    m_ClosedStatusModelInterface(model),
+    InterfaceName(ClosedStatusInterface::INTERFACE_NAME)
 {
     ignore_unused(m_cdmControllee);
 }

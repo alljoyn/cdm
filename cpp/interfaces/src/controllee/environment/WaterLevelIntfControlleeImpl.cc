@@ -41,7 +41,7 @@
 #include <interfaces/controllee/environment/WaterLevelIntfControllee.h>
 #include <interfaces/controllee/environment/WaterLevelIntfControlleeModel.h>
 
-#include "../CdmInterfaceValidation.h"
+#include <interfaces/controllee/CdmInterfaceValidation.h>
 
 
 using namespace qcc;
@@ -66,6 +66,12 @@ class WaterLevelIntfControllee::Impl :
      * @return status
      */
     QStatus Init() override;
+
+    /**
+     * override the interfaces GetInterfaceName method
+     * @return
+     */
+    const qcc::String& GetInterfaceName() const override { return InterfaceName; }
 
     /**
      * a callback function for getting property.
@@ -133,6 +139,7 @@ class WaterLevelIntfControllee::Impl :
     MethodHandlers m_methodHandlers;
 
     Ref<WaterLevelIntfControlleeModel> m_WaterLevelModelInterface;
+    qcc::String InterfaceName;
 };
 
 /*
@@ -203,7 +210,8 @@ WaterLevelIntfControllee::Impl::Impl(BusAttachment& busAttachment, Ref<WaterLeve
     m_busAttachment(busAttachment),
     m_cdmControllee(cdmControllee),
     m_methodHandlers(),
-    m_WaterLevelModelInterface(model)
+    m_WaterLevelModelInterface(model),
+    InterfaceName(WaterLevelInterface::INTERFACE_NAME)
 {
     ignore_unused(m_cdmControllee);
 }

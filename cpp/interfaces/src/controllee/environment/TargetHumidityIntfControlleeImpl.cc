@@ -41,7 +41,7 @@
 #include <interfaces/controllee/environment/TargetHumidityIntfControllee.h>
 #include <interfaces/controllee/environment/TargetHumidityIntfControlleeModel.h>
 
-#include "../CdmInterfaceValidation.h"
+#include <interfaces/controllee/CdmInterfaceValidation.h>
 
 
 using namespace qcc;
@@ -66,6 +66,12 @@ class TargetHumidityIntfControllee::Impl :
      * @return status
      */
     QStatus Init() override;
+
+    /**
+     * override the interfaces GetInterfaceName method
+     * @return
+     */
+    const qcc::String& GetInterfaceName() const override { return InterfaceName; }
 
     /**
      * a callback function for getting property.
@@ -149,6 +155,7 @@ class TargetHumidityIntfControllee::Impl :
     MethodHandlers m_methodHandlers;
 
     Ref<TargetHumidityIntfControlleeModel> m_TargetHumidityModelInterface;
+    qcc::String InterfaceName;
 };
 
 /*
@@ -229,7 +236,8 @@ TargetHumidityIntfControllee::Impl::Impl(BusAttachment& busAttachment, Ref<Targe
     m_busAttachment(busAttachment),
     m_cdmControllee(cdmControllee),
     m_methodHandlers(),
-    m_TargetHumidityModelInterface(model)
+    m_TargetHumidityModelInterface(model),
+    InterfaceName(TargetHumidityInterface::INTERFACE_NAME)
 {
     ignore_unused(m_cdmControllee);
 }

@@ -41,7 +41,7 @@
 #include <interfaces/controllee/operation/FilterStatusIntfControllee.h>
 #include <interfaces/controllee/operation/FilterStatusIntfControlleeModel.h>
 
-#include "../CdmInterfaceValidation.h"
+#include <interfaces/controllee/CdmInterfaceValidation.h>
 
 
 using namespace qcc;
@@ -66,6 +66,12 @@ class FilterStatusIntfControllee::Impl :
      * @return status
      */
     QStatus Init() override;
+
+    /**
+     * override the interfaces GetInterfaceName method
+     * @return
+     */
+    const qcc::String& GetInterfaceName() const override { return InterfaceName; }
 
     /**
      * a callback function for getting property.
@@ -140,6 +146,7 @@ class FilterStatusIntfControllee::Impl :
     MethodHandlers m_methodHandlers;
 
     Ref<FilterStatusIntfControlleeModel> m_FilterStatusModelInterface;
+    qcc::String InterfaceName;
 };
 
 /*
@@ -215,7 +222,8 @@ FilterStatusIntfControllee::Impl::Impl(BusAttachment& busAttachment, Ref<FilterS
     m_busAttachment(busAttachment),
     m_cdmControllee(cdmControllee),
     m_methodHandlers(),
-    m_FilterStatusModelInterface(model)
+    m_FilterStatusModelInterface(model),
+    InterfaceName(FilterStatusInterface::INTERFACE_NAME)
 {
     ignore_unused(m_cdmControllee);
 }
