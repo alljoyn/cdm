@@ -58,72 +58,72 @@ public:
     uint8_t m_stepValueSignal;
     std::vector<uint8_t> m_selectableHumidityLevelsSignal;
 
-    virtual void OnResponseSetTargetValue(QStatus status, const qcc::String& objectPath, void* context)
+    virtual void OnResponseSetTargetValue(QStatus status, const qcc::String& objectPath, void* context) override
     {
         m_status = status;
         m_event.SetEvent();
     }
 
-    virtual void OnResponseGetTargetValue(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context)
+    virtual void OnResponseGetTargetValue(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) override
     {
         m_status = status;
         m_targetValue = value;
         m_event.SetEvent();
     }
 
-    virtual void OnResponseGetMinValue(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context)
+    virtual void OnResponseGetMinValue(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) override
     {
         m_status = status;
         m_minValue = value;
         m_event.SetEvent();
     }
 
-    virtual void OnResponseGetMaxValue(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context)
+    virtual void OnResponseGetMaxValue(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) override
     {
         m_status = status;
         m_maxValue = value;
         m_event.SetEvent();
     }
 
-    virtual void OnResponseGetStepValue(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context)
+    virtual void OnResponseGetStepValue(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) override
     {
         m_status = status;
         m_stepValue = value;
         m_event.SetEvent();
     }
 
-    virtual void OnResponseGetSelectableHumidityLevels(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& value, void* context)
+    virtual void OnResponseGetSelectableHumidityLevels(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& value, void* context) override
     {
         m_status = status;
         m_selectableHumidityLevels = value;
         m_event.SetEvent();
     }
 
-    virtual void OnTargetValueChanged(const qcc::String& objectPath, const uint8_t value)
+    virtual void OnTargetValueChanged(const qcc::String& objectPath, const uint8_t value) override
     {
         m_targetValueSignal = value;
         m_eventSignal.SetEvent();
     }
 
-    virtual void OnMinValueChanged(const qcc::String& objectPath, const uint8_t value)
+    virtual void OnMinValueChanged(const qcc::String& objectPath, const uint8_t value) override
     {
         m_minValueSignal = value;
         m_eventSignal.SetEvent();
     }
 
-    virtual void OnMaxValueChanged(const qcc::String& objectPath, const uint8_t value)
+    virtual void OnMaxValueChanged(const qcc::String& objectPath, const uint8_t value) override
     {
         m_maxValueSignal = value;
         m_eventSignal.SetEvent();
     }
 
-    virtual void OnStepValueChanged(const qcc::String& objectPath, const uint8_t value)
+    virtual void OnStepValueChanged(const qcc::String& objectPath, const uint8_t value) override
     {
         m_stepValueSignal = value;
         m_eventSignal.SetEvent();
     }
 
-    virtual void OnSelectableHumidityLevelsChanged(const qcc::String& objectPath, const std::vector<uint8_t>& value)
+    virtual void OnSelectableHumidityLevelsChanged(const qcc::String& objectPath, const std::vector<uint8_t>& value) override
     {
         m_selectableHumidityLevelsSignal = value;
         m_eventSignal.SetEvent();
@@ -296,7 +296,7 @@ TEST_F(CDMTest, CDM_v1_TargetHumidity)
             listener->m_event.ResetEvent();
 
             TEST_LOG_3("Wait the PropertiesChanged signal for the TargetValue property.");
-            EXPECT_EQ(ER_OK, listener->m_eventSignal.Wait(TIMEOUT)) << "property changed signal is missing";
+            EXPECT_EQ(true, listener->m_eventSignal.Wait(TIMEOUT)) << "property changed signal is missing";
             listener->m_eventSignal.ResetEvent();
             EXPECT_DOUBLE_EQ(listener->m_targetValueSignal, listener->m_maxValue);
 

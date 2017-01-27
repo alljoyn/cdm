@@ -30,6 +30,8 @@
 
 #include "CdmTest.h"
 #include <algorithm>
+#include <iostream>
+using namespace std;
 
 #include <interfaces/controller/environment/WaterLevelIntfController.h>
 #include <interfaces/controller/environment/WaterLevelIntfControllerListener.h>
@@ -53,35 +55,35 @@ public:
     qcc::String m_errorName;
     qcc::String m_errorMessage;
 
-    virtual void OnGetMaxLevelPropertyCallback(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context)
+    virtual void OnResponseGetMaxLevel(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) override
     {
         m_maxLevel = value;
         m_status = status;
         m_event.SetEvent();
     }
-    virtual void OnGetSupplySourcePropertyCallback (QStatus status, const qcc::String& objectPath, const WaterLevelInterface::SupplySource value, void* context)
+    virtual void OnResponseGetSupplySource(QStatus status, const qcc::String& objectPath, const WaterLevelInterface::SupplySource value, void* context) override
     {
         m_status = status;
         m_supplySource = value;
         m_event.SetEvent();
     }
-    virtual void OnGetCurrentLevelPropertyCallback (QStatus status, const qcc::String& objectPath, const uint8_t value, void* context)
+    virtual void OnResponseGetCurrentLevel (QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) override
     {
         m_status = status;
         m_currentLevel = value;
         m_event.SetEvent();
     }
-    virtual void MaxLevelProprtyChanged(const qcc::String& objectPath, const uint8_t value)
+    virtual void OnMaxLevelChanged(const qcc::String& objectPath, const uint8_t value) override
     {
         m_maxLevelSignal = value;
         m_eventSignal.SetEvent();
     }
-    virtual void CurrentLevelProprtyChanged(const qcc::String& objectPath, const uint8_t value)
+    virtual void OnCurrentLevelChanged(const qcc::String& objectPath, const uint8_t value) override
     {
         m_currentLevelSignal = value;
         m_eventSignal.SetEvent();
     }
-    virtual void SupplySourceProprtyChanged(const qcc::String& objectPath, const WaterLevelInterface::SupplySource value)
+    virtual void OnSupplySourceChanged(const qcc::String& objectPath, const WaterLevelInterface::SupplySource value) override
     {
         m_supplySourceSignal = value;
         m_eventSignal.SetEvent();

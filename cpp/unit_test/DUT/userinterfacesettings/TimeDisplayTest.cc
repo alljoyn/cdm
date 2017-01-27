@@ -50,33 +50,33 @@ public:
     std::vector<uint8_t> m_supportedTimeFormats;
     std::vector<uint8_t> m_supportedTimeFormatsSignal;
 
-    virtual void GetDisplayTimeFormatPropertyCallback(QStatus status, const qcc::String& objectPath, const uint8_t timeformat, void* context)
+    virtual void OnResponseGetDisplayTimeFormat(QStatus status, const qcc::String& objectPath, const uint8_t timeformat, void* context) override
     {
         m_status = status;
         m_displayTimeformat = timeformat;
         m_event.SetEvent();
     }
 
-    virtual void SetDisplayTimeFormatPropertyCallback(QStatus status, const qcc::String& objectPath, void* context)
+    virtual void OnResponseSetDisplayTimeFormat(QStatus status, const qcc::String& objectPath, void* context) override
     {
         m_status = status;
         m_event.SetEvent();
     }
 
-    virtual void GetSupportedDisplayTimeFormatsPropertyCallback(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& supportedTimeFormats, void* context)
+    virtual void OnResponseGetSupportedDisplayTimeFormats(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& supportedTimeFormats, void* context) override
     {
         m_supportedTimeFormats = supportedTimeFormats;
         m_status = status;
         m_event.SetEvent();
     }
 
-    virtual void DisplayTimeFormatPropertyChanged(const qcc::String& objectPath, const uint8_t timeformat)
+    virtual void OnDisplayTimeFormatChanged(const qcc::String& objectPath, const uint8_t timeformat) override
     {
         m_displayTimeformatSignal = timeformat;
         m_eventSignal.SetEvent();
     }
 
-    virtual void SupportedDisplayTimeFormatsPropertyChanged(const qcc::String& objectPath, const std::vector<uint8_t>& supportedTimeFormats)
+    virtual void OnSupportedDisplayTimeFormatsChanged(const qcc::String& objectPath, const std::vector<uint8_t>& supportedTimeFormats) override
     {
         m_supportedTimeFormatsSignal = supportedTimeFormats;
         m_eventSignal.SetEvent();

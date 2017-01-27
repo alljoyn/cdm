@@ -46,27 +46,27 @@ public:
     qcc::String m_errorName;
     qcc::String m_errorMessage;
 
-    virtual void OnResponseGetCurrentValue(QStatus status, const qcc::String& objectPath, const uint8_t currentValue, void* context)
+    virtual void OnResponseGetCurrentValue(QStatus status, const qcc::String& objectPath, const uint8_t currentValue, void* context) override
     {
         m_status = status;
         m_currentValue = currentValue;
         m_event.SetEvent();
     }
 
-    virtual void OnResponseGetIsCharging(QStatus status, const qcc::String& objectPath, const bool isCharging, void* context)
+    virtual void OnResponseGetIsCharging(QStatus status, const qcc::String& objectPath, const bool isCharging, void* context) override
     {
         m_status = status;
         m_isCharging = isCharging;
         m_event.SetEvent();
     }
 
-    virtual void OnCurrentValueChanged(const qcc::String& objectPath, const uint8_t currentValue)
+    virtual void OnCurrentValueChanged(const qcc::String& objectPath, const uint8_t currentValue) override
     {
         m_currentValueSignal = currentValue;
         m_eventSignal.SetEvent();
     }
 
-    virtual void OnIsChargingChanged(const qcc::String& objectPath, const bool isCharging)
+    virtual void OnIsChargingChanged(const qcc::String& objectPath, const bool isCharging) override
     {
         m_isChargingSignal = isCharging;
         m_eventSignal.SetEvent();

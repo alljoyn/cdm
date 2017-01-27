@@ -39,7 +39,7 @@ public:
     CdmSemaphore m_event;
     CdmSemaphore m_eventSignal;
     QStatus m_status;
-    AudioVideoInputInterface::SourceType m_inputSourceId;
+    uint16_t m_inputSourceId;
     std::vector<AudioVideoInputInterface::InputSource> m_supportedInputSources;
     uint16_t m_inputSourceIdSignal;
     std::vector<AudioVideoInputInterface::InputSource> m_supportedInputSourcesSignal;
@@ -52,7 +52,7 @@ public:
         m_event.SetEvent();
     }
 
-    virtual void OnResponseGetInputSourceId(QStatus status, const qcc::String& objectPath, const AudioVideoInputInterface::SourceType inputSourceId, void* context) override
+    virtual void OnResponseGetInputSourceId(QStatus status, const qcc::String& objectPath, const uint16_t inputSourceId, void* context) override
     {
         m_status = status;
         m_inputSourceId = inputSourceId;
@@ -67,7 +67,7 @@ public:
         m_event.SetEvent();
     }
 
-    virtual void OnInputSourceIdChanged(const qcc::String& objectPath, const AudioVideoInputInterface::SourceType inputSourceId) override
+    virtual void OnInputSourceIdChanged(const qcc::String& objectPath, const uint16_t inputSourceId) override
     {
         m_inputSourceIdSignal = inputSourceId;
         m_eventSignal.SetEvent();
@@ -138,11 +138,11 @@ TEST_F(CDMTest, CDM_v1_AudioVideoInput)
             ASSERT_NE((int)listener->m_supportedInputSources.size(), 0);
         }
 
-        std::vector<AudioVideoInputInterface::SourceType> sourceIds;
+        std::vector<uint16_t> sourceIds;
         auto itr = listener->m_supportedInputSources.begin();
         auto end = listener->m_supportedInputSources.end();
         while (itr != end) {
-            sourceIds.push_back(itr->sourceType);
+            sourceIds.push_back(itr->id);
             itr++;
         }
 

@@ -175,6 +175,7 @@ TEST_F(CDMTest, CDM_v1_MoistureOutputLevel)
 
         TEST_LOG_1("Set properties to invalid value.");
         {
+            // Values are now clamped
             TEST_LOG_2("If MaxMoistureOutputLevel != UINT8_MAX, Set the MoistureOutputLevel property to MaxMoistureOutputLevel + 1.");
             if (listener->m_maxMoistureOutputLevel != UINT8_MAX) {
                 const uint16_t invalidMoistureOutputLevel = listener->m_maxMoistureOutputLevel + 1;
@@ -182,7 +183,7 @@ TEST_F(CDMTest, CDM_v1_MoistureOutputLevel)
                 EXPECT_EQ(status, ER_OK);
                 EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
                 listener->m_event.ResetEvent();
-                EXPECT_NE(listener->m_status, ER_OK);
+                EXPECT_EQ(listener->m_status, ER_OK);
 
                 TEST_LOG_3("Get the MoistureOutputLevel property.");
                 status = controller->GetMoistureOutputLevel();
@@ -190,14 +191,16 @@ TEST_F(CDMTest, CDM_v1_MoistureOutputLevel)
                 EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
                 listener->m_event.ResetEvent();
                 EXPECT_EQ(listener->m_status, ER_OK);
-                EXPECT_EQ(listener->m_moistureOutputLevel, initMoistureOutputLevel);
+                EXPECT_EQ(listener->m_moistureOutputLevel, listener->m_maxMoistureOutputLevel);
 
+#if 0
                 auto invalidValue = (MoistureOutputLevelInterface::AutoMode)2;
                 TEST_LOG_2("Set the AutoMode property to 2.");
                 status =  controller->SetAutoMode(invalidValue);
                 EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
                 EXPECT_NE(listener->m_status, ER_OK);
                 listener->m_event.ResetEvent();
+#endif
 
                 TEST_LOG_3("Get the AutoMode property.");
                 status =  controller->GetAutoMode();

@@ -9,10 +9,11 @@
 
     if (arg_startingRecord >= channels.size()) {
         error = INVALID_VALUE;
-    } else {
-        for (auto i = arg_startingRecord; i < arg_startingRecord + arg_numRecords && i < channels.size(); ++i) {
-            arg_listOfChannelInfoRecords.push_back(channels[i]);
-        }
+        return ER_INVALID_DATA;
+    }
+
+    for (auto i = arg_startingRecord; i < arg_startingRecord + arg_numRecords && i < channels.size(); ++i) {
+        arg_listOfChannelInfoRecords.push_back(channels[i]);
     }
 
     return ER_OK;

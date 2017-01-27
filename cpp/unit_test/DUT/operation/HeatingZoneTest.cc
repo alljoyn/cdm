@@ -53,35 +53,35 @@ public:
     std::vector<uint8_t> m_heatingLevels;
     std::vector<uint8_t> m_heatingLevelsSignal;
 
-    virtual void OnGetNumberOfHeatingZonesPropertyCallback(QStatus status, const qcc::String& objectPath, const uint8_t numberOfZones, void* context)
+    virtual void OnResponseGetNumberOfHeatingZones(QStatus status, const qcc::String& objectPath, const uint8_t numberOfZones, void* context) override
     {
         m_status = status;
         m_numberOfHeatingZones = numberOfZones;
         m_event.SetEvent();
     }
-    virtual void OnGetMaxHeatingLevelsPropertyCallback(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& maxHeatingLevels, void* context)
+    virtual void OnResponseGetMaxHeatingLevels(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& maxHeatingLevels, void* context) override
     {
         m_status = status;
         m_maxHeatingLevels = maxHeatingLevels;
         m_event.SetEvent();
     }
-    virtual void OnGetHeatingLevelsPropertyCallback(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& heatingLevels, void* context)
+    virtual void OnResponseGetHeatingLevels(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& heatingLevels, void* context) override
     {
         m_status = status;
         m_heatingLevels = heatingLevels;
         m_event.SetEvent();
     }
-    virtual void NumberOfHeatingZonesPropertyChanged(const qcc::String& objectPath, const uint8_t numberOfHeatingZones)
+    virtual void OnNumberOfHeatingZonesChanged(const qcc::String& objectPath, const uint8_t numberOfHeatingZones) override
     {
         m_numberOfHeatingZonesSignal = numberOfHeatingZones;
         m_eventSignal.SetEvent();
     }
-    virtual void MaxHeatingLevelsPropertyChanged(const qcc::String& objectPath, const std::vector<uint8_t>& maxHeatingLevels)
+    virtual void OnMaxHeatingLevelsChanged(const qcc::String& objectPath, const std::vector<uint8_t>& maxHeatingLevels) override
     {
         m_maxHeatingLevelsSignal = maxHeatingLevels;
         m_eventSignal.SetEvent();
     }
-    virtual void HeatingLevelsPropertyChanged(const qcc::String& objectPath, const std::vector<uint8_t>& heatingLevels)
+    virtual void OnHeatingLevelsChanged(const qcc::String& objectPath, const std::vector<uint8_t>& heatingLevels) override
     {
         m_heatingLevelsSignal = heatingLevels;
         m_eventSignal.SetEvent();

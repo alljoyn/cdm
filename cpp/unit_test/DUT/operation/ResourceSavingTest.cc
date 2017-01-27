@@ -44,7 +44,7 @@ public:
     qcc::String m_errorName;
     qcc::String m_errorMessage;
 
-    virtual void OnResponseSetResourceSavingMode(QStatus status, const qcc::String& objectPath, void* context)
+    virtual void OnResponseSetResourceSavingMode(QStatus status, const qcc::String& objectPath, void* context) override
     {
         m_errorName = "";
         m_errorMessage = "";
@@ -53,7 +53,7 @@ public:
         m_event.SetEvent();
     }
 
-    virtual void OnResponseGetResourceSavingMode(QStatus status, const qcc::String& objectPath, const bool value, void* context)
+    virtual void OnResponseGetResourceSavingMode(QStatus status, const qcc::String& objectPath, const bool value, void* context) override
     {
         m_errorName = "";
         m_errorMessage = "";
@@ -63,7 +63,7 @@ public:
         m_event.SetEvent();
     }
 
-    virtual void OnResourceSavingModeChanged(const qcc::String& objectPath, const bool value)
+    virtual void OnResourceSavingModeChanged(const qcc::String& objectPath, const bool value) override
     {
         m_resourceSavingModeSignal = value;
         m_eventSignal.SetEvent();

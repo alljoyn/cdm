@@ -45,40 +45,40 @@ public:
     qcc::String m_errorName;
     qcc::String m_errorMessage;
 
-    virtual void OnResponseGetCurrentPower(QStatus status, const qcc::String& objectPath, const double currentPower, void* context)
+    virtual void OnResponseGetCurrentPower(QStatus status, const qcc::String& objectPath, const double currentPower, void* context) override
     {
         this->m_status = status;
         this->m_currentPower = currentPower;
         m_event.SetEvent();
     }
 
-    virtual void OnResponseGetPrecision(QStatus status, const qcc::String& objectPath, const double precision, void* context)
+    virtual void OnResponseGetPrecision(QStatus status, const qcc::String& objectPath, const double precision, void* context) override
     {
         this->m_status = status;
         this->m_precision = precision;
         m_event.SetEvent();
     }
 
-    virtual void OnResponseGetUpdateMinTime(QStatus status, const qcc::String& objectPath, const uint16_t updateMinTime, void* context)
+    virtual void OnResponseGetUpdateMinTime(QStatus status, const qcc::String& objectPath, const uint16_t updateMinTime, void* context) override
     {
         this->m_status = status;
         this->m_updateMinTime = updateMinTime;
         m_event.SetEvent();
     }
 
-    virtual void OnCurrentPowerChanged(const qcc::String& objectPath, const double currentPower)
+    virtual void OnCurrentPowerChanged(const qcc::String& objectPath, const double currentPower) override
     {
         this->m_currentPower = currentPower;
         m_eventSignal.SetEvent();
     }
 
-    virtual void OnPrecisionChanged(const qcc::String& objectPath, const double precision)
+    virtual void OnPrecisionChanged(const qcc::String& objectPath, const double precision) override
     {
         this->m_precision = precision;
         m_eventSignal.SetEvent();
     }
 
-    virtual void OnUpdateMinTimeChanged(const qcc::String& objectPath, const uint16_t updateMinTime)
+    virtual void OnUpdateMinTimeChanged(const qcc::String& objectPath, const uint16_t updateMinTime) override
     {
         this->m_updateMinTime = updateMinTime;
         m_eventSignal.SetEvent();

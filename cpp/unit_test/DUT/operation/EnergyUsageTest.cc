@@ -48,28 +48,28 @@ public:
     qcc::String m_errorName;
     qcc::String m_errorMessage;
 
-    virtual void OnResponseGetCumulativeEnergy(QStatus status, const qcc::String& objectPath, const double cumulativeEnergy, void* context)
+    virtual void OnResponseGetCumulativeEnergy(QStatus status, const qcc::String& objectPath, const double cumulativeEnergy, void* context) override
     {
         m_status = status;
         m_cumulativeEnergy = cumulativeEnergy;
         m_event.SetEvent();
     }
 
-    virtual void OnResponseGetPrecision(QStatus status, const qcc::String& objectPath, const double precision, void* context)
+    virtual void OnResponseGetPrecision(QStatus status, const qcc::String& objectPath, const double precision, void* context) override
     {
         m_status = status;
         m_precision = precision;
         m_event.SetEvent();
     }
 
-    virtual void OnResponseGetUpdateMinTime(QStatus status, const qcc::String& objectPath, const uint16_t updateMinTime, void* context)
+    virtual void OnResponseGetUpdateMinTime(QStatus status, const qcc::String& objectPath, const uint16_t updateMinTime, void* context) override
     {
         m_status = status;
         m_updateMinTime = updateMinTime;
         m_event.SetEvent();
     }
 
-    virtual void OnResponseResetCumulativeEnergy(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage)
+    virtual void OnResponseResetCumulativeEnergy(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage) override
     {
         m_status = status;
         if (status != ER_OK) {
@@ -83,19 +83,19 @@ public:
         m_event.SetEvent();
     }
 
-    virtual void OnCumulativeEnergyChanged(const qcc::String& objectPath, const double cumulativeEnergy)
+    virtual void OnCumulativeEnergyChanged(const qcc::String& objectPath, const double cumulativeEnergy) override
     {
         m_cumulativeEnergySignal = cumulativeEnergy;
         m_eventSignal.SetEvent();
     }
 
-    virtual void OnPrecisionChanged(const qcc::String& objectPath, const double precision)
+    virtual void OnPrecisionChanged(const qcc::String& objectPath, const double precision) override
     {
         m_precisionSignal = precision;
         m_eventSignal.SetEvent();
     }
 
-    virtual void OnUpdateMinTimeChanged(const qcc::String& objectPath, const uint16_t updateMinTime)
+    virtual void OnUpdateMinTimeChanged(const qcc::String& objectPath, const uint16_t updateMinTime) override
     {
         m_updateMinTimeSignal = updateMinTime;
         m_eventSignal.SetEvent();

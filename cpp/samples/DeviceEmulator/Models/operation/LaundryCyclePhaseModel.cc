@@ -132,6 +132,10 @@ QStatus LaundryCyclePhaseModel::GetSupportedCyclePhases(std::vector<uint8_t>& ou
 
 QStatus LaundryCyclePhaseModel::GetVendorPhasesDescription(qcc::String& arg_languageTag, std::vector<LaundryCyclePhaseInterface::CyclePhaseDescriptor>& arg_phasesDescription, ErrorCode& error, CdmControllee& controllee)
 {
+    if (arg_languageTag != "en") {      // the unit tests require this
+        error = LANGUAGE_NOT_SUPPORTED;
+        return ER_INVALID_DATA;
+    }
     auto status = HAL::ReadProperty(m_busPath, "org.alljoyn.SmartSpaces.Operation.LaundryCyclePhase", "__PhaseDescription", arg_phasesDescription);
     if (status != ER_OK) {
         error = FEATURE_NOT_AVAILABLE;

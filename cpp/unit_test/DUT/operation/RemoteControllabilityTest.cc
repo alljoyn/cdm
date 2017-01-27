@@ -46,13 +46,13 @@ public:
 
 
 
-    virtual void GetIsControllablePropertyCallback(QStatus status, const qcc::String& objectPath, const bool isControllable, void* context)
+    virtual void OnResponseGetIsControllable(QStatus status, const qcc::String& objectPath, const bool isControllable, void* context) override
     {
         m_status = status;
         m_isControllable = isControllable;
         m_event.SetEvent();
     }
-    virtual void IsControllalbePropertyChanged(const qcc::String& objectPath, const bool isControllable)
+    virtual void OnIsControllableChanged(const qcc::String& objectPath, const bool isControllable) override
     {
         m_isControllableSignal = isControllable;
         m_eventSignal.SetEvent();

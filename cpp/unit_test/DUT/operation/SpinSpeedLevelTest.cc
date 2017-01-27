@@ -53,46 +53,46 @@ public:
     std::vector<uint8_t> m_selectableLevels;
     std::vector<uint8_t> m_selectableLevelsSignal;
 
-    virtual void GetMaxLevelPropertyCallback(QStatus status, const qcc::String& objectPath, const uint8_t maxLevel, void* context)
+    virtual void OnResponseGetMaxLevel(QStatus status, const qcc::String& objectPath, const uint8_t maxLevel, void* context) override
     {
         m_status = status;
         m_maxLevel = maxLevel;
         m_event.SetEvent();
     }
 
-    virtual void GetTargetLevelPropertyCallback(QStatus status, const qcc::String& objectPath, const uint8_t targetLevel, void* context)
+    virtual void OnResponseGetTargetLevel(QStatus status, const qcc::String& objectPath, const uint8_t targetLevel, void* context) override
     {
         m_status = status;
         m_targetLevel = targetLevel;
         m_event.SetEvent();
     }
 
-    virtual void SetTargetLevelPropertyCallback(QStatus status, const qcc::String& objectPath, void* context)
+    virtual void OnResponseSetTargetLevel(QStatus status, const qcc::String& objectPath, void* context) override
     {
         m_status = status;
         m_event.SetEvent();
     }
 
-    virtual void GetSelectableLevelsPropertyCallback(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& selectableLevels, void* context)
+    virtual void OnResponseGetSelectableLevels(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& selectableLevels, void* context) override
     {
         m_selectableLevels = selectableLevels;
         m_status = status;
         m_event.SetEvent();
     }
 
-    virtual void MaxLevelPropertyChanged(const qcc::String& objectPath, const uint8_t maxLevel)
+    virtual void OnMaxLevelChanged(const qcc::String& objectPath, const uint8_t maxLevel) override
     {
         m_maxLevelSignal = maxLevel;
         m_eventSignal.SetEvent();
     }
 
-    virtual void TargetLevelPropertyChanged(const qcc::String& objectPath, const uint8_t targetLevel)
+    virtual void OnTargetLevelChanged(const qcc::String& objectPath, const uint8_t targetLevel) override
     {
         m_targetLevelSignal = targetLevel;
         m_eventSignal.SetEvent();
     }
 
-    virtual void SelectableLevelsPropertyChanged(const qcc::String& objectPath, const std::vector<uint8_t>& selectableLevels)
+    virtual void OnSelectableLevelsChanged(const qcc::String& objectPath, const std::vector<uint8_t>& selectableLevels) override
     {
         m_selectableLevelsSignal = selectableLevels;
         m_eventSignal.SetEvent();
@@ -169,12 +169,13 @@ TEST_F(CDMTest, CDM_v1_SpinSpeedLevel)
 
         TEST_LOG_1("Set properties to invalid value.");
         {
+            // The values are now clamped
             TEST_LOG_2("Set the TargetLevel property to MaxLevel + 1.");
             status = controller->SetTargetLevel(listener->m_maxLevel + 1);
             EXPECT_EQ(status, ER_OK);
             EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
             listener->m_event.ResetEvent();
-            EXPECT_NE(listener->m_status, ER_OK);
+            EXPECT_EQ(listener->m_status, ER_OK);
 
             TEST_LOG_2("Get the TargetLevel property.");
             status = controller->GetTargetLevel();
@@ -182,7 +183,7 @@ TEST_F(CDMTest, CDM_v1_SpinSpeedLevel)
             EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
             listener->m_event.ResetEvent();
             EXPECT_EQ(listener->m_status, ER_OK);
-            EXPECT_EQ(listener->m_targetLevel, initTargetLevel);
+            EXPECT_EQ(listener->m_targetLevel, listener->m_maxLevel);
 
             TEST_LOG_2("Set the TargetLevel property to value outside SelectableLevels.");
             uint8_t unselectableLevel = 0;

@@ -47,27 +47,27 @@ public:
     uint16_t m_maxSetMinutes;
     uint16_t m_rapidModeMinutesRemainingSignal;
 
-    virtual void OnResponseGetRapidModeMinutesRemaining(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context)
+    virtual void OnResponseGetRapidModeMinutesRemaining(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context) override
     {
         m_status = status;
         m_rapidModeMinutesRemaining = value;
         m_event.SetEvent();
     }
 
-    virtual void OnResponseSetRapidModeMinutesRemaining(QStatus status, const qcc::String& objectPath, void* context)
+    virtual void OnResponseSetRapidModeMinutesRemaining(QStatus status, const qcc::String& objectPath, void* context) override
     {
         m_status = status;
         m_event.SetEvent();
     }
 
-    virtual void OnResponseGetMaxSetMinutes(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context)
+    virtual void OnResponseGetMaxSetMinutes(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context) override
     {
         m_status = status;
         m_maxSetMinutes = value;
         m_event.SetEvent();
     }
 
-    virtual void OnRapidModeMinutesRemainingChanged(const qcc::String& objectPath, const uint16_t value)
+    virtual void OnRapidModeMinutesRemainingChanged(const qcc::String& objectPath, const uint16_t value) override
     {
         m_rapidModeMinutesRemainingSignal = value;
         m_eventSignal.SetEvent();
@@ -122,6 +122,7 @@ TEST_F(CDMTest, CDM_v1_RapidModeTimed)
 
         TEST_LOG_1("Set properties to invalid value.");
         {
+            // The values are now clamped
             TEST_LOG_2("If MaxSetMinutes != UINT16_MAX, Set the RapidModeMinutesRemaining property to MaxSetMinutes + 1.");
             if (listener->m_maxSetMinutes != UINT16_MAX) {
                 const uint32_t invalidValue = listener->m_maxSetMinutes + 1;
@@ -129,7 +130,7 @@ TEST_F(CDMTest, CDM_v1_RapidModeTimed)
                 EXPECT_EQ(status, ER_OK);
                 EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
                 listener->m_event.ResetEvent();
-                EXPECT_NE(listener->m_status, ER_OK);
+                EXPECT_EQ(listener->m_status, ER_OK);
 
                 TEST_LOG_3("Get the RapidModeMinutesRemaining property.");
                 status = controller->GetRapidModeMinutesRemaining();
@@ -137,7 +138,7 @@ TEST_F(CDMTest, CDM_v1_RapidModeTimed)
                 EXPECT_EQ(true, listener->m_event.Wait(TIMEOUT));
                 listener->m_event.ResetEvent();
                 EXPECT_EQ(listener->m_status, ER_OK);
-                EXPECT_EQ(listener->m_rapidModeMinutesRemaining, initValue);
+                EXPECT_EQ(listener->m_rapidModeMinutesRemaining, listener->m_maxSetMinutes);
             }
         }
 

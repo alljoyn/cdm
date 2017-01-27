@@ -44,14 +44,14 @@ public:
     qcc::String m_errorName;
     qcc::String m_errorMessage;
 
-    virtual void GetIsClosedPropertyCallback(QStatus status, const qcc::String& objectPath, const bool isClosed, void* context)
+    virtual void OnResponseGetIsClosed(QStatus status, const qcc::String& objectPath, const bool isClosed, void* context) override
     {
         m_status = status;
         m_isClosed = isClosed;
         m_event.SetEvent();
     }
 
-    virtual void IsClosedPropertyChanged(const qcc::String& objectPath, const bool isClosed)
+    virtual void OnIsClosedChanged(const qcc::String& objectPath, const bool isClosed) override
     {
         m_isClosedSignal = isClosed;
         m_eventSignal.SetEvent();

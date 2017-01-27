@@ -165,7 +165,7 @@ TEST_F(CDMTest, CDM_v1_WindDirection)
     for (size_t i = 0; i < m_interfaces.size(); i++) {
 
         auto listener = mkRef<WindDirectionListener>();
-        auto interface = m_controller->CreateInterface("org.alljoyn.SmartSpaces.Environment.WaterLevel", m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()), m_interfaces[i].sessionId, listener);
+        auto interface = m_controller->CreateInterface("org.alljoyn.SmartSpaces.Environment.WindDirection", m_interfaces[i].busName, qcc::String(m_interfaces[i].objectPath.c_str()), m_interfaces[i].sessionId, listener);
 
         auto controller = std::dynamic_pointer_cast<WindDirectionIntfController>(interface);
         QStatus status = ER_FAIL;

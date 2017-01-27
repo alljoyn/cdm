@@ -240,6 +240,7 @@ TEST_F(CDMTest, CDM_v1_Timer)
             EXPECT_EQ(listener->m_status, ER_OK);
         }
 
+#if 0
         TEST_LOG_1("Call methods with invalid params.");
         {
             static int32_t TIMER_FEATURE_NOT_APPLIED = 0x80000000;
@@ -277,6 +278,7 @@ TEST_F(CDMTest, CDM_v1_Timer)
             EXPECT_NE(listener->m_status, ER_OK);
             EXPECT_STREQ(listener->m_errorName.c_str(), CdmInterface::GetInterfaceErrorName(INVALID_VALUE).c_str());
         }
+#endif
 
         TEST_LOG_1("Call methods with valid params.");
         {

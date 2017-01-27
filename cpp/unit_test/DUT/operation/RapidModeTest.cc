@@ -45,20 +45,20 @@ public:
     qcc::String m_errorMessage;
 
 
-    virtual void OnSetRapidModePropertyCallback(QStatus status, const qcc::String& objectPath, void* context)
+    virtual void OnResponseSetRapidMode(QStatus status, const qcc::String& objectPath, void* context) override
     {
         m_status = status;
         m_event.SetEvent();
     }
 
-    virtual void OnGetRapidModePropertyCallback(QStatus status, const qcc::String& objectPath, const bool rapidMode, void* context)
+    virtual void OnResponseGetRapidMode(QStatus status, const qcc::String& objectPath, const bool rapidMode, void* context) override
     {
         m_status = status;
         m_rapidMode = rapidMode;
         m_event.SetEvent();
     }
 
-    virtual void RapidModePropertyChanged(const qcc::String& objectPath, const bool rapidMode)
+    virtual void OnRapidModeChanged(const qcc::String& objectPath, const bool rapidMode) override
     {
         m_rapidModeSignal = rapidMode;
         m_eventSignal.SetEvent();

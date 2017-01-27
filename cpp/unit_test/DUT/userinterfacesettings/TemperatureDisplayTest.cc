@@ -50,33 +50,33 @@ public:
     std::vector<uint8_t> m_supportedDisplayTemperatureUnits;
     std::vector<uint8_t> m_supportedDisplayTemperatureUnitsSignal;
 
-    virtual void GetDisplayTemperatureUnitPropertyCallback(QStatus status, const qcc::String& objectPath, const uint8_t temperatureUnit, void* context)
+    virtual void OnResponseGetDisplayTemperatureUnit(QStatus status, const qcc::String& objectPath, const uint8_t temperatureUnit, void* context) override
     {
         m_status = status;
         m_displayTemperatureUnit = temperatureUnit;
         m_event.SetEvent();
     }
 
-    virtual void SetDisplayTemperatureUnitPropertyCallback(QStatus status, const qcc::String& objectPath, void* context)
+    virtual void OnResponseSetDisplayTemperatureUnit(QStatus status, const qcc::String& objectPath, void* context) override
     {
         m_status = status;
         m_event.SetEvent();
     }
 
-    virtual void GetSupportedDisplayTemperatureUnitsPropertyCallback(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& supportedDisplayTemperatureUnits, void* context)
+    virtual void OnResponseGetSupportedDisplayTemperatureUnits(QStatus status, const qcc::String& objectPath, const std::vector<uint8_t>& supportedDisplayTemperatureUnits, void* context) override
     {
         m_supportedDisplayTemperatureUnits = supportedDisplayTemperatureUnits;
         m_status = status;
         m_event.SetEvent();
     }
 
-    virtual void DisplayTemperatureUnitPropertyChanged(const qcc::String& objectPath, const uint8_t temperatureUnit)
+    virtual void OnDisplayTemperatureUnitChanged(const qcc::String& objectPath, const uint8_t temperatureUnit) override
     {
         m_displayTemperatureUnitSignal = temperatureUnit;
         m_eventSignal.SetEvent();
     }
 
-    virtual void SupportedDisplayTemperatureUnitsPropertyChanged(const qcc::String& objectPath, const std::vector<uint8_t>& supportedDisplayTemperatureUnits)
+    virtual void OnSupportedDisplayTemperatureUnitsChanged(const qcc::String& objectPath, const std::vector<uint8_t>& supportedDisplayTemperatureUnits) override
     {
         m_supportedDisplayTemperatureUnitsSignal = supportedDisplayTemperatureUnits;
         m_eventSignal.SetEvent();

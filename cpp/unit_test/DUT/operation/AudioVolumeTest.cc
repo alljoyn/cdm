@@ -48,52 +48,52 @@ public:
     qcc::String m_errorName;
     qcc::String m_errorMessage;
 
-    virtual void OnResponseSetVolume(QStatus status, const qcc::String& objectPath, void* context)
+    virtual void OnResponseSetVolume(QStatus status, const qcc::String& objectPath, void* context) override
     {
         m_status = status;
         m_event.SetEvent();
     }
 
-    virtual void OnResponseGetVolume(QStatus status, const qcc::String& objectPath, const uint8_t volume, void* context)
+    virtual void OnResponseGetVolume(QStatus status, const qcc::String& objectPath, const uint8_t volume, void* context) override
     {
         m_status = status;
         m_volume = volume;
         m_event.SetEvent();
     }
 
-    virtual void OnResponseGetMaxVolume(QStatus status, const qcc::String& objectPath, const uint8_t maxVolume, void* context)
+    virtual void OnResponseGetMaxVolume(QStatus status, const qcc::String& objectPath, const uint8_t maxVolume, void* context) override
     {
         m_status = status;
         m_maxVolume = maxVolume;
         m_event.SetEvent();
     }
 
-    virtual void OnResponseSetMute(QStatus status, const qcc::String& objectPath, void* context)
+    virtual void OnResponseSetMute(QStatus status, const qcc::String& objectPath, void* context) override
     {
         m_status = status;
         m_event.SetEvent();
     }
 
-    virtual void OnResponseGetMute(QStatus status, const qcc::String& objectPath, const bool mute, void* context)
+    virtual void OnResponseGetMute(QStatus status, const qcc::String& objectPath, const bool mute, void* context) override
     {
         m_status = status;
         m_mute = mute;
         m_event.SetEvent();
     }
 
-    virtual void OnVolumeChanged(const qcc::String& objectPath, const uint8_t volume)
+    virtual void OnVolumeChanged(const qcc::String& objectPath, const uint8_t volume) override
     {
         m_volumeSignal = volume;
         m_eventSignal.SetEvent();
     }
 
-    virtual void OnMaxVolumeChanged(const qcc::String& objectPath, const uint8_t maxVolume)
+    virtual void OnMaxVolumeChanged(const qcc::String& objectPath, const uint8_t maxVolume) override
     {
         m_maxVolumeSignal = maxVolume;
         m_eventSignal.SetEvent();
     }
 
-    virtual void OnMuteChanged(const qcc::String& objectPath, const bool mute)
+    virtual void OnMuteChanged(const qcc::String& objectPath, const bool mute) override
     {
         m_muteSignal = mute;
         m_eventSignal.SetEvent();

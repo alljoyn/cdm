@@ -51,74 +51,74 @@ public:
     qcc::String m_url;
     uint8_t m_lifeRemaining;
 
-    virtual void OnResponseGetExpectedLifeInDays(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context)
+    virtual void OnResponseGetExpectedLifeInDays(QStatus status, const qcc::String& objectPath, const uint16_t value, void* context) override
     {
         m_status = status;
         m_expectedLifeInDays = value;
         m_event.SetEvent();
     }
 
-    virtual void OnResponseGetIsCleanable(QStatus status, const qcc::String& objectPath, const bool isCleanable, void* context)
+    virtual void OnResponseGetIsCleanable(QStatus status, const qcc::String& objectPath, const bool isCleanable, void* context) override
     {
         m_status = status;
         m_isCleanable = isCleanable;
         m_event.SetEvent();
     }
 
-    virtual void OnResponseGetOrderPercentage(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context)
+    virtual void OnResponseGetOrderPercentage(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) override
     {
         m_status = status;
         m_orderPercentage = value;
         m_event.SetEvent();
     }
 
-    virtual void OnResponseGetManufacturer(QStatus status, const qcc::String& objectPath, const qcc::String& manufacturer, void* context)
+    virtual void OnResponseGetManufacturer(QStatus status, const qcc::String& objectPath, const qcc::String& manufacturer, void* context) override
     {
         m_status = status;
         m_manufacturer = manufacturer;
         m_event.SetEvent();
     }
 
-    virtual void OnResponseGetPartNumber(QStatus status, const qcc::String& objectPath, const qcc::String& partNumber, void* context)
+    virtual void OnResponseGetPartNumber(QStatus status, const qcc::String& objectPath, const qcc::String& partNumber, void* context) override
     {
         m_status = status;
         m_partNumber = partNumber;
         m_event.SetEvent();
     }
 
-    virtual void OnResponseGetUrl(QStatus status, const qcc::String& objectPath, const qcc::String& url, void* context)
+    virtual void OnResponseGetUrl(QStatus status, const qcc::String& objectPath, const qcc::String& url, void* context) override
     {
         m_status = status;
         m_url = url;
         m_event.SetEvent();
     }
 
-    virtual void OnResponseGetLifeRemaining(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context)
+    virtual void OnResponseGetLifeRemaining(QStatus status, const qcc::String& objectPath, const uint8_t value, void* context) override
     {
         m_status = status;
         m_lifeRemaining = value;
         m_event.SetEvent();
     }
 
-    virtual void OnExpectedLifeInDaysChanged(const qcc::String& objectPath, const uint16_t value)
+    virtual void OnExpectedLifeInDaysChanged(const qcc::String& objectPath, const uint16_t value) override
     {
         m_expectedLifeInDays = value;
         m_eventSignal.SetEvent();
     }
 
-    virtual void OnIsCleanableChanged(const qcc::String& objectPath, const bool isCleanable)
+    virtual void OnIsCleanableChanged(const qcc::String& objectPath, const bool isCleanable) override
     {
         m_isCleanable = isCleanable;
         m_eventSignal.SetEvent();
     }
 
-    virtual void OnOrderPercentageChanged(const qcc::String& objectPath, const uint8_t value)
+    virtual void OnOrderPercentageChanged(const qcc::String& objectPath, const uint8_t value) override
     {
         m_orderPercentage = value;
         m_eventSignal.SetEvent();
     }
 
-    virtual void OnLifeRemainingChanged(const qcc::String& objectPath, const uint8_t value)
+    virtual void OnLifeRemainingChanged(const qcc::String& objectPath, const uint8_t value) override
     {
         m_lifeRemaining = value;
         m_eventSignal.SetEvent();

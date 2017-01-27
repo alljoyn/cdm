@@ -44,20 +44,20 @@ public:
     qcc::String m_errorName;
     qcc::String m_errorMessage;
 
-    virtual void OnResponseSetIsRecirculating(QStatus status, const qcc::String& objectPath, void* context)
+    virtual void OnResponseSetIsRecirculating(QStatus status, const qcc::String& objectPath, void* context) override
     {
         m_status = status;
         m_event.SetEvent();
     }
 
-    virtual void OnResponseGetIsRecirculating(QStatus status, const qcc::String& objectPath, const bool isRecirculating, void* context)
+    virtual void OnResponseGetIsRecirculating(QStatus status, const qcc::String& objectPath, const bool isRecirculating, void* context) override
     {
         m_status = status;
         m_isRecirculating = isRecirculating;
         m_event.SetEvent();
     }
 
-    virtual void OnIsRecirculatingChanged(const qcc::String& objectPath, const bool isRecirculating)
+    virtual void OnIsRecirculatingChanged(const qcc::String& objectPath, const bool isRecirculating) override
     {
         m_isRecirculatingSignal = isRecirculating;
         m_eventSignal.SetEvent();

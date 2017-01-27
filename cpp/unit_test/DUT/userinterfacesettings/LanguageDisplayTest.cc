@@ -50,33 +50,33 @@ public:
     std::vector<qcc::String> m_supportedDisplayLanguages;
     std::vector<qcc::String> m_supportedDisplayLanguagesSignal;
 
-    virtual void GetDisplayLanguagePropertyCallback(QStatus status, const qcc::String& objectPath, const qcc::String displayLanguage, void* context)
+    virtual void OnResponseGetDisplayLanguage(QStatus status, const qcc::String& objectPath, const qcc::String& displayLanguage, void* context) override
     {
         m_displayLanguage = displayLanguage;
         m_status = status;
         m_event.SetEvent();
     }
 
-    virtual void SetDisplayLanguagePropertyCallback(QStatus status, const qcc::String& objectPath, void* context)
+    virtual void OnResponseSetDisplayLanguage(QStatus status, const qcc::String& objectPath, void* context) override
     {
         m_status = status;
         m_event.SetEvent();
     }
 
-    virtual void GetSupportedDisplayLanguagesPropertyCallback(QStatus status, const qcc::String& objectPath, const std::vector<qcc::String>& supportedDisplayLanguages, void* context)
+    virtual void OnResponseGetSupportedDisplayLanguages(QStatus status, const qcc::String& objectPath, const std::vector<qcc::String>& supportedDisplayLanguages, void* context) override
     {
         m_supportedDisplayLanguages = supportedDisplayLanguages;
         m_status = status;
         m_event.SetEvent();
     }
 
-    virtual void DisplayLanguagePropertyChanged(const qcc::String& objectPath, const qcc::String& displayLanguage)
+    virtual void OnDisplayLanguageChanged(const qcc::String& objectPath, const qcc::String& displayLanguage) override
     {
         m_displayLanguageSignal = displayLanguage;
         m_eventSignal.SetEvent();
     }
 
-    virtual void SupportedDisplayLanguagesPropertyChanged(const qcc::String& objectPath, const std::vector<qcc::String>& supportedDisplayLanguages)
+    virtual void OnSupportedDisplayLanguagesChanged(const qcc::String& objectPath, const std::vector<qcc::String>& supportedDisplayLanguages) override
     {
         m_supportedDisplayLanguagesSignal = supportedDisplayLanguages;
         m_eventSignal.SetEvent();

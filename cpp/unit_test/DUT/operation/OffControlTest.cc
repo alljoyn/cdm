@@ -41,7 +41,7 @@ public:
     qcc::String m_errorName;
     qcc::String m_errorMessage;
 
-    virtual void OnResponseSwitchOff(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage)
+    virtual void OnResponseSwitchOff(QStatus status, const qcc::String& objectPath, void* context, const char* errorName, const char* errorMessage) override
     {
         if (status != ER_OK) {
             if (errorName) {

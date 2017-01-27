@@ -44,7 +44,7 @@ public:
     qcc::String m_errorName;
     qcc::String m_errorMessage;
 
-    virtual void OnResponseGetRepeatMode(QStatus status, const qcc::String& objectPath, const bool value, void* context)
+    virtual void OnResponseGetRepeatMode(QStatus status, const qcc::String& objectPath, const bool value, void* context) override
     {
         m_errorName = "";
         m_errorMessage = "";
@@ -54,7 +54,7 @@ public:
         m_event.SetEvent();
     }
 
-    virtual void OnResponseSetRepeatMode(QStatus status, const qcc::String& objectPath, void* context)
+    virtual void OnResponseSetRepeatMode(QStatus status, const qcc::String& objectPath, void* context) override
     {
         m_errorName = "";
         m_errorMessage = "";
@@ -63,7 +63,7 @@ public:
         m_event.SetEvent();
     }
 
-    virtual void OnRepeatModeChanged(const qcc::String& objectPath, const bool value)
+    virtual void OnRepeatModeChanged(const qcc::String& objectPath, const bool value) override
     {
         m_repeatModeSignal = value;
         m_eventSignal.SetEvent();
