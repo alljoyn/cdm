@@ -40,7 +40,12 @@ file(GLOB INTERFACE_SOURCE_FILES
     interfaces/WarpCore/*.h
 )
 
-set(CDM_DIST "${PROJECT_SOURCE_DIR}/../../../build/darwin/x86_64/debug/dist")
+IF(CMAKE_BUILD_TYPE STREQUAL Release)
+    set(CDM_DIST "${PROJECT_SOURCE_DIR}/../../../build/darwin/x86_64/release/dist")
+ELSE()
+    set(CDM_DIST "${PROJECT_SOURCE_DIR}/../../../build/darwin/x86_64/debug/dist")
+ENDIF()
+
 
 include_directories(SYSTEM
     $ENV{ALLJOYN_DISTDIR}/cpp/inc
