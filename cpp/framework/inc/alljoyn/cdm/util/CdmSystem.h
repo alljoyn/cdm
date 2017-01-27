@@ -90,12 +90,7 @@ class CdmSystem
      * set if the app has not been started.
      */
     CdmSystem& SetRouter(Ref<RouterLauncher> router);
-
-    /**
-     * Set the 'about' data in XML format.
-     */
-    CdmSystem& SetAboutData(const qcc::String& xml);
-
+    
     /**
      * @return the bus attachment object. This is only available
      * after starting the app.

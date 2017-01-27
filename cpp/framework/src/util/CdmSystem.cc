@@ -68,7 +68,6 @@ class CdmSystem::Impl
     }
 
     void SetRouter(Ref<RouterLauncher> router);
-    void SetAboutData(const qcc::String& xml);
     void SetAllowRemoteMessages(bool allow);
 
     QStatus Start();

@@ -50,7 +50,7 @@ sample_dirs = [
 exports = { 'env': local_env }
 
 ### install the sample launcher
-samples_launcher_path = 'sample_launcher'
+samples_launcher_path = 'SampleLauncher'
 local_env.Install('$CDM_DISTDIR/bin/', samples_launcher_path + '/launch.py')
 
 # Build the sys.conf file with the users abs path
