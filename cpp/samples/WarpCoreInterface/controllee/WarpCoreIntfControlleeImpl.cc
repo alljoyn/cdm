@@ -148,6 +148,8 @@ class WarpCoreIntfControllee::Impl :
      */
     Impl(BusAttachment& busAttachment, Ref<WarpCoreIntfControlleeModel> model, CdmBusObject& cdmBusObject, CdmControllee& cdmControllee);
 
+    QStatus clampWarpFactor(double value, double& out);
+
     BusAttachment& m_busAttachment;
     CdmControllee& m_cdmControllee;
     MethodHandlers m_methodHandlers;
@@ -314,6 +316,9 @@ QStatus WarpCoreIntfControllee::Impl::OnSetProperty(const String& propName, MsgA
 
         double validValue = value;
 
+        if (clampWarpFactor(value, validValue) != ER_OK)
+            return ER_INVALID_DATA;
+
         QStatus status = m_WarpCoreModelInterface->SetWarpFactor(validValue);
         if (status != ER_OK) {
             QCC_LogError(status, ("%s: failed to set property value", __func__));
@@ -446,6 +451,18 @@ void WarpCoreIntfControllee::Impl::OnDisengage(const InterfaceDescription::Membe
                         CdmInterface::GetInterfaceErrorMessage(errorCode).c_str());
         }
     }
+}
+
+QStatus WarpCoreIntfControllee::Impl::clampWarpFactor(double value, double& out)
+{
+
+    double minValue = 1.0;
+
+    double maxValue = 9.8;
+    double stepValue = 0;
+
+    out = clamp<double>(value, minValue, maxValue, stepValue);
+    return ER_OK;
 }
 
 } //namespace services

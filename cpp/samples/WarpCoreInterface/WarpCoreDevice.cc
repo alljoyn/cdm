@@ -54,7 +54,6 @@ int CDECL_CALL main(int argc, char** argv) {
 
     cdm::utils::FindArg(argc, argv, "--state-dir", "emulated_device_state", stateDir);
     cdm::utils::FindArg(argc, argv, "--certs-dir", "certificates/security", certsDir);
-    bool emitOnSet = (cdm::utils::ArgExists(argc, argv, "--emit-on-set") > 0);
     cdm::HAL::SetRootDir(stateDir);
 
     QStatus status = system.Start();
@@ -91,7 +90,7 @@ int CDECL_CALL main(int argc, char** argv) {
 
     WarpCoreControllee warpCore(system.GetBusAttachment(), aboutData, certsDir);
 
-    status = warpCore.Run(emitOnSet);
+    status = warpCore.Run(true);
     if (status != ER_OK) {
         std::cerr << "Failed to start the warp core: " << QCC_StatusText(status) << "\n";
         return 1;

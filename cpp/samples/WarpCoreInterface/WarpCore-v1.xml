@@ -11,6 +11,7 @@
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
             <annotation name="org.alljoyn.Bus.Type.Min" value="1.0"/>
             <annotation name="org.alljoyn.Bus.Type.Max" value="9.8"/>
+            <annotation name="org.twobulls.Property.Clamp" value="true"/>
         </property>
         <property name="CurrentWarpFactor" type="d" access="read">
             <annotation name="org.alljoyn.Bus.DocString.En" value="The current warp factor."/>
