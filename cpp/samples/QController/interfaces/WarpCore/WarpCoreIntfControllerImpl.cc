@@ -66,8 +66,7 @@ class WarpCoreIntfController::Impl : public InterfaceController
 
     const char* GetInterfaceName() const
     {
-        const char *name = INTERFACE_NAME;
-        return name;
+        return INTERFACE_NAME;
     }
 
     QStatus GetWarpFactor(void* context);

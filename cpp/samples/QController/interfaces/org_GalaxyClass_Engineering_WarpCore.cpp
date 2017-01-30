@@ -26,7 +26,7 @@
  *     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
-#include "org_USSEnterprise_Engineering_WarpCore.h"
+#include "org_GalaxyClass_Engineering_WarpCore.h"
 #include "qcUtils.h"
 #include "QStringConversion.h"
 #include <QDebug>
@@ -39,11 +39,11 @@
 
 using namespace CDMQtWidgets;
 
-static const int auto_register_meta_type = qRegisterMetaType<org_USSEnterprise_Engineering_WarpCore*>();
+static const int auto_register_meta_type = qRegisterMetaType<org_GalaxyClass_Engineering_WarpCore*>();
 
 
 
-org_USSEnterprise_Engineering_WarpCore::org_USSEnterprise_Engineering_WarpCore(CommonControllerInterface *iface)
+org_GalaxyClass_Engineering_WarpCore::org_GalaxyClass_Engineering_WarpCore(CommonControllerInterface *iface)
   : controller(NULL),
     m_listener(mkRef<Listener>(this))
 {
@@ -103,14 +103,14 @@ org_USSEnterprise_Engineering_WarpCore::org_USSEnterprise_Engineering_WarpCore(C
     }
 }
 
-org_USSEnterprise_Engineering_WarpCore::~org_USSEnterprise_Engineering_WarpCore()
+org_GalaxyClass_Engineering_WarpCore::~org_GalaxyClass_Engineering_WarpCore()
 {
     qWarning() << __FUNCTION__;
 }
 
 
 
-void org_USSEnterprise_Engineering_WarpCore::fetchProperties()
+void org_GalaxyClass_Engineering_WarpCore::fetchProperties()
 {
     // Get current values
     QStatus status;
@@ -141,7 +141,7 @@ void org_USSEnterprise_Engineering_WarpCore::fetchProperties()
 
 
 
-void org_USSEnterprise_Engineering_WarpCore::slotClickEngage()
+void org_GalaxyClass_Engineering_WarpCore::slotClickEngage()
 {
     qWarning() << "WarpCore::slotClickEngage";
 
@@ -160,7 +160,7 @@ void org_USSEnterprise_Engineering_WarpCore::slotClickEngage()
 
 
 
-void org_USSEnterprise_Engineering_WarpCore::slotClickDisengage()
+void org_GalaxyClass_Engineering_WarpCore::slotClickDisengage()
 {
     qWarning() << "WarpCore::slotClickDisengage";
 
@@ -179,7 +179,7 @@ void org_USSEnterprise_Engineering_WarpCore::slotClickDisengage()
 
 
 
-void org_USSEnterprise_Engineering_WarpCore::slotOnResponseGetWarpFactor(QStatus status, const double value)
+void org_GalaxyClass_Engineering_WarpCore::slotOnResponseGetWarpFactor(QStatus status, const double value)
 {
     qWarning() << "WarpCore::slotOnResponseGetWarpFactor";
 
@@ -188,7 +188,7 @@ void org_USSEnterprise_Engineering_WarpCore::slotOnResponseGetWarpFactor(QStatus
 
 
 
-void org_USSEnterprise_Engineering_WarpCore::slotOnWarpFactorChanged(const double value)
+void org_GalaxyClass_Engineering_WarpCore::slotOnWarpFactorChanged(const double value)
 {
     qWarning() << "WarpCore::slotOnWarpFactorChanged";
 
@@ -197,7 +197,7 @@ void org_USSEnterprise_Engineering_WarpCore::slotOnWarpFactorChanged(const doubl
 
 
 
-void org_USSEnterprise_Engineering_WarpCore::slotOnResponseSetWarpFactor(QStatus status)
+void org_GalaxyClass_Engineering_WarpCore::slotOnResponseSetWarpFactor(QStatus status)
 {
     qWarning() << "WarpCore::slotOnResponseSetWarpFactor";
 
@@ -211,7 +211,7 @@ void org_USSEnterprise_Engineering_WarpCore::slotOnResponseSetWarpFactor(QStatus
 
 
 
-void org_USSEnterprise_Engineering_WarpCore::slotSetWarpFactor()
+void org_GalaxyClass_Engineering_WarpCore::slotSetWarpFactor()
 {
     qWarning() << "WarpCore::slotSetWarpFactor";
 
@@ -237,7 +237,7 @@ void org_USSEnterprise_Engineering_WarpCore::slotSetWarpFactor()
 
 
 
-void org_USSEnterprise_Engineering_WarpCore::slotOnResponseGetCurrentWarpFactor(QStatus status, const double value)
+void org_GalaxyClass_Engineering_WarpCore::slotOnResponseGetCurrentWarpFactor(QStatus status, const double value)
 {
     qWarning() << "WarpCore::slotOnResponseGetCurrentWarpFactor";
 
@@ -246,7 +246,7 @@ void org_USSEnterprise_Engineering_WarpCore::slotOnResponseGetCurrentWarpFactor(
 
 
 
-void org_USSEnterprise_Engineering_WarpCore::slotOnCurrentWarpFactorChanged(const double value)
+void org_GalaxyClass_Engineering_WarpCore::slotOnCurrentWarpFactorChanged(const double value)
 {
     qWarning() << "WarpCore::slotOnCurrentWarpFactorChanged";
 
@@ -258,7 +258,7 @@ void org_USSEnterprise_Engineering_WarpCore::slotOnCurrentWarpFactorChanged(cons
 
 
 
-void org_USSEnterprise_Engineering_WarpCore::slotOnResponseGetIsEngaged(QStatus status, const bool value)
+void org_GalaxyClass_Engineering_WarpCore::slotOnResponseGetIsEngaged(QStatus status, const bool value)
 {
     qWarning() << "WarpCore::slotOnResponseGetIsEngaged";
 
@@ -267,7 +267,7 @@ void org_USSEnterprise_Engineering_WarpCore::slotOnResponseGetIsEngaged(QStatus 
 
 
 
-void org_USSEnterprise_Engineering_WarpCore::slotOnIsEngagedChanged(const bool value)
+void org_GalaxyClass_Engineering_WarpCore::slotOnIsEngagedChanged(const bool value)
 {
     qWarning() << "WarpCore::slotOnIsEngagedChanged";
 
@@ -279,7 +279,7 @@ void org_USSEnterprise_Engineering_WarpCore::slotOnIsEngagedChanged(const bool v
 
 
 
-void org_USSEnterprise_Engineering_WarpCore::slotOnResponseMethodEngage(QStatus status, const QString& errorName)
+void org_GalaxyClass_Engineering_WarpCore::slotOnResponseMethodEngage(QStatus status, const QString& errorName)
 {
     if (status == ER_OK)
     {
@@ -293,7 +293,7 @@ void org_USSEnterprise_Engineering_WarpCore::slotOnResponseMethodEngage(QStatus 
 
 
 
-void org_USSEnterprise_Engineering_WarpCore::slotOnResponseMethodDisengage(QStatus status, const QString& errorName)
+void org_GalaxyClass_Engineering_WarpCore::slotOnResponseMethodDisengage(QStatus status, const QString& errorName)
 {
     if (status == ER_OK)
     {

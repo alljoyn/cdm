@@ -40,7 +40,7 @@
 #include <alljoyn/cdm/util/CdmAnnouncer.h>
 #include <alljoyn/cdm/util/CdmSecurity.h>
 
-#include "WarpCoreModel.h"
+#include "WarpCoreIntfControllee/WarpCoreModel.h"
 
 
 class WarpCoreControllee {
@@ -58,7 +58,7 @@ class WarpCoreControllee {
     ajn::services::CdmSecurity m_security;
     ajn::services::CdmControllee m_controllee;
 
-    ajn::services::Ref<WarpCoreModel> m_warpCoreModel;
+    ajn::services::Ref<ajn::services::emulator::WarpCoreModel> m_warpCoreModel;
 };
 
 

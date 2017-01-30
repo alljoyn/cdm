@@ -1,0 +1,86 @@
+diff output/WarpCoreInterface.cc WarpCoreIntfControllee/WarpCoreInterface.cc
+33c33
+< #include <interfaces/common/engineering/WarpCoreInterface.h>
+---
+> #include "WarpCoreInterface.h"
+39c39
+< const CdmInterfaceType WarpCoreInterface::INTERFACE_TYPE = WARP_CORE_INTERFACE;
+---
+> const CdmInterfaceType WarpCoreInterface::INTERFACE_TYPE = VENDOR_DEFINED_INTERFACE;
+diff output/WarpCoreInterface.h WarpCoreIntfControllee/WarpCoreInterface.h
+66c66
+<     const CdmInterfaceType GetInterfaceType() const { return WARP_CORE_INTERFACE; }
+---
+>     const CdmInterfaceType GetInterfaceType() const { return WarpCoreInterface::INTERFACE_TYPE; }
+diff output/WarpCoreIntfControllee.h WarpCoreIntfControllee/WarpCoreIntfControllee.h
+45c45
+< #include <interfaces/common/engineering/WarpCoreInterface.h>
+---
+> #include "WarpCoreInterface.h"
+diff output/WarpCoreIntfControlleeImpl.cc WarpCoreIntfControllee/WarpCoreIntfControlleeImpl.cc
+41,42c41,42
+< #include <interfaces/controllee/engineering/WarpCoreIntfControllee.h>
+< #include <interfaces/controllee/engineering/WarpCoreIntfControlleeModel.h>
+---
+> #include "WarpCoreIntfControllee.h"
+> #include "WarpCoreIntfControlleeModel.h"
+diff output/WarpCoreIntfControlleeModel.h WarpCoreIntfControllee/WarpCoreIntfControlleeModel.h
+43c43
+< #include <interfaces/common/engineering/WarpCoreInterface.h>
+---
+> #include "WarpCoreInterface.h"
+diff output/WarpCoreModel.cc WarpCoreIntfControllee/WarpCoreModel.cc
+31,32c31,32
+< #include <interfaces/controllee/engineering/WarpCoreIntfControllee.h>
+< #include "../../../Utils/HAL.h"
+---
+> #include "WarpCoreIntfControllee.h"
+> #include "../Utils/HAL.h"
+73a74,95
+>     double warpFactor;
+>     QStatus status = GetWarpFactor(warpFactor);
+>     if (status != ER_OK)
+>         return status;
+>
+>     status = HAL::WriteProperty(m_busPath, "org.GalaxyClass.Engineering.WarpCore", "CurrentWarpFactor", warpFactor);
+>     if (status != ER_OK)
+>         return status;
+>
+>     status = HAL::WriteProperty(m_busPath, "org.GalaxyClass.Engineering.WarpCore", "IsEngaged", true);
+>     if (status != ER_OK)
+>         return status;
+>
+>
+>     if (status == ER_OK && controllee.EmitChangedSignalOnSetProperty())
+>     {
+>         auto iface = controllee.GetInterface<WarpCoreIntfControllee>(m_busPath, "org.GalaxyClass.Engineering.WarpCore");
+>         iface->EmitCurrentWarpFactorChanged(warpFactor);
+>         iface->EmitIsEngagedChanged(true);
+>     }
+>
+>     return ER_OK;
+77a100,116
+>     QStatus status = HAL::WriteProperty(m_busPath, "org.GalaxyClass.Engineering.WarpCore", "CurrentWarpFactor", 0.0);
+>     if (status != ER_OK)
+>         return status;
+>
+>     status = HAL::WriteProperty(m_busPath, "org.GalaxyClass.Engineering.WarpCore", "IsEngaged", false);
+>     if (status != ER_OK)
+>         return status;
+>
+>
+>     if (status == ER_OK && controllee.EmitChangedSignalOnSetProperty())
+>     {
+>         auto iface = controllee.GetInterface<WarpCoreIntfControllee>(m_busPath, "org.GalaxyClass.Engineering.WarpCore");
+>         iface->EmitCurrentWarpFactorChanged(0.0);
+>         iface->EmitIsEngagedChanged(false);
+>     }
+>
+>     return ER_OK;
+diff output/WarpCoreModel.h WarpCoreIntfControllee/WarpCoreModel.h
+33,34c33,34
+< #include <interfaces/controllee/engineering/WarpCoreIntfControlleeModel.h>
+< #include "../../../Utils/Command.h"
+---
+> #include "WarpCoreIntfControlleeModel.h"
+> #include "../Utils/Command.h"

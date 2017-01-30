@@ -28,10 +28,21 @@
  ******************************************************************************/
 
 #include "WarpCoreModel.h"
-#include "controllee/WarpCoreIntfControllee.h"
+#include "WarpCoreIntfControllee.h"
 #include "../Utils/HAL.h"
 
-using namespace ajn::services;
+
+namespace ajn {
+namespace services {
+
+} // namespace services
+} // namespace ajn
+
+
+
+namespace ajn {
+namespace services {
+namespace emulator {
 
 
 WarpCoreModel::WarpCoreModel(const std::string& busPath) :
@@ -40,22 +51,22 @@ WarpCoreModel::WarpCoreModel(const std::string& busPath) :
 
 QStatus WarpCoreModel::GetWarpFactor(double& out) const
 {
-    return HAL::ReadProperty(m_busPath, "org.USSEnterprise.Engineering.WarpCore", "WarpFactor", out);
+    return HAL::ReadProperty(m_busPath, "org.GalaxyClass.Engineering.WarpCore", "WarpFactor", out);
 }
 
 QStatus WarpCoreModel::SetWarpFactor(const double value)
 {
-    return HAL::WriteProperty(m_busPath, "org.USSEnterprise.Engineering.WarpCore", "WarpFactor", value);
+    return HAL::WriteProperty(m_busPath, "org.GalaxyClass.Engineering.WarpCore", "WarpFactor", value);
 }
 
 QStatus WarpCoreModel::GetCurrentWarpFactor(double& out) const
 {
-    return HAL::ReadProperty(m_busPath, "org.USSEnterprise.Engineering.WarpCore", "CurrentWarpFactor", out);
+    return HAL::ReadProperty(m_busPath, "org.GalaxyClass.Engineering.WarpCore", "CurrentWarpFactor", out);
 }
 
 QStatus WarpCoreModel::GetIsEngaged(bool& out) const
 {
-    return HAL::ReadProperty(m_busPath, "org.USSEnterprise.Engineering.WarpCore", "IsEngaged", out);
+    return HAL::ReadProperty(m_busPath, "org.GalaxyClass.Engineering.WarpCore", "IsEngaged", out);
 }
 
 QStatus WarpCoreModel::Engage(ErrorCode& error, CdmControllee& controllee)
@@ -65,18 +76,18 @@ QStatus WarpCoreModel::Engage(ErrorCode& error, CdmControllee& controllee)
     if (status != ER_OK)
         return status;
 
-    status = HAL::WriteProperty(m_busPath, "org.USSEnterprise.Engineering.WarpCore", "CurrentWarpFactor", warpFactor);
+    status = HAL::WriteProperty(m_busPath, "org.GalaxyClass.Engineering.WarpCore", "CurrentWarpFactor", warpFactor);
     if (status != ER_OK)
         return status;
 
-    status = HAL::WriteProperty(m_busPath, "org.USSEnterprise.Engineering.WarpCore", "IsEngaged", true);
+    status = HAL::WriteProperty(m_busPath, "org.GalaxyClass.Engineering.WarpCore", "IsEngaged", true);
     if (status != ER_OK)
         return status;
 
 
     if (status == ER_OK && controllee.EmitChangedSignalOnSetProperty())
     {
-        auto iface = controllee.GetInterface<WarpCoreIntfControllee>(m_busPath, "org.USSEnterprise.Engineering.WarpCore");
+        auto iface = controllee.GetInterface<WarpCoreIntfControllee>(m_busPath, "org.GalaxyClass.Engineering.WarpCore");
         iface->EmitCurrentWarpFactorChanged(warpFactor);
         iface->EmitIsEngagedChanged(true);
     }
@@ -86,18 +97,18 @@ QStatus WarpCoreModel::Engage(ErrorCode& error, CdmControllee& controllee)
 
 QStatus WarpCoreModel::Disengage(ErrorCode& error, CdmControllee& controllee)
 {
-    QStatus status = HAL::WriteProperty(m_busPath, "org.USSEnterprise.Engineering.WarpCore", "CurrentWarpFactor", 0.0);
+    QStatus status = HAL::WriteProperty(m_busPath, "org.GalaxyClass.Engineering.WarpCore", "CurrentWarpFactor", 0.0);
     if (status != ER_OK)
         return status;
 
-    status = HAL::WriteProperty(m_busPath, "org.USSEnterprise.Engineering.WarpCore", "IsEngaged", false);
+    status = HAL::WriteProperty(m_busPath, "org.GalaxyClass.Engineering.WarpCore", "IsEngaged", false);
     if (status != ER_OK)
         return status;
 
 
     if (status == ER_OK && controllee.EmitChangedSignalOnSetProperty())
     {
-        auto iface = controllee.GetInterface<WarpCoreIntfControllee>(m_busPath, "org.USSEnterprise.Engineering.WarpCore");
+        auto iface = controllee.GetInterface<WarpCoreIntfControllee>(m_busPath, "org.GalaxyClass.Engineering.WarpCore");
         iface->EmitCurrentWarpFactorChanged(0.0);
         iface->EmitIsEngagedChanged(false);
     }
@@ -111,12 +122,12 @@ QStatus HandleWarpCoreCommand(const Command& cmd, CdmControllee& controllee)
 {
     QStatus status = ER_FAIL;
 
-    if (cmd.name == "changed" && cmd.interface == "org.USSEnterprise.Engineering.WarpCore") {
+    if (cmd.name == "changed" && cmd.interface == "org.GalaxyClass.Engineering.WarpCore") {
         if (cmd.property == "WarpFactor") {
             double value;
             status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
             if (status == ER_OK) {
-                auto iface = controllee.GetInterface<WarpCoreIntfControllee>(cmd.objPath, "org.USSEnterprise.Engineering.WarpCore");
+                auto iface = controllee.GetInterface<WarpCoreIntfControllee>(cmd.objPath, "org.GalaxyClass.Engineering.WarpCore");
                 if (iface) {
                     iface->EmitWarpFactorChanged(value);
                 }
@@ -126,7 +137,7 @@ QStatus HandleWarpCoreCommand(const Command& cmd, CdmControllee& controllee)
             double value;
             status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
             if (status == ER_OK) {
-                auto iface = controllee.GetInterface<WarpCoreIntfControllee>(cmd.objPath, "org.USSEnterprise.Engineering.WarpCore");
+                auto iface = controllee.GetInterface<WarpCoreIntfControllee>(cmd.objPath, "org.GalaxyClass.Engineering.WarpCore");
                 if (iface) {
                     iface->EmitCurrentWarpFactorChanged(value);
                 }
@@ -136,7 +147,7 @@ QStatus HandleWarpCoreCommand(const Command& cmd, CdmControllee& controllee)
             bool value;
             status = HAL::ReadProperty(cmd.objPath, cmd.interface, cmd.property, value);
             if (status == ER_OK) {
-                auto iface = controllee.GetInterface<WarpCoreIntfControllee>(cmd.objPath, "org.USSEnterprise.Engineering.WarpCore");
+                auto iface = controllee.GetInterface<WarpCoreIntfControllee>(cmd.objPath, "org.GalaxyClass.Engineering.WarpCore");
                 if (iface) {
                     iface->EmitIsEngagedChanged(value);
                 }
@@ -146,3 +157,8 @@ QStatus HandleWarpCoreCommand(const Command& cmd, CdmControllee& controllee)
 
     return status;
 }
+
+
+} // namespace emulator
+} // namespace services
+} // namespace ajn

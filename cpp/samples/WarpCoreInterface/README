@@ -5,34 +5,50 @@ Step 1: Using the WarpCore-v1.xml file in this directory generate all the interf
 
   As an example, from this directory in a terminal enter:
 
-../../../generator/generate.py ../../../generator/templates/interface_templates/cdm WarpCore-v1.xml --output ./output --binding cpp --components common controllee controller samples
+../../../generator/generate.py ../../../generator/templates/interface_templates/cdm WarpCore-v1.xml --output ./output --binding cpp --components common controllee controller samples --flat-output-path
 
   This create all the files required in the ./output directory.
 
 
+An overview of the generator command and its parameters:
+
+    ../../../generator/generate.py <- is the generator executable
+
+    ../../../generator/templates/interface_templates/cdm <- this the root of the templates directory used by the generator for CDM
+
+    WarpCore-v1.xml <- this is the xml to generate from
+
+    --output ./output <- the path to write the output to
+
+    --binding cpp <- the bindings we are generating. In this case we want c++ code to be generated.
+
+    --components common controllee controller samples <- The components we want generated
+
+    --flat-output-path <- this option causes the generator to write all output to --output directly. Without this option, the generator will match the template path structure.
+
+
+
 Step 2: The controllee side
 
-  Copy all the all the relevant controllee and common files the your controllee directory
-  This step involves a bit of digging through the output directory due to the nature of the template setup of the
-  generator for the CDM interfaces.
+  Copy all the relevant controllee and common files into your source directory
 
-  You need these files from the interfaces inc and src dirs:
-    common
+  You need these files:
+    Common part
         WarpCoreInterface.h
         WarpCoreInterface.cc
-    controllee
+
+    Controllee side
         WarpCoreIntfControllee.h
         WarpCoreIntfControlleeImpl.cc
         WarpCoreIntfControlleeModel.h
 
-  You need these files from the samples/DeviceEmulator
         WarpCoreModel.h
         WarpCoreModel.cc
 
-
   Notes:
-    You might need to modify some header paths in the above files.
-    In the Common/WarpCoreInterface.h change the return of GetInterfaceType() from WARP_CORE_INTERFACE to VENDOR_DEFINED_INTERFACE
+    You will probably need to modify the generated code slightly to make it compile.
+    You will need to implement the methods Engage and Disengage in the model.
+    There is a diff in the WarpCoreInterface sample directory that highlights the changes required to make the generated code work
 
   You should now have the interfaces that can be used in an app.
 
@@ -41,15 +57,42 @@ Step 3: The controller side
 
    * This will depend on the controller app being used. It is assumed here the QController is being used.
 
-  From the generated output dir, under samples/QController, grab org_USSEnterprise_Engineering_WarpCore.h and org_USSEnterprise_Engineering_WarpCore.cpp
+  Copy the modified common files from the controllee to your controller source location.
+  We've put them in samples/QController/interfaces/WarpCore
+
+
+  From the generated output dir, copy:
+    WarpCoreIntfController.h
+    WarpCoreIntfControllerImpl.cc
+    WarpCoreIntfControllerListener.h
+  and put them with the common files in samples/QController/interfaces/WarpCore
+
+    Modification Notes:
+        WarpCoreIntfController.h ln 35 needs to be changed to
+            #include "WarpCoreInterface.h"
+        WarpCoreIntfControllerImpl.cc lns 35,36 needs to be changed to
+            #include "WarpCoreIntfControllerListener.h"
+            #include "WarpCoreIntfController.h"
+        WarpCoreIntfControllerListener.h ln 38 needs to be changed to
+            #include "WarpCoreInterface.h"
+
+  Now, grab org_GalaxyClass_Engineering_WarpCore.h and org_GalaxyClass_Engineering_WarpCore.cpp from the output dir
   and put them in the samples/QController/interfaces directory.
 
-  Also copy from the interfaces directory the common and controller files.
-  The includes might need to be corrected.
+    Modification Notes:
+        org_GalaxyClass_Engineering_WarpCore.h lns 41, 42 and 43 need to be changed to
+            #include "WarpCore/WarpCoreInterface.h"
+            #include "WarpCore/WarpCoreIntfController.h"
+            #include "WarpCore/WarpCoreIntfControllerListener.h"
 
   In the QController/commoncontrollerroot.cpp include: WarpCoreInterface.h and WarpCoreIntfController.h
-  At the bottom of the CommonControllerRoot constructor, call controller->RegisterInterface(WarpCoreInterface::INTERFACE_NAME, WarpCoreIntfController::CreateInterface);
+  At the bottom of the CommonControllerRoot constructor at ln 212 add the following:
 
+      status = controller->RegisterInterface(WarpCoreInterface::INTERFACE_NAME, WarpCoreIntfController::CreateInterface);
+      if (status != ER_OK) {
+          qCritical() << "Failed to register WarpCore " << status;
+          return;
+      }
 
-
+  The QController can now be built and it will now recognise the new warp core interface :-)
 

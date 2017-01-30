@@ -141,7 +141,7 @@ public:
 
 private:
     CommonControllerPath *path;
-    std::string interface;
+    std::string interfacename;
 };
 
 

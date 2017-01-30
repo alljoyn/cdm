@@ -42,7 +42,7 @@
 
 #include <alljoyn/cdm/util/CdmMsgCvt.h>
 
-#include "../common/WarpCoreInterface.h"
+#include "WarpCoreInterface.h"
 
 namespace ajn {
 

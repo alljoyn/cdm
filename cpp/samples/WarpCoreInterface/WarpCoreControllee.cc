@@ -30,7 +30,7 @@
 
 #include <alljoyn/cdm/controllee/CdmBusObject.h>
 
-#include "controllee/WarpCoreIntfControllee.h"
+#include "WarpCoreIntfControllee/WarpCoreIntfControllee.h"
 
 #include "WarpCoreControllee.h"
 
@@ -46,15 +46,15 @@ typedef ajn::services::WarpCoreIntfControllee WarpCore;
 
 static QStatus InitialiseParamters(CdmControllee& controllee, bool force)
 {
-    QStatus status = HAL::WriteProperty(BusPath, "org.USSEnterprise.Engineering.WarpCore", "WarpFactor", 6.0, force);
+    QStatus status = HAL::WriteProperty(BusPath, "org.GalaxyClass.Engineering.WarpCore", "WarpFactor", 6.0, force);
     if (status != ER_OK)
         return status;
 
-    status = HAL::WriteProperty(BusPath, "org.USSEnterprise.Engineering.WarpCore", "CurrentWarpFactor", 0.0, force);
+    status = HAL::WriteProperty(BusPath, "org.GalaxyClass.Engineering.WarpCore", "CurrentWarpFactor", 0.0, force);
     if (status != ER_OK)
         return status;
 
-    status = HAL::WriteProperty(BusPath, "org.USSEnterprise.Engineering.WarpCore", "IsEngaged", false, force);
+    status = HAL::WriteProperty(BusPath, "org.GalaxyClass.Engineering.WarpCore", "IsEngaged", false, force);
     if (status != ER_OK)
         return status;
 
@@ -70,8 +70,8 @@ static QStatus HandleCommand(const Command& cmd, CdmControllee& controllee)
     QStatus status = ER_OK;
 
     if (cmd.name == "changed") {
-        if (cmd.interface=="org.USSEnterprise.Engineering.WarpCore") {
-            status = HandleWarpCoreCommand(cmd, controllee);
+        if (cmd.interface=="org.GalaxyClass.Engineering.WarpCore") {
+            status = ajn::services::emulator::HandleWarpCoreCommand(cmd, controllee);
         }
     }
 
@@ -82,7 +82,7 @@ WarpCoreControllee::WarpCoreControllee(BusAttachment& bus, const std::string& ab
     m_announcer(bus),
     m_security(bus),
     m_controllee(bus),
-    m_warpCoreModel(new WarpCoreModel(BusPath))
+    m_warpCoreModel(new ajn::services::emulator::WarpCoreModel(BusPath))
 {
     m_security.LoadFiles(certPath);
     m_announcer.SetAboutData(aboutData);

@@ -63,7 +63,7 @@ class WarpCoreInterface : public CdmInterface {
      * Get Interface Type
      * @return interface type
      */
-    const CdmInterfaceType GetInterfaceType() const { return VENDOR_DEFINED_INTERFACE; }
+    const CdmInterfaceType GetInterfaceType() const { return WarpCoreInterface::INTERFACE_TYPE; }
 
     /**
      * Get Introspection XML

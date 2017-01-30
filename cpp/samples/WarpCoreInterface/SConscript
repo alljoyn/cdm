@@ -29,8 +29,7 @@
 Import('env')
 
 srcs = env.Glob('*.cc')
-srcs += env.Glob('common/*.cc')
-srcs += env.Glob('controllee/*.cc')
+srcs += env.Glob('WarpCoreIntfControllee/*.cc')
 srcs += env.Glob('../Utils/*.cc')
 
 objs = env.Object(srcs)

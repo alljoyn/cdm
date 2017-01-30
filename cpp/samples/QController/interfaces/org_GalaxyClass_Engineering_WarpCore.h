@@ -27,8 +27,8 @@
  *     PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#ifndef org_USSEnterprise_Engineering_WarpCore_H_
-#define org_USSEnterprise_Engineering_WarpCore_H_
+#ifndef org_GalaxyClass_Engineering_WarpCore_H_
+#define org_GalaxyClass_Engineering_WarpCore_H_
 
 #include <QWidget>
 #include <QCheckBox>
@@ -49,12 +49,12 @@ using namespace ajn::services;
 namespace CDMQtWidgets
 {
 
-class org_USSEnterprise_Engineering_WarpCore : public QWidget
+class org_GalaxyClass_Engineering_WarpCore : public QWidget
 {
     Q_OBJECT
 public:
-    Q_INVOKABLE org_USSEnterprise_Engineering_WarpCore(CommonControllerInterface *iface=NULL);
-    ~org_USSEnterprise_Engineering_WarpCore();
+    Q_INVOKABLE org_GalaxyClass_Engineering_WarpCore(CommonControllerInterface *iface=NULL);
+    ~org_GalaxyClass_Engineering_WarpCore();
 
     // Slots mirror the callbacks to avoid threading issues
 private slots:
@@ -175,4 +175,4 @@ protected:
 
 }
 
-#endif /* org_USSEnterprise_Engineering_WarpCore_H_ */
+#endif /* org_GalaxyClass_Engineering_WarpCore_H_ */

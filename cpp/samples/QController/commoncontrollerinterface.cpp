@@ -35,7 +35,7 @@
 // CommonControllerInterface
 //------------------------------------------------------------
 
-CommonControllerInterface::CommonControllerInterface(CommonControllerPath *parent, const std::string &interface) : path(parent), interface(interface)
+CommonControllerInterface::CommonControllerInterface(CommonControllerPath *parent, const std::string &interfacename) : path(parent), interfacename(interfacename)
 {
 }
 
@@ -45,5 +45,5 @@ CommonControllerInterface::~CommonControllerInterface()
 
 QString CommonControllerInterface::name() const
 {
-    return interface.c_str();
+    return interfacename.c_str();
 }
