@@ -115,7 +115,8 @@ class Generator(object):
         pass
 
     def get_output_path(self, path):
-        return os.path.join(self.cmd_args.output_dir, path)
+        filter_path = os.path.basename if self.cmd_args.flat_output_path else lambda x: x
+        return os.path.join(self.cmd_args.output_dir, filter_path(path))
 
     def process_xml_file(self, saxhandler, xml_file):
         pass
@@ -146,8 +147,6 @@ class Generator(object):
             component_checks = build_checks(self.cmd_args.components, self._component_checks_metadata)
             is_valid = not_hidden and validate_checks(binding_checks) and validate_checks(component_checks)
             return is_valid
-
-        # print 'Running %s' % type(self).__name__
 
         saxhandler = self.get_parser()
         parser = xml.make_parser()
@@ -259,6 +258,7 @@ def main():
     argument_parser.add_argument('--sample', action='store_true', required=False, help='Generate sample programs using the device emulator xml file')
     argument_parser.add_argument('--patches', required=False, default="", help='Path to the root for patch templates')
     argument_parser.add_argument('--dryrun', action='store_true', required=False, default=False, help="Executes but doesn't write any files")
+    argument_parser.add_argument('--flat-output-path', action='store_true', required=False, default=False, help="Ignores the template structure on output so all files get written to the output path directly")
     args = argument_parser.parse_args()
 
     generator = SampleAppGenerator(args) if args.sample else InterfaceCodeGenerator(args)

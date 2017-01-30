@@ -5,89 +5,256 @@ Welcome to the CDM Service Framework.
 
 CDM Service Framework provides easy methods to implement CDM controllee and controller applications.
 
+C++ Framework and Interfaces
+==================
 
 Folder Structure
 ----------------
+Please note that the folder structure in 16.10 has changed since the 16.04 release
 <pre>
 cpp
-+---code_template
-|   +---interface_template
-|   +---vendor_defined_interface_template
-|   \---xml
-|       +---org.alljoyn.SmartSpaces.Environment
-|       +---org.alljoyn.SmartSpaces.Operation
-|       \---org.alljoyn.SmartSpaces.UserInterfaceSettings
-+---inc
-|   \---alljoyn
-|       \---cdm
-|           \---interfaces
-|               +---environment
-|               +---input
-|               \---operation
++---framework
+|   +---inc
+|   |   \---alljoyn
+|   |       \---cdm
+|   |           +---common
+|   |           +---controllee
+|   |           +---controller
+|   |           \---util
+|   |
+|   \---src
+|       +---common
+|       +---controllee
+|       +---controller
+|       \---util
+|
++---interfaces
+|   +---inc
+|   |   \---interfaces
+|   |       +---common
+|   |       |   +---environment
+|   |       |   +---input
+|   |       |   +---operation
+|   |       |   \---userinterfacesetting
+|   |       |
+|   |       +---controllee
+|   |       |   +---environment
+|   |       |   +---input
+|   |       |   +---operation
+|   |       |   \---userinterfacesetting
+|   |       |
+|   |       \---controller
+|   |           +---environment
+|   |           +---input
+|   |           +---operation
+|   |           \---userinterfacesetting
+|   |
+|   \---src
+|       +---common
+|       |   +---environment
+|       |   +---input
+|       |   +---operation
+|       |   \---userinterfacesetting
+|       |
+|       +---controllee
+|       |   +---environment
+|       |   +---input
+|       |   +---operation
+|       |   \---userinterfacesetting
+|       |
+|       \---controller
+|           +---environment
+|           +---input
+|           +---operation
+|           \---userinterfacesetting
+|
 +---samples
-|   +---ACControllee
-|   +---BaseSample
-|   |   +---Controllee
-|   |   +---Controller
-|   |   \---VendorDefinedInterfaces
-|   +---CookTopControllee
+|   +---certificates
 |   +---DeviceEmulator
-|   |   \---config
-|   +---IntegratedController
-|   +---IntegratedControllee
-|   +---LaundryControllee
-|   +---RobotCleanerControllee
-|   +---TimerSimulator
-|   +---TvControllee
-|   \---VDIControllee
-+---src
-|   \---interfaces
-|       +---environment
-|       +---input
-|       \---operation
+|   |   \---Model
+|   |       +---environment
+|   |       +---input
+|   |       +---operation
+|   |       \---userinterfacesetting
+|   |
+|   +---DeviceXML
+|   +---LampDevice
+|   +---Migration
+|   |   +---16.04
+|   |   |   +---BaseSample
+|   |   |   |   \---Controllee
+|   |   |   |
+|   |   |   \---CookTopControllee
+|   |   |
+|   |   +---16.10
+|   |       +---BaseSample
+|   |       |   \---Controllee
+|   |       |
+|   |       \---CookTopControllee
+|   |
+|   +---QController
+|   |   \---interfaces
+|   |
+|   +---SampleLauncher
+|   |   \---cdm_os
+|   |       +---bin
+|   |       \---conf
+|   |           +---cdm
+|   |           \---cdm_tcl
+|   |
+|   +---Utils
+|   \---WarpCoreInterface
+|       +---common
+|       \---controllee
+|
 \---unittest
     +---DUT
     |   +---environment
     |   +---input
     |   \---operation
+    |
     \---ServiceFramework
+
+generator
++---alljoyn_interfaces
+\---templates
+    +---interface_templates
+    |   +---cdm
+    |   |   +---cpp
+    |   |   |   +---interfaces
+    |   |   |   |   +---inc
+    |   |   |   |   |   +---interfaces
+    |   |   |   |   |       +---common
+    |   |   |   |   |       |   \---{{InterfaceCategory}}
+    |   |   |   |   |       +---controllee
+    |   |   |   |   |       |   \---{{InterfaceCategory}}
+    |   |   |   |   |       \---controller
+    |   |   |   |   |           \---{{InterfaceCategory}}
+    |   |   |   |   |
+    |   |   |   |   \---src
+    |   |   |   |       +---common
+    |   |   |   |       |   \---{{InterfaceCategory}}
+    |   |   |   |       +---controllee
+    |   |   |   |       |   \---{{InterfaceCategory}}
+    |   |   |   |       \---controller
+    |   |   |   |           \---{{InterfaceCategory}}
+    |   |   |   |
+    |   |   |   \---samples
+    |   |   |       +---DeviceEmulator
+    |   |   |       |   \---Models
+    |   |   |       |       \---{{InterfaceCategory}}
+    |   |   |       |
+    |   |   |       \---QController
+    |   |   |           \---interfaces
+    |   |   |
+    |   |   +---ios
+    |   |   |   \---CDMController
+    |   |   |       \---cdm_controller
+    |   |   |           \---view_controllers
+    |   |   |               \---{{InterfaceCategory}}
+    |   |   |
+    |   |   \---java
+    |   |       \---CdmController
+    |   |           \---app
+    |   |               \---src
+    |   |                   \---main
+    |   |                       \---java
+    |   |                           \---org
+    |   |                               \---alljoyn
+    |   |                                   +---cdmcontroller
+    |   |                                   |   \---fragment
+    |   |                                   |       \---{{InterfaceCategory}}
+    |   |                                   |
+    |   |                                   \---smartspaces
+    |   |                                       \---{{InterfaceCategory}}
+    |   |
+    |   \---cdm_tcl
+    |       +---inc
+    |       |   \---interfaces
+    |       |       \---{{InterfaceCategory}}
+    |       |
+    |       +---samples
+    |       |   \---DeviceEmulator
+    |       |       \---Models
+    |       |           \---{{InterfaceCategory}}
+    |       |
+    |       \---src
+    |           \---interfaces
+    |               \---{{InterfaceCategory}}
+    |
+    +---patches
+    |   \---cpp
+    |       +---interfaces
+    |       |   \---src
+    |       |       \---controllee
+    |       |           +---environment
+    |       |           \---operation
+    |       |
+    |       \---samples
+    |           +---DeviceEmulator
+    |           |   \---Models
+    |           |       +---environment
+    |           |       +---input
+    |           |       \---operation
+    |           |
+    |           \---QController
+    |               \---interfaces
+    |
+    \---patches_tcl
+        +---samples
+        |   \---DeviceEmulator
+        |       \---Models
+        |           +---environment
+        |           +---input
+        |           +---operation
+        |           \---userinterfacesettings
+        |
+        \---src
+            \---interfaces
+                +---environment
+                \---operation
+
+
 </pre>
 
- * cpp/code_template : Generator of CDM interfaces skeleton codes
- * cpp/code_template/xml : Interospection XML files of CDM interfaces
- * cpp/inc/alljoyn/cdm : CDM common header files
- * cpp/inc/alljoyn/cdm/interfaces : CDM interface-related header files
- * cpp/samples/BaseSample : Base sample for making other device sample
- * cpp/samples/ACControllee :
-   - Example of cdm device composed of Base sample controllee
-   - Emulated virtual air conditioner sample. It has 11 interfaces. (OnOffStatus, OnControl,
-     OffControl, ResourceSaving, ClimateControlMode, FanSpeedLevel, CurrentPower, EnergyUsage,
-     CurrentTemperature, TargetTemperature, WindDirection)
- * cpp/samples/CookTopControllee :
-   - Example of cdm device composed of Base sample controllee
-   - Emulated virtual cook top sample. It has 3 interfaces. (HeatingZone, OvenCyclePhase, RapidMode)
- * cpp/samples/DeviceEmulator :
-   - Device emulator (Refer to Device Emulator section in this document.)
- * cpp/samples/IntegratedControllee :
-   - Integrated controllee based on Base sample controllee
-   - Integrated controllee is designed to make it easier to add other interfaces.
- * cpp/samples/IntegratedController :
-   - Integrated controller based on Base sample controller
-   - Integrated controller is designed to make it easier to add other interfaces.
- * cpp/samples/LaundryControllee :
-   - Example of cdm device composed of Base sample controllee
-   - Emulated virtual laundry sample. It has 8 interfaces. (OnOffStatus, CycleControl, SoilLevel,
-     SpinSpeedLevel, WaterLevel, DishWashingCyclePhase, LaundryCyclePhase, Timer)
- * cpp/samples/RobotCleanerControllee :
-   - Example of cdm device composed of Base sample controllee
-   - Emulated virtual robot cleaner sample. It has 5 interfaces. (OnOffStatus, BatteryStatus,
-     RepeatMode, RobotCleaningCyclePhase, CurrentPower)
- * cpp/samples/TimerSimulator :
-   - Timer simulator. It has CycleControl and Timer interfaces.
- * cpp/samples/TVControllee :
-   - Example of cdm device composed of Base sample controllee
-   - Emulated virtual TV sample. It has 4 interfaces. (Channel, AudioVolume, AudioVideoInput, Hid)
+##### cpp/framework : The CDM framework libraries
+   - The framework is segregated into common, controllee, controller and utility libraries
+     * The controllee and controller libraries contain code directly related to their respective functionality
+     * The common library is required by both controllee and controller libraries
+     * The utility library contains utilities that wrap some boiler plate and make working with AllJoyn and CDM easier but it is not required
+       - CdmAnnouncer can be given the devices about xml and then used to announce a device
+       - CdmMsgCvt is a utility that converts to and from an Alljoyn MsgArg
+       - CdmSecurity is a utility that can manage keys/certificates and be used to enable security
+       - CdmSystem is used to manage AllJoyn and the router
 
+##### cpp/interfaces : CDM interfaces libraries
+   - The interfaces are segregated into common, controllee and controller libraries
+     * The controlle and controller libraries contain the respective interface implementations
+     * The common library is required by both controllee and controller libraries
+
+##### cpp/samples : Samples that demonstrate the features and use of CDM
+   * certificates contains some certficates used by the samples
+   * DeviceEmulator - Refer to Device Emulator section in this document
+   * DeviceXML contains device xml files used by the device emulator
+   * LampDevice is sample that uses the CDM utilities and implements an HSV model and a Switch model
+     - The HSV model composes of the Brightness and the Color interfaces
+     - The Switch model composes of the OnOffStatus, OnControl and OffControl interfaces
+   * Migration contains an example of the changes required to make a 16.04 sample work with 16.10
+     - The 16.04 directory contains all the required code for the 16.04 cook top sample
+     - The 16.10 contains all the modifications required to make it work with 16.10
+     - 16.04_16.10.diff is a diff of the two directories to highlight the changes required
+   * QController is a Qt controller implementation
+   * SampleLauncher - Refer to the CDM OS section in this document
+   * Utils contains utilities used by the samples
+     - Command is a rework of the concept from 16.04 and listens for input from stdin. It simulates an interrupt handler
+     - HAL simulates a Hardware Abstraction Layer. It is used in the sample model implementations read and write data to the "device's hardware"
+   * WarpCoreInterface demonstrates how to build and integrate a custom interface starting from an xml file
+
+##### generator : The CDM code generator
+   * The generator is written in python and uses the jinja2 module
+   * There are a number of custom annotations that are supported.
+   * The alljoyn_intefraces contains modified CDM xml files. The modifications are the new annotations. All the new annotations are under org.twobulls.
+   * Please refer to the README under the generator directory for instructions.
 
 Building
 --------
@@ -100,37 +267,103 @@ for more details on setting up your environment.
 <pre>
 root-source-dir
     +---core
-    |   +---alljoyn
-    |   \---ajtcl
+    |   \---alljoyn
+    |
     \---services
         +---base
         \---cdm
 </pre>
 
-  * Build
+### Build Linux
 <pre>
-cd root-source-dir/services/cdm
-scons BINDINGS=cpp WS=off BT=off ICE=off
+$ cd $AJ_ROOT/core/alljoyn
+$ scons OS=linux CPU={x86|x86_64} BINDINGS=cpp VARIANT={debug|release} CRYPTO=builtin
+$ CORE_DISTDIR=$(pwd)/build/linux/{x86|x86_64}/{debug|release}/dist/
+$ cd $AJ_ROOT/services/cdm/
+$ scons OS=linux CPU={x86|x86_64} BINDINGS=cpp VARIANT={debug|release} CRYPTO=builtin ALLJOYN_DISTDIR=$CORE_DISTDIR
+</pre>
+#### Notes:
+  libcap-dev may need to be installed
+
+### Build windows
+<pre>
+> cd %AJ_ROOT%/core/alljoyn
+> scons OS={win10|win7} CPU={x86|x86_64} BINDINGS=cpp VARIANT={debug|release} MSVC_VERSION={14.0|12.0}
+> set CORE_DISTDIR=%cd%/build/{win10|win7}/{x86|x86_64}/{debug|release}/dist/
+> cd %AJ_ROOT%/services/cdm/
+> scons OS={win10|win7} CPU={x86|x86_64} BINDINGS=cpp VARIANT={debug|release} MSVC_VERSION={14.0|12.0} ALLJOYN_DISTDIR=%CORE_DISTDIR%
 </pre>
 
-  * Output
+### Build Darwin
+<pre>
+$ cd $AJ_ROOT/core/alljoyn
+$ PLATFORM_NAME=macosx scons OS=darwin CPU={x86|x86_64} BINDINGS=cpp VARIANT={debug|release} SDKROOT=$(xcodebuild -sdk macosx -version Path)
+$ CORE_DISTDIR=$(pwd)/build/darwin/{x86|x86_64}/{debug|release}/dist/
+$ cd $AJ_ROOT/services/cdm/
+$ PLATFORM_NAME=macosx scons OS=darwin CPU={x86|x86_64} BINDINGS=cpp VARIANT={debug|release} SDKROOT=$(xcodebuild -sdk macosx -version Path) ALLJOYN_DISTDIR=$CORE_DISTDIR
+</pre>
+
+### Build QController Sample
+<pre>
+$ cd cpp/samples/QController
+$ cmake . -DCMAKE_BUILD_TYPE={Release|Debug} -DOS={darwin} -DCPU={x86|x86_64} -DCMAKE_PREFIX_PATH=<path_to_qt5_installation>
+$ make
+</pre>
+#### Notes:
+  The QController isn't built with the other samples as it has a dependency on Qt5 and needs to be build manually<br>
+  The QController can be built for windows but it isn't actively supported at this stage.
+
+
+### Build Output
 <pre>
 cdm/
     +---bin
-    +---inc
-    |   \---alljoyn
-    |       \---cdm
-    |           \---interfaces
+    |   +---cdm_os
+    |   |   +---bin
+    |   |   \---conf
+    |   |       +---cdm
+    |   |       \---cdm_tcl
+    |   |
+    |   +---certificates
+    |   \---DeviceXML
+    |
+    +---framework
+    |   +---inc
+    |       \---alljoyn
+    |           \---cdm
+    |               +---common
+    |               +---controllee
+    |               +---controller
+    |               \---util
+    |
+    +---interfaces
+    |   +---inc
+    |       +---interfaces
+    |           +---common
+    |           |   +---environment
+    |           |   +---input
+    |           |   +---operation
+    |           |   \---userinterfacesettings
+    |           |
+    |           +---controllee
+    |           |   +---environment
+    |           |   +---input
+    |           |   +---operation
+    |           |   \---userinterfacesettings
+    |           |
+    |           \---controller
     |               +---environment
     |               +---input
-    |               \---operation
+    |               +---operation
+    |               \---userinterfacesettings
     \---lib
 </pre>
 
-    - path : root-source-dir/services/cdm/build/$OS/$TARGET_CPU/debug/dist/cdm
-    - bin : IntegratedController, TvControllee
-    - lib : liballjoyn_cdm.a, liballjoyn_cdm.so
-    - inc : header files
+  - output path : root-source-dir/services/cdm/build/$OS/$TARGET_CPU/$VARIANT/dist/cdm
+  - bin : CookTopControllee, DeviceEmulator, LampDevice, launch.py and WarpCore
+  - lib : liballjoyn_cdm.a, liballjoyn_cdm.so
+  - framework : public header files for the framework
+  - interfaces : public header files for the CDM interfaces
 
 Unit Tests
 -------
@@ -149,132 +382,162 @@ cd root-source-dir/services/cdm/cpp/docs
 doxygen Doxygen_html
 </pre>
 
-  * Make manual in the building step
+  * Make manual in the building step by adding DOCS=html to the scons command
 <pre>
-cd root-source-dir/services/cdm
-scons BINDINGS=cpp WS=off BT=off ICE=off DOCS=html
+  PLATFORM_NAME=macosx scons OS=darwin CPU=x86_64 BINDINGS=cpp VARIANT=release SDKROOT=$(xcodebuild -sdk macosx -version Path) ALLJOYN_DISTDIR=$CORE_DISTDIR DOCS=html
 </pre>
 
-How to add new interface
-------------------------
-  1. Generate the skeleton codes using make_interface.py script.
-  2. Fill the codes for properties, methods and signals in all files generated.
+How to add a non CDM, custom interface
+--------------------------------------
 
-  * Create skeleton codes for new interface
-<pre>
-cd root-source-dir/services/cdm/cpp/code_template
-python make_interface.py -n InterfaceName -c CategoryName
-(InterfaceName and CategoryName are case sensitive.)
-[example]
-python make_interface.py -n TargetTemperature -c Environment
-Created: ../inc/alljoyn/cdm/interfaces/environment/TargetTemperatureInterface.h
-Created: ../inc/alljoyn/cdm/interfaces/environment/TargetTemperatureIntfControllee.h
-Created: ../inc/alljoyn/cdm/interfaces/environment/TargetTemperatureIntfControlleeListener.h
-Created: ../inc/alljoyn/cdm/interfaces/environment/TargetTemperatureIntfController.h
-Created: ../inc/alljoyn/cdm/interfaces/environment/TargetTemperatureIntfControllerListener.h
-Created: ../src/interfaces/environment/TargetTemperatureInterface.cc
-Created: ../src/interfaces/environment/TargetTemperatureIntfControlleeImpl.h
-Created: ../src/interfaces/environment/TargetTemperatureIntfControlleeImpl.cc
-Created: ../src/interfaces/environment/TargetTemperatureIntfControllerImpl.h
-Created: ../src/interfaces/environment/TargetTemperatureIntfControllerImpl.cc
-</pre>
+There are three parts to creating a new interface - the common, controllee and controller parts.
 
-  * Delete files related new interface
-<pre>
-cd root-source-dir/services/cdm/cpp/code_template
-python make_interface.py -n InterfaceName -c Category -d
-</pre>
+### Common part
+The common part is used by both the controllee and controller parts to attach the interface to the AllJoyn bus attachment.
 
-How to add vendor defined interface
-------------------------------------
-  1. Generate the skeleton codes using make_interface.py script.
-  2. Copy all files to your application folder
-  3. Fill the codes for properties, methods and signals in all files generated.
+A class is created that inherits from CdmInterface, declared in framework/{inc}/common/CdmInterface.h
+CdmInterface is an abstract base class and some methods require implementation.
 
-  * Create skeleton codes for vendor defined interface
-<pre>
-cd root-source-dir/services/cdm/cpp/code_template
-python make_interface.py -n InterfaceName -v
-(InterfaceName is case sensitive.)
-[example]
-python make_interface.py -n Test -v
-Created: ./vendor_defined/TestInterface.h
-Created: ./vendor_defined/TestIntfControllee.h
-Created: ./vendor_defined/TestIntfControlleeListener.h
-Created: ./vendor_defined/TestIntfController.h
-Created: ./vendor_defined/TestIntfControllerListener.h
-Created: ./vendor_defined/TestInterface.cc
-Created: ./vendor_defined/TestIntfControlleeImpl.h
-Created: ./vendor_defined/TestIntfControlleeImpl.cc
-Created: ./vendor_defined/TestIntfControllerImpl.h
-Created: ./vendor_defined/TestIntfControllerImpl.cc
-</pre>
+This class is used to define static definitions relating to the interface, such as property names and its introspection xml.
 
-  * Delete files related vendor defined interface
-<pre>
-cd root-source-dir/services/cdm/cpp/code_template
-python make_interface.py -n InterfaceName -v -d
-</pre>
+### Controllee Side
+The controllee implementation needs to create a class that inherits and implements two pure virtual classes:
+ - CdmControlleeInterface, declared in framework/{inc}/controllee/CdmControlleeInterface.h
+ - InterfaceReceiver, framework/{inc}/controllee/InterfaceReceiver.h
+
+as well as the common class created above.
+
+This class is responsible for receiving requests from a controller, unpacking the AllJoyn MsgArg, input validation and passing the request on to the model class (see next section).
+
+##### Controllee Model
+A model must also be implemented. The model is designed to implement the functionality that is exposed by the Alljoyn interface i.e.,
+If a property is read only, then it has a Get{property_name}() method only and if it is readwrite then a Set{property_name}() method will be needed. The model is also responsible for implementing any methods declared in the interface xml.
+
+The model is the integration point with the device and all hardware interaction occurs inside the model class.
+
+Note: The CDM implementations of the interfaces actually do data validation of a SetProperty in the controllee implementation mentioned above and not in the model. The models assume the data is valid.
+
+Model classes inherit from InterfaceControlleeModel, declared in framework/{inc}/controllee/InterfaceControlleeModel.h
+
+### Controller Side
+The controller implementation needs to create a class that inherits and implements:
+ - InterfaceController, declared in framework/{inc}/controller/InterfaceController.h
+
+as well as the common class created above.
+
+##### Controller Listener
+The listener is the reciprocal for the model on the controller side. It implements callbacks to the requests that are defined by the interface xml. It is the integration point for the UX/UI side of the controller.
+
+The listener class inherits from InterfaceControllerListener, declared in framework/{inc}/controller/InterfaceControllerListener.h
+
+
+#### Tutorial
+
+The WarpCore sample provides a simple tutorial and demonstration of the above in the README located in that samples directory.
 
 Device Emulator
 ---------------
-Device emulator is an emulator for the CDM Service Framework based devices.
-You can launch the virtual device using the configuration XML file.
+Device emulator is a testing tool to help with the design of interfaces and UX experience by acting as a virtual device.
+The emulator takes a device xml file as an input, this xml file contains the devices about data, a list of interfaces it should use and the default values for the properties of those interfaces.
 
-  * Run emulator
+Example device xml files can be found in the DeviceXML directory that exists along side the device emulator.
+
+##### Running the emulator
 <pre>
 cd <root-source-dir>/services/cdm/build/{OS}/{CPU}/{VARIANT}/dist/cdm/bin
-./DeviceEmulator config.xml
+./DeviceEmulator some_devices.xml
 </pre>
 
- * Sample config.xml for air conditioner
+The emulator also takes three other optional arguments.
+
+--state-dir <path>: This sets the directory that the simulated HAL (hardware abstraction layer) will read and write its property data to.
+
+--certs-dir <path>: This is the location where security certificates are read from. This parameter includes the directory path as well as the certificate files prefix i.e., certificates/security, will used certificates/security.priv and certificates/security.pub
+
+--emit-on-set : This parameter is required if you want the framework to emit signals when a property is set.
+
+A call using all the arguments might look like
 <pre>
-&ltDeviceEmulator&gt
-    &ltAboutData&gt
-        &ltAppId&gt000102030405060708090A0B0C0D0E0C&lt/AppId&gt
-        &ltDefaultLanguage&gten&lt/DefaultLanguage&gt
-        &ltDeviceName&gtMy Device Name&lt/DeviceName&gt
-        &ltDeviceName lang = 'es'&gtNombre de mi dispositivo&lt/DeviceName&gt
-        &ltDeviceId&gtbaddeviceid&lt/DeviceId&gt
-        &ltAppName&gtMy Application Name&lt/AppName&gt
-        &ltAppName lang = 'es'&gtMi Nombre de la aplicación&lt/AppName&gt
-        &ltManufacturer&gtCompany&lt/Manufacturer&gt
-        &ltManufacturer lang = 'es'&gtEmpresa&lt/Manufacturer&gt
-        &ltModelNumber&gtWxfy388i&lt/ModelNumber&gt
-        &ltDescription&gtA detailed description provided by the application.&lt/Description&gt
-        &ltDescription lang = 'es'&gtUna descripción detallada proporcionada por la aplicación.&lt/Description&gt
-        &ltDateOfManufacture&gt2014-01-08&lt/DateOfManufacture&gt
-        &ltSoftwareVersion&gt1.0.0&lt/SoftwareVersion&gt
-        &ltHardwareVersion&gt1.0.0&lt/HardwareVersion&gt
-        &ltSupportUrl&gtwww.example.com&lt/SupportUrl&gt
-        &ltUserDefinedTag&gtCan only accept strings anything other than strings must be done using the AboutData Class SetField method&lt/UserDefinedTag&gt
-        &ltUserDefinedTag lang='es'&gtSólo se puede aceptar cadenas distintas de cadenas nada debe hacerse utilizando el método AboutData Clase SetField&lt/UserDefinedTag&gt
-        &ltCountryOfProduction&gtRoom1&lt/CountryOfProduction&gt
-        &ltLocation&gtRoom1&lt/Location&gt
-        &ltProductBrand&gtRoom1&lt/ProductBrand&gt
-        &ltLocation&gtupstairs bedroom&lt/Location&gt
-        &ltLocation lang='es'&gthabitación del segundo piso&lt/Location&gt
-        &ltDeviceTypeDescription&gt
-            &ltTypeDescription&gt
-                &ltdevice_type&gt5&lt/device_type&gt
-                &ltobject_path&gt/Cdm/AirConditioner&lt/object_path&gt
-            &lt/TypeDescription&gt
-        &lt/DeviceTypeDescription&gt
-    &lt/AboutData&gt
-    &ltInterfaceList&gt
-        &ltObject path='/Cdm/AirConditioner'&gt
-            &ltInterface name='org.alljoyn.SmartSpaces.Environment.TargetTemperature'/&gt
-            &ltInterface name='org.alljoyn.SmartSpaces.Environment.CurrentTemperature'/&gt
-            &ltInterface name='org.alljoyn.SmartSpaces.Environment.WindDirection'/&gt
-            &ltInterface name='org.alljoyn.SmartSpaces.Operation.OnControl'/&gt
-            &ltInterface name='org.alljoyn.SmartSpaces.Operation.OffControl'/&gt
-            &ltInterface name='org.alljoyn.SmartSpaces.Operation.OnOffStatus'/&gt
-            &ltInterface name='org.alljoyn.SmartSpaces.Operation.FanSpeedLevel'/&gt
-            &ltInterface name='org.alljoyn.SmartSpaces.Operation.ClimateControlMode'/&gt
-        &lt/Object&gt
-    &lt/InterfaceList&gt
-&lt/DeviceEmulator&gt
+cd <root-source-dir>/services/cdm/build/{OS}/{CPU}/{VARIANT}/dist/cdm/bin
+./DeviceEmulator some_devices.xml --state-dir ../emulated_state --certs-dir certificates/security --emit-on-set
 </pre>
+
+CDM OS
+------
+CMD OS is a tool written in python that is used to launch samples for both CDM and CDM thin client under a predefined configuration.
+The entry point is the launch.py found in the bin dir.
+
+launch.py acts like a boot loader for the sample in that reads the sys.conf file under the cdm_os/conf directory to gather data about the system configuration, i.e., cdm or cdm tcl. launch.py also needs a device configuration.
+
+The arguments for launch.py are (all arguments are optional):
+
+--system : Is used to specify either cdm or cdm tcl. Defaults to cdm.
+--device : Is used to choose the device.conf file. The file must exist under the conf/{system} directory.
+--device-xml : Is used to specify the device xml file for the device emulator.
+--list-devices : This will cause launch.py to list all the devices that are available for launch.
+
+If --device arg is not specified, launch.py will prompt the user for a device under the system that was specified (cdm by default)
+
+##### Running the device emulator via CDM OS
+<pre>
+cd <root-source-dir>/services/cdm/build/{OS}/{CPU}/{VARIANT}/dist/cdm/bin
+./launch.py --device DeviceEmulator --device-xml air-conditioner.xml
+</pre>
+
+This will launch the device emulator as an air conditioner and allow the user to interact with the device's state via a *nix like shell.
+
+#### CDM OS in more detail
+When CDM OS launches, it launches the sample executable as a separate process and is able to communicate with it via stdin.
+
+##### The sys.conf
+The sys.conf file is a json file containing keys for all the system configurations.
+
+Each system configuration needs the follow entries:
+
+<pre>
+  "bin_dir": "points to the location where all the sample binaries are installed",
+  "mount_dir": "points to the base directory where all devices state directories will be written",
+  "device_xml_dir": "points to the directory containing all the device xmls"
+</pre>
+
+##### A device.conf
+The device.conf is a json configuration file used by CDM OS to launch the sample.
+It has the required fields
+
+<pre>
+"bin": "The sample binary",
+"args": ["arg1", "arg2"],
+"devicexml": "a path to the device xml",
+"boot_program": "the boot program to use",
+"state_dir": "the directory name for the devices state to be stored",
+"certs_dir": "path/prefix for the security certificates"
+</pre>
+
+Notes:
+ - Any argument in the args list that starts with %% will act as a macro for any other defined field. e.g., %%devicexml will be replaced with the devicexml field
+ - The devicexml field can be set to the value "from args" which means the device xml must be specified via the --devicexml argument from launch.py. If this is required but is absent, the user will be prompted.
+ - The boot_program field is the name of the python program that CDM OS will boot into. The .py extension isn't needed.
+
+##### A Boot Program
+A boot program is a python module that implements the following:
+ 1. defines a class that provides a start method with no arguments other than self.
+ 2. provides a build function that takes two parameters, system and device_name. This function is expected to return the class mentioned above.
+
+The class is typically initialised with the system and device_name parameters of the build function but it's not a requirement.
+
+The boot programs are found in the cdm_os/bin directory.
+
+##### The shell boot program
+The shell boot program is used in the DeviceEmulator.conf and the LampDevice.conf. It enables the user to interact with the virtual device's properties in a way that is similar to a *nix shell, i.e., via a command prompt.
+
+The commands available in the shell:
+ - help : Entry point to the help system.
+ - ls : lists the contents of the current directory.
+ - cd : changes the current directory.
+ - inspect : Displays the contents of a properties state file.
+ - set : Writes new data into a properties state file.
+ - reset : Can be used to reset a devices state back to it's 'factory' settings.
+
 
 Android Controller
 ==================
@@ -304,3 +567,46 @@ Building
    4. Uncheck the box next to Enable Instant Run to ~~~
    5. Run > Clean and Rerun 'app'
 
+
+iOS Controller
+==================
+
+Folder Structure
+----------------
+<pre>
+iOS
+  \---CDMController
+      +---cdm_controller
+      |   +---en.lproj
+      |   +---logic
+      |   +---util
+      |   \---view_controllers
+      |       +---environment
+      |       +---input
+      |       +---operation
+      |       +---table_view_cells
+      |       \---userinterfacesettings
+      |
+      +---CDMController.xcodeproj
+      +---Controller
+      \---images
+</pre>
+
+ * iOS/CDMController/cdm_controller/view_controllers : contains the views for all the interfaces
+ * iOS/CDMController/CDMController.xcodeproj : The xcode project
+ * iOS/CDMController/Controller : The app entry point
+
+Building
+--------
+Xcode 8.0 or above required
+
+<pre>
+$ cd $AJ_ROOT/core/alljoyn/
+$ PLATFORM_NAME=iphoneos CONFIGURATION={Debug|Release} scons OS=darwin CPU=arm BINDINGS=cpp VARIANT={debug|release} CRYPTO=builtin SDKROOT=$(xcodebuild -sdk iphoneos -version Path)
+$ cd alljoyn_objc/AllJoynFramework_iOS/
+$ xcodebuild -project AllJoynFramework_iOS.xcodeproj/ -scheme AllJoynFramework_iOS -sdk iphoneos -configuration {Debug|Release}
+$ cd $AJ_ROOT/services/cdm/
+$ PLATFORM_NAME=iphoneos CONFIGURATION={Debug|Release} scons OS=darwin CPU={armv7,arm64} BINDINGS=cpp VARIANT={debug|release} CRYPTO=builtin SDKROOT=$(xcodebuild -sdk iphoneos -version Path)
+$ cd ios/CDMController
+$ xcodebuild -project CDMController.xcodeproj/ -sdk iphoneos -configuration {Debug|Release}
+</pre>

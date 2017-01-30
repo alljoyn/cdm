@@ -7,17 +7,35 @@ layers of CDM.  These include
     samples/QController/interfaces/
 
 The code is generated using the XML files in the alljoyn_interfaces repo.
-This should be in $AJ_ROOT/alljoyn_interfaces.
+These have been modified with custom annotations and are included in ./alljoyn_interfaces.
+
 The code is generated using Jinja2 templates in the templates/interface_templates directory.
 In templates/patches* there are hand-crafted patches for the generated code.
 
-The generation process is controlled by the Makefile. Normally you would generate into
+generator.py takes a number of arguments and is called:
+
+    generate.py <template_dir> <xml_files> options
+
+  where:
+    template_dir is the first argument and is the path to directory with the templates to be used for code generation
+    xml_files is a Unix style path name pattern expansion to xml files to be used for pystache rendering context
+
+  options:
+    --output_dir: The path to directory where the generated files will be output to. Default = ./output
+    --bindings: The bindings to generate. Choices are all, cpp, java, tcl and ios
+    --components: The components to generate. Choices are all, controller, controllee, common, samples and tcl.
+    --patches: The path to the root for patch templates.
+    --dryrun: Executes and outputs the process but doesn't write any files.
+    --flat-output-path: Ignores the template structure on output so all files get written to the output path directly.
+
+
+To generate all the CDM interfaces, the process is controlled by the Makefile. Normally you would generate into
 a local tree, output/ or output_tcl. The code can then be installed into the source tree.
 
 To generate and install everything for standard CDM do
     make generate install
 
-To generate and install everything for standard CDM do
+To generate and install everything for thin core CDM do
     make which=tcl generate install
 
 The model code can be generated separately using
@@ -40,7 +58,4 @@ macros
 tcl_macros
     Jinja2 macros used in the code generation
 
-output
-output_tcl
-    The standard output trees.
 
