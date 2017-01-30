@@ -8,6 +8,7 @@ layers of CDM.  These include
 
 The code is generated using the XML files in the alljoyn_interfaces repo.
 These have been modified with custom annotations and are included in ./alljoyn_interfaces.
+All the custom annotations begin with 'org.twobulls' so they are easily grepped.
 
 The code is generated using Jinja2 templates in the templates/interface_templates directory.
 In templates/patches* there are hand-crafted patches for the generated code.
@@ -31,6 +32,14 @@ generator.py takes a number of arguments and is called:
 
 To generate all the CDM interfaces, the process is controlled by the Makefile. Normally you would generate into
 a local tree, output/ or output_tcl. The code can then be installed into the source tree.
+
+The AJ_ROOT environment variable needs to be set to the base alljoyn directory in order to use the MakeFile, e.g.,
+
+${AJ_ROOT}
+    +---core
+    \---services
+        +---cdm
+        +---cdm_tcl
 
 To generate and install everything for standard CDM do
     make generate install

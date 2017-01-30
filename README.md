@@ -229,7 +229,7 @@ generator
 
 ##### cpp/interfaces : CDM interfaces libraries
    - The interfaces are segregated into common, controllee and controller libraries
-     * The controlle and controller libraries contain the respective interface implementations
+     * The controllee and controller libraries contain the respective interface implementations
      * The common library is required by both controllee and controller libraries
 
 ##### cpp/samples : Samples that demonstrate the features and use of CDM
@@ -247,7 +247,7 @@ generator
    * SampleLauncher - Refer to the CDM OS section in this document
    * Utils contains utilities used by the samples
      - Command is a rework of the concept from 16.04 and listens for input from stdin. It simulates an interrupt handler
-     - HAL simulates a Hardware Abstraction Layer. It is used in the sample model implementations read and write data to the "device's hardware"
+     - HAL simulates a Hardware Abstraction Layer. It is used in the sample model implementations to read and write data to the "device's hardware"
    * WarpCoreInterface demonstrates how to build and integrate a custom interface starting from an xml file
 
 ##### generator : The CDM code generator
@@ -310,7 +310,7 @@ $ cmake . -DCMAKE_BUILD_TYPE={Release|Debug} -DOS={darwin} -DCPU={x86|x86_64} -D
 $ make
 </pre>
 #### Notes:
-  The QController isn't built with the other samples as it has a dependency on Qt5 and needs to be build manually<br>
+  The QController isn't built with the other samples as it has a dependency on Qt5 and needs to be built manually<br>
   The QController can be built for windows but it isn't actively supported at this stage.
 
 
@@ -361,7 +361,7 @@ cdm/
 
   - output path : root-source-dir/services/cdm/build/$OS/$TARGET_CPU/$VARIANT/dist/cdm
   - bin : CookTopControllee, DeviceEmulator, LampDevice, launch.py and WarpCore
-  - lib : liballjoyn_cdm.a, liballjoyn_cdm.so
+  - lib : liballjoyn_cdm_common, liballjoyn_cdm_controllee, liballjoyn_cdm_controller, liballjoyn_cdm_interfaces and liballjoyn_cdm_util
   - framework : public header files for the framework
   - interfaces : public header files for the CDM interfaces
 
@@ -395,15 +395,15 @@ There are three parts to creating a new interface - the common, controllee and c
 ### Common part
 The common part is used by both the controllee and controller parts to attach the interface to the AllJoyn bus attachment.
 
-A class is created that inherits from CdmInterface, declared in framework/{inc}/common/CdmInterface.h
+A class is created that inherits from CdmInterface, declared in framework/.../common/CdmInterface.h
 CdmInterface is an abstract base class and some methods require implementation.
 
 This class is used to define static definitions relating to the interface, such as property names and its introspection xml.
 
 ### Controllee Side
 The controllee implementation needs to create a class that inherits and implements two pure virtual classes:
- - CdmControlleeInterface, declared in framework/{inc}/controllee/CdmControlleeInterface.h
- - InterfaceReceiver, framework/{inc}/controllee/InterfaceReceiver.h
+ - CdmControlleeInterface, declared in framework/.../controllee/CdmControlleeInterface.h
+ - InterfaceReceiver, framework/.../controllee/InterfaceReceiver.h
 
 as well as the common class created above.
 
@@ -417,18 +417,18 @@ The model is the integration point with the device and all hardware interaction 
 
 Note: The CDM implementations of the interfaces actually do data validation of a SetProperty in the controllee implementation mentioned above and not in the model. The models assume the data is valid.
 
-Model classes inherit from InterfaceControlleeModel, declared in framework/{inc}/controllee/InterfaceControlleeModel.h
+Model classes inherit from InterfaceControlleeModel, declared in framework/.../controllee/InterfaceControlleeModel.h
 
 ### Controller Side
 The controller implementation needs to create a class that inherits and implements:
- - InterfaceController, declared in framework/{inc}/controller/InterfaceController.h
+ - InterfaceController, declared in framework/.../controller/InterfaceController.h
 
 as well as the common class created above.
 
 ##### Controller Listener
 The listener is the reciprocal for the model on the controller side. It implements callbacks to the requests that are defined by the interface xml. It is the integration point for the UX/UI side of the controller.
 
-The listener class inherits from InterfaceControllerListener, declared in framework/{inc}/controller/InterfaceControllerListener.h
+The listener class inherits from InterfaceControllerListener, declared in framework/.../controller/InterfaceControllerListener.h
 
 
 #### Tutorial
@@ -445,7 +445,7 @@ Example device xml files can be found in the DeviceXML directory that exists alo
 ##### Running the emulator
 <pre>
 cd <root-source-dir>/services/cdm/build/{OS}/{CPU}/{VARIANT}/dist/cdm/bin
-./DeviceEmulator some_devices.xml
+./DeviceEmulator some_device.xml
 </pre>
 
 The emulator also takes three other optional arguments.
@@ -459,22 +459,23 @@ The emulator also takes three other optional arguments.
 A call using all the arguments might look like
 <pre>
 cd <root-source-dir>/services/cdm/build/{OS}/{CPU}/{VARIANT}/dist/cdm/bin
-./DeviceEmulator some_devices.xml --state-dir ../emulated_state --certs-dir certificates/security --emit-on-set
+./DeviceEmulator some_device.xml --state-dir ../emulated_state --certs-dir certificates/security --emit-on-set
 </pre>
 
 CDM OS
 ------
-CMD OS is a tool written in python that is used to launch samples for both CDM and CDM thin client under a predefined configuration.
+CMD OS is a tool written in python that is used to launch samples for both CDM and CDM thin client under a predefined configuration. Its main feature is to provide access to the virtual devices property state. It can also run specific python programs to simulate more complex behaviour. For an example of this, see the motion_sensor sample. This sample simulates a battery powered motion sensor where 1% of the battery drains every second. At random intervals the sensor detects motion and emits an alert. It also emits alerts at 30% battery power and 15% battery power. The sample ends at 0% battery power.
+
 The entry point is the launch.py found in the bin dir.
 
-launch.py acts like a boot loader for the sample in that reads the sys.conf file under the cdm_os/conf directory to gather data about the system configuration, i.e., cdm or cdm tcl. launch.py also needs a device configuration.
+launch.py acts like a boot loader for the sample in that it reads the sys.conf file under the cdm_os/conf directory to gather data about the system configuration, i.e., cdm or cdm tcl. launch.py also needs a device configuration.
 
 The arguments for launch.py are (all arguments are optional):
 
---system : Is used to specify either cdm or cdm tcl. Defaults to cdm.
---device : Is used to choose the device.conf file. The file must exist under the conf/{system} directory.
---device-xml : Is used to specify the device xml file for the device emulator.
---list-devices : This will cause launch.py to list all the devices that are available for launch.
+--system : Is used to specify either cdm or cdm tcl. Defaults to cdm.<br>
+--device : Is used to choose the device.conf file. The file must exist under the conf/{system} directory.<br>
+--device-xml : Is used to specify the device xml file for the device emulator.<br>
+--list-devices : This will cause launch.py to list all the devices that are available for launch.<br>
 
 If --device arg is not specified, launch.py will prompt the user for a device under the system that was specified (cdm by default)
 
