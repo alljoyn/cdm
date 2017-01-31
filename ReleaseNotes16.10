@@ -1,0 +1,243 @@
+Common Device Model (CDM) Version 16.10 Release Notes
+=====================================================
+
+Fully Validated Platforms
+-------------------------
+1) Linux Ubuntu 16.04 and 15.04, Debian 8.6
+2) Android Lollipop 5.0, Nougat 7.1.1
+3) OS X El Capitan and Sierra
+4) Windows 10
+5) iOS 9 and 10
+
+
+Features added in CDM 16.10
+===========================
+
+New Interfaces:
+ * Brightness
+ * Color
+ * ColorTemperature
+ * LockStatus
+ * LockControl
+ * UnlockControl
+ * TriggerSensor
+
+New Device Theories of operation:
+ * Lamp
+ * Lock
+ * Switch
+ * Door/Window Sensor
+ * Motion Sensor
+ * Power Outlet/Smart-Plug
+ * Smoke Detector
+ * Water Sensor
+ * Speaker
+ * Generic Battery Powered Device
+ * Generic Binary Sensor Device
+
+
+Improved Code Generation
+------------------------
+All the requirements and code for the interfaces for 16.04 and 16.10 CDM and
+CDM TCL can be code generated directly from the interface xml.
+The code generator takes advantage of some custom annotations that were added
+to the interfaces to help with data validation and enum types amongst others.
+
+See the README in the cdm/generator directory for more details.
+
+
+New Utilities to make Alljoyn and CDM devices easier
+----------------------------------------------------
+Some new utilities and tools were developed with the idea to hide away boilerplate
+but not obfuscate the required steps in setting up a device.
+
+ * CdmAnnouncer can be given the devices about xml and then used to announce a device
+ * CdmMsgCvt is a utility that converts data types to and from an Alljoyn MsgArg
+ * CdmSecurity is a utility that can manage keys/certificates and be used to enable security
+ * CdmSystem is a quick and easy class to to manage AllJoyn and the router
+
+The cdm samples demonstrate how these utility classes work.
+
+
+Controller Framework Improvements
+---------------------------------
+ * Can control all 16.04 and 16.10 interfaces
+ * New iOS controller implementation
+ * New Qt controller implementation
+ * Android controller has stability improvements
+ * Increased stability with multi-threading fixes and improved object life time management
+
+
+Controllee Framework Improvements
+---------------------------------
+ * API improvements
+   - Clearly named methods for emitting change signals on hardware modification
+   - Methods can now alter the state of other interfaces and emit change signals to notify
+     controllers without dependency
+
+ * Simplified API for creating interface instances
+   - The CreateInterface method is now templated and doesn't use a factory
+   - No more distinction between CDM interfaces and vendor defined interfaces.
+     Both are implemented and instantiated using the same code paths
+
+ * The public facing API for interfaces now makes a distinction between setting values and
+   emitting change signals
+
+
+Samples implemented to reflect hardware implementation
+------------------------------------------------------
+ * A Sample's property data is stored externally to simulate a *nix style device file
+   - This is abstracted through a simulated hardware abstraction layer with a simple
+     read/write style interface
+   - The sample can be interrupted when its property data is changed external so it can
+     emit a change signal
+ * Samples support a factory reset of property data
+
+
+Improved Device Emulator
+------------------------
+ * The device xml used by the device emulator can now specify default property values
+   for the interface in the interface list
+ * The device emulator supports factory reset
+ * The device emulator has fully implemented and functioning models for all interfaces
+
+See the CDM README for more details
+
+CDM OS
+------
+CDM OS is a python program that enables the launching of sample binaries and interaction
+with their property data.
+
+ * Launches sample binaries, including the device emulator and executes a 'boot program'
+   i.e., a shell like interface
+ * Customizable and easy to add new configurations and boot programs to simulate how a
+   device and its interfaces would work and interact.
+
+See the CDM README for more details
+
+
+Experimental Features
+---------------------
+ * A backwards compatibility/translation layer has been added
+   - An LSF translator exists as private implementation and is exposed in the QController.
+     The translator takes an LSF device and exposes it as a CDM device.
+     This has been verified with a LIFX Color 1000 lamp.
+     It currently only supports HSV model (Brightness and Color interfaces) and the
+     Switch model (OnOffStatus, OnControl and OffControl).
+ * Groups and presets have a rudimentary implementation inside the Android Controller
+
+
+
+
+Breaking changes in CDM 16.10
+=============================
+A number of breaking changes have occurred in 16.10. Most of these changes have been brought
+about by the want to create a strong distinction between a controllee and a controller. The
+needs and requirements for each side are different and it was decided that it was better to
+make these changes early in the platforms life time rather than wait.
+
+
+Directory structure of the code base
+------------------------------------
+There is now a strong distinction between what is framework, what is an interface and what is
+a utility. The framework and interfaces also make a clear distinction between what is a
+controller, what is a controllee and what is common to both. This is reflected in the new
+directory structure. The new layout can be viewed in the CDM README.
+
+This also enables the code to be built into distinct libraries...
+	cdm_common
+	cdm_controllee
+	cdm_controller
+	cdm_interfaces
+
+...so developers can link to the parts they need depending on what they are working on.
+
+This will break includes for code using 16.04 but this granular linking paves the way
+for a plugin based system where interfaces are entirely external as well as translation
+layers etc.
+
+
+CreateInterface methods are now templated
+-----------------------------------------
+This was done to remove the factory on the controllee side. A controllee device knows up
+front what interfaces it needs to implement and has no need of a factory. The added advantage
+is that all the code for unused interfaces is no longer linked into the executable via the factory.
+
+
+Interface APIs have changed
+---------------------------
+The CDM interface implementations no longer have the side channelling set methods for read only
+properties that exist in 16.04. These were for the device emulator/sample framework/unit
+tests so they could test and to emit change signals when a user was interacting through
+the command prompt.
+
+The interfaces in 16.10 expose what is defined by the interface xml. If a property is
+read only, it only has a get method. If it also emits a change signal then it has an emit
+value changed method. It is assumed that if an interface is read only but emits a change
+signal then the properties value is going to be changed externally to CDM and that CDM will
+need to be notified of the change but not perform the change itself.
+
+Any side channeling that is required is kept to the sample that requires it.
+
+
+Listeners are now Models on the Controllee
+------------------------------------------
+While the usage of 'Listener' on the controller side is apt, on the controllee it is
+not so much. This class implements reading and writing of property data to the device
+and the implementation of the interfaces methods that also interact with the device.
+This functionality is invoked directly from the interfaces implementation.
+The term model, while not perfect, is more inline with what this class is doing
+on the controllee side.
+
+
+Removed the Vendor Defined Interface API
+----------------------------------------
+With the changes to the CreateInterface method, where a controllee can directly
+instantiate an interface instance via its type and not an enum, this concept is redundant.
+
+As the controller still uses a factory but the creation key is now the interface name,
+a single register method is needed for custom interfaces and these registered interfaces
+can exist in the factory along side the CDM interfaces. Removing this distinction on the
+controller side also sets up the ability for CDM interfaces the use the same registration
+interface and ship as a default plugin and vendor plugins can be installed along side.
+
+
+Migration Sample
+----------------
+The migration sample takes a sample from 16.04, framework and all, and provides the
+minimal amount of changes required to make it work with 16.10.
+
+Inside the sample directory are two directories:
+	16.04 contains the original code that won't compile with 16.10
+	16.10 contains the changed sample that will compile and run
+
+along side these directories is a diff of the two directories. This should allow
+developers to hone in and become familiar with the specific changes required.
+
+
+Possible Future directions for CDM post 16.10
+=============================================
+
+ * Currently the interface factory is located inside the interfaces library. This is
+   a pretty terrible place for it but it is a workable first step. It should ultimately
+   be inside the controller part of the framework and some form of (auto?) registration
+   should occur.
+
+ * The above is made much easier with a plugin system and a dynamic loading of the
+   interfaces at runtime. CDM interfaces, as well as custom vendor interfaces could all
+   ship as plugins and use the same registration code path.
+
+ * Plugins for controllers has a complicating aspect. The design of UI/UX can not really
+   rely on hardcoded knowledge of interfaces if vendors are shipping plugins of yet to
+   be determined interfaces. The controller framework should not handle any rendering
+   of widget, this is the mistake controlpanel made. It could possibly implement some
+   kind of hint/metadata transmission that comes from the plugin and can be interpreted
+   by UX designers/implementors to create custom UI/UX for their controller apps.
+
+ * Extending the work on the translation/backward compatibility system
+   - Making it more robust and consolidating an API
+   - Translators as plugins
+
+ * Extending/defining the groups/presets concept
+   - How are groups defined? Are they groups of interfaces or groups of devices? Does
+     the group need to be homogeneous? How are presets handled in heterogeneous groups?
